@@ -1,13 +1,33 @@
 import React, { useState } from "react";
 import "../styles/LoginPage.scss";
+import axios from "axios";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    ///Add login to handle login once backend and dB are setup. Google O auth??
+    console.log("Button clicked!");
+
+    try {
+      const response = await axios.post("/login", {
+        username,
+        password,
+      });
+      if (response.status === 200) {
+        ///Login successful
+        const { token } = response.data;
+
+        //Store the token in local storage
+        localStorage.setItem("token", token);
+      } else {
+        console.error("Unexpected response status:", response.status);
+      }
+    } catch (error) {
+      // Handle login error (e.g., incorrect credentials, server error)
+      console.error("Login error:", error.message);
+    }
   };
 
   return (

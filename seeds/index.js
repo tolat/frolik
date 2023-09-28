@@ -1,4 +1,4 @@
-require("dotenv").config({path: '../.env'});
+require("dotenv").config({ path: "../.env" });
 const mongoose = require("mongoose");
 const Activity = require("../models/activity");
 const User = require("../models/user");
@@ -8,7 +8,7 @@ const dbUrl = process.env.DB_URL;
 const { userSeeds } = require("./user");
 const { activitySeeds } = require("./activity");
 
-console.log(dbUrl)
+console.log(dbUrl);
 
 // Connect to the database and handle connection errors
 mongoose.connect(dbUrl, {
@@ -30,9 +30,9 @@ const seedUsers = async () => {
 
   const users = await User.find();
   for (user of users) {
-    for (freind of users) {
-      if (user != freind) {
-        user.freinds.push(freind);
+    for (friend of users) {
+      if (user != friend) {
+        user.friends.push(friend);
       }
     }
 
@@ -62,7 +62,7 @@ const seedOutings = async () => {
     outing.status = "completed";
     outing.chat = {};
     user.outings.push(outing);
-    user2.outings.push(outing)
+    user2.outings.push(outing);
 
     await outing.save();
     await user.save();
