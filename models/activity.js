@@ -23,6 +23,7 @@ const ActivitySchema = new Schema(
     ratings: [
       { user: { type: Schema.Types.ObjectId, ref: "User" }, number: Number },
     ],
+    media: Object
   },
   { minimize: false }
 );
