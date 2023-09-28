@@ -1,0 +1,32 @@
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const passportLocalMongoose = require("passport-local-mongoose");
+
+const UserSchema = new Schema(
+  {
+    first_name: String,
+    last_name: String,
+    username: String,
+    tagline: String,
+    status: String,
+    profile_picture: String,
+    freinds:[{ type: Schema.Types.ObjectId, ref: "User" }],
+    photos: [
+      {
+        url: String,
+        outing: { type: Schema.Types.ObjectId, ref: "Activity" },
+        taggedUsers: [{ type: Schema.Types.ObjectId, ref: "User" }],
+      },
+    ],
+    outings: [{ type: Schema.Types.ObjectId, ref: "Outing" }]
+  },
+  { minimize: false }
+);
+
+UserSchema.plugin(passportLocalMongoose);
+
+UserSchema.virtual("fullname").get(function () {
+  return `${this.first_name} ${this.last_name}`;
+});
+
+module.exports = mongoose.model("User", UserSchema);
