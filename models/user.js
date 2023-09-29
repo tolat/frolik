@@ -7,10 +7,11 @@ const UserSchema = new Schema(
     first_name: String,
     last_name: String,
     username: String,
+    password: String,
     tagline: String,
     status: String,
     profile_picture: String,
-    freinds:[{ type: Schema.Types.ObjectId, ref: "User" }],
+    friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
     photos: [
       {
         url: String,
@@ -18,7 +19,7 @@ const UserSchema = new Schema(
         taggedUsers: [{ type: Schema.Types.ObjectId, ref: "User" }],
       },
     ],
-    outings: [{ type: Schema.Types.ObjectId, ref: "Outing" }]
+    outings: [{ type: Schema.Types.ObjectId, ref: "Outing" }],
   },
   { minimize: false }
 );
