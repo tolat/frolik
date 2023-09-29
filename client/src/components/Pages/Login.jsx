@@ -1,17 +1,33 @@
 import React, { useState } from "react";
 import styles from "./styles/Login.module.scss";
+import useHttp from "../../hooks/use-http";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const { isLoading, error, sendRequest } = useHttp();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add login to handle login once backend and dB are setup. Google O auth??
+    console.log("Button clicked!");
+
+    const handleResponse = (data) => {
+      console.log(data);
+    };
+
+    sendRequest(
+      {
+        url: "/login",
+        method: "POST",
+        body: JSON.stringify({ username, password }),
+      },
+      handleResponse
+    );
   };
 
   return (
-    <div className={styles["login-page"]}>
+    <div className={styles.login}>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div>

@@ -4,6 +4,11 @@ const path = require("path");
 const jwt = require("jsonwebtoken");
 const router = express.Router({ mergeParams: true });
 const User = require("./models/user");
+const mongoose = require("mongoose");
+const MongoStore = require("connect-mongo");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const session = require("express-session");
 
 const app = express();
 app.use(
@@ -13,48 +18,56 @@ app.use(
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-///Helper function for generating auth token. Can move later.
-
-function generateAuthToken(user) {
-  // Define the payload (user data) to be included in the token
-  const payload = {
-    _id: user._id,
-    username: user.username,
-  };
-
-  const token = jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: "1h",
-  });
-
-  return token;
-}
-
-// Routes
-
-//Login Route
-app.post("/login", async (req, res) => {
-  console.log("Login route hit");
-  const { username, password } = req.body;
-  try {
-    // Find the user by username
-    const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(401).json({ message: "User not found" });
-    }
-
-    // Check if the password is correct
-    const isPasswordValid = await user.comparePassword(password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ message: "Incorrect password" });
-    }
-
-    // If authentication is successful, generate a JWT token and send it in the response
-    const token = generateAuthToken(user);
-    res.status(200).json({ token });
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
+// Connect to the database and handle connection errors
+mongoose.connect(process.env.DB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
+global.db = mongoose.connection;
+global.db.on("error", console.error.bind(console, "connection error:"));
+global.db.once("open", () => {
+  console.log("Main process connected to database");
+});
+
+// Session
+const secret = process.env.SECRET;
+const sessionConfig = {
+  store: MongoStore.create({
+    mongoUrl: process.env.DB_URL,
+    touchAfter: 3600 * 24,
+    secret: secret,
+  }),
+  name: "go_session",
+  secure: true,
+  secret: secret,
+  resave: false,
+  saveUninitialized: true,
+  expires: Date.now() + 1000 * 60 * 60 * 24,
+};
+app.use(session(sessionConfig));
+
+// Morgan logger
+const morgan = require("morgan");
+app.use(morgan("dev"));
+
+
+// Passport
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.post("/login", passport.authenticate("local"), (req, res) => {
+  res.send({authenticated: req.isAuthenticated()})
+});
+
+// Logout route
+app.get("/logout", (req, res) => {
+  req.logout();
+  res.redirect("/login");
+});
+
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "client/build/index.html"));

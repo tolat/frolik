@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "../.env" });
+const denv = require("dotenv").config({ path: './.env' });
 const mongoose = require("mongoose");
 const Activity = require("../models/activity");
 const User = require("../models/user");
@@ -7,8 +7,6 @@ const dbUrl = process.env.DB_URL;
 
 const { userSeeds } = require("./user");
 const { activitySeeds } = require("./activity");
-
-console.log(dbUrl);
 
 // Connect to the database and handle connection errors
 mongoose.connect(dbUrl, {
@@ -25,7 +23,7 @@ db.once("open", () => {
 const seedUsers = async () => {
   for (user of userSeeds) {
     const newUser = new User({ ...user });
-    await newUser.save();
+    await User.register(user, "123456")
   }
 
   const users = await User.find();
@@ -35,8 +33,8 @@ const seedUsers = async () => {
         user.friends.push(friend);
       }
     }
-
     await user.save();
+   
   }
 };
 
