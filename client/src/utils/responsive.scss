@@ -1,0 +1,48 @@
+$breakpoint_s: 750px;
+$breakpoint_m: 1100px;
+$breakpoint_l: 1800px;
+
+@mixin mbl_styles {
+  @media (max-width: $breakpoint_s) {
+    @content;
+  }
+}
+
+@mixin sml_styles {
+  @media (min-width: $breakpoint_s) and (max-width: $breakpoint_m) {
+    @content;
+  }
+}
+
+@mixin med_styles {
+  @media (min-width: $breakpoint_m) and (max-width: $breakpoint_l) {
+    @content;
+  }
+}
+
+@mixin lrg_styles {
+  @media (min-width: $breakpoint_l) {
+    @content;
+  }
+}
+
+@mixin responsive(
+  $attribute,
+  $t: "unset",
+  $s: "unset",
+  $m: "unset",
+  $l: "unset"
+) {
+  @include mbl_styles {
+    #{$attribute}: $t;
+  }
+  @include sml_styles {
+    #{$attribute}: $s;
+  }
+  @include med_styles {
+    #{$attribute}: $m;
+  }
+  @include lrg_styles {
+    #{$attribute}: $l;
+  }
+}
