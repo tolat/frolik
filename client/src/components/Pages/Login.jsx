@@ -18,16 +18,17 @@ function Login() {
 
     sendRequest(
       {
-        url: "/login",
+        url: "http://localhost:3001/login",
         method: "POST",
         body: JSON.stringify({ username, password }),
+        mode: "no-cors"
       },
       handleResponse
     );
   };
 
   return (
-    <div className={styles.login}>
+    <div className={styles['login-page']}>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div>

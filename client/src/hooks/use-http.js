@@ -13,6 +13,7 @@ const useHttp = () => {
         method: requestConfig.method ? requestConfig.method : "GET",
         headers: requestConfig.headers ? requestConfig.headers : {},
         body: requestConfig.body ? requestConfig.body : null,
+        mode: requestConfig.mode ? requestConfig.mode: "cors",
       });
 
 
