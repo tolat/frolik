@@ -9,6 +9,7 @@ const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const session = require("express-session");
+const cors = require("cors");
 
 const app = express();
 app.use(
@@ -17,7 +18,7 @@ app.use(
 );
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
+app.use(cors());
 // Connect to the database and handle connection errors
 mongoose.connect(process.env.DB_URL, {
   useNewUrlParser: true,
@@ -50,7 +51,6 @@ app.use(session(sessionConfig));
 const morgan = require("morgan");
 app.use(morgan("dev"));
 
-
 // Passport
 app.use(passport.initialize());
 app.use(passport.session());
@@ -59,7 +59,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.post("/login", passport.authenticate("local"), (req, res) => {
-  res.send({authenticated: req.isAuthenticated()})
+  res.send({ authenticated: req.isAuthenticated() });
 });
 
 // Logout route
@@ -67,7 +67,6 @@ app.get("/logout", (req, res) => {
   req.logout();
   res.redirect("/login");
 });
-
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "client/build/index.html"));

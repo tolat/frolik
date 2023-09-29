@@ -20,8 +20,10 @@ function Login() {
       {
         url: "http://localhost:3001/login",
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ username, password }),
-        mode: "no-cors"
       },
       handleResponse
     );
