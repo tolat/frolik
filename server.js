@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
-const jwt = require("jsonwebtoken");
 const router = express.Router({ mergeParams: true });
 const User = require("./models/user");
 const mongoose = require("mongoose");
@@ -31,16 +30,15 @@ global.db.once("open", () => {
 });
 
 // Session
-const secret = process.env.SECRET;
 const sessionConfig = {
   store: MongoStore.create({
     mongoUrl: process.env.DB_URL,
     touchAfter: 3600 * 24,
-    secret: secret,
+    secret: process.env.SECRET,
   }),
   name: "go_session",
-  secure: true,
-  secret: secret,
+  secure: false,
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   expires: Date.now() + 1000 * 60 * 60 * 24,
@@ -58,24 +56,40 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.post("/login", passport.authenticate("local"), (req, res) => {
-  res.send({ authenticated: req.isAuthenticated() });
+// Auth Routes
+app.post("/login", passport.authenticate("local"), async (req, res) => {
+  const user = await User.findOne({ username: req.body.username });
+  if (req.isAuthenticated()) {
+    res.send({ userID: user._id });
+  }
 });
 
-// Logout route
-app.get("/logout", (req, res) => {
-  req.logout();
-  res.redirect("/login");
+app.post("/check-auth", async (req, res) => {
+  const isAuthenticated = req.isAuthenticated();
+  if (isAuthenticated) {
+    const user = await User.findOne({ username: req.session.passport.user });
+    const userID = user ? user._id : false;
+    res.send({ isAuthenticated, userID });
+  } else {
+    res.send({ isAuthenticated });
+  }
 });
 
-app.get("/", (req, res) => {
+app.post("/logout", (req, res) => {
+  req.logout(() => {
+    res.send({ success: true });
+  });
+});
+
+// All routes go to the client, routing happens on the front end
+app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client/build/index.html"));
 });
 
-app.get("*", (req, res) => {
+/* app.get("*", (req, res) => {
   res.send("no path matched");
 });
-
+ */
 app.listen(process.env.PORT, () => {
   console.log(`Example app listening on port ${process.env.PORT}`);
 });

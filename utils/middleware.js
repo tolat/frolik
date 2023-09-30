@@ -13,12 +13,3 @@ module.exports.handleCORS = async (req, res, next) => {
   // Send success if CORS checks options on pre-flight test
   "OPTIONS" == req.method ? res.send(200) : next();
 };
-
-module.exports.isLoggedIn = (req, res, next) => {
-  req.session.returnTo = req.originalUrl;
-  if (!req.isAuthenticated()) {
-    console.log("\n\n\nNOT AUTHENTICATED \n\n\n");
-    return res.redirect("/login");
-  }
-  next();
-};
