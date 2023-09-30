@@ -4,3 +4,56 @@
     height: 100%;
     justify-content: center;
 }
+
+.userContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.userIcon{
+    width: 8rem;
+    height: 8rem;
+    border-radius: 100rem;
+    border: 2px solid rgb(147, 147, 147);
+    margin: 1rem 0;
+    background-image: url('../../../../images/usericon.png');
+    background-size: contain;
+}
+
+.addButton{
+    font-size: 2rem;
+    width: 3rem;
+    height: 3rem;
+    margin: 1rem;
+    border-radius: 100rem;
+}
+
+.select{
+    padding: 1rem 0.5rem;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    border-radius: 3px;
+}
+
+.goButton{
+    font-size: 1.2rem;
+    padding: 1rem;
+    background-color: rgb(175, 228, 191);
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 3px;
+}
+
+.container button:hover{
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.searchContainer{
+    margin-top: 2rem;
+    height: 12rem;
+    width: 100%;
+    border-radius: 3px;
+    border: 3px solid rgb(228, 228, 228);
+    background-color: rgb(248, 248, 248);
+}

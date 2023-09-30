@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Chat from "./components/Pages/Chat";
-import Go from "./components/Pages/Go";
+import Go, { goLoader } from "./components/Pages/Go";
 import Login, { loginLoader } from "./components/Pages/Login";
 import Profile, { profileLoader } from "./components/Pages/Profile";
 import { Outlet } from "react-router-dom";
@@ -38,6 +38,7 @@ const router = createBrowserRouter([
       {
         path: "go",
         element: <Go />,
+        loader: goLoader,
       },
       {
         path: "chat",
