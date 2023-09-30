@@ -1,0 +1,15 @@
+.header {
+  align-items: center;
+  background-color: #ffdead;
+  border-bottom: 3px solid #000;
+  justify-content: space-between;
+  display: flex;
+  padding: 10px;
+}
+
+.navItems{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 200px;
+}
