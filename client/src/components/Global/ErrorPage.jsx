@@ -8,6 +8,7 @@ const ErrorPage = (props) => {
   return (
     <div className={styles.container}>
       <h1>An Error Occured!</h1>
+      <p>{error.message}</p>
     </div>
   );
 };

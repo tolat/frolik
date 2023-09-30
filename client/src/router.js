@@ -11,7 +11,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <div className="App">
+      <div class="app">
         <Navbar/>
         <Outlet />
       </div>
