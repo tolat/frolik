@@ -26,7 +26,7 @@ export const login = (username, password) => {
 
     // handle login post request errors
     const handleError = (err) => {
-    if(err.message == 'unauthorized'){
+    if(err.message === 'unauthorized'){
         // COULD ADD CODE HERE TO UPDATE AN "incorrect credentials" STATE
     }
       console.log(err);

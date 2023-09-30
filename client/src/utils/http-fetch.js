@@ -13,7 +13,7 @@ export default async function httpFetch(
 
     // Handle other status codes (e.g., 401, 500) here
     if (!response.ok) {
-      if (response.status == 401) {
+      if (response.status === 401) {
         throw new Error("unauthorized");
       } else {
         throw new Error(`Request failed with status: ${response.status}`);
