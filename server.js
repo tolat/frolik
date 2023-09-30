@@ -56,40 +56,14 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// Auth Routes
-app.post("/login", passport.authenticate("local"), async (req, res) => {
-  const user = await User.findOne({ username: req.body.username });
-  if (req.isAuthenticated()) {
-    res.send({ userID: user._id });
-  }
-});
-
-app.post("/check-auth", async (req, res) => {
-  const isAuthenticated = req.isAuthenticated();
-  if (isAuthenticated) {
-    const user = await User.findOne({ username: req.session.passport.user });
-    const userID = user ? user._id : false;
-    res.send({ isAuthenticated, userID });
-  } else {
-    res.send({ isAuthenticated });
-  }
-});
-
-app.post("/logout", (req, res) => {
-  req.logout(() => {
-    res.send({ success: true });
-  });
-});
+// App Routes
+app.use("/auth", require("./routes/auth"));
 
 // All routes go to the client, routing happens on the front end
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client/build/index.html"));
 });
 
-/* app.get("*", (req, res) => {
-  res.send("no path matched");
-});
- */
 app.listen(process.env.PORT, () => {
   console.log(`Example app listening on port ${process.env.PORT}`);
 });
