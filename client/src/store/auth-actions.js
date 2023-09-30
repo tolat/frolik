@@ -1,6 +1,7 @@
 import httpFetch from "../utils/http-fetch";
 import { authActions } from "./auth-slice";
 import store from ".";
+import { getServer } from "../utils/env-utils";
 
 // Create a login action to attempt to log in the user
 export const login = (username, password) => {
@@ -11,7 +12,7 @@ export const login = (username, password) => {
     dispatch = dispatch ? dispatch : (dispatch = store.dispatch);
 
     const requestConfig = {
-      url: `http://localhost:3001/login`,
+      url: `${getServer()}/auth/login`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -26,9 +27,9 @@ export const login = (username, password) => {
 
     // handle login post request errors
     const handleError = (err) => {
-    if(err.message === 'unauthorized'){
+      if (err.message === "unauthorized") {
         // COULD ADD CODE HERE TO UPDATE AN "incorrect credentials" STATE
-    }
+      }
       console.log(err);
     };
 
@@ -45,7 +46,7 @@ export const checkAuth = () => {
     dispatch = dispatch ? dispatch : (dispatch = store.dispatch);
 
     const requestConfig = {
-      url: `http://localhost:3001/check-auth`,
+      url: `${getServer()}/auth/check`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -78,7 +79,7 @@ export const logout = () => {
     dispatch = dispatch ? dispatch : (dispatch = store.dispatch);
 
     const requestConfig = {
-      url: `http://localhost:3001/logout`,
+      url: `${getServer()}/auth/logout`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",

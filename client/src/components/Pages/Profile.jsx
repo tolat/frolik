@@ -38,9 +38,6 @@ const Profile = (props) => {
 
 export default Profile;
 
-// $$ Write profile loader to either get user data on page load or
-// return to login page if not authenticated
-
 export const profileLoader = async()=>{
   await checkAuth()()
   return null
