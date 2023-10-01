@@ -2,7 +2,6 @@ import httpFetch from "../utils/http-fetch";
 import { authActions } from "./auth-slice";
 import store from ".";
 import { getServer } from "../utils/env-utils";
-import { redirect } from "react-router-dom";
 
 // Dummy user for dev purposes
 const devUser = {
