@@ -26,22 +26,22 @@ const router = createBrowserRouter([
         loader: loginLoader,
       },
       {
-        path: "login",
+        path: "/login",
         element: <Login />,
         loader: loginLoader,
       },
       {
-        path: "profile",
+        path: "/profile",
         element: <Profile />,
         loader: profileLoader,
       },
       {
-        path: "go",
+        path: "/go",
         element: <Go />,
         loader: goLoader,
       },
       {
-        path: "chat",
+        path: "/chat",
         element: <Chat />,
       },
     ],

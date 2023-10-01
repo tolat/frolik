@@ -23,7 +23,7 @@ db.once("open", () => {
 const seedUsers = async () => {
   for (user of userSeeds) {
     const newUser = new User({ ...user });
-    await User.register(user, "123456")
+    await User.register(user, "getout1*")
   }
 
   const users = await User.find();

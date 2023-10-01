@@ -2,14 +2,32 @@ import httpFetch from "../utils/http-fetch";
 import { authActions } from "./auth-slice";
 import store from ".";
 import { getServer } from "../utils/env-utils";
+import { redirect } from "react-router-dom";
+
+// Dummy user for dev purposes
+const devUser = {
+  first_name: "Dev",
+  last_name: "User",
+  username: "devuser@gmail.com",
+  tagline: "Looking for a good time",
+  status: "inactive",
+  profile_picture: "",
+  photos: [],
+  friends: [],
+};
 
 // Create a login action to attempt to log in the user
-export const login = (username, password) => {
+export const fetchLogin = (username, password) => {
   // config for login post request
   return async (dispatch) => {
     // If dispatch is undefined (this funciton is called from outside a component),
     // use the dispatch method on the store object
     dispatch = dispatch ? dispatch : (dispatch = store.dispatch);
+
+    if (process.env.NODE_ENV === "development") {
+      dispatch(authActions.login(devUser));
+      return;
+    }
 
     const requestConfig = {
       url: `${getServer()}/auth/login`,
@@ -20,12 +38,10 @@ export const login = (username, password) => {
       body: JSON.stringify({ username, password }),
     };
 
-    // handle login post request response
     const handleResponse = (response) => {
-      dispatch(authActions.login(response.userID));
+      dispatch(authActions.login(response.user));
     };
 
-    // handle login post request errors
     const handleError = (err) => {
       if (err.message === "unauthorized") {
         // COULD ADD CODE HERE TO UPDATE AN "incorrect credentials" STATE
@@ -38,12 +54,16 @@ export const login = (username, password) => {
 };
 
 // Create a check auth action to check if session is authenticated on page load
-export const checkAuth = () => {
+export const fetchAuth = () => {
   // config for auth check post request
   return async (dispatch) => {
     // If dispatch is undefined (this funciton is called from outside a component),
     // use the dispatch method on the store object
     dispatch = dispatch ? dispatch : (dispatch = store.dispatch);
+
+    if (process.env.NODE_ENV === "development") {
+      return;
+    }
 
     const requestConfig = {
       url: `${getServer()}/auth/check`,
@@ -54,14 +74,12 @@ export const checkAuth = () => {
       body: JSON.stringify({}),
     };
 
-    // handle auth check post request response
     const handleResponse = (response) => {
       response.isAuthenticated
-        ? dispatch(authActions.login(response.userID))
+        ? dispatch(authActions.login(response.user))
         : dispatch(authActions.logout());
     };
 
-    // handle auth check post request errors
     const handleError = (err) => {
       dispatch(authActions.logout());
       console.log(err);
@@ -71,12 +89,18 @@ export const checkAuth = () => {
   };
 };
 
-export const logout = () => {
+export const fetchLogout = () => {
   // config for login post request
   return async (dispatch) => {
     // If dispatch is undefined (this funciton is called from outside a component),
     // use the dispatch method on the store object
     dispatch = dispatch ? dispatch : (dispatch = store.dispatch);
+
+    // Don't send http request if in dev mode
+    if (process.env.NODE_ENV === "development") {
+      dispatch(authActions.logout());
+      return;
+    }
 
     const requestConfig = {
       url: `${getServer()}/auth/logout`,
@@ -87,14 +111,12 @@ export const logout = () => {
       body: JSON.stringify({}),
     };
 
-    // handle logout post request response
     const handleResponse = (response) => {
       dispatch(authActions.logout());
     };
 
-    // handle logout post request errors
     const handleError = (err) => {
-      console.log(err);
+      throw new Error(err)
     };
 
     await httpFetch(requestConfig, handleResponse, handleError);

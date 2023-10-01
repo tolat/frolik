@@ -7,7 +7,7 @@ const router = express.Router({ mergeParams: true });
 router.post("/login", passport.authenticate("local"), async (req, res) => {
   const user = await User.findOne({ username: req.body.username });
   if (req.isAuthenticated()) {
-    res.send({ userID: user._id });
+    res.send({ user });
   }
 });
 
@@ -15,8 +15,7 @@ router.post("/check", async (req, res) => {
   const isAuthenticated = req.isAuthenticated();
   if (isAuthenticated) {
     const user = await User.findOne({ username: req.session.passport.user });
-    const userID = user ? user._id : false;
-    res.send({ isAuthenticated, userID });
+    res.send({ isAuthenticated, user });
   } else {
     res.send({ isAuthenticated });
   }
