@@ -7,13 +7,31 @@
   width: 100%;
   flex-grow: 10;
   align-items: center;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.outer::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
 
 .inner {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  background-color: rgb(244, 244, 244);
+  max-height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  box-sizing: border-box;
 
   @include responsive("width", 40rem, 40rem, 40rem, 40rem);
 }
+
+.inner::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+  

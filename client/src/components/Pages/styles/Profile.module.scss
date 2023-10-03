@@ -1,8 +1,47 @@
 .container{
     display: flex;
-    width: 100vw;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
+    align-items: center;
+}
+
+.userIcon{
+    width: 12rem;
+    height: 12rem;
+    border-radius: 5px;
+    border: 2px solid rgb(147, 147, 147);
+    margin: 1rem 0;
+    background-image: url('../../../images/usericon.png');
+    background-size: contain;
+}
+
+.photoGrid{
+    display: grid;
+    grid-template-rows: 200px 200px 200px;
+    grid-template-columns: 200px 200px 200px;
+}
+
+.userImg{
+width: 100%;
+height: 100%;
+padding: 5px;
+box-sizing: border-box;
+border-radius: 5px;
+box-sizing: border-box;
+}
+
+.friendsContainer{
+    display: flex;
+    justify-content: space-evenly;
+    padding: 1rem;
+    width: 100%;
+}
+
+.friendIcon{
+    width: 10rem;
+    height: 10rem;
+    border-radius: 100px;
+    border: 2px solid rgb(147, 147, 147);
+    margin: 1rem 0;
+    background-image: url('../../../images/usericon.png');
+    background-size: contain;
 }
