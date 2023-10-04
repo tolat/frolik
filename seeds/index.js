@@ -55,7 +55,8 @@ const seedOutings = async () => {
       filteredUsers[parseInt((Math.random() * 1000) % filteredUsers.length)];
     outing.activity =
       activities[parseInt((Math.random() * 1000) % activities.length)];
-    outing.date = new Date();
+    outing.date_created = new Date();
+    outing.date_completed = outing.date_created
     outing.users = [user, user2];
     outing.status = "completed";
     outing.chat = {};

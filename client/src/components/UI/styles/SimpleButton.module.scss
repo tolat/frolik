@@ -1,0 +1,16 @@
+.container {
+    width: 100%;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: flex;
+    padding: 1rem;
+    box-sizing: border-box;
+    justify-content: center;
+  }
+  
+  .container:hover {
+      cursor: pointer;
+      opacity: 0.8;
+  }
+  
+  

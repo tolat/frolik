@@ -4,45 +4,90 @@ import { fetchAuth } from "../../store/auth-actions";
 import MainContainer from "../UI/MainContainer";
 import { redirect } from "react-router-dom";
 import store from "../../store";
+import { useState } from "react";
 
-// REMOVE FOR BUILD, DUMMY IMAGES
-import img1 from "../../images/sampleUserImgs/acroyoga.png";
-import img2 from "../../images/sampleUserImgs/beerpong.png";
-import img3 from "../../images/sampleUserImgs/drawing.png";
-import img4 from "../../images/sampleUserImgs/football.png";
-import img5 from "../../images/sampleUserImgs/kayaking.png";
-import img6 from "../../images/sampleUserImgs/lawngame.png";
-import img7 from "../../images/sampleUserImgs/icecream.png";
-import img8 from "../../images/sampleUserImgs/tenniscourt.png";
-import img9 from "../../images/sampleUserImgs/beach.png";
+import SliderNavbar from "../UI/SliderNavbar";
+import PhotoGrid from "../UI/PhotoGrid";
+
+import photos from "../../images/photogrid.png";
+import friends from "../../images/friends.png";
+import outings from "../../images/outing2.png";
+
+
+import SimpleButton from "../UI/SimpleButton";
+import OutingList from "../UI/OutingList";
+
+import { JaneOutings } from "../../utils/client-dev-db";
+import UserIcon from "../UI/UserIcon";
+
+const sliderIcons = [
+  {
+    key: "_photos",
+    url: photos,
+  },
+  {
+    key: "_outings",
+    url: outings,
+  },
+  {
+    key: "_friends",
+    url: friends,
+  },
+];
 
 const Profile = (props) => {
   const authState = useSelector((state) => state.auth);
+  
+  const userPhotos = authState.user.photos.map((p) => {
+    return { url: p, key: Math.random() };
+  });
+
+  // MUST CHANGE TO USE AUTHSTATE.USER FOR USE WITH SERVER
+  const userOutings = JaneOutings;
+
+  const [selectedSliderKey, setSelectedSliderKey] = useState("_photos");
 
   return (
     <MainContainer>
       <div className={styles.container}>
-        <div className={styles.userIcon}></div>
-        <h2>Tagline</h2>
-        <h1 className={styles.tagline}>{authState.user.tagline}</h1>
-        <h2>Photos</h2>
-        <div className={styles.photoGrid}>
-          <img className={styles.userImg} alt="userImage" src={img1} />
-          <img className={styles.userImg} alt="userImage" src={img2} />
-          <img className={styles.userImg} alt="userImage" src={img3} />
-          <img className={styles.userImg} alt="userImage" src={img4} />
-          <img className={styles.userImg} alt="userImage" src={img5} />
-          <img className={styles.userImg} alt="userImage" src={img6} />
-          <img className={styles.userImg} alt="userImage" src={img7} />
-          <img className={styles.userImg} alt="userImage" src={img8} />
-          <img className={styles.userImg} alt="userImage" src={img9} />
+        <div className={styles.nonMediaSection}>
+          <div className={styles.profilePicContainer}>
+            <div className={styles.iconContainer}>
+              <div className={styles.flakeIcon}></div>
+              <div className={styles.iconRating}>1.2</div>
+            </div>
+            <UserIcon sizeInRem={14} user={authState.user}/>
+            <div className={styles.iconContainer}>
+              <div className={styles.outingIcon}></div>
+              <div className={styles.iconRating}>14</div>
+            </div>
+          </div>
+
+          <div
+            className={styles.userName}
+          >{`${authState.user.first_name} ${authState.user.last_name}`}</div>
+          <div className={styles.tagline}>{authState.user.tagline}</div>
+          <SimpleButton
+            style={{
+              color: "rgb(111, 111, 111)",
+              backgroundColor: "rgb(223, 223, 223)",
+              margin: "2rem 0 2rem 0"
+            }}
+          >
+            Edit Profile
+          </SimpleButton>
+          <SliderNavbar
+            selected={selectedSliderKey}
+            setSelected={setSelectedSliderKey}
+            icons={sliderIcons}
+          />
         </div>
-        <h2>Friends</h2>
-        <div className={styles.friendsContainer}>
-          <div className={styles.friendIcon}></div>
-          <div className={styles.friendIcon}></div>
-          <div className={styles.friendIcon}></div>
-        </div>
+
+        {selectedSliderKey === "_photos" ? (
+          <PhotoGrid images={userPhotos} gridTemplateColumns="1fr 1fr 1fr" />
+        ) : (
+          <OutingList outings={userOutings} />
+        )}
       </div>
     </MainContainer>
   );

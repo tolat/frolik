@@ -1,4 +1,40 @@
-module.exports.activitySeeds = [
+import img1 from "../images/sampleUserImgs/acroyoga.png";
+import img2 from "../images/sampleUserImgs/beerpong.png";
+import img3 from "../images/sampleUserImgs/drawing.png";
+import img4 from "../images/sampleUserImgs/football.png";
+import img5 from "../images/sampleUserImgs/kayaking.png";
+import img6 from "../images/sampleUserImgs/lawngame.png";
+import img7 from "../images/sampleUserImgs/icecream.png";
+import img8 from "../images/sampleUserImgs/tenniscourt.png";
+import img9 from "../images/sampleUserImgs/beach.png";
+import janePic from "../images/profilePic.png";
+
+const photos = [img1, img2, img3, img4, img5, img6, img7, img8, img9];
+
+export const EdwardUser = {
+  first_name: "Edward",
+  last_name: "Daniels",
+  username: "edward@gmail.com",
+  tagline: "Something wicked this way cometh",
+  status: "inactive",
+  profile_picture: "",
+  photos: [],
+  friends: [],
+};
+
+export const MichaelUser = {
+  first_name: "Michael",
+  last_name: "Brown",
+  username: "michael@gmail.com",
+  tagline: "When I was a young boy, I played the silver ball",
+  status: "inactive",
+  profile_picture: "",
+  photos: [],
+  friends: [EdwardUser],
+};
+
+
+export const Activities = [
   {
     name: "Park Pong",
     description:
@@ -95,3 +131,51 @@ module.exports.activitySeeds = [
     participants: 2,
   },
 ];
+
+export const JaneOutings = [
+  {
+    activity: Activities[0],
+    date_created: new Date(),
+    date_completed: new Date(),
+    users: [EdwardUser],
+    status: "Completed",
+    chat: "",
+  },
+  {
+    activity: Activities[1],
+    date_created: new Date(),
+    date_completed: new Date(),
+    users: [MichaelUser],
+    status: "Completed",
+    chat: "",
+  },
+  {
+    activity: Activities[2],
+    date_created: new Date(),
+    date_completed: new Date(),
+    users: [EdwardUser, MichaelUser],
+    status: "Completed",
+    chat: "",
+  },
+];
+
+export const categoryColorMap = {
+  Games: "rgb(117, 204, 255)",
+  Art: "rgb(186, 255, 169)",
+  Sports: "rgb(255, 223, 141)",
+  Food: "rgb(255, 194, 156)",
+  Misc: "rgb(255, 158, 166)"
+};
+
+export const JaneUser = {
+  first_name: "Jane",
+  last_name: "Sullivan",
+  username: "jane@gmail.com",
+  tagline: "The early bird is way too motivated..",
+  status: "inactive",
+  profile_picture: janePic,
+  photos: photos,
+  friends: [EdwardUser, MichaelUser],
+  outings: JaneOutings
+};
+

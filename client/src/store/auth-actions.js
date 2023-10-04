@@ -3,17 +3,7 @@ import { authActions } from "./auth-slice";
 import store from ".";
 import { getServer } from "../utils/env-utils";
 
-// Dummy user for dev purposes
-const devUser = {
-  first_name: "Dev",
-  last_name: "User",
-  username: "devuser@gmail.com",
-  tagline: "Looking for a good time",
-  status: "inactive",
-  profile_picture: "",
-  photos: [],
-  friends: [],
-};
+import { JaneUser } from "../utils/client-dev-db";
 
 // Create a login action to attempt to log in the user
 export const fetchLogin = (username, password) => {
@@ -24,7 +14,7 @@ export const fetchLogin = (username, password) => {
     dispatch = dispatch ? dispatch : (dispatch = store.dispatch);
 
     if (process.env.NODE_ENV === "development") {
-      dispatch(authActions.login(devUser));
+      dispatch(authActions.login(JaneUser));
       return;
     }
 
