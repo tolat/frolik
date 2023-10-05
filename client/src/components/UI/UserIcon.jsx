@@ -1,5 +1,8 @@
 import styles from "./styles/UserIcon.module.scss";
-import { categoryColorMap } from "../../utils/client-dev-db";
+
+// TEMPORARY - PULL THIS FROM THE DB EVENTUALLY
+import { categoryColorMap, profilePics } from "../../utils/globals";
+// TEMPORARY - PULL THIS FROM THE DB EVENTUALLY
 
 const getCategoryPercentage = (category, user) => {
   const numCategory = user.outings.filter(
@@ -39,8 +42,12 @@ const genBackgroundStr = (user) => {
 
 const UserIcon = (props) => {
   const backgroundString = genBackgroundStr(props.user);
-  const photoDimension = `${props.sizeInRem - 2}rem`;
+  const photoDimension = `${props.sizeInRem - props.borderSizeInRem}rem`;
   const pieDimension = `${props.sizeInRem}rem`;
+
+  // TEMPORARY - PULL THIS FROM THE DB EVENTUALLY
+  const profilePic = profilePics[props.user.first_name.toLowerCase()];
+  // TEMPORARY - PULL THIS FROM THE DB EVENTUALLY
 
   const pieStyle = {
     width: pieDimension,
@@ -48,14 +55,13 @@ const UserIcon = (props) => {
     background: backgroundString,
   };
 
-
   return (
     <div style={pieStyle} className={styles.pieChart}>
       <img
-        src={props.user.profile_picture}
+        src={profilePic}
         className={styles.photo}
-        style={{  height: photoDimension, width: photoDimension }}
-        alt='profile_picture'
+        style={{ height: photoDimension, width: photoDimension }}
+        alt="profile_picture"
       />
     </div>
   );

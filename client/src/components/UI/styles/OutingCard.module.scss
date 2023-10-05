@@ -1,7 +1,11 @@
 .outerContainer{
     display: flex;
     width: 100%;
-    
+}
+
+.innerContainer:hover{
+    cursor: pointer;
+    background-color: rgb(243, 243, 243);
 }
 
 .categoryStripe{
@@ -51,6 +55,10 @@
 }
 
 .status{
-    font-size: 1.2rem;
-    color: rgb(154, 154, 154);
+    font-size: 1rem;
+    color: rgb(96, 96, 96);
+}
+
+.userIconContainer{
+    margin-left: 1rem;
 }

@@ -1,7 +1,7 @@
 export function getServer() {
-  if (process.env.REACT_APP_SERVER) {
-    return process.env.REACT_APP_SERVER;
+  if (process.env.NODE_ENV === 'development') {
+    return 'http://localhost:3001'
   } else {
-    throw new Error("No Server Url Provided in .env");
+    return 'http://localhost:3001'
   }
 }

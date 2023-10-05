@@ -6,9 +6,6 @@ import { redirect } from "react-router-dom";
 import store from "../../store";
 
 const Go = (props) => {
-  const user = useSelector((state) => state.auth.user);
-
-
 
   return (
     <MainContainer>

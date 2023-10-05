@@ -7,7 +7,7 @@ const PhotoGrid = (props) => {
       className={styles.container}
     >
       {props.images.map((m) => (
-        <img key={m.key} className={styles.img} alt="userImage" src={m.url} />
+        <img key={Math.random()} className={styles.img} alt="userImage" src={m} />
       ))}
     </div>
   );

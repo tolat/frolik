@@ -6,7 +6,7 @@ const OutingList = (props) => {
     <div className={styles.container}>
       {props.outings.map((o) => (
         <div key={Math.random()} className={styles.outingContainer}>
-          <OutingCard outing={o} />
+          <OutingCard outing={o} user={props.user} />
         </div>
       ))}
     </div>

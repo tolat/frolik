@@ -9,6 +9,7 @@ export default async function httpFetch(
       headers: requestConfig.headers ? requestConfig.headers : {},
       body: requestConfig.body ? requestConfig.body : null,
       mode: requestConfig.mode ? requestConfig.mode : "cors",
+      credentials: 'include'
     });
 
     // Handle other status codes (e.g., 401, 500) here

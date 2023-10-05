@@ -1,4 +1,4 @@
-const denv = require("dotenv").config({ path: './.env' });
+const denv = require("dotenv").config({ path: "./.env" });
 const mongoose = require("mongoose");
 const Activity = require("../models/activity");
 const User = require("../models/user");
@@ -23,7 +23,7 @@ db.once("open", () => {
 const seedUsers = async () => {
   for (user of userSeeds) {
     const newUser = new User({ ...user });
-    await User.register(user, "getout1*")
+    await User.register(newUser, "getout1*");
   }
 
   const users = await User.find();
@@ -34,7 +34,6 @@ const seedUsers = async () => {
       }
     }
     await user.save();
-   
   }
 };
 
@@ -49,23 +48,32 @@ const seedOutings = async () => {
   const users = await User.find();
   const activities = await Activity.find();
   for (user of users) {
-    const outing = new Outing({});
-    const filteredUsers = users.filter((u) => u != user);
-    const user2 =
-      filteredUsers[parseInt((Math.random() * 1000) % filteredUsers.length)];
-    outing.activity =
-      activities[parseInt((Math.random() * 1000) % activities.length)];
-    outing.date_created = new Date();
-    outing.date_completed = outing.date_created
-    outing.users = [user, user2];
-    outing.status = "completed";
-    outing.chat = {};
-    user.outings.push(outing);
-    user2.outings.push(outing);
+    for (let i = 0; i < 4; i++) {
+      const outing = new Outing({});
+      const filteredUsers = users.filter((u) => u != user);
+      let user2 =
+        filteredUsers[parseInt((Math.random() * 1000) % filteredUsers.length)];
+      outing.activity =
+        activities[parseInt((Math.random() * 1000) % activities.length)];
+      outing.date_created = new Date();
+      outing.date_completed = outing.date_created;
+      outing.users = [user, user2];
+      outing.status = "Completed";
+      outing.chat = {};
+      user.outings.push(outing);
+      user2.outings.push(outing);
 
-    await outing.save();
-    await user.save();
-    await user2.save();
+      let user3 = null;
+      if (Math.random() > 0.5) {
+        user3 = users.filter((u) => u != user && u != user2)[0];
+        user3.outings.push(outing);
+        await user3.save();
+      }
+
+      await outing.save();
+      await user.save();
+      await user2.save();
+    }
   }
 };
 
