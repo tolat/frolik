@@ -18,6 +18,7 @@
   },
   "scripts": {
     "start": "nodemon server.js",
-    "seed": "node ./seeds/index.js"
+    "seed": "node ./seeds/index.js",
+    "init-start": "npm i && npm --prefix client/ i && npm run seed && npm --prefix client/ run build && npm run start"
   }
 }
