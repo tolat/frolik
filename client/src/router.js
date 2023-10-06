@@ -12,7 +12,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <div class="app">
+      <div className="app">
         <Navbar />
         <Outlet />
         <Footer />

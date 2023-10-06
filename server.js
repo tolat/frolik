@@ -8,8 +8,9 @@ const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const session = require("express-session");
-const cors = require("cors");
+const {handleCORS} =require("./utils/middleware")
 
+// Set up express
 const app = express();
 app.use(
   "/static",
@@ -17,7 +18,7 @@ app.use(
 );
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cors());
+app.use(handleCORS);
 // Connect to the database and handle connection errors
 mongoose.connect(process.env.DB_URL, {
   useNewUrlParser: true,
@@ -29,7 +30,7 @@ global.db.once("open", () => {
   console.log("Main process connected to database");
 });
 
-// Session
+// Session config for express
 const sessionConfig = {
   store: MongoStore.create({
     mongoUrl: process.env.DB_URL,

@@ -3,18 +3,6 @@ import { authActions } from "./auth-slice";
 import store from ".";
 import { getServer } from "../utils/env-utils";
 
-// Dummy user for dev purposes
-const devUser = {
-  first_name: "Dev",
-  last_name: "User",
-  username: "devuser@gmail.com",
-  tagline: "Looking for a good time",
-  status: "inactive",
-  profile_picture: "",
-  photos: [],
-  friends: [],
-};
-
 // Create a login action to attempt to log in the user
 export const fetchLogin = (username, password) => {
   // config for login post request
@@ -22,11 +10,6 @@ export const fetchLogin = (username, password) => {
     // If dispatch is undefined (this funciton is called from outside a component),
     // use the dispatch method on the store object
     dispatch = dispatch ? dispatch : (dispatch = store.dispatch);
-
-    if (process.env.NODE_ENV === "development") {
-      dispatch(authActions.login(devUser));
-      return;
-    }
 
     const requestConfig = {
       url: `${getServer()}/auth/login`,
@@ -60,10 +43,6 @@ export const fetchAuth = () => {
     // use the dispatch method on the store object
     dispatch = dispatch ? dispatch : (dispatch = store.dispatch);
 
-    if (process.env.NODE_ENV === "development") {
-      return;
-    }
-
     const requestConfig = {
       url: `${getServer()}/auth/check`,
       method: "POST",
@@ -95,12 +74,6 @@ export const fetchLogout = () => {
     // use the dispatch method on the store object
     dispatch = dispatch ? dispatch : (dispatch = store.dispatch);
 
-    // Don't send http request if in dev mode
-    if (process.env.NODE_ENV === "development") {
-      dispatch(authActions.logout());
-      return;
-    }
-
     const requestConfig = {
       url: `${getServer()}/auth/logout`,
       method: "POST",
@@ -112,10 +85,11 @@ export const fetchLogout = () => {
 
     const handleResponse = (response) => {
       dispatch(authActions.logout());
+      setTimeout(() => dispatch(authActions.deleteUser()), 100);
     };
 
     const handleError = (err) => {
-      throw new Error(err)
+      throw new Error(err);
     };
 
     await httpFetch(requestConfig, handleResponse, handleError);

@@ -1,47 +1,79 @@
-.container{
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.nonMediaSection{
     display: flex;
     flex-direction: column;
-    align-items: center;
-}
-
-.userIcon{
-    width: 12rem;
-    height: 12rem;
-    border-radius: 5px;
-    border: 2px solid rgb(147, 147, 147);
-    margin: 1rem 0;
-    background-image: url('../../../images/usericon.png');
-    background-size: contain;
-}
-
-.photoGrid{
-    display: grid;
-    grid-template-rows: 200px 200px 200px;
-    grid-template-columns: 200px 200px 200px;
-}
-
-.userImg{
-width: 100%;
-height: 100%;
-padding: 5px;
-box-sizing: border-box;
-border-radius: 5px;
-box-sizing: border-box;
-}
-
-.friendsContainer{
-    display: flex;
-    justify-content: space-evenly;
-    padding: 1rem;
     width: 100%;
+    justify-self: flex-start;
+    align-items: center;
+    margin-top: 3rem;
 }
 
-.friendIcon{
-    width: 10rem;
-    height: 10rem;
-    border-radius: 100px;
-    border: 2px solid rgb(147, 147, 147);
-    margin: 1rem 0;
-    background-image: url('../../../images/usericon.png');
-    background-size: contain;
+.iconContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.iconRating {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.flakeIcon {
+  background-image: url("../../../images/snowflake.png");
+  background-size: contain;
+  width: 4rem;
+  height: 4rem;
+}
+
+.outingIcon {
+  background-image: url("../../../images/outing2.png");
+  background-size: contain;
+  width: 4rem;
+  height: 4rem;
+}
+
+.profilePicContainer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+}
+
+
+
+.userName {
+  margin: 2rem 0 0 0;
+  font-size: 2rem;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+}
+
+.tagline {
+  margin: 0.3rem 0 0 0;
+  font-size: 1.4rem;
+  color: rgb(145, 145, 145);
+}
+
+.friendsContainer {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 1rem;
+  width: 100%;
+}
+
+.friendIcon {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 100px;
+  border: 2px solid rgb(147, 147, 147);
+  margin: 1rem 0;
+  background-image: url("../../../images/usericon.png");
+  background-size: contain;
 }

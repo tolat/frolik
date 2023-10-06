@@ -34,7 +34,7 @@ module.exports.activitySeeds = [
   {
     name: "Ice Cream Bang Bang",
     description: "Eat Ice cream once, shame on me. Eat ice cream twice..",
-    category: "Treats",
+    category: "Food",
     instructions: [
       {
         kind: "communicate",
