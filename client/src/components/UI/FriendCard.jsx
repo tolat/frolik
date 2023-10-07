@@ -30,7 +30,7 @@ const FriendCard = (props) => {
         <div className={styles.iconContainer}>
           <UserIcon
             sizeInRem="6"
-            borderSizeInRem="0.5"
+            borderSizeInRem="0.8"
             user={friendUser}
             profilePic={props.user.profile_picture}
           />

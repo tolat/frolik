@@ -34,7 +34,7 @@ const OutingCard = (props) => {
                 <div key={Math.random()} className={styles.userIconContainer}>
                   <UserIcon
                     sizeInRem="6"
-                    borderSizeInRem="0.5"
+                    borderSizeInRem="0.8"
                     user={u}
                     profilePic={u.profile_picture}
                   />
