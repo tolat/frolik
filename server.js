@@ -8,7 +8,7 @@ const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const session = require("express-session");
-const {handleCORS} =require("./utils/middleware")
+const { handleCORS } = require("./utils/middleware");
 
 // Set up express
 const app = express();
@@ -59,6 +59,7 @@ passport.deserializeUser(User.deserializeUser());
 
 // App Routes
 app.use("/auth", require("./routes/auth"));
+app.use("/user", require("./routes/user"));
 
 // All routes go to the client, routing happens on the front end
 app.get("*", (req, res) => {

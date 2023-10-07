@@ -9,7 +9,9 @@ export default async function httpFetch(
       headers: requestConfig.headers ? requestConfig.headers : {},
       body: requestConfig.body ? requestConfig.body : null,
       mode: requestConfig.mode ? requestConfig.mode : "cors",
-      credentials: 'include'
+      credentials: requestConfig.credentials
+        ? requestConfig.credentials
+        : "include",
     });
 
     // Handle other status codes (e.g., 401, 500) here
@@ -22,6 +24,7 @@ export default async function httpFetch(
     } else {
       const data = await response.json();
       handleResponse(data);
+      return data;
     }
   } catch (err) {
     handleError(err);

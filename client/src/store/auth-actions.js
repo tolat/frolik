@@ -85,7 +85,7 @@ export const fetchLogout = () => {
 
     const handleResponse = (response) => {
       dispatch(authActions.logout());
-      setTimeout(() => dispatch(authActions.deleteUser()), 100);
+      setTimeout(() => dispatch(authActions.deleteUser()), 1000);
     };
 
     const handleError = (err) => {

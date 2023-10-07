@@ -14,9 +14,16 @@ import SimpleButton from "../UI/SimpleButton";
 import OutingList from "../UI/OutingList";
 import UserIcon from "../UI/UserIcon";
 
+import flakeIcon from "../../images/snowflake.png";
+import outingsIcon from "../../images/outing2.png";
+
 // TEMPORARY - NEED TO FIGURE OUT HOW TO SERVE THESE FROM BACKEND
-import { userPhotos, profilePics } from "../../utils/globals";
+import { userPhotos } from "../../utils/globals";
 // TEMPORARY - NEED TO FIGURE OUT HOW TO SERVE THESE FROM BACKEND
+
+import StatIcon from "../UI/StatIcon";
+import FriendCard from "../UI/FriendCard";
+
 
 const sliderIcons = [
   {
@@ -41,10 +48,9 @@ const Profile = (props) => {
     backgroundColor: "rgb(223, 223, 223)",
     margin: "2rem 0 2rem 0",
   };
+  const iconStyle = { width: "4rem", height: "4rem" };
 
   // TEMPORARY - NEED TO FIGURE OUT HOW TO SERVE THESE FROM BACKEND
-  user.profile_picture =
-    profilePics[`${user.first_name && user.first_name.toLowerCase()}`];
   user.photos = userPhotos;
   // TEMPORARY - NEED TO FIGURE OUT HOW TO SERVE THESE FROM BACKEND
 
@@ -53,20 +59,24 @@ const Profile = (props) => {
       <div className={styles.container}>
         <div className={styles.nonMediaSection}>
           <div className={styles.profilePicContainer}>
-            <div className={styles.iconContainer}>
-              <div className={styles.flakeIcon}></div>
-              <div className={styles.iconRating}>{user.flake}</div>
-            </div>
+            <StatIcon
+              alt="flake"
+              icon={flakeIcon}
+              iconStyle={iconStyle}
+              rating={user.flake}
+            />
             <UserIcon
               sizeInRem={14}
               user={user}
               profilePic={user.profile_picture}
               borderSizeInRem={"1.5"}
             />
-            <div className={styles.iconContainer}>
-              <div className={styles.outingIcon}></div>
-              <div className={styles.iconRating}>{user.outings.length}</div>
-            </div>
+            <StatIcon
+              alt="outings"
+              icon={outingsIcon}
+              iconStyle={iconStyle}
+              rating={user.outings.length}
+            />
           </div>
 
           <div
@@ -84,9 +94,9 @@ const Profile = (props) => {
         {selectedSliderKey === "_photos" ? (
           <PhotoGrid images={user.photos} gridTemplateColumns="1fr 1fr 1fr" />
         ) : selectedSliderKey === "_outings" ? (
-          <OutingList outings={user.outings} user={user} />
+          <OutingList user={user} />
         ) : (
-          <div>friends</div>
+          user.friends.map(f => <FriendCard key={Math.random()} user={f}/>)
         )}
       </div>
     </MainContainer>

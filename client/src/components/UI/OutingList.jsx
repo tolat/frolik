@@ -4,7 +4,7 @@ import styles from "./styles/OutingList.module.scss";
 const OutingList = (props) => {
   return (
     <div className={styles.container}>
-      {props.outings.map((o) => (
+      {props.user.outings.map((o) => (
         <div key={Math.random()} className={styles.outingContainer}>
           <OutingCard outing={o} user={props.user} />
         </div>

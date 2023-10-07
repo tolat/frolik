@@ -21,11 +21,6 @@ const Navbar = (props) => {
     <div className={styles.header}>
       <div className={styles.logo}>
         <img src={logo} alt="logo" />
-        {authState.user && (
-          <div
-            className={styles.username}
-          >{`${authState.user.first_name || "none"} ${authState.user.last_name}`}</div>
-        )}
       </div>
 
       <div>

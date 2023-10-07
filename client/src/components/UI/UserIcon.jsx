@@ -15,28 +15,41 @@ const getCategoryPercentage = (category, user) => {
 const genBackgroundStr = (user) => {
   let backgroundString = "conic-gradient(";
   const keys = Object.keys(categoryColorMap);
-  let prevPercentage = 0;
+  let percentageMap = {};
 
-  // Build color map for the icon circle based on percentage
-  // of each activity category vs tota number of that category for user
+  // Build percentage map
   for (let i = 0; i < keys.length; i++) {
     const category = keys[i];
-    const percentage = getCategoryPercentage(category, user);
-    const cumulativePercentage =
-      parseFloat(prevPercentage) + parseFloat(percentage);
+    const percentage = parseFloat(getCategoryPercentage(category, user));
+    if (percentage != 0) {
+      percentageMap[category] = percentage;
+    }
+  }
+
+  // Build color map for the icon circle based on percentage
+  // of each activity category vs total number of that category for user
+  const mapKeys = Object.keys(percentageMap);
+  let cumulativePercentage = 0;
+  for (let i = 0; i < mapKeys.length; i++) {
+    const category = mapKeys[i];
+    const nextCategory = mapKeys[(i + 1) % mapKeys.length];
+    const percentage = percentageMap[category];
+
     backgroundString = backgroundString.concat(
-      `${categoryColorMap[category]} ${parseFloat(
-        prevPercentage
-      )}% ${cumulativePercentage}%`
+      `${categoryColorMap[category]} ${cumulativePercentage}%, 
+         ${categoryColorMap[nextCategory]} ${
+        cumulativePercentage + percentage
+      }%`
     );
-    if (i < keys.length - 1) {
+
+    if (i < mapKeys.length - 1) {
       backgroundString = backgroundString.concat(",");
     }
-    prevPercentage = cumulativePercentage;
+
+    cumulativePercentage = cumulativePercentage + percentage
   }
 
   backgroundString = backgroundString.concat(")");
-
   return backgroundString;
 };
 
