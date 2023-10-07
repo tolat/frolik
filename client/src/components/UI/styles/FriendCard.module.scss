@@ -2,14 +2,11 @@
     display: flex;
     padding: 1rem;
     background-color: rgb(250, 250, 250);
-    width: 100%;
     margin-bottom: 1rem;
+    justify-content: space-between;
+
 }
 
-.container:hover{
-    opacity: 0.8;
-    cursor: pointer;
-}
 
 .detailsContainer{
     display: flex;
@@ -35,4 +32,32 @@
     font-size: 1.4rem;
     font-weight: bold;
     background-color: rgb(250, 250, 250);
+}
+
+.button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 6rem;
+    background-color: #e3e3e3;
+    height: 100%;
+    border-radius: 4px;
+    margin-right: 1rem;
+}
+
+.button:hover{
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.leftContainer{
+    display: flex;
+    flex-grow: 1;
+}
+
+.rightContainer{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  
 }
