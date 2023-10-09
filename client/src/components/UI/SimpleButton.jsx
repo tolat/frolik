@@ -4,7 +4,7 @@ const SimpleButton = (props) => {
   return (
     <div
       {...props}
-      className={styles.container}
+      className={`${styles.container} ${props.className}`}
     >
       {props.children}
     </div>

@@ -1,26 +1,49 @@
+@import "../../../utils/responsive.scss";
+
 .header {
   align-items: center;
-  background-color: #ffdead;
-  border-bottom: 3px solid #000;
-  justify-content: space-between;
+  background-color: #ffffff;
+  justify-content: space-evenly;
   display: flex;
-  padding: 10px;
+  background-color: #f8f8f8;
+  width: 100%;
+  border-bottom: 2px solid rgb(228, 228, 228);
+  height: $navbar_height;
+  box-sizing: border-box;
+}
+
+.innerContainer{
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $central_span_width;
+
 }
 
 .navItems{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  width: 300px;
+  justify-content: flex-end;
+  width: 100%;
 }
 
 .logo{
   display: flex;
   align-items: center;
+  height: 5rem;
+  width: 5rem;
+  padding: 0.5rem;
 }
 
 .username{
   font-size: 1.5rem;
   font-weight: bold;
   margin-left: 1rem;
+}
+
+.navButton{
+  width: 4rem;
+  height: 4rem;
+  margin-right: 2rem;
 }

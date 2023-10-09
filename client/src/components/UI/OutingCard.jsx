@@ -33,8 +33,8 @@ const OutingCard = (props) => {
               u.username !== props.user.username ? (
                 <div key={Math.random()} className={styles.userIconContainer}>
                   <UserIcon
-                    sizeInRem="6"
-                    borderSizeInRem="0.8"
+                    sizeInRem="5"
+                    borderSizeInRem="0.6"
                     user={u}
                     profilePic={u.profile_picture}
                   />
@@ -43,7 +43,6 @@ const OutingCard = (props) => {
             )}
           </div>
         </div>
-        {/* <SimpleButton style={buttonStyle}>View Media</SimpleButton> */}
       </div>
     </div>
   );

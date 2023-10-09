@@ -6,6 +6,18 @@
   flex-grow: 1;
 }
 
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30rem;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  padding: 3rem;
+  box-sizing: border-box;
+}
+
 .login-page h2 {
   font-size: 24px;
   margin-bottom: 20px;
@@ -13,10 +25,11 @@
 
 .login-form {
   background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
+  padding: 3rem;
+  border-radius: 5px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
+  margin-bottom: 10rem;
 }
 
 .form-group {
@@ -26,22 +39,22 @@
 label {
   display: block;
   margin-bottom: 5px;
+  margin-top: 5px;
 }
-
-
 
 button[type="submit"] {
   background-color: #007bff;
   color: #fff;
   border: none;
-  border-radius: 4px;
-  padding: 10px 20px;
+  padding: 15px 20px;
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s ease;
+  margin-top: 2rem;
+  width: 100%;
+  font-size: 1.2rem;
 }
 
 button[type="submit"]:hover {
   background-color: #0056b3;
 }
-

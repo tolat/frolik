@@ -2,6 +2,7 @@ import httpFetch from "../utils/http-fetch";
 import { authActions } from "./auth-slice";
 import store from ".";
 import { getServer } from "../utils/env-utils";
+import { modalActions } from "./modal-slice";
 
 // Create a login action to attempt to log in the user
 export const fetchLogin = (username, password) => {
@@ -84,8 +85,13 @@ export const fetchLogout = () => {
     };
 
     const handleResponse = (response) => {
+      dispatch(modalActions.hideModal());
       dispatch(authActions.logout());
-      setTimeout(() => dispatch(authActions.deleteUser()), 1000);
+      setTimeout(() => {
+        dispatch(authActions.deleteUser());
+        dispatch(modalActions.setZIndex("-1"));
+        dispatch(modalActions.setContent(null))
+      }, 500);
     };
 
     const handleError = (err) => {

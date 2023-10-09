@@ -1,7 +1,6 @@
 import styles from "./styles/Profile.module.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchAuth } from "../../store/auth-actions";
-import MainContainer from "../UI/MainContainer";
 import { redirect } from "react-router-dom";
 import store from "../../store";
 import { useState } from "react";
@@ -13,6 +12,7 @@ import outings from "../../images/outing2.png";
 import SimpleButton from "../UI/SimpleButton";
 import OutingList from "../UI/OutingList";
 import UserIcon from "../UI/UserIcon";
+import { modalActions } from "../../store/modal-slice";
 
 import flakeIcon from "../../images/snowflake.png";
 import outingsIcon from "../../images/outing2.png";
@@ -23,7 +23,7 @@ import { userPhotos } from "../../utils/globals";
 
 import StatIcon from "../UI/StatIcon";
 import FriendCard from "../UI/FriendCard";
-
+import EditProfileModal from "../Modals/EditProfileModal";
 
 const sliderIcons = [
   {
@@ -42,6 +42,7 @@ const sliderIcons = [
 
 const Profile = (props) => {
   const user = { ...useSelector((state) => state.auth.user) };
+  const modalDispatch = useDispatch();
   const [selectedSliderKey, setSelectedSliderKey] = useState("_photos");
   const editButtonStyle = {
     color: "rgb(111, 111, 111)",
@@ -50,56 +51,61 @@ const Profile = (props) => {
   };
   const iconStyle = { width: "4rem", height: "4rem" };
 
+  const handleEditButtonClick = async (e) => {
+    await modalDispatch(modalActions.setContent(<EditProfileModal/>))
+    await modalDispatch(modalActions.toggleModal());
+  };
+
   // TEMPORARY - NEED TO FIGURE OUT HOW TO SERVE THESE FROM BACKEND
-  user.photos = userPhotos;
+  user.photos = userPhotos.concat(userPhotos);
   // TEMPORARY - NEED TO FIGURE OUT HOW TO SERVE THESE FROM BACKEND
 
   return (
-    <MainContainer>
-      <div className={styles.container}>
-        <div className={styles.nonMediaSection}>
-          <div className={styles.profilePicContainer}>
-            <StatIcon
-              alt="flake"
-              icon={flakeIcon}
-              iconStyle={iconStyle}
-              rating={user.flake}
-            />
-            <UserIcon
-              sizeInRem={14}
-              user={user}
-              profilePic={user.profile_picture}
-              borderSizeInRem={"1.5"}
-            />
-            <StatIcon
-              alt="outings"
-              icon={outingsIcon}
-              iconStyle={iconStyle}
-              rating={user.outings.length}
-            />
-          </div>
-
-          <div
-            className={styles.userName}
-          >{`${user.first_name} ${user.last_name}`}</div>
-          <div className={styles.tagline}>{user.tagline}</div>
-          <SimpleButton style={editButtonStyle}>Edit Profile</SimpleButton>
-          <SliderNavbar
-            selected={selectedSliderKey}
-            setSelected={setSelectedSliderKey}
-            icons={sliderIcons}
+    <div className={styles.container}>
+      <div className={styles.nonMediaSection}>
+        <div className={styles.profilePicContainer}>
+          <StatIcon
+            alt="flake"
+            icon={flakeIcon}
+            iconStyle={iconStyle}
+            rating={user.flake}
+          />
+          <UserIcon
+            sizeInRem={14}
+            user={user}
+            profilePic={user.profile_picture}
+            borderSizeInRem={"1.5"}
+          />
+          <StatIcon
+            alt="outings"
+            icon={outingsIcon}
+            iconStyle={iconStyle}
+            rating={user.outings.length}
           />
         </div>
 
-        {selectedSliderKey === "_photos" ? (
-          <PhotoGrid images={user.photos} gridTemplateColumns="1fr 1fr 1fr" />
-        ) : selectedSliderKey === "_outings" ? (
-          <OutingList user={user} />
-        ) : (
-          user.friends.map(f => <FriendCard key={Math.random()} user={f}/>)
-        )}
+        <div
+          className={styles.userName}
+        >{`${user.first_name} ${user.last_name}`}</div>
+        <div className={styles.tagline}>{user.tagline}</div>
+        <SimpleButton onClick={handleEditButtonClick} style={editButtonStyle}>
+          Edit Profile
+        </SimpleButton>
+        <SliderNavbar
+          selected={selectedSliderKey}
+          setSelected={setSelectedSliderKey}
+          icons={sliderIcons}
+        />
       </div>
-    </MainContainer>
+
+      {selectedSliderKey === "_photos" ? (
+        <PhotoGrid images={user.photos} gridTemplateColumns="1fr 1fr 1fr" />
+      ) : selectedSliderKey === "_outings" ? (
+        <OutingList user={user} />
+      ) : (
+        user.friends.map((f) => <FriendCard key={Math.random()} user={f} />)
+      )}
+    </div>
   );
 };
 

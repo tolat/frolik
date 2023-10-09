@@ -1,0 +1,22 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.input{
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+    font-size: 1.1rem;
+    border: none;
+    border-bottom: 3px solid transparent;
+    outline: none;
+    transition: border 0.2s ease-in-out;
+    background-color: rgb(229, 238, 253);
+  }
+  
+  .input:focus{
+    border-bottom: 3px solid rgb(62, 129, 254);
+  }
+  

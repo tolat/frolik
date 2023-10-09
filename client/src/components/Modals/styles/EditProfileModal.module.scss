@@ -1,0 +1,57 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.photoEditor {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.nameEditor {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin: 1rem;
+  box-sizing: border-box;
+}
+
+.formSpacer {
+  width: 2rem;
+}
+
+.saveButton {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 15px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  margin-top: 2rem;
+  width: 100%;
+  font-size: 1.2rem;
+  justify-self: flex-end;
+  margin-bottom: 20rem;
+}
+.uploadButton {
+  background-color: #f0f0f0;
+  color: #000000;
+  border: none;
+  padding: 1rem;
+  margin: 1rem;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
+  font-size: 1.2rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}

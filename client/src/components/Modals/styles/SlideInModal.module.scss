@@ -1,0 +1,49 @@
+@import "../../../utils/responsive.scss"; 
+
+.container{
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    background-color: white;
+    width: $central_span_width;
+    transition: margin 0.23s ease-in-out;
+    background-color: rgb(255, 255, 255);   
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+.outerContainer{
+    position: absolute;
+    box-sizing: border-box;
+    display: flex;
+    height: calc(100vh - $navbar_height);
+    width: calc(2 * $central_span_width);
+    margin-left: $central_span_width;
+}
+
+.baffle{
+    background-color: white;
+    height: 100%;
+    width: 50%;
+    right: 0;
+    position: absolute;
+}
+
+.backButton{
+    top: 0;
+    left: 0;
+  
+    width: 4rem;
+    height: 4rem;
+}
+
+.backButton:hover{
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.arrowImage{
+    width: 100%;
+    height: 100%;
+}

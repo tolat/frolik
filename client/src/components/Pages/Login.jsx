@@ -7,6 +7,7 @@ import MainContainer from "../UI/MainContainer";
 import { redirect } from "react-router-dom";
 import store from "../../store";
 import { useNavigate } from "react-router-dom";
+import SimpleInput from "../UI/SimpleInput";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -14,7 +15,7 @@ function Login() {
   const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,44 +25,45 @@ function Login() {
   };
 
   // if authenticated, navigate to profile
-  useEffect(()=>{
-    if(authState.isAuthenticated){
-      navigate("/profile")
+  useEffect(() => {
+    if (authState.isAuthenticated) {
+      navigate("/profile");
     }
-  },[authState.isAuthenticated, navigate])
+  }, [authState.isAuthenticated, navigate]);
 
   return (
-    <MainContainer>
-      <div className={styles["login-page"]}>
+    <div className={styles["login-page"]}>
+      <form className={styles["login-form"]} onSubmit={handleSubmit}>
         <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="username">Username:</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit">Login</button>
-          {isLoggingIn && <div>Logging in...</div>}
-        </form>
-      </div>
-    </MainContainer>
+        <div>
+          <SimpleInput
+            type="text"
+            id="username"
+            name="username"
+            label="Username:"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <SimpleInput
+            type="password"
+            id="password"
+            name="password"
+            label="Password:"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">
+          {!isLoggingIn && !authState.isAuthenticated
+            ? "Login"
+            : "Logging in..."}
+        </button>
+      </form>
+    </div>
   );
 }
 

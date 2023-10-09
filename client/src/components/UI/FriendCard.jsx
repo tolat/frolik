@@ -9,7 +9,7 @@ import { fetchUserFriendData } from "../../utils/user-fetch";
 import IconButton from "./IconButton";
 
 import chatIcon from "../../images/chat.png";
-import getOutIcon from "../../images/get-out.png"
+import getOutIcon from "../../images/air-balloon.png"
 
 const FriendCard = (props) => {
   const statIconStyle = { width: "2rem", height: "2rem" };
