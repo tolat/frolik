@@ -3,6 +3,7 @@ import { authActions } from "./auth-slice";
 import store from ".";
 import { getServer } from "../utils/env-utils";
 import { modalActions } from "./modal-slice";
+import { hideModal } from "./modal-actions";
 
 // Create a login action to attempt to log in the user
 export const fetchLogin = (username, password) => {
@@ -85,11 +86,10 @@ export const fetchLogout = () => {
     };
 
     const handleResponse = (response) => {
-      dispatch(modalActions.hideModal());
+      hideModal();
       dispatch(authActions.logout());
       setTimeout(() => {
         dispatch(authActions.deleteUser());
-        dispatch(modalActions.setZIndex("-1"));
         dispatch(modalActions.setSelector("none"))
       }, 500);
     };

@@ -2,19 +2,14 @@ import styles from "./styles/SlideInModal.module.scss";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 
 import backArrow from "../../images/left-arrow.png";
-import { useDispatch } from "react-redux";
-import { modalActions } from "../../store/modal-slice";
 import EditProfileModal from "./EditProfileModal";
+import { hideModal } from "../../store/modal-actions";
 
 const SlideInModal = (props) => {
   const modalState = useSelector((state) => state.modal);
-  const dispatch = useDispatch();
 
   const handleBackButtonClick = (e) => {
-    dispatch(modalActions.toggleModal());
-    setTimeout(() => {
-      dispatch(modalActions.setZIndex("-1"));
-    }, 300);
+    hideModal();
   };
 
   // Map to set modal to display based on the modal state

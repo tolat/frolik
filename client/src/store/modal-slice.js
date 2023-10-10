@@ -26,14 +26,6 @@ const modalSlice = createSlice({
         state.marginLeft = "50%";
       }
     },
-    toggleModal(state) {
-      if (state.marginLeft === "50%") {
-        state.marginLeft = "0%";
-        state.zIndex = "1";
-      } else {
-        state.marginLeft = "50%";
-      }
-    },
   },
 });
 
