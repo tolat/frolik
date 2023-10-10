@@ -3,10 +3,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-grow: 1;
-  overflow-y: hidden;
   overflow-x: hidden;
   box-sizing: border-box;
+  flex-shrink: 0;
+  background-color: white;
+  padding: 2rem;
+  margin-top: 2rem;
 }
 
 .photoEditor {
@@ -40,7 +42,6 @@
   width: 100%;
   font-size: 1.2rem;
   justify-self: flex-end;
-  margin-bottom: 20rem;
 }
 .uploadButton {
   background-color: #f0f0f0;
@@ -53,5 +54,5 @@
   width: 100%;
   font-size: 1.2rem;
   margin-top: 2rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }

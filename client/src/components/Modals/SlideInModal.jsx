@@ -21,7 +21,7 @@ const SlideInModal = (props) => {
   return (
     <div
       style={{ zIndex: modalState.zIndex }}
-      className={styles.outerContainer}
+      className={`${styles.outerContainer} noscroll`}
     >
       <div
         style={{ marginLeft: `${modalState.marginLeft}` }}

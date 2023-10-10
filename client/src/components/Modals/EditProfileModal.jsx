@@ -9,10 +9,10 @@ const EditProfileModal = (props) => {
 
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} noscroll`}>
       <div className={styles.photoEditor}>
         <UserIcon
-          sizeInRem={22}
+          sizeInRem={18}
           user={user}
           profilePic={user.profile_picture}
           borderSizeInRem={"0"}

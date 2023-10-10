@@ -15,3 +15,11 @@ module.exports.handleCORS = async (req, res, next) => {
   // Send success if CORS checks options on pre-flight test
   "OPTIONS" == req.method ? res.sendStatus(200) : next();
 };
+
+module.exports.reqAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated) {
+    next();
+  } else {
+    res.sendStatus(401);
+  }
+};

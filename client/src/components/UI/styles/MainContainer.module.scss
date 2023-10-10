@@ -10,8 +10,7 @@
   box-sizing: border-box;
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
-  height: calc(100vh - $navbar_height);
-
+  margin-top: $navbar_height;
 }
 
 .outer::-webkit-scrollbar {
