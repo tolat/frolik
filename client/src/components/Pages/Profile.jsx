@@ -12,7 +12,6 @@ import outings from "../../images/outing2.png";
 import SimpleButton from "../UI/SimpleButton";
 import OutingList from "../UI/OutingList";
 import UserIcon from "../UI/UserIcon";
-import { modalActions } from "../../store/modal-slice";
 
 import flakeIcon from "../../images/snowflake.png";
 import outingsIcon from "../../images/outing2.png";
@@ -23,7 +22,7 @@ import { userPhotos } from "../../utils/globals";
 
 import StatIcon from "../UI/StatIcon";
 import FriendCard from "../UI/FriendCard";
-import EditProfileModal from "../Modals/EditProfileModal";
+import { modalActions } from "../../store/modal-slice";
 
 const sliderIcons = [
   {
@@ -42,7 +41,6 @@ const sliderIcons = [
 
 const Profile = (props) => {
   const user = { ...useSelector((state) => state.auth.user) };
-  const modalDispatch = useDispatch();
   const [selectedSliderKey, setSelectedSliderKey] = useState("_photos");
   const editButtonStyle = {
     color: "rgb(111, 111, 111)",
@@ -50,10 +48,11 @@ const Profile = (props) => {
     margin: "2rem 0 2rem 0",
   };
   const iconStyle = { width: "4rem", height: "4rem" };
+  const dispatch = useDispatch()
 
   const handleEditButtonClick = async (e) => {
-    await modalDispatch(modalActions.setContent(<EditProfileModal/>))
-    await modalDispatch(modalActions.toggleModal());
+     await dispatch(modalActions.setSelector('edit-profile'))
+     await dispatch(modalActions.showModal())
   };
 
   // TEMPORARY - NEED TO FIGURE OUT HOW TO SERVE THESE FROM BACKEND

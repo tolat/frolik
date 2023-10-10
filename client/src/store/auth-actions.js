@@ -90,7 +90,7 @@ export const fetchLogout = () => {
       setTimeout(() => {
         dispatch(authActions.deleteUser());
         dispatch(modalActions.setZIndex("-1"));
-        dispatch(modalActions.setContent(null))
+        dispatch(modalActions.setSelector("none"))
       }, 500);
     };
 

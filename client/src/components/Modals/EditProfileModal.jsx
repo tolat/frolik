@@ -7,6 +7,7 @@ import styles from "./styles/EditProfileModal.module.scss";
 const EditProfileModal = (props) => {
   const user = useSelector((state) => state.auth.user);
 
+
   return (
     <div className={styles.container}>
       <div className={styles.photoEditor}>
@@ -24,7 +25,7 @@ const EditProfileModal = (props) => {
           id="first_name"
           name="first_name"
           label="First Name:"
-          value={user.first_name}
+          // value={user.first_name}
         />
         <div className={styles.formSpacer} />
         <SimpleInput
@@ -32,7 +33,7 @@ const EditProfileModal = (props) => {
           id="last_name"
           name="last_name"
           label="Last Name:"
-          value={user.last_name}
+          // value={user.last_name}
         />
       </div>
       <SimpleInput
@@ -40,7 +41,7 @@ const EditProfileModal = (props) => {
         id="tagline"
         name="tagline"
         label="Tagline:"
-        value={user.tagline}
+        // value={user.tagline}
       />
       <SimpleButton className={styles.saveButton}>Save</SimpleButton>
     </div>

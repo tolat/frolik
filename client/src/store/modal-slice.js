@@ -1,16 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  content: null,
-  marginLeft: "100%",
+  selector: "none",
+  marginLeft: "50%",
   zIndex: "-1",
 };
 const modalSlice = createSlice({
   name: "modal",
   initialState: initialState,
   reducers: {
-    setContent(state, action) {
-      state.content = action.payload;
+    setSelector(state, action) {
+      state.selector = action.payload;
     },
     setZIndex(state, action) {
       state.zIndex = action.payload;
@@ -18,6 +18,7 @@ const modalSlice = createSlice({
     showModal(state) {
       if (state.marginLeft === "50%") {
         state.marginLeft = "0%";
+        state.zIndex = "1"
       }
     },
     hideModal(state) {
