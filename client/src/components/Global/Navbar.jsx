@@ -6,9 +6,6 @@ import { fetchLogout } from "../../store/auth-actions";
 import { useNavigate } from "react-router-dom";
 import NavButton from "../UI/NavButton";
 
-import logoutIcon from "../../images/get-out.png";
-import profileIcon from "../../images/profile.png";
-import chatIcon from "../../images/chat.png"
 import logo from "../../images/balloon1.png";
 
 const Navbar = (props) => {

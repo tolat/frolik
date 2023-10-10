@@ -3,7 +3,6 @@ import styles from "./styles/Login.module.scss";
 import { useDispatch } from "react-redux";
 import { fetchLogin, fetchAuth } from "../../store/auth-actions";
 import { useSelector } from "react-redux";
-import MainContainer from "../UI/MainContainer";
 import { redirect } from "react-router-dom";
 import store from "../../store";
 import { useNavigate } from "react-router-dom";

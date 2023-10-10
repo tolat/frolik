@@ -1,17 +1,9 @@
-import SimpleButton from "./SimpleButton";
 import styles from "./styles/OutingCard.module.scss";
 import { categoryColorMap } from "../../utils/globals";
 import UserIcon from "./UserIcon";
 
-import { seedProfilePicMap } from "../../utils/globals";
-
 const OutingCard = (props) => {
   const o = props.outing;
-  const buttonStyle = {
-    color: "rgb(111, 111, 111)",
-    backgroundColor: "rgb(223, 223, 223)",
-    borderBottomRightRadius: "5px",
-  };
 
   return (
     <div style={props.style} className={styles.outerContainer}>
