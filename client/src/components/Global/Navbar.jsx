@@ -31,7 +31,7 @@ const Navbar = (props) => {
             <Link to="/profile">
               <NavButton text={"Profile"} className={styles.navButton} />
             </Link>
-            <Link to="/profile">
+            <Link to="/chat">
               <NavButton text={"Chat"} className={styles.navButton} />
             </Link>
 
