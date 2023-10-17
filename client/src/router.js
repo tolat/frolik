@@ -6,8 +6,6 @@ import Chat, { chatLoader } from "./components/Pages/Chat";
 import { Outlet } from "react-router-dom";
 import ErrorPage from "./components/Global/ErrorPage";
 import Navbar from "./components/Global/Navbar";
-import Footer from "./components/Global/Footer";
-import SlideInModal from "./components/Modals/SlideInModal";
 import MainContainer from "./components/UI/MainContainer";
 
 const router = createBrowserRouter([
@@ -19,7 +17,6 @@ const router = createBrowserRouter([
         <MainContainer>
           <Outlet />
         </MainContainer>
-        {/*  <Footer /> */}
       </div>
     ),
     errorElement: <ErrorPage />,

@@ -9,6 +9,9 @@ const router = express.Router({ mergeParams: true });
 
 router.post("/friend", reqAuthenticated, async (req, res) => {
   const user = await User.findOne({ _id: req.body.userID });
+  if(!user){
+    res.sendStatus(400)
+  }
   await user.populate("outings");
   await user.populate("outings.activity");
 
@@ -27,6 +30,8 @@ router.post("/friend", reqAuthenticated, async (req, res) => {
   res.send({ friendData });
 });
 
-router.post("/profile-picture", async (req, res) => {});
+router.post("/profile-picture", reqAuthenticated, async (req, res) => {
+    
+});
 
 module.exports = router;

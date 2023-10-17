@@ -7,6 +7,7 @@ import { redirect } from "react-router-dom";
 import store from "../../store";
 import { useNavigate } from "react-router-dom";
 import SimpleInput from "../UI/SimpleInput";
+import { hideModal, hideModalFast } from "../../store/modal-actions";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -70,6 +71,7 @@ export default Login;
 
 export const loginLoader = async () => {
   await fetchAuth()();
+  hideModalFast()
 
   if (store.getState().auth.isAuthenticated) {
     return redirect("/profile");

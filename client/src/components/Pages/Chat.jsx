@@ -6,6 +6,7 @@ import FriendCard from '../UI/FriendCard';
 import { fetchAuth } from "../../store/auth-actions";
 import { redirect } from "react-router-dom";
 import store from "../../store";
+import { hideModalFast } from '../../store/modal-actions';
 
 
 const Chat = (props) => {
@@ -13,10 +14,8 @@ const Chat = (props) => {
   const user = useSelector((state) => state.auth.user);
   const [friends, setFriends] = useState([]);
   const [talkLoaded, markTalkLoaded] = useState(false);
-  console.log("user:", user)
   
   useEffect(() => {
-    console.log("user:", user)
     Talk.ready.then(() => markTalkLoaded(true));
 
     if (talkLoaded) {
@@ -58,7 +57,7 @@ const Chat = (props) => {
 
   return (
     <div >
-      {user.friends.map((f) => <FriendCard key={Math.random()} user={f} />)}
+      {user.friends.map((id) => <FriendCard key={Math.random()} userID={id} />)}
       <div className={styles.container} ref={chatboxEl} />; 
     </div>
   );
@@ -69,6 +68,7 @@ export default Chat;
 
 export const chatLoader = async () => {
   await fetchAuth()();
+  hideModalFast()
 
   if (!store.getState().auth.isAuthenticated) {
     return redirect("/login");

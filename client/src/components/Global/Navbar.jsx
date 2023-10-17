@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { NavLink } from "react-router-dom"; // Import Link from react-router-dom
 import styles from "./styles/Navbar.module.scss";
 import { useDispatch } from "react-redux";
 import { fetchLogout } from "../../store/auth-actions";
@@ -12,6 +12,8 @@ const Navbar = (props) => {
   const authState = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const makeActive = (navData) =>
+    navData.isActive ? styles.activeLink : "none";
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -22,24 +24,26 @@ const Navbar = (props) => {
   return (
     <div className={styles.header}>
       <div className={styles.innerContainer}>
-        <Link to="/go">
-          <img className={styles.logo} src={logo} alt="logo" />
-        </Link>
+        <NavLink className={(navData) => makeActive(navData)} to="/go">
+          <div className={styles.goButton}>
+            <img className={styles.logo} src={logo} alt="logo" />
+          </div>
+        </NavLink>
 
         {authState.isAuthenticated ? (
           <div className={styles.navItems}>
-            <Link to="/profile">
+            <NavLink className={(navData) => makeActive(navData)} to="/profile">
               <NavButton text={"Profile"} className={styles.navButton} />
-            </Link>
-            <Link to="/chat">
+            </NavLink>
+            <NavLink className={(navData) => makeActive(navData)} to="/chat">
               <NavButton text={"Chat"} className={styles.navButton} />
-            </Link>
+            </NavLink>
 
-              <NavButton
-                onClick={handleLogout}
-                text={"Logout"}
-                className={styles.navButton}
-              />
+            <NavButton
+              onClick={handleLogout}
+              text={"Logout"}
+              className={styles.navButton}
+            />
           </div>
         ) : null}
       </div>

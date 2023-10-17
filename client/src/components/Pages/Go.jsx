@@ -1,32 +1,58 @@
-import MainContainer from "../UI/MainContainer";
 import styles from "./styles/Go.module.scss";
 import { fetchAuth } from "../../store/auth-actions";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { redirect } from "react-router-dom";
 import store from "../../store";
+import SimpleButton from "../UI/SimpleButton";
+import { Fragment } from "react";
+import AddUserModal from "../Modals/AddUserModal";
+import { modalActions } from "../../store/modal-slice";
+import { hideModalFast } from "../../store/modal-actions";
+import editIcon from "../../images/edit.png";
+import plusIcon from "../../images/plus.png";
+import EditUsersModal from "../Modals/EditUsersModal";
+import UserIconCluster from "../UI/UserIconCluster";
+import buttonStyles from "../../components/UI/styles/SimpleButton.module.scss"
 
 const Go = (props) => {
+  const dispatch = useDispatch();
+
+  // Handle Add Participant
+  const handleAddUserClick = () => {
+    dispatch(modalActions.setSelector("add-user"));
+    dispatch(modalActions.showModal());
+  };
+
+  const handleEditUsersClick = () => {
+    dispatch(modalActions.setSelector("edit-users"));
+    dispatch(modalActions.showModal());
+  };
+
+  const user = useSelector((state) => state.auth.user);
   return (
-    <div className={styles.container}>
-      <div className={styles.userContainer}>
-        <div className={styles.userIcon}></div>
-        <button className={styles.addButton}>+</button>
+    <Fragment>
+      <AddUserModal />
+      <EditUsersModal />
+      <div className={styles.container}>
+        <div className={styles.usersContainer}>
+          <button onClick={handleEditUsersClick} className={styles.roundButton}>
+            <img
+              className={styles.editIcon}
+              src={editIcon}
+              alt="edit-friends"
+            />
+          </button>
+          <UserIconCluster sizeInRem={14} />
+          <button onClick={handleAddUserClick} className={styles.roundButton}>
+            <img className={styles.editIcon} src={plusIcon} alt="add-people" />
+          </button>
+        </div>
+        <SimpleButton className={styles.goButton}>+ Create Outing</SimpleButton>
+        <SimpleButton className={buttonStyles.greyButton}>
+          Filter Activities
+        </SimpleButton>
       </div>
-      <label htmlFor="categories">Choose Activity Category</label>
-      <select name="categories" className={styles.select}>
-        <option value="">--Choose Activity Category--</option>
-        <option value="games">Games</option>
-        <option value="food">Food</option>
-      </select>
-      <label htmlFor="activities">Choose Activity</label>
-      <select name="activities" className={styles.select}>
-        <option value="">--Choose Activity--</option>
-        <option value="beerpong">Park Pong</option>
-        <option value="icecream">Ice Cream Bang Bang</option>
-      </select>
-      <button className={styles.goButton}>Get off your a**!</button>
-      <div className={styles.searchContainer}></div>
-    </div>
+    </Fragment>
   );
 };
 
@@ -34,6 +60,7 @@ export default Go;
 
 export const goLoader = async () => {
   await fetchAuth()();
+  hideModalFast();
 
   if (!store.getState().auth.isAuthenticated) {
     return redirect("/login");

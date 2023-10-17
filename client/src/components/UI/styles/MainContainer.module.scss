@@ -25,8 +25,8 @@
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
   box-sizing: border-box;
-  height: 100%;
   width: 100%;
+
 
   @include responsive(
     "width",

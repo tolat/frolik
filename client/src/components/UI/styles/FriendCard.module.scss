@@ -4,9 +4,12 @@
     background-color: rgb(250, 250, 250);
     margin-bottom: 1rem;
     justify-content: space-between;
-
+    box-sizing: border-box;
 }
-
+.container:hover{
+    cursor: pointer;
+    opacity: 0.9;
+}
 
 .detailsContainer{
     display: flex;
@@ -58,4 +61,13 @@
     justify-content: flex-end;
     align-items: center;
   
+}
+
+.addButton{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3.5rem;
+    margin-right: 1rem;
 }

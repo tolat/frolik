@@ -9,6 +9,7 @@ module.exports.userSeeds = [
     profile_picture: "",
     photos: [],
     friends: [],
+    location: "Vancouver"
   },
   {
     first_name: "Torin",
@@ -20,6 +21,7 @@ module.exports.userSeeds = [
     profile_picture: "static/images/torin.jpeg",
     photos: [],
     friends: [],
+    location: "Vancouver"
   },
   {
     first_name: "Alex",
@@ -31,6 +33,7 @@ module.exports.userSeeds = [
     profile_picture: "",
     photos: [],
     friends: [],
+    location: "Vancouver"
   },
   {
     first_name: "Josh",
@@ -42,5 +45,6 @@ module.exports.userSeeds = [
     profile_picture: "",
     photos: [],
     friends: [],
+    location: "Vancouver"
   },
 ];

@@ -4,6 +4,7 @@ const initialState = {
   selector: "none",
   marginLeft: "50%",
   zIndex: "-1",
+  opacity: "1"
 };
 const modalSlice = createSlice({
   name: "modal",
@@ -26,6 +27,9 @@ const modalSlice = createSlice({
         state.marginLeft = "50%";
       }
     },
+    setOpacity(state, action){
+      state.opacity = action.payload
+    }
   },
 });
 

@@ -2,7 +2,6 @@ import styles from "./styles/SlideInModal.module.scss";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 
 import backArrow from "../../images/left-arrow.png";
-import EditProfileModal from "./EditProfileModal";
 import { hideModal } from "../../store/modal-actions";
 
 const SlideInModal = (props) => {
@@ -12,20 +11,15 @@ const SlideInModal = (props) => {
     hideModal();
   };
 
-  // Map to set modal to display based on the modal state
-  const modalMap = {
-    "edit-profile": <EditProfileModal />,
-    none: null,
-  };
-
   return (
     <div
-      style={{ zIndex: modalState.zIndex }}
+      style={{ zIndex: modalState.zIndex, opacity: modalState.opacity }}
       className={`${styles.outerContainer} noscroll`}
     >
       <div
         style={{ marginLeft: `${modalState.marginLeft}` }}
         className={styles.container}
+        id="modal-container"
       >
         <div onClick={handleBackButtonClick} className={styles.backButton}>
           <img
@@ -34,7 +28,6 @@ const SlideInModal = (props) => {
             alt="back-arrow"
           ></img>
         </div>
-        {modalMap[modalState.selector]}
       </div>
       <div className={styles.baffle} />
     </div>

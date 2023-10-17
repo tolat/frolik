@@ -6,11 +6,19 @@
     padding: 1rem;
     box-sizing: border-box;
     justify-content: center;
+    outline: none;
+    border: none;
   }
   
   .container:hover {
       cursor: pointer;
       opacity: 0.8;
+  }
+
+  .greyButton{
+    color: rgb(111, 111, 111);
+    background-color: rgb(223, 223, 223);
+    margin: 2rem 0 2rem 0;
   }
   
   

@@ -11,6 +11,7 @@ const UserSchema = new Schema(
     status: String,
     profile_picture: String,
     flake: Number,
+    location: String,
     friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
     photos: [
       {
