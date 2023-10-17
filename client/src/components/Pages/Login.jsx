@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "./styles/Login.module.scss";
 import { useDispatch } from "react-redux";
-import { fetchLogin, fetchAuth } from "../../store/auth-actions";
+import { fetchLogin } from "../../store/auth-actions";
 import { useSelector } from "react-redux";
 import { redirect } from "react-router-dom";
 import store from "../../store";
 import { useNavigate } from "react-router-dom";
 import SimpleInput from "../UI/SimpleInput";
-import { hideModal, hideModalFast } from "../../store/modal-actions";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -70,11 +69,9 @@ function Login() {
 export default Login;
 
 export const loginLoader = async () => {
-  await fetchAuth()();
-  hideModalFast()
-
   if (store.getState().auth.isAuthenticated) {
     return redirect("/profile");
   }
+
   return null;
 };

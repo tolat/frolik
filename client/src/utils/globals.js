@@ -11,6 +11,7 @@ import torin from "../images/torin.jpeg";
 import adam from "../images/adam.jpeg";
 import josh from "../images/josh.jpeg";
 import alex from "../images/alex.jpeg";
+import ingrid from "../images/ingrid.png"
 
 export const userPhotos = [
   img1,
@@ -24,7 +25,7 @@ export const userPhotos = [
   img9,
 ];
 
-export const profilePics = { torin, adam, josh, alex };
+export const profilePics = { torin, adam, josh, alex, ingrid };
 
 export const categoryColorMap = {
   Games: "rgb(117, 204, 255)",

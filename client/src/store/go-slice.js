@@ -12,15 +12,15 @@ const goSlice = createSlice({
   initialState: initialState,
   reducers: {
     setUsers(state, action) {
-      state.users = action.payload;
+      state.outing.users = action.payload;
     },
     addUser(state, action) {
-      if (!state.users.find((id) => action.payload === id))
-        state.users.push(action.payload);
+      if (!state.outing.users.find((user) => action.payload._id === user._id))
+        state.outing.users.push(action.payload);
     },
     removeUser(state, action) {
-      const index = state.users.findIndex(id=> id === action.payload);
-      if (index !== -1) state.users.splice(index, 1);
+      const index = state.outing.users.findIndex(user=> user._id === action.payload._id);
+      if (index !== -1) state.outing.users.splice(index, 1);
     },
   },
 });

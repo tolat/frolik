@@ -17,7 +17,7 @@ module.exports.handleCORS = async (req, res, next) => {
 };
 
 module.exports.reqAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated) {
+  if (req.isAuthenticated()) {
     next();
   } else {
     res.sendStatus(401);

@@ -1,30 +1,18 @@
 import StatIcon from "./StatIcon";
 import styles from "./styles/FriendCard.module.scss";
 import UserIcon from "./UserIcon";
-import { Fragment, useEffect, useState } from "react";
-
 import flakeIcon from "../../images/snowflake.png";
 import outingsIcon from "../../images/outing2.png";
-import { fetchUserFriendData } from "../../utils/user-fetch";
 import IconButton from "./IconButton";
-
 import chatIcon from "../../images/chat.png";
 import getOutIcon from "../../images/air-balloon.png";
 
 const FriendCard = (props) => {
   const statIconStyle = { width: "2rem", height: "2rem" };
   const statContainerStyle = { marginLeft: "1rem" };
-  const [friendUser, setFriendUser] = useState(false);
   const buttonIconStyle = { width: "3rem", height: "3rem" };
 
-  // Get friend user from server
-  useEffect(() => {
-    fetchUserFriendData(props.userID, setFriendUser);
-  }, [setFriendUser, props.userID]);
-
-  return !friendUser ? (
-    <div className={styles.friendLoading}>Loading...</div>
-  ) : (
+  return (
     <div
       onClick={props.onClick}
       style={props.style}
@@ -32,12 +20,12 @@ const FriendCard = (props) => {
     >
       <div className={styles.leftContainer}>
         <div className={styles.iconContainer}>
-          <UserIcon sizeInRem="6" borderSizeInRem="0.8" user={friendUser} />
+          <UserIcon sizeInRem="6" borderSizeInRem="0.8" user={props.user} />
         </div>
 
         <div className={styles.detailsContainer}>
           <div className={styles.userName}>
-            {`${friendUser.first_name} ${friendUser.last_name}`}
+            {`${props.user.first_name} ${props.user.last_name}`}
           </div>
           <div className={styles.ratingsContainer}>
             <StatIcon
@@ -45,14 +33,14 @@ const FriendCard = (props) => {
               icon={flakeIcon}
               style={statContainerStyle}
               iconStyle={statIconStyle}
-              rating={friendUser.flake}
+              rating={props.user.flake}
             />
             <StatIcon
               alt="outings"
               icon={outingsIcon}
               style={statContainerStyle}
               iconStyle={statIconStyle}
-              rating={friendUser.outings.length}
+              rating={props.user.outings.length}
             />
           </div>
         </div>

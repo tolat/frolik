@@ -1,8 +1,5 @@
 import styles from "./styles/Profile.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAuth } from "../../store/auth-actions";
-import { redirect } from "react-router-dom";
-import store from "../../store";
 import { Fragment, useState } from "react";
 import SliderNavbar from "../UI/SliderNavbar";
 import PhotoGrid from "../UI/PhotoGrid";
@@ -13,20 +10,17 @@ import SimpleButton from "../UI/SimpleButton";
 import OutingList from "../UI/OutingList";
 import UserIcon from "../UI/UserIcon";
 import buttonStyles from "../UI/styles/SimpleButton.module.scss";
-
 import flakeIcon from "../../images/snowflake.png";
 import outingsIcon from "../../images/outing2.png";
 import editIcon from "../../images/edit-light.png";
+import StatIcon from "../UI/StatIcon";
+import { modalActions } from "../../store/modal-slice";
+import EditProfileModal from "../Modals/EditProfileModal";
+import FriendCard from "../UI/FriendCard";
 
 // TEMPORARY - NEED TO FIGURE OUT HOW TO SERVE THESE FROM BACKEND
 import { userPhotos } from "../../utils/globals";
 // TEMPORARY - NEED TO FIGURE OUT HOW TO SERVE THESE FROM BACKEND
-
-import StatIcon from "../UI/StatIcon";
-import { modalActions } from "../../store/modal-slice";
-import FriendsList from "../UI/FriendsList";
-import EditProfileModal from "../Modals/EditProfileModal";
-import { hideModal, hideModalFast } from "../../store/modal-actions";
 
 const sliderIcons = [
   {
@@ -71,7 +65,7 @@ const Profile = (props) => {
               rating={user.flake}
             />
             <UserIcon
-              sizeInRem={14}
+              sizeInRem={16}
               user={user}
               profilePic={user.profile_picture}
               borderSizeInRem={"1.5"}
@@ -91,7 +85,7 @@ const Profile = (props) => {
           <div className={styles.statusContainer}>
             Status: {user.status}
             <img className={styles.editIcon} src={editIcon} alt="edit_button" />
-            </div>
+          </div>
           <SimpleButton
             onClick={handleEditButtonClick}
             className={buttonStyles.greyButton}
@@ -111,7 +105,7 @@ const Profile = (props) => {
         ) : selectedSliderKey === "_outings" ? (
           <OutingList user={user} />
         ) : (
-          <FriendsList friendIDs={user.friends} />
+          user.friends.map((f) => <FriendCard key={Math.random()} user={f} />)
         )}
       </div>
     </Fragment>
@@ -121,12 +115,5 @@ const Profile = (props) => {
 export default Profile;
 
 export const profileLoader = async () => {
-  await fetchAuth()();
-  hideModalFast();
-
-  if (!store.getState().auth.isAuthenticated) {
-    return redirect("/login");
-  }
-
   return null;
 };

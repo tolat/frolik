@@ -12,20 +12,20 @@ const EditUsersModal = (props) => {
   const modalDisplay = modalState.selector === "edit-users" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
 
-  const removeUser = (id) => {
-    if (id !== user._id) dispatch(goActions.removeUser(id));
+  const removeUser = (u) => {
+    if (u._id !== user._id) dispatch(goActions.removeUser(u));
   };
 
   return (
     <ModalPortal>
       <div style={modalStyle} className={styles.container}>
-        {goState.users.map((id) => (
+        {goState.outing.users.map((u) => (
           <FriendCard
-            buttonSet={id === user._id ? "none" : "remove"}
-            userID={id}
+            buttonSet={u._id === user._id ? "none" : "remove"}
+            user={u}
             key={Math.random()}
             onClick={() => {
-              removeUser(id);
+              removeUser(u);
             }}
           />
         ))}

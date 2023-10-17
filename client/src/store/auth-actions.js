@@ -23,7 +23,7 @@ export const fetchLogin = (username, password) => {
     };
 
     const handleResponse = (response) => {
-      dispatch(authActions.login(response.user));
+      dispatch(authActions.login(response));
     };
 
     const handleError = (err) => {
@@ -55,8 +55,8 @@ export const fetchAuth = () => {
     };
 
     const handleResponse = (response) => {
-      response.isAuthenticated
-        ? dispatch(authActions.login(response.user))
+      response.user
+        ? dispatch(authActions.login(response))
         : dispatch(authActions.logout());
     };
 
@@ -90,7 +90,7 @@ export const fetchLogout = () => {
       dispatch(authActions.logout());
       setTimeout(() => {
         dispatch(authActions.deleteUser());
-        dispatch(modalActions.setSelector("none"))
+        dispatch(modalActions.setSelector("none"));
       }, 500);
     };
 

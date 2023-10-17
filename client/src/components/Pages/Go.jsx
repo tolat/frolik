@@ -1,13 +1,9 @@
 import styles from "./styles/Go.module.scss";
-import { fetchAuth } from "../../store/auth-actions";
-import { useDispatch, useSelector } from "react-redux";
-import { redirect } from "react-router-dom";
-import store from "../../store";
+import { useDispatch } from "react-redux";
 import SimpleButton from "../UI/SimpleButton";
 import { Fragment } from "react";
 import AddUserModal from "../Modals/AddUserModal";
 import { modalActions } from "../../store/modal-slice";
-import { hideModalFast } from "../../store/modal-actions";
 import editIcon from "../../images/edit.png";
 import plusIcon from "../../images/plus.png";
 import EditUsersModal from "../Modals/EditUsersModal";
@@ -28,7 +24,6 @@ const Go = (props) => {
     dispatch(modalActions.showModal());
   };
 
-  const user = useSelector((state) => state.auth.user);
   return (
     <Fragment>
       <AddUserModal />
@@ -42,14 +37,14 @@ const Go = (props) => {
               alt="edit-friends"
             />
           </button>
-          <UserIconCluster sizeInRem={14} />
+          <UserIconCluster sizeInRem={16} borderSizeInRem={1.5} />
           <button onClick={handleAddUserClick} className={styles.roundButton}>
             <img className={styles.editIcon} src={plusIcon} alt="add-people" />
           </button>
         </div>
-        <SimpleButton className={styles.goButton}>+ Create Outing</SimpleButton>
+        <SimpleButton className={styles.goButton} >+ Create Outing</SimpleButton>
         <SimpleButton className={buttonStyles.greyButton}>
-          Filter Activities
+          Choose Activity
         </SimpleButton>
       </div>
     </Fragment>
@@ -59,11 +54,6 @@ const Go = (props) => {
 export default Go;
 
 export const goLoader = async () => {
-  await fetchAuth()();
-  hideModalFast();
 
-  if (!store.getState().auth.isAuthenticated) {
-    return redirect("/login");
-  }
   return null;
 };

@@ -26,6 +26,7 @@ router.post("/friend", reqAuthenticated, async (req, res) => {
     last_name: user.last_name,
     flake: user.flake,
     outings: strippedOutings,
+    status: user.status
   };
   res.send({ friendData });
 });

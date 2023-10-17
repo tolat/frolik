@@ -15,8 +15,8 @@ const AddUserModal = (props) => {
     modalState.selector === "add-user" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
 
-  const addUserToOuting = (id) => {
-    dispatch(goActions.addUser(id));
+  const addUserToOuting = (u) => {
+    dispatch(goActions.addUser(u));
   };
 
   return (
@@ -37,14 +37,14 @@ const AddUserModal = (props) => {
         </div>
 
         <h2>Friends:</h2>
-        {user.friends.map((id) =>
-          !goState.users.find((_id) => _id === id) ? (
+        {user.friends.map((f) =>
+          !goState.outing.users.find((u) => u._id === f._id) ? (
             <FriendCard
               buttonSet={"add"}
-              userID={id}
+              user={f}
               key={Math.random()}
               onClick={() => {
-                addUserToOuting(id);
+                addUserToOuting(f);
               }}
             />
           ) : null

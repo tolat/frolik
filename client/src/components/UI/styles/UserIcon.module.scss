@@ -10,3 +10,12 @@
   background-size: cover;
   box-sizing: border-box;
 }
+
+.whiteBacker{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+  border-radius: 100rem;
+  box-sizing: border-box;
+}
