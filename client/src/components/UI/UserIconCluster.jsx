@@ -20,37 +20,41 @@ const UserIconCluster = (props) => {
 
   return (
     <div style={containerStyle}>
-      {outing.users.length === 1 ? (
+      {props.users.length === 1 ? (
         <UserIcon
+          backer={true}
           sizeInRem={props.sizeInRem}
-          user={outing.users[0]}
+          user={props.users[0]}
           borderSizeInRem={props.borderSizeInRem}
         />
-      ) : outing.users.length === 2 ? (
+      ) : props.users.length === 2 ? (
         <Fragment>
           <UserIcon
+            backer={true}
             style={{
               position: "absolute",
               marginRight: `${props.sizeInRem - props.sizeInRem / mag21}rem`,
             }}
             sizeInRem={parseFloat(props.sizeInRem) / mag21}
-            user={outing.users[0]}
+            user={props.users[0]}
             borderSizeInRem={parseFloat(props.borderSizeInRem) / mag21}
           />
           <UserIcon
+            backer={true}
             style={{
               position: "absolute",
               marginLeft: `${props.sizeInRem - props.sizeInRem / mag22}rem`,
               marginTop: `${props.sizeInRem - props.sizeInRem / mag22}rem`,
             }}
             sizeInRem={parseFloat(props.sizeInRem) / mag22}
-            user={outing.users[1]}
+            user={props.users[1]}
             borderSizeInRem={parseFloat(props.borderSizeInRem) / mag22}
           />
         </Fragment>
-      ) : outing.users.length === 3 ? (
+      ) : props.users.length === 3 ? (
         <Fragment>
           <UserIcon
+            backer={true}
             style={{
               position: "absolute",
               marginRight: `${props.sizeInRem - props.sizeInRem / mag31}rem`,
@@ -59,10 +63,11 @@ const UserIconCluster = (props) => {
               }rem`,
             }}
             sizeInRem={parseFloat(props.sizeInRem) / mag31}
-            user={outing.users[0]}
+            user={props.users[0]}
             borderSizeInRem={parseFloat(props.borderSizeInRem) / mag31}
           />
           <UserIcon
+            backer={true}
             style={{
               position: "absolute",
               marginLeft: `${props.sizeInRem - props.sizeInRem / mag32}rem`,
@@ -71,10 +76,11 @@ const UserIconCluster = (props) => {
               }rem`,
             }}
             sizeInRem={parseFloat(props.sizeInRem) / mag32}
-            user={outing.users[1]}
+            user={props.users[1]}
             borderSizeInRem={parseFloat(props.borderSizeInRem) / mag32}
           />
           <UserIcon
+            backer={true}
             style={{
               position: "absolute",
               marginLeft: `${
@@ -83,13 +89,14 @@ const UserIconCluster = (props) => {
               marginTop: `${props.sizeInRem - props.sizeInRem / mag33}rem`,
             }}
             sizeInRem={parseFloat(props.sizeInRem) / mag33}
-            user={outing.users[2]}
+            user={props.users[2]}
             borderSizeInRem={parseFloat(props.borderSizeInRem) / mag33}
           />
         </Fragment>
-      ) : outing.users.length === 4 ? (
+      ) : props.users.length === 4 ? (
         <Fragment>
           <UserIcon
+            backer={true}
             style={{
               position: "absolute",
               marginRight: `${
@@ -100,20 +107,22 @@ const UserIconCluster = (props) => {
               }rem`,
             }}
             sizeInRem={props.sizeInRem / mag41}
-            user={outing.users[0]}
+            user={props.users[0]}
             borderSizeInRem={props.borderSizeInRem / mag41}
           />
           <UserIcon
+            backer={true}
             style={{
               position: "absolute",
               marginLeft: `${props.sizeInRem - props.sizeInRem / mag43}rem`,
               marginTop: `${props.sizeInRem - props.sizeInRem / mag43}rem`,
             }}
             sizeInRem={props.sizeInRem / mag43}
-            user={outing.users[2]}
+            user={props.users[2]}
             borderSizeInRem={props.borderSizeInRem / mag43}
           />
           <UserIcon
+            backer={true}
             style={{
               position: "absolute",
               marginLeft: `${
@@ -124,11 +133,12 @@ const UserIconCluster = (props) => {
               }rem`,
             }}
             sizeInRem={props.sizeInRem / mag42}
-            user={outing.users[1]}
+            user={props.users[1]}
             borderSizeInRem={props.borderSizeInRem / mag42}
           />
 
           <UserIcon
+            backer={true}
             style={{
               position: "absolute",
               marginRight: `${props.sizeInRem - props.sizeInRem / mag44}rem`,
@@ -137,13 +147,14 @@ const UserIconCluster = (props) => {
               }rem`,
             }}
             sizeInRem={props.sizeInRem / mag44}
-            user={outing.users[3]}
+            user={props.users[3]}
             borderSizeInRem={props.borderSizeInRem / mag44}
           />
         </Fragment>
       ) : (
         <Fragment>
           <UserIcon
+            backer={true}
             style={{
               position: "absolute",
               marginRight: `${
@@ -154,22 +165,23 @@ const UserIconCluster = (props) => {
               }rem`,
             }}
             sizeInRem={props.sizeInRem / mag41}
-            user={outing.users[0]}
+            user={props.users[0]}
             borderSizeInRem={props.borderSizeInRem / mag41}
           />
           <div
             style={{
-                width: `${props.sizeInRem / 3}rem`,
-                height: `${props.sizeInRem / 3}rem`,
+              width: `${props.sizeInRem / 3}rem`,
+              height: `${props.sizeInRem / 3}rem`,
               fontSize: `${props.sizeInRem / 5}rem`,
               position: "absolute",
-              marginLeft: `${props.sizeInRem - (props.sizeInRem/3)}rem`,
-              marginTop: `${props.sizeInRem - (props.sizeInRem/3)}rem`,
+              marginLeft: `${props.sizeInRem - props.sizeInRem / 3}rem`,
+              marginTop: `${props.sizeInRem - props.sizeInRem / 3}rem`,
             }}
           >
             5+
           </div>
           <UserIcon
+            backer={true}
             style={{
               position: "absolute",
               marginLeft: `${
@@ -180,11 +192,12 @@ const UserIconCluster = (props) => {
               }rem`,
             }}
             sizeInRem={props.sizeInRem / mag42}
-            user={outing.users[1]}
+            user={props.users[1]}
             borderSizeInRem={props.borderSizeInRem / mag42}
           />
 
           <UserIcon
+            backer={true}
             style={{
               position: "absolute",
               marginRight: `${props.sizeInRem - props.sizeInRem / mag44}rem`,
@@ -193,7 +206,7 @@ const UserIconCluster = (props) => {
               }rem`,
             }}
             sizeInRem={props.sizeInRem / mag44}
-            user={outing.users[3]}
+            user={props.users[3]}
             borderSizeInRem={props.borderSizeInRem / mag44}
           />
         </Fragment>

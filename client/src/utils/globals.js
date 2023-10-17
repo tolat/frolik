@@ -32,5 +32,5 @@ export const categoryColorMap = {
   Art: "rgb(186, 255, 169)",
   Sports: "rgb(255, 223, 141)",
   Food: "rgb(255, 194, 156)",
-  Misc: "rgb(255, 158, 166)",
+  Adventure: "rgb(255, 158, 166)",
 };

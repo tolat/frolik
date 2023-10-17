@@ -12,6 +12,7 @@ const ActivitySchema = new Schema(
     duration: Number,
     cost: Number,
     participants: Number,
+    goal: "String",
     instructions: [
       {
         kind: String,

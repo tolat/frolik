@@ -4,6 +4,7 @@ module.exports.activitySeeds = [
     description:
       "Casual or competitive, beer pong in the park is an all-time games favourite.",
     category: "Games",
+    goal: "Beat the other team in Beer Pong.",
     instructions: [
       {
         kind: "purchase",
@@ -35,6 +36,7 @@ module.exports.activitySeeds = [
     name: "Ice Cream Bang Bang",
     description: "Eat Ice cream once, shame on me. Eat ice cream twice..",
     category: "Food",
+    goal: "Eat Ice Cream at two different locations, one after the other.",
     instructions: [
       {
         kind: "communicate",
@@ -72,13 +74,14 @@ module.exports.activitySeeds = [
     name: "Portrait Swap",
     description: "Not everyone is an artist, but you are today.",
     category: "Art",
+    goal: "Draw portraits of eachother.",
     instructions: [
       {
         kind: "communicate",
         number: 1,
         title: "Place, Pen, Paper",
         details:
-          "Decide on a spot. Don't forget to bring a pen/bruch/pencil and paper!",
+          "Decide on a spot. Don't forget to bring a pen/brush/pencil and paper!",
       },
       {
         kind: "travel",
@@ -93,5 +96,39 @@ module.exports.activitySeeds = [
     duration: 1,
     cost: 0,
     participants: 2,
+  },
+  {
+    name: "Paparazzi Battle",
+    description: "May the sneakiest team win!",
+    category: "Games",
+    goal: "Post a photo of the other team bofore they one of you.",
+    instructions: [
+      {
+        kind: "communicate",
+        number: 1,
+        title: "Pick a Park",
+        details:
+          "Pick a local Park where the game will take place. Pick somewhere with some natural obstacles or places to hide. Agree upon a bright shirt colour for eveyone to wear so you can spot eachother.",
+      },
+      {
+        kind: "travel",
+        number: 2,
+        title: "Don't be too late!",
+        details:
+          "Head to the park at an agreed upon time. Don't forget to wear the agreed upon clothing!",
+      },
+      {
+        kind: "capture",
+        number: 3,
+        title: "Got em!",
+        details:
+          "The first team to take a picture of the other team and post it wins. The other team has to confirm is was the in the picture!",
+      },
+    ],
+    location: "Global",
+    rating: 4.4,
+    duration: 2,
+    cost: 0,
+    participants: 4,
   },
 ];

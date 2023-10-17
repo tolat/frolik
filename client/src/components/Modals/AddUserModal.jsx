@@ -36,7 +36,6 @@ const AddUserModal = (props) => {
           </SimpleButton>
         </div>
 
-        <h2>Friends:</h2>
         {user.friends.map((f) =>
           !goState.outing.users.find((u) => u._id === f._id) ? (
             <FriendCard

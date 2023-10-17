@@ -67,7 +67,24 @@ const seedOutings = async () => {
       if (Math.random() > 0.5) {
         user3 = users.filter((u) => u != user && u != user2)[0];
         user3.outings.push(outing);
+        outing.users.push(user3)
         await user3.save();
+      }
+
+      let user4 = null;
+      if (Math.random() > 0.75) {
+        user4 = users.filter((u) => u != user && u != user2 && u != user3)[0];
+        user4.outings.push(outing);
+        outing.users.push(user4)
+        await user4.save();
+      }
+
+      let user5 = null;
+      if (Math.random() > 0.85) {
+        user5 = users.filter((u) => u != user && u != user2 && u != user3&& u != user4)[0];
+        user5.outings.push(outing);
+        outing.users.push(user5)
+        await user5.save();
       }
 
       await outing.save();

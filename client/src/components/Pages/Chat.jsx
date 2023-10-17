@@ -52,7 +52,7 @@ const Chat = (props) => {
 
   return (
     <div >
-      {user.friends.map((id) => <FriendCard key={Math.random()} userID={id} />)}
+      {user.friends.map((u) => <FriendCard key={Math.random()} user={u} />)}
       <div className={styles.container} ref={chatboxEl} />; 
     </div>
   );

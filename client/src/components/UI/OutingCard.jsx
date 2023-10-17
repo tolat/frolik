@@ -1,6 +1,6 @@
 import styles from "./styles/OutingCard.module.scss";
 import { categoryColorMap } from "../../utils/globals";
-import UserIcon from "./UserIcon";
+import UserIconCluster from "./UserIconCluster";
 
 const OutingCard = (props) => {
   const o = props.outing;
@@ -21,18 +21,7 @@ const OutingCard = (props) => {
           </div>
           <div className={styles.rightUpperSection}>
             {/* TEMPORARY - CHANGE BELOW LOGIC TO PULL profilePic FROM USER (S3)*/}
-            {o.users.map((u) =>
-              u.username !== props.user.username ? (
-                <div key={Math.random()} className={styles.userIconContainer}>
-                  <UserIcon
-                    sizeInRem="5"
-                    borderSizeInRem="0.6"
-                    user={u}
-                    profilePic={u.profile_picture}
-                  />
-                </div>
-              ) : null
-            )}
+            <UserIconCluster users={o.users} sizeInRem={7} borderSizeInRem={0.5} />
           </div>
         </div>
       </div>

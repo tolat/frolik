@@ -60,6 +60,7 @@ passport.deserializeUser(User.deserializeUser());
 // App Routes
 app.use("/auth", require("./routes/auth"));
 app.use("/user", require("./routes/user"));
+app.use("/activity", require("./routes/activity"))
 
 // All routes go to the client, routing happens on the front end
 app.get("*", (req, res) => {

@@ -2,8 +2,6 @@ import styles from "./styles/UserIcon.module.scss";
 
 // TEMPORARY - PULL THIS FROM THE DB EVENTUALLY
 import { categoryColorMap, profilePics } from "../../utils/globals";
-import { useEffect, useState } from "react";
-import { fetchUserFriendData } from "../../utils/user-fetch";
 // TEMPORARY - PULL THIS FROM THE DB EVENTUALLY
 
 const getCategoryPercentage = (category, user) => {
@@ -57,7 +55,7 @@ const genBackgroundStr = (user) => {
 
 const UserIcon = (props) => {
   const backgroundString = genBackgroundStr(props.user);
-  const photoDimension = `${props.sizeInRem - 2*props.borderSizeInRem}rem`;
+  const photoDimension = `${props.sizeInRem - 2 * props.borderSizeInRem}rem`;
   const pieDimension = `${props.sizeInRem - props.borderSizeInRem}rem`;
   const backerDimension = `${props.sizeInRem}rem`;
 
@@ -71,11 +69,15 @@ const UserIcon = (props) => {
     background: backgroundString,
   };
 
-  const backerStyle = { width: backerDimension, height: backerDimension };
+  const backerStyle = {
+    backgroundColor: props.backer ? "white" : "transparent",
+    width: backerDimension,
+    height: backerDimension,
+  };
 
   return (
     <div
-      style={{...backerStyle, ...props.style}}
+      style={{ ...backerStyle, ...props.style }}
       className={`${styles.whiteBacker} ${props.className}`}
     >
       <div style={pieStyle} className={styles.pieChart}>
