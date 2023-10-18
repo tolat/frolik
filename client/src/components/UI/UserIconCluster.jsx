@@ -14,9 +14,9 @@ const UserIconCluster = (props) => {
   const mag32 = 1.7;
   const mag33 = 1.6;
   const mag41 = 2;
-  const mag42 = 1.7;
+  const mag42 = 1.8;
   const mag43 = 2.1;
-  const mag44 = 1.6;
+  const mag44 = 1.55;
 
   return (
     <div style={containerStyle}>

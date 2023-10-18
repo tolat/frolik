@@ -3,6 +3,9 @@ $breakpoint_m: 1100px;
 $breakpoint_l: 1800px;
 $central_span_width: 40rem;
 $navbar_height: 7rem;
+$blue: #488efe;
+$green: rgb(107, 189, 132);
+$card_grey: rgb(250, 250, 250);
 
 @mixin mbl_styles {
   @media (max-width: $breakpoint_s) {

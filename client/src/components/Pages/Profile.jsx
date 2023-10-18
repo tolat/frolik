@@ -17,6 +17,7 @@ import StatIcon from "../UI/StatIcon";
 import { modalActions } from "../../store/modal-slice";
 import EditProfileModal from "../Modals/EditProfileModal";
 import FriendCard from "../UI/FriendCard";
+import { hideModalFast } from "../../store/modal-actions";
 
 // TEMPORARY - NEED TO FIGURE OUT HOW TO SERVE THESE FROM BACKEND
 import { userPhotos } from "../../utils/globals";
@@ -38,7 +39,7 @@ const sliderIcons = [
 ];
 
 const Profile = (props) => {
-  const user = { ...useSelector((state) => state.auth.user) };
+  const user = {...useSelector((state) => state.auth.user)}
   const [selectedSliderKey, setSelectedSliderKey] = useState("_photos");
   const iconStyle = { width: "4rem", height: "4rem" };
   const dispatch = useDispatch();
@@ -115,5 +116,6 @@ const Profile = (props) => {
 export default Profile;
 
 export const profileLoader = async () => {
+  hideModalFast()
   return null;
 };

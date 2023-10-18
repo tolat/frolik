@@ -26,7 +26,6 @@ const appLoader = async () => {
   return null;
 };
 
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -39,7 +38,7 @@ const router = createBrowserRouter([
       </div>
     ),
     errorElement: <ErrorPage />,
-   loader: appLoader,
+    loader: appLoader,
     children: [
       {
         index: true,

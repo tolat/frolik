@@ -26,6 +26,7 @@
   scrollbar-width: none; /* Firefox */
   box-sizing: border-box;
   width: 100%;
+  padding: 1rem;
 
 
   @include responsive(

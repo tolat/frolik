@@ -6,7 +6,7 @@
   justify-content: center;
   width: 100%;
   box-sizing: border-box;
-  margin-top: 3rem;
+  margin-top: 1rem;
   box-sizing: border-box;
   align-items: center;
 }
@@ -50,12 +50,12 @@
 }
 
 .goButton {
-  background-color: rgb(107, 189, 132);
+  background-color: $green;
   color: white;
   font-size: 1.2rem !important;
   font-weight: bold;
   box-sizing: border-box;
-  width: 15rem !important;
+  width: 14rem !important;
   height: 3rem;
   border-radius: 100rem;
   display: flex;
@@ -68,5 +68,10 @@
   font-weight: bold;
   justify-content: center;
   display: flex;
+}
+
+.balloonIcon{
+  height: 1.5rem;
+  margin-right: 0.4rem;
 }
 

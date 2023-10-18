@@ -9,6 +9,7 @@
     transition: margin 0.23s ease-in-out;
     background-color: rgb(255, 255, 255);   
     box-sizing: border-box;
+    padding: 1rem;
 }
 
 .outerContainer{
@@ -19,6 +20,7 @@
     width: calc(2 * $central_span_width);
     margin-left: $central_span_width;
     overflow-y: scroll;
+    top: $navbar_height;
 }
 
 .baffle{
