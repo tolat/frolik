@@ -1,7 +1,7 @@
 import styles from "./styles/Go.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import SimpleButton from "../UI/SimpleButton";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, memo, useEffect, useReducer, useState } from "react";
 import AddUserModal from "../Modals/AddUserModal";
 import { modalActions } from "../../store/modal-slice";
 import editIcon from "../../images/edit.png";
@@ -14,11 +14,84 @@ import ActivityCard from "../UI/ActivityCard";
 import FilterActivitiesModal from "../Modals/FilterActivitiesModal";
 import balloonIcon from "../../images/air-balloon-light.png";
 import { hideModalFast } from "../../store/modal-actions";
+import { calcAvgRating } from "../../utils/utils";
+
+const initialFilterState = {
+  filter: {
+    category: false,
+    maxParticipants: false,
+    minParticipants: false,
+    minRating: false,
+    maxCost: false,
+    minCost: false,
+    maxTime: false,
+    newOnly: false,
+    completedOnly: false,
+    featuredOnly: true,
+  },
+  activities: [],
+  initialActivities: [],
+  active: false,
+};
+
+const filterReducer = (state, action) => {
+  const applyFilter = (activities, filter) => {
+    const filteredActivities = []
+
+    // Apply category filter
+    for (let activity of activities) {
+      console.log(activity)
+      if (
+        // Category
+        (filter.category &&
+          filter.category !== "Any" &&
+          activity.category !== filter.category) ||
+        // Participant
+        (filter.minParticipants &&
+          activity.participants < filter.minParticipants) ||
+        (filter.maxParticipants &&
+          activity.participants > filter.maxParticipants) ||
+        // Rating
+        (filter.minRating && calcAvgRating(activity) < filter.minRating) ||
+        // Cost
+        (filter.minCost && activity.cost < filter.minCost) ||
+        (filter.maxCost && activity.cost > filter.maxCost) ||
+        // Time
+        (filter.maxTime && activity.duration > filter.maxTime)
+      ) {
+        continue;
+      } else {
+        filteredActivities.push(activity);
+      }
+    }
+
+    return filteredActivities;
+  };
+
+  if (action.type === "set-initial") {
+    return { ...state, initialActivities: action.activities };
+  }
+
+  if (action.type === "apply-filter") {
+    const activities = applyFilter(state.initialActivities, action.filter);
+    return {
+      ...state,
+      activities: activities,
+      filter: action.filter,
+      active: action.active,
+    };
+  }
+};
 
 const Go = (props) => {
   const dispatch = useDispatch();
-  const [activities, setActivities] = useState([]);
+  const [activityFilter, dispatchFilter] = useReducer(
+    filterReducer,
+    initialFilterState
+  );
   const users = useSelector((state) => state.go.outing.users);
+  const Outings = useSelector((state) => state.auth.user.outings);
+  const completedActivities = Outings.map((outing) => outing.activity._id);
 
   // Handle Add user button click
   const handleAddUserClick = () => {
@@ -40,14 +113,28 @@ const Go = (props) => {
 
   // Get all activities
   useEffect(() => {
-    fetchActivities(setActivities);
-  }, [setActivities]);
+    async function fetchActivityData() {
+      const setInitial = (activities) => {
+        dispatchFilter({ type: "set-initial", activities });
+      };
+      await fetchActivities(setInitial);
+      dispatchFilter({
+        type: "apply-filter",
+        filter: initialFilterState.filter,
+      });
+    }
+
+    fetchActivityData();
+  }, []);
 
   return (
     <Fragment>
       <AddUserModal />
       <EditUsersModal />
-      <FilterActivitiesModal />
+      <FilterActivitiesModal
+        filter={activityFilter.filter}
+        dispatchFilter={dispatchFilter}
+      />
       <div className={styles.container}>
         <div className={styles.usersContainer}>
           <button onClick={handleEditUsersClick} className={styles.roundButton}>
@@ -77,9 +164,21 @@ const Go = (props) => {
           Filter Activities
         </SimpleButton>
 
-        {activities.map((a) => (
-          <ActivityCard key={Math.random()} activity={a} />
-        ))}
+        {!activityFilter.activities[0] ? (
+          <div className={styles.loading}>
+            {activityFilter.active
+              ? "No Activities Matched Filters!"
+              : "Loading Activities.."}
+          </div>
+        ) : (
+          activityFilter.activities.map((a) => (
+            <ActivityCard
+              key={Math.random()}
+              activity={a}
+              completed={completedActivities.find((id) => id === a._id)}
+            />
+          ))
+        )}
       </div>
     </Fragment>
   );
@@ -88,6 +187,7 @@ const Go = (props) => {
 export default Go;
 
 export const goLoader = async () => {
-  hideModalFast()
+  hideModalFast();
+
   return null;
 };

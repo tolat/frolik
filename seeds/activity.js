@@ -5,6 +5,7 @@ module.exports.activitySeeds = [
       "Casual or competitive, beer pong in the park is an all-time games favourite.",
     category: "Games",
     goal: "Beat the other team in Beer Pong.",
+    featured: true,
     instructions: [
       {
         kind: "purchase",
@@ -37,6 +38,7 @@ module.exports.activitySeeds = [
     description: "Eat Ice cream once, shame on me. Eat ice cream twice..",
     category: "Food",
     goal: "Eat Ice Cream at two different locations, one after the other.",
+    featured: true,
     instructions: [
       {
         kind: "communicate",
@@ -75,6 +77,7 @@ module.exports.activitySeeds = [
     description: "Not everyone is an artist, but you are today.",
     category: "Art",
     goal: "Draw portraits of eachother.",
+    featured: true,
     instructions: [
       {
         kind: "communicate",
@@ -102,6 +105,7 @@ module.exports.activitySeeds = [
     description: "May the sneakiest team win!",
     category: "Games",
     goal: "Post a photo of the other team bofore they one of you.",
+    featured: false,
     instructions: [
       {
         kind: "communicate",

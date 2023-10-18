@@ -12,6 +12,8 @@ import communicateIcon from "../../images/talking.png";
 import purchaseIcon from "../../images/cart.png";
 import captureIcon from "../../images/camera.png";
 import trophyIcon from "../../images/trophy.png";
+import completeIcon from "../../images/complete.png"
+import { calcAvgRating } from "../../utils/utils";
 
 const instructionIconMap = {
   communicate: communicateIcon,
@@ -37,7 +39,14 @@ const ActivityCard = (props) => {
       ></div>
       <div className={styles.innerContainer}>
         <div className={styles.upperContainer}>
-          <div className={styles.name}>{props.activity.name}</div>
+          <div className={styles.name}>
+            {props.activity.name}
+            {props.completed ? (
+              <div className={styles.completedIconContainer}>
+                <img src={completeIcon} className={styles.completedIcon} alt="completed-icon"/>
+              </div>
+            ) : null}
+          </div>
           <div className={styles.description}>{props.activity.description}</div>
           <div className={styles.specsContainer}>
             <StatIcon
@@ -66,21 +75,20 @@ const ActivityCard = (props) => {
               icon={ratingIcon}
               style={statContainerStyle}
               iconStyle={statIconStyle}
-              rating={`${props.activity.participants}/5`}
+              rating={`${calcAvgRating(props.activity)}/5`}
             />
           </div>
         </div>
         <div
           style={{
             maxHeight: instructionsVisible ? "40rem" : "0",
-           
           }}
           className={styles.instructionsContainer}
         >
           <div className={styles.iHeader}>Instructions:</div>
 
           {props.activity.instructions.map((i) => (
-            <InstructionCard instruction={i} />
+            <InstructionCard key={Math.random()} instruction={i} />
           ))}
           <div className={styles.iHeader}>Goal:</div>
           <div className={styles.goalContainer}>

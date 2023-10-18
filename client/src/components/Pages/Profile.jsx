@@ -117,5 +117,6 @@ export default Profile;
 
 export const profileLoader = async () => {
   hideModalFast()
+
   return null;
 };

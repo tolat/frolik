@@ -13,6 +13,7 @@ const ActivitySchema = new Schema(
     cost: Number,
     participants: Number,
     goal: "String",
+    featured: Boolean,
     instructions: [
       {
         kind: String,
@@ -22,11 +23,19 @@ const ActivitySchema = new Schema(
       },
     ],
     ratings: [
-      { user: { type: Schema.Types.ObjectId, ref: "User" }, number: Number },
+      { user: { type: Schema.Types.ObjectId, ref: "User" }, rating: Number },
     ],
-    media: Object
+    media: Object,
   },
   { minimize: false }
 );
+
+// Virtual for calculating average rating
+ActivitySchema.virtual("rating").get(function () {
+  return (
+    this.ratings.reduce((acc, rating) => acc + rating.rating, 0) /
+    this.ratings.length
+  );
+});
 
 module.exports = mongoose.model("Activity", ActivitySchema);

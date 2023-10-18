@@ -1,9 +1,7 @@
-import { useSelector } from "react-redux";
 import UserIcon from "./UserIcon";
-import { Fragment } from "react";
+import { Fragment, memo } from "react";
 
 const UserIconCluster = (props) => {
-  const outing = useSelector((state) => state.go.outing);
   const containerStyle = {
     width: `${props.sizeInRem}rem`,
     height: `${props.sizeInRem}rem`,
@@ -215,4 +213,4 @@ const UserIconCluster = (props) => {
   );
 };
 
-export default UserIconCluster;
+export default memo(UserIconCluster);

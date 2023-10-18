@@ -40,6 +40,13 @@ const seedUsers = async () => {
 const seedActivities = async () => {
   for (activity of activitySeeds) {
     const newActivity = new Activity({ ...activity });
+    const seedUsers = await User.find({});
+
+    for (u of seedUsers) {
+      newActivity.ratings.push({ user: u, rating: parseInt((Math.random() * 10) % 5 )});
+    }
+
+    newActivity.markModified("ratings");
     await newActivity.save();
   }
 };
@@ -67,7 +74,7 @@ const seedOutings = async () => {
       if (Math.random() > 0.5) {
         user3 = users.filter((u) => u != user && u != user2)[0];
         user3.outings.push(outing);
-        outing.users.push(user3)
+        outing.users.push(user3);
         await user3.save();
       }
 
@@ -75,15 +82,17 @@ const seedOutings = async () => {
       if (Math.random() > 0.75) {
         user4 = users.filter((u) => u != user && u != user2 && u != user3)[0];
         user4.outings.push(outing);
-        outing.users.push(user4)
+        outing.users.push(user4);
         await user4.save();
       }
 
       let user5 = null;
       if (Math.random() > 0.85) {
-        user5 = users.filter((u) => u != user && u != user2 && u != user3&& u != user4)[0];
+        user5 = users.filter(
+          (u) => u != user && u != user2 && u != user3 && u != user4
+        )[0];
         user5.outings.push(outing);
-        outing.users.push(user5)
+        outing.users.push(user5);
         await user5.save();
       }
 
