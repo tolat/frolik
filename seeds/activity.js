@@ -129,10 +129,11 @@ module.exports.activitySeeds = [
           "The first team to take a picture of the other team and post it wins. The other team has to confirm is was the in the picture!",
       },
     ],
-    location: "Global",
+    location: "Toronto",
     rating: 4.4,
     duration: 2,
     cost: 0,
     participants: 4,
   },
+  
 ];

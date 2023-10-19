@@ -13,6 +13,8 @@ import { fetchActivities } from "../../utils/data-fetch";
 import ActivityCard from "../UI/ActivityCard";
 import FilterActivitiesModal from "../Modals/FilterActivitiesModal";
 import balloonIcon from "../../images/air-balloon-light.png";
+import downIcon from "../../images/down.png";
+import upIcon from "../../images/up.png";
 import { hideModalFast } from "../../store/modal-actions";
 import { calcAvgRating } from "../../utils/utils";
 import { initialActivityFilter } from "../../utils/globals";
@@ -20,8 +22,10 @@ import store from "../../store";
 
 const filterReducer = (state, action) => {
   const applyFilter = (activities, filter) => {
-    const filteredActivities = []
-    const completedActivities = store.getState().auth.user.outings.map((outing) => outing.activity._id);
+    const filteredActivities = [];
+    const completedActivities = store
+      .getState()
+      .auth.user.outings.map((outing) => outing.activity._id);
 
     // Apply category filter
     for (let activity of activities) {
@@ -43,9 +47,9 @@ const filterReducer = (state, action) => {
         // Time
         (filter.maxTime && activity.duration > filter.maxTime) ||
         // Fetured Only
-        (filter.featuredOnly && !activity.featured)||
+        (filter.featuredOnly && !activity.featured) ||
         // New Only
-        (filter.newOnly && completedActivities.includes(activity._id))||
+        (filter.newOnly && completedActivities.includes(activity._id)) ||
         // Completed Only
         (filter.completedOnly && !completedActivities.includes(activity._id))
       ) {
@@ -73,15 +77,26 @@ const filterReducer = (state, action) => {
   }
 };
 
+const filtersAreEqual = (f1, f2) => {
+  for (let key in f1) {
+    if (f1[key] !== f2[key]) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
 const Go = (props) => {
   const dispatch = useDispatch();
   const [activityFilter, dispatchFilter] = useReducer(
     filterReducer,
     initialActivityFilter
   );
-  const users = useSelector((state) => state.go.outing.users);
   const Outings = useSelector((state) => state.auth.user.outings);
   const completedActivities = Outings.map((outing) => outing.activity._id);
+  const goState = useSelector((state) => state.go);
+  const users = goState.outing.users;
 
   // Handle Add user button click
   const handleAddUserClick = () => {
@@ -127,9 +142,14 @@ const Go = (props) => {
       />
       <div className={styles.container}>
         <div className={styles.usersContainer}>
-          <button onClick={handleEditUsersClick} className={styles.roundButton}>
+          <button
+            onClick={goState.outing.users[1] ? handleEditUsersClick : null}
+            className={styles.roundButton}
+          >
             <img
-              className={styles.editIcon}
+              className={
+                goState.outing.users[1] ? styles.editIcon : styles.iconBlocked
+              }
               src={editIcon}
               alt="edit-friends"
             />
@@ -139,36 +159,78 @@ const Go = (props) => {
             <img className={styles.editIcon} src={plusIcon} alt="add-people" />
           </button>
         </div>
-        <SimpleButton className={styles.goButton}>
-          <img
-            className={styles.balloonIcon}
-            src={balloonIcon}
-            alt="outing-icon"
-          />{" "}
-          Create Outing
-        </SimpleButton>
-        <SimpleButton
-          onClick={handleFilterActivitiesClick}
-          className={buttonStyles.greyButton}
-        >
-          Filter Activities
-        </SimpleButton>
-
-        {!activityFilter.activities[0] ? (
-          <div className={styles.loading}>
-            {activityFilter.active
-              ? "No Activities Matched Filters!"
-              : "Loading Activities.."}
-          </div>
+        {!goState.outing.activity.name ? (
+          <Fragment>
+            <div className={styles.selectHeader}>Select Activity</div>
+            <img
+              className={styles.downIcon}
+              src={downIcon}
+              alt="down-arrow"
+            />{" "}
+          </Fragment>
+        ) : !goState.outing.users[1] ? (
+          <Fragment>
+            <img className={styles.upIcon} src={upIcon} alt="up-arrow" />{" "}
+            <div className={styles.addPeopleHeader}>Add People</div>
+          </Fragment>
         ) : (
-          activityFilter.activities.map((a) => (
-            <ActivityCard
-              key={Math.random()}
-              activity={a}
-              completed={completedActivities.find((id) => id === a._id)}
-            />
-          ))
+          <SimpleButton className={styles.goButton}>
+            <img
+              className={styles.balloonIcon}
+              src={balloonIcon}
+              alt="balloon-icon"
+            />{" "}
+            Create Outing
+          </SimpleButton>
         )}
+        {goState.outing.activity.name ? (
+          <ActivityCard
+            key={Math.random()}
+            activity={goState.outing.activity}
+            completed={completedActivities.find(
+              (id) => id === goState.outing.activity._id
+            )}
+            showInstructions={true}
+          />
+        ) : null}
+        {!goState.outing.activity.name ? (
+          <Fragment>
+            <SimpleButton
+              onClick={handleFilterActivitiesClick}
+              className={
+                filtersAreEqual(
+                  initialActivityFilter.filter,
+                  activityFilter.filter
+                )
+                  ? buttonStyles.greyButton
+                  : styles.activeFiltersButton
+              }
+            >
+              {filtersAreEqual(
+                initialActivityFilter.filter,
+                activityFilter.filter
+              )
+                ? "Filter Activities"
+                : "Change Filters"}
+            </SimpleButton>
+
+            {!activityFilter.activities[0] ? (
+              <div className={styles.loading}>
+                {activityFilter.active
+                  ? "No Activities Matched Filters!"
+                  : "Loading Activities.."}
+              </div>
+            ) : (
+              activityFilter.activities.map((a) => (
+                <ActivityCard
+                  key={Math.random()}
+                  activity={a}
+                  completed={completedActivities.find((id) => id === a._id)}
+                />
+              ))
+            )}
+          </Fragment>
+        ) : null}
       </div>
     </Fragment>
   );

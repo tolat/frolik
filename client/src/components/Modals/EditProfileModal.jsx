@@ -31,7 +31,7 @@ const EditProfileModal = (props) => {
             id="first_name"
             name="first_name"
             label="First Name:"
-            // value={user.first_name}
+            defaultVal={user.first_name}
           />
           <div className={styles.formSpacer} />
           <SimpleInput
@@ -39,7 +39,7 @@ const EditProfileModal = (props) => {
             id="last_name"
             name="last_name"
             label="Last Name:"
-            // value={user.last_name}
+            defaultVal={user.last_name}
           />
         </div>
         <SimpleInput
@@ -47,7 +47,7 @@ const EditProfileModal = (props) => {
           id="tagline"
           name="tagline"
           label="Tagline:"
-          // value={user.tagline}
+          defaultVal={user.tagline}
         />
         <SimpleButton className={styles.saveButton}>Save</SimpleButton>
       </div>

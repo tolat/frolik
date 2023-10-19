@@ -22,6 +22,12 @@ const goSlice = createSlice({
       const index = state.outing.users.findIndex(user=> user._id === action.payload._id);
       if (index !== -1) state.outing.users.splice(index, 1);
     },
+    setActivity(state, action){
+      state.outing.activity = action.payload
+    },
+    removeActivity(state){
+      state.outing.activity = {}
+    }
   },
 });
 

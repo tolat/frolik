@@ -8,8 +8,12 @@ const { reqAuthenticated } = require("../utils/middleware");
 const router = express.Router({ mergeParams: true });
 
 router.get("/get-all", reqAuthenticated, async (req, res) => {
-    const activities = await Activity.find({})
-    res.send({activities})
+  const activities = await Activity.find({});
+  const user = await User.findOne({ username: req.session.passport.user });
+  const localActivities = activities.filter(
+    (a) => a.location == "Global" || a.location == user.location
+  );
+  res.send({ activities: localActivities });
 });
 
 module.exports = router;

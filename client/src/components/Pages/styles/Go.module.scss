@@ -11,33 +11,47 @@
   align-items: center;
 }
 
-.usersContainer{
-    display: flex;
-    justify-content: space-evenly;
-    width: 100%;
-    align-items: center;
-    margin-bottom: 2rem;
-    box-sizing: border-box;
+.usersContainer {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  align-items: center;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
 }
 
-.roundButton{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    outline: none;
-    border: none;
+.roundButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  outline: none;
+  border: none;
 }
 
-.editIcon{
-    width: 2.5rem;
-    height: 2.5rem;
-    margin-left: 10px;
+.roundButton:hover {
+  cursor: default;
+  opacity: unset;
 }
 
-.editIcon:hover{
-    cursor: pointer;
-    opacity: 0.7;
+.editIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.editIcon:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.iconBlocked {
+  width: 2.5rem;
+  height: 2.5rem;
+  opacity: 0.2;
+}
+
+.iconBlocked:hover {
+  cursor: auto;
 }
 
 .greyButton {
@@ -57,12 +71,13 @@
   box-sizing: border-box;
   width: 14rem !important;
   height: 3rem;
-  border-radius: 100rem;
   display: flex;
   align-items: center;
+  margin-bottom: 3rem;
+  margin-top: 1rem;
 }
 
-.simpleHeader{
+.simpleHeader {
   width: 100%;
   font-size: 1.8rem;
   font-weight: bold;
@@ -70,13 +85,57 @@
   display: flex;
 }
 
-.balloonIcon{
+.balloonIcon {
   height: 1.5rem;
   margin-right: 0.4rem;
 }
 
-.loading{
+.loading {
   font-size: 1.3rem;
   font-weight: bold;
 }
 
+.selectHeader {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-top: 2.5rem;
+  animation: bump 5s infinite;
+}
+
+.downIcon {
+  height: 2.5rem;
+  box-sizing: border-box;
+}
+
+.addPeopleHeader {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 2.5rem;
+  animation: bump 5s infinite;
+}
+
+.upIcon {
+  height: 2.5rem;
+  box-sizing: border-box;
+}
+
+.activeFiltersButton {
+  background-color: $blue;
+  color: white;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+@keyframes bump {
+  15% {
+    scale: 1;
+  }
+
+  20% {
+    scale: 1.1;
+  }
+
+  25% {
+    scale: 1;
+  }
+}

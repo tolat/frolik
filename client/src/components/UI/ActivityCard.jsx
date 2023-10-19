@@ -13,8 +13,10 @@ import purchaseIcon from "../../images/cart.png";
 import captureIcon from "../../images/camera.png";
 import trophyIcon from "../../images/trophy.png";
 import completeIcon from "../../images/complete.png";
-import featuredIcon from "../../images/feature.png"
+import featuredIcon from "../../images/feature.png";
 import { calcAvgRating } from "../../utils/utils";
+import { useDispatch, useSelector } from "react-redux";
+import { goActions } from "../../store/go-slice";
 
 const instructionIconMap = {
   communicate: communicateIcon,
@@ -27,9 +29,20 @@ const ActivityCard = (props) => {
   const statIconStyle = { width: "2rem", height: "2rem" };
   const statContainerStyle = { marginLeft: "1rem" };
   const [instructionsVisible, setInstructionsVisible] = useState(false);
+  const dispatch = useDispatch();
+  const goState = useSelector((state) => state.go);
 
   const handleShowInstructions = (e) => {
     setInstructionsVisible((prev) => !prev);
+  };
+
+  const handleSelect = () => {
+    dispatch(goActions.setActivity(props.activity));
+    setInstructionsVisible(true);
+  };
+
+  const handleRemove = () => {
+    dispatch(goActions.removeActivity());
   };
 
   return (
@@ -97,7 +110,8 @@ const ActivityCard = (props) => {
         </div>
         <div
           style={{
-            maxHeight: instructionsVisible ? "40rem" : "0",
+            maxHeight:
+              instructionsVisible || props.showInstructions ? "80rem" : "0",
           }}
           className={styles.instructionsContainer}
         >
@@ -113,10 +127,24 @@ const ActivityCard = (props) => {
           </div>
         </div>
         <div className={styles.buttonContainer}>
-          <SimpleButton onClick={handleShowInstructions}>
-            {!instructionsVisible ? "Show Instructions" : "Hide Instructions"}
+          <SimpleButton
+            onClick={props.showInstructions ? null : handleShowInstructions}
+          >
+            {!props.showInstructions
+              ? !instructionsVisible
+                ? "Show Instructions"
+                : "Hide Instructions"
+              : null}
           </SimpleButton>
-          <SimpleButton className={styles.select}>Select</SimpleButton>
+          {goState.outing.activity.name === props.activity.name ? (
+            <SimpleButton onClick={handleRemove} className={styles.remove}>
+              Remove
+            </SimpleButton>
+          ) : (
+            <SimpleButton onClick={handleSelect} className={styles.select}>
+              Select
+            </SimpleButton>
+          )}
         </div>
       </div>
     </div>
