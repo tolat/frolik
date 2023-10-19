@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import styles from "./styles/Chat.module.scss";
 import FriendCard from "../UI/FriendCard";
 import { hideModalFast } from "../../store/modal-actions";
+import { pageLoader } from "../../utils/utils";
 
 const Chat = (props) => {
   const chatboxEl = useRef();
@@ -63,6 +64,9 @@ const Chat = (props) => {
 export default Chat;
 
 export const chatLoader = async () => {
-  hideModalFast();
+  const redirect = await pageLoader();
+  if (redirect) {
+    return redirect;
+  }
   return null;
 };

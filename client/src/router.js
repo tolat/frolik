@@ -12,20 +12,6 @@ import { hideModalFast } from "./store/modal-actions";
 import store from "./store";
 import { goActions } from "./store/go-slice";
 
-const appLoader = async () => {
-  await fetchAuth()();
-  hideModalFast();
-
-  if (!store.getState().auth.isAuthenticated) {
-    return redirect("/login");
-  } else {
-    // Set authenticated user as default for go page
-    store.dispatch(goActions.setUsers([store.getState().auth.user]));
-  }
-
-  return null;
-};
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -38,7 +24,6 @@ const router = createBrowserRouter([
       </div>
     ),
     errorElement: <ErrorPage />,
-    loader: appLoader,
     children: [
       {
         index: true,

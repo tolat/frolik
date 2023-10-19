@@ -4,7 +4,7 @@ const Outing = require("../models/outing");
 const Activity = require("../models/activity");
 const express = require("express");
 const fs = require("fs/promises");
-const { reqAuthenticated } = require("../utils/middleware");
+const { reqAuthenticated, logIncoming } = require("../utils/middleware");
 
 const router = express.Router({ mergeParams: true });
 

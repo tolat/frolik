@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./styles/Login.module.scss";
 import { useDispatch } from "react-redux";
 import { fetchLogin } from "../../store/auth-actions";
@@ -9,8 +9,8 @@ import { useNavigate } from "react-router-dom";
 import SimpleInput from "../UI/SimpleInput";
 
 function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const usernameRef = useRef();
+  const passwordRef = useRef();
   const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -19,7 +19,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoggingIn(true);
-    await dispatch(fetchLogin(username, password));
+    await dispatch(fetchLogin(usernameRef.current.value, passwordRef.current.value));
     setIsLoggingIn(false);
   };
 
@@ -40,8 +40,8 @@ function Login() {
             id="username"
             name="username"
             label="Username:"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            ref={usernameRef}
+            defaultVal={''}
             required
           />
         </div>
@@ -51,8 +51,8 @@ function Login() {
             id="password"
             name="password"
             label="Password:"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            ref={passwordRef}
+            defaultVal={''}
             required
           />
         </div>

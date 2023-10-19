@@ -22,6 +22,7 @@ import locationIcon from "../../images/location-dark.png";
 
 // TEMPORARY - NEED TO FIGURE OUT HOW TO SERVE THESE FROM BACKEND
 import { userPhotos } from "../../utils/globals";
+import { pageLoader } from "../../utils/utils";
 // TEMPORARY - NEED TO FIGURE OUT HOW TO SERVE THESE FROM BACKEND
 
 const sliderIcons = [
@@ -94,7 +95,6 @@ const Profile = (props) => {
                 alt="location-icon"
               />
               {user.location}
-              
             </div>
           </div>
 
@@ -127,7 +127,10 @@ const Profile = (props) => {
 export default Profile;
 
 export const profileLoader = async () => {
-  hideModalFast();
+  const redirect = await pageLoader();
+  if (redirect) {
+    return redirect;
+  }
 
   return null;
 };

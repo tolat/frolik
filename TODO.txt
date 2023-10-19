@@ -1,0 +1,8 @@
+- Create routes + connect frontend to backend for picture retrieval
+- Connect backend to S3 bucket for image storage and retrieval
+- Put Chat in modal
+- Get chat functionality working
+- Finish chat page layout / interface
+- Get Edit profile modal working
+- Set up Add Users modal in Go page to display up to 3 non friend users and 
+all friends that are "ready" or searching  

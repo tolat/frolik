@@ -23,3 +23,8 @@ module.exports.reqAuthenticated = (req, res, next) => {
     res.sendStatus(401);
   }
 };
+
+module.exports.logIncoming = (req,res,next) =>{
+  console.log(req.body);
+  next()
+}

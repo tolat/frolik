@@ -16,7 +16,7 @@ import balloonIcon from "../../images/air-balloon-light.png";
 import downIcon from "../../images/down.png";
 import upIcon from "../../images/up.png";
 import { hideModalFast } from "../../store/modal-actions";
-import { calcAvgRating } from "../../utils/utils";
+import { calcAvgRating, pageLoader } from "../../utils/utils";
 import { initialActivityFilter } from "../../utils/globals";
 import store from "../../store";
 
@@ -239,7 +239,10 @@ const Go = (props) => {
 export default Go;
 
 export const goLoader = async () => {
-  hideModalFast();
+  const redirect = await pageLoader();
+  if (redirect) {
+    return redirect;
+  }
 
   return null;
 };
