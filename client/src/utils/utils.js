@@ -23,4 +23,5 @@ export const pageLoader = async () => {
     if (!store.getState().go.outing.users.find((u) => u._id !== user._id))
       store.dispatch(goActions.setUsers([user]));
   }
+  return false
 };
