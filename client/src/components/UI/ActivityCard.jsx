@@ -12,7 +12,8 @@ import communicateIcon from "../../images/talking.png";
 import purchaseIcon from "../../images/cart.png";
 import captureIcon from "../../images/camera.png";
 import trophyIcon from "../../images/trophy.png";
-import completeIcon from "../../images/complete.png"
+import completeIcon from "../../images/complete.png";
+import featuredIcon from "../../images/feature.png"
 import { calcAvgRating } from "../../utils/utils";
 
 const instructionIconMap = {
@@ -41,11 +42,26 @@ const ActivityCard = (props) => {
         <div className={styles.upperContainer}>
           <div className={styles.name}>
             {props.activity.name}
-            {props.completed ? (
-              <div className={styles.completedIconContainer}>
-                <img src={completeIcon} className={styles.completedIcon} alt="completed-icon"/>
-              </div>
-            ) : null}
+            <div className={styles.nameRightContainer}>
+              {props.completed ? (
+                <div className={styles.completedIconContainer}>
+                  <img
+                    src={completeIcon}
+                    className={styles.completedIcon}
+                    alt="completed-icon"
+                  />
+                </div>
+              ) : null}
+              {props.activity.featured ? (
+                <div className={styles.completedIconContainer}>
+                  <img
+                    src={featuredIcon}
+                    className={styles.completedIcon}
+                    alt="completed-icon"
+                  />
+                </div>
+              ) : null}
+            </div>
           </div>
           <div className={styles.description}>{props.activity.description}</div>
           <div className={styles.specsContainer}>

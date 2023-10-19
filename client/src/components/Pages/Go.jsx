@@ -1,7 +1,7 @@
 import styles from "./styles/Go.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import SimpleButton from "../UI/SimpleButton";
-import { Fragment, memo, useEffect, useReducer, useState } from "react";
+import { Fragment, useEffect, useReducer } from "react";
 import AddUserModal from "../Modals/AddUserModal";
 import { modalActions } from "../../store/modal-slice";
 import editIcon from "../../images/edit.png";
@@ -15,32 +15,16 @@ import FilterActivitiesModal from "../Modals/FilterActivitiesModal";
 import balloonIcon from "../../images/air-balloon-light.png";
 import { hideModalFast } from "../../store/modal-actions";
 import { calcAvgRating } from "../../utils/utils";
-
-const initialFilterState = {
-  filter: {
-    category: false,
-    maxParticipants: false,
-    minParticipants: false,
-    minRating: false,
-    maxCost: false,
-    minCost: false,
-    maxTime: false,
-    newOnly: false,
-    completedOnly: false,
-    featuredOnly: true,
-  },
-  activities: [],
-  initialActivities: [],
-  active: false,
-};
+import { initialActivityFilter } from "../../utils/globals";
+import store from "../../store";
 
 const filterReducer = (state, action) => {
   const applyFilter = (activities, filter) => {
     const filteredActivities = []
+    const completedActivities = store.getState().auth.user.outings.map((outing) => outing.activity._id);
 
     // Apply category filter
     for (let activity of activities) {
-      console.log(activity)
       if (
         // Category
         (filter.category &&
@@ -57,7 +41,13 @@ const filterReducer = (state, action) => {
         (filter.minCost && activity.cost < filter.minCost) ||
         (filter.maxCost && activity.cost > filter.maxCost) ||
         // Time
-        (filter.maxTime && activity.duration > filter.maxTime)
+        (filter.maxTime && activity.duration > filter.maxTime) ||
+        // Fetured Only
+        (filter.featuredOnly && !activity.featured)||
+        // New Only
+        (filter.newOnly && completedActivities.includes(activity._id))||
+        // Completed Only
+        (filter.completedOnly && !completedActivities.includes(activity._id))
       ) {
         continue;
       } else {
@@ -87,7 +77,7 @@ const Go = (props) => {
   const dispatch = useDispatch();
   const [activityFilter, dispatchFilter] = useReducer(
     filterReducer,
-    initialFilterState
+    initialActivityFilter
   );
   const users = useSelector((state) => state.go.outing.users);
   const Outings = useSelector((state) => state.auth.user.outings);
@@ -120,7 +110,7 @@ const Go = (props) => {
       await fetchActivities(setInitial);
       dispatchFilter({
         type: "apply-filter",
-        filter: initialFilterState.filter,
+        filter: initialActivityFilter.filter,
       });
     }
 

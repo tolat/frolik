@@ -34,3 +34,21 @@ export const categoryColorMap = {
   Food: "rgb(255, 194, 156)",
   Adventure: "rgb(255, 158, 166)",
 };
+
+export const initialActivityFilter = {
+  filter: {
+    category: 'Any',
+    maxParticipants: '',
+    minParticipants: '',
+    minRating: '',
+    maxCost: '',
+    minCost: '',
+    maxTime: '',
+    newOnly: false,
+    completedOnly: false,
+    featuredOnly: false,
+  },
+  activities: [],
+  initialActivities: [],
+  active: false,
+};

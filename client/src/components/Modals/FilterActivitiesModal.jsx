@@ -4,8 +4,10 @@ import ModalPortal from "./ModalPortal";
 import SimpleSelect from "../UI/SimpleSelect";
 import SimpleInput from "../UI/SimpleInput";
 import SimpleButton from "../UI/SimpleButton";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { hideModal } from "../../store/modal-actions";
+import { initialActivityFilter } from "../../utils/globals";
+import SimpleCheckbox from "../UI/SimpleCheckbox";
 
 const categories = ["Any", "Games", "Food", "Sports", "Art", "Adventure"];
 
@@ -15,29 +17,34 @@ const FilterActivitiesModal = (props) => {
     modalState.selector === "filter-activities" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
 
+
   const updateLocalFilter = () => {
-    const extractValuesFromRefsFilter = {};
-    for (let key in filter) {
-      extractValuesFromRefsFilter[key] = filter[key].current.value;
+    const filter = {};
+    for (let key in filterRefs) {
+      if (["newOnly", "featuredOnly", "completedOnly"].includes(key)) {
+        filter[key] = filterRefs[key].current.checked;
+      } else {
+        filter[key] = filterRefs[key].current.value;
+      }
     }
-    return extractValuesFromRefsFilter;
+    return filter;
   };
 
-  const filter = {
+  const filterRefs = {
     category: useRef(),
     maxParticipants: useRef(),
     minParticipants: useRef(),
-    minRating: useRef(props.filter.minRating),
-    maxCost: useRef(props.filter.maxCost),
-    minCost: useRef(props.filter.minCost),
-    maxTime: useRef(props.filter.maxTime),
-    //newOnly: useRef(props.filter.newOnly),
-    //completedOnly: useRef(props.filter.completedOnly),
-    //featuredOnly: useRef(props.filter.featuredOnly),
+    minRating: useRef(),
+    maxCost: useRef(),
+    minCost: useRef(),
+    maxTime: useRef(),
+    newOnly: useRef(),
+    completedOnly: useRef(),
+    featuredOnly: useRef(),
   };
 
   // Apply filter changes
-  const handleApplyFilter = () => {
+  function handleApplyFilter() {
     props.dispatchFilter({
       type: "apply-filter",
       active: true,
@@ -45,8 +52,18 @@ const FilterActivitiesModal = (props) => {
     });
 
     hideModal();
-  };
+  }
 
+  // Apply filter changes
+  function handleClearFilter() {
+    props.dispatchFilter({
+      type: "apply-filter",
+      active: true,
+      filter: initialActivityFilter.filter,
+    });
+
+    hideModal();
+  }
 
   return (
     <ModalPortal>
@@ -57,12 +74,19 @@ const FilterActivitiesModal = (props) => {
         >
           Apply
         </SimpleButton>
+        <SimpleButton
+          onClick={handleClearFilter}
+          className={styles.clearButton}
+        >
+          Clear Filters
+        </SimpleButton>
+
         <SimpleSelect
           options={categories}
           name={"Category"}
           label={"Filter By Category:"}
-          ref={filter.category}
-          defaultValue={props.filter.category}
+          ref={filterRefs.category}
+          defaultVal={props.filter.category}
         />
         <div className={styles.sideBySide}>
           <SimpleInput
@@ -70,8 +94,8 @@ const FilterActivitiesModal = (props) => {
             label={"Maximum Participants:"}
             type="number"
             min={0}
-            ref={filter.maxParticipants}
-            defaultValue={props.filter.maxParticipants}
+            ref={filterRefs.maxParticipants}
+            defaultVal={props.filter.maxParticipants}
           />
           <div className={styles.spacer}></div>
           <SimpleInput
@@ -79,8 +103,8 @@ const FilterActivitiesModal = (props) => {
             label={"Minimum Participants:"}
             type="number"
             min={0}
-            ref={filter.minParticipants}
-            defaultValue={props.filter.minParticipants}
+            ref={filterRefs.minParticipants}
+            defaultVal={props.filter.minParticipants}
           />
         </div>
         <div className={styles.spacer} />
@@ -90,8 +114,8 @@ const FilterActivitiesModal = (props) => {
           type={"number"}
           name={"min-rating"}
           label={"Minimum Rating:"}
-          ref={filter.minRating}
-          defaultValue={props.filter.minRating}
+          ref={filterRefs.minRating}
+          defaultVal={props.filter.minRating}
         />
         <div className={styles.sideBySide}>
           <SimpleInput
@@ -99,8 +123,8 @@ const FilterActivitiesModal = (props) => {
             type={"number"}
             name={"max-cost"}
             label={"Maximum Cost:"}
-            ref={filter.maxCost}
-          defaultValue={props.filter.maxCost}
+            ref={filterRefs.maxCost}
+            defaultVal={props.filter.maxCost}
           />
           <div className={styles.spacer} />
           <SimpleInput
@@ -108,8 +132,8 @@ const FilterActivitiesModal = (props) => {
             type={"number"}
             name={"min-cost"}
             label={"Minimum Cost:"}
-            ref={filter.minCost}
-          defaultValue={props.filter.minCost}
+            ref={filterRefs.minCost}
+            defaultVal={props.filter.minCost}
           />
         </div>
         <div className={styles.spacer} />
@@ -119,8 +143,26 @@ const FilterActivitiesModal = (props) => {
           type={"number"}
           name={"max-time"}
           label={"Maximum Time:"}
-          ref={filter.maxTime}
-          defaultValue={props.filter.maxTime}
+          ref={filterRefs.maxTime}
+          defaultVal={props.filter.maxTime}
+        />
+        <SimpleCheckbox
+          label={"Completed Only"}
+          name={"completedOnly"}
+          ref={filterRefs.completedOnly}
+          defaultVal={props.filter.completedOnly}
+        />
+        <SimpleCheckbox
+          label={"New Only"}
+          name={"newOnly"}
+          ref={filterRefs.newOnly}
+          defaultVal={props.filter.newOnly}
+        />
+        <SimpleCheckbox
+          label={"Featured Only"}
+          name={"featuredOnly"}
+          ref={filterRefs.featuredOnly}
+          defaultVal={props.filter.featuredOnly}
         />
       </div>
     </ModalPortal>

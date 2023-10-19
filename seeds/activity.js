@@ -34,7 +34,7 @@ module.exports.activitySeeds = [
     participants: 2,
   },
   {
-    name: "Ice Cream Bang Bang",
+    name: "Twice Cream",
     description: "Eat Ice cream once, shame on me. Eat ice cream twice..",
     category: "Food",
     goal: "Eat Ice Cream at two different locations, one after the other.",
