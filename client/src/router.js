@@ -1,4 +1,4 @@
-import { createBrowserRouter, redirect } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Go, { goLoader } from "./components/Pages/Go";
 import Login, { loginLoader } from "./components/Pages/Login";
 import Profile, { profileLoader } from "./components/Pages/Profile";
@@ -7,10 +7,6 @@ import { Outlet } from "react-router-dom";
 import ErrorPage from "./components/Global/ErrorPage";
 import Navbar from "./components/Global/Navbar";
 import MainContainer from "./components/UI/MainContainer";
-import { fetchAuth } from "./store/auth-actions";
-import { hideModalFast } from "./store/modal-actions";
-import store from "./store";
-import { goActions } from "./store/go-slice";
 
 const router = createBrowserRouter([
   {

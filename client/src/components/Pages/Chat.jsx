@@ -3,7 +3,6 @@ import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import styles from "./styles/Chat.module.scss";
 import FriendCard from "../UI/FriendCard";
-import { hideModalFast } from "../../store/modal-actions";
 import { pageLoader } from "../../utils/utils";
 
 const Chat = (props) => {

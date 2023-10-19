@@ -15,7 +15,6 @@ import FilterActivitiesModal from "../Modals/FilterActivitiesModal";
 import balloonIcon from "../../images/air-balloon-light.png";
 import downIcon from "../../images/down.png";
 import upIcon from "../../images/up.png";
-import { hideModalFast } from "../../store/modal-actions";
 import { calcAvgRating, pageLoader } from "../../utils/utils";
 import { initialActivityFilter } from "../../utils/globals";
 import store from "../../store";

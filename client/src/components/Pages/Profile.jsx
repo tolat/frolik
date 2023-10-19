@@ -12,12 +12,10 @@ import UserIcon from "../UI/UserIcon";
 import buttonStyles from "../UI/styles/SimpleButton.module.scss";
 import flakeIcon from "../../images/snowflake.png";
 import outingsIcon from "../../images/outing2.png";
-import editIcon from "../../images/edit-light.png";
 import StatIcon from "../UI/StatIcon";
 import { modalActions } from "../../store/modal-slice";
 import EditProfileModal from "../Modals/EditProfileModal";
 import FriendCard from "../UI/FriendCard";
-import { hideModalFast } from "../../store/modal-actions";
 import locationIcon from "../../images/location-dark.png";
 
 // TEMPORARY - NEED TO FIGURE OUT HOW TO SERVE THESE FROM BACKEND
