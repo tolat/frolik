@@ -1,8 +1,38 @@
-- Create routes + connect frontend to backend for picture retrieval
-- Connect backend to S3 bucket for image storage and retrieval
-- Put Chat in modal
-- Get chat functionality working
-- Finish chat page layout / interface
-- Get Edit profile modal working
-- Set up Add Users modal in Go page to display up to 3 non friend users and 
-all friends that are "ready" or searching  
+- Create routes + connect frontend to backend for picture retrieval (1 day)
+
+- Connect backend to S3 bucket for image storage and retrieval (2 days)
+
+- Finish chat page layout / interface. Put Chat in modal (1 day)
+
+- Get chat functionality working. need to make a chat object
+in the databases (5 days)
+
+- Get Edit profile modal working (1 day)
+
+- Add Users Modal.
+Set up Add Users modal in Go page to display up to 4 non friend users 
+and all friends that are "ready" or searching. Need to add at least 1 
+new connection to create an outing! (1 day)
+
+- Creat Outing Funcitonality. 
+Set up a pending outing for all users, and take user to outing modal. 
+Only 3 pending outings at a time.Can only cancel outings that have not 
+been accepted by others. Outing Modal will show activuty, users, link to 
+chat, upload photos area (1 photo per user), change outing status to 
+competed or cancelled area (all users who accepted the outing must mark
+outing as completed or cancelled). Can also rate activity here - ratings 
+only apply once outingis competed. Only once ratings AND minimum 1 photo 
+is uploaded can the outing be marked as completed! (3 days)
+
+- Completed outing updates activity rating, and photos. (1 day)
+
+- Need notifications page showing freind requests, outing requests, and 
+confirmations. do this in modal. dispatch notifications (1 day)
+
+- Need page for creating account. (1day)
+
+- Need backend set up for account creation. (1day)
+
+- DEPLOY WOO!!! (3 days)
+
+TOTAL: 21 days / 4 weeks
