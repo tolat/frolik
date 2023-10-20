@@ -15,10 +15,10 @@ export const fetchLogin = (username, password) => {
 
     const requestConfig = {
       url: `${getServer()}/auth/login`,
-      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      method: 'POST',
       body: JSON.stringify({ username, password }),
     };
 
@@ -45,14 +45,7 @@ export const fetchAuth = () => {
     // use the dispatch method on the store object
     dispatch = dispatch ? dispatch : (dispatch = store.dispatch);
 
-    const requestConfig = {
-      url: `${getServer()}/auth/check`,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({}),
-    };
+    const requestConfig = { url: `${getServer()}/auth/check` };
 
     const handleResponse = (response) => {
       response.user
@@ -76,14 +69,7 @@ export const fetchLogout = () => {
     // use the dispatch method on the store object
     dispatch = dispatch ? dispatch : (dispatch = store.dispatch);
 
-    const requestConfig = {
-      url: `${getServer()}/auth/logout`,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({}),
-    };
+    const requestConfig = { url: `${getServer()}/auth/logout` };
 
     const handleResponse = (response) => {
       hideModal();

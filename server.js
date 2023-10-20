@@ -14,7 +14,7 @@ const { handleCORS } = require("./utils/middleware");
 const app = express();
 app.use(
   "/static",
-  express.static(path.join(__dirname, "client/build/static/"))
+  express.static(path.join(__dirname, "/client/public/"))
 );
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

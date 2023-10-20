@@ -1,8 +1,9 @@
+import { useSelector } from "react-redux";
 import styles from "./styles/OutingCard.module.scss";
-import { categoryColorMap } from "../../utils/globals";
 import UserIconCluster from "./UserIconCluster";
 
 const OutingCard = (props) => {
+  const categoryColorMap = useSelector(state=>state.auth.categoryColorMap)
   const o = props.outing;
 
   return (
@@ -20,7 +21,6 @@ const OutingCard = (props) => {
             </div>
           </div>
           <div className={styles.rightUpperSection}>
-            {/* TEMPORARY - CHANGE BELOW LOGIC TO PULL profilePic FROM USER (S3)*/}
             <UserIconCluster users={o.users} sizeInRem={7} borderSizeInRem={0.5} />
           </div>
         </div>

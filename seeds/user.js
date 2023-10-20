@@ -6,7 +6,7 @@ module.exports.userSeeds = [
     tagline: "Looking for a good time",
     status: "inactive",
     flake: ((Math.random() * 100) % 5).toFixed(1),
-    profile_picture: "",
+    profile_picture: "adam.jpeg",
     photos: [],
     friends: [],
     location: "Vancouver"
@@ -18,7 +18,7 @@ module.exports.userSeeds = [
     tagline: "Where's the party at",
     status: "ready",
     flake: ((Math.random() * 100) % 5).toFixed(1),
-    profile_picture: "static/images/torin.jpeg",
+    profile_picture: "torin.jpeg",
     photos: [],
     friends: [],
     location: "Vancouver"
@@ -30,7 +30,7 @@ module.exports.userSeeds = [
     tagline: "Probably playing sports..",
     status: "searching",
     flake: ((Math.random() * 100) % 5).toFixed(1),
-    profile_picture: "",
+    profile_picture: "alex.jpeg",
     photos: [],
     friends: [],
     location: "Vancouver"
@@ -42,7 +42,7 @@ module.exports.userSeeds = [
     tagline: "Catch me if you can",
     status: "ready",
     flake: ((Math.random() * 100) % 5).toFixed(1),
-    profile_picture: "",
+    profile_picture: "josh.jpeg",
     photos: [],
     friends: [],
     location: "Vancouver"
@@ -54,7 +54,7 @@ module.exports.userSeeds = [
     tagline: "Hope you like cold dips..!",
     status: "searching",
     flake: ((Math.random() * 100) % 5).toFixed(1),
-    profile_picture: "",
+    profile_picture: "ingrid.jpeg",
     photos: [],
     friends: [],
     location: "Vancouver"

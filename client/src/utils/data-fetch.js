@@ -16,3 +16,48 @@ export const fetchActivities = async (setData) => {
 
   await httpFetch(requestConfig, handleResponse, handleError);
 };
+
+export const fetchProfilePic = async (userID, setData) => {
+  const requestConfig = {
+    url: `${getServer()}/user/profile-picture`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: 'POST',
+    body: JSON.stringify({userID}),
+  };
+
+  const handleResponse = (response) => {
+    setData(response.url);
+  };
+
+  const handleError = (err) => {
+    throw new Error(err);
+  };
+
+  await httpFetch(requestConfig, handleResponse, handleError);
+};
+
+
+export const fetchPhotos = async (userID, setData) => {
+  const requestConfig = {
+    url: `${getServer()}/user/photos`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: 'POST',
+    body: JSON.stringify({userID}),
+  };
+
+  const handleResponse = (response) => {
+    console.log(response.photos)
+    setData(response.photos);
+  };
+
+  const handleError = (err) => {
+    throw new Error(err);
+  };
+
+  await httpFetch(requestConfig, handleResponse, handleError);
+};
+

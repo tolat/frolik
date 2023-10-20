@@ -1,7 +1,7 @@
 import { redirect } from "react-router-dom";
 import store from "../store";
 import { fetchAuth } from "../store/auth-actions";
-import { hideModalFast } from "../store/modal-actions";
+import { hideModal, hideModalFast } from "../store/modal-actions";
 import { goActions } from "../store/go-slice";
 
 export const calcAvgRating = (activity) => {

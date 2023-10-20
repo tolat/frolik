@@ -4,7 +4,6 @@ import timeIcon from "../../images/clock.png";
 import costIcon from "../../images/bill.png";
 import ratingIcon from "../../images/star.png";
 import groupIcon from "../../images/friends.png";
-import { categoryColorMap } from "../../utils/globals";
 import SimpleButton from "./SimpleButton";
 import { useState } from "react";
 import travelIcon from "../../images/walk.png";
@@ -26,6 +25,7 @@ const instructionIconMap = {
 };
 
 const ActivityCard = (props) => {
+  const categoryColorMap = useSelector(state=>state.auth.categoryColorMap)
   const statIconStyle = { width: "2rem", height: "2rem" };
   const statContainerStyle = { marginLeft: "1rem" };
   const [instructionsVisible, setInstructionsVisible] = useState(false);

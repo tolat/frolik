@@ -4,7 +4,7 @@ const Outing = require("../models/outing");
 const Activity = require("../models/activity");
 const express = require("express");
 const fs = require("fs/promises");
-const { reqAuthenticated, logIncoming } = require("../utils/middleware");
+const {categoryColorMap} = require("../utils/globals")
 
 const router = express.Router({ mergeParams: true });
 
@@ -56,10 +56,10 @@ router.post("/login", passport.authenticate("local"), async (req, res) => {
   // Get stripped down populated friends list
   const populatedFriends = await populateFriends(user.friends);
 
-  res.send({ user, populatedFriends });
+  res.send({ user, populatedFriends, categoryColorMap });
 });
 
-router.post("/check", async (req, res) => {
+router.get("/check", async (req, res) => {
   if(req.isAuthenticated()){
   let user = await User.findOne({ username: req.session.passport.user });
 
@@ -69,13 +69,13 @@ router.post("/check", async (req, res) => {
   // Get stripped down populated friends list
   const populatedFriends = await populateFriends(user.friends);
 
-  res.send({ user, populatedFriends });
+  res.send({ user, populatedFriends, categoryColorMap });
   }else{
     res.send({})
   }
 });
 
-router.post("/logout", (req, res) => {
+router.get("/logout", (req, res) => {
   req.logout(() => {
     res.send({ success: true });
   });

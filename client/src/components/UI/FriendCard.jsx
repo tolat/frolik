@@ -6,8 +6,9 @@ import outingsIcon from "../../images/outing2.png";
 import IconButton from "./IconButton";
 import chatIcon from "../../images/chat.png";
 import getOutIcon from "../../images/air-balloon.png";
+import { memo } from "react";
 
-const FriendCard = (props) => {
+const FriendCard = memo(function FriendCard(props) {
   const statIconStyle = { width: "2rem", height: "2rem" };
   const statContainerStyle = { marginLeft: "1rem" };
   const buttonIconStyle = { width: "3rem", height: "3rem" };
@@ -67,6 +68,12 @@ const FriendCard = (props) => {
       )}
     </div>
   );
-};
+}, propsAreEqual);
 
+function propsAreEqual(oldProps, newProps){
+  console.log(oldProps, newProps)
+
+  return true
+  
+}
 export default FriendCard;

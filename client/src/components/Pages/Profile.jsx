@@ -1,6 +1,6 @@
 import styles from "./styles/Profile.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import SliderNavbar from "../UI/SliderNavbar";
 import PhotoGrid from "../UI/PhotoGrid";
 import photos from "../../images/photogrid.png";
@@ -17,11 +17,8 @@ import { modalActions } from "../../store/modal-slice";
 import EditProfileModal from "../Modals/EditProfileModal";
 import FriendCard from "../UI/FriendCard";
 import locationIcon from "../../images/location-dark.png";
-
-// TEMPORARY - NEED TO FIGURE OUT HOW TO SERVE THESE FROM BACKEND
-import { userPhotos } from "../../utils/globals";
 import { pageLoader } from "../../utils/utils";
-// TEMPORARY - NEED TO FIGURE OUT HOW TO SERVE THESE FROM BACKEND
+import { fetchPhotos } from "../../utils/data-fetch";
 
 const sliderIcons = [
   {
@@ -43,15 +40,18 @@ const Profile = (props) => {
   const [selectedSliderKey, setSelectedSliderKey] = useState("_photos");
   const iconStyle = { width: "4rem", height: "4rem" };
   const dispatch = useDispatch();
+  const [userPhotos, setUserPhotos] = useState(false)
 
   const handleEditButtonClick = (e) => {
     dispatch(modalActions.setSelector("edit-profile"));
     dispatch(modalActions.showModal());
   };
 
-  // TEMPORARY - NEED TO FIGURE OUT HOW TO SERVE THESE FROM BACKEND
-  user.photos = userPhotos.concat(userPhotos);
-  // TEMPORARY - NEED TO FIGURE OUT HOW TO SERVE THESE FROM BACKEND
+  // Get User photos from server
+  useEffect(()=>{
+    fetchPhotos(user._id, setUserPhotos)
+  },[user._id, setUserPhotos])
+
 
   return (
     <Fragment>
@@ -78,7 +78,6 @@ const Profile = (props) => {
               rating={user.outings.length}
             />
           </div>
-
           <div
             className={styles.userName}
           >{`${user.first_name} ${user.last_name}`}</div>
@@ -111,7 +110,8 @@ const Profile = (props) => {
         </div>
 
         {selectedSliderKey === "_photos" ? (
-          <PhotoGrid images={user.photos} gridTemplateColumns="1fr 1fr 1fr" />
+          !userPhotos? <h2 className={styles.simpleHeader}>Loading Photos..</h2>:
+          <PhotoGrid images={userPhotos} gridTemplateColumns="1fr 1fr 1fr" />
         ) : selectedSliderKey === "_outings" ? (
           <OutingList user={user} />
         ) : (

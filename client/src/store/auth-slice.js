@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isAuthenticated: false,
   user: false,
+  categoryColorMap:{}
 };
 const authSlice = createSlice({
   name: "auth",
@@ -12,6 +13,7 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.user = action.payload.user;
       state.user.friends = action.payload.populatedFriends
+      state.categoryColorMap = action.payload.categoryColorMap
     },
     logout(state) {
       state.isAuthenticated = false;

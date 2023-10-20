@@ -1,8 +1,7 @@
 import styles from "./styles/UserIcon.module.scss";
-
-// TEMPORARY - PULL THIS FROM THE DB EVENTUALLY
-import { categoryColorMap, profilePics } from "../../utils/globals";
-// TEMPORARY - PULL THIS FROM THE DB EVENTUALLY
+import {  memo, useEffect, useMemo, useState } from "react";
+import { fetchProfilePic } from "../../utils/data-fetch";
+import { useSelector } from "react-redux";
 
 const getCategoryPercentage = (category, user) => {
   const numCategory = user.outings.filter(
@@ -12,7 +11,7 @@ const getCategoryPercentage = (category, user) => {
   return (100 * (numCategory / user.outings.length)).toFixed(2);
 };
 
-const genBackgroundStr = (user) => {
+const genBackgroundStr = (user, categoryColorMap) => {
   let backgroundString = "conic-gradient(";
   const keys = Object.keys(categoryColorMap);
   let percentageMap = {};
@@ -21,7 +20,7 @@ const genBackgroundStr = (user) => {
   for (let i = 0; i < keys.length; i++) {
     const category = keys[i];
     const percentage = parseFloat(getCategoryPercentage(category, user));
-    if (percentage != 0) {
+    if (percentage !== 0) {
       percentageMap[category] = percentage;
     }
   }
@@ -53,15 +52,17 @@ const genBackgroundStr = (user) => {
   return backgroundString;
 };
 
-const UserIcon = (props) => {
-  const backgroundString = genBackgroundStr(props.user);
+const UserIcon = memo(function UserIcon(props) {
+  const categoryColorMap = useSelector((state) => state.auth.categoryColorMap);
+  const backgroundString = genBackgroundStr(props.user, categoryColorMap);
   const photoDimension = `${props.sizeInRem - 2 * props.borderSizeInRem}rem`;
   const pieDimension = `${props.sizeInRem - props.borderSizeInRem}rem`;
   const backerDimension = `${props.sizeInRem}rem`;
+  const [profilePicUrl, setProfilePicUrl] = useState(false);
 
-  // TEMPORARY - PULL THIS FROM THE DB EVENTUALLY
-  const profilePic = profilePics[props.user.first_name.toLowerCase()];
-  // TEMPORARY - PULL THIS FROM THE DB EVENTUALLY
+  useEffect(() => {
+    fetchProfilePic(props.user._id, setProfilePicUrl);
+  }, [setProfilePicUrl, props.user._id]);
 
   const pieStyle = {
     width: pieDimension,
@@ -80,16 +81,19 @@ const UserIcon = (props) => {
       style={{ ...backerStyle, ...props.style }}
       className={`${styles.whiteBacker} ${props.className}`}
     >
-      <div style={pieStyle} className={styles.pieChart}>
-        <img
-          src={profilePic}
-          className={styles.photo}
-          style={{ height: photoDimension, width: photoDimension }}
-          alt="profile_picture"
-        />
-      </div>
+      {!profilePicUrl ? null : (
+        <div style={pieStyle} className={styles.pieChart}>
+          <img
+            src={profilePicUrl}
+            className={styles.photo}
+            style={{ height: photoDimension, width: photoDimension }}
+            alt="profile_picture"
+          />
+        </div>
+      )}
     </div>
   );
-};
+});
+
 
 export default UserIcon;
