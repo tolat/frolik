@@ -6,9 +6,7 @@ const initialState = {
 
 const findOrCreateUser = (state, action) => {
   // Create user objet in store if none exists
-  if (
-    !Object.keys(state.users).find((key) => key === action.payload.userID)
-  ) {
+  if (!Object.keys(state.users).find((key) => key === action.payload.userID)) {
     state.users[action.payload.userID] = {
       profile_picture: false,
       photos: [],
@@ -26,7 +24,8 @@ const dataSlice = createSlice({
       user.profile_picture = action.payload.photoString;
     },
     setUserPhotos(state, action) {
-      state.user.photos = action.payload;
+      const user = findOrCreateUser(state, action);
+      user.photos = action.payload.photoStrings;
     },
   },
 });

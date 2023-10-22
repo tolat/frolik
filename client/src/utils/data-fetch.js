@@ -30,11 +30,9 @@ export const fetchProfilePic = async (userID) => {
   };
 
   const handleResponse = async (response) => {
-    await store.dispatch(
-      dataActions.setUserProfilePicture({
-        userID,
-        photoString: response.imageDataString,
-      })
+    await localStorage.setItem(
+      `${userID}-profile-picture`,
+      response.imageDataString
     );
   };
 
@@ -45,7 +43,7 @@ export const fetchProfilePic = async (userID) => {
   await httpFetch(requestConfig, handleResponse, handleError);
 };
 
-export const fetchPhotos = async (userID, setData) => {
+export const fetchPhotos = async (userID) => {
   const requestConfig = {
     url: `${getServer()}/user/photos`,
     headers: {
@@ -55,8 +53,14 @@ export const fetchPhotos = async (userID, setData) => {
     body: JSON.stringify({ userID }),
   };
 
-  const handleResponse = (response) => {
-    setData(response.photos);
+  const handleResponse = async (response) => {
+    for(let key in response.photoStrings){
+      await localStorage.setItem(
+        `${userID}-photo-${key}`,
+        response.photoStrings[key]
+      );
+    }
+    
   };
 
   const handleError = (err) => {

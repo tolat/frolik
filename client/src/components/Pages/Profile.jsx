@@ -18,8 +18,6 @@ import EditProfileModal from "../Modals/EditProfileModal";
 import FriendCard from "../UI/FriendCard";
 import locationIcon from "../../images/location-dark.png";
 import { initializeUserMedia, pageLoader } from "../../utils/utils";
-import { fetchPhotos, fetchProfilePic } from "../../utils/data-fetch";
-import store from "../../store";
 
 const sliderIcons = [
   {
@@ -41,17 +39,14 @@ const Profile = (props) => {
   const [selectedSliderKey, setSelectedSliderKey] = useState("_photos");
   const iconStyle = { width: "4rem", height: "4rem" };
   const dispatch = useDispatch();
-  const [userPhotos, setUserPhotos] = useState(false);
+  const userPhotos = user.photos.map((key) =>
+    localStorage.getItem(`${user._id}-photo-${key}`)
+  );
 
   const handleEditButtonClick = (e) => {
     dispatch(modalActions.setSelector("edit-profile"));
     dispatch(modalActions.showModal());
   };
-
-  // Get User photos from server
-  useEffect(() => {
-    fetchPhotos(user._id, setUserPhotos);
-  }, [user._id, setUserPhotos]);
 
   return (
     <Fragment>
@@ -111,11 +106,7 @@ const Profile = (props) => {
         </div>
 
         {selectedSliderKey === "_photos" ? (
-          !userPhotos ? (
-            <h2 className={styles.simpleHeader}>Loading Photos..</h2>
-          ) : (
-            <PhotoGrid images={userPhotos} gridTemplateColumns="1fr 1fr 1fr" />
-          )
+          <PhotoGrid images={userPhotos} gridTemplateColumns="1fr 1fr 1fr" />
         ) : selectedSliderKey === "_outings" ? (
           <OutingList user={user} />
         ) : (
@@ -134,7 +125,7 @@ export const profileLoader = async () => {
     return redirect;
   }
 
-  await initializeUserMedia()
+  await initializeUserMedia();
 
   return null;
 };

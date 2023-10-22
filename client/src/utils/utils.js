@@ -3,7 +3,7 @@ import store from "../store";
 import { fetchAuth } from "../store/auth-actions";
 import { hideModalFast } from "../store/modal-actions";
 import { goActions } from "../store/go-slice";
-import { fetchProfilePic } from "./data-fetch";
+import { fetchPhotos, fetchProfilePic } from "./data-fetch";
 
 export const calcAvgRating = (activity) => {
   return (
@@ -27,17 +27,25 @@ export const pageLoader = async () => {
   return false;
 };
 
-export const initializeUserMedia = async (newOnly = true) => {
-  // if newOnly is flagged,
-  // Only download image data if is hasen't been downloaded
-  const dataStore = store.getState().data;
+export const initializeUserMedia = async () => {
   const user = store.getState().auth.user;
-  if (newOnly && !dataStore.users[user._id]) await fetchProfilePic(user._id);
-  else if (!newOnly) await fetchProfilePic(user._id);
 
+  // Get user profile picture and photo thumbs
+  if (!localStorage.getItem(`${user._id}-profile-picture`)) {
+    await fetchProfilePic(user._id);
+  }
+  if (
+    user.photos[0] &&
+    !Object.keys(localStorage).find((key) => key.includes(`${user._id}-photo`))
+  ) {
+    await fetchPhotos(user._id);
+  }
+
+  // Get user friend profile pics
   for (let friend of user.friends) {
-    if (newOnly && !dataStore.users[friend._id || friend])
-      await fetchProfilePic(friend._id || friend);
-    else if (!newOnly) await fetchProfilePic(friend._id || friend);
+    const friendId = friend._id || friend;
+    if (!localStorage.getItem(`${friendId}-profile-picture`)) {
+      await fetchProfilePic(friendId);
+    }
   }
 };

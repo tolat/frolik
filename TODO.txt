@@ -2,13 +2,16 @@
 DONE
 
 - Connect backend to S3 bucket for image storage and retrieval (3 days)
+DONE
+
+- Still need to download all photos from S3
 
 - Finish chat page layout / interface. Put Chat in modal (1 day)
 
+- Get Edit profile modal working (1 day)
+
 - Get chat functionality working. need to make a chat object
 in the databases (5 days)
-
-- Get Edit profile modal working (1 day)
 
 - Add Users Modal.
 Set up Add Users modal in Go page to display up to 4 non friend users 
@@ -36,7 +39,7 @@ confirmations. do this in modal. dispatch notifications (1 day)
 
 - DEPLOY WOO!!! (3 days)
 
-TOTAL: 22 days / 4.5 weeks
+TOTAL: 18 days / 3.5 weeks
 
 
 NOTES:
@@ -60,3 +63,18 @@ NOTES:
   //   process.env.AWS_DEV_BUCKET,
   //   user.profile_picture
   // );
+
+
+
+Below is a laoder component that we might use again
+    <div
+        style={{ ...imageLoadingStyle, ...props.style }}
+        className={`${styles.imageLoading}  ${props.backerClassName}`}
+      >
+        <div className={styles.spinner}>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>

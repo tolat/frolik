@@ -1,6 +1,5 @@
 import styles from "./styles/UserIcon.module.scss";
-import { memo, useEffect, useState } from "react";
-import { fetchProfilePic } from "../../utils/data-fetch";
+import { memo, useState } from "react";
 import { useSelector } from "react-redux";
 
 const getCategoryPercentage = (category, user) => {
@@ -58,25 +57,7 @@ const UserIcon = memo(function UserIcon(props) {
   const photoDimension = `${props.sizeInRem - 2 * props.borderSizeInRem}rem`;
   const pieDimension = `${props.sizeInRem - props.borderSizeInRem}rem`;
   const backerDimension = `${props.sizeInRem}rem`;
-  const photoString = useSelector(
-    (state) => state.data.users[props.user._id].profile_picture
-  );
-
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const imageLoadingStyle = {
-    width: backerDimension,
-    height: backerDimension,
-    display: imageLoaded ? "none" : "flex",
-  };
-
-  //const [profilePicUrl, setProfilePicUrl] = useState(false);
-  /*  useEffect(() => {
-    fetchProfilePic(props.user._id, setProfilePicUrl);
-  }, [setProfilePicUrl, props.user._id]); */
-
-  const handleImageLoaded = () => {
-    setImageLoaded(true);
-  };
+  const photoString = localStorage.getItem(`${props.user._id}-profile-picture`);
 
   const pieStyle = {
     width: pieDimension,
@@ -92,24 +73,12 @@ const UserIcon = memo(function UserIcon(props) {
   return (
     <div className={styles.container}>
       <div
-        style={{ ...imageLoadingStyle, ...props.style }}
-        className={`${styles.imageLoading}  ${props.backerClassName}`}
-      >
-        <div className={styles.spinner}>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-      <div
         style={{ ...backerStyle, ...props.style }}
         className={`${styles.whiteBacker} ${props.backerClassName}`}
       >
         {!photoString ? null : (
           <div style={pieStyle} className={styles.pieChart}>
             <img
-              onLoad={handleImageLoaded}
               src={`data:image/png;base64,${photoString}`}
               className={styles.photo}
               style={{ height: photoDimension, width: photoDimension }}

@@ -6,6 +6,7 @@ module.exports.userSeeds = [
     tagline: "Looking for a good time",
     status: "inactive",
     flake: ((Math.random() * 100) % 5).toFixed(1),
+    profile_picture: "adam.jpeg",
     photos: [],
     friends: [],
     location: "Vancouver"

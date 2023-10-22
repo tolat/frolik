@@ -37,7 +37,7 @@ router.post("/friend", reqAuthenticated, async (req, res) => {
 
 router.post("/profile-picture", reqAuthenticated, async (req, res) => {
   const user = await User.findById(req.body.userID);
-  
+
   // Send image data as string to client for storage in store
   const imageStream = await downloadFromS3(
     process.env.AWS_DEV_BUCKET,
@@ -51,9 +51,15 @@ router.post("/profile-picture", reqAuthenticated, async (req, res) => {
 router.post("/photos", reqAuthenticated, async (req, res) => {
   const user = await User.findOne({ _id: req.body.userID });
 
-  res.send({
-    photos: [],
-  });
+  let photoStrings = {};
+  for (key of user.photos) {
+    // Get image data as string for client
+    const imageStream = await downloadFromS3(process.env.AWS_DEV_BUCKET, key);
+    const imageDataString = await imageStream.transformToString("base64");
+    photoStrings[key] = imageDataString
+  }
+
+  res.send({ photoStrings });
 });
 
 module.exports = router;

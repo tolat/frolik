@@ -13,13 +13,7 @@ const UserSchema = new Schema(
     flake: Number,
     location: String,
     friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    photos: [
-      {
-        url: String,
-        outing: { type: Schema.Types.ObjectId, ref: "Activity" },
-        taggedUsers: [{ type: Schema.Types.ObjectId, ref: "User" }],
-      },
-    ],
+    photos: [String],
     outings: [{ type: Schema.Types.ObjectId, ref: "Outing" }],
   },
   { minimize: false }

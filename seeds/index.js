@@ -5,6 +5,7 @@ const User = require("../models/user");
 const Outing = require("../models/outing");
 const dbUrl = process.env.DB_URL;
 const fs = require("fs");
+const sharp = require("sharp");
 
 const { userSeeds } = require("./user");
 const { activitySeeds } = require("./activity");
@@ -22,7 +23,36 @@ db.once("open", () => {
   console.log("SEEDING...");
 });
 
+const deleteAndUploadImagesToS3 = async (directoryPath) => {
+  const files = await fs.readdirSync(directoryPath);
+  for (key of files) {
+    const imagePath = `${directoryPath}/${key}`;
+    // Skip hidden files like .DS_Store and directories
+    if (key[0] == "." || !key.includes(".")) {
+      continue;
+    }
+    console.log("uploading: ", key);
+    // Delete existing images from S3
+    await deleteFromS3(process.env.AWS_DEV_BUCKET, key);
+
+    // Upload image to s3
+    const sampleImageBuffer = await fs.readFileSync(imagePath);
+    const resizedBuffer = await sharp(sampleImageBuffer)
+      .resize(350, 350)
+      .toBuffer();
+    await uploadToS3(process.env.AWS_DEV_BUCKET, key, resizedBuffer);
+  }
+};
+
 const seedUsers = async () => {
+  console.log("** USING EXISITNG IMAGES **");
+  // Upload seed images to S3
+  // const profilePicsPath = `${__dirname}/images`;
+  // const sampleImagesPath = `${__dirname}/images/sampleUserPhotos`;
+  // await deleteAndUploadImagesToS3(profilePicsPath);
+  // await deleteAndUploadImagesToS3(sampleImagesPath);
+
+  // Create users
   for (user of userSeeds) {
     const newUser = new User({ ...user });
     await User.register(newUser, "getout1*");
@@ -36,18 +66,18 @@ const seedUsers = async () => {
       }
     }
 
-    const profilePicKey = `${user.first_name}-pofile-pic`;
-    const profilePicPath = `${__dirname}/images/${user.first_name}.jpeg`;
-
-    // Delete existing images from S3
-    await deleteFromS3(process.env.AWS_DEV_BUCKET, profilePicKey);
-
-    // Upload user image to s3
-    const userImgBuffer = await fs.readFileSync(profilePicPath);
-    await uploadToS3(process.env.AWS_DEV_BUCKET, profilePicKey, userImgBuffer);
-
-    user.profile_picture = profilePicKey;
-    user.markModified("profile_picture");
+    user.profile_picture = `${user.first_name}.jpeg`.toLowerCase();
+    user.photos = [
+      "acroyoga.png",
+      "beach.png",
+      "beerpong.png",
+      "drawing.png",
+      "football.png",
+      "icecream.png",
+      "kayaking.png",
+      "lawngame.png",
+      "tenniscourt.png",
+    ];
     await user.save();
   }
 };
