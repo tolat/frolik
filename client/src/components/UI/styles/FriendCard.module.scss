@@ -1,73 +1,78 @@
-.container{
-    display: flex;
-    padding: 1rem;
-    background-color: rgb(250, 250, 250);
-    margin-bottom: 1rem;
-    justify-content: space-between;
-    box-sizing: border-box;
-}
-.container:hover{
-    cursor: pointer;
-    opacity: 0.9;
+@import "../../../utils/responsive.scss";
+
+.iconBacker {
+  background-color: $card_grey;
 }
 
-.detailsContainer{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+.container {
+  display: flex;
+  padding: 1rem;
+  background-color: $card_grey;
+  margin-bottom: 1rem;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+.container:hover {
+  cursor: pointer;
+  opacity: 0.9;
 }
 
-.userName{
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-left: 1rem;
+.detailsContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
-.ratingsContainer{
-    display: flex;
-    margin: 0.5rem 0 0 0 ;
+.userName {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-left: 1rem;
 }
 
-.friendLoading{
-    padding: 2rem;
-    margin-bottom: 1rem;
-    width: 100%;
-    font-size: 1.4rem;
-    font-weight: bold;
-    background-color: rgb(250, 250, 250);
+.ratingsContainer {
+  display: flex;
+  margin: 0.5rem 0 0 0;
 }
 
-.button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 6rem;
-    height: 100%;
-    border-radius: 4px;
+.friendLoading {
+  padding: 2rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  font-size: 1.4rem;
+  font-weight: bold;
+  background-color: rgb(250, 250, 250);
 }
 
-.button:hover{
-    opacity: 0.5;
-    cursor: pointer;
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 6rem;
+  height: 100%;
+  border-radius: 4px;
 }
 
-.leftContainer{
-    display: flex;
-    flex-grow: 1;
+.button:hover {
+  opacity: 0.5;
+  cursor: pointer;
 }
 
-.rightContainer{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  
+.leftContainer {
+  display: flex;
+  flex-grow: 1;
 }
 
-.addButton{
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 3.5rem;
-    margin-right: 1rem;
+.rightContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.addButton {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3.5rem;
+  margin-right: 1rem;
 }

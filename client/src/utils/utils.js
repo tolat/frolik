@@ -1,8 +1,9 @@
 import { redirect } from "react-router-dom";
 import store from "../store";
 import { fetchAuth } from "../store/auth-actions";
-import { hideModal, hideModalFast } from "../store/modal-actions";
+import { hideModalFast } from "../store/modal-actions";
 import { goActions } from "../store/go-slice";
+import { fetchProfilePic } from "./data-fetch";
 
 export const calcAvgRating = (activity) => {
   return (
@@ -23,5 +24,20 @@ export const pageLoader = async () => {
     if (!store.getState().go.outing.users.find((u) => u._id !== user._id))
       store.dispatch(goActions.setUsers([user]));
   }
-  return false
+  return false;
+};
+
+export const initializeUserMedia = async (newOnly = true) => {
+  // if newOnly is flagged,
+  // Only download image data if is hasen't been downloaded
+  const dataStore = store.getState().data;
+  const user = store.getState().auth.user;
+  if (newOnly && !dataStore.users[user._id]) await fetchProfilePic(user._id);
+  else if (!newOnly) await fetchProfilePic(user._id);
+
+  for (let friend of user.friends) {
+    if (newOnly && !dataStore.users[friend._id || friend])
+      await fetchProfilePic(friend._id || friend);
+    else if (!newOnly) await fetchProfilePic(friend._id || friend);
+  }
 };

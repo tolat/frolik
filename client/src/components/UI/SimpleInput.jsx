@@ -25,6 +25,7 @@ const SimpleInput = forwardRef((props, ref) => {
         id={props.id}
         name={props.name}
         required={props.required}
+        type={props.type}
       ></input>
     </div>
   );

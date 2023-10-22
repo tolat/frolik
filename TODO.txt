@@ -37,3 +37,26 @@ confirmations. do this in modal. dispatch notifications (1 day)
 - DEPLOY WOO!!! (3 days)
 
 TOTAL: 22 days / 4.5 weeks
+
+
+NOTES:
+
+
+  // Option 1: Download image from S3 storage
+  //const fileName = `${user.username}-profile-picture.jpeg`;
+  //const clientAccessUrl = `${process.env.SERVER}/static/images/${fileName}`;
+  //const writePath = `${path.join(__dirname, "../", "public/images/")}`;
+  //
+  //// Only Download if no image found
+  //const fileNames = await fs.readdirSync(writePath);
+  //if (fileNames.find((n) => n === fileName)) {
+  //  await (
+  //    await downloadFromS3(process.env.AWS_DEV_BUCKET, user.profile_picture)
+  //  ).pipe(fs.createWriteStream(writePath + `/${fileName}`));
+  //}
+
+  // Option 2: send signedURL to client and user that to download image
+  // const signedURL = await getSignedURLFromS3(
+  //   process.env.AWS_DEV_BUCKET,
+  //   user.profile_picture
+  // );

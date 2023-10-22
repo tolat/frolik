@@ -153,7 +153,12 @@ const Go = (props) => {
               alt="edit-friends"
             />
           </button>
-          <UserIconCluster users={users} sizeInRem={16} borderSizeInRem={1.5} />
+          <UserIconCluster
+            backerClassName={styles.iconBacker}
+            users={users}
+            sizeInRem={16}
+            borderSizeInRem={1.5}
+          />
           <button onClick={handleAddUserClick} className={styles.roundButton}>
             <img className={styles.editIcon} src={plusIcon} alt="add-people" />
           </button>

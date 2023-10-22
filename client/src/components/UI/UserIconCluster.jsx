@@ -21,6 +21,7 @@ const UserIconCluster = (props) => {
       {props.users.length === 1 ? (
         <UserIcon
           backer={true}
+          backerClassName={props.backerClassName}
           sizeInRem={props.sizeInRem}
           user={props.users[0]}
           borderSizeInRem={props.borderSizeInRem}
@@ -29,6 +30,7 @@ const UserIconCluster = (props) => {
         <Fragment>
           <UserIcon
             backer={true}
+            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginRight: `${props.sizeInRem - props.sizeInRem / mag21}rem`,
@@ -39,6 +41,7 @@ const UserIconCluster = (props) => {
           />
           <UserIcon
             backer={true}
+            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginLeft: `${props.sizeInRem - props.sizeInRem / mag22}rem`,
@@ -53,6 +56,7 @@ const UserIconCluster = (props) => {
         <Fragment>
           <UserIcon
             backer={true}
+            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginRight: `${props.sizeInRem - props.sizeInRem / mag31}rem`,
@@ -66,6 +70,7 @@ const UserIconCluster = (props) => {
           />
           <UserIcon
             backer={true}
+            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginLeft: `${props.sizeInRem - props.sizeInRem / mag32}rem`,
@@ -79,6 +84,7 @@ const UserIconCluster = (props) => {
           />
           <UserIcon
             backer={true}
+            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginLeft: `${
@@ -95,6 +101,7 @@ const UserIconCluster = (props) => {
         <Fragment>
           <UserIcon
             backer={true}
+            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginRight: `${
@@ -110,6 +117,7 @@ const UserIconCluster = (props) => {
           />
           <UserIcon
             backer={true}
+            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginLeft: `${props.sizeInRem - props.sizeInRem / mag43}rem`,
@@ -121,6 +129,7 @@ const UserIconCluster = (props) => {
           />
           <UserIcon
             backer={true}
+            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginLeft: `${
@@ -137,6 +146,7 @@ const UserIconCluster = (props) => {
 
           <UserIcon
             backer={true}
+            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginRight: `${props.sizeInRem - props.sizeInRem / mag44}rem`,
@@ -153,6 +163,7 @@ const UserIconCluster = (props) => {
         <Fragment>
           <UserIcon
             backer={true}
+            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginRight: `${
@@ -180,6 +191,7 @@ const UserIconCluster = (props) => {
           </div>
           <UserIcon
             backer={true}
+            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginLeft: `${
@@ -196,6 +208,7 @@ const UserIconCluster = (props) => {
 
           <UserIcon
             backer={true}
+            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginRight: `${props.sizeInRem - props.sizeInRem / mag44}rem`,

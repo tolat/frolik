@@ -21,7 +21,13 @@ const FriendCard = memo(function FriendCard(props) {
     >
       <div className={styles.leftContainer}>
         <div className={styles.iconContainer}>
-          <UserIcon sizeInRem="6" borderSizeInRem="0.8" user={props.user} />
+          <UserIcon
+            backer={true}
+            backerClassName={styles.iconBacker}
+            sizeInRem="6"
+            borderSizeInRem="0.8"
+            user={props.user}
+          />
         </div>
 
         <div className={styles.detailsContainer}>
@@ -70,10 +76,9 @@ const FriendCard = memo(function FriendCard(props) {
   );
 }, propsAreEqual);
 
-function propsAreEqual(oldProps, newProps){
-  console.log(oldProps, newProps)
+function propsAreEqual(oldProps, newProps) {
+  console.log(oldProps, newProps);
 
-  return true
-  
+  return true;
 }
 export default FriendCard;

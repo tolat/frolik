@@ -1,26 +1,59 @@
-var AWS = require("aws-sdk");
+const {
+  S3Client,
+  PutObjectCommand,
+  CreateBucketCommand,
+  DeleteObjectCommand,
+  DeleteBucketCommand,
+  paginateListObjectsV2,
+  GetObjectCommand,
+} = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
-module.exports.uploadToBucket = async (bucketName, fileName, dataBuffer) => {
-  AWS.config.update({
-    accessKeyId: process.env.S3_ACCESS_KEY,
-    secretAccesskey: process.env.S3_SECRET_ACCESS_KEY,
-    //region: process.env.S3_REGION, //"us-east-1"
+const s3Client = new S3Client({
+  region: process.env.AWS_DEFAULT_REGION,
+});
+
+module.exports.uploadToS3 = async (Bucket, Key, Body) => {
+  // Put an object into an Amazon S3 bucket.
+  return await s3Client.send(
+    new PutObjectCommand({
+      Bucket,
+      Key,
+      Body,
+    })
+  );
+};
+
+module.exports.downloadFromS3 = async (Bucket, Key) => {
+  // Read the object.
+  const { Body } = await s3Client.send(
+    new GetObjectCommand({
+      Bucket,
+      Key,
+    })
+  );
+
+  return Body;
+};
+
+module.exports.getSignedURLFromS3 = async (Bucket, Key) => {
+  // Read the object.
+  const command = new GetObjectCommand({
+    Bucket,
+    Key,
   });
 
-  const s3 = new AWS.S3();
+  const signedURL = await getSignedUrl(s3Client, command, { expiresIn: 60 });
 
-  // Setting up S3 upload parameters
-  const params = {
-    Bucket: bucketName,
-    Key: fileName,
-    Body: dataBuffer,
-  };
+  return signedURL;
+};
 
-  // Uploading files to the bucket
-  return await s3.upload(params, function (err, data) {
-    if (err) {
-      throw err;
-    }
-    return data;
-  });
+module.exports.deleteFromS3 = async (Bucket, Key) => {
+  // Read the object.
+  await s3Client.send(
+    new DeleteObjectCommand({
+      Bucket,
+      Key,
+    })
+  );
 };

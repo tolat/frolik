@@ -17,8 +17,9 @@ import { modalActions } from "../../store/modal-slice";
 import EditProfileModal from "../Modals/EditProfileModal";
 import FriendCard from "../UI/FriendCard";
 import locationIcon from "../../images/location-dark.png";
-import { pageLoader } from "../../utils/utils";
-import { fetchPhotos } from "../../utils/data-fetch";
+import { initializeUserMedia, pageLoader } from "../../utils/utils";
+import { fetchPhotos, fetchProfilePic } from "../../utils/data-fetch";
+import store from "../../store";
 
 const sliderIcons = [
   {
@@ -40,7 +41,7 @@ const Profile = (props) => {
   const [selectedSliderKey, setSelectedSliderKey] = useState("_photos");
   const iconStyle = { width: "4rem", height: "4rem" };
   const dispatch = useDispatch();
-  const [userPhotos, setUserPhotos] = useState(false)
+  const [userPhotos, setUserPhotos] = useState(false);
 
   const handleEditButtonClick = (e) => {
     dispatch(modalActions.setSelector("edit-profile"));
@@ -48,10 +49,9 @@ const Profile = (props) => {
   };
 
   // Get User photos from server
-  useEffect(()=>{
-    fetchPhotos(user._id, setUserPhotos)
-  },[user._id, setUserPhotos])
-
+  useEffect(() => {
+    fetchPhotos(user._id, setUserPhotos);
+  }, [user._id, setUserPhotos]);
 
   return (
     <Fragment>
@@ -66,6 +66,7 @@ const Profile = (props) => {
               rating={user.flake}
             />
             <UserIcon
+              backerClassName={styles.iconBacker}
               sizeInRem={16}
               user={user}
               profilePic={user.profile_picture}
@@ -110,8 +111,11 @@ const Profile = (props) => {
         </div>
 
         {selectedSliderKey === "_photos" ? (
-          !userPhotos? <h2 className={styles.simpleHeader}>Loading Photos..</h2>:
-          <PhotoGrid images={userPhotos} gridTemplateColumns="1fr 1fr 1fr" />
+          !userPhotos ? (
+            <h2 className={styles.simpleHeader}>Loading Photos..</h2>
+          ) : (
+            <PhotoGrid images={userPhotos} gridTemplateColumns="1fr 1fr 1fr" />
+          )
         ) : selectedSliderKey === "_outings" ? (
           <OutingList user={user} />
         ) : (
@@ -129,6 +133,8 @@ export const profileLoader = async () => {
   if (redirect) {
     return redirect;
   }
+
+  await initializeUserMedia()
 
   return null;
 };

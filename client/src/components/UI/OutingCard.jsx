@@ -21,7 +21,7 @@ const OutingCard = (props) => {
             </div>
           </div>
           <div className={styles.rightUpperSection}>
-            <UserIconCluster users={o.users} sizeInRem={7} borderSizeInRem={0.5} />
+            <UserIconCluster backerClassName={styles.iconBacker} users={o.users} sizeInRem={7} borderSizeInRem={0.5} />
           </div>
         </div>
       </div>

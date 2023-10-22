@@ -4,9 +4,11 @@ const Activity = require("../models/activity");
 const User = require("../models/user");
 const Outing = require("../models/outing");
 const dbUrl = process.env.DB_URL;
+const fs = require("fs");
 
 const { userSeeds } = require("./user");
 const { activitySeeds } = require("./activity");
+const { uploadToS3, deleteFromS3 } = require("../utils/S3");
 
 // Connect to the database and handle connection errors
 mongoose.connect(dbUrl, {
@@ -33,6 +35,19 @@ const seedUsers = async () => {
         user.friends.push(friend);
       }
     }
+
+    const profilePicKey = `${user.first_name}-pofile-pic`;
+    const profilePicPath = `${__dirname}/images/${user.first_name}.jpeg`;
+
+    // Delete existing images from S3
+    await deleteFromS3(process.env.AWS_DEV_BUCKET, profilePicKey);
+
+    // Upload user image to s3
+    const userImgBuffer = await fs.readFileSync(profilePicPath);
+    await uploadToS3(process.env.AWS_DEV_BUCKET, profilePicKey, userImgBuffer);
+
+    user.profile_picture = profilePicKey;
+    user.markModified("profile_picture");
     await user.save();
   }
 };
@@ -43,7 +58,10 @@ const seedActivities = async () => {
     const seedUsers = await User.find({});
 
     for (u of seedUsers) {
-      newActivity.ratings.push({ user: u, rating: parseInt((Math.random() * 10) % 5 )});
+      newActivity.ratings.push({
+        user: u,
+        rating: parseInt((Math.random() * 10) % 5),
+      });
     }
 
     newActivity.markModified("ratings");
