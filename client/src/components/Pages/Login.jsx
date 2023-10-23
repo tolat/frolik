@@ -19,8 +19,13 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoggingIn(true);
-    await dispatch(fetchLogin(usernameRef.current.value, passwordRef.current.value));
-    setIsLoggingIn(false);
+    dispatch(
+      fetchLogin(
+        usernameRef.current.value,
+        passwordRef.current.value,
+        setIsLoggingIn
+      )
+    );
   };
 
   // if authenticated, navigate to profile
@@ -41,7 +46,7 @@ function Login() {
             name="username"
             label="Username:"
             ref={usernameRef}
-            defaultVal={''}
+            defaultVal={""}
             required
           />
         </div>
@@ -52,7 +57,7 @@ function Login() {
             name="password"
             label="Password:"
             ref={passwordRef}
-            defaultVal={''}
+            defaultVal={""}
             required
           />
         </div>

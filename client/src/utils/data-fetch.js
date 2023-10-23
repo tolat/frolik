@@ -21,51 +21,61 @@ export const fetchActivities = async (setData) => {
 
 export const fetchProfilePic = async (userID) => {
   const requestConfig = {
-    url: `${getServer()}/user/profile-picture`,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify({ userID }),
+    url: `${getServer()}/user/${userID}/profile-picture`,
   };
 
   const handleResponse = async (response) => {
-    await localStorage.setItem(
-      `${userID}-profile-picture`,
-      response.imageDataString
-    );
+    response.text().then((imageDataString) => {
+      store.dispatch(
+        dataActions.setUserProfilePicture({
+          userID,
+          photoString: imageDataString,
+        })
+      );
+    });
   };
 
   const handleError = (err) => {
     throw new Error(err);
   };
 
-  await httpFetch(requestConfig, handleResponse, handleError);
+  httpFetch(requestConfig, handleResponse, handleError);
 };
 
-export const fetchPhotos = async (userID) => {
-  const requestConfig = {
-    url: `${getServer()}/user/photos`,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify({ userID }),
-  };
-
-  const handleResponse = async (response) => {
-    for(let key in response.photoStrings){
-      await localStorage.setItem(
-        `${userID}-photo-${key}`,
-        response.photoStrings[key]
+export const fetchPhotos = async (user) => {
+  const dataStateUser = store.getState().data.users[user._id];
+  for (let photoKey of user.photos) {
+    // Check if photo has already been downloaded or queued
+    if (
+      !dataStateUser ||
+      !dataStateUser.photos.find((p) => p.key === photoKey)
+    ) {
+      // Mark photo as queued for donwload in redux store
+      await store.dispatch(
+        dataActions.queueUserPhoto({ userID: user._id, photoKey })
       );
+
+      const requestConfig = {
+        url: `${getServer()}/user/${user._id}/photo/${photoKey}`,
+      };
+
+      const handleResponse = async (response) => {
+        response.text().then((imageDataString) => {
+          store.dispatch(
+            dataActions.addUserPhoto({
+              userID: user._id,
+              photoKey,
+              photoString: imageDataString,
+            })
+          );
+        });
+      };
+
+      const handleError = (err) => {
+        throw new Error(err);
+      };
+
+      httpFetch(requestConfig, handleResponse, handleError);
     }
-    
-  };
-
-  const handleError = (err) => {
-    throw new Error(err);
-  };
-
-  await httpFetch(requestConfig, handleResponse, handleError);
+  }
 };

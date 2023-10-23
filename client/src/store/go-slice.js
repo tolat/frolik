@@ -19,15 +19,17 @@ const goSlice = createSlice({
         state.outing.users.push(action.payload);
     },
     removeUser(state, action) {
-      const index = state.outing.users.findIndex(user=> user._id === action.payload._id);
+      const index = state.outing.users.findIndex(
+        (user) => user._id === action.payload._id
+      );
       if (index !== -1) state.outing.users.splice(index, 1);
     },
-    setActivity(state, action){
-      state.outing.activity = action.payload
+    setActivity(state, action) {
+      state.outing.activity = action.payload;
     },
-    removeActivity(state){
-      state.outing.activity = {}
-    }
+    removeActivity(state) {
+      state.outing.activity = {};
+    },
   },
 });
 

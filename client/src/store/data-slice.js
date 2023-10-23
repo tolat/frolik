@@ -25,7 +25,19 @@ const dataSlice = createSlice({
     },
     setUserPhotos(state, action) {
       const user = findOrCreateUser(state, action);
-      user.photos = action.payload.photoStrings;
+      user.photos = action.payload;
+    },
+    addUserPhoto(state, action) {
+      const user = findOrCreateUser(state, action);
+      const photo = user.photos.find((p) => p.key === action.payload.photoKey);
+      photo.photo = action.payload.photoString;
+    },
+    queueUserPhoto(state, action) {
+      const user = findOrCreateUser(state, action);
+      user.photos.push({
+        key: action.payload.photoKey,
+        photo: false,
+      });
     },
   },
 });

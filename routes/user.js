@@ -35,31 +35,58 @@ router.post("/friend", reqAuthenticated, async (req, res) => {
   res.send({ friendData });
 });
 
-router.post("/profile-picture", reqAuthenticated, async (req, res) => {
-  const user = await User.findById(req.body.userID);
+router.get("/:id/photo/:key", reqAuthenticated, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
 
-  // Send image data as string to client for storage in store
-  const imageStream = await downloadFromS3(
-    process.env.AWS_DEV_BUCKET,
-    user.profile_picture
-  );
-  const imageDataString = await imageStream.transformToString("base64");
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
 
-  res.send({ imageDataString });
-});
+    if(!user.photos.find(photo => photo === req.params.key)){
+      return res.status(404).send("Photo with given key not found");
+    }
 
-router.post("/photos", reqAuthenticated, async (req, res) => {
-  const user = await User.findOne({ _id: req.body.userID });
-
-  let photoStrings = {};
-  for (key of user.photos) {
-    // Get image data as string for client
-    const imageStream = await downloadFromS3(process.env.AWS_DEV_BUCKET, key);
-    const imageDataString = await imageStream.transformToString("base64");
-    photoStrings[key] = imageDataString
+    // Download image stream from S3 and pipe into response
+    downloadFromS3(process.env.AWS_DEV_BUCKET, req.params.key)
+      .then((imageStream) => imageStream.pipe(res))
+      .catch((error) => {
+        console.error("Error downloading image:", error);
+        res.status(500).send("Internal Server Error");
+      });
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    res.status(500).send("Internal Server Error");
   }
-
-  res.send({ photoStrings });
 });
+
+router.get("/:id/profile-picture", reqAuthenticated, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    // Download image stream from S3 and pipe into response
+    downloadFromS3(process.env.AWS_DEV_BUCKET, user.profile_picture)
+      .then((imageStream) => imageStream.pipe(res))
+      .catch((error) => {
+        console.error("Error downloading image:", error);
+        res.status(500).send("Internal Server Error");
+      });
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+const timeOperation = async (fun, name) => {
+  let start = Date.now();
+  const result = await fun();
+  let end = Date.now();
+  console.log(`"${name} request took: `, end - start, "ms");
+  return result;
+};
 
 module.exports = router;

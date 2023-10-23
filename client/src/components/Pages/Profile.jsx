@@ -1,6 +1,6 @@
 import styles from "./styles/Profile.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import SliderNavbar from "../UI/SliderNavbar";
 import PhotoGrid from "../UI/PhotoGrid";
 import photos from "../../images/photogrid.png";
@@ -39,9 +39,11 @@ const Profile = (props) => {
   const [selectedSliderKey, setSelectedSliderKey] = useState("_photos");
   const iconStyle = { width: "4rem", height: "4rem" };
   const dispatch = useDispatch();
-  const userPhotos = user.photos.map((key) =>
-    localStorage.getItem(`${user._id}-photo-${key}`)
-  );
+  const dataState = useSelector((state) => state.data);
+  const userData = dataState.users[user._id];
+  const userPhotos = !userData
+    ? []
+    : userData.photos.filter((p) => p && p.photo).map(p => p.photo)
 
   const handleEditButtonClick = (e) => {
     dispatch(modalActions.setSelector("edit-profile"));
@@ -124,8 +126,6 @@ export const profileLoader = async () => {
   if (redirect) {
     return redirect;
   }
-
-  await initializeUserMedia();
 
   return null;
 };

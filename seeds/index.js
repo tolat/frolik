@@ -23,34 +23,45 @@ db.once("open", () => {
   console.log("SEEDING...");
 });
 
-const deleteAndUploadImagesToS3 = async (directoryPath) => {
+const deleteAndUploadImagesToS3 = async (directoryPath, duplicate = false) => {
   const files = await fs.readdirSync(directoryPath);
+
+  const deleteAndUpload = async (key, imagePath) => {
+    const simpleKey = key.substring(0, key.indexOf("."));
+    console.log("uploading: ", simpleKey);
+    // Delete existing images from S3
+    await deleteFromS3(process.env.AWS_DEV_BUCKET, simpleKey);
+
+    // Upload image to s3
+    const imageBuffer = await fs.readFileSync(imagePath);
+    const reducedImageBuffer = await sharp(imageBuffer)
+      .resize(350, 350)
+      .toBuffer();
+
+    const imageString = reducedImageBuffer.toString("base64");
+    await uploadToS3(process.env.AWS_DEV_BUCKET, simpleKey, imageString);
+  };
+
   for (key of files) {
     const imagePath = `${directoryPath}/${key}`;
     // Skip hidden files like .DS_Store and directories
     if (key[0] == "." || !key.includes(".")) {
       continue;
     }
-    console.log("uploading: ", key);
-    // Delete existing images from S3
-    await deleteFromS3(process.env.AWS_DEV_BUCKET, key);
 
-    // Upload image to s3
-    const sampleImageBuffer = await fs.readFileSync(imagePath);
-    const resizedBuffer = await sharp(sampleImageBuffer)
-      .resize(350, 350)
-      .toBuffer();
-    await uploadToS3(process.env.AWS_DEV_BUCKET, key, resizedBuffer);
+    await deleteAndUpload(key, imagePath);
+    if (duplicate) {
+      await deleteAndUpload(`dup_${key}`, imagePath);
+    }
   }
 };
 
 const seedUsers = async () => {
-  console.log("** USING EXISITNG IMAGES **");
-  // Upload seed images to S3
-  // const profilePicsPath = `${__dirname}/images`;
-  // const sampleImagesPath = `${__dirname}/images/sampleUserPhotos`;
-  // await deleteAndUploadImagesToS3(profilePicsPath);
-  // await deleteAndUploadImagesToS3(sampleImagesPath);
+  //Upload seed images to S3
+  const profilePicsPath = `${__dirname}/images`;
+  const sampleImagesPath = `${__dirname}/images/sampleUserPhotos`;
+  await deleteAndUploadImagesToS3(profilePicsPath);
+  await deleteAndUploadImagesToS3(sampleImagesPath, true);
 
   // Create users
   for (user of userSeeds) {
@@ -66,17 +77,26 @@ const seedUsers = async () => {
       }
     }
 
-    user.profile_picture = `${user.first_name}.jpeg`.toLowerCase();
+    user.profile_picture = `${user.first_name}`.toLowerCase();
     user.photos = [
-      "acroyoga.png",
-      "beach.png",
-      "beerpong.png",
-      "drawing.png",
-      "football.png",
-      "icecream.png",
-      "kayaking.png",
-      "lawngame.png",
-      "tenniscourt.png",
+      "acroyoga",
+      "beach",
+      "beerpong",
+      "drawing",
+      "football",
+      "icecream",
+      "kayaking",
+      "lawngame",
+      "tenniscourt",
+      "dup_acroyoga",
+      "dup_beach",
+      "dup_beerpong",
+      "dup_drawing",
+      "dup_football",
+      "dup_icecream",
+      "dup_kayaking",
+      "dup_lawngame",
+      "dup_tenniscourt",
     ];
     await user.save();
   }

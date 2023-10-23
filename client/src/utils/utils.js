@@ -23,29 +23,32 @@ export const pageLoader = async () => {
     const user = store.getState().auth.user;
     if (!store.getState().go.outing.users.find((u) => u._id !== user._id))
       store.dispatch(goActions.setUsers([user]));
+
+      initializeUserMedia()
   }
   return false;
 };
 
-export const initializeUserMedia = async () => {
+export const initializeUserMedia = async (newOnly = true) => {
+  // if newOnly is flagged,
+  // Only download image data if is hasen't been downloaded
+  const dataStore = store.getState().data;
   const user = store.getState().auth.user;
-
-  // Get user profile picture and photo thumbs
-  if (!localStorage.getItem(`${user._id}-profile-picture`)) {
-    await fetchProfilePic(user._id);
-  }
-  if (
-    user.photos[0] &&
-    !Object.keys(localStorage).find((key) => key.includes(`${user._id}-photo`))
-  ) {
-    await fetchPhotos(user._id);
+  if (newOnly && !dataStore.users[user._id]) {
+    fetchProfilePic(user._id);
+    fetchPhotos(user);
+  } else if (newOnly && !dataStore.users[user._id].photos[0]) {
+    fetchPhotos(user);
+  } else if (!newOnly) {
+    fetchProfilePic(user._id)
+    fetchPhotos(user);
   }
 
-  // Get user friend profile pics
   for (let friend of user.friends) {
-    const friendId = friend._id || friend;
-    if (!localStorage.getItem(`${friendId}-profile-picture`)) {
-      await fetchProfilePic(friendId);
+    if (newOnly && !dataStore.users[friend._id || friend]) {
+      fetchProfilePic(friend._id || friend);
+    } else if (!newOnly) {
+      fetchProfilePic(friend._id || friend);
     }
   }
 };

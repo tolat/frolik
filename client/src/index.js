@@ -5,7 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./store";
-import { initializeUserMedia, pageLoader } from "./utils/utils";
+import { pageLoader } from "./utils/utils";
 
 async function appLoader() {
   const redirect = await pageLoader();
@@ -13,20 +13,15 @@ async function appLoader() {
     return redirect;
   }
 
-  await initializeUserMedia();
-  
-  return null
+  return null;
 }
-
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const render = async () => {
-  await appLoader();
+ await appLoader();
   root.render(
     <Provider store={store}>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
+      <App />
     </Provider>
   );
 };

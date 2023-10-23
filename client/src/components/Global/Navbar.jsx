@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { fetchLogout } from "../../store/auth-actions";
 import { useNavigate } from "react-router-dom";
 import NavButton from "../UI/NavButton";
-
 import logo from "../../images/balloon1.png";
 
 const Navbar = (props) => {

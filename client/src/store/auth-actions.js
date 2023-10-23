@@ -4,9 +4,11 @@ import store from ".";
 import { getServer } from "../utils/env-utils";
 import { modalActions } from "./modal-slice";
 import { hideModal } from "./modal-actions";
+import { initializeUserMedia } from "../utils/utils";
+import { dataActions } from "./data-slice";
 
 // Create a login action to attempt to log in the user
-export const fetchLogin = (username, password) => {
+export const fetchLogin = (username, password, setIsLoggingIn) => {
   // config for login post request
   return async (dispatch) => {
     // If dispatch is undefined (this funciton is called from outside a component),
@@ -22,8 +24,10 @@ export const fetchLogin = (username, password) => {
       body: JSON.stringify({ username, password }),
     };
 
-    const handleResponse = (response) => {
+    const handleResponse = async (response) => {
       dispatch(authActions.login(response));
+      setIsLoggingIn(false)
+      initializeUserMedia();
     };
 
     const handleError = (err) => {
@@ -33,7 +37,7 @@ export const fetchLogin = (username, password) => {
       console.log(err);
     };
 
-    await httpFetch(requestConfig, handleResponse, handleError);
+    httpFetch(requestConfig, handleResponse, handleError);
   };
 };
 
@@ -58,7 +62,7 @@ export const fetchAuth = () => {
       console.log(err);
     };
 
-    await httpFetch(requestConfig, handleResponse, handleError);
+    httpFetch(requestConfig, handleResponse, handleError);
   };
 };
 
@@ -74,6 +78,8 @@ export const fetchLogout = () => {
     const handleResponse = (response) => {
       hideModal();
       dispatch(authActions.logout());
+      dispatch(dataActions.setUserProfilePicture(false))
+      dispatch(dataActions.setUserPhotos([]))
       setTimeout(() => {
         dispatch(authActions.deleteUser());
         dispatch(modalActions.setSelector("none"));

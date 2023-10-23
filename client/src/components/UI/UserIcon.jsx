@@ -1,5 +1,5 @@
 import styles from "./styles/UserIcon.module.scss";
-import { memo, useState } from "react";
+import { memo } from "react";
 import { useSelector } from "react-redux";
 
 const getCategoryPercentage = (category, user) => {
@@ -57,7 +57,10 @@ const UserIcon = memo(function UserIcon(props) {
   const photoDimension = `${props.sizeInRem - 2 * props.borderSizeInRem}rem`;
   const pieDimension = `${props.sizeInRem - props.borderSizeInRem}rem`;
   const backerDimension = `${props.sizeInRem}rem`;
-  const photoString = localStorage.getItem(`${props.user._id}-profile-picture`);
+  const dataState = useSelector((state) => state.data);
+  const photoString = dataState.users[props.user._id]
+    ? dataState.users[props.user._id].profile_picture
+    : null;
 
   const pieStyle = {
     width: pieDimension,
