@@ -12,11 +12,12 @@ export const calcAvgRating = (activity) => {
   );
 };
 
-export const pageLoader = async () => {
-  await fetchAuth()();
+export const pageLoader =  () => {
+  fetchAuth()();
   hideModalFast();
 
   if (!store.getState().auth.isAuthenticated) {
+    console.log("going ot login")
     return redirect("/login");
   } else {
     // Set authenticated user as default for go page

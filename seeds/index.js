@@ -35,7 +35,7 @@ const deleteAndUploadImagesToS3 = async (directoryPath, duplicate = false) => {
     // Upload image to s3
     const imageBuffer = await fs.readFileSync(imagePath);
     const reducedImageBuffer = await sharp(imageBuffer)
-      .resize(350, 350)
+      .resize(280, 280)
       .toBuffer();
 
     const imageString = reducedImageBuffer.toString("base64");
@@ -57,11 +57,11 @@ const deleteAndUploadImagesToS3 = async (directoryPath, duplicate = false) => {
 };
 
 const seedUsers = async () => {
-  //Upload seed images to S3
-  const profilePicsPath = `${__dirname}/images`;
-  const sampleImagesPath = `${__dirname}/images/sampleUserPhotos`;
-  await deleteAndUploadImagesToS3(profilePicsPath);
-  await deleteAndUploadImagesToS3(sampleImagesPath, true);
+  //Uncomment to Upload seed images to S3
+  //const profilePicsPath = `${__dirname}/images`;
+  //const sampleImagesPath = `${__dirname}/images/sampleUserPhotos`;
+  //await deleteAndUploadImagesToS3(profilePicsPath);
+  //await deleteAndUploadImagesToS3(sampleImagesPath, true);
 
   // Create users
   for (user of userSeeds) {
