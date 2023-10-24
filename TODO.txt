@@ -5,18 +5,19 @@ DONE
 DONE
 
 - Still need to download all photos from S3
-
-- Finish chat page layout / interface. Put Chat in modal (1 day)
+DONE
 
 - Get Edit profile modal working (1 day)
-
-- Get chat functionality working. need to make a chat object
-in the databases (5 days)
 
 - Add Users Modal.
 Set up Add Users modal in Go page to display up to 4 non friend users 
 and all friends that are "ready" or searching. Need to add at least 1 
 new connection to create an outing! (1 day)
+
+- Finish chat page layout / interface. Put Chat in modal (1 day)
+
+- Get chat functionality working. need to make a chat object
+in the databases (5 days)
 
 - Creat Outing Funcitonality. 
 Set up a pending outing for all users, and take user to outing modal. 

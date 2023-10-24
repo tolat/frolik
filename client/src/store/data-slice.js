@@ -25,7 +25,7 @@ const dataSlice = createSlice({
     },
     setUserPhotos(state, action) {
       const user = findOrCreateUser(state, action);
-      user.photos = action.payload;
+      user.photos = action.payload.stringsArray;
     },
     addUserPhoto(state, action) {
       const user = findOrCreateUser(state, action);

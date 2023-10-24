@@ -17,7 +17,7 @@ import { modalActions } from "../../store/modal-slice";
 import EditProfileModal from "../Modals/EditProfileModal";
 import FriendCard from "../UI/FriendCard";
 import locationIcon from "../../images/location-dark.png";
-import { initializeUserMedia, pageLoader } from "../../utils/utils";
+import {  pageLoader } from "../../utils/utils";
 
 const sliderIcons = [
   {

@@ -51,7 +51,7 @@ export const fetchPhotos = async (user) => {
       !dataStateUser.photos.find((p) => p.key === photoKey)
     ) {
       // Mark photo as queued for donwload in redux store
-      await store.dispatch(
+      store.dispatch(
         dataActions.queueUserPhoto({ userID: user._id, photoKey })
       );
 
