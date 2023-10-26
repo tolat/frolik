@@ -14,11 +14,7 @@ export const calcAvgRating = (activity) => {
 
 export const pageLoader = async () => {
   await fetchAuth()();
-  if(store.getState().selector !== 'none'){
-    console.log("hiding modal")
-    hideModal();
-    await setTimeout(5000)
-  }
+  await hideModal();
 
   if (!store.getState().auth.isAuthenticated) {
     return redirect("/login");
@@ -27,8 +23,6 @@ export const pageLoader = async () => {
     const user = store.getState().auth.user;
     if (!store.getState().go.outing.users.find((u) => u._id !== user._id))
       store.dispatch(goActions.setUsers([user]));
-
-    initializeUserPhotos();
   }
   return false;
 };

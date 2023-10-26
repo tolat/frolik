@@ -1,5 +1,6 @@
 import UserIcon from "./UserIcon";
 import { Fragment, memo } from "react";
+import styles from "./styles/UserIconCluster.module.scss"
 
 const UserIconCluster = (props) => {
   const containerStyle = {
@@ -17,7 +18,7 @@ const UserIconCluster = (props) => {
   const mag44 = 1.55;
 
   return (
-    <div style={containerStyle}>
+    <div className={styles.container} style={containerStyle}>
       {props.users.length === 1 ? (
         <UserIcon
           backer={true}

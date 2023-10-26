@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import Cropper from "react-easy-crop";
 import styles from "./styles/ImageCropper.module.scss";
 
@@ -7,15 +7,14 @@ const ImageCropper = (props) => {
   const [crop, setCrop] = useState(props.crop);
 
   const onCropChange = (newCrop) => {
-    props.setPreStageCrop(newCrop)
-    setCrop(newCrop)
+    props.setPreStageCrop(newCrop);
+    setCrop(newCrop);
   };
 
   const onZoomChange = (newZoom) => {
-   props.setPreStageZoom(newZoom)
-   setZoom(newZoom)
+    props.setPreStageZoom(newZoom);
+    setZoom(newZoom);
   };
-
 
   return !props.image ? null : (
     <div

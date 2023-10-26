@@ -60,8 +60,12 @@ const UserIcon = memo(function UserIcon(props) {
   const backerDimension = `${props.sizeInRem}rem`;
   const dataState = useSelector((state) => state.data);
   const userData = dataState.users[props.user._id];
-  const zoom = userData.zoom;
-  const crop = userData.crop;
+  const scalingFactor =
+    (parseFloat(props.sizeInRem) - 2 * parseFloat(props.borderSizeInRem)) / 25;
+  let zoom = userData.zoom;
+  let crop = { ...userData.crop };
+  crop.x = crop.x * scalingFactor;
+  crop.y = crop.y * scalingFactor;
   const photoString = userData ? userData.profile_picture : null;
 
   const pieStyle = {
@@ -93,7 +97,6 @@ const UserIcon = memo(function UserIcon(props) {
               zoom={zoom}
               crop={crop}
               style={{ height: photoDimension, width: photoDimension }}
-              className={styles.photo}
             />
           </div>
         )}

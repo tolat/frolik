@@ -2,7 +2,6 @@ import httpFetch from "../utils/http-fetch";
 import { authActions } from "./auth-slice";
 import store from ".";
 import { getServer } from "../utils/env-utils";
-import { modalActions } from "./modal-slice";
 import { hideModal } from "./modal-actions";
 import { dataActions } from "./data-slice";
 import { initializeUserPhotos } from "./data-actions";
@@ -20,13 +19,13 @@ export const fetchLogin = (username, password, setIsLoggingIn) => {
       headers: {
         "Content-Type": "application/json",
       },
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ username, password }),
     };
 
     const handleResponse = async (response) => {
       await dispatch(authActions.login(response));
-      setIsLoggingIn(false)
+      setIsLoggingIn(false);
       initializeUserPhotos();
     };
 
@@ -75,15 +74,15 @@ export const fetchLogout = () => {
 
     const requestConfig = { url: `${getServer()}/auth/logout` };
 
-    const handleResponse = (response) => {
-      hideModal();
+    const handleResponse = async () => {
+      if (store.getState().modal.marginLeft === "0%") await hideModal();
       dispatch(authActions.logout());
-      dispatch(dataActions.setUserProfilePicture(false))
-      dispatch(dataActions.setUserPhotos([]))
+      dispatch(dataActions.setUserProfilePicture(false));
+      dispatch(dataActions.setUserPhotos([]));
       setTimeout(() => {
         dispatch(authActions.deleteUser());
-        dispatch(modalActions.setSelector("none"));
-      }, 500);
+        //dispatch(dataActions.clearAllUserData())
+      }, 300);
     };
 
     const handleError = (err) => {

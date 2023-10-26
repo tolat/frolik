@@ -9,8 +9,6 @@ export const initializeUserPhotos = (newOnly = true) => {
   const dataStore = store.getState().data;
   const userData = dataStore.users[user._id];
 
-  console.log(dataStore)
-
   // Set profile picture zoom and crop from auth user
   function initCropZoom(userObject) {
     store.dispatch(
@@ -41,7 +39,6 @@ export const initializeUserPhotos = (newOnly = true) => {
 
   // Fetch friend user profile pictures
   for (let friend of user.friends) {
-    console.log(friend)
     initCropZoom(friend);
     if (newOnly && !dataStore.users[friend]) {
       fetchProfilePic(friend._id);

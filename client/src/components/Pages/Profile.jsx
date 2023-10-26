@@ -1,6 +1,6 @@
 import styles from "./styles/Profile.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import SliderNavbar from "../UI/SliderNavbar";
 import PhotoGrid from "../UI/PhotoGrid";
 import photos from "../../images/photogrid.png";
@@ -17,8 +17,7 @@ import { modalActions } from "../../store/modal-slice";
 import EditProfileModal from "../Modals/EditProfileModal";
 import FriendCard from "../UI/FriendCard";
 import locationIcon from "../../images/location-dark.png";
-import {  pageLoader } from "../../utils/utils";
-import { hideModal } from "../../store/modal-actions";
+import { pageLoader } from "../../utils/utils";
 
 const sliderIcons = [
   {
@@ -35,19 +34,20 @@ const sliderIcons = [
   },
 ];
 
-const getPhotosFromState = (userData) =>{
+const getPhotosFromState = (userData) => {
   return !userData
-  ? []
-  : userData.photos.filter((p) => p && p.photo).map(p => p.photo)
-}
+    ? []
+    : userData.photos.filter((p) => p && p.photo).map((p) => p.photo);
+};
 
 const Profile = (props) => {
   const user = { ...useSelector((state) => state.auth.user) };
   const [selectedSliderKey, setSelectedSliderKey] = useState("_photos");
   const iconStyle = { width: "4rem", height: "4rem" };
   const dispatch = useDispatch();
-  const dataState = useSelector((state) => state.data).users[user._id];
-  const userPhotos = getPhotosFromState(dataState)
+  const dataState = useSelector((state) => state.data)
+  const userData = dataState.users[user._id];
+  const userPhotos = getPhotosFromState(userData);
 
   const handleEditButtonClick = (e) => {
     dispatch(modalActions.setSelector("edit-profile"));
@@ -55,71 +55,69 @@ const Profile = (props) => {
   };
 
 
-  return (
-    <Fragment>
+  return !user ? null : (
+    <div className={styles.container}>
       <EditProfileModal />
-      <div className={styles.container}>
-        <div className={styles.nonMediaSection}>
-          <div className={styles.profilePicContainer}>
-            <StatIcon
-              alt="flake"
-              icon={flakeIcon}
-              iconStyle={iconStyle}
-              rating={user.flake}
-            />
-            <UserIcon
-              backerClassName={styles.iconBacker}
-              sizeInRem={20}
-              user={user}
-              borderSizeInRem={"1.5"}
-            />
-            <StatIcon
-              alt="outings"
-              icon={outingsIcon}
-              iconStyle={iconStyle}
-              rating={user.outings.length}
-            />
-          </div>
-          <div
-            className={styles.userName}
-          >{`${user.first_name} ${user.last_name}`}</div>
-          <div className={styles.tagline}>{user.tagline}</div>
-          <div className={styles.sideBySide}>
-            <div className={styles.statusContainer}>Status: {user.status}</div>
-            <div className={styles.locationContainer}>
-              <img
-                style={{ marginRight: "10px" }}
-                className={styles.smallIcon}
-                src={locationIcon}
-                alt="location-icon"
-              />
-              {user.location}
-            </div>
-          </div>
-
-          <SimpleButton
-            onClick={handleEditButtonClick}
-            className={buttonStyles.greyButton}
-          >
-            Edit Profile
-          </SimpleButton>
-
-          <SliderNavbar
-            selected={selectedSliderKey}
-            setSelected={setSelectedSliderKey}
-            icons={sliderIcons}
+      <div className={styles.nonMediaSection}>
+        <div className={styles.profilePicContainer}>
+          <StatIcon
+            alt="flake"
+            icon={flakeIcon}
+            iconStyle={iconStyle}
+            rating={user.flake}
+          />
+          <UserIcon
+            backerClassName={styles.iconBacker}
+            sizeInRem={20}
+            user={user}
+            borderSizeInRem={"1.5"}
+          />
+          <StatIcon
+            alt="outings"
+            icon={outingsIcon}
+            iconStyle={iconStyle}
+            rating={user.outings.length}
           />
         </div>
+        <div
+          className={styles.userName}
+        >{`${user.first_name} ${user.last_name}`}</div>
+        <div className={styles.tagline}>{user.tagline}</div>
+        <div className={styles.sideBySide}>
+          <div className={styles.statusContainer}>Status: {user.status}</div>
+          <div className={styles.locationContainer}>
+            <img
+              style={{ marginRight: "10px" }}
+              className={styles.smallIcon}
+              src={locationIcon}
+              alt="location-icon"
+            />
+            {user.location}
+          </div>
+        </div>
 
-        {selectedSliderKey === "_photos" ? (
-          <PhotoGrid images={userPhotos} gridTemplateColumns="1fr 1fr 1fr" />
-        ) : selectedSliderKey === "_outings" ? (
-          <OutingList user={user} />
-        ) : (
-          user.friends.map((f) => <FriendCard key={Math.random()} user={f} />)
-        )}
+        <SimpleButton
+          onClick={handleEditButtonClick}
+          className={buttonStyles.greyButton}
+        >
+          Edit Profile
+        </SimpleButton>
+
+        <SliderNavbar
+          selected={selectedSliderKey}
+          setSelected={setSelectedSliderKey}
+          icons={sliderIcons}
+        />
       </div>
-    </Fragment>
+
+      {selectedSliderKey === "_photos" ? (
+        <PhotoGrid images={userPhotos} gridTemplateColumns="1fr 1fr 1fr" />
+      ) : selectedSliderKey === "_outings" ? (
+        <OutingList user={user} />
+      ) : (
+        user.friends.map((f) => <FriendCard key={Math.random()} user={f} />)
+      )}
+    </div>
   );
 };
 

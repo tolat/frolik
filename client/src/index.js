@@ -6,12 +6,15 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./store";
 import { pageLoader } from "./utils/utils";
+import { initializeUserPhotos } from "./store/data-actions";
 
 async function appLoader() {
   const redirect = await pageLoader();
   if (redirect) {
     return redirect;
   }
+
+  initializeUserPhotos();
 
   return null;
 }

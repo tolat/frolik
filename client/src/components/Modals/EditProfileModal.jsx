@@ -18,12 +18,12 @@ const EditProfileModal = (props) => {
   const modalDisplay = modalState.selector === "edit-profile" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
   const [editing, setEditing] = useState(false);
-  const userData = dataState.users[user._id];
-  const stagedPhoto =
-    userData.staged.profile_picture || userData.profile_picture;
   const photoDimentionStyle = { width: `25rem`, height: `25rem` };
-  const stagedCrop = userData.staged.crop || user.profile_picture.crop;
-  const stagedZoom = userData.staged.zoom || user.profile_picture.zoom;
+  const userData = dataState.users[user._id];
+  const stagedData = userData.staged;
+  const stagedPhoto = stagedData.profile_picture || userData.profile_picture;
+  const stagedCrop = stagedData.crop || userData.crop;
+  const stagedZoom = stagedData.zoom || userData.zoom;
   const [preStageCrop, setPreStageCrop] = useState(stagedCrop);
   const [preStageZoom, setPreStageZoom] = useState(stagedZoom);
 
@@ -34,6 +34,12 @@ const EditProfileModal = (props) => {
   };
 
   const handleShowCropper = () => {
+    dispatch(
+      dataActions.stageUserProfilePicture({
+        userID: user._id,
+        photoString: stagedPhoto,
+      })
+    );
     setEditing(true);
   };
 
@@ -105,7 +111,7 @@ const EditProfileModal = (props) => {
               setPreStageCrop={setPreStageCrop}
               setPreStageZoom={setPreStageZoom}
             />
-          ) : (
+          ) : !stagedPhoto ? null : (
             <CroppedImage
               image={stagedPhoto}
               zoom={stagedZoom}

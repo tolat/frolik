@@ -69,12 +69,15 @@ const dataSlice = createSlice({
     commitStagedPhotoData(state, action) {
       const user = findOrCreateUser(state, action);
       // Check if anything has been staged before updating
-      if (Object.keys(user.staged)[0]) {
+      if (user.staged.profile_picture || user.staged.crop) {
         user.profile_picture = user.staged.profile_picture;
         user.zoom = user.staged.zoom;
         user.crop = user.staged.crop;
         user.staged = {};
       }
+    },
+    clearAllUserData(state) {
+      state.users = initialState;
     },
   },
 });

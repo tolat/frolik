@@ -18,7 +18,6 @@ import upIcon from "../../images/up.png";
 import { calcAvgRating, pageLoader } from "../../utils/utils";
 import { initialActivityFilter } from "../../utils/globals";
 import store from "../../store";
-import { hideModal } from "../../store/modal-actions";
 
 const filterReducer = (state, action) => {
   const applyFilter = (activities, filter) => {
