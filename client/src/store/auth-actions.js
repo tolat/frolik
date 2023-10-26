@@ -23,8 +23,8 @@ export const fetchLogin = (username, password, setIsLoggingIn) => {
       body: JSON.stringify({ username, password }),
     };
 
-    const handleResponse = async (response) => {
-      await dispatch(authActions.login(response));
+    const handleResponse = (response) => {
+      dispatch(authActions.login(response));
       setIsLoggingIn(false);
       initializeUserPhotos();
     };
@@ -42,11 +42,8 @@ export const fetchLogin = (username, password, setIsLoggingIn) => {
 
 // Create a check auth action to check if session is authenticated on page load
 export const fetchAuth = () => {
-  // config for auth check post request
-  return async (dispatch) => {
-    // If dispatch is undefined (this funciton is called from outside a component),
-    // use the dispatch method on the store object
-    dispatch = dispatch ? dispatch : (dispatch = store.dispatch);
+  return new Promise((resolve, reject) => {
+    const dispatch = store.dispatch;
 
     const requestConfig = { url: `${getServer()}/auth/check` };
 
@@ -54,15 +51,18 @@ export const fetchAuth = () => {
       response.user
         ? dispatch(authActions.login(response))
         : dispatch(authActions.logout());
+
+      resolve();
     };
 
     const handleError = (err) => {
       dispatch(authActions.logout());
       console.log(err);
+      reject();
     };
 
     httpFetch(requestConfig, handleResponse, handleError);
-  };
+  });
 };
 
 export const fetchLogout = () => {

@@ -7,6 +7,7 @@ const Globals = require("../models/globals");
 const dbUrl = process.env.DB_URL;
 const fs = require("fs");
 const sharp = require("sharp");
+const path = require("path");
 
 const { userSeeds } = require("./user");
 const { activitySeeds } = require("./activity");
@@ -87,8 +88,30 @@ const seedGlobals = async () => {
       "Your status will be set to Inactive after two weeks of inactivity.",
   };
 
-  const globals = new Globals({categoryColorMap, statusMap})
-  await globals.save()
+  // Load city data
+  const cityDataPath = path.join(__dirname, "/city-data/cities10000.json");
+  const readCityData = new Promise((resolve, reject) => {
+    fs.readFile(cityDataPath, "utf8", async (err, data) => {
+      if (err) {
+        console.error("Error reading JSON file:", err);
+        reject();
+        return;
+      }
+
+      const filteredData = JSON.parse(data).map((city) => {
+        return {
+          name: city.name,
+          country: city.country_code,
+          timezone: city.timezone,
+        };
+      });
+      resolve(filteredData);
+    });
+  });
+  const cityData = await readCityData;
+
+  const globals = new Globals({ categoryColorMap, statusMap, cityData });
+  await globals.save();
 };
 
 const seedUsers = async () => {
@@ -211,9 +234,9 @@ const seedOutings = async () => {
 };
 
 const seedDB = async () => {
-  await Globals.deleteMany({})
-  await seedGlobals()
-  console.log('done globals..')
+  await Globals.deleteMany({});
+  await seedGlobals();
+  console.log("done globals..");
 
   await User.deleteMany({});
   await seedUsers();

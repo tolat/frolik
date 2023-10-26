@@ -10,8 +10,8 @@ import { dataActions } from "../../store/data-slice";
 import CroppedImage from "../UI/CroppedImage";
 import { hideModal } from "../../store/modal-actions";
 import { uploadProfilePicture } from "../../utils/data-fetch";
-import SimpleSelect from "../UI/SimpleSelect";
 import CustomSelect from "../UI/CustomSelect";
+import balloonIcon from "../../images/balloon1.png";
 
 const EditProfileModal = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -30,7 +30,8 @@ const EditProfileModal = (props) => {
   const stagedZoom = stagedData.zoom || userData.zoom;
   const [preStageCrop, setPreStageCrop] = useState(stagedCrop);
   const [preStageZoom, setPreStageZoom] = useState(stagedZoom);
-  const statusMap = useSelector((state) => state.auth.globals.statusMap);
+  const globals = useSelector(state => state.auth.globals)
+  const statusMap = globals.statusMap;
 
   const formRefs = {
     first_name: useRef(),
@@ -92,22 +93,33 @@ const EditProfileModal = (props) => {
     hideModal();
   };
 
-
   const statusOptions = Object.keys(statusMap).map((key) => {
-    const selectable = key === "Ready" || key === "Busy"
+    const selectable = key === "Ready" || key === "Busy";
     return {
       selectable,
       name: key,
-      component: <StatusOption unselectable={!selectable} name={key} details={statusMap[key]} />,
+      component: (
+        <StatusOption
+          unselectable={!selectable}
+          name={key}
+          details={statusMap[key]}
+        />
+      ),
     };
   });
 
   const locationOptions = Object.keys(statusMap).map((key) => {
-    const selectable = key === "Ready" || key === "Busy"
+    const selectable = key === "Ready" || key === "Busy";
     return {
       selectable,
       name: key,
-      component: <StatusOption unselectable={!selectable} name={key} details={statusMap[key]} />,
+      component: (
+        <StatusOption
+          unselectable={!selectable}
+          name={key}
+          details={statusMap[key]}
+        />
+      ),
     };
   });
 
@@ -185,7 +197,7 @@ const EditProfileModal = (props) => {
         <CustomSelect
           options={statusOptions}
           name={"Status"}
-          label={"Set Status:"}
+          label={"Status:"}
           ref={formRefs.status}
           defaultVal={user.status.status}
           className={styles.statusSelect}
@@ -193,7 +205,7 @@ const EditProfileModal = (props) => {
         <CustomSelect
           options={locationOptions}
           name={"Location"}
-          label={"Set Location:"}
+          label={"Location:"}
           ref={formRefs.location}
           defaultVal={user.location}
           className={styles.statusSelect}
@@ -234,6 +246,20 @@ const EditProfileModal = (props) => {
 };
 
 const StatusOption = (props) => {
+  const details =
+    props.name !== "Searching" ? (
+      props.details
+    ) : (
+      <div>
+        Your status is set to Searching when you are on the{" "}
+        <img
+          style={{ height: "2rem" }}
+          src={balloonIcon}
+          alt={"balloonIcon"}
+        />{" "}
+        page.
+      </div>
+    );
   return (
     <div
       className={`${styles.statusOptionContainer} ${
@@ -241,7 +267,7 @@ const StatusOption = (props) => {
       }`}
     >
       <div className={styles.statusName}>{props.name}</div>
-      <div className={styles.statusDetails}>{props.details}</div>
+      <div className={styles.statusDetails}>{details}</div>
     </div>
   );
 };

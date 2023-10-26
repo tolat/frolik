@@ -6,6 +6,7 @@ const express = require("express");
 const { reqAuthenticated, tryCatch } = require("../utils/middleware");
 const { downloadFromS3, uploadToS3 } = require("../utils/S3");
 const { populateUser, populateFriends } = require("../utils/utils");
+const sharp= require('sharp')
 
 const router = express.Router({ mergeParams: true });
 
@@ -81,8 +82,16 @@ router.post(
     // Get stripped down populated friends list
     const populatedFriends = await populateFriends(user.friends);
 
+    // Resize/compress image before upload
+    const imageBuffer = Buffer.from(req.body.photoString, 'base64')
+    const reducedImageBuffer = await sharp(imageBuffer)
+      .resize(350, 350)
+      .toBuffer();
+    const imageString = reducedImageBuffer.toString("base64");
+    
+
     // Upload image to S3
-    uploadToS3(process.env.AWS_DEV_BUCKET, req.body.key, req.body.photoString)
+    uploadToS3(process.env.AWS_DEV_BUCKET, req.body.key, imageString)
       .then((response) => {
         res.send({ user, populatedFriends });
       })

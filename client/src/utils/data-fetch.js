@@ -2,6 +2,7 @@ import httpFetch from "./http-fetch";
 import { getServer } from "./env-utils";
 import { dataActions } from "../store/data-slice";
 import store from "../store";
+import { authActions } from "../store/auth-slice";
 
 export const fetchActivities = async (setData) => {
   const requestConfig = {
@@ -102,10 +103,10 @@ export const uploadProfilePicture = async (userID) => {
       }),
     };
 
-    console.log(requestConfig)
 
-    const handleResponse = async (response) => {
-      console.log(response.body);
+    const handleResponse = (response) => {
+      store.dispatch(authActions.setUser(response.user))
+      store.dispatch(authActions.setUserFriends(response.populatedFriends))
     };
 
     const handleError = (err) => {

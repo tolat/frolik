@@ -5,7 +5,8 @@ import downIcon from "../../images/down.png";
 
 const CustomSelect = forwardRef((props, ref) => {
   const [value, setValue] = useState(props.defaultVal);
-  const [optionsDisplay, setOptionsDisplay] = useState(false);
+  const [optionsDisplay, setOptionsDisplay] = useState("none");
+
 
   const handleToggleOptions = () => {
     setOptionsDisplay((prevState) => {

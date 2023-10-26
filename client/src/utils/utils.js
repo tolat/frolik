@@ -12,8 +12,8 @@ export const calcAvgRating = (activity) => {
 };
 
 export const pageLoader = async () => {
-  await fetchAuth()();
-  await hideModal();
+  fetchAuth();
+  if (store.getState().modal.marginLeft === "0%") await hideModal();
 
   if (!store.getState().auth.isAuthenticated) {
     return redirect("/login");

@@ -5,6 +5,7 @@ const GlobalsSchema = new Schema(
   {
     categoryColorMap: Object,
     statusMap: Object,
+    cityData: Object
   },
   { minimize: false }
 );

@@ -70,7 +70,6 @@
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
-  background-color: $green;
   color: white;
   padding: 0.7rem 2rem;
   font-weight: bold;
@@ -78,9 +77,21 @@
   text-transform: capitalize;
 }
 
-.statusContainer:hover{
-  cursor: pointer;
-  opacity: 0.8;
+.statusReady{
+  background-color: $green;
+}
+
+.statusSearching{
+  background-color: $blue;
+}
+
+.statusBusy{
+  background-color: $red;
+}
+
+.statusInactive{
+  background-color: $card_grey;
+  color: black;
 }
 
 .locationContainer{
