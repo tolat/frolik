@@ -53,15 +53,16 @@ const genBackgroundStr = (user, categoryColorMap) => {
 };
 
 const UserIcon = memo(function UserIcon(props) {
-  const categoryColorMap = useSelector((state) => state.auth.categoryColorMap);
+  const categoryColorMap = useSelector((state) => state.auth.globals.categoryColorMap);
   const backgroundString = genBackgroundStr(props.user, categoryColorMap);
   const photoDimension = `${props.sizeInRem - 2 * props.borderSizeInRem}rem`;
   const pieDimension = `${props.sizeInRem - props.borderSizeInRem}rem`;
   const backerDimension = `${props.sizeInRem}rem`;
   const dataState = useSelector((state) => state.data);
+  const master = dataState.masterPhotoDimension;
   const userData = dataState.users[props.user._id];
   const scalingFactor =
-    (parseFloat(props.sizeInRem) - 2 * parseFloat(props.borderSizeInRem)) / 25;
+    (parseFloat(props.sizeInRem) - 2 * parseFloat(props.borderSizeInRem)) / master;
   let zoom = userData.zoom;
   let crop = { ...userData.crop };
   crop.x = crop.x * scalingFactor;

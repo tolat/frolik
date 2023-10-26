@@ -13,7 +13,7 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.user = action.payload.user;
       state.user.friends = action.payload.populatedFriends
-      state.categoryColorMap = action.payload.categoryColorMap
+      state.globals = action.payload.globals
     },
     logout(state) {
       state.isAuthenticated = false;

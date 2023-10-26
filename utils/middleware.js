@@ -24,7 +24,16 @@ module.exports.reqAuthenticated = (req, res, next) => {
   }
 };
 
-module.exports.logIncoming = (req,res,next) =>{
+module.exports.logIncoming = (req, res, next) => {
   console.log(req.body);
-  next()
-}
+  next();
+};
+
+module.exports.tryCatch = (req, res, next) => {
+  try {
+    next();
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    res.status(500).send("Internal Server Error");
+  }
+};

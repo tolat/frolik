@@ -3,12 +3,13 @@ const User = require("../models/user");
 const Outing = require("../models/outing");
 const Activity = require("../models/activity");
 const express = require("express");
-const { reqAuthenticated } = require("../utils/middleware");
-const { downloadFromS3 } = require("../utils/S3");
+const { reqAuthenticated, tryCatch } = require("../utils/middleware");
+const { downloadFromS3, uploadToS3 } = require("../utils/S3");
+const { populateUser, populateFriends } = require("../utils/utils");
 
 const router = express.Router({ mergeParams: true });
 
-router.get("/:id/photo/:key", reqAuthenticated, async (req, res) => {
+router.get("/:id/photo/:key", reqAuthenticated, tryCatch, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
 
@@ -33,9 +34,11 @@ router.get("/:id/photo/:key", reqAuthenticated, async (req, res) => {
   }
 });
 
-
-router.get("/:id/profile-picture", reqAuthenticated, async (req, res) => {
-  try {
+router.get(
+  "/:id/profile-picture",
+  reqAuthenticated,
+  tryCatch,
+  async (req, res) => {
     const user = await User.findById(req.params.id);
 
     if (!user) {
@@ -49,11 +52,46 @@ router.get("/:id/profile-picture", reqAuthenticated, async (req, res) => {
         console.error("Error downloading image:", error);
         res.status(500).send("Internal Server Error");
       });
-  } catch (error) {
-    console.error("Error fetching user:", error);
-    res.status(500).send("Internal Server Error");
   }
-});
+);
+
+router.post(
+  "/:id/profile-picture",
+  reqAuthenticated,
+  tryCatch,
+  async (req, res) => {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    user.profile_picture = {
+      key: req.body.key,
+      crop: req.body.crop,
+      zoom: req.body.zoom,
+    };
+
+    user.markModified("profile_picture");
+    await user.save();
+
+    // Populate user
+    await populateUser(user);
+
+    // Get stripped down populated friends list
+    const populatedFriends = await populateFriends(user.friends);
+
+    // Upload image to S3
+    uploadToS3(process.env.AWS_DEV_BUCKET, req.body.key, req.body.photoString)
+      .then((response) => {
+        res.send({ user, populatedFriends });
+      })
+      .catch((error) => {
+        console.error("Error uploading image:", error);
+        res.status(500).send("Internal Server Error");
+      });
+  }
+);
 
 const timeOperation = async (fun, name) => {
   let start = Date.now();
@@ -64,5 +102,3 @@ const timeOperation = async (fun, name) => {
 };
 
 module.exports = router;
-
-

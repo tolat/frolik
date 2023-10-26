@@ -24,14 +24,6 @@
   margin-bottom: 2rem;
 }
 
-.nameEditor {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  margin: 1rem;
-  box-sizing: border-box;
-}
-
 .formSpacer {
   width: 2rem;
 }
@@ -129,6 +121,7 @@
   align-items: center;
   width: 100%;
   box-sizing: border-box;
+  margin-bottom: 1rem;
 }
 
 .revertButton{
@@ -137,4 +130,39 @@
   width: 7rem;
   font-size: 1.2rem;
  
+}
+
+.statusSelect{
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.statusOptionContainer{
+  font-size: 1.3rem;
+  background-color: $light_blue;
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.statusOptionContainer:hover{
+  cursor: pointer;
+}
+
+.unselectable{
+  color: grey;
+}
+
+.unselectable:hover{
+  cursor: auto;
+}
+
+.statusName{
+  font-weight: bold;
+}
+
+.statusDetails{
+  margin-top: 0.2rem;
+  font-size: 1rem;
+  font-weight: normal;
 }

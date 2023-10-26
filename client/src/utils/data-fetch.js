@@ -76,3 +76,42 @@ export const fetchPhotos = async (user) => {
     }
   }
 };
+
+export const uploadProfilePicture = async (userID) => {
+  const userData = store.getState().data.users[userID];
+  const user = store.getState().auth.user;
+  // Only proceed if changes have been made to the profile picture data
+  if (
+    (userData && userData.profile_picture !== user.profile_picture) ||
+    userData.zoom !== user.zoom ||
+    userData.crop !== user.crop
+  ) {
+
+    //*** NEED TO SCALE IMAGE DOWN TO 300x300 or smaller first ***
+    const requestConfig = {
+      url: `${getServer()}/user/${userID}/profile-picture`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({
+        photoString: userData.profile_picture,
+        zoom: userData.zoom,
+        crop: userData.crop,
+        key: user.username
+      }),
+    };
+
+    console.log(requestConfig)
+
+    const handleResponse = async (response) => {
+      console.log(response.body);
+    };
+
+    const handleError = (err) => {
+      console.log(err);
+    };
+
+    httpFetch(requestConfig, handleResponse, handleError);
+  }
+};

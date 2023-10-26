@@ -8,11 +8,14 @@ const UserSchema = new Schema(
     last_name: String,
     username: String,
     tagline: String,
-    status: String,
+    status: {
+      updated: Date,
+      status: String,
+    },
     profile_picture: {
       key: String,
       crop: Object,
-      zoom: Number
+      zoom: Number,
     },
     flake: Number,
     location: String,

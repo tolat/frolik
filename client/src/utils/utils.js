@@ -3,7 +3,6 @@ import store from "../store";
 import { fetchAuth } from "../store/auth-actions";
 import { hideModal } from "../store/modal-actions";
 import { goActions } from "../store/go-slice";
-import { initializeUserPhotos } from "../store/data-actions";
 
 export const calcAvgRating = (activity) => {
   return (

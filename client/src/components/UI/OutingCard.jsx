@@ -3,7 +3,7 @@ import styles from "./styles/OutingCard.module.scss";
 import UserIconCluster from "./UserIconCluster";
 
 const OutingCard = (props) => {
-  const categoryColorMap = useSelector(state=>state.auth.categoryColorMap)
+  const categoryColorMap = useSelector(state=>state.auth.globals.categoryColorMap)
   const o = props.outing;
 
   return (

@@ -54,7 +54,6 @@ const Profile = (props) => {
     dispatch(modalActions.showModal());
   };
 
-
   return !user ? null : (
     <div className={styles.container}>
       <EditProfileModal />
@@ -84,7 +83,7 @@ const Profile = (props) => {
         >{`${user.first_name} ${user.last_name}`}</div>
         <div className={styles.tagline}>{user.tagline}</div>
         <div className={styles.sideBySide}>
-          <div className={styles.statusContainer}>Status: {user.status}</div>
+          <div className={styles.statusContainer}>Status: {user.status.status}</div>
           <div className={styles.locationContainer}>
             <img
               style={{ marginRight: "10px" }}

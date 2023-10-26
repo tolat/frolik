@@ -25,7 +25,7 @@ const instructionIconMap = {
 };
 
 const ActivityCard = (props) => {
-  const categoryColorMap = useSelector(state=>state.auth.categoryColorMap)
+  const categoryColorMap = useSelector(state=>state.auth.globals.categoryColorMap)
   const statIconStyle = { width: "2rem", height: "2rem" };
   const statContainerStyle = { marginLeft: "1rem" };
   const [instructionsVisible, setInstructionsVisible] = useState(false);

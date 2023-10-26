@@ -1,0 +1,57 @@
+@import "../../../utils/responsive.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+}
+
+.valueContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.valueContainer:hover {
+  cursor: pointer;
+}
+
+.value {
+  width: 100%;
+}
+
+.arrow {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.arrow .label {
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.select {
+  width: 100%;
+  border: 1rem solid rgb(229, 238, 253);
+  background-color: rgb(229, 238, 253);
+  box-sizing: border-box;
+}
+
+.optionContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.optionsContainer {
+  position: absolute;
+  left: 0;
+  margin-top: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  border-top: 1px solid $card_grey;
+  z-index: 1;
+}

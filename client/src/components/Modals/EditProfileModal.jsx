@@ -9,6 +9,9 @@ import { arrayBufferToBase64 } from "../../utils/utils";
 import { dataActions } from "../../store/data-slice";
 import CroppedImage from "../UI/CroppedImage";
 import { hideModal } from "../../store/modal-actions";
+import { uploadProfilePicture } from "../../utils/data-fetch";
+import SimpleSelect from "../UI/SimpleSelect";
+import CustomSelect from "../UI/CustomSelect";
 
 const EditProfileModal = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -18,7 +21,8 @@ const EditProfileModal = (props) => {
   const modalDisplay = modalState.selector === "edit-profile" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
   const [editing, setEditing] = useState(false);
-  const photoDimentionStyle = { width: `25rem`, height: `25rem` };
+  const master = dataState.masterPhotoDimension;
+  const photoDimentionStyle = { width: `${master}rem`, height: `${master}rem` };
   const userData = dataState.users[user._id];
   const stagedData = userData.staged;
   const stagedPhoto = stagedData.profile_picture || userData.profile_picture;
@@ -26,11 +30,14 @@ const EditProfileModal = (props) => {
   const stagedZoom = stagedData.zoom || userData.zoom;
   const [preStageCrop, setPreStageCrop] = useState(stagedCrop);
   const [preStageZoom, setPreStageZoom] = useState(stagedZoom);
+  const statusMap = useSelector((state) => state.auth.globals.statusMap);
 
   const formRefs = {
     first_name: useRef(),
     last_name: useRef(),
     tagline: useRef(),
+    status: useRef(),
+    location: useRef(),
   };
 
   const handleShowCropper = () => {
@@ -81,8 +88,28 @@ const EditProfileModal = (props) => {
 
   const handleSave = () => {
     dispatch(dataActions.commitStagedPhotoData({ userID: user._id }));
+    uploadProfilePicture(user._id);
     hideModal();
   };
+
+
+  const statusOptions = Object.keys(statusMap).map((key) => {
+    const selectable = key === "Ready" || key === "Busy"
+    return {
+      selectable,
+      name: key,
+      component: <StatusOption unselectable={!selectable} name={key} details={statusMap[key]} />,
+    };
+  });
+
+  const locationOptions = Object.keys(statusMap).map((key) => {
+    const selectable = key === "Ready" || key === "Busy"
+    return {
+      selectable,
+      name: key,
+      component: <StatusOption unselectable={!selectable} name={key} details={statusMap[key]} />,
+    };
+  });
 
   return (
     <ModalPortal>
@@ -155,12 +182,29 @@ const EditProfileModal = (props) => {
             )}
           </div>
         </div>
-        <div className={styles.nameEditor}>
+        <CustomSelect
+          options={statusOptions}
+          name={"Status"}
+          label={"Set Status:"}
+          ref={formRefs.status}
+          defaultVal={user.status.status}
+          className={styles.statusSelect}
+        />
+        <CustomSelect
+          options={locationOptions}
+          name={"Location"}
+          label={"Set Location:"}
+          ref={formRefs.location}
+          defaultVal={user.location}
+          className={styles.statusSelect}
+        />
+        <div className={styles.sideBySide}>
           <SimpleInput
             type="text"
             id="first_name"
             name="first_name"
             label="First Name:"
+            ref={formRefs.first_name}
             defaultVal={user.first_name}
           />
           <div className={styles.formSpacer} />
@@ -169,6 +213,7 @@ const EditProfileModal = (props) => {
             id="last_name"
             name="last_name"
             label="Last Name:"
+            ref={formRefs.last_name}
             defaultVal={user.last_name}
           />
         </div>
@@ -177,6 +222,7 @@ const EditProfileModal = (props) => {
           id="tagline"
           name="tagline"
           label="Tagline:"
+          ref={formRefs.tagline}
           defaultVal={user.tagline}
         />
         <SimpleButton onClick={handleSave} className={styles.saveButton}>
@@ -184,6 +230,19 @@ const EditProfileModal = (props) => {
         </SimpleButton>
       </div>
     </ModalPortal>
+  );
+};
+
+const StatusOption = (props) => {
+  return (
+    <div
+      className={`${styles.statusOptionContainer} ${
+        props.unselectable ? styles.unselectable : null
+      }`}
+    >
+      <div className={styles.statusName}>{props.name}</div>
+      <div className={styles.statusDetails}>{props.details}</div>
+    </div>
   );
 };
 

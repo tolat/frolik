@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Activity = require("../models/activity");
 const User = require("../models/user");
 const Outing = require("../models/outing");
+const Globals = require("../models/globals");
 const dbUrl = process.env.DB_URL;
 const fs = require("fs");
 const sharp = require("sharp");
@@ -23,11 +24,24 @@ db.once("open", () => {
   console.log("SEEDING...");
 });
 
+const removeFileSuffix = (filename) => {
+  let newFileName = filename;
+  if (!filename.includes(".")) {
+    return filename;
+  }
+  for (let i = filename.length - 1; i >= 0; i--) {
+    newFileName = newFileName.slice(0, i);
+    if (filename[i] === ".") {
+      return newFileName;
+    }
+  }
+};
+
 const deleteAndUploadImagesToS3 = async (directoryPath, duplicate = false) => {
   const files = await fs.readdirSync(directoryPath);
 
   const deleteAndUpload = async (key, imagePath) => {
-    const simpleKey = key.substring(0, key.indexOf("."));
+    const simpleKey = removeFileSuffix(key);
     console.log("uploading: ", simpleKey);
     // Delete existing images from S3
     await deleteFromS3(process.env.AWS_DEV_BUCKET, simpleKey);
@@ -56,6 +70,27 @@ const deleteAndUploadImagesToS3 = async (directoryPath, duplicate = false) => {
   }
 };
 
+const seedGlobals = async () => {
+  const categoryColorMap = {
+    Games: "rgb(117, 204, 255)",
+    Art: "rgb(186, 255, 169)",
+    Sports: "rgb(255, 223, 141)",
+    Food: "rgb(255, 194, 156)",
+    Adventure: "rgb(255, 158, 166)",
+  };
+
+  const statusMap = {
+    Ready: "You are available for outing requests from anyone!",
+    Busy: "You are busy doing other, less fun things.",
+    Searching: "Your status is set to Searching when you are on the 'Go' page.",
+    Inactive:
+      "Your status will be set to Inactive after two weeks of inactivity.",
+  };
+
+  const globals = new Globals({categoryColorMap, statusMap})
+  await globals.save()
+};
+
 const seedUsers = async () => {
   //Uncomment to Upload seed images to S3
   //const profilePicsPath = `${__dirname}/images`;
@@ -78,7 +113,7 @@ const seedUsers = async () => {
     }
 
     user.profile_picture = {
-      key: `${user.first_name}`.toLowerCase(),
+      key: user.username,
       crop: { x: 0, y: 0 },
       zoom: 1,
     };
@@ -176,6 +211,10 @@ const seedOutings = async () => {
 };
 
 const seedDB = async () => {
+  await Globals.deleteMany({})
+  await seedGlobals()
+  console.log('done globals..')
+
   await User.deleteMany({});
   await seedUsers();
   console.log("done users..");

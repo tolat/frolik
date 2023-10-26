@@ -9,16 +9,15 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const session = require("express-session");
 const { handleCORS } = require("./utils/middleware");
+const bodyParser = require("body-parser");
 
 // Set up express
 const app = express();
-app.use(
-  "/static",
-  express.static(path.join(__dirname, "/public/"))
-);
+app.use("/static", express.static(path.join(__dirname, "/public/")));
 app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
 app.use(handleCORS);
+
 // Connect to the database and handle connection errors
 mongoose.connect(process.env.DB_URL, {
   useNewUrlParser: true,
@@ -60,7 +59,7 @@ passport.deserializeUser(User.deserializeUser());
 // App Routes
 app.use("/auth", require("./routes/auth"));
 app.use("/user", require("./routes/user"));
-app.use("/activity", require("./routes/activity"))
+app.use("/activity", require("./routes/activity"));
 
 // All routes go to the client, routing happens on the front end
 app.get("*", (req, res) => {

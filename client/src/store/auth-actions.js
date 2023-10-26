@@ -81,7 +81,7 @@ export const fetchLogout = () => {
       dispatch(dataActions.setUserPhotos([]));
       setTimeout(() => {
         dispatch(authActions.deleteUser());
-        //dispatch(dataActions.clearAllUserData())
+        // *** INCLUDE? dispatch(dataActions.clearAllUserData())
       }, 300);
     };
 
