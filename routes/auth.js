@@ -4,7 +4,7 @@ const Outing = require("../models/outing");
 const Activity = require("../models/activity");
 const express = require("express");
 const fs = require("fs/promises");
-const {categoryColorMap} = require("../utils/globals")
+const { categoryColorMap } = require("../utils/globals");
 
 const router = express.Router({ mergeParams: true });
 
@@ -30,6 +30,7 @@ const populateFriends = async (friends) => {
       flake: friendUser.flake,
       outings: strippedOutings,
       status: friendUser.status,
+      profile_picture: friendUser.profile_picture,
     };
 
     populatedFriends.push(friendData);
@@ -60,18 +61,18 @@ router.post("/login", passport.authenticate("local"), async (req, res) => {
 });
 
 router.get("/check", async (req, res) => {
-  if(req.isAuthenticated()){
-  let user = await User.findOne({ username: req.session.passport.user });
+  if (req.isAuthenticated()) {
+    let user = await User.findOne({ username: req.session.passport.user });
 
-  // Populate user
-  await populateUser(user);
+    // Populate user
+    await populateUser(user);
 
-  // Get stripped down populated friends list
-  const populatedFriends = await populateFriends(user.friends);
+    // Get stripped down populated friends list
+    const populatedFriends = await populateFriends(user.friends);
 
-  res.send({ user, populatedFriends, categoryColorMap });
-  }else{
-    res.send({})
+    res.send({ user, populatedFriends, categoryColorMap });
+  } else {
+    res.send({});
   }
 });
 

@@ -43,13 +43,10 @@ export const fetchProfilePic = async (userID) => {
 };
 
 export const fetchPhotos = async (user) => {
-  const dataStateUser = store.getState().data.users[user._id];
+  const userData = store.getState().data.users[user._id];
   for (let photoKey of user.photos) {
     // Check if photo has already been downloaded or queued
-    if (
-      !dataStateUser ||
-      !dataStateUser.photos.find((p) => p.key === photoKey)
-    ) {
+    if (!userData || !userData.photos.find((p) => p.key === photoKey)) {
       // Mark photo as queued for donwload in redux store
       store.dispatch(
         dataActions.queueUserPhoto({ userID: user._id, photoKey })

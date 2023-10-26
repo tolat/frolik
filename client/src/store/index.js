@@ -9,7 +9,7 @@ const store = configureStore({
     auth: authReducer,
     modal: modalReducer,
     go: goReducer,
-    data: dataReducer
+    data: dataReducer,
   },
 });
 

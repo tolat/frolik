@@ -15,9 +15,10 @@ import FilterActivitiesModal from "../Modals/FilterActivitiesModal";
 import balloonIcon from "../../images/air-balloon-light.png";
 import downIcon from "../../images/down.png";
 import upIcon from "../../images/up.png";
-import { calcAvgRating, initializeUserMedia, pageLoader } from "../../utils/utils";
+import { calcAvgRating, pageLoader } from "../../utils/utils";
 import { initialActivityFilter } from "../../utils/globals";
 import store from "../../store";
+import { hideModal } from "../../store/modal-actions";
 
 const filterReducer = (state, action) => {
   const applyFilter = (activities, filter) => {
@@ -156,7 +157,7 @@ const Go = (props) => {
           <UserIconCluster
             backerClassName={styles.iconBacker}
             users={users}
-            sizeInRem={16}
+            sizeInRem={20}
             borderSizeInRem={1.5}
           />
           <button onClick={handleAddUserClick} className={styles.roundButton}>

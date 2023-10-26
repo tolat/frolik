@@ -43,7 +43,7 @@ router.get("/:id/profile-picture", reqAuthenticated, async (req, res) => {
     }
 
     // Download image stream from S3 and pipe into response
-    downloadFromS3(process.env.AWS_DEV_BUCKET, user.profile_picture)
+    downloadFromS3(process.env.AWS_DEV_BUCKET, user.profile_picture.key)
       .then((imageStream) => imageStream.pipe(res))
       .catch((error) => {
         console.error("Error downloading image:", error);

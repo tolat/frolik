@@ -6,10 +6,9 @@ module.exports.userSeeds = [
     tagline: "Looking for a good time",
     status: "inactive",
     flake: ((Math.random() * 100) % 5).toFixed(1),
-    profile_picture: "adam.jpeg",
     photos: [],
     friends: [],
-    location: "Vancouver"
+    location: "Vancouver",
   },
   {
     first_name: "Torin",
@@ -20,7 +19,7 @@ module.exports.userSeeds = [
     flake: ((Math.random() * 100) % 5).toFixed(1),
     photos: [],
     friends: [],
-    location: "Vancouver"
+    location: "Vancouver",
   },
   {
     first_name: "Alex",
@@ -31,7 +30,7 @@ module.exports.userSeeds = [
     flake: ((Math.random() * 100) % 5).toFixed(1),
     photos: [],
     friends: [],
-    location: "Vancouver"
+    location: "Vancouver",
   },
   {
     first_name: "Josh",
@@ -42,7 +41,7 @@ module.exports.userSeeds = [
     flake: ((Math.random() * 100) % 5).toFixed(1),
     photos: [],
     friends: [],
-    location: "Vancouver"
+    location: "Vancouver",
   },
   {
     first_name: "Ingrid",
@@ -53,6 +52,6 @@ module.exports.userSeeds = [
     flake: ((Math.random() * 100) % 5).toFixed(1),
     photos: [],
     friends: [],
-    location: "Vancouver"
+    location: "Vancouver",
   },
 ];

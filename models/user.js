@@ -9,7 +9,11 @@ const UserSchema = new Schema(
     username: String,
     tagline: String,
     status: String,
-    profile_picture: String,
+    profile_picture: {
+      key: String,
+      crop: Object,
+      zoom: Number
+    },
     flake: Number,
     location: String,
     friends: [{ type: Schema.Types.ObjectId, ref: "User" }],

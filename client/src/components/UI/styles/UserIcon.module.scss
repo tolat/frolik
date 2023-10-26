@@ -17,6 +17,7 @@
   align-items: center;
   border-radius: 100rem;
   box-sizing: border-box;
+  position: relative;
 }
 
 .imageLoading {
@@ -61,6 +62,29 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.badgeContainer{
+  width: 30%;
+  height: 30%;
+  position: absolute;
+  background-color: rgb(255, 255, 255);
+  bottom: 0;
+  right: 0;
+  border-radius: 100rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.badgeContent{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 87%;
+  height: 87%;
+  background-color: aqua;
+  border-radius: 100rem;
 }
 
 

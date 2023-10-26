@@ -1,9 +1,9 @@
 import { redirect } from "react-router-dom";
 import store from "../store";
 import { fetchAuth } from "../store/auth-actions";
-import { hideModalFast } from "../store/modal-actions";
+import { hideModal } from "../store/modal-actions";
 import { goActions } from "../store/go-slice";
-import { fetchPhotos, fetchProfilePic } from "./data-fetch";
+import { initializeUserPhotos } from "../store/data-actions";
 
 export const calcAvgRating = (activity) => {
   return (
@@ -12,12 +12,15 @@ export const calcAvgRating = (activity) => {
   );
 };
 
-export const pageLoader =  () => {
-  fetchAuth()();
-  hideModalFast();
+export const pageLoader = async () => {
+  await fetchAuth()();
+  if(store.getState().selector !== 'none'){
+    console.log("hiding modal")
+    hideModal();
+    await setTimeout(5000)
+  }
 
   if (!store.getState().auth.isAuthenticated) {
-    console.log("going ot login")
     return redirect("/login");
   } else {
     // Set authenticated user as default for go page
@@ -25,32 +28,17 @@ export const pageLoader =  () => {
     if (!store.getState().go.outing.users.find((u) => u._id !== user._id))
       store.dispatch(goActions.setUsers([user]));
 
-      initializeUserMedia()
+    initializeUserPhotos();
   }
   return false;
 };
 
-export const initializeUserMedia = async (newOnly = true) => {
-  // if newOnly is flagged,
-  // Only download image data if is hasen't been downloaded
-  const dataStore = store.getState().data;
-  const user = store.getState().auth.user;
-  if (newOnly && !dataStore.users[user._id]) {
-    fetchProfilePic(user._id);
-    fetchPhotos(user);
-  } else if (newOnly && !dataStore.users[user._id].photos[0]) {
-    fetchPhotos(user);
-  } else if (!newOnly) {
-    fetchProfilePic(user._id)
-    fetchPhotos(user);
+export const arrayBufferToBase64 = (buffer) => {
+  var binary = "";
+  var bytes = new Uint8Array(buffer);
+  var len = bytes.byteLength;
+  for (var i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
   }
-
-  for (let friend of user.friends) {
-    if (newOnly && !dataStore.users[friend._id || friend]) {
-      fetchProfilePic(friend._id || friend);
-    } else if (!newOnly) {
-      fetchProfilePic(friend._id || friend);
-    }
-  }
+  return window.btoa(binary);
 };
-

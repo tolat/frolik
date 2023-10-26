@@ -4,8 +4,8 @@ import store from ".";
 import { getServer } from "../utils/env-utils";
 import { modalActions } from "./modal-slice";
 import { hideModal } from "./modal-actions";
-import { initializeUserMedia } from "../utils/utils";
 import { dataActions } from "./data-slice";
+import { initializeUserPhotos } from "./data-actions";
 
 // Create a login action to attempt to log in the user
 export const fetchLogin = (username, password, setIsLoggingIn) => {
@@ -25,9 +25,9 @@ export const fetchLogin = (username, password, setIsLoggingIn) => {
     };
 
     const handleResponse = async (response) => {
-      dispatch(authActions.login(response));
+      await dispatch(authActions.login(response));
       setIsLoggingIn(false)
-      initializeUserMedia();
+      initializeUserPhotos();
     };
 
     const handleError = (err) => {

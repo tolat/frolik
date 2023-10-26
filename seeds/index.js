@@ -77,7 +77,11 @@ const seedUsers = async () => {
       }
     }
 
-    user.profile_picture = `${user.first_name}`.toLowerCase();
+    user.profile_picture = {
+      key: `${user.first_name}`.toLowerCase(),
+      crop: { x: 0, y: 0 },
+      zoom: 1,
+    };
     user.photos = [
       "acroyoga",
       "beach",

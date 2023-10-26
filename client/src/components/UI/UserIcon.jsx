@@ -1,6 +1,7 @@
 import styles from "./styles/UserIcon.module.scss";
 import { memo } from "react";
 import { useSelector } from "react-redux";
+import CroppedImage from "./CroppedImage";
 
 const getCategoryPercentage = (category, user) => {
   const numCategory = user.outings.filter(
@@ -58,9 +59,10 @@ const UserIcon = memo(function UserIcon(props) {
   const pieDimension = `${props.sizeInRem - props.borderSizeInRem}rem`;
   const backerDimension = `${props.sizeInRem}rem`;
   const dataState = useSelector((state) => state.data);
-  const photoString = dataState.users[props.user._id]
-    ? dataState.users[props.user._id].profile_picture
-    : null;
+  const userData = dataState.users[props.user._id];
+  const zoom = userData.zoom;
+  const crop = userData.crop;
+  const photoString = userData ? userData.profile_picture : null;
 
   const pieStyle = {
     width: pieDimension,
@@ -79,13 +81,19 @@ const UserIcon = memo(function UserIcon(props) {
         style={{ ...backerStyle, ...props.style }}
         className={`${styles.whiteBacker} ${props.backerClassName}`}
       >
+        {props.badge ? (
+          <div className={`${styles.badgeContainer} ${props.backerClassName}`}>
+            <div className={styles.badgeContent}>{props.badge}</div>
+          </div>
+        ) : null}
         {!photoString ? null : (
           <div style={pieStyle} className={styles.pieChart}>
-            <img
-              src={`data:image/png;base64,${photoString}`}
-              className={styles.photo}
+            <CroppedImage
+              image={photoString}
+              zoom={zoom}
+              crop={crop}
               style={{ height: photoDimension, width: photoDimension }}
-              alt="profile_picture"
+              className={styles.photo}
             />
           </div>
         )}

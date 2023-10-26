@@ -14,6 +14,10 @@ Set up Add Users modal in Go page to display up to 4 non friend users
 and all friends that are "ready" or searching. Need to add at least 1 
 new connection to create an outing! (1 day)
 
+- Need page for creating account. (1day)
+
+- Need backend set up for account creation. (1day)
+
 - Finish chat page layout / interface. Put Chat in modal (1 day)
 
 - Get chat functionality working. need to make a chat object
@@ -34,9 +38,7 @@ is uploaded can the outing be marked as completed! (3 days)
 - Need notifications page showing freind requests, outing requests, and 
 confirmations. do this in modal. dispatch notifications (1 day)
 
-- Need page for creating account. (1day)
 
-- Need backend set up for account creation. (1day)
 
 - DEPLOY WOO!!! (3 days)
 

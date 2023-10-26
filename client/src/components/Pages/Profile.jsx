@@ -18,7 +18,7 @@ import EditProfileModal from "../Modals/EditProfileModal";
 import FriendCard from "../UI/FriendCard";
 import locationIcon from "../../images/location-dark.png";
 import {  pageLoader } from "../../utils/utils";
-import { fetchAuth } from "../../store/auth-actions";
+import { hideModal } from "../../store/modal-actions";
 
 const sliderIcons = [
   {
@@ -54,6 +54,7 @@ const Profile = (props) => {
     dispatch(modalActions.showModal());
   };
 
+
   return (
     <Fragment>
       <EditProfileModal />
@@ -68,9 +69,8 @@ const Profile = (props) => {
             />
             <UserIcon
               backerClassName={styles.iconBacker}
-              sizeInRem={16}
+              sizeInRem={20}
               user={user}
-              profilePic={user.profile_picture}
               borderSizeInRem={"1.5"}
             />
             <StatIcon
@@ -126,7 +126,6 @@ const Profile = (props) => {
 export default Profile;
 
 export const profileLoader = async () => {
-  await fetchAuth()()
   const redirect = await pageLoader();
   if (redirect) {
     return redirect;
