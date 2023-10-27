@@ -90,7 +90,7 @@ router.post(
     // Resize/compress image before upload
     const imageBuffer = Buffer.from(req.body.photoString, "base64");
     const reducedImageBuffer = await sharp(imageBuffer)
-      .resize(350, 350)
+      .jpeg({quality:50})
       .toBuffer();
     const imageString = reducedImageBuffer.toString("base64");
 

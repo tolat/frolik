@@ -15,7 +15,7 @@ const OutingCard = (props) => {
       <div className={styles.innerContainer}>
         <div className={styles.upperSection}>
           <div className={styles.leftUpperSection}>
-            <div className={styles.name}>{o.activity.name}</div>
+            <div className={styles.name}>{o.activity?.name}</div>
             <div className={styles.status}>
               {`${o.status} - ${new Date(o.date_completed).toDateString()}`}
             </div>

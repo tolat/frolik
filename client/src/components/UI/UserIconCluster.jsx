@@ -19,7 +19,7 @@ const UserIconCluster = (props) => {
 
   return (
     <div className={styles.container} style={containerStyle}>
-      {props.users.length === 1 ? (
+      {props.users?.length === 1 ? (
         <UserIcon
           backer={true}
           backerClassName={props.backerClassName}
@@ -27,7 +27,7 @@ const UserIconCluster = (props) => {
           user={props.users[0]}
           borderSizeInRem={props.borderSizeInRem}
         />
-      ) : props.users.length === 2 ? (
+      ) : props.users?.length === 2 ? (
         <Fragment>
           <UserIcon
             backer={true}
@@ -53,7 +53,7 @@ const UserIconCluster = (props) => {
             borderSizeInRem={parseFloat(props.borderSizeInRem) / mag22}
           />
         </Fragment>
-      ) : props.users.length === 3 ? (
+      ) : props.users?.length === 3 ? (
         <Fragment>
           <UserIcon
             backer={true}
@@ -98,7 +98,7 @@ const UserIconCluster = (props) => {
             borderSizeInRem={parseFloat(props.borderSizeInRem) / mag33}
           />
         </Fragment>
-      ) : props.users.length === 4 ? (
+      ) : props.users?.length === 4 ? (
         <Fragment>
           <UserIcon
             backer={true}

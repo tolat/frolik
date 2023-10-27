@@ -70,14 +70,14 @@ const EditProfileModal = (props) => {
     setEditing(true);
   };
 
-  const stagePreStagedData = () =>{
+  const stagePreStagedCrop = () => {
     dispatch(
       dataActions.stageUserCrop({ userID: user._id, crop: preStageCrop })
     );
     dispatch(
       dataActions.stageUserZoom({ userID: user._id, zoom: preStageZoom })
     );
-  }
+  };
 
   const handleHideCropper = () => {
     // Set data changed to true if crop/zoom have been updated
@@ -92,7 +92,7 @@ const EditProfileModal = (props) => {
     }
 
     setEditing(false);
-    stagePreStagedData()
+    stagePreStagedCrop();
   };
 
   const handleUploadClick = () => {
@@ -123,13 +123,20 @@ const EditProfileModal = (props) => {
     setEditing(false);
   };
 
-  const resetData = () =>{
+  const resetData = () => {
     dispatchDataChanged({ type: "reset" });
-    setSaveButtonText("Save")
-  }
+    setSaveButtonText("Save");
+  };
 
   const handleSave = () => {
-    stagePreStagedData()
+    // Hide cropper if it is open
+    handleHideCropper()
+
+    // Stage prestaged image data if image has been edited
+    if (dataChangedState.crop) {
+      stagePreStagedCrop();
+    }
+
     setSaveButtonText("Saving..");
     dispatch(dataActions.commitStagedPhotoData({ userID: user._id }));
     const data = {

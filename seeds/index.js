@@ -50,7 +50,7 @@ const deleteAndUploadImagesToS3 = async (directoryPath, duplicate = false) => {
     // Upload image to s3
     const imageBuffer = await fs.readFileSync(imagePath);
     const reducedImageBuffer = await sharp(imageBuffer)
-      .resize(280, 280)
+      .jpeg({quality:50})
       .toBuffer();
 
     const imageString = reducedImageBuffer.toString("base64");
