@@ -2,11 +2,9 @@ import httpFetch from "../utils/http-fetch";
 import { authActions } from "./auth-slice";
 import store from ".";
 import { getServer } from "../utils/env-utils";
-import { hideModal } from "./modal-actions";
+import { hideModalFast } from "./modal-actions";
 import { dataActions } from "./data-slice";
-import { initializeUserPhotos } from "./data-actions";
 
-// Create a login action to attempt to log in the user
 export const fetchLogin = (username, password, setIsLoggingIn) => {
   // config for login post request
   return async (dispatch) => {
@@ -26,7 +24,6 @@ export const fetchLogin = (username, password, setIsLoggingIn) => {
     const handleResponse = (response) => {
       dispatch(authActions.login(response));
       setIsLoggingIn(false);
-      initializeUserPhotos();
     };
 
     const handleError = (err) => {
@@ -40,55 +37,47 @@ export const fetchLogin = (username, password, setIsLoggingIn) => {
   };
 };
 
-// Create a check auth action to check if session is authenticated on page load
 export const fetchAuth = () => {
-  return new Promise((resolve, reject) => {
-    const dispatch = store.dispatch;
+  const dispatch = store.dispatch;
 
-    const requestConfig = { url: `${getServer()}/auth/check` };
+  const requestConfig = { url: `${getServer()}/auth/check` };
 
-    const handleResponse = (response) => {
-      response.user
-        ? dispatch(authActions.login(response))
-        : dispatch(authActions.logout());
+  // If session is authenticated, dispatch login to state
+  const handleResponse = (authData) => {
+    if (authData.user) dispatch(authActions.login(authData));
+  };
 
-      resolve();
-    };
+  const handleError = (err) => {
+    dispatch(authActions.logout());
+  };
 
-    const handleError = (err) => {
-      dispatch(authActions.logout());
-      console.log(err);
-      reject();
-    };
-
+  try {
     httpFetch(requestConfig, handleResponse, handleError);
-  });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export const fetchLogout = () => {
-  // config for login post request
-  return async (dispatch) => {
-    // If dispatch is undefined (this funciton is called from outside a component),
-    // use the dispatch method on the store object
-    dispatch = dispatch ? dispatch : (dispatch = store.dispatch);
+  const dispatch = store.dispatch;
 
-    const requestConfig = { url: `${getServer()}/auth/logout` };
+  const requestConfig = { url: `${getServer()}/auth/logout` };
 
-    const handleResponse = async () => {
-      if (store.getState().modal.marginLeft === "0%") await hideModal();
-      dispatch(authActions.logout());
+  const handleResponse = () => {
+    window.location = "/login";
+    if (store.getState().modal.marginLeft === "0%") hideModalFast();
+    dispatch(authActions.logout());
+    setTimeout(() => {
       dispatch(dataActions.setUserProfilePicture(false));
       dispatch(dataActions.setUserPhotos([]));
-      setTimeout(() => {
-        dispatch(authActions.deleteUser());
-        // *** INCLUDE? dispatch(dataActions.clearAllUserData())
-      }, 300);
-    };
-
-    const handleError = (err) => {
-      throw new Error(err);
-    };
-
-    await httpFetch(requestConfig, handleResponse, handleError);
+      dispatch(authActions.deleteUser());
+      dispatch(dataActions.clearAllUserData());
+    }, 500);
   };
+
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
 };

@@ -24,10 +24,10 @@ const EditProfileModal = (props) => {
   const master = dataState.masterPhotoDimension;
   const photoDimentionStyle = { width: `${master}rem`, height: `${master}rem` };
   const userData = dataState.users[user._id];
-  const stagedData = userData.staged;
-  const stagedPhoto = stagedData.profile_picture || userData.profile_picture;
-  const stagedCrop = stagedData.crop || userData.crop;
-  const stagedZoom = stagedData.zoom || userData.zoom;
+  const stagedData = userData?.staged
+  const stagedPhoto = stagedData?.profile_picture || userData?.profile_picture;
+  const stagedCrop = stagedData?.crop || userData?.crop;
+  const stagedZoom = stagedData?.zoom || userData?.zoom;
   const [preStageCrop, setPreStageCrop] = useState(stagedCrop);
   const [preStageZoom, setPreStageZoom] = useState(stagedZoom);
   const globals = useSelector(state => state.auth.globals)
@@ -184,7 +184,7 @@ const EditProfileModal = (props) => {
             >
               Upload New Picture
             </SimpleButton>
-            {stagedPhoto === userData.profile_picture ? null : (
+            {stagedPhoto === userData?.profile_picture ? null : (
               <SimpleButton
                 onClick={handleRevert}
                 className={styles.revertButton}
@@ -199,7 +199,7 @@ const EditProfileModal = (props) => {
           name={"Status"}
           label={"Status:"}
           ref={formRefs.status}
-          defaultVal={user.status.status}
+          defaultVal={user?.status?.status}
           className={styles.statusSelect}
         />
         <CustomSelect

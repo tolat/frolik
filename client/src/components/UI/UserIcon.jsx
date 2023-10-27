@@ -4,11 +4,11 @@ import { useSelector } from "react-redux";
 import CroppedImage from "./CroppedImage";
 
 const getCategoryPercentage = (category, user) => {
-  const numCategory = user.outings.filter(
+  const numCategory = user.outings?.filter(
     (o) => o.activity.category === category
   ).length;
 
-  return (100 * (numCategory / user.outings.length)).toFixed(2);
+  return (100 * (numCategory / user?.outings?.length)).toFixed(2);
 };
 
 const genBackgroundStr = (user, categoryColorMap) => {
@@ -60,14 +60,14 @@ const UserIcon = memo(function UserIcon(props) {
   const backerDimension = `${props.sizeInRem}rem`;
   const dataState = useSelector((state) => state.data);
   const master = dataState.masterPhotoDimension;
-  const userData = dataState.users[props.user._id];
+  const userData = dataState.users[props.user?._id];
   const scalingFactor =
     (parseFloat(props.sizeInRem) - 2 * parseFloat(props.borderSizeInRem)) / master;
-  let zoom = userData.zoom;
-  let crop = { ...userData.crop };
+  let zoom = userData?.zoom;
+  let crop = { ...userData?.crop };
   crop.x = crop.x * scalingFactor;
   crop.y = crop.y * scalingFactor;
-  const photoString = userData ? userData.profile_picture : null;
+  const photoString = userData?.profile_picture
 
   const pieStyle = {
     width: pieDimension,

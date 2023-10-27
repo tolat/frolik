@@ -16,7 +16,15 @@ function Login() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  // If authenticated, navigate to profile
+  useEffect(() => {
+    if (authState.isAuthenticated) {
+      navigate("/profile");
+    }
+  }, [authState.isAuthenticated, navigate]);
+
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoggingIn(true);
     dispatch(
@@ -28,13 +36,7 @@ function Login() {
     );
   };
 
-  // if authenticated, navigate to profile
-  useEffect(() => {
-    if (authState.isAuthenticated) {
-      navigate("/profile");
-    }
-  }, [authState.isAuthenticated, navigate]);
-
+  
   return (
     <div className={styles["login-page"]}>
       <form className={styles["login-form"]} onSubmit={handleSubmit}>

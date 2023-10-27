@@ -5,19 +5,23 @@ import store from "../store";
 import { authActions } from "../store/auth-slice";
 
 export const fetchActivities = async (setData) => {
-  const requestConfig = {
-    url: `${getServer()}/activity/get-all`,
-  };
+  return new Promise((resolve, reject) => {
+    const requestConfig = {
+      url: `${getServer()}/activity/get-all`,
+    };
 
-  const handleResponse = (response) => {
-    setData(response.activities);
-  };
+    const handleResponse = (response) => {
+      setData(response.activities);
+      resolve();
+    };
 
-  const handleError = (err) => {
-    throw new Error(err);
-  };
+    const handleError = (err) => {
+      reject();
+      throw new Error(err);
+    };
 
-  await httpFetch(requestConfig, handleResponse, handleError);
+    httpFetch(requestConfig, handleResponse, handleError);
+  });
 };
 
 export const fetchProfilePic = async (userID) => {
@@ -87,8 +91,6 @@ export const uploadProfilePicture = async (userID) => {
     userData.zoom !== user.zoom ||
     userData.crop !== user.crop
   ) {
-
-    //*** NEED TO SCALE IMAGE DOWN TO 300x300 or smaller first ***
     const requestConfig = {
       url: `${getServer()}/user/${userID}/profile-picture`,
       headers: {
@@ -99,14 +101,13 @@ export const uploadProfilePicture = async (userID) => {
         photoString: userData.profile_picture,
         zoom: userData.zoom,
         crop: userData.crop,
-        key: user.username
+        key: user.username,
       }),
     };
 
-
     const handleResponse = (response) => {
-      store.dispatch(authActions.setUser(response.user))
-      store.dispatch(authActions.setUserFriends(response.populatedFriends))
+      store.dispatch(authActions.setUser(response.user));
+      store.dispatch(authActions.setUserFriends(response.populatedFriends));
     };
 
     const handleError = (err) => {

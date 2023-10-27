@@ -17,7 +17,7 @@ import { modalActions } from "../../store/modal-slice";
 import EditProfileModal from "../Modals/EditProfileModal";
 import FriendCard from "../UI/FriendCard";
 import locationIcon from "../../images/location-dark.png";
-import { pageLoader } from "../../utils/utils";
+import { pageRouteLoader } from "../../utils/utils";
 
 const sliderIcons = [
   {
@@ -48,7 +48,7 @@ const Profile = (props) => {
   const dataState = useSelector((state) => state.data);
   const userData = dataState.users[user._id];
   const userPhotos = getPhotosFromState(userData);
-  const userStatus = user.status.status;
+  const userStatus = user?.status?.status;
 
   let statusClassName = null;
   switch (userStatus) {
@@ -73,7 +73,7 @@ const Profile = (props) => {
     dispatch(modalActions.showModal());
   };
 
-  return !user ? null : (
+  return (
     <div className={styles.container}>
       <EditProfileModal />
       <div className={styles.nonMediaSection}>
@@ -94,7 +94,7 @@ const Profile = (props) => {
             alt="outings"
             icon={outingsIcon}
             iconStyle={iconStyle}
-            rating={user.outings.length}
+            rating={user.outings?.length}
           />
         </div>
         <div
@@ -103,7 +103,7 @@ const Profile = (props) => {
         <div className={styles.tagline}>{user.tagline}</div>
         <div className={styles.sideBySide}>
           <div className={`${styles.statusContainer} ${statusClassName}`}>
-            Status: {user.status.status}
+            Status: {user?.status?.status}
           </div>
           <div className={styles.locationContainer}>
             <img
@@ -144,10 +144,10 @@ const Profile = (props) => {
 export default Profile;
 
 export const profileLoader = async () => {
-  const redirect = await pageLoader();
+  const redirect = await pageRouteLoader();
   if (redirect) {
     return redirect;
   }
 
-  return null;
+  return null
 };

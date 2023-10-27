@@ -2,7 +2,7 @@ import { redirect } from "react-router-dom";
 import store from "../store";
 import { fetchAuth } from "../store/auth-actions";
 import { hideModal } from "../store/modal-actions";
-import { goActions } from "../store/go-slice";
+import { initializeUserPhotos } from "../store/data-actions";
 
 export const calcAvgRating = (activity) => {
   return (
@@ -11,19 +11,21 @@ export const calcAvgRating = (activity) => {
   );
 };
 
-export const pageLoader = async () => {
+export const pageRouteLoader = async () => {
+  // fetch session authentication in the background
   fetchAuth();
+
+  // Hide Modal if it is visible. await it to make sure visible modal
+  // doesn't disappear until the modal is hidden
   if (store.getState().modal.marginLeft === "0%") await hideModal();
 
+  // Redirect if user is not authenticated
   if (!store.getState().auth.isAuthenticated) {
     return redirect("/login");
   } else {
-    // Set authenticated user as default for go page
-    const user = store.getState().auth.user;
-    if (!store.getState().go.outing.users.find((u) => u._id !== user._id))
-      store.dispatch(goActions.setUsers([user]));
+    initializeUserPhotos();
+    return false;
   }
-  return false;
 };
 
 export const arrayBufferToBase64 = (buffer) => {

@@ -1,23 +1,18 @@
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom"; // Import Link from react-router-dom
 import styles from "./styles/Navbar.module.scss";
-import { useDispatch } from "react-redux";
 import { fetchLogout } from "../../store/auth-actions";
-import { useNavigate } from "react-router-dom";
 import NavButton from "../UI/NavButton";
 import logo from "../../images/balloon1.png";
 
 const Navbar = (props) => {
   const authState = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const makeActive = (navData) =>
     navData.isActive ? styles.activeLink : "none";
 
-  const handleLogout = async (e) => {
+  const handleLogout = (e) => {
     e.preventDefault();
-    await dispatch(fetchLogout());
-    navigate("/login");
+    fetchLogout();
   };
 
   return (

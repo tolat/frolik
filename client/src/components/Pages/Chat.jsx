@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import styles from "./styles/Chat.module.scss";
 import FriendCard from "../UI/FriendCard";
-import { pageLoader } from "../../utils/utils";
+import { pageRouteLoader } from "../../utils/utils";
 
 const Chat = (props) => {
   const chatboxEl = useRef();
@@ -63,9 +63,10 @@ const Chat = (props) => {
 export default Chat;
 
 export const chatLoader = async () => {
-  const redirect = await pageLoader();
+  const redirect = await pageRouteLoader();
   if (redirect) {
     return redirect;
   }
+
   return null;
 };

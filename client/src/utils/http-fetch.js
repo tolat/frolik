@@ -22,16 +22,13 @@ export default async function httpFetch(
         throw new Error(`Request failed with status: ${response.status}`);
       }
     } else {
-      const contentType =  response.headers.get('Content-Type')
-      if(contentType && contentType.includes('application/json')){
+      const contentType = response.headers.get("Content-Type");
+      if (contentType && contentType.includes("application/json")) {
         const data = await response.json();
-        handleResponse(data)
-      } else{
-        handleResponse(response)
+        handleResponse(data);
+      } else {
+        handleResponse(response);
       }
-      
-      
-      return response;
     }
   } catch (err) {
     handleError(err);

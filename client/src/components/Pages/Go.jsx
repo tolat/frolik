@@ -15,16 +15,17 @@ import FilterActivitiesModal from "../Modals/FilterActivitiesModal";
 import balloonIcon from "../../images/air-balloon-light.png";
 import downIcon from "../../images/down.png";
 import upIcon from "../../images/up.png";
-import { calcAvgRating, pageLoader } from "../../utils/utils";
+import { calcAvgRating, pageRouteLoader } from "../../utils/utils";
 import { initialActivityFilter } from "../../utils/globals";
 import store from "../../store";
+import { goActions } from "../../store/go-slice";
 
 const filterReducer = (state, action) => {
   const applyFilter = (activities, filter) => {
     const filteredActivities = [];
     const completedActivities = store
       .getState()
-      .auth.user.outings.map((outing) => outing.activity._id);
+      .auth.user?.outings?.map((outing) => outing.activity._id);
 
     // Apply category filter
     for (let activity of activities) {
@@ -87,15 +88,31 @@ const filtersAreEqual = (f1, f2) => {
 };
 
 const Go = (props) => {
+  const goUsers = useSelector((state) => state.go.outing.users);
   const dispatch = useDispatch();
+  const outings = useSelector((state) => state.auth.user.outings);
+  const completedActivities = outings?.map((outing) => outing.activity._id);
+  const goState = useSelector((state) => state.go);
   const [activityFilter, dispatchFilter] = useReducer(
     filterReducer,
     initialActivityFilter
   );
-  const Outings = useSelector((state) => state.auth.user.outings);
-  const completedActivities = Outings.map((outing) => outing.activity._id);
-  const goState = useSelector((state) => state.go);
-  const users = goState.outing.users;
+
+  // Get all activities
+  useEffect(() => {
+    async function fetchActivityData() {
+      const setInitial = (activities) => {
+        dispatchFilter({ type: "set-initial", activities });
+      };
+      await fetchActivities(setInitial);
+      dispatchFilter({
+        type: "apply-filter",
+        filter: initialActivityFilter.filter,
+      });
+    }
+
+    fetchActivityData();
+  }, []);
 
   // Handle Add user button click
   const handleAddUserClick = () => {
@@ -114,22 +131,6 @@ const Go = (props) => {
     dispatch(modalActions.setSelector("filter-activities"));
     dispatch(modalActions.showModal());
   };
-
-  // Get all activities
-  useEffect(() => {
-    async function fetchActivityData() {
-      const setInitial = (activities) => {
-        dispatchFilter({ type: "set-initial", activities });
-      };
-      await fetchActivities(setInitial);
-      dispatchFilter({
-        type: "apply-filter",
-        filter: initialActivityFilter.filter,
-      });
-    }
-
-    fetchActivityData();
-  }, []);
 
   return (
     <Fragment>
@@ -155,7 +156,7 @@ const Go = (props) => {
           </button>
           <UserIconCluster
             backerClassName={styles.iconBacker}
-            users={users}
+            users={goUsers}
             sizeInRem={20}
             borderSizeInRem={1.5}
           />
@@ -243,10 +244,14 @@ const Go = (props) => {
 export default Go;
 
 export const goLoader = async () => {
-  const redirect = await pageLoader();
+  const redirect = await pageRouteLoader();
   if (redirect) {
     return redirect;
   }
+
+  // Make sure to goState outing has at least the main user in the userlist
+  if (!store.getState().go.outing.users[0])
+    store.dispatch(goActions.setUsers([store.getState().auth.user]));
 
   return null;
 };
