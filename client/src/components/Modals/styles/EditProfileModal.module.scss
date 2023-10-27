@@ -20,7 +20,7 @@
   flex-direction: column;
 }
 
-.userPhoto{
+.userPhoto {
   margin-bottom: 2rem;
 }
 
@@ -43,8 +43,27 @@
   margin-bottom: 5rem;
 }
 
+.unclickableButton{
+  background-color: $button_grey;
+  color: #bbbbbb;
+  border: none;
+  padding: 15px 20px;
+  cursor: auto;
+  font-size: 16px;
+  margin-top: 2rem;
+  width: 100%;
+  font-size: 1.2rem;
+  justify-self: flex-end;
+  margin-bottom: 5rem;
+}
+
+.unclickableButton:hover{
+  cursor: auto;
+  opacity: 1;
+}
+
 .cropButton {
-  background-color: #f0f0f0;
+  background-color: $button_grey;
   color: #000000;
   border: none;
   padding: 1rem;
@@ -116,7 +135,7 @@
   height: 100%;
 }
 
-.sideBySide{
+.sideBySide {
   display: flex;
   align-items: center;
   width: 100%;
@@ -124,44 +143,50 @@
   margin-bottom: 1rem;
 }
 
-.revertButton{
+.revertButton {
   background-color: $red;
   color: white;
   width: 7rem;
   font-size: 1.2rem;
- 
 }
 
-.statusSelect{
+.statusSelect {
   font-size: 1.3rem;
   margin-bottom: 1rem;
 }
 
-.statusOptionContainer{
+.locationSelect {
   font-size: 1.3rem;
-  background-color: $light_blue;
+  margin-bottom: 1rem;
+}
+
+.statusOptionContainer {
+  font-size: 1.3rem;
+  background-color: white;
   padding: 1rem;
   width: 100%;
   box-sizing: border-box;
 }
 
-.statusOptionContainer:hover{
+.statusOptionContainer:hover {
   cursor: pointer;
+  background-color: $card_grey;
 }
 
-.unselectable{
+.unselectable {
   color: grey;
 }
 
-.unselectable:hover{
+.unselectable:hover {
   cursor: auto;
+  background-color: white;
 }
 
-.statusName{
+.statusName {
   font-weight: bold;
 }
 
-.statusDetails{
+.statusDetails {
   margin-top: 0.2rem;
   font-size: 1.1rem;
   font-weight: normal;

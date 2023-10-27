@@ -8,35 +8,14 @@
   width: 100%;
 }
 
-.valueContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-}
-
-.valueContainer:hover {
-  cursor: pointer;
-}
-
-.value {
-  width: 100%;
-}
-
-.arrow {
-  height: 1.5rem;
-  width: 1.5rem;
-}
-
-.arrow .label {
-  margin-bottom: 0.5rem;
-  width: 100%;
-}
-
-.select {
+.input {
   width: 100%;
   background-color: rgb(229, 238, 253);
   box-sizing: border-box;
+  border: none;
+  padding: 1rem;
+  font-size: 1.3rem;
+  outline: none;
 }
 
 .optionContainer {
@@ -44,17 +23,23 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  padding: 0.5rem;
 }
 
-.optionContainer:hover{
+.optionContainer:hover {
   cursor: pointer;
+  background-color: $card_grey;
 }
 
 .optionsContainer {
   position: absolute;
   left: 0;
+  margin-top: 5.5rem;
   width: 100%;
   box-sizing: border-box;
   border: 1px solid #c1c1c1;
   z-index: 1;
+  max-height: 20rem;
+  background-color: white;
+  overflow-y: scroll;
 }

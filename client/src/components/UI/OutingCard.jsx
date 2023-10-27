@@ -9,7 +9,7 @@ const OutingCard = (props) => {
   return (
     <div style={props.style} className={styles.outerContainer}>
       <div
-        style={{ backgroundColor: categoryColorMap[o.activity.category] }}
+        style={{ backgroundColor: categoryColorMap[o.activity?.category] }}
         className={styles.categoryStripe}
       ></div>
       <div className={styles.innerContainer}>

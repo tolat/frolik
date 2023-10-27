@@ -117,3 +117,31 @@ export const uploadProfilePicture = async (userID) => {
     httpFetch(requestConfig, handleResponse, handleError);
   }
 };
+
+export const uploadProfileData = (userID, data, resetData) => {
+  const requestConfig = {
+    url: `${getServer()}/user/${userID}/profile-data`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(data),
+  };
+
+  const handleResponse = (response) => {
+    // Update user in redux store
+    store.dispatch(authActions.setUser(response.user));
+
+    // Upload profile picture data once user data has been updated
+    uploadProfilePicture(userID);
+
+    // Reset data 
+    resetData()
+  };
+
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};

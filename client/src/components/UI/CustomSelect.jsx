@@ -7,6 +7,19 @@ const CustomSelect = forwardRef((props, ref) => {
   const [value, setValue] = useState(props.defaultVal);
   const [optionsDisplay, setOptionsDisplay] = useState("none");
 
+  const handleSetDataChanged = (value) => {
+    if (value !== props.defaultVal) {
+      props.setDataChanged && props.setDataChanged(true);
+    } else {
+      props.setDataChanged && props.setDataChanged(false);
+    }
+  };
+
+  const handleChange = (o) => {
+    handleToggleOptions();
+    setValue(o.name);
+    handleSetDataChanged(o.name);
+  };
 
   const handleToggleOptions = () => {
     setOptionsDisplay((prevState) => {
@@ -24,13 +37,18 @@ const CustomSelect = forwardRef((props, ref) => {
         {props.label}
       </label>
       <div
+        tabIndex={"0"}
+        onBlur={() => {
+          setOptionsDisplay("none");
+        }}
         className={styles.select}
         name={props.name}
         id={`${props.name}-select`}
-        ref={ref}
       >
         <div onClick={handleToggleOptions} className={styles.valueContainer}>
-          <div className={styles.value}>{value}</div>
+          <div ref={ref} className={styles.value}>
+            {value}
+          </div>
           <img
             className={styles.arrow}
             style={{ display: optionsDisplay === "block" ? "none" : "block" }}
@@ -55,8 +73,7 @@ const CustomSelect = forwardRef((props, ref) => {
               onClick={
                 o.selectable
                   ? () => {
-                      handleToggleOptions();
-                      setValue(o.name);
+                      handleChange(o);
                     }
                   : null
               }

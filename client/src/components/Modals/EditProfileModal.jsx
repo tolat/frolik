@@ -3,15 +3,23 @@ import SimpleButton from "../UI/SimpleButton";
 import SimpleInput from "../UI/SimpleInput";
 import styles from "./styles/EditProfileModal.module.scss";
 import ModalPortal from "./ModalPortal";
-import { useRef, useState } from "react";
+import { useReducer, useRef, useState } from "react";
 import ImageCropper from "../Tools/ImageCropper";
 import { arrayBufferToBase64 } from "../../utils/utils";
 import { dataActions } from "../../store/data-slice";
 import CroppedImage from "../UI/CroppedImage";
-import { hideModal } from "../../store/modal-actions";
-import { uploadProfilePicture } from "../../utils/data-fetch";
+import { uploadProfileData } from "../../utils/data-fetch";
 import CustomSelect from "../UI/CustomSelect";
 import balloonIcon from "../../images/balloon1.png";
+import CustomAutocomplete from "../UI/CustomAutocomplete";
+
+const dataChangedReducer = (state, action) => {
+  if (action.type === "reset") {
+    return {};
+  } else {
+    return { ...state, [`${action.type}`]: action.value };
+  }
+};
 
 const EditProfileModal = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -24,14 +32,25 @@ const EditProfileModal = (props) => {
   const master = dataState.masterPhotoDimension;
   const photoDimentionStyle = { width: `${master}rem`, height: `${master}rem` };
   const userData = dataState.users[user._id];
-  const stagedData = userData?.staged
+  const stagedData = userData?.staged;
   const stagedPhoto = stagedData?.profile_picture || userData?.profile_picture;
   const stagedCrop = stagedData?.crop || userData?.crop;
   const stagedZoom = stagedData?.zoom || userData?.zoom;
   const [preStageCrop, setPreStageCrop] = useState(stagedCrop);
   const [preStageZoom, setPreStageZoom] = useState(stagedZoom);
-  const globals = useSelector(state => state.auth.globals)
-  const statusMap = globals.statusMap;
+  const globals = useSelector((state) => state.auth.globals);
+  const statusMap = globals?.statusMap;
+  const cities = globals?.cityData;
+  const [saveButtonText, setSaveButtonText] = useState("Save");
+  const [dataChangedState, dispatchDataChanged] = useReducer(
+    dataChangedReducer,
+    {}
+  );
+
+  // Data has been changed if dataChangedState has any true field values
+  const dataChanged = Object.keys(dataChangedState)
+    .map((k) => dataChangedState[k])
+    .filter((val) => val)[0];
 
   const formRefs = {
     first_name: useRef(),
@@ -52,6 +71,17 @@ const EditProfileModal = (props) => {
   };
 
   const handleHideCropper = () => {
+    // Set data changed to true if crop/zoom have been updated
+    if (
+      preStageCrop.x !== user.profile_picture?.crop.x ||
+      preStageCrop.y !== user.profile_picture?.crop.y ||
+      preStageZoom !== user.profile_picture?.zoom
+    ) {
+      dispatchDataChanged({ type: "crop", value: true });
+    } else {
+      dispatchDataChanged({ type: "crop", value: false });
+    }
+
     setEditing(false);
     dispatch(
       dataActions.stageUserCrop({ userID: user._id, crop: preStageCrop })
@@ -68,6 +98,7 @@ const EditProfileModal = (props) => {
   const updateProfilePicture = async () => {
     const newPhoto = document.getElementById("imgupload").files[0];
     if (newPhoto) {
+      dispatchDataChanged({ type: "image", value: true });
       const reader = new FileReader();
       reader.onload = () => {
         dispatch(
@@ -84,31 +115,29 @@ const EditProfileModal = (props) => {
 
   const handleRevert = () => {
     dispatch(dataActions.clearStagedPhotoData({ userID: user._id }));
+    dispatchDataChanged({ type: "image", value: false });
     setEditing(false);
   };
 
+  const resetData = () =>{
+    dispatchDataChanged({ type: "reset" });
+    setSaveButtonText("Save")
+  }
+
   const handleSave = () => {
+    setSaveButtonText("Saving..");
     dispatch(dataActions.commitStagedPhotoData({ userID: user._id }));
-    uploadProfilePicture(user._id);
-    hideModal();
+    const data = {
+      status: formRefs.status.current.innerHTML,
+      location: formRefs.location.current.value,
+      first_name: formRefs.first_name.current.value,
+      last_name: formRefs.last_name.current.value,
+      tagline: formRefs.tagline.current.value,
+    };
+    uploadProfileData(user._id, data, resetData);
   };
 
   const statusOptions = Object.keys(statusMap).map((key) => {
-    const selectable = key === "Ready" || key === "Busy";
-    return {
-      selectable,
-      name: key,
-      component: (
-        <StatusOption
-          unselectable={!selectable}
-          name={key}
-          details={statusMap[key]}
-        />
-      ),
-    };
-  });
-
-  const locationOptions = Object.keys(statusMap).map((key) => {
     const selectable = key === "Ready" || key === "Busy";
     return {
       selectable,
@@ -201,14 +230,20 @@ const EditProfileModal = (props) => {
           ref={formRefs.status}
           defaultVal={user?.status?.status}
           className={styles.statusSelect}
+          setDataChanged={(value) => {
+            dispatchDataChanged({ type: "status", value });
+          }}
         />
-        <CustomSelect
-          options={locationOptions}
+        <CustomAutocomplete
+          options={cities}
           name={"Location"}
           label={"Location:"}
           ref={formRefs.location}
           defaultVal={user.location}
-          className={styles.statusSelect}
+          className={styles.locationSelect}
+          setDataChanged={(value) => {
+            dispatchDataChanged({ type: "location", value });
+          }}
         />
         <div className={styles.sideBySide}>
           <SimpleInput
@@ -218,6 +253,9 @@ const EditProfileModal = (props) => {
             label="First Name:"
             ref={formRefs.first_name}
             defaultVal={user.first_name}
+            setDataChanged={(value) => {
+              dispatchDataChanged({ type: "first_name", value });
+            }}
           />
           <div className={styles.formSpacer} />
           <SimpleInput
@@ -227,6 +265,9 @@ const EditProfileModal = (props) => {
             label="Last Name:"
             ref={formRefs.last_name}
             defaultVal={user.last_name}
+            setDataChanged={(value) => {
+              dispatchDataChanged({ type: "last_name", value });
+            }}
           />
         </div>
         <SimpleInput
@@ -236,9 +277,15 @@ const EditProfileModal = (props) => {
           label="Tagline:"
           ref={formRefs.tagline}
           defaultVal={user.tagline}
+          setDataChanged={(value) => {
+            dispatchDataChanged({ type: "tagline", value });
+          }}
         />
-        <SimpleButton onClick={handleSave} className={styles.saveButton}>
-          Save
+        <SimpleButton
+          onClick={dataChanged ? handleSave : null}
+          className={dataChanged ? styles.saveButton : styles.unclickableButton}
+        >
+          {saveButtonText}
         </SimpleButton>
       </div>
     </ModalPortal>
@@ -252,11 +299,7 @@ const StatusOption = (props) => {
     ) : (
       <div>
         Your status is set to Searching when you are on the{" "}
-        <img
-          style={{ height: "2rem" }}
-          src={balloonIcon}
-          alt={"balloonIcon"}
-        />{" "}
+        <img style={{ height: "2rem" }} src={balloonIcon} alt={"balloonIcon"} />{" "}
         page.
       </div>
     );

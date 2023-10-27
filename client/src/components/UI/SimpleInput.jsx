@@ -3,14 +3,25 @@ import styles from "./styles/SimpleInput.module.scss";
 
 const SimpleInput = forwardRef((props, ref) => {
   const [value, setValue] = useState(props.defaultVal);
+
+  const handleSetDataChanged = (value) => {
+    if (value !== props.defaultVal) {
+      props.setDataChanged && props.setDataChanged(true);
+    } else {
+      props.setDataChanged && props.setDataChanged(false);
+    }
+  };
+
   const handleChange = (e) => {
-    setValue(e.target.value);
+    const newValue = e.target.value;
+    setValue(newValue);
+    handleSetDataChanged(newValue);
   };
 
   useEffect(() => {
     setValue(props.defaultVal);
   }, [props.defaultVal]);
-  
+
   return (
     <div className={styles.container}>
       <label className={styles.label} htmlFor={props.name}>

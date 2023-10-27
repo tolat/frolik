@@ -1,3 +1,5 @@
+const User = require("../models/user")
+
 module.exports.handleCORS = async (req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
   res.header(
@@ -19,6 +21,29 @@ module.exports.handleCORS = async (req, res, next) => {
 module.exports.reqAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     next();
+  } else {
+    res.sendStatus(401);
+  }
+};
+
+module.exports.sameUserOnly = async (req, res, next) => {
+  // Check if the request is authenticated
+  if (req.isAuthenticated()) {
+    const user = await User.findOne({ username: req.session?.passport?.user });
+
+    // Send not found if no user exists
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    // Only move along if the request params id is the same as the
+    // id for the session user
+    if (user._id.toString() !== req.params.id) {
+      res.status(401).send("Not Authorized");
+    } else {
+      req.user = user
+      next();
+    }
   } else {
     res.sendStatus(401);
   }

@@ -5,7 +5,7 @@ import CroppedImage from "./CroppedImage";
 
 const getCategoryPercentage = (category, user) => {
   const numCategory = user.outings?.filter(
-    (o) => o.activity.category === category
+    (o) => o.activity?.category === category
   ).length;
 
   return (100 * (numCategory / user?.outings?.length)).toFixed(2);
@@ -53,7 +53,7 @@ const genBackgroundStr = (user, categoryColorMap) => {
 };
 
 const UserIcon = memo(function UserIcon(props) {
-  const categoryColorMap = useSelector((state) => state.auth.globals.categoryColorMap);
+  const categoryColorMap = useSelector((state) => state.auth.globals?.categoryColorMap);
   const backgroundString = genBackgroundStr(props.user, categoryColorMap);
   const photoDimension = `${props.sizeInRem - 2 * props.borderSizeInRem}rem`;
   const pieDimension = `${props.sizeInRem - props.borderSizeInRem}rem`;
