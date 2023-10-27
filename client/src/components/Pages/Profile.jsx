@@ -149,5 +149,5 @@ export const profileLoader = async () => {
     return redirect;
   }
 
-  return null
+  return null;
 };

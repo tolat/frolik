@@ -70,6 +70,15 @@ const EditProfileModal = (props) => {
     setEditing(true);
   };
 
+  const stagePreStagedData = () =>{
+    dispatch(
+      dataActions.stageUserCrop({ userID: user._id, crop: preStageCrop })
+    );
+    dispatch(
+      dataActions.stageUserZoom({ userID: user._id, zoom: preStageZoom })
+    );
+  }
+
   const handleHideCropper = () => {
     // Set data changed to true if crop/zoom have been updated
     if (
@@ -83,12 +92,7 @@ const EditProfileModal = (props) => {
     }
 
     setEditing(false);
-    dispatch(
-      dataActions.stageUserCrop({ userID: user._id, crop: preStageCrop })
-    );
-    dispatch(
-      dataActions.stageUserZoom({ userID: user._id, zoom: preStageZoom })
-    );
+    stagePreStagedData()
   };
 
   const handleUploadClick = () => {
@@ -125,6 +129,7 @@ const EditProfileModal = (props) => {
   }
 
   const handleSave = () => {
+    stagePreStagedData()
     setSaveButtonText("Saving..");
     dispatch(dataActions.commitStagedPhotoData({ userID: user._id }));
     const data = {

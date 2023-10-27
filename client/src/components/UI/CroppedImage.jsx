@@ -11,6 +11,7 @@ const CroppedImage = (props) => {
         image={`data:image/png;base64,${props.image}`}
         crop={props.crop}
         zoom={props.zoom}
+        rotation={0}
         aspect={3 / 3}
         cropShape={"round"}
         onCropChange={() => {}}
