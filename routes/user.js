@@ -15,8 +15,10 @@ const sharp = require("sharp");
 const router = express.Router({ mergeParams: true });
 
 // Get a photo with given key for user with given id
-router.get("/:id/photo/:key", reqAuthenticated, tryCatch, async (req, res) => {
-  try {
+router.get(
+  "/:id/photo/:key",
+  reqAuthenticated,
+  tryCatch(async (req, res) => {
     const user = await User.findById(req.params.id);
 
     if (!user) {
@@ -34,18 +36,14 @@ router.get("/:id/photo/:key", reqAuthenticated, tryCatch, async (req, res) => {
         console.error("Error downloading image:", error);
         res.status(500).send("Internal Server Error");
       });
-  } catch (error) {
-    console.error("Error fetching user:", error);
-    res.status(500).send("Internal Server Error");
-  }
-});
+  })
+);
 
 // Get User Profile Picture
 router.get(
   "/:id/profile-picture",
   reqAuthenticated,
-  tryCatch,
-  async (req, res) => {
+  tryCatch(async (req, res) => {
     const user = await User.findById(req.params.id);
 
     if (!user) {
@@ -59,7 +57,7 @@ router.get(
         console.error("Error downloading image:", error);
         res.status(500).send("Internal Server Error");
       });
-  }
+  })
 );
 
 // Upload user profile picture
@@ -67,8 +65,7 @@ router.post(
   "/:id/profile-picture",
   reqAuthenticated,
   sameUserOnly,
-  tryCatch,
-  async (req, res) => {
+  tryCatch(async (req, res) => {
     // Getting user from the sameUserOnly middleware
     const user = req.user;
 
@@ -90,7 +87,7 @@ router.post(
     // Resize/compress image before upload
     const imageBuffer = Buffer.from(req.body.photoString, "base64");
     const reducedImageBuffer = await sharp(imageBuffer)
-      .jpeg({quality:50})
+      .jpeg({ quality: 50 })
       .toBuffer();
     const imageString = reducedImageBuffer.toString("base64");
 
@@ -103,15 +100,14 @@ router.post(
         console.error("Error uploading image:", error);
         res.status(500).send("Internal Server Error");
       });
-  }
+  })
 );
 
 router.post(
   "/:id/profile-data",
   reqAuthenticated,
   sameUserOnly,
-  tryCatch,
-  async (req, res) => {
+  tryCatch(async (req, res) => {
     const user = req.user;
 
     user.first_name = req.body.first_name;
@@ -126,15 +122,7 @@ router.post(
     await user.save();
 
     res.send({ user });
-  }
+  })
 );
-
-const timeOperation = async (fun, name) => {
-  let start = Date.now();
-  const result = await fun();
-  let end = Date.now();
-  console.log(`"${name} request took: `, end - start, "ms");
-  return result;
-};
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const User = require("../models/user")
+const User = require("../models/user");
 
 module.exports.handleCORS = async (req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
@@ -41,7 +41,7 @@ module.exports.sameUserOnly = async (req, res, next) => {
     if (user._id.toString() !== req.params.id) {
       res.status(401).send("Not Authorized");
     } else {
-      req.user = user
+      req.user = user;
       next();
     }
   } else {
@@ -54,11 +54,12 @@ module.exports.logIncoming = (req, res, next) => {
   next();
 };
 
-module.exports.tryCatch = (req, res, next) => {
-  try {
-    next();
-  } catch (error) {
-    console.error("Error fetching user:", error);
-    res.status(500).send("Internal Server Error");
-  }
+// Async try/catch wrapper function
+module.exports.tryCatch = (fn) => {
+  return function (req, res, next) {
+    fn(req, res, next).catch((e) => {
+      console.error("ERROR ON PATH, ", req.path, "\n", e);
+      res.status(500).send("Internal Server Error");
+    });
+  };
 };

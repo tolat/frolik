@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   users: {},
-  masterPhotoDimension: 25
+  masterPhotoDimension: 25,
 };
 
 const findOrCreateUser = (state, action) => {
@@ -71,9 +71,10 @@ const dataSlice = createSlice({
       const user = findOrCreateUser(state, action);
       // Check if anything has been staged before updating
       if (user.staged.profile_picture || user.staged.crop) {
-        user.profile_picture = user.staged.profile_picture;
-        user.zoom = user.staged.zoom;
-        user.crop = user.staged.crop;
+        user.profile_picture =
+          user.staged.profile_picture || user.profile_picture;
+        user.zoom = user.staged.zoom || user.zoom;
+        user.crop = user.staged.crop || user.crop;
         user.staged = {};
       }
     },

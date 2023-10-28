@@ -269,3 +269,12 @@ const combineStreams = async (streams, res) => {
 };
 
 module.exports = { CombinedReadableStream, combineStreams };
+
+
+const timeOperation = async (fun, name) => {
+  let start = Date.now();
+  const result = await fun();
+  let end = Date.now();
+  console.log(`"${name} request took: `, end - start, "ms");
+  return result;
+};

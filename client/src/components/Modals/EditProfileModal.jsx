@@ -82,9 +82,9 @@ const EditProfileModal = (props) => {
   const handleHideCropper = () => {
     // Set data changed to true if crop/zoom have been updated
     if (
-      preStageCrop.x !== user.profile_picture?.crop.x ||
-      preStageCrop.y !== user.profile_picture?.crop.y ||
-      preStageZoom !== user.profile_picture?.zoom
+      (preStageCrop.x && preStageCrop.x !== user.profile_picture?.crop.x) ||
+      (preStageCrop.y && preStageCrop.y !== user.profile_picture?.crop.y) ||
+      (preStageZoom >= 1 && preStageZoom !== user.profile_picture?.zoom)
     ) {
       dispatchDataChanged({ type: "crop", value: true });
     } else {
@@ -130,7 +130,7 @@ const EditProfileModal = (props) => {
 
   const handleSave = () => {
     // Hide cropper if it is open
-    handleHideCropper()
+    handleHideCropper();
 
     // Stage prestaged image data if image has been edited
     if (dataChangedState.crop) {

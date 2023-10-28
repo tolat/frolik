@@ -47,7 +47,7 @@ const FriendCard = memo(function FriendCard(props) {
               icon={outingsIcon}
               style={statContainerStyle}
               iconStyle={statIconStyle}
-              rating={props.user.outings.length}
+              rating={props.user.outings?.length}
             />
           </div>
         </div>

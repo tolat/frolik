@@ -8,15 +8,16 @@ DONE
 DONE
 
 - Get Edit profile modal working (1 day)
+DONE
+
+- Need page for creating account. (1day)
+
+- Need backend set up for account creation. (1day)
 
 - Add Users Modal.
 Set up Add Users modal in Go page to display up to 4 non friend users 
 and all friends that are "ready" or searching. Need to add at least 1 
 new connection to create an outing! (1 day)
-
-- Need page for creating account. (1day)
-
-- Need backend set up for account creation. (1day)
 
 - Finish chat page layout / interface. Put Chat in modal (1 day)
 
@@ -42,42 +43,10 @@ confirmations. do this in modal. dispatch notifications (1 day)
 
 - DEPLOY WOO!!! (3 days)
 
-TOTAL: 18 days / 3.5 weeks
+TOTAL: 23 days  / ~3 weeks
+
+REMAINING: 17 days 
 
 
 NOTES:
 
-
-  // Option 1: Download image from S3 storage
-  //const fileName = `${user.username}-profile-picture.jpeg`;
-  //const clientAccessUrl = `${process.env.SERVER}/static/images/${fileName}`;
-  //const writePath = `${path.join(__dirname, "../", "public/images/")}`;
-  //
-  //// Only Download if no image found
-  //const fileNames = await fs.readdirSync(writePath);
-  //if (fileNames.find((n) => n === fileName)) {
-  //  await (
-  //    await downloadFromS3(process.env.AWS_DEV_BUCKET, user.profile_picture)
-  //  ).pipe(fs.createWriteStream(writePath + `/${fileName}`));
-  //}
-
-  // Option 2: send signedURL to client and user that to download image
-  // const signedURL = await getSignedURLFromS3(
-  //   process.env.AWS_DEV_BUCKET,
-  //   user.profile_picture
-  // );
-
-
-
-Below is a laoder component that we might use again
-    <div
-        style={{ ...imageLoadingStyle, ...props.style }}
-        className={`${styles.imageLoading}  ${props.backerClassName}`}
-      >
-        <div className={styles.spinner}>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
