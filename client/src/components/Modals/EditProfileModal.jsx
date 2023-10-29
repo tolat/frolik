@@ -7,6 +7,7 @@ import { uploadProfileData } from "../../utils/data-fetch";
 import CustomSelect from "../UI/CustomSelect";
 import balloonIcon from "../../images/balloon1.png";
 import ProfileEditor from "./ProfileEditor";
+import { hideModal } from "../../store/modal-actions";
 
 const stagedDataReducer = (state, action) => {
   return action.type === "reset"
@@ -61,6 +62,7 @@ const EditProfileModal = (props) => {
     dispatch(dataActions.updateUserPhotoData({userID: user._id, data}));
     const fullData = { ...data, status: formRefs.status.current.innerHTML };
     uploadProfileData(user._id, fullData, resetData);
+    hideModal()
   };
 
   const statusOptions = Object.keys(statusMap).map((key) => {

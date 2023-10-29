@@ -117,7 +117,7 @@ router.post(
     const user = req.user;
 
     for (let key in req.body) {
-      if (req.body[key]) {
+      if (req.body[key] || req.body[key] == "") {
         key == "status"
           ? (user.status = {
               status: req.body.status,
