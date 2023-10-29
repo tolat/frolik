@@ -15,7 +15,7 @@ const bodyParser = require("body-parser");
 const app = express();
 app.use("/static", express.static(path.join(__dirname, "/public/")));
 app.use(express.urlencoded({ extended: false }));
-app.use(express.json({limit: '50mb'}));
+app.use(express.json({ limit: "50mb" }));
 app.use(handleCORS);
 
 // Connect to the database and handle connection errors
@@ -46,8 +46,8 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 
 // Morgan logger
-const morgan = require("morgan");
-app.use(morgan("dev"));
+// const morgan = require("morgan");
+// app.use(morgan("dev"));
 
 // Passport
 app.use(passport.initialize());
@@ -60,6 +60,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use("/auth", require("./routes/auth"));
 app.use("/user", require("./routes/user"));
 app.use("/activity", require("./routes/activity"));
+app.use("/data", require("./routes/data"));
 
 // All routes go to the client, routing happens on the front end
 app.get("*", (req, res) => {

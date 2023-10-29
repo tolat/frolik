@@ -59,25 +59,26 @@ const CustomAutocomplete = forwardRef((props, ref) => {
           id="city-select-options-container"
           className={styles.optionsContainer}
         >
-          {props.options
-            .filter((o) =>
-              o.name
-                .toLowerCase()
-                .includes(
-                  value.slice(0, value.indexOf(",") || "").toLowerCase()
-                )
-            )
-            .map((o) => (
-              <div
-                key={Math.random()}
-                onClick={() => {
-                  handleSelectCity(o);
-                }}
-                className={styles.optionContainer}
-              >
-                {o.name}, {o.country}
-              </div>
-            ))}
+          {props.options &&
+            props.options
+              .filter((o) =>
+                o.name
+                  .toLowerCase()
+                  .includes(
+                    value.slice(0, value.indexOf(",") || "").toLowerCase()
+                  )
+              )
+              .map((o) => (
+                <div
+                  key={Math.random()}
+                  onClick={() => {
+                    handleSelectCity(o);
+                  }}
+                  className={styles.optionContainer}
+                >
+                  {o.name}, {o.country}
+                </div>
+              ))}
         </div>
       )}
     </div>

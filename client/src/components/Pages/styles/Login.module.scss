@@ -1,3 +1,5 @@
+@import "../../../utils/responsive.scss";
+
 .login-page {
   display: flex;
   flex-direction: column;
@@ -58,4 +60,10 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
   background-color: #0056b3;
+}
+
+.createAccountButton{
+  background-color: $button_grey;
+  color: rgb(0, 0, 0);
+  margin-top: 1rem;
 }

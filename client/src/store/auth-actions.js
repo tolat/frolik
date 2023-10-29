@@ -65,7 +65,6 @@ export const fetchLogout = () => {
 
   const handleResponse = () => {
     window.location = "/login";
-    if (store.getState().modal.marginLeft === "0%") hideModalFast();
     dispatch(authActions.logout());
     setTimeout(() => {
       dispatch(dataActions.setUserProfilePicture(false));

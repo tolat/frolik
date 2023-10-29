@@ -22,6 +22,9 @@
   width: $central_span_width;
 
 }
+.none{
+  width: 100%;
+}
 
 .navItems{
   display: flex;
@@ -36,6 +39,7 @@
   height: 4.5rem;
   width: 4.5rem;
   padding: 0.5rem;
+  
 }
 
 .username{

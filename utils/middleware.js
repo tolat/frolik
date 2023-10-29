@@ -56,7 +56,7 @@ module.exports.logIncoming = (req, res, next) => {
 
 // Async try/catch wrapper function
 module.exports.tryCatch = (fn) => {
-  return function (req, res, next) {
+  return (req, res, next) => {
     fn(req, res, next).catch((e) => {
       console.error("ERROR ON PATH, ", req.path, "\n", e);
       res.status(500).send("Internal Server Error");

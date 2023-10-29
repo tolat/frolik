@@ -84,22 +84,28 @@ router.post(
     // Get stripped down populated friends list
     const populatedFriends = await populateFriends(user.friends);
 
-    // Resize/compress image before upload
-    const imageBuffer = Buffer.from(req.body.photoString, "base64");
-    const reducedImageBuffer = await sharp(imageBuffer)
-      .jpeg({ quality: 50 })
-      .toBuffer();
-    const imageString = reducedImageBuffer.toString("base64");
+    // Only upload new image if it has been sent
+    if (req.body.photoString) {
+      // Resize/compress image before upload
+      const imageBuffer = Buffer.from(req.body.photoString, "base64");
+      const reducedImageBuffer = await sharp(imageBuffer)
+        .jpeg({ quality: 50 })
+        .withMetadata()
+        .toBuffer();
+      const imageString = reducedImageBuffer.toString("base64");
 
-    // Upload image to S3
-    uploadToS3(process.env.AWS_DEV_BUCKET, req.body.key, imageString)
-      .then((response) => {
-        res.send({ user, populatedFriends });
-      })
-      .catch((error) => {
-        console.error("Error uploading image:", error);
-        res.status(500).send("Internal Server Error");
-      });
+      // Upload image to S3
+      uploadToS3(process.env.AWS_DEV_BUCKET, req.body.key, imageString)
+        .then((response) => {
+          res.send({ user, populatedFriends });
+        })
+        .catch((error) => {
+          console.error("Error uploading image:", error);
+          res.status(500).send("Internal Server Error");
+        });
+    } else {
+      res.send({ user, populatedFriends });
+    }
   })
 );
 
@@ -110,14 +116,16 @@ router.post(
   tryCatch(async (req, res) => {
     const user = req.user;
 
-    user.first_name = req.body.first_name;
-    user.last_name = req.body.last_name;
-    user.location = req.body.location;
-    user.tagline = req.body.tagline;
-    user.status = {
-      status: req.body.status,
-      updated: Date.now(),
-    };
+    for (let key in req.body) {
+      if (req.body[key]) {
+        key == "status"
+          ? (user.status = {
+              status: req.body.status,
+              updated: Date.now(),
+            })
+          : (user[key] = req.body[key]);
+      }
+    }
 
     await user.save();
 

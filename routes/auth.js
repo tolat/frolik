@@ -47,13 +47,14 @@ router.get(
   })
 );
 
-router.get(
-  "/logout",
-  tryCatch((req, res) => {
+router.get("/logout", (req, res) => {
+  try {
     req.logout(() => {
       res.sendStatus(200);
     });
-  })
-);
+  } catch (e) {
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 module.exports = router;

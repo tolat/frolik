@@ -17,7 +17,7 @@ export const fetchActivities = async (setData) => {
 
     const handleError = (err) => {
       reject();
-      throw new Error(err);
+      console.log(err);
     };
 
     httpFetch(requestConfig, handleResponse, handleError);
@@ -41,7 +41,7 @@ export const fetchProfilePic = async (userID) => {
   };
 
   const handleError = (err) => {
-    throw new Error(err);
+    console.log(err);
   };
 
   httpFetch(requestConfig, handleResponse, handleError);
@@ -74,7 +74,7 @@ export const fetchPhotos = async (user) => {
       };
 
       const handleError = (err) => {
-        throw new Error(err);
+        console.log(err);
       };
 
       httpFetch(requestConfig, handleResponse, handleError);
@@ -82,45 +82,25 @@ export const fetchPhotos = async (user) => {
   }
 };
 
-export const uploadProfilePicture = async (userID) => {
-  const userData = store.getState().data.users[userID];
-  const user = store.getState().auth.user;
-  // Only proceed if changes have been made to the profile picture data
-  if (
-    (userData && userData.profile_picture !== user.profile_picture) ||
-    userData.zoom !== user.zoom ||
-    userData.crop !== user.crop
-  ) {
-    const requestConfig = {
-      url: `${getServer()}/user/${userID}/profile-picture`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        photoString: userData.profile_picture,
-        zoom: userData.zoom,
-        crop: userData.crop,
-        key: user.username,
-      }),
-    };
+export const fetchGobals = async (setGlobals) => {
+  const requestConfig = {
+    url: `${getServer()}/data/globals`,
+  };
 
-    const handleResponse = (response) => {
-      store.dispatch(authActions.setUser(response.user));
-      store.dispatch(authActions.setUserFriends(response.populatedFriends));
-    };
+  const handleResponse = async (response) => {
+    setGlobals(response.globals);
+  };
 
-    const handleError = (err) => {
-      console.log(err);
-    };
+  const handleError = (err) => {
+    console.log(err);
+  };
 
-    httpFetch(requestConfig, handleResponse, handleError);
-  }
+  httpFetch(requestConfig, handleResponse, handleError);
 };
 
-export const uploadProfileData = (userID, data, resetData) => {
+export const uploadProfilePictureData = async (userID, data) => {
   const requestConfig = {
-    url: `${getServer()}/user/${userID}/profile-data`,
+    url: `${getServer()}/user/${userID}/profile-picture`,
     headers: {
       "Content-Type": "application/json",
     },
@@ -129,14 +109,53 @@ export const uploadProfileData = (userID, data, resetData) => {
   };
 
   const handleResponse = (response) => {
+    store.dispatch(authActions.setUser(response.user));
+    store.dispatch(authActions.setUserFriends(response.populatedFriends));
+  };
+
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};
+
+export const uploadProfileData = (userID, data, resetData) => {
+  const userProfilePictureKey = store.getState().auth.user.profile_picture.key;
+
+  const profilePictureData = {
+    photoString: data.image,
+    zoom: data.zoom,
+    crop: data.crop,
+    key: userProfilePictureKey,
+  };
+
+  const profileData = {
+    first_name: data.first_name,
+    last_name: data.last_name,
+    location: data.location,
+    tagline: data.tagline,
+    status: data.status,
+  };
+
+  const requestConfig = {
+    url: `${getServer()}/user/${userID}/profile-data`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(profileData),
+  };
+
+  const handleResponse = (response) => {
     // Update user in redux store
     store.dispatch(authActions.setUser(response.user));
 
     // Upload profile picture data once user data has been updated
-    uploadProfilePicture(userID);
+    uploadProfilePictureData(userID, profilePictureData);
 
-    // Reset data 
-    resetData()
+    // Reset data
+    resetData();
   };
 
   const handleError = (err) => {

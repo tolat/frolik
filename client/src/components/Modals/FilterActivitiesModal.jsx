@@ -6,7 +6,6 @@ import SimpleInput from "../UI/SimpleInput";
 import SimpleButton from "../UI/SimpleButton";
 import { useRef } from "react";
 import { hideModal } from "../../store/modal-actions";
-import { initialActivityFilter } from "../../utils/globals";
 import SimpleCheckbox from "../UI/SimpleCheckbox";
 
 const categories = ["Any", "Games", "Food", "Sports", "Art", "Adventure"];
@@ -59,7 +58,7 @@ const FilterActivitiesModal = (props) => {
     props.dispatchFilter({
       type: "apply-filter",
       active: true,
-      filter: initialActivityFilter.filter,
+      filter: props.initialActivityFilter?.filter,
     });
 
     hideModal();
@@ -103,8 +102,8 @@ const FilterActivitiesModal = (props) => {
             label={"Minimum Participants:"}
             type="number"
             min={0}
-            ref={filterRefs.minParticipants}
-            defaultVal={props.filter.minParticipants}
+            ref={filterRefs?.minParticipants}
+            defaultVal={props.filter?.minParticipants}
           />
         </div>
         <div className={styles.spacer} />

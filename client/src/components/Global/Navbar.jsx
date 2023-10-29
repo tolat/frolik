@@ -4,14 +4,16 @@ import styles from "./styles/Navbar.module.scss";
 import { fetchLogout } from "../../store/auth-actions";
 import NavButton from "../UI/NavButton";
 import logo from "../../images/balloon1.png";
+import { hideModal } from "../../store/modal-actions";
 
 const Navbar = (props) => {
   const authState = useSelector((state) => state.auth);
   const makeActive = (navData) =>
     navData.isActive ? styles.activeLink : "none";
 
-  const handleLogout = (e) => {
+  const handleLogout = async (e) => {
     e.preventDefault();
+    await hideModal()
     fetchLogout();
   };
 
@@ -39,7 +41,7 @@ const Navbar = (props) => {
               className={styles.navButton}
             />
           </div>
-        ) : null}
+        ) : <div></div>}
       </div>
     </div>
   );

@@ -7,12 +7,16 @@ const ImageCropper = (props) => {
   const [crop, setCrop] = useState(props.crop);
 
   const onCropChange = (newCrop) => {
-    props.setPreStageCrop(newCrop);
+    newCrop !== props.crop
+      ? props.setCropChange(newCrop)
+      : props.setCropChange(false);
     setCrop(newCrop);
   };
 
   const onZoomChange = (newZoom) => {
-    props.setPreStageZoom(newZoom);
+    newZoom !== props.zoom
+      ? props.setZoomChange(newZoom)
+      : props.setZoomChange(false);
     setZoom(newZoom);
   };
 

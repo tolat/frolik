@@ -16,9 +16,26 @@ import balloonIcon from "../../images/air-balloon-light.png";
 import downIcon from "../../images/down.png";
 import upIcon from "../../images/up.png";
 import { calcAvgRating, pageRouteLoader } from "../../utils/utils";
-import { initialActivityFilter } from "../../utils/globals";
 import store from "../../store";
 import { goActions } from "../../store/go-slice";
+
+const initialActivityFilter = {
+  filter: {
+    category: 'Any',
+    maxParticipants: '',
+    minParticipants: '',
+    minRating: '',
+    maxCost: '',
+    minCost: '',
+    maxTime: '',
+    newOnly: false,
+    completedOnly: false,
+    featuredOnly: false,
+  },
+  activities: [],
+  initialActivities: [],
+  active: false,
+};
 
 const filterReducer = (state, action) => {
   const applyFilter = (activities, filter) => {
@@ -31,27 +48,27 @@ const filterReducer = (state, action) => {
     for (let activity of activities) {
       if (
         // Category
-        (filter.category &&
-          filter.category !== "Any" &&
-          activity.category !== filter.category) ||
+        (filter?.category &&
+          filter?.category !== "Any" &&
+          activity?.category !== filter?.category) ||
         // Participant
-        (filter.minParticipants &&
-          activity.participants < filter.minParticipants) ||
-        (filter.maxParticipants &&
-          activity.participants > filter.maxParticipants) ||
+        (filter?.minParticipants &&
+          activity.participants < filter?.minParticipants) ||
+        (filter?.maxParticipants &&
+          activity.participants > filter?.maxParticipants) ||
         // Rating
-        (filter.minRating && calcAvgRating(activity) < filter.minRating) ||
+        (filter?.minRating && calcAvgRating(activity) < filter?.minRating) ||
         // Cost
-        (filter.minCost && activity.cost < filter.minCost) ||
-        (filter.maxCost && activity.cost > filter.maxCost) ||
+        (filter?.minCost && activity.cost < filter?.minCost) ||
+        (filter?.maxCost && activity.cost > filter?.maxCost) ||
         // Time
-        (filter.maxTime && activity.duration > filter.maxTime) ||
+        (filter?.maxTime && activity.duration > filter?.maxTime) ||
         // Fetured Only
-        (filter.featuredOnly && !activity.featured) ||
+        (filter?.featuredOnly && !activity.featured) ||
         // New Only
-        (filter.newOnly && completedActivities.includes(activity._id)) ||
+        (filter?.newOnly && completedActivities.includes(activity._id)) ||
         // Completed Only
-        (filter.completedOnly && !completedActivities.includes(activity._id))
+        (filter?.completedOnly && !completedActivities.includes(activity._id))
       ) {
         continue;
       } else {
@@ -79,7 +96,7 @@ const filterReducer = (state, action) => {
 
 const filtersAreEqual = (f1, f2) => {
   for (let key in f1) {
-    if (f1[key] !== f2[key]) {
+    if (f1?.[key] !== f2?.[key]) {
       return false;
     }
   }
@@ -139,6 +156,7 @@ const Go = (props) => {
       <FilterActivitiesModal
         filter={activityFilter.filter}
         dispatchFilter={dispatchFilter}
+        initialActivityFilter = {initialActivityFilter}
       />
       <div className={styles.container}>
         <div className={styles.usersContainer}>

@@ -23,7 +23,7 @@ const SimpleInput = forwardRef((props, ref) => {
   }, [props.defaultVal]);
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${props.className}`}>
       <label className={styles.label} htmlFor={props.name}>
         {props.label}
       </label>

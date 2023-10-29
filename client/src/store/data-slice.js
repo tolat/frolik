@@ -7,6 +7,7 @@ const initialState = {
 
 const findOrCreateUser = (state, action) => {
   // Create user objet in store if none exists
+  if(!action.payload.userID)console.log('NO USERID PASSED TO DATASLICE')
   if (!Object.keys(state.users).find((key) => key === action.payload.userID)) {
     state.users[action.payload.userID] = {
       profile_picture: false,
@@ -51,32 +52,15 @@ const dataSlice = createSlice({
         photo: false,
       });
     },
-    stageUserProfilePicture(state, action) {
+    updateUserPhotoData(state, action) {
       const user = findOrCreateUser(state, action);
-      user.staged.profile_picture = action.payload.photoString;
-    },
-    stageUserCrop(state, action) {
-      const user = findOrCreateUser(state, action);
-      user.staged.crop = action.payload.crop;
-    },
-    stageUserZoom(state, action) {
-      const user = findOrCreateUser(state, action);
-      user.staged.zoom = action.payload.zoom;
-    },
-    clearStagedPhotoData(state, action) {
-      const user = findOrCreateUser(state, action);
-      user.staged = {};
-    },
-    commitStagedPhotoData(state, action) {
-      const user = findOrCreateUser(state, action);
-      // Check if anything has been staged before updating
-      if (user.staged.profile_picture || user.staged.crop) {
-        user.profile_picture =
-          user.staged.profile_picture || user.profile_picture;
-        user.zoom = user.staged.zoom || user.zoom;
-        user.crop = user.staged.crop || user.crop;
-        user.staged = {};
-      }
+      const newImage = action.payload.data.image;
+      const newCrop = action.payload.data.crop;
+      const newZoom = action.payload.data.zoom;
+
+      if (newImage) user.profile_picture = newImage;
+      if (newCrop) user.crop = newCrop;
+      if (newZoom) user.zoom = newZoom;
     },
     clearAllUserData(state) {
       state.users = initialState;

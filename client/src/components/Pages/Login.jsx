@@ -7,6 +7,9 @@ import { redirect } from "react-router-dom";
 import store from "../../store";
 import { useNavigate } from "react-router-dom";
 import SimpleInput from "../UI/SimpleInput";
+import CreateAccountModal from "../Modals/CreateAccountModal";
+import SimpleButton from "../UI/SimpleButton";
+import { modalActions } from "../../store/modal-slice";
 
 function Login() {
   const usernameRef = useRef();
@@ -23,7 +26,6 @@ function Login() {
     }
   }, [authState.isAuthenticated, navigate]);
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoggingIn(true);
@@ -36,9 +38,16 @@ function Login() {
     );
   };
 
-  
+  // Handle create account button click
+  const handleCreateAccountButtonClick = (e) => {
+    e.preventDefault()
+    dispatch(modalActions.setSelector("create-account"));
+    dispatch(modalActions.showModal());
+  };
+
   return (
     <div className={styles["login-page"]}>
+      <CreateAccountModal />
       <form className={styles["login-form"]} onSubmit={handleSubmit}>
         <h2>Login</h2>
         <div>
@@ -68,6 +77,12 @@ function Login() {
             ? "Login"
             : "Logging in..."}
         </button>
+        <SimpleButton
+          onClick={handleCreateAccountButtonClick}
+          className={styles.createAccountButton}
+        >
+          Create Account
+        </SimpleButton>
       </form>
     </div>
   );
