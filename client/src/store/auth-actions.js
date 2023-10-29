@@ -2,7 +2,6 @@ import httpFetch from "../utils/http-fetch";
 import { authActions } from "./auth-slice";
 import store from ".";
 import { getServer } from "../utils/env-utils";
-import { hideModalFast } from "./modal-actions";
 import { dataActions } from "./data-slice";
 
 export const fetchLogin = (username, password, setIsLoggingIn) => {

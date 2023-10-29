@@ -1,9 +1,8 @@
 import styles from "./styles/CreateAccountModal.module.scss";
 import ModalPortal from "./ModalPortal";
 import { useEffect, useReducer, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import ProfileEditor from "./ProfileEditor";
-import { dataActions } from "../../store/data-slice";
 import placeholderPhoto from "../../images/placeholder-user-photo.png";
 import SimpleInput from "../UI/SimpleInput";
 
@@ -12,7 +11,6 @@ const stagedDataReducer = (state, action) => {
 };
 
 const CreateAccountModal = (props) => {
-  const dispatch = useDispatch();
   const modalState = useSelector((state) => state.modal);
   const modalDisplay =
     modalState.selector === "create-account" ? "flex" : "none";
