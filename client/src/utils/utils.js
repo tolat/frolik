@@ -37,3 +37,21 @@ export const arrayBufferToBase64 = (buffer) => {
   }
   return window.btoa(binary);
 };
+
+export const loadImageAsBase64 = async (imageUrl, setImage) => {
+  try {
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result;
+      const trimmedString = base64String.slice(base64String.indexOf(",") + 1);
+      setImage(trimmedString);
+    };
+
+    reader.readAsDataURL(blob);
+  } catch (error) {
+    console.error("Error loading image:", error);
+  }
+};

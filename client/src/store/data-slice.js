@@ -7,14 +7,13 @@ const initialState = {
 
 const findOrCreateUser = (state, action) => {
   // Create user objet in store if none exists
-  if(!action.payload.userID)console.log('NO USERID PASSED TO DATASLICE')
+  if (!action.payload.userID) console.log("NO USERID PASSED TO DATASLICE");
   if (!Object.keys(state.users).find((key) => key === action.payload.userID)) {
     state.users[action.payload.userID] = {
       profile_picture: false,
       zoom: 1,
       crop: { x: 0, y: 0 },
       photos: [],
-      staged: {},
     };
   }
   return state.users[action.payload.userID];

@@ -5,25 +5,18 @@ const CustomAutocomplete = forwardRef((props, ref) => {
   const [value, setValue] = useState(props.defaultVal);
   const [showOptions, setShowOptions] = useState(false);
 
-  const handleSetDataChanged = (value) => {
-    if (value !== props.defaultVal) {
-      props.setDataChanged && props.setDataChanged(true);
-    } else {
-      props.setDataChanged && props.setDataChanged(false);
-    }
-  };
 
   const handleChange = (e) => {
     const newValue = e.target.value;
     setValue(e.target.value);
-    handleSetDataChanged(newValue);
+    props.setDataChanged && props.setDataChanged(newValue)
     setShowOptions(true);
   };
 
   const handleSelectCity = (o) => {
     const newValue = `${o.name}, ${o.country}`;
     setValue(newValue);
-    handleSetDataChanged(newValue);
+    props.setDataChanged && props.setDataChanged(newValue)
     setShowOptions(false);
   };
 
@@ -38,7 +31,7 @@ const CustomAutocomplete = forwardRef((props, ref) => {
   }, [props.defaultVal]);
 
   return (
-    <div className={`${styles.container} ${props.className}`}>
+    <div id={props.id} className={`${styles.container} ${props.className}`}>
       <label className={styles.label} htmlFor={`${props.name}-autocomplete`}>
         {props.label}
       </label>

@@ -11,13 +11,15 @@ DONE
 DONE
 
 - Need page for creating account. (1day)
+DONE
 
 - Need backend set up for account creation. (1day)
 
 - Add Users Modal.
 Set up Add Users modal in Go page to display up to 4 non friend users 
-and all friends that are "ready" or searching. Need to add at least 1 
-new connection to create an outing! (1 day)
+and all friends that are "ready" or "searching" with searching being the priority. 
+Need to add at least 1 
+new connection to create an outing! Need to add   (1 day)
 
 - Finish chat page layout / interface. Put Chat in modal (1 day)
 

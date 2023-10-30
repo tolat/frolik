@@ -7,18 +7,10 @@ const CustomSelect = forwardRef((props, ref) => {
   const [value, setValue] = useState(props.defaultVal);
   const [optionsDisplay, setOptionsDisplay] = useState("none");
 
-  const handleSetDataChanged = (value) => {
-    if (value !== props.defaultVal) {
-      props.setDataChanged && props.setDataChanged(true);
-    } else {
-      props.setDataChanged && props.setDataChanged(false);
-    }
-  };
-
   const handleChange = (o) => {
     handleToggleOptions();
     setValue(o.name);
-    handleSetDataChanged(o.name);
+    props.setDataChanged && props.setDataChanged(o.name)
   };
 
   const handleToggleOptions = () => {
@@ -33,7 +25,7 @@ const CustomSelect = forwardRef((props, ref) => {
 
   return (
     <div className={`${styles.container} ${props.className}`}>
-      <label className={styles.label} htmlFor={`${props.name}-select`}>
+      <label className={styles.label} htmlFor={props.id || Math.random()}>
         {props.label}
       </label>
       <div
@@ -43,9 +35,12 @@ const CustomSelect = forwardRef((props, ref) => {
         }}
         className={styles.select}
         name={props.name}
-        id={`${props.name}-select`}
       >
-        <div onClick={handleToggleOptions} className={styles.valueContainer}>
+        <div
+          id={props.id}
+          onClick={handleToggleOptions}
+          className={styles.valueContainer}
+        >
           <div ref={ref} className={styles.value}>
             {value}
           </div>

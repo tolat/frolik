@@ -1,18 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles/EditProfileModal.module.scss";
 import ModalPortal from "./ModalPortal";
-import { useReducer, useRef, useState } from "react";
+import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { dataActions } from "../../store/data-slice";
-import { uploadProfileData } from "../../utils/data-fetch";
+import { fetchGobals, uploadProfileData } from "../../utils/data-fetch";
 import CustomSelect from "../UI/CustomSelect";
 import balloonIcon from "../../images/balloon1.png";
 import ProfileEditor from "./ProfileEditor";
 import { hideModal } from "../../store/modal-actions";
+import ValidatorBubble, { runValidators } from "../UI/ValidatorBubble";
+import { editProfileValidators } from "../../utils/validators";
 
 const stagedDataReducer = (state, action) => {
-  return action.type === "reset"
-    ? {}
-    : { ...state, [`${action.type}`]: action.value };
+  return action.type === "setAll"
+    ? action.values
+    : { ...state, [`${action.id}`]: action.value };
 };
 
 const EditProfileModal = (props) => {
@@ -23,20 +25,15 @@ const EditProfileModal = (props) => {
   const modalDisplay = modalState.selector === "edit-profile" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
   const userData = dataState.users[user._id];
-  const globals = useSelector((state) => state.auth.globals);
-  const statusMap = globals?.statusMap;
 
-  const [stagedData, dispatchStageData] = useReducer(stagedDataReducer, {});
   const [buttonText, setButtonText] = useState("Save");
   const [editingPhoto, setEditingPhoto] = useState(false);
+  const [validationMessage, setValidationMessage] = useState(false);
+  const [validationDisplay, setValidationDisplay] = useState("none");
+  const [validationID, setValidationID] = useState(false);
+  const [globals, setGlobals] = useState({});
   const buttonTextOnSubmit = "Saving..";
-  const stagedCrop = stagedData.crop;
-  const stagedZoom = stagedData.zoom;
-  const stagedImage = stagedData.image;
-  const defaultCrop = userData.crop;
-  const defaultZoom = userData.zoom;
-  const defaultImage = userData.profile_picture
-
+  const [stagedData, dispatchStageData] = useReducer(stagedDataReducer);
 
   const formRefs = {
     first_name: useRef(),
@@ -46,71 +43,107 @@ const EditProfileModal = (props) => {
     location: useRef(),
   };
 
-  const defaultValues = {
-    location: user.location,
-    first_name: user.first_name,
-    last_name: user.last_name,
-    tagline: user.tagline,
+  // Set memoized default values based on user data
+  const defaultValues = useMemo(() => {
+    return {
+      location: user.location,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      tagline: user.tagline,
+      status: user.status?.status,
+      profile_picture: userData.profile_picture,
+      crop: userData.crop,
+      zoom: userData.zoom,
+    };
+  }, [userData, user]);
+
+  // Initialize the staged data reducer state with the default values
+  // and get globals from server
+  useEffect(() => {
+    dispatchStageData({ type: "setAll", values: defaultValues });
+    fetchGobals(setGlobals);
+  }, [defaultValues]);
+
+  // Data has been changed if stagedData values differ from defaultValues
+  const dataChanged = !stagedData
+    ? false
+    : Object.keys(stagedData)?.find(
+        (key) => stagedData[key] !== defaultValues[key]
+      );
+
+  const statusOptions = !globals.statusMap
+    ? []
+    : Object.keys(globals.statusMap).map((key) => {
+        const selectable = key === "Ready" || key === "Busy";
+        return {
+          selectable,
+          name: key,
+          component: (
+            <StatusOption
+              unselectable={!selectable}
+              name={key}
+              details={globals?.statusMap[key]}
+            />
+          ),
+        };
+      });
+
+  const runValidation = () => {
+    return runValidators(
+      editProfileValidators(globals),
+      stagedData,
+      setValidationMessage,
+      setValidationDisplay,
+      setValidationID
+    );
   };
 
-  const resetData = () => {
-    dispatchStageData({ type: "reset" });
+  const resetForm = () => {
     setButtonText("Save");
   };
 
   const onSubmit = (data) => {
-    dispatch(dataActions.updateUserPhotoData({userID: user._id, data}));
+    dispatch(dataActions.updateUserPhotoData({ userID: user._id, data }));
     const fullData = { ...data, status: formRefs.status.current.innerHTML };
-    uploadProfileData(user._id, fullData, resetData);
-    hideModal()
+    uploadProfileData(user._id, fullData, resetForm);
+    hideModal();
   };
-
-  const statusOptions = Object.keys(statusMap).map((key) => {
-    const selectable = key === "Ready" || key === "Busy";
-    return {
-      selectable,
-      name: key,
-      component: (
-        <StatusOption
-          unselectable={!selectable}
-          name={key}
-          details={statusMap[key]}
-        />
-      ),
-    };
-  });
 
   return (
     <ModalPortal>
       <div style={modalStyle} className={`${styles.container} noscroll`}>
+        <ValidatorBubble
+          elementID={validationID}
+          display={validationDisplay}
+          message={validationMessage}
+        />
         <ProfileEditor
           stagedData={stagedData}
           dispatchStageData={dispatchStageData}
           buttonText={buttonText}
           setButtonText={setButtonText}
           buttonTextOnSubmit={buttonTextOnSubmit}
-          stagedCrop={stagedCrop}
-          stagedZoom={stagedZoom}
-          stagedimage={stagedImage}
-          defaultCrop={defaultCrop}
-          defaultZoom={defaultZoom}
-          defaultImage={defaultImage}
           editingPhoto={editingPhoto}
           setEditingPhoto={setEditingPhoto}
           formRefs={formRefs}
           onSubmit={onSubmit}
           allowCrop={true}
           defaultValues={defaultValues}
+          dataChanged={dataChanged}
+          runValidation={runValidation}
+          clearValidators={() => setValidationDisplay("none")}
+          resetForm={resetForm}
         >
           <CustomSelect
             options={statusOptions}
             name={"Status"}
+            id={"status"}
             label={"Status:"}
             ref={formRefs.status}
-            defaultVal={user?.status?.status}
+            defaultVal={defaultValues.status}
             className={styles.statusSelect}
             setDataChanged={(value) => {
-              dispatchStageData({ type: "status", value });
+              dispatchStageData({ id: "status", value });
             }}
           />
         </ProfileEditor>

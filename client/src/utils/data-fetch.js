@@ -120,7 +120,7 @@ export const uploadProfilePictureData = async (userID, data) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
-export const uploadProfileData = (userID, data, resetData) => {
+export const uploadProfileData = (userID, data, resetForm) => {
   const userProfilePictureKey = store.getState().auth.user.profile_picture.key;
 
   const profilePictureData = {
@@ -154,8 +154,7 @@ export const uploadProfileData = (userID, data, resetData) => {
     // Upload profile picture data once user data has been updated
     uploadProfilePictureData(userID, profilePictureData);
 
-    // Reset data
-    resetData();
+    resetForm()
   };
 
   const handleError = (err) => {

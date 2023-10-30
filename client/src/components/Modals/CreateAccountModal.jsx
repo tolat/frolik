@@ -1,13 +1,19 @@
 import styles from "./styles/CreateAccountModal.module.scss";
 import ModalPortal from "./ModalPortal";
-import { useEffect, useReducer, useRef, useState } from "react";
-import {  useSelector } from "react-redux";
+import { useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import ProfileEditor from "./ProfileEditor";
 import placeholderPhoto from "../../images/placeholder-user-photo.png";
 import SimpleInput from "../UI/SimpleInput";
+import ValidatorBubble, { runValidators } from "../UI/ValidatorBubble";
+import { fetchGobals } from "../../utils/data-fetch";
+import { loadImageAsBase64 } from "../../utils/utils";
+import { createProfileValidators } from "../../utils/validators";
 
 const stagedDataReducer = (state, action) => {
-  return { ...state, [`${action.type}`]: action.value };
+  return action.type === "setAll"
+    ? action.values
+    : { ...state, [`${action.id}`]: action.value };
 };
 
 const CreateAccountModal = (props) => {
@@ -21,37 +27,13 @@ const CreateAccountModal = (props) => {
   const [editingPhoto, setEditingPhoto] = useState(false);
   const [defaultImage, setDefaultImage] = useState(false);
   const [allowCrop, setAllowCrop] = useState(false);
+  const [validationMessage, setValidationMessage] = useState(false);
+  const [validationDisplay, setValidationDisplay] = useState("none");
+  const [validationID, setValidationID] = useState(false);
+  const [globals, setGlobals] = useState({});
   const buttonTextOnSubmit = "Creating Profile..";
-  const stagedCrop = stagedData.crop;
-  const stagedZoom = stagedData.zoom;
-  const stagedImage = stagedData.image;
-  const defaultCrop = {x:0,y:0};
+  const defaultCrop = { x: 0, y: 0 };
   const defaultZoom = 1;
-
-  // Load placeholder image as base64 string
-  useEffect(() => {
-    const loadImageAsBase64 = async () => {
-      try {
-        const response = await fetch(placeholderPhoto);
-        const blob = await response.blob();
-
-        const reader = new FileReader();
-        reader.onload = () => {
-          const base64String = reader.result;
-          const trimmedString = base64String.slice(
-            base64String.indexOf(",") + 1
-          );
-          setDefaultImage(trimmedString);
-        };
-
-        reader.readAsDataURL(blob);
-      } catch (error) {
-        console.error("Error loading image:", error);
-      }
-    };
-
-    loadImageAsBase64();
-  }, []);
 
   const formRefs = {
     first_name: useRef(),
@@ -63,15 +45,52 @@ const CreateAccountModal = (props) => {
     password: useRef(),
   };
 
-  const defaultValues = {
-    location: "",
-    first_name: "",
-    last_name: "",
-    tagline: "",
-  };
+  // Set memoized default values based on user data
+  const defaultValues = useMemo(() => {
+    return {
+      location: "",
+      first_name: "",
+      last_name: "",
+      tagline: "",
+      profile_picture: defaultImage,
+      "create-email": "",
+      "create-password": "",
+      crop: { x: 0, y: 0 },
+      zoom: 1,
+    };
+  }, [defaultImage]);
+
+  // Initialize the staged data reducer state with the default values
+  // and get globals from server
+  useEffect(() => {
+    dispatchStageData({ type: "setAll", values: defaultValues });
+    fetchGobals(setGlobals);
+    loadImageAsBase64(placeholderPhoto, setDefaultImage);
+  }, [defaultValues]);
+
+  // Data has been changed if stagedData values differ from defaultValues
+  const dataChanged = !stagedData
+    ? false
+    : Object.keys(stagedData)?.find(
+        (key) => stagedData[key] !== defaultValues[key]
+      );
 
   const onPhotoChange = (newImage) => {
     newImage !== defaultImage ? setAllowCrop(true) : setAllowCrop(false);
+  };
+
+  const runValidation = () => {
+    return runValidators(
+      createProfileValidators(globals, defaultImage),
+      stagedData,
+      setValidationMessage,
+      setValidationDisplay,
+      setValidationID
+    );
+  };
+
+  const resetForm = () => {
+    setButtonText("Create Acount");
   };
 
   const onSubmit = async (data) => {
@@ -81,18 +100,17 @@ const CreateAccountModal = (props) => {
   return (
     <ModalPortal>
       <div className={styles.container} style={modalStyle}>
+        <ValidatorBubble
+          elementID={validationID}
+          display={validationDisplay}
+          message={validationMessage}
+        />
         <ProfileEditor
           stagedData={stagedData}
           dispatchStageData={dispatchStageData}
           buttonText={buttonText}
           setButtonText={setButtonText}
           buttonTextOnSubmit={buttonTextOnSubmit}
-          stagedCrop={stagedCrop}
-          stagedZoom={stagedZoom}
-          stagedimage={stagedImage}
-          defaultCrop = {defaultCrop}
-          defaultZoom = {defaultZoom}
-          defaultImage={defaultImage}
           editingPhoto={editingPhoto}
           setEditingPhoto={setEditingPhoto}
           formRefs={formRefs}
@@ -100,17 +118,21 @@ const CreateAccountModal = (props) => {
           onPhotoChange={onPhotoChange}
           allowCrop={allowCrop}
           defaultValues={defaultValues}
+          dataChanged={dataChanged}
+          runValidation={runValidation}
+          clearValidators={() => setValidationDisplay("none")}
+          resetForm={resetForm}
         >
           <SimpleInput
             type="text"
-            id="creat-email"
+            id="create-email"
             name="email"
-            label="Email (username):"
+            label="Email:"
             ref={formRefs.username}
-            defaultVal={""}
+            defaultVal={defaultValues["create-email"]}
             className={styles.simpleInput}
             setDataChanged={(value) => {
-              dispatchStageData({ type: "username", value });
+              dispatchStageData({ id: "create-email", value });
             }}
           />
           <SimpleInput
@@ -119,10 +141,10 @@ const CreateAccountModal = (props) => {
             name="password"
             label="Password:"
             ref={formRefs.password}
-            defaultVal={""}
+            defaultVal={defaultValues["create-password"]}
             className={styles.simpleInput}
             setDataChanged={(value) => {
-              dispatchStageData({ type: "password", value });
+              dispatchStageData({ id: "create-password", value });
             }}
           />
         </ProfileEditor>
