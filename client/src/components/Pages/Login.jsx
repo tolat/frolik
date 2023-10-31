@@ -10,6 +10,7 @@ import SimpleInput from "../UI/SimpleInput";
 import CreateAccountModal from "../Modals/CreateAccountModal";
 import SimpleButton from "../UI/SimpleButton";
 import { modalActions } from "../../store/modal-slice";
+import { authActions } from "../../store/auth-slice";
 
 function Login() {
   const usernameRef = useRef();
@@ -30,10 +31,20 @@ function Login() {
     e.preventDefault();
     setIsLoggingIn(true);
 
+    const handleLoginResponse = (response) => {
+      dispatch(authActions.login(response));
+      setIsLoggingIn(false);
+    };
+
+    const handleLoginError = (err) => {
+      console.log(err.status);
+    };
+
     fetchLogin(
       usernameRef.current.value,
       passwordRef.current.value,
-      setIsLoggingIn
+      handleLoginResponse,
+      handleLoginError
     );
   };
 

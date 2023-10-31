@@ -23,7 +23,10 @@ router.post(
     // Get stripped down populated friends list
     const populatedFriends = await populateFriends(user.friends);
 
-    res.send({ user, populatedFriends, globals });
+    // Send unacceptable status code 406 if user has a 'Pending' status
+    user.status.status == "Pending"
+      ? res.sendStatus(406)
+      : res.send({ user, populatedFriends, globals });
   })
 );
 

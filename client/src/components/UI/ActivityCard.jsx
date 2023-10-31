@@ -25,7 +25,9 @@ const instructionIconMap = {
 };
 
 const ActivityCard = (props) => {
-  const categoryColorMap = useSelector(state=>state.auth.globals.categoryColorMap)
+  const categoryColorMap = useSelector(
+    (state) => state.auth.globals.categoryColorMap
+  );
   const statIconStyle = { width: "2rem", height: "2rem" };
   const statContainerStyle = { marginLeft: "1rem" };
   const [instructionsVisible, setInstructionsVisible] = useState(false);
@@ -54,7 +56,11 @@ const ActivityCard = (props) => {
       <div className={styles.innerContainer}>
         <div className={styles.upperContainer}>
           <div className={styles.name}>
-            {props.activity.name}
+            <div className={styles.innerNameContainer}>
+              {props.activity.name}
+              <div className={styles.category}>{`- ${props.activity.category}`}</div>
+            </div>
+
             <div className={styles.nameRightContainer}>
               {props.completed ? (
                 <div className={styles.completedIconContainer}>

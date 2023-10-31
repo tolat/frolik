@@ -30,6 +30,7 @@ code {
 }
 
 .app {
+  position: absolute;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -39,4 +40,14 @@ code {
 
 a:link {
   text-decoration: none;
+}
+
+#popup{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  width: 100vw;
+  height: 100vh;
+  display: none;
 }

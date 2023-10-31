@@ -7,8 +7,11 @@ import placeholderPhoto from "../../images/placeholder-user-photo.png";
 import SimpleInput from "../UI/SimpleInput";
 import ValidatorBubble, { runValidators } from "../UI/ValidatorBubble";
 import { createAccount, fetchGobals } from "../../utils/data-fetch";
-import { loadImageAsBase64 } from "../../utils/utils";
+import { hidePopup, loadImageAsBase64, showPopup } from "../../utils/utils";
 import { createProfileValidators } from "../../utils/validators";
+import SimpleButton from "../UI/SimpleButton";
+import Popup from "../Popups/Popup";
+import WarningPopup from "../Popups/WarningPopup";
 
 const stagedDataReducer = (state, action) => {
   return action.type === "setAll"
@@ -31,6 +34,8 @@ const CreateAccountModal = (props) => {
   const [validationDisplay, setValidationDisplay] = useState("none");
   const [validationID, setValidationID] = useState(false);
   const [globals, setGlobals] = useState({});
+  const [showConfirmEmail, setShowConfirmEmail] = useState(false);
+  const [popupContent, setPoputContent] = useState(null);
   const buttonTextOnSubmit = "Creating Profile..";
   const validatorBubbleID = "validator-bubble";
 
@@ -79,11 +84,28 @@ const CreateAccountModal = (props) => {
     );
   };
 
-  const resetForm = () => {
-    setButtonText("Create Acount");
+  const resetForm = (err) => {
+    if (err) {
+      // User already created error
+      if (err.status === 406) {
+        setPoputContent(
+          <WarningPopup
+            header={`Account for ${stagedData["create-email"]} already exists.`}
+            message={"Please try again with a different email."}
+            ok={"OK"}
+            okClick={hidePopup}
+          />
+        );
+      }
+
+      showPopup();
+      setButtonText("Create Acount");
+    } else {
+      setShowConfirmEmail(true);
+    }
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     createAccount(
       {
         ...data,
@@ -94,8 +116,13 @@ const CreateAccountModal = (props) => {
     );
   };
 
+  const resendConfirmationEmail = () => {
+    console.log("resend confirmation");
+  };
+
   return (
     <ModalPortal>
+      <Popup>{popupContent}</Popup>
       <div className={styles.container} style={modalStyle}>
         <ValidatorBubble
           id={validatorBubbleID}
@@ -103,46 +130,64 @@ const CreateAccountModal = (props) => {
           display={validationDisplay}
           message={validationMessage}
         />
-        <ProfileEditor
-          stagedData={stagedData}
-          dispatchStageData={dispatchStageData}
-          buttonText={buttonText}
-          setButtonText={setButtonText}
-          buttonTextOnSubmit={buttonTextOnSubmit}
-          editingPhoto={editingPhoto}
-          setEditingPhoto={setEditingPhoto}
-          onSubmit={onSubmit}
-          onPhotoChange={onPhotoChange}
-          allowCrop={allowCrop}
-          defaultValues={defaultValues}
-          dataChanged={dataChanged}
-          runValidation={runValidation}
-          clearValidators={() => setValidationDisplay("none")}
-          resetForm={resetForm}
-        >
-          <SimpleInput
-            type="text"
-            id="create-email"
-            name="email"
-            label="Email:"
-            defaultVal={defaultValues["create-email"]}
-            className={styles.simpleInput}
-            setDataChanged={(value) => {
-              dispatchStageData({ id: "create-email", value });
-            }}
-          />
-          <SimpleInput
-            type="password"
-            id="create-password"
-            name="password"
-            label="Password:"
-            defaultVal={defaultValues["create-password"]}
-            className={styles.simpleInput}
-            setDataChanged={(value) => {
-              dispatchStageData({ id: "create-password", value });
-            }}
-          />
-        </ProfileEditor>
+        {showConfirmEmail ? (
+          <div className={styles.confirmEmailContainer}>
+            <h2 className={styles.confirmEmailHeader}>
+              Please confirm your email!
+            </h2>
+            <div className={styles.confirmEmailText}>
+              {`We've sent a link to ${stagedData["create-email"]}
+              that you can use to finish creating your account.`}
+            </div>
+            <SimpleButton
+              className={styles.resendEmailButton}
+              onClick={resendConfirmationEmail}
+            >
+              Resend confirmation email
+            </SimpleButton>
+          </div>
+        ) : (
+          <ProfileEditor
+            stagedData={stagedData}
+            dispatchStageData={dispatchStageData}
+            buttonText={buttonText}
+            setButtonText={setButtonText}
+            buttonTextOnSubmit={buttonTextOnSubmit}
+            editingPhoto={editingPhoto}
+            setEditingPhoto={setEditingPhoto}
+            onSubmit={onSubmit}
+            onPhotoChange={onPhotoChange}
+            allowCrop={allowCrop}
+            defaultValues={defaultValues}
+            dataChanged={dataChanged}
+            runValidation={runValidation}
+            clearValidators={() => setValidationDisplay("none")}
+            resetForm={resetForm}
+          >
+            <SimpleInput
+              type="text"
+              id="create-email"
+              name="email"
+              label="Email:"
+              defaultVal={defaultValues["create-email"]}
+              className={styles.simpleInput}
+              setDataChanged={(value) => {
+                dispatchStageData({ id: "create-email", value });
+              }}
+            />
+            <SimpleInput
+              type="password"
+              id="create-password"
+              name="password"
+              label="Password:"
+              defaultVal={defaultValues["create-password"]}
+              className={styles.simpleInput}
+              setDataChanged={(value) => {
+                dispatchStageData({ id: "create-password", value });
+              }}
+            />
+          </ProfileEditor>
+        )}
       </div>
     </ModalPortal>
   );

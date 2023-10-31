@@ -1,11 +1,10 @@
 const {
   S3Client,
   PutObjectCommand,
-  CreateBucketCommand,
   DeleteObjectCommand,
-  DeleteBucketCommand,
-  paginateListObjectsV2,
   GetObjectCommand,
+  ListObjectsCommand,
+  DeleteObjectsCommand,
 } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
@@ -56,4 +55,29 @@ module.exports.deleteFromS3 = async (Bucket, Key) => {
       Key,
     })
   );
+};
+
+module.exports.deleteAllFromS3 = async (Bucket) => {
+  try {
+    const listObjectsResponse = await s3Client.send(
+      new ListObjectsCommand({ Bucket })
+    );
+
+    if (listObjectsResponse.Contents.length === 0) {
+      console.log("Bucket is already empty.");
+      return;
+    }
+
+    const deleteObjectsCommand = new DeleteObjectsCommand({
+      Bucket,
+      Delete: {
+        Objects: listObjectsResponse.Contents.map((obj) => ({ Key: obj.Key })),
+      },
+    });
+
+    await s3Client.send(deleteObjectsCommand);
+    console.log("All objects deleted successfully.");
+  } catch (error) {
+    console.error("Error deleting objects:", error);
+  }
 };

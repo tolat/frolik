@@ -16,13 +16,7 @@ export default async function httpFetch(
 
     // Handle other status codes (e.g., 401, 500) here
     if (!response.ok) {
-      if (response.status === 401) {
-        console.log("ERROR: CAN'T FETCH - UNAUTHORIZED")
-        //throw new Error("unauthorized");
-      } else {
-        console.log(`ERROR: CAN'T FETCH - RESPONSE STATUS ${response.status}`)
-        // throw new Error(`Request failed with status: ${response.status}`);
-      }
+      handleError(response)
     } else {
       const contentType = response.headers.get("Content-Type");
       if (contentType && contentType.includes("application/json")) {

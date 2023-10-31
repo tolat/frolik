@@ -166,6 +166,7 @@ export const uploadProfileData = (userID, data, resetForm) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Send request to create a new user to the server
 export const createAccount = (data, resetForm) => {
   const newUserData = {
     user: {
@@ -187,12 +188,6 @@ export const createAccount = (data, resetForm) => {
     photoString: data.profile_picture,
   };
 
-  const profilePictureData = {
-    profile_picture: data.profile_picture,
-    zoom: data.zoom,
-    crop: data.crop,
-  };
-
   const requestConfig = {
     url: `${getServer()}/user/create`,
     headers: {
@@ -203,23 +198,12 @@ export const createAccount = (data, resetForm) => {
   };
 
   const handleResponse = (response) => {
-    // Update user in redux auth store
-    store.dispatch(authActions.setUser(response.user));
-    // Update userData in redux data store
-    store.dispatch(
-      dataActions.updateUserPhotoData({
-        userID: response.user._id,
-        data: profilePictureData,
-      })
-    );
-
-    // Log created user in
-    // fetchLogin(data.username, data.password, (args) => {});
     resetForm();
   };
 
   const handleError = (err) => {
-    console.log(err);
+    resetForm(err);
+    console.log("ERROR: ", err);
   };
 
   httpFetch(requestConfig, handleResponse, handleError);

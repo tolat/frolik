@@ -11,7 +11,7 @@ const path = require("path");
 
 const { userSeeds } = require("./user");
 const { activitySeeds } = require("./activity");
-const { uploadToS3, deleteFromS3 } = require("../utils/S3");
+const { uploadToS3, deleteFromS3, deleteAllFromS3 } = require("../utils/S3");
 
 // Connect to the database and handle connection errors
 mongoose.connect(dbUrl, {
@@ -38,23 +38,21 @@ const removeFileSuffix = (filename) => {
   }
 };
 
-const deleteAndUploadImagesToS3 = async (directoryPath, duplicate = false) => {
+const UploadImagesToS3 = async (directoryPath) => {
   const files = await fs.readdirSync(directoryPath);
 
-  const deleteAndUpload = async (key, imagePath) => {
+  const uploadImage = async (key, imagePath) => {
     const simpleKey = removeFileSuffix(key);
     console.log("uploading: ", simpleKey);
-    // Delete existing images from S3
-    await deleteFromS3(process.env.AWS_DEV_BUCKET, simpleKey);
 
     // Upload image to s3
     const imageBuffer = await fs.readFileSync(imagePath);
     const reducedImageBuffer = await sharp(imageBuffer)
-      .jpeg({quality:50})
+      .jpeg({ quality: 70 })
       .toBuffer();
 
     const imageString = reducedImageBuffer.toString("base64");
-    await uploadToS3(process.env.AWS_DEV_BUCKET, simpleKey, imageString);
+    await uploadToS3(process.env.AWS_BUCKET, simpleKey, imageString);
   };
 
   for (key of files) {
@@ -64,10 +62,7 @@ const deleteAndUploadImagesToS3 = async (directoryPath, duplicate = false) => {
       continue;
     }
 
-    await deleteAndUpload(key, imagePath);
-    if (duplicate) {
-      await deleteAndUpload(`dup_${key}`, imagePath);
-    }
+    await uploadImage(key, imagePath);
   }
 };
 
@@ -115,11 +110,12 @@ const seedGlobals = async () => {
 };
 
 const seedUsers = async () => {
-  //Uncomment to Upload seed images to S3
-  //const profilePicsPath = `${__dirname}/images`;
-  //const sampleImagesPath = `${__dirname}/images/sampleUserPhotos`;
-  //await deleteAndUploadImagesToS3(profilePicsPath);
-  //await deleteAndUploadImagesToS3(sampleImagesPath, true);
+  // Delete sampledev bucket data and re-seed images
+  await deleteAllFromS3(process.env.AWS_BUCKET);
+  const profilePicsPath = `${__dirname}/images`;
+  const sampleImagesPath = `${__dirname}/images/sampleUserPhotos`;
+  await UploadImagesToS3(profilePicsPath);
+  await UploadImagesToS3(sampleImagesPath);
 
   // Create users
   for (user of userSeeds) {
@@ -150,16 +146,8 @@ const seedUsers = async () => {
       "kayaking",
       "lawngame",
       "tenniscourt",
-      "dup_acroyoga",
-      "dup_beach",
-      "dup_beerpong",
-      "dup_drawing",
-      "dup_football",
-      "dup_icecream",
-      "dup_kayaking",
-      "dup_lawngame",
-      "dup_tenniscourt",
     ];
+
     await user.save();
   }
 };

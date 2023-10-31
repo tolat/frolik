@@ -4,11 +4,8 @@ import store from ".";
 import { getServer } from "../utils/env-utils";
 import { dataActions } from "./data-slice";
 
-export const fetchLogin = (username, password, setIsLoggingIn) => {
-  const dispatch = store.dispatch;
-
-  console.log(username, password);
-
+// Send request to log the user in and start a session in the browser
+export const fetchLogin = (username, password, handleResponse, handleError) => {
   const requestConfig = {
     url: `${getServer()}/auth/login`,
     headers: {
@@ -16,18 +13,6 @@ export const fetchLogin = (username, password, setIsLoggingIn) => {
     },
     method: "POST",
     body: JSON.stringify({ username, password }),
-  };
-
-  const handleResponse = (response) => {
-    dispatch(authActions.login(response));
-    setIsLoggingIn(false);
-  };
-
-  const handleError = (err) => {
-    if (err.message === "unauthorized") {
-      // COULD ADD CODE HERE TO UPDATE AN "incorrect credentials" STATE
-    }
-    console.log(err);
   };
 
   httpFetch(requestConfig, handleResponse, handleError);

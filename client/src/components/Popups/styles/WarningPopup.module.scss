@@ -1,0 +1,40 @@
+@import "../../../utils/responsive.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.message {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.buttonSpacer {
+  width: 2rem;
+  height: 1rem;
+}
+
+.okButton {
+  background-color: $green;
+  color: white;
+}
+
+.cancelButton {
+  background-color: $button_grey;
+}

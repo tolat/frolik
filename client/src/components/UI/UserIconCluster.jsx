@@ -24,7 +24,7 @@ const UserIconCluster = (props) => {
           backer={true}
           backerClassName={props.backerClassName}
           sizeInRem={props.sizeInRem}
-          user={props.users[0]}
+          user={props.users && props.users[0]}
           borderSizeInRem={props.borderSizeInRem}
         />
       ) : props.users?.length === 2 ? (
@@ -37,7 +37,7 @@ const UserIconCluster = (props) => {
               marginRight: `${props.sizeInRem - props.sizeInRem / mag21}rem`,
             }}
             sizeInRem={parseFloat(props.sizeInRem) / mag21}
-            user={props.users[0]}
+            user={props.users && props.users[0]}
             borderSizeInRem={parseFloat(props.borderSizeInRem) / mag21}
           />
           <UserIcon
@@ -66,7 +66,7 @@ const UserIconCluster = (props) => {
               }rem`,
             }}
             sizeInRem={parseFloat(props.sizeInRem) / mag31}
-            user={props.users[0]}
+            user={props.users && props.users[0]}
             borderSizeInRem={parseFloat(props.borderSizeInRem) / mag31}
           />
           <UserIcon
@@ -113,7 +113,7 @@ const UserIconCluster = (props) => {
               }rem`,
             }}
             sizeInRem={props.sizeInRem / mag41}
-            user={props.users[0]}
+            user={props.users && props.users[0]}
             borderSizeInRem={props.borderSizeInRem / mag41}
           />
           <UserIcon
@@ -175,7 +175,7 @@ const UserIconCluster = (props) => {
               }rem`,
             }}
             sizeInRem={props.sizeInRem / mag41}
-            user={props.users[0]}
+            user={props.users && props.users[0]}
             borderSizeInRem={props.borderSizeInRem / mag41}
           />
           <div

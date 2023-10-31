@@ -36,6 +36,17 @@
   align-items: center;
 }
 
+.innerNameContainer{
+  display: flex;
+  align-items: center;
+}
+
+.category{
+  margin-left: 0.3rem;
+  font-size: 1.1rem;
+  color: grey;
+}
+
 .select {
   background-color: $blue;
   width: 7rem;

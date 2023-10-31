@@ -9,7 +9,7 @@ const {
   sameUserOnly,
 } = require("../utils/middleware");
 const { downloadFromS3, uploadToS3 } = require("../utils/S3");
-const { populateUser, populateFriends } = require("../utils/utils");
+const { populateUser, populateFriends, sendEmail } = require("../utils/utils");
 const sharp = require("sharp");
 
 const router = express.Router({ mergeParams: true });
@@ -30,7 +30,7 @@ router.get(
     }
 
     // Download image stream from S3 and pipe into response
-    downloadFromS3(process.env.AWS_DEV_BUCKET, req.params.key)
+    downloadFromS3(process.env.AWS_BUCKET, req.params.key)
       .then((imageStream) => imageStream.pipe(res))
       .catch((error) => {
         console.error("Error downloading image:", error);
@@ -51,7 +51,7 @@ router.get(
     }
 
     // Download image stream from S3 and pipe into response
-    downloadFromS3(process.env.AWS_DEV_BUCKET, user.profile_picture.key)
+    downloadFromS3(process.env.AWS_BUCKET, user.profile_picture.key)
       .then((imageStream) => imageStream.pipe(res))
       .catch((error) => {
         console.error("Error downloading image:", error);
@@ -95,7 +95,7 @@ router.post(
       const imageString = reducedImageBuffer.toString("base64");
 
       // Upload image to S3
-      uploadToS3(process.env.AWS_DEV_BUCKET, req.body.key, imageString)
+      uploadToS3(process.env.AWS_BUCKET, req.body.key, imageString)
         .then((response) => {
           res.send({ user, populatedFriends });
         })
@@ -146,24 +146,41 @@ router.post(
     } else {
       // Else create new user and upload photo
       const user = new User(userData);
-      user.status = { status: "Ready", updated: Date.now() };
-
       await User.register(user, userData.password);
+
+      // Send email confirmation link
+      const link = `${process.env.SERVER}/user/${user._id.toString()}/verify`;
+      sendEmail(userData.username, "Confirm Email", link);
+      user.status = { status: "Pending", updated: Date.now() };
 
       // Upload image to S3
       uploadToS3(
-        process.env.AWS_DEV_BUCKET,
+        process.env.AWS_BUCKET,
         user.profile_picture.key,
         req.body.photoString
       )
         .then((response) => {
-          res.send({ user });
+          res.sendStatus(200);
         })
         .catch((error) => {
           console.error("Error uploading image:", error);
           res.status(500).send("Internal Server Error");
         });
     }
+  })
+);
+
+router.get(
+  "/:id/verify",
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    user.status = { status: "Ready", updated: Date.now() };
+
+    console.log(user);
+
+    await user.save()
+
+    res.redirect('/login')
   })
 );
 

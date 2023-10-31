@@ -147,7 +147,7 @@ const Profile = (props) => {
         </div>
       ) : selectedSliderKey === "_photos" ? (
         <Fragment>
-          <PhotoGrid images={userPhotos} gridTemplateColumns="1fr 1fr 1fr" />
+          <PhotoGrid images={userPhotos} gridTemplateColumns="1fr 1fr" />
           <div className={styles.noImagesBlurb}>
             <div>To add photos, complete more </div>
             <div style={{ display: "flex", alignItems: "center" }}>

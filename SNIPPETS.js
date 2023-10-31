@@ -165,7 +165,7 @@ router.post("/:id/photos", reqAuthenticated, async (req, res) => {
   try {
     const imageStreams = await Promise.all(
       imageKeys.map(async (key) =>
-        downloadFromS3(process.env.AWS_DEV_BUCKET, key)
+        downloadFromS3(process.env.AWS_BUCKET, key)
       )
     );
     
