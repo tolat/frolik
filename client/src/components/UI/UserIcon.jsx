@@ -12,6 +12,11 @@ const getCategoryPercentage = (category, user) => {
 };
 
 const genBackgroundStr = (user, categoryColorMap) => {
+  // Return grey border if user has no outings
+  if(!user.outings[0]){
+    return "rgb(220,220,220)"
+  }
+
   let backgroundString = "conic-gradient(";
   const keys = Object.keys(categoryColorMap);
   let percentageMap = {};

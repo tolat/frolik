@@ -29,18 +29,17 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoggingIn(true);
-    dispatch(
-      fetchLogin(
-        usernameRef.current.value,
-        passwordRef.current.value,
-        setIsLoggingIn
-      )
+
+    fetchLogin(
+      usernameRef.current.value,
+      passwordRef.current.value,
+      setIsLoggingIn
     );
   };
 
   // Handle create account button click
   const handleCreateAccountButtonClick = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     dispatch(modalActions.setSelector("create-account"));
     dispatch(modalActions.showModal());
   };
@@ -72,11 +71,12 @@ function Login() {
             required
           />
         </div>
-        <button type="submit">
+
+        <SimpleButton type={"submit"}>
           {!isLoggingIn && !authState.isAuthenticated
             ? "Login"
             : "Logging in..."}
-        </button>
+        </SimpleButton>
         <SimpleButton
           onClick={handleCreateAccountButtonClick}
           className={styles.createAccountButton}

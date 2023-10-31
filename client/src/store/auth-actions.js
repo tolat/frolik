@@ -5,35 +5,32 @@ import { getServer } from "../utils/env-utils";
 import { dataActions } from "./data-slice";
 
 export const fetchLogin = (username, password, setIsLoggingIn) => {
-  // config for login post request
-  return async (dispatch) => {
-    // If dispatch is undefined (this funciton is called from outside a component),
-    // use the dispatch method on the store object
-    dispatch = dispatch ? dispatch : (dispatch = store.dispatch);
+  const dispatch = store.dispatch;
 
-    const requestConfig = {
-      url: `${getServer()}/auth/login`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({ username, password }),
-    };
+  console.log(username, password);
 
-    const handleResponse = (response) => {
-      dispatch(authActions.login(response));
-      setIsLoggingIn(false);
-    };
-
-    const handleError = (err) => {
-      if (err.message === "unauthorized") {
-        // COULD ADD CODE HERE TO UPDATE AN "incorrect credentials" STATE
-      }
-      console.log(err);
-    };
-
-    httpFetch(requestConfig, handleResponse, handleError);
+  const requestConfig = {
+    url: `${getServer()}/auth/login`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({ username, password }),
   };
+
+  const handleResponse = (response) => {
+    dispatch(authActions.login(response));
+    setIsLoggingIn(false);
+  };
+
+  const handleError = (err) => {
+    if (err.message === "unauthorized") {
+      // COULD ADD CODE HERE TO UPDATE AN "incorrect credentials" STATE
+    }
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
 };
 
 export const fetchAuth = () => {

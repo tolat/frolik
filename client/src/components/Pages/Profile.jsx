@@ -1,6 +1,6 @@
 import styles from "./styles/Profile.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import SliderNavbar from "../UI/SliderNavbar";
 import PhotoGrid from "../UI/PhotoGrid";
 import photos from "../../images/photogrid.png";
@@ -18,6 +18,7 @@ import EditProfileModal from "../Modals/EditProfileModal";
 import FriendCard from "../UI/FriendCard";
 import locationIcon from "../../images/location-dark.png";
 import { pageRouteLoader } from "../../utils/utils";
+import balloonIcon from "../../images/balloon1.png";
 
 const sliderIcons = [
   {
@@ -130,8 +131,36 @@ const Profile = (props) => {
         />
       </div>
 
-      {selectedSliderKey === "_photos" ? (
-        <PhotoGrid images={userPhotos} gridTemplateColumns="1fr 1fr 1fr" />
+      {!userPhotos[0] && !user.friends[0] && !user.outings[0] ? (
+        <div className={styles.noContentBlurb}>
+          <h3>You have no media yet!</h3>
+          <div>To start adding photos, outings and friends, create </div>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            and complete an outing on the{" "}
+            <img
+              className={styles.outingBalloon}
+              src={balloonIcon}
+              alt="outing page icon"
+            />{" "}
+            page!
+          </div>
+        </div>
+      ) : selectedSliderKey === "_photos" ? (
+        <Fragment>
+          <PhotoGrid images={userPhotos} gridTemplateColumns="1fr 1fr 1fr" />
+          <div className={styles.noImagesBlurb}>
+            <div>To add photos, complete more </div>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              outings on the{" "}
+              <img
+                className={styles.outingBalloon}
+                src={balloonIcon}
+                alt="outing page icon"
+              />{" "}
+              page!
+            </div>
+          </div>
+        </Fragment>
       ) : selectedSliderKey === "_outings" ? (
         <OutingList user={user} />
       ) : (

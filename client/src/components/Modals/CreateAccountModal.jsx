@@ -1,12 +1,12 @@
 import styles from "./styles/CreateAccountModal.module.scss";
 import ModalPortal from "./ModalPortal";
-import { useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { useEffect, useMemo, useReducer, useState } from "react";
 import { useSelector } from "react-redux";
 import ProfileEditor from "./ProfileEditor";
 import placeholderPhoto from "../../images/placeholder-user-photo.png";
 import SimpleInput from "../UI/SimpleInput";
 import ValidatorBubble, { runValidators } from "../UI/ValidatorBubble";
-import { fetchGobals } from "../../utils/data-fetch";
+import { createAccount, fetchGobals } from "../../utils/data-fetch";
 import { loadImageAsBase64 } from "../../utils/utils";
 import { createProfileValidators } from "../../utils/validators";
 
@@ -33,16 +33,6 @@ const CreateAccountModal = (props) => {
   const [globals, setGlobals] = useState({});
   const buttonTextOnSubmit = "Creating Profile..";
   const validatorBubbleID = "validator-bubble";
-
-  const formRefs = {
-    first_name: useRef(),
-    last_name: useRef(),
-    tagline: useRef(),
-    status: useRef(),
-    location: useRef(),
-    usename: useRef(),
-    password: useRef(),
-  };
 
   // Set memoized default values based on user data
   const defaultValues = useMemo(() => {
@@ -94,7 +84,14 @@ const CreateAccountModal = (props) => {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
+    createAccount(
+      {
+        ...data,
+        username: stagedData["create-email"],
+        password: stagedData["create-password"],
+      },
+      resetForm
+    );
   };
 
   return (
@@ -114,7 +111,6 @@ const CreateAccountModal = (props) => {
           buttonTextOnSubmit={buttonTextOnSubmit}
           editingPhoto={editingPhoto}
           setEditingPhoto={setEditingPhoto}
-          formRefs={formRefs}
           onSubmit={onSubmit}
           onPhotoChange={onPhotoChange}
           allowCrop={allowCrop}
@@ -129,7 +125,6 @@ const CreateAccountModal = (props) => {
             id="create-email"
             name="email"
             label="Email:"
-            ref={formRefs.username}
             defaultVal={defaultValues["create-email"]}
             className={styles.simpleInput}
             setDataChanged={(value) => {
@@ -141,7 +136,6 @@ const CreateAccountModal = (props) => {
             id="create-password"
             name="password"
             label="Password:"
-            ref={formRefs.password}
             defaultVal={defaultValues["create-password"]}
             className={styles.simpleInput}
             setDataChanged={(value) => {

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles/EditProfileModal.module.scss";
 import ModalPortal from "./ModalPortal";
-import { useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { useEffect, useMemo, useReducer, useState } from "react";
 import { dataActions } from "../../store/data-slice";
 import { fetchGobals, uploadProfileData } from "../../utils/data-fetch";
 import CustomSelect from "../UI/CustomSelect";

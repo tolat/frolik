@@ -133,4 +133,38 @@ router.post(
   })
 );
 
+router.post(
+  "/create",
+  tryCatch(async (req, res) => {
+    const userData = req.body.user;
+
+    //Send back error code if user already exists
+    if (await User.findOne({ username: userData.username })) {
+      res
+        .status(406)
+        .send(`User with username ${userData.username} already exists`);
+    } else {
+      // Else create new user and upload photo
+      const user = new User(userData);
+      user.status = { status: "Ready", updated: Date.now() };
+
+      await User.register(user, userData.password);
+
+      // Upload image to S3
+      uploadToS3(
+        process.env.AWS_DEV_BUCKET,
+        user.profile_picture.key,
+        req.body.photoString
+      )
+        .then((response) => {
+          res.send({ user });
+        })
+        .catch((error) => {
+          console.error("Error uploading image:", error);
+          res.status(500).send("Internal Server Error");
+        });
+    }
+  })
+);
+
 module.exports = router;
