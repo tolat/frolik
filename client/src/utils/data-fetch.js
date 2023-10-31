@@ -99,6 +99,7 @@ export const fetchGobals = async (setGlobals) => {
 };
 
 export const uploadProfilePictureData = async (userID, data) => {
+
   const requestConfig = {
     url: `${getServer()}/user/${userID}/profile-picture`,
     headers: {
@@ -124,7 +125,7 @@ export const uploadProfileData = (userID, data, resetForm) => {
   const userProfilePictureKey = store.getState().auth.user.profile_picture.key;
 
   const profilePictureData = {
-    photoString: data.image,
+    photoString: data.profile_picture,
     zoom: data.zoom,
     crop: data.crop,
     key: userProfilePictureKey,
@@ -163,3 +164,45 @@ export const uploadProfileData = (userID, data, resetForm) => {
 
   httpFetch(requestConfig, handleResponse, handleError);
 };
+
+export const createAccount = (userID, data, resetForm) =>{
+
+  const profilePictureData = {
+    photoString: data.image,
+    zoom: data.zoom,
+    crop: data.crop,
+    key: data.username,
+  };
+
+  const profileData = {
+    first_name: data.first_name,
+    last_name: data.last_name,
+    location: data.location,
+    tagline: data.tagline,
+    status: data.status,
+  };
+  const requestConfig = {
+    url: `${getServer()}/user/${userID}/profile-data`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(profileData),
+  };
+
+  const handleResponse = (response) => {
+    // Update user in redux store
+    store.dispatch(authActions.setUser(response.user));
+
+    // Upload profile picture data once user data has been updated
+    uploadProfilePictureData(userID, profilePictureData);
+
+    resetForm()
+  };
+
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+}

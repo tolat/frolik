@@ -11,16 +11,26 @@ const ValidatorBubble = (props) => {
 
   function getElementCoordinates(element) {
     const rect = element?.getBoundingClientRect();
-    const scrollY = window.scrollY || window.pageYOffset;
+    const modalRect = document
+      .getElementById("modal-container")
+      .getBoundingClientRect();
 
-    const x = rect?.left + window.scrollX;
-    const y = rect?.top + scrollY;
+    function remToPixels(rem) {
+      const baseFontSize = parseInt(
+        getComputedStyle(document.documentElement).fontSize,
+        10
+      );
+      return rem * baseFontSize;
+    }
+
+    const x = rect?.left - modalRect.left + window.scrollX + 50;
+    const y = rect?.top - modalRect.top + window.scrollY + remToPixels(6.5);
 
     return { x, y };
   }
 
   return (
-    <div style={containerStyle} className={styles.container}>
+    <div id={props.id} style={containerStyle} className={styles.container}>
       <div className={styles.arrow}></div>
       <div className={styles.exclamation}>!</div>
       <div className={styles.message}>{props.message}</div>
@@ -37,6 +47,7 @@ export const runValidators = (
   setMessage,
   setDisplay,
   setID,
+  bubbleID
 ) => {
   // Set validator display to none initially
   setDisplay("none");
@@ -49,6 +60,12 @@ export const runValidators = (
           setMessage(validator.message);
           setDisplay("flex");
           setID(id);
+          setTimeout(() => {
+            document.getElementById(bubbleID).scrollIntoView({
+              behavior: "smooth",
+            });
+          }, 100);
+
           return false;
         }
       }

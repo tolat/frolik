@@ -4,7 +4,7 @@ import styles from "./styles/MainContainer.module.scss";
 const MainContainer = (props) => {
   return (
     <div className={styles.outer}>
-      <div className={styles.inner}>
+      <div id="main-container" className={styles.inner}>
          {props.children}
           <SlideInModal />
       </div>

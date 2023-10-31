@@ -8,6 +8,8 @@
 
 .categoryStripe {
   width: 1rem;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
 }
 
 .innerContainer {
@@ -16,6 +18,8 @@
   box-sizing: border-box;
   background-color: $card_grey;
   border-left: none;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 
 .upperContainer {
@@ -38,6 +42,9 @@
   color: white;
   display: flex;
   align-items: center;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .remove{

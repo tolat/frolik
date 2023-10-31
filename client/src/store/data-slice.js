@@ -53,7 +53,7 @@ const dataSlice = createSlice({
     },
     updateUserPhotoData(state, action) {
       const user = findOrCreateUser(state, action);
-      const newImage = action.payload.data.image;
+      const newImage = action.payload.data.profile_picture;
       const newCrop = action.payload.data.crop;
       const newZoom = action.payload.data.zoom;
 

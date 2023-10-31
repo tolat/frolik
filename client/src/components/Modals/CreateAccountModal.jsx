@@ -32,8 +32,7 @@ const CreateAccountModal = (props) => {
   const [validationID, setValidationID] = useState(false);
   const [globals, setGlobals] = useState({});
   const buttonTextOnSubmit = "Creating Profile..";
-  const defaultCrop = { x: 0, y: 0 };
-  const defaultZoom = 1;
+  const validatorBubbleID = "validator-bubble";
 
   const formRefs = {
     first_name: useRef(),
@@ -85,7 +84,8 @@ const CreateAccountModal = (props) => {
       stagedData,
       setValidationMessage,
       setValidationDisplay,
-      setValidationID
+      setValidationID,
+      validatorBubbleID
     );
   };
 
@@ -101,6 +101,7 @@ const CreateAccountModal = (props) => {
     <ModalPortal>
       <div className={styles.container} style={modalStyle}>
         <ValidatorBubble
+          id={validatorBubbleID}
           elementID={validationID}
           display={validationDisplay}
           message={validationMessage}

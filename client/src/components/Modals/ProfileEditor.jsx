@@ -24,7 +24,6 @@ const ProfileEditor = (props) => {
   const buttonTextOnSubmit = props.buttonTextOnSubmit;
   const editingPhoto = props.editingPhoto;
   const setEditingPhoto = props.setEditingPhoto;
-  const formRefs = props.formRefs;
   const allowCrop = props.allowCrop;
   const dataChanged = props.dataChanged;
 
@@ -116,11 +115,11 @@ const ProfileEditor = (props) => {
     setButtonText(buttonTextOnSubmit);
 
     const data = {
-      location: formRefs.location.current.value,
-      first_name: formRefs.first_name.current.value,
-      last_name: formRefs.last_name.current.value,
-      tagline: formRefs.tagline.current.value,
-      image: stagedData.profile_picture,
+      location: stagedData.location,
+      first_name: stagedData.first_name,
+      last_name: stagedData.last_name,
+      tagline: stagedData.tagline,
+      profile_picture: stagedData.profile_picture,
       crop: stagedData.crop,
       zoom: stagedData.zoom,
     };
@@ -211,7 +210,6 @@ const ProfileEditor = (props) => {
           name={"Location"}
           label={"Location:"}
           id={"location"}
-          ref={formRefs.location}
           className={styles.locationSelect}
           defaultVal={defaultValues.location}
           setDataChanged={(value) => {
@@ -224,7 +222,6 @@ const ProfileEditor = (props) => {
             id="first_name"
             name="first_name"
             label="First Name:"
-            ref={formRefs.first_name}
             defaultVal={defaultValues.first_name}
             setDataChanged={(value) => {
               dispatchStageData({ id: "first_name", value });
@@ -236,7 +233,6 @@ const ProfileEditor = (props) => {
             id="last_name"
             name="last_name"
             label="Last Name:"
-            ref={formRefs.last_name}
             defaultVal={defaultValues.last_name}
             setDataChanged={(value) => {
               dispatchStageData({ id: "last_name", value });
@@ -248,7 +244,6 @@ const ProfileEditor = (props) => {
           id="tagline"
           name="tagline"
           label="Tagline:"
-          ref={formRefs.tagline}
           defaultVal={defaultValues.tagline}
           setDataChanged={(value) => {
             dispatchStageData({ id: "tagline", value });

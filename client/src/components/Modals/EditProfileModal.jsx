@@ -25,6 +25,7 @@ const EditProfileModal = (props) => {
   const modalDisplay = modalState.selector === "edit-profile" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
   const userData = dataState.users[user._id];
+  const validatorBubbleID = "validator-bubble";
 
   const [buttonText, setButtonText] = useState("Save");
   const [editingPhoto, setEditingPhoto] = useState(false);
@@ -34,14 +35,6 @@ const EditProfileModal = (props) => {
   const [globals, setGlobals] = useState({});
   const buttonTextOnSubmit = "Saving..";
   const [stagedData, dispatchStageData] = useReducer(stagedDataReducer);
-
-  const formRefs = {
-    first_name: useRef(),
-    last_name: useRef(),
-    tagline: useRef(),
-    status: useRef(),
-    location: useRef(),
-  };
 
   // Set memoized default values based on user data
   const defaultValues = useMemo(() => {
@@ -67,9 +60,12 @@ const EditProfileModal = (props) => {
   // Data has been changed if stagedData values differ from defaultValues
   const dataChanged = !stagedData
     ? false
-    : Object.keys(stagedData)?.find(
-        (key) => stagedData[key] !== defaultValues[key]
-      );
+    : Object.keys(stagedData)?.find((key) => {
+        return key === "crop"
+          ? stagedData[key].x !== defaultValues[key].x ||
+            stagedData[key].y !== defaultValues[key].y
+          : stagedData[key] !== defaultValues[key];
+      });
 
   const statusOptions = !globals.statusMap
     ? []
@@ -94,7 +90,8 @@ const EditProfileModal = (props) => {
       stagedData,
       setValidationMessage,
       setValidationDisplay,
-      setValidationID
+      setValidationID,
+      validatorBubbleID
     );
   };
 
@@ -104,7 +101,7 @@ const EditProfileModal = (props) => {
 
   const onSubmit = (data) => {
     dispatch(dataActions.updateUserPhotoData({ userID: user._id, data }));
-    const fullData = { ...data, status: formRefs.status.current.innerHTML };
+    const fullData = { ...data, status: stagedData.status };
     uploadProfileData(user._id, fullData, resetForm);
     hideModal();
   };
@@ -113,6 +110,7 @@ const EditProfileModal = (props) => {
     <ModalPortal>
       <div style={modalStyle} className={`${styles.container} noscroll`}>
         <ValidatorBubble
+          id={validatorBubbleID}
           elementID={validationID}
           display={validationDisplay}
           message={validationMessage}
@@ -125,7 +123,6 @@ const EditProfileModal = (props) => {
           buttonTextOnSubmit={buttonTextOnSubmit}
           editingPhoto={editingPhoto}
           setEditingPhoto={setEditingPhoto}
-          formRefs={formRefs}
           onSubmit={onSubmit}
           allowCrop={true}
           defaultValues={defaultValues}
@@ -139,7 +136,6 @@ const EditProfileModal = (props) => {
             name={"Status"}
             id={"status"}
             label={"Status:"}
-            ref={formRefs.status}
             defaultVal={defaultValues.status}
             className={styles.statusSelect}
             setDataChanged={(value) => {
