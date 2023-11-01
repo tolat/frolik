@@ -14,11 +14,13 @@ DONE
 DONE
 
 - Need backend set up for account creation. (1day)
+DONE
 
 - Need to connect photos to outings and not user (1day)
+DONE
 
 - Add Users Modal.
-Set up Add Users modal in Go page to display up to 4 non friend users 
+Set up Add Users modal in Go page to display up to 5 non friend users 
 and all friends that are "ready" or "searching" with searching being the priority. 
 Need to add at least 1 
 new connection to create an outing! Need to add   (1 day)

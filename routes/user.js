@@ -9,7 +9,7 @@ const {
   sameUserOnly,
 } = require("../utils/middleware");
 const { downloadFromS3, uploadToS3 } = require("../utils/S3");
-const { populateUser, populateFriends, sendEmail } = require("../utils/utils");
+const { populateUser, populateFriends, sendEmail, getPhotosFromOutings } = require("../utils/utils");
 const sharp = require("sharp");
 
 const router = express.Router({ mergeParams: true });
@@ -19,13 +19,14 @@ router.get(
   "/:id/photo/:key",
   reqAuthenticated,
   tryCatch(async (req, res) => {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).populate('outings');
+    const photoKeys = getPhotosFromOutings(user)
 
     if (!user) {
       return res.status(404).send("User not found");
     }
 
-    if (!user.photos.find((photo) => photo === req.params.key)) {
+    if (!photoKeys.find((photo) => photo === req.params.key)) {
       return res.status(404).send("Photo with given key not found");
     }
 

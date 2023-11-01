@@ -87,7 +87,7 @@ module.exports.activitySeeds = [
           "Decide on a spot. Don't forget to bring a pen/brush/pencil and paper!",
       },
       {
-        kind: "travel",
+        kind: "create",
         number: 2,
         title: "Doodle",
         details:
@@ -135,5 +135,52 @@ module.exports.activitySeeds = [
     cost: 0,
     participants: 4,
   },
-  
+  {
+    name: "Soccer Tennis",
+    description:
+      "Two sports for the price of one! No tennis rackets, just a soccer ball and a court.",
+    category: "Sports",
+    goal: "Try to win, have fun!",
+    featured: false,
+    instructions: [
+      {
+        kind: "communicate",
+        number: 1,
+        title: "Pick a Court",
+        details: "Decide on a spot. Don't forget to bring a soccer ball!",
+      },
+      {
+        kind: "play",
+        number: 2,
+        title: "Play ball!",
+        details:
+          "Play soccer tennis! You make the rules, but tennis rules are a good place to start.",
+      },
+    ],
+    location: "Global",
+    rating: 4.8,
+    duration: 2,
+    cost: 0,
+    participants: 4,
+  },
+  {
+    name: "Beach Glass Rainbow",
+    description: "Collect 5 different colours of beach glass!",
+    category: "Adventure",
+    goal: "Try for 5 colours, the more the better!",
+    featured: false,
+    instructions: [
+      {
+        kind: "communicate",
+        number: 1,
+        title: "Pick a Beach",
+        details: "Decide on a local beach and time to meet.",
+      },
+    ],
+    location: "Vancouver, CA",
+    rating: 3.5,
+    duration: 2,
+    cost: 0,
+    participants: 2,
+  },
 ];

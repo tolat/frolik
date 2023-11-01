@@ -70,9 +70,9 @@ const seedGlobals = async () => {
   const categoryColorMap = {
     Games: "rgb(117, 204, 255)",
     Art: "rgb(186, 255, 169)",
-    Sports: "rgb(255, 223, 141)",
-    Food: "rgb(255, 194, 156)",
-    Adventure: "rgb(255, 158, 166)",
+    Sports: "rgb(255 236 69)",
+    Food: "rgb(238 183 220)",
+    Adventure: "rgb(248 157 157)",
   };
 
   const statusMap = {
@@ -136,17 +136,6 @@ const seedUsers = async () => {
       crop: { x: 0, y: 0 },
       zoom: 1,
     };
-    user.photos = [
-      "acroyoga",
-      "beach",
-      "beerpong",
-      "drawing",
-      "football",
-      "icecream",
-      "kayaking",
-      "lawngame",
-      "tenniscourt",
-    ];
 
     await user.save();
   }
@@ -171,22 +160,46 @@ const seedActivities = async () => {
 
 const seedOutings = async () => {
   const users = await User.find();
-  const activities = await Activity.find();
+  let activities = await Activity.find();
+
+  //Remove one activity at random from the activities list
+  activities.splice((Math.random() * 1000) % activities.length, 1);
+
+  let outingPhotoKeys = [
+    "acroyoga",
+    "beach",
+    "beerpong",
+    "drawing",
+    "football",
+    "icecream",
+    "kayaking",
+    "lawngame",
+    "tenniscourt",
+    "beachglass",
+  ];
+
   for (user of users) {
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 2; i++) {
       const outing = new Outing({});
+
       const filteredUsers = users.filter((u) => u != user);
+
       let user2 =
         filteredUsers[parseInt((Math.random() * 1000) % filteredUsers.length)];
+
       outing.activity =
         activities[parseInt((Math.random() * 1000) % activities.length)];
+
       outing.date_created = new Date();
       outing.date_completed = outing.date_created;
       outing.users = [user, user2];
       outing.status = "Completed";
       outing.chat = {};
+      outing.photos.push(outingPhotoKeys.pop());
       user.outings.push(outing);
       user2.outings.push(outing);
+      await user.save();
+      await user2.save();
 
       let user3 = null;
       if (Math.random() > 0.5) {
@@ -215,8 +228,6 @@ const seedOutings = async () => {
       }
 
       await outing.save();
-      await user.save();
-      await user2.save();
     }
   }
 };

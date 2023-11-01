@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const nodemailer = require("nodemailer")
+const nodemailer = require("nodemailer");
 
 // Populates an array with stripped down version of friends
 module.exports.populateFriends = async (friends) => {
@@ -44,10 +44,10 @@ module.exports.populateUser = async (user) => {
 module.exports.sendEmail = async (to, subject, text) => {
   try {
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       auth: {
-        user: process.env.SENDMAIL_FROM, 
-        pass: process.env.SENDMAIL_FROM_PASSWORD, 
+        user: process.env.SENDMAIL_FROM,
+        pass: process.env.SENDMAIL_FROM_PASSWORD,
       },
     });
 
@@ -59,8 +59,18 @@ module.exports.sendEmail = async (to, subject, text) => {
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log('Email sent:', info.response);
+    console.log("Email sent:", info.response);
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error("Error sending email:", error);
   }
+};
+
+module.exports.getPhotosFromOutings = (user) => {
+  let photoKeys = [];
+  for (outing of user.outings) {
+    for (photoKey of outing.photos) {
+      photoKeys.push(photoKey);
+    }
+  }
+  return photoKeys;
 };

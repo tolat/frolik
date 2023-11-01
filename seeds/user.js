@@ -8,7 +8,7 @@ module.exports.userSeeds = [
     flake: ((Math.random() * 100) % 5).toFixed(1),
     photos: [],
     friends: [],
-    location: "Vancouver",
+    location: "Vancouver, CA",
   },
   {
     first_name: "Torin",
@@ -19,7 +19,7 @@ module.exports.userSeeds = [
     flake: ((Math.random() * 100) % 5).toFixed(1),
     photos: [],
     friends: [],
-    location: "Vancouver",
+    location: "Vancouver, CA",
   },
   {
     first_name: "Alex",
@@ -30,7 +30,7 @@ module.exports.userSeeds = [
     flake: ((Math.random() * 100) % 5).toFixed(1),
     photos: [],
     friends: [],
-    location: "Vancouver",
+    location: "Vancouver, CA",
   },
   {
     first_name: "Josh",
@@ -41,7 +41,7 @@ module.exports.userSeeds = [
     flake: ((Math.random() * 100) % 5).toFixed(1),
     photos: [],
     friends: [],
-    location: "Vancouver",
+    location: "Vancouver, CA",
   },
   {
     first_name: "Ingrid",
@@ -52,6 +52,6 @@ module.exports.userSeeds = [
     flake: ((Math.random() * 100) % 5).toFixed(1),
     photos: [],
     friends: [],
-    location: "Vancouver",
+    location: "Vancouver, CA",
   },
 ];

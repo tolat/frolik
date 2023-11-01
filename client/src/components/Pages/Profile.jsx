@@ -19,6 +19,7 @@ import FriendCard from "../UI/FriendCard";
 import locationIcon from "../../images/location-dark.png";
 import { pageRouteLoader } from "../../utils/utils";
 import balloonIcon from "../../images/balloon1.png";
+import { useNavigate } from "react-router-dom";
 
 const sliderIcons = [
   {
@@ -46,10 +47,16 @@ const Profile = (props) => {
   const [selectedSliderKey, setSelectedSliderKey] = useState("_photos");
   const iconStyle = { width: "4rem", height: "4rem" };
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const dataState = useSelector((state) => state.data);
   const userData = dataState.users[user._id];
   const userPhotos = getPhotosFromState(userData);
   const userStatus = user?.status?.status;
+
+  const onBalloonIconClick = () => {
+    console.log("click");
+    navigate("/go");
+  };
 
   let statusClassName = null;
   switch (userStatus) {
@@ -138,6 +145,7 @@ const Profile = (props) => {
           <div style={{ display: "flex", alignItems: "center" }}>
             and complete an outing on the{" "}
             <img
+              onClick={onBalloonIconClick}
               className={styles.outingBalloon}
               src={balloonIcon}
               alt="outing page icon"
@@ -153,6 +161,7 @@ const Profile = (props) => {
             <div style={{ display: "flex", alignItems: "center" }}>
               outings on the{" "}
               <img
+                onClick={onBalloonIconClick}
                 className={styles.outingBalloon}
                 src={balloonIcon}
                 alt="outing page icon"

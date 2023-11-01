@@ -11,8 +11,10 @@ import communicateIcon from "../../images/talking.png";
 import purchaseIcon from "../../images/cart.png";
 import captureIcon from "../../images/camera.png";
 import trophyIcon from "../../images/trophy.png";
+import whistleIcon from "../../images/whistle.png"
 import completeIcon from "../../images/complete.png";
 import featuredIcon from "../../images/feature.png";
+import createIcon from "../../images/paint.png"
 import { calcAvgRating } from "../../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { goActions } from "../../store/go-slice";
@@ -22,6 +24,8 @@ const instructionIconMap = {
   travel: travelIcon,
   purchase: purchaseIcon,
   capture: captureIcon,
+  play: whistleIcon,
+  create: createIcon
 };
 
 const ActivityCard = (props) => {

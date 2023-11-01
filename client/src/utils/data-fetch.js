@@ -3,8 +3,6 @@ import { getServer } from "./env-utils";
 import { dataActions } from "../store/data-slice";
 import store from "../store";
 import { authActions } from "../store/auth-slice";
-import { fetchAuth, fetchLogin } from "../store/auth-actions";
-import { Navigate } from "react-router-dom";
 
 export const fetchActivities = async (setData) => {
   return new Promise((resolve, reject) => {
@@ -51,7 +49,16 @@ export const fetchProfilePic = async (userID) => {
 
 export const fetchPhotos = async (user) => {
   const userData = store.getState().data.users[user._id];
-  for (let photoKey of user.photos) {
+
+  // Create array of photo keys from user outings
+  let photoKeys = []
+  for(let outing of user.outings ){
+    for(let photoKey of outing.photos){
+      photoKeys.push(photoKey)
+    }
+    
+  }
+  for (let photoKey of photoKeys) {
     // Check if photo has already been downloaded or queued
     if (!userData || !userData.photos.find((p) => p.key === photoKey)) {
       // Mark photo as queued for donwload in redux store
