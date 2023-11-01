@@ -3,15 +3,11 @@ import styles from "./styles/FriendCard.module.scss";
 import UserIcon from "./UserIcon";
 import flakeIcon from "../../images/snowflake.png";
 import outingsIcon from "../../images/outing2.png";
-import IconButton from "./IconButton";
-import chatIcon from "../../images/chat.png";
-import getOutIcon from "../../images/air-balloon.png";
 import { memo } from "react";
 
 const FriendCard = memo(function FriendCard(props) {
   const statIconStyle = { width: "2rem", height: "2rem" };
   const statContainerStyle = { marginLeft: "1rem" };
-  const buttonIconStyle = { width: "3rem", height: "3rem" };
 
   return (
     <div
@@ -52,26 +48,7 @@ const FriendCard = memo(function FriendCard(props) {
           </div>
         </div>
       </div>
-      {props.buttonSet === "add" ? (
-        <div className={styles.addButton}>+</div>
-      ) : props.buttonSet === "none" ? null : props.buttonSet === "remove" ? (
-        <div onClick={props.onRemove} className={styles.addButton}>
-          -
-        </div>
-      ) : (
-        <div className={styles.rightContainer}>
-          <IconButton
-            className={styles.button}
-            iconStyle={buttonIconStyle}
-            icon={chatIcon}
-          />
-          <IconButton
-            className={styles.button}
-            iconStyle={buttonIconStyle}
-            icon={getOutIcon}
-          />
-        </div>
-      )}
+      {props.buttons}
     </div>
   );
 }, propsAreEqual);

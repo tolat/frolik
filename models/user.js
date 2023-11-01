@@ -21,6 +21,12 @@ const UserSchema = new Schema(
     location: String,
     friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
     outings: [{ type: Schema.Types.ObjectId, ref: "Outing" }],
+    matches: [
+      {
+        user: { type: Schema.Types.ObjectId, ref: "User" },
+        updated: Date,
+      },
+    ],
   },
   { minimize: false }
 );

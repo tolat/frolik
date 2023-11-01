@@ -111,11 +111,11 @@ const seedGlobals = async () => {
 
 const seedUsers = async () => {
   // Delete sampledev bucket data and re-seed images
-  await deleteAllFromS3(process.env.AWS_BUCKET);
-  const profilePicsPath = `${__dirname}/images`;
-  const sampleImagesPath = `${__dirname}/images/sampleUserPhotos`;
-  await UploadImagesToS3(profilePicsPath);
-  await UploadImagesToS3(sampleImagesPath);
+  // await deleteAllFromS3(process.env.AWS_BUCKET);
+  // const profilePicsPath = `${__dirname}/images`;
+  // const sampleImagesPath = `${__dirname}/images/sampleUserPhotos`;
+  // await UploadImagesToS3(profilePicsPath);
+  // await UploadImagesToS3(sampleImagesPath);
 
   // Create users
   async function createUsers(seeds) {

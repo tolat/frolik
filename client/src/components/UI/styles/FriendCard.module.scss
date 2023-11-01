@@ -43,36 +43,8 @@
   background-color: rgb(250, 250, 250);
 }
 
-.button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 6rem;
-  height: 100%;
-  border-radius: 4px;
-}
-
-.button:hover {
-  opacity: 0.5;
-  cursor: pointer;
-}
-
 .leftContainer {
   display: flex;
   flex-grow: 1;
 }
 
-.rightContainer {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.addButton {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 3.5rem;
-  margin-right: 1rem;
-}

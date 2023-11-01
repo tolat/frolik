@@ -20,6 +20,9 @@ import locationIcon from "../../images/location-dark.png";
 import { pageRouteLoader } from "../../utils/utils";
 import balloonIcon from "../../images/balloon1.png";
 import { useNavigate } from "react-router-dom";
+import IconButton from "../UI/IconButton";
+import chatIcon from "../../images/chat.png";
+import getOutIcon from "../../images/air-balloon.png";
 
 const sliderIcons = [
   {
@@ -52,6 +55,7 @@ const Profile = (props) => {
   const userData = dataState.users[user._id];
   const userPhotos = getPhotosFromState(userData);
   const userStatus = user?.status?.status;
+  const friendCardButtonStyle = { width: "3rem", height: "3rem" };
 
   const onBalloonIconClick = () => {
     console.log("click");
@@ -79,6 +83,23 @@ const Profile = (props) => {
   const handleEditButtonClick = (e) => {
     dispatch(modalActions.setSelector("edit-profile"));
     dispatch(modalActions.showModal());
+  };
+
+  const FriendCardButtons = (props) => {
+    return (
+      <div className={styles.friendCardButtons}>
+        <IconButton
+          className={styles.friendCardButton}
+          iconStyle={friendCardButtonStyle}
+          icon={chatIcon}
+        />
+        <IconButton
+          className={styles.friendCardButton}
+          iconStyle={friendCardButtonStyle}
+          icon={getOutIcon}
+        />
+      </div>
+    );
   };
 
   return (
@@ -173,7 +194,13 @@ const Profile = (props) => {
       ) : selectedSliderKey === "_outings" ? (
         <OutingList user={user} />
       ) : (
-        user.friends.map((f) => <FriendCard key={Math.random()} user={f} />)
+        user.friends.map((f) => (
+          <FriendCard
+            buttons={<FriendCardButtons user={f} />}
+            key={Math.random()}
+            user={f}
+          />
+        ))
       )}
     </div>
   );

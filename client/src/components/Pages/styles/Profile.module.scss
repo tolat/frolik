@@ -159,3 +159,23 @@
   margin: 0.3rem 0.3rem;
   cursor: pointer;
 }
+
+.friendCardButtons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.friendCardButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 6rem;
+  height: 100%;
+  border-radius: 4px;
+}
+
+.friendCardButton:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}

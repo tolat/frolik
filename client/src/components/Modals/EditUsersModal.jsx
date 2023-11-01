@@ -16,17 +16,25 @@ const EditUsersModal = (props) => {
     if (u._id !== user._id) dispatch(goActions.removeUser(u));
   };
 
+  const RemoveButton = (props) => {
+    return (
+      <div
+        onClick={() => removeUser(props.user)}
+        className={styles.removeButton}
+      >
+        -
+      </div>
+    );
+  };
+
   return (
     <ModalPortal>
       <div style={modalStyle} className={styles.container}>
         {goState.outing.users.map((u) => (
           <FriendCard
-            buttonSet={u._id === user._id ? "none" : "remove"}
             user={u}
             key={Math.random()}
-            onClick={() => {
-              removeUser(u);
-            }}
+            buttons={u._id === user._id ? null : <RemoveButton user={u} />}
           />
         ))}
       </div>

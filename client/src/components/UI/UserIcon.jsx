@@ -13,8 +13,8 @@ const getCategoryPercentage = (category, user) => {
 
 const genBackgroundStr = (user, categoryColorMap) => {
   // Return grey border if user has no outings
-  if(!user.outings[0]){
-    return "rgb(220,220,220)"
+  if (!user.outings[0]) {
+    return "rgb(220,220,220)";
   }
 
   let backgroundString = "conic-gradient(";
@@ -40,7 +40,11 @@ const genBackgroundStr = (user, categoryColorMap) => {
     const percentage = percentageMap[category];
 
     backgroundString = backgroundString.concat(
-      `${categoryColorMap[category]} ${cumulativePercentage}%, 
+      /* `${categoryColorMap[category]} ${cumulativePercentage}% ${
+        percentage + cumulativePercentage
+      }%` */
+      
+       `${categoryColorMap[category]} ${cumulativePercentage}%, 
          ${categoryColorMap[nextCategory]} ${
         cumulativePercentage + percentage
       }%`
@@ -58,7 +62,9 @@ const genBackgroundStr = (user, categoryColorMap) => {
 };
 
 const UserIcon = memo(function UserIcon(props) {
-  const categoryColorMap = useSelector((state) => state.auth.globals?.categoryColorMap);
+  const categoryColorMap = useSelector(
+    (state) => state.auth.globals?.categoryColorMap
+  );
   const backgroundString = genBackgroundStr(props.user, categoryColorMap);
   const photoDimension = `${props.sizeInRem - 2 * props.borderSizeInRem}rem`;
   const pieDimension = `${props.sizeInRem - props.borderSizeInRem}rem`;
@@ -67,12 +73,13 @@ const UserIcon = memo(function UserIcon(props) {
   const master = dataState.masterPhotoDimension;
   const userData = dataState.users[props.user?._id];
   const scalingFactor =
-    (parseFloat(props.sizeInRem) - 2 * parseFloat(props.borderSizeInRem)) / master;
+    (parseFloat(props.sizeInRem) - 2 * parseFloat(props.borderSizeInRem)) /
+    master;
   let zoom = userData?.zoom;
   let crop = { ...userData?.crop };
   crop.x = crop.x * scalingFactor;
   crop.y = crop.y * scalingFactor;
-  const photoString = userData?.profile_picture
+  const photoString = userData?.profile_picture;
 
   const pieStyle = {
     width: pieDimension,

@@ -16,7 +16,6 @@ export const fetchActivities = async (setData) => {
     };
 
     const handleError = (err) => {
-      reject();
       console.log(err);
     };
 
@@ -51,12 +50,11 @@ export const fetchPhotos = async (user) => {
   const userData = store.getState().data.users[user._id];
 
   // Create array of photo keys from user outings
-  let photoKeys = []
-  for(let outing of user.outings ){
-    for(let photoKey of outing.photos){
-      photoKeys.push(photoKey)
+  let photoKeys = [];
+  for (let outing of user.outings) {
+    for (let photoKey of outing.photos) {
+      photoKeys.push(photoKey);
     }
-    
   }
   for (let photoKey of photoKeys) {
     // Check if photo has already been downloaded or queued
@@ -210,6 +208,24 @@ export const createAccount = (data, resetForm) => {
 
   const handleError = (err) => {
     resetForm(err);
+    console.log("ERROR: ", err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};
+
+// Fetch users matched with current user for creating outings
+export const fetchMatchedUsers = (user, setMatchedUsers) => {
+  const requestConfig = {url: `${getServer()}/user/${user._id}/matches`};
+
+  const handleResponse = (response) => {
+    setMatchedUsers(response.matches);
+    for(user of response.matches){
+      fetchProfilePic(user._id);
+    }
+  };
+
+  const handleError = (err) => {
     console.log("ERROR: ", err);
   };
 

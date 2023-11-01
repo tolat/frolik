@@ -9,7 +9,12 @@ const {
   sameUserOnly,
 } = require("../utils/middleware");
 const { downloadFromS3, uploadToS3 } = require("../utils/S3");
-const { populateUser, populateFriends, sendEmail, getPhotosFromOutings } = require("../utils/utils");
+const {
+  populateUser,
+  populateFriends,
+  sendEmail,
+  getPhotosFromOutings,
+} = require("../utils/utils");
 const sharp = require("sharp");
 
 const router = express.Router({ mergeParams: true });
@@ -19,8 +24,8 @@ router.get(
   "/:id/photo/:key",
   reqAuthenticated,
   tryCatch(async (req, res) => {
-    const user = await User.findById(req.params.id).populate('outings');
-    const photoKeys = getPhotosFromOutings(user)
+    const user = await User.findById(req.params.id).populate("outings");
+    const photoKeys = getPhotosFromOutings(user);
 
     if (!user) {
       return res.status(404).send("User not found");
@@ -179,9 +184,72 @@ router.get(
 
     console.log(user);
 
-    await user.save()
+    await user.save();
 
-    res.redirect('/login')
+    res.redirect("/login");
+  })
+);
+
+router.get(
+  "/:id/matches",
+  reqAuthenticated,
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    const validStatuses = ["Ready", "Searching"];
+    let allAvailable = await User.find({
+      "status.status": { $in: validStatuses },
+    });
+
+    // Filter out friends and this user
+    allAvailable = allAvailable.filter(
+      (u) =>
+        !user.friends.includes(u._id.toString()) && u.username != user.username
+    );
+
+    // If no full matches set, generate matches set with at most 5 matches
+    if (!user.matches || !user.matches[0]) {
+      user.matches = [];
+      // Pick 5 available users at random
+      for (let i = 0; i < 5; i++) {
+        if (allAvailable.length > 0) {
+          const index = parseInt(
+            (Math.random() * 1000000) % allAvailable.length
+          );
+          console.log(index)
+          user.matches.push({ user: allAvailable[index], updated: Date.now() });
+          allAvailable.splice(index, 1);
+        } 
+      }
+    } else {
+      // Replace or delete any matches that are 24 hrs or older
+      for (match of user.matches) {
+        if (Date.now() - new Date(match.updated).getTime() > 86400000) {
+          const replaceIndex = user.matches.indexOf(match);
+          if (allAvailable.length > 0) {
+            const newIndex = (Math.random() * 1000000) % allAvailable.length;
+            user.matches[replaceIndex] = {
+              user: allAvailable[newIndex],
+              updated: Date.now(),
+            };
+            allAvailable.splice(newIndex, 1);
+          } else {
+            user.matches.splice(replaceIndex, 1);
+          }
+        }
+      }
+    }
+    await user.save();
+
+    let matches = [];
+    // Just send matched users back to the server
+    for (match of user.matches) {
+      let matchedUser = await User.findById(match.user)
+      await matchedUser.populate('outings')
+      await matchedUser.populate('outings.activity')
+      matches.push(matchedUser);
+    }
+
+    res.send({ matches });
   })
 );
 
