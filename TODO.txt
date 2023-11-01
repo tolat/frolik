@@ -24,6 +24,7 @@ Set up Add Users modal in Go page to display up to 5 non friend users
 and all friends that are "ready" or "searching" with searching being the priority. 
 Need to add at least 1 
 new connection to create an outing! Need to add   (1 day)
+DONE
 
 - Finish chat page layout / interface. Put Chat in modal (1 day)
 

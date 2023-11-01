@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import SimpleButton from "../UI/SimpleButton";
 import styles from "./styles/AddUserModal.module.scss";
 import ModalPortal from "./ModalPortal";
 import FriendCard from "../UI/FriendCard";
