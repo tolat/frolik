@@ -9,7 +9,7 @@ const fs = require("fs");
 const sharp = require("sharp");
 const path = require("path");
 
-const { userSeeds } = require("./user");
+const { userSeeds, userSeeds2 } = require("./user");
 const { activitySeeds } = require("./activity");
 const { uploadToS3, deleteFromS3, deleteAllFromS3 } = require("../utils/S3");
 
@@ -118,27 +118,33 @@ const seedUsers = async () => {
   await UploadImagesToS3(sampleImagesPath);
 
   // Create users
-  for (user of userSeeds) {
-    const newUser = new User({ ...user });
-    await User.register(newUser, "getout1*");
-  }
-
-  const users = await User.find();
-  for (user of users) {
-    for (friend of users) {
-      if (user != friend) {
-        user.friends.push(friend);
-      }
+  async function createUsers(seeds) {
+    for (user of seeds) {
+      const newUser = new User({ ...user });
+      await User.register(newUser, "getout1*");
     }
 
-    user.profile_picture = {
-      key: user.username,
-      crop: { x: 0, y: 0 },
-      zoom: 1,
-    };
+    const seedUsernames = seeds.map(u=> u.username)
+    const users = await User.find({username: {$in: seedUsernames}});
+    for (user of users) {
+      for (friend of users) {
+        if (user != friend) {
+          user.friends.push(friend);
+        }
+      }
 
-    await user.save();
+      user.profile_picture = {
+        key: user.username,
+        crop: { x: 0, y: 0 },
+        zoom: 1,
+      };
+
+      await user.save();
+    }
   }
+
+  await createUsers(userSeeds);
+  await createUsers(userSeeds2);
 };
 
 const seedActivities = async () => {
@@ -158,8 +164,9 @@ const seedActivities = async () => {
   }
 };
 
-const seedOutings = async () => {
-  const users = await User.find();
+const seedOutings = async (seeds) => {
+  const seedUsernames = seeds.map((u) => u.username);
+  const users = await User.find({ username: { $in: seedUsernames } });
   let activities = await Activity.find();
 
   //Remove one activity at random from the activities list
@@ -246,7 +253,8 @@ const seedDB = async () => {
   console.log("done activities..");
 
   await Outing.deleteMany({});
-  await seedOutings();
+  await seedOutings(userSeeds);
+  await seedOutings(userSeeds2);
   console.log("done outings..");
 };
 

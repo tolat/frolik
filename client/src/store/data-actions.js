@@ -14,14 +14,14 @@ export const initializeUserPhotos = (newOnly = true) => {
     
     store.dispatch(
       dataActions.setUserZoom({
-        userID: userObject._id,
-        zoom: userObject.profile_picture.zoom,
+        userID: userObject?._id,
+        zoom: userObject?.profile_picture?.zoom,
       })
     );
     store.dispatch(
       dataActions.setUserCrop({
-        userID: userObject._id,
-        crop: userObject.profile_picture.crop,
+        userID: userObject?._id,
+        crop: userObject?.profile_picture?.crop,
       })
     );
   }

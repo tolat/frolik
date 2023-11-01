@@ -1,6 +1,6 @@
 import UserIcon from "./UserIcon";
 import { Fragment, memo } from "react";
-import styles from "./styles/UserIconCluster.module.scss"
+import styles from "./styles/UserIconCluster.module.scss";
 
 const UserIconCluster = (props) => {
   const containerStyle = {
@@ -17,7 +17,7 @@ const UserIconCluster = (props) => {
   const mag43 = 2.1;
   const mag44 = 1.55;
 
-  return (
+  return !props.users ? null : (
     <div className={styles.container} style={containerStyle}>
       {props.users?.length === 1 ? (
         <UserIcon
