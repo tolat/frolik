@@ -8,7 +8,6 @@ import editIcon from "../../images/edit.png";
 import plusIcon from "../../images/plus.png";
 import EditUsersModal from "../Modals/EditUsersModal";
 import UserIconCluster from "../UI/UserIconCluster";
-import buttonStyles from "../../components/UI/styles/SimpleButton.module.scss";
 import { fetchActivities } from "../../utils/data-fetch";
 import ActivityCard from "../UI/ActivityCard";
 import FilterActivitiesModal from "../Modals/FilterActivitiesModal";
@@ -18,16 +17,17 @@ import upIcon from "../../images/up.png";
 import { calcAvgRating, pageRouteLoader } from "../../utils/utils";
 import store from "../../store";
 import { goActions } from "../../store/go-slice";
+import SimpleSearch from "../UI/SimpleSearch";
 
 const initialActivityFilter = {
   filter: {
-    category: 'Any',
-    maxParticipants: '',
-    minParticipants: '',
-    minRating: '',
-    maxCost: '',
-    minCost: '',
-    maxTime: '',
+    category: "Any",
+    maxParticipants: "",
+    minParticipants: "",
+    minRating: "",
+    maxCost: "",
+    minCost: "",
+    maxTime: "",
     newOnly: false,
     completedOnly: false,
     featuredOnly: false,
@@ -156,7 +156,7 @@ const Go = (props) => {
       <FilterActivitiesModal
         filter={activityFilter.filter}
         dispatchFilter={dispatchFilter}
-        initialActivityFilter = {initialActivityFilter}
+        initialActivityFilter={initialActivityFilter}
       />
       <div className={styles.container}>
         <div className={styles.usersContainer}>
@@ -218,24 +218,33 @@ const Go = (props) => {
         ) : null}
         {!goState.outing.activity.name ? (
           <Fragment>
-            <SimpleButton
-              onClick={handleFilterActivitiesClick}
-              className={
-                filtersAreEqual(
+            <div className={styles.sideBySide}>
+              <SimpleButton
+                onClick={handleFilterActivitiesClick}
+                className={`${styles.filterButton}
+                ${
+                  filtersAreEqual(
+                    initialActivityFilter.filter,
+                    activityFilter.filter
+                  )
+                    ? null
+                    : styles.activeFiltersButton
+                }
+             `}
+              >
+                {filtersAreEqual(
                   initialActivityFilter.filter,
                   activityFilter.filter
                 )
-                  ? buttonStyles.greyButton
-                  : styles.activeFiltersButton
-              }
-            >
-              {filtersAreEqual(
-                initialActivityFilter.filter,
-                activityFilter.filter
-              )
-                ? "Filter Activities"
-                : "Change Filters"}
-            </SimpleButton>
+                  ? "Filter Activities"
+                  : "Change Filters"}
+              </SimpleButton>
+              <div className={styles.buttonSpacer}></div>
+              <SimpleSearch
+                className={styles.activitySearch}
+                placeholder={"Search Activities"}
+              />
+            </div>
 
             {!activityFilter.activities[0] ? (
               <div className={styles.loading}>

@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import styles from "./styles/FilterActivitiesModal.module.scss";
 import ModalPortal from "./ModalPortal";
-import SimpleSelect from "../UI/SimpleSelect";
+import CustomSelect from "../UI/CustomSelect";
 import SimpleInput from "../UI/SimpleInput";
 import SimpleButton from "../UI/SimpleButton";
 import { useRef } from "react";
@@ -16,12 +16,13 @@ const FilterActivitiesModal = (props) => {
     modalState.selector === "filter-activities" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
 
-
   const updateLocalFilter = () => {
     const filter = {};
     for (let key in filterRefs) {
       if (["newOnly", "featuredOnly", "completedOnly"].includes(key)) {
         filter[key] = filterRefs[key].current.checked;
+      } else if (key === "category") {
+        filter[key] = filterRefs[key].current.innerHTML;
       } else {
         filter[key] = filterRefs[key].current.value;
       }
@@ -64,6 +65,14 @@ const FilterActivitiesModal = (props) => {
     hideModal();
   }
 
+  const categoryOptions = categories.map((c) => {
+    return {
+      name: c,
+      selectable: true,
+      component: <div className={styles.categoryOption}>{c}</div>,
+    };
+  });
+
   return (
     <ModalPortal>
       <div style={modalStyle} className={`${styles.container} noscroll`}>
@@ -80,8 +89,9 @@ const FilterActivitiesModal = (props) => {
           Clear Filters
         </SimpleButton>
 
-        <SimpleSelect
-          options={categories}
+        <CustomSelect
+          options={categoryOptions}
+          className={styles.select}
           name={"Category"}
           label={"Filter By Category:"}
           ref={filterRefs.category}

@@ -9,7 +9,7 @@ const fs = require("fs");
 const sharp = require("sharp");
 const path = require("path");
 
-const { userSeeds, userSeeds2 } = require("./user");
+const { userSeeds, userSeeds2, userSeeds3 } = require("./user");
 const { activitySeeds } = require("./activity");
 const { uploadToS3, deleteFromS3, deleteAllFromS3 } = require("../utils/S3");
 
@@ -111,11 +111,11 @@ const seedGlobals = async () => {
 
 const seedUsers = async () => {
   // Delete sampledev bucket data and re-seed images
-  // await deleteAllFromS3(process.env.AWS_BUCKET);
-  // const profilePicsPath = `${__dirname}/images`;
-  // const sampleImagesPath = `${__dirname}/images/sampleUserPhotos`;
-  // await UploadImagesToS3(profilePicsPath);
-  // await UploadImagesToS3(sampleImagesPath);
+  await deleteAllFromS3(process.env.AWS_BUCKET);
+  const profilePicsPath = `${__dirname}/images`;
+  const sampleImagesPath = `${__dirname}/images/sampleUserPhotos`;
+  await UploadImagesToS3(profilePicsPath);
+  await UploadImagesToS3(sampleImagesPath);
 
   // Create users
   async function createUsers(seeds) {
@@ -124,8 +124,8 @@ const seedUsers = async () => {
       await User.register(newUser, "getout1*");
     }
 
-    const seedUsernames = seeds.map(u=> u.username)
-    const users = await User.find({username: {$in: seedUsernames}});
+    const seedUsernames = seeds.map((u) => u.username);
+    const users = await User.find({ username: { $in: seedUsernames } });
     for (user of users) {
       for (friend of users) {
         if (user != friend) {
@@ -145,6 +145,7 @@ const seedUsers = async () => {
 
   await createUsers(userSeeds);
   await createUsers(userSeeds2);
+  await createUsers(userSeeds3);
 };
 
 const seedActivities = async () => {
@@ -255,6 +256,7 @@ const seedDB = async () => {
   await Outing.deleteMany({});
   await seedOutings(userSeeds);
   await seedOutings(userSeeds2);
+  await seedOutings(userSeeds3);
   console.log("done outings..");
 };
 

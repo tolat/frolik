@@ -1,0 +1,35 @@
+@import "../../../utils/responsive.scss";
+
+.container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+  height: 3.5rem;
+  box-sizing: border-box;
+}
+
+.input {
+  outline: none;
+  border: 1px solid $light_grey;
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: $card_grey;
+  font-size: 1.3rem;
+  height: 100%;
+}
+
+.searchIconContainer{
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.searchIcon {
+  height: 100%;
+  padding: 28%;
+  background-color: $light_grey;
+  box-sizing: border-box;
+}

@@ -40,3 +40,16 @@
     cursor: none;
     opacity: 1;
 }
+
+.select{
+    font-size: 1.2rem;
+}
+
+.categoryOption{
+    background-color: white;
+    padding: 1rem;
+}
+
+.categoryOption:hover{
+    background-color: $card_grey;
+}

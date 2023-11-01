@@ -215,10 +215,10 @@ router.get(
           const index = parseInt(
             (Math.random() * 1000000) % allAvailable.length
           );
-          console.log(index)
+          console.log(index);
           user.matches.push({ user: allAvailable[index], updated: Date.now() });
           allAvailable.splice(index, 1);
-        } 
+        }
       }
     } else {
       // Replace or delete any matches that are 24 hrs or older
@@ -226,7 +226,7 @@ router.get(
         if (Date.now() - new Date(match.updated).getTime() > 86400000) {
           const replaceIndex = user.matches.indexOf(match);
           if (allAvailable.length > 0) {
-            const newIndex = (Math.random() * 1000000) % allAvailable.length;
+            const newIndex = parseInt((Math.random() * 1000000) % allAvailable.length);
             user.matches[replaceIndex] = {
               user: allAvailable[newIndex],
               updated: Date.now(),
@@ -240,12 +240,13 @@ router.get(
     }
     await user.save();
 
+
     let matches = [];
     // Just send matched users back to the server
     for (match of user.matches) {
-      let matchedUser = await User.findById(match.user)
-      await matchedUser.populate('outings')
-      await matchedUser.populate('outings.activity')
+      let matchedUser = await User.findById(match.user);
+      await matchedUser.populate("outings");
+      await matchedUser.populate("outings.activity");
       matches.push(matchedUser);
     }
 

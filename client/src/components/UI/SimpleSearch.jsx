@@ -1,7 +1,8 @@
 import { forwardRef, useEffect, useState } from "react";
-import styles from "./styles/SimpleInput.module.scss";
+import styles from "./styles/SimpleSearch.module.scss";
+import searchIcon from "../../images/search.png";
 
-const SimpleInput = forwardRef((props, ref) => {
+const SimpleSearch = forwardRef((props, ref) => {
   const [value, setValue] = useState(props.defaultVal);
   const inputID = props.id || Math.random();
 
@@ -9,7 +10,7 @@ const SimpleInput = forwardRef((props, ref) => {
   const onChange = (e) => {
     const newValue = e.target.value;
     setValue(newValue);
-    props.setDataChanged && props.setDataChanged(newValue);
+    props.setValue && props.setValue(newValue);
   };
 
   // Set default value on component load and
@@ -20,12 +21,8 @@ const SimpleInput = forwardRef((props, ref) => {
 
   return (
     <div id={inputID} className={`${styles.container} ${props.className}`}>
-      {!props.label ? null : (
-        <label className={styles.label} htmlFor={props.name}>
-          {props.label}
-        </label>
-      )}
       <input
+        placeholder={props.placeholder}
         onChange={onChange}
         value={value}
         ref={ref || null}
@@ -36,8 +33,15 @@ const SimpleInput = forwardRef((props, ref) => {
         required={props.required}
         type={props.type}
       ></input>
+      <div className={styles.searchIconContainer}>
+        <img
+          className={styles.searchIcon}
+          src={searchIcon}
+          alt={"search-glass"}
+        />
+      </div>
     </div>
   );
 });
 
-export default SimpleInput;
+export default SimpleSearch;
