@@ -213,7 +213,6 @@ const Go = (props) => {
             completed={completedActivities.find(
               (id) => id === goState.outing.activity._id
             )}
-            showInstructions={true}
           />
         ) : null}
         {!goState.outing.activity.name ? (

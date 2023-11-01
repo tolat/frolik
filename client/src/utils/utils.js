@@ -2,13 +2,12 @@ import { redirect } from "react-router-dom";
 import store from "../store";
 import { fetchAuth } from "../store/auth-actions";
 import { hideModal } from "../store/modal-actions";
-import { initializeUserPhotos } from "../store/data-actions";
 
 export const calcAvgRating = (activity) => {
   return (
-    (activity.ratings.reduce((acc, rating) => acc + rating.rating, 0) /
-    activity.ratings.length).toFixed(1)
-  );
+    activity.ratings.reduce((acc, rating) => acc + rating.rating, 0) /
+    activity.ratings.length
+  ).toFixed(1);
 };
 
 export const pageRouteLoader = async () => {
@@ -23,7 +22,7 @@ export const pageRouteLoader = async () => {
   if (!store.getState().auth.isAuthenticated) {
     return redirect("/login");
   } else {
-    initializeUserPhotos();
+   
     return false;
   }
 };
@@ -57,9 +56,22 @@ export const loadImageAsBase64 = async (imageUrl, setImage) => {
 };
 
 export const showPopup = () => {
-  document.getElementById('popup').style.display = 'block'
-}
+  document.getElementById("popup").style.display = "block";
+};
 
-export const hidePopup = () =>{
-  document.getElementById('popup').style.display = 'none'
-}
+export const hidePopup = () => {
+  document.getElementById("popup").style.display = "none";
+};
+
+export const genMembersString = (memberNames) => {
+  let result = "";
+  for (let i = 0; i < memberNames.length; i++) {
+    if (i > 3) {
+      return result.slice(0,result.length - 2).concat(".. 4+");
+    } else if (i === memberNames.length - 1) {
+      return result.concat(`${memberNames[i]}`);
+    } else {
+      result = result.concat(`${memberNames[i]}, `);
+    }
+  }
+};

@@ -38,13 +38,12 @@ const ActivityCard = (props) => {
   const dispatch = useDispatch();
   const goState = useSelector((state) => state.go);
 
-  const handleShowInstructions = (e) => {
+  const handleToggleInstructions = (e) => {
     setInstructionsVisible((prev) => !prev);
   };
 
   const handleSelect = () => {
     dispatch(goActions.setActivity(props.activity));
-    setInstructionsVisible(true);
   };
 
   const handleRemove = () => {
@@ -138,7 +137,7 @@ const ActivityCard = (props) => {
         </div>
         <div className={styles.buttonContainer}>
           <SimpleButton
-            onClick={props.showInstructions ? null : handleShowInstructions}
+            onClick={props.showInstructions ? null : handleToggleInstructions}
           >
             {!props.showInstructions
               ? !instructionsVisible

@@ -2,6 +2,7 @@ const passport = require("passport");
 const User = require("../models/user");
 const Outing = require("../models/outing");
 const Activity = require("../models/activity");
+const Chat = require("../models/chat");
 const express = require("express");
 const {
   reqAuthenticated,
@@ -115,6 +116,7 @@ router.post(
   })
 );
 
+// Update profile data for a user
 router.post(
   "/:id/profile-data",
   reqAuthenticated,
@@ -139,6 +141,7 @@ router.post(
   })
 );
 
+// Create a new user
 router.post(
   "/create",
   tryCatch(async (req, res) => {
@@ -176,6 +179,7 @@ router.post(
   })
 );
 
+// email verification route for new users
 router.get(
   "/:id/verify",
   tryCatch(async (req, res) => {
@@ -190,6 +194,7 @@ router.get(
   })
 );
 
+// Gets/updates the daily matched users for a user
 router.get(
   "/:id/matches",
   reqAuthenticated,
@@ -226,7 +231,9 @@ router.get(
         if (Date.now() - new Date(match.updated).getTime() > 86400000) {
           const replaceIndex = user.matches.indexOf(match);
           if (allAvailable.length > 0) {
-            const newIndex = parseInt((Math.random() * 1000000) % allAvailable.length);
+            const newIndex = parseInt(
+              (Math.random() * 1000000) % allAvailable.length
+            );
             user.matches[replaceIndex] = {
               user: allAvailable[newIndex],
               updated: Date.now(),
@@ -240,7 +247,6 @@ router.get(
     }
     await user.save();
 
-
     let matches = [];
     // Just send matched users back to the server
     for (match of user.matches) {
@@ -251,6 +257,34 @@ router.get(
     }
 
     res.send({ matches });
+  })
+);
+
+// Get chat and populate it for use in the client
+router.get(
+  "/:id/chat/:chatid",
+  reqAuthenticated,
+  tryCatch(async (req, res) => {
+    const chat = await Chat.findById(req.params.chatid);
+    const user = await User.findById(req.params.id);
+
+    if (!user || !chat) {
+      res.status(404).send("Resource Not Found");
+      return
+    }
+
+    // Send back unauthorized if chatid is not in the user's chats
+    if(!user.chats.find(c=> c.toString() == chat._id.toString())){
+      res.status(401).send('User Not Authorized For This Chat')
+      return
+    }
+
+    await chat.populate('outing')
+
+    // Populate chat users with stripped down data
+    const populatedUsers = await populateFriends(chat.outing.users.map(u=> u.toString()))
+
+    res.send({ chat, populatedUsers });
   })
 );
 

@@ -1,4 +1,20 @@
+@import "../../../utils/responsive.scss";
+
 .container{
-  height: 1000px;
   width: 100%;
+  position: relative;
+  box-sizing: border-box;
 }
+
+.newChatButton{
+  background-color: $blue;
+  color: white;
+  font-weight: bold;
+}
+
+.chatsContainer{
+  margin-top: 1rem;
+}
+
+
+

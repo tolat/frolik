@@ -216,13 +216,29 @@ export const createAccount = (data, resetForm) => {
 
 // Fetch users matched with current user for creating outings
 export const fetchMatchedUsers = (user, setMatchedUsers) => {
-  const requestConfig = {url: `${getServer()}/user/${user._id}/matches`};
+  const requestConfig = { url: `${getServer()}/user/${user._id}/matches` };
 
   const handleResponse = (response) => {
     setMatchedUsers(response.matches);
-    for(user of response.matches){
+    for (user of response.matches) {
       fetchProfilePic(user._id);
     }
+  };
+
+  const handleError = (err) => {
+    console.log("ERROR: ", err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};
+
+// Get chat from server
+export const fetchChat = (userID, chatID, setChat) => {
+  const requestConfig = { url: `${getServer()}/user/${userID}/chat/${chatID}` };
+
+  const handleResponse = (response) => {
+    response.chat.outing.users = response.populatedUsers;
+    setChat(response.chat);
   };
 
   const handleError = (err) => {

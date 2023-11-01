@@ -2,16 +2,15 @@ import store from ".";
 import { fetchPhotos, fetchProfilePic } from "../utils/data-fetch";
 import { dataActions } from "./data-slice";
 
-export const initializeUserPhotos = (newOnly = true) => {
+export const initializeUserPhotos = (user, newOnly = true) => {
+
   // If newOnly is flagged,
   // Only download image data if is hasen't been downloaded
-  const user = store.getState().auth.user;
   const dataStore = store.getState().data;
   const userData = dataStore.users[user._id];
 
   // Set profile picture zoom and crop from auth user
   function initCropZoom(userObject) {
-    
     store.dispatch(
       dataActions.setUserZoom({
         userID: userObject?._id,

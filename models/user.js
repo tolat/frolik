@@ -8,6 +8,11 @@ const UserSchema = new Schema(
     last_name: String,
     username: String,
     tagline: String,
+    flake: Number,
+    location: String,
+    chats: [{ type: Schema.Types.ObjectId, ref: "Chat" }],
+    friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    outings: [{ type: Schema.Types.ObjectId, ref: "Outing" }],
     status: {
       updated: Date,
       status: String,
@@ -17,10 +22,6 @@ const UserSchema = new Schema(
       crop: Object,
       zoom: Number,
     },
-    flake: Number,
-    location: String,
-    friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    outings: [{ type: Schema.Types.ObjectId, ref: "Outing" }],
     matches: [
       {
         user: { type: Schema.Types.ObjectId, ref: "User" },

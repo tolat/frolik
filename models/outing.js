@@ -8,7 +8,7 @@ const OutingSchema = new Schema(
     date_completed: Date,
     users: [{ type: Schema.Types.ObjectId, ref: "User" }],
     status: String,
-    chat: Object,
+    chat: { type: Schema.Types.ObjectId, ref: "Chat" },
     photos: [String],
   },
   { minimize: false }

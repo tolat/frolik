@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Chat = require("../models/chat")
 const nodemailer = require("nodemailer");
 
 // Populates an array with stripped down version of friends

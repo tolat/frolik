@@ -28,8 +28,10 @@ DONE
 
 - Finish chat page layout / interface. Put Chat in modal (1 day)
 
-- Get chat functionality working. need to make a chat object
-in the databases (5 days)
+- Get chat functionality working. (5 days)
+need to make a chat object
+in the databases 
+need to make 
 
 - Creat Outing Funcitonality. 
 Set up a pending outing for all users, and take user to outing modal. 

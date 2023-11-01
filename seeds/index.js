@@ -4,6 +4,8 @@ const Activity = require("../models/activity");
 const User = require("../models/user");
 const Outing = require("../models/outing");
 const Globals = require("../models/globals");
+const Chat = require("../models/chat");
+
 const dbUrl = process.env.DB_URL;
 const fs = require("fs");
 const sharp = require("sharp");
@@ -111,11 +113,11 @@ const seedGlobals = async () => {
 
 const seedUsers = async () => {
   // Delete sampledev bucket data and re-seed images
-  await deleteAllFromS3(process.env.AWS_BUCKET);
-  const profilePicsPath = `${__dirname}/images`;
-  const sampleImagesPath = `${__dirname}/images/sampleUserPhotos`;
-  await UploadImagesToS3(profilePicsPath);
-  await UploadImagesToS3(sampleImagesPath);
+  //await deleteAllFromS3(process.env.AWS_BUCKET);
+  //const profilePicsPath = `${__dirname}/images`;
+  //const sampleImagesPath = `${__dirname}/images/sampleUserPhotos`;
+  //await UploadImagesToS3(profilePicsPath);
+  //await UploadImagesToS3(sampleImagesPath);
 
   // Create users
   async function createUsers(seeds) {
@@ -138,6 +140,8 @@ const seedUsers = async () => {
         crop: { x: 0, y: 0 },
         zoom: 1,
       };
+
+      user.chats = [];
 
       await user.save();
     }
@@ -202,8 +206,8 @@ const seedOutings = async (seeds) => {
       outing.date_completed = outing.date_created;
       outing.users = [user, user2];
       outing.status = "Completed";
-      outing.chat = {};
       outing.photos.push(outingPhotoKeys.pop());
+
       user.outings.push(outing);
       user2.outings.push(outing);
       await user.save();
@@ -240,6 +244,37 @@ const seedOutings = async (seeds) => {
   }
 };
 
+const seedChats = async () => {
+  const allOutings = await Outing.find({});
+
+  for (outing of allOutings) {
+    await outing.populate("users");
+    await outing.populate("activity");
+
+    // Create chat for this outing
+    const chat = new Chat({
+      name: outing.activity.name,
+      outing,
+      messages: [],
+      touched: Date.now(),
+    });
+    await chat.save();
+
+    // Add chat to chats list for all outing users
+    for (user of outing.users) {
+      if (!user.chats) {
+        user.chats = [];
+      }
+      user.chats.push(chat);
+      await user.save();
+    }
+
+    // set chat as the chat for this outing
+    outing.chat = chat;
+    await outing.save();
+  }
+};
+
 const seedDB = async () => {
   await Globals.deleteMany({});
   await seedGlobals();
@@ -258,6 +293,10 @@ const seedDB = async () => {
   await seedOutings(userSeeds2);
   await seedOutings(userSeeds3);
   console.log("done outings..");
+
+  await Chat.deleteMany({});
+  await seedChats();
+  console.log('done chats..')
 };
 
 const awaitSeed = async () => {

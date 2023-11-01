@@ -1,0 +1,39 @@
+@import "../../../utils/responsive.scss";
+
+.container{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    background-color: $card_grey;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.container:hover{
+    cursor: pointer;
+    background-color: rgb(242, 242, 242);
+}
+
+.leftSection{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.iconBacker{
+    background-color: $card_grey;
+}
+
+.iconClusterContainer{
+    margin-right: 2rem;
+}
+
+.name{
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+.memberNames{
+    font-size: 1.3rem;
+}
