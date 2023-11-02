@@ -1,19 +1,24 @@
+import { useSelector } from "react-redux";
 import { genMembersString } from "../../utils/utils";
 import UserIconCluster from "../UI/UserIconCluster";
 import ModalPortal from "./ModalPortal";
-import styles from "./styles/ChatModule.module.scss";
+import styles from "./styles/ChatModal.module.scss";
 
 const ChatModal = (props) => {
-  const memberNames = props.chat.outing.users.map((u) => u.first_name);
+  const modalState = useSelector((state) => state.modal);
+  const modalDisplay = modalState.selector === "chat-modal" ? "flex" : "none";
+  const modalStyle = { display: modalDisplay };
+  const memberNames =
+    props.chat && props.chat.outing.users.map((u) => u.first_name);
   const membersString = genMembersString(memberNames);
 
-  return (
+  return !props.chat ? null : (
     <ModalPortal>
-      <div className={styles.container}>
+      <div style={modalStyle} className={styles.container}>
         <div className={styles.header}>
           <div className={styles.headerLeftContainer}>
-            <div className={styles.outingName}>{props.chat.name}</div>
-            <div className={styles.outingMembers}>{membersString}</div>
+            <div className={styles.chatName}>{props.chat.name}</div>
+            <div className={styles.chatMembers}>{membersString}</div>
           </div>
 
           <div className={styles.headerRightContainer}>
@@ -25,8 +30,13 @@ const ChatModal = (props) => {
             />
           </div>
         </div>
-        <div className={styles.chatContainer}>CHAT HERE</div>
-        <div className={styles.composeContainer}>COMPOSE HERE</div>
+        <div className={styles.chatContainer}></div>
+        <div className={styles.composeContainer}>
+          <textarea className={styles.composer}/>
+          <button className={styles.sendButton}>
+            <img />
+          </button>
+        </div>
       </div>
     </ModalPortal>
   );

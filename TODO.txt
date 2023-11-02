@@ -28,6 +28,9 @@ DONE
 
 - Finish chat page layout / interface. Put Chat in modal (1 day)
 
+- Make sure the all user profile pictures are saved into the datastore
+(look at ChatCard / UserIcon)
+
 - Get chat functionality working. (5 days)
 need to make a chat object
 in the databases 

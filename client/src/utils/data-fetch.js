@@ -24,18 +24,21 @@ export const fetchActivities = async (setData) => {
 };
 
 export const fetchProfilePic = async (userID) => {
+  const userData = store.getState().data.users[userID];
   const requestConfig = {
     url: `${getServer()}/user/${userID}/profile-picture`,
   };
 
   const handleResponse = async (response) => {
     response.text().then((imageDataString) => {
-      store.dispatch(
-        dataActions.setUserProfilePicture({
-          userID,
-          photoString: imageDataString,
-        })
-      );
+      if (userData && userData.profile_picture !== imageDataString) {
+        store.dispatch(
+          dataActions.setUserProfilePicture({
+            userID,
+            photoString: imageDataString,
+          })
+        );
+      }
     });
   };
 

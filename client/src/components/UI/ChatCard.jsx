@@ -3,29 +3,30 @@ import UserIconCluster from "./UserIconCluster";
 import { genMembersString } from "../../utils/utils";
 import { useEffect, useMemo, useState } from "react";
 import { fetchChat } from "../../utils/data-fetch";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { modalActions } from "../../store/modal-slice";
 
 const ChatCard = (props) => {
   const user = useSelector((state) => state.auth.user);
   const [chat, setChat] = useState(false);
+  const dispatch = useDispatch();
   const memberNames = !chat
     ? ""
     : genMembersString(chat.outing.users.map((u) => u.first_name));
 
-     // Memoize the fetchChat function
-  const memoizedFetchChat = useMemo(() => {
-    return (userID, chatID, setChat) => {
-      fetchChat(userID, chatID, setChat)
-    };
-  }, []); 
+  const handleClick = () => {
+    props.setActiveChat(chat)
+    dispatch(modalActions.setSelector(`chat-modal`));
+    dispatch(modalActions.showModal());
+  };
 
   // Get populated chat from server
   useEffect(() => {
-    memoizedFetchChat(user._id, props.chat, setChat);
-  }, [props.chat, user._id, memoizedFetchChat]);
+    fetchChat(user._id, props.chat, setChat);
+  }, [user._id, props.chat]);
 
   return !chat ? null : (
-    <div style={props.style} className={styles.container}>
+    <div onClick={handleClick} style={props.style} className={styles.container}>
       <div className={styles.iconClusterContainer}>
         <UserIconCluster
           backerClassName={styles.iconBacker}
@@ -40,8 +41,7 @@ const ChatCard = (props) => {
           <div className={styles.memberNames}>{memberNames}</div>
         </div>
         <div className={styles.lastActive}>
-            Last active - 
-          {` ${new Date(chat.touched).toDateString()}`}
+          Last active -{` ${new Date(chat.touched).toDateString()}`}
         </div>
       </div>
     </div>

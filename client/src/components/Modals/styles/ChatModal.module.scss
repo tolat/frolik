@@ -1,11 +1,69 @@
 @import "../../../utils/responsive.scss";
 
-.container{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  flex-grow: 1;
+  padding: 1rem;
+  margin-top: -2rem;
 }
 
-.chatContainer{
-    flex-grow: 1;
+.chatContainer {
+  flex-grow: 1;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $button_grey;
+  box-sizing: border-box;
+}
+
+.headerRightContainer {
+  display: flex;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.headerLeftContainer {
+  display: flex;
+  flex-direction: column;
+  margin-left: 7rem;
+  height: 100%;
+}
+
+.chatName {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-top: 2rem;
+}
+
+.chatMembers {
+  font-size: 1.3rem;
+  color: grey;
+}
+
+.chatContainer {
+  background-color: $card_grey;
+}
+
+.composeContainer {
+  background-color: $light_grey;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+.composer{
+    padding: 1rem;
+    border: 1px solid $light_grey;
+    background-color: $card_grey;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1.2rem;
+    outline: none !important;
+    resize: none;
 }
