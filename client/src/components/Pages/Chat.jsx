@@ -18,18 +18,19 @@ const Chat = memo((props) => {
         <ChatCard setActiveChat={setActiveChat} key={c.id} chat={c} />
       ));
     }, [user.chats, setActiveChat]);
-  
-    return <Fragment>{memoizedChatCards}</Fragment>
+
+    return <div className={styles.chatsContainer}>{memoizedChatCards}</div>;
   };
 
   return (
     <div className={styles.container}>
       <ChatModal chat={activeChat} />
+      <h1>Chats</h1>
       <div className={styles.upperContainer}>
         <SimpleSearch />
         <SimpleButton className={styles.newChatButton}>+ New Chat</SimpleButton>
       </div>
-      <ChatList user={user} setActiveChat={setActiveChat}/>
+      <ChatList user={user} setActiveChat={setActiveChat} />
     </div>
   );
 });

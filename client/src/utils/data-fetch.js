@@ -25,13 +25,18 @@ export const fetchActivities = async (setData) => {
 
 export const fetchProfilePic = async (userID) => {
   const userData = store.getState().data.users[userID];
+  // Don't fetch if photo has been downloaded 
+  if(userData && userData.profile_picture){
+    return
+  }
+  
   const requestConfig = {
     url: `${getServer()}/user/${userID}/profile-picture`,
   };
 
   const handleResponse = async (response) => {
     response.text().then((imageDataString) => {
-      if (userData && userData.profile_picture !== imageDataString) {
+      if (!userData || (userData && userData.profile_picture !== imageDataString)) {
         store.dispatch(
           dataActions.setUserProfilePicture({
             userID,
@@ -240,7 +245,14 @@ export const fetchChat = (userID, chatID, setChat) => {
   const requestConfig = { url: `${getServer()}/user/${userID}/chat/${chatID}` };
 
   const handleResponse = (response) => {
-    response.chat.outing.users = response.populatedUsers;
+    const populatedUsers = response.populatedUsers;
+    response.chat.outing.users = populatedUsers;
+    
+    // Get missing user photos
+    for (let user of populatedUsers) {
+      fetchProfilePic(user._id);
+    }
+
     setChat(response.chat);
   };
 

@@ -3,7 +3,9 @@ import styles from "./styles/OutingCard.module.scss";
 import UserIconCluster from "./UserIconCluster";
 
 const OutingCard = (props) => {
-  const categoryColorMap = useSelector(state=>state.auth.globals.categoryColorMap)
+  const categoryColorMap = useSelector(
+    (state) => state.auth.globals.categoryColorMap
+  );
   const o = props.outing;
 
   return (
@@ -21,7 +23,12 @@ const OutingCard = (props) => {
             </div>
           </div>
           <div className={styles.rightUpperSection}>
-            <UserIconCluster backerClassName={styles.iconBacker} users={o.users} sizeInRem={7} borderSizeInRem={0.5} />
+            <UserIconCluster
+              backerClassName={styles.iconBacker}
+              users={o.users}
+              sizeInRem={7}
+              borderSizeInRem={0.8}
+            />
           </div>
         </div>
       </div>

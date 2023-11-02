@@ -32,7 +32,7 @@ const ChatCard = (props) => {
           backerClassName={styles.iconBacker}
           users={chat.outing.users}
           sizeInRem={7}
-          borderSizeInRem={0.5}
+          borderSizeInRem={0.8}
         />
       </div>
       <div className={styles.leftSection}>

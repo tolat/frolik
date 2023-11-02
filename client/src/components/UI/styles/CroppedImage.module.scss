@@ -9,4 +9,7 @@
     display: none;
   }
 
+  :global(.reactEasyCrop_Image) {
+    cursor: auto;
+  }
 }

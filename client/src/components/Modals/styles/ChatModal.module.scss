@@ -6,13 +6,16 @@
   flex-direction: column;
   box-sizing: border-box;
   flex-grow: 1;
-  padding: 1rem;
-  margin-top: -2rem;
 }
 
 .chatContainer {
   flex-grow: 1;
   box-sizing: border-box;
+  background-color: $card_grey;
+}
+
+.iconBacker {
+  background-color: $button_grey;
 }
 
 .header {
@@ -34,6 +37,15 @@
   flex-direction: column;
   margin-left: 7rem;
   height: 100%;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.lastActive{
+    font-size: 1rem;
+    color: grey;
+    margin-bottom: 1rem;
 }
 
 .chatName {
@@ -44,33 +56,48 @@
 
 .chatMembers {
   font-size: 1.3rem;
-  color: grey;
-}
-
-.chatContainer {
-  background-color: $card_grey;
+  color: rgb(90, 90, 90);
 }
 
 .composeContainer {
-  background-color: $light_grey;
-  padding: 0.5rem;
+  background-color: $button_grey;
+  padding: 1rem;
   box-sizing: border-box;
   display: flex;
+  padding-bottom: 2rem;
 }
 
-.composer{
-    padding: 1rem;
-    border: 1px solid $light_grey;
-    background-color: $card_grey;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 1.2rem;
-    outline: none !important;
-    resize: none;
+.composer {
+  padding: 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: $card_grey;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1.1rem;
+  outline: none !important;
+  resize: none;
 }
 
-.sendButton{
-    background-color: none;
-    border: none;
-    outline: none;
+.sendButton {
+  background-color: $button_grey;
+  border: none;
+  outline: none;
+  width: 4rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.sendIcon {
+  width: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.sendIcon:hover {
+  cursor: pointer;
+  opacity: 0.7;
 }
