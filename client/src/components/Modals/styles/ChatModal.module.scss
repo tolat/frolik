@@ -55,6 +55,7 @@
   background-color: $light_grey;
   padding: 0.5rem;
   box-sizing: border-box;
+  display: flex;
 }
 
 .composer{
@@ -66,4 +67,10 @@
     font-size: 1.2rem;
     outline: none !important;
     resize: none;
+}
+
+.sendButton{
+    background-color: none;
+    border: none;
+    outline: none;
 }

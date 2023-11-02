@@ -28,6 +28,8 @@ DONE
 
 - Finish chat page layout / interface. Put Chat in modal (1 day)
 
+- ** MAKE SURE THE daily matches photos are loading!!!
+
 - Make sure the all user profile pictures are saved into the datastore
 (look at ChatCard / UserIcon)
 
