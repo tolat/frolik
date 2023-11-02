@@ -5,22 +5,12 @@ import ChatCard from "../UI/ChatCard";
 import SimpleSearch from "../UI/SimpleSearch";
 import SimpleButton from "../UI/SimpleButton";
 import ChatModal from "../Modals/ChatModal";
-import { memo, useMemo, useState } from "react";
+import { memo, useState } from "react";
 
 const Chat = memo((props) => {
   const user = useSelector((state) => state.auth.user);
+  const userData = useSelector((state) => state.data.users[user._id]);
   const [activeChat, setActiveChat] = useState(false);
-
-  const ChatList = ({ user, setActiveChat }) => {
-    // Memoize the rendering of ChatCard components
-    const memoizedChatCards = useMemo(() => {
-      return user.chats.map((c) => (
-        <ChatCard setActiveChat={setActiveChat} key={c.id} chat={c} />
-      ));
-    }, [user.chats, setActiveChat]);
-
-    return <div className={styles.chatsContainer}>{memoizedChatCards}</div>;
-  };
 
   return (
     <div className={styles.container}>
@@ -30,7 +20,15 @@ const Chat = memo((props) => {
         <SimpleSearch />
         <SimpleButton className={styles.newChatButton}>+ New Chat</SimpleButton>
       </div>
-      <ChatList user={user} setActiveChat={setActiveChat} />
+      {!userData.chats[0] ? (
+        <h2 style={{ width: "100%", textAlign: "center" }}>Loading Chats..</h2>
+      ) : (
+        <div className={styles.chatsContainer}>
+          {userData.chats.map((c) => (
+            <ChatCard setActiveChat={setActiveChat} key={c._id} chat={c} />
+          ))}
+        </div>
+      )}
     </div>
   );
 });

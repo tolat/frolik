@@ -18,6 +18,7 @@ const findOrCreateUser = (state, action) => {
       zoom: 1,
       crop: { x: 0, y: 0 },
       photos: [],
+      chats:[]
     };
   }
   return state.users[action.payload.userID];
@@ -68,6 +69,10 @@ const dataSlice = createSlice({
     clearAllUserData(state) {
       state.users = initialState;
     },
+    setUserChats(state, action){
+      const user = findOrCreateUser(state, action);
+      user.chats = action.payload.chats
+    }
   },
 });
 

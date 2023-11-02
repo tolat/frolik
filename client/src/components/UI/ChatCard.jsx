@@ -1,14 +1,11 @@
 import styles from "./styles/ChatCard.module.scss";
 import UserIconCluster from "./UserIconCluster";
 import { genMembersString } from "../../utils/utils";
-import { useEffect, useState } from "react";
-import { fetchChat } from "../../utils/data-fetch";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
 
 const ChatCard = (props) => {
-  const user = useSelector((state) => state.auth.user);
-  const [chat, setChat] = useState(false);
+  const chat = props.chat
   const dispatch = useDispatch();
   const memberNames = !chat
     ? ""
@@ -20,10 +17,6 @@ const ChatCard = (props) => {
     dispatch(modalActions.showModal());
   };
 
-  // Get populated chat from server
-  useEffect(() => {
-    fetchChat(user._id, props.chat, setChat);
-  }, [user._id, props.chat]);
 
   return !chat ? null : (
     <div onClick={handleClick} style={props.style} className={styles.container}>

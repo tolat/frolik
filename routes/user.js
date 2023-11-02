@@ -271,21 +271,51 @@ router.get(
 
     if (!user || !chat) {
       res.status(404).send("Resource Not Found");
-      return
+      return;
     }
 
     // Send back unauthorized if chatid is not in the user's chats
-    if(!user.chats.find(c=> c.toString() == chat._id.toString())){
-      res.status(401).send('User Not Authorized For This Chat')
-      return
+    if (!user.chats.find((c) => c.toString() == chat._id.toString())) {
+      res.status(401).send("User Not Authorized For This Chat");
+      return;
     }
 
-    await chat.populate('outing')
+    await chat.populate("outing");
 
     // Populate chat users with stripped down data
-    const populatedUsers = await populateFriends(chat.outing.users.map(u=> u.toString()))
+    const populatedUsers = await populateFriends(
+      chat.outing.users.map((u) => u.toString())
+    );
 
     res.send({ chat, populatedUsers });
+  })
+);
+
+// Get chat and populate it for use in the client
+router.get(
+  "/:id/chats/",
+  reqAuthenticated,
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      res.status(404).send("User Not Found");
+      return;
+    }
+
+    await user.populate("chats");
+    await user.populate("chats.outing");
+
+    // For each chat, populate the outing users with stripped data
+    let chatMembersMap = {}
+    for (let chat of user.chats) {
+      const populatedMembers = await populateFriends(
+        chat.outing.users.map((u) => u.toString())
+      );
+      chatMembersMap[chat._id.toString()] = populatedMembers
+    }
+
+    res.send({ chats: user.chats, chatMembersMap });
   })
 );
 

@@ -25,9 +25,9 @@ export const fetchActivities = async (setData) => {
 
 export const fetchProfilePic = async (userID) => {
   const userData = store.getState().data.users[userID];
-  // Don't fetch if photo has been downloaded 
-  if(userData && userData.profile_picture){
-    return
+  // Don't fetch if photo has been downloaded
+  if (userData && userData.profile_picture) {
+    return;
   }
 
   const requestConfig = {
@@ -36,7 +36,10 @@ export const fetchProfilePic = async (userID) => {
 
   const handleResponse = async (response) => {
     response.text().then((imageDataString) => {
-      if (!userData || (userData && userData.profile_picture !== imageDataString)) {
+      if (
+        !userData ||
+        (userData && userData.profile_picture !== imageDataString)
+      ) {
         store.dispatch(
           dataActions.setUserProfilePicture({
             userID,
@@ -164,7 +167,7 @@ export const uploadProfileData = (userID, data, resetForm) => {
 
   const handleResponse = (response) => {
     // Update user in redux store
-    response.user.friends = response.populatedFriends
+    response.user.friends = response.populatedFriends;
     store.dispatch(authActions.setUser(response.user));
 
     // Upload profile picture data once user data has been updated
@@ -248,8 +251,8 @@ export const fetchChat = (userID, chatID, setChat) => {
   const handleResponse = (response) => {
     const populatedUsers = response.populatedUsers;
     response.chat.outing.users = populatedUsers;
-    
-    // Get missing user photos
+
+    // Get any missing user photos
     for (let user of populatedUsers) {
       fetchProfilePic(user._id);
     }
@@ -259,6 +262,35 @@ export const fetchChat = (userID, chatID, setChat) => {
 
   const handleError = (err) => {
     console.log("ERROR: ", err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};
+
+export const fetchChats = (user) => {
+  const dispatch = store.dispatch;
+
+  const requestConfig = { url: `${getServer()}/user/${user._id}/chats` };
+
+  const handleResponse = (response) => {
+    // Insert populated members lists from response for each chat 
+    for(let chat of response.chats){
+      chat.outing.users = response.chatMembersMap[chat._id]
+      // Get any missing user photos
+      for(let member of chat.outing.users){
+        fetchProfilePic(member._id)
+      }
+    }
+
+    // Set userData chats in data store to the response's fetched chats
+    dispatch(
+      dataActions.setUserChats({ userID: user._id, chats: response.chats })
+    );
+
+  };
+
+  const handleError = (err) => {
+    console.log(err);
   };
 
   httpFetch(requestConfig, handleResponse, handleError);
