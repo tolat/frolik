@@ -1,3 +1,6 @@
+import store from "../store";
+import { authActions } from "../store/auth-slice";
+
 export default async function httpFetch(
   requestConfig,
   handleResponse,
@@ -16,7 +19,13 @@ export default async function httpFetch(
 
     // Handle other status codes (e.g., 401, 500) here
     if (!response.ok) {
-      handleError(response)
+      // Logout if unauthorized
+      if (response.status === 401) {
+        store.dispatch(authActions.logout());
+        window.location = '/login'
+      } else {
+        handleError(response);
+      }
     } else {
       const contentType = response.headers.get("Content-Type");
       if (contentType && contentType.includes("application/json")) {

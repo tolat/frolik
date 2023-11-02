@@ -36,7 +36,7 @@ export const fetchAuth = () => {
   };
 
   const handleError = (err) => {
-    console.log("ERROR, LOGGING OUT", err)
+    console.log("ERROR: ", err)
     dispatch(authActions.logout());
   };
 
