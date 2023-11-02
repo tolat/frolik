@@ -17,7 +17,7 @@ const Chat = memo((props) => {
       <ChatModal chat={activeChat} />
       <h1>Chats</h1>
       <div className={styles.upperContainer}>
-        <SimpleSearch />
+        <SimpleSearch placeholder={"Search chats"}/>
         <SimpleButton className={styles.newChatButton}>+ New Chat</SimpleButton>
       </div>
       {!userData.chats[0] ? (
