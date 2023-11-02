@@ -5,7 +5,7 @@ import ChatCard from "../UI/ChatCard";
 import SimpleSearch from "../UI/SimpleSearch";
 import SimpleButton from "../UI/SimpleButton";
 import ChatModal from "../Modals/ChatModal";
-import { Fragment, memo, useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 
 const Chat = memo((props) => {
   const user = useSelector((state) => state.auth.user);

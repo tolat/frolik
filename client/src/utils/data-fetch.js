@@ -29,7 +29,7 @@ export const fetchProfilePic = async (userID) => {
   if(userData && userData.profile_picture){
     return
   }
-  
+
   const requestConfig = {
     url: `${getServer()}/user/${userID}/profile-picture`,
   };
@@ -164,6 +164,7 @@ export const uploadProfileData = (userID, data, resetForm) => {
 
   const handleResponse = (response) => {
     // Update user in redux store
+    response.user.friends = response.populatedFriends
     store.dispatch(authActions.setUser(response.user));
 
     // Upload profile picture data once user data has been updated

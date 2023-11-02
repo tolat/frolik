@@ -3,7 +3,6 @@ import { useSelector } from "react-redux/es/hooks/useSelector";
 
 import backArrow from "../../images/left-arrow.png";
 import { hideModal } from "../../store/modal-actions";
-import { useState } from "react";
 
 function pixelsToRem(pixels) {
   // Get the root font size from the computed style of the document element

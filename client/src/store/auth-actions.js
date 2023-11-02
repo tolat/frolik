@@ -3,6 +3,7 @@ import { authActions } from "./auth-slice";
 import store from ".";
 import { getServer } from "../utils/env-utils";
 import { dataActions } from "./data-slice";
+import { initializeUserPhotos } from "./data-actions";
 
 // Send request to log the user in and start a session in the browser
 export const fetchLogin = (username, password, handleResponse, handleError) => {
@@ -24,11 +25,16 @@ export const fetchAuth = () => {
   const requestConfig = { url: `${getServer()}/auth/check` };
 
   // If session is authenticated, dispatch login to state
-  const handleResponse = (authData) => {
-    if (authData.user) dispatch(authActions.login(authData));
+  const handleResponse = (response) => {
+    if (response.user) {
+      response.user.friends = response.populatedFriends;
+      initializeUserPhotos(response.user);
+      dispatch(authActions.login(response));
+    }
   };
 
   const handleError = (err) => {
+    console.log("ERROR, LOGGING OUT", err)
     dispatch(authActions.logout());
   };
 

@@ -11,6 +11,7 @@ import CreateAccountModal from "../Modals/CreateAccountModal";
 import SimpleButton from "../UI/SimpleButton";
 import { modalActions } from "../../store/modal-slice";
 import { authActions } from "../../store/auth-slice";
+import { initializeUserPhotos } from "../../store/data-actions";
 
 function Login() {
   const usernameRef = useRef();
@@ -32,7 +33,9 @@ function Login() {
     setIsLoggingIn(true);
 
     const handleLoginResponse = (response) => {
+      response.user.friends = response.populatedFriends;
       dispatch(authActions.login(response));
+      initializeUserPhotos(response.user);
       setIsLoggingIn(false);
     };
 

@@ -1,7 +1,7 @@
 import styles from "./styles/ChatCard.module.scss";
 import UserIconCluster from "./UserIconCluster";
 import { genMembersString } from "../../utils/utils";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchChat } from "../../utils/data-fetch";
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";

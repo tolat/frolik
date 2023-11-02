@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isAuthenticated: false,
   user: false,
-  categoryColorMap:{}
+  globals: {}
 };
 const authSlice = createSlice({
   name: "auth",
@@ -16,6 +16,7 @@ const authSlice = createSlice({
       state.globals = action.payload.globals
     },
     logout(state) {
+      console.trace()
       state.isAuthenticated = false;
     },
     deleteUser(state){

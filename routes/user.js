@@ -135,9 +135,10 @@ router.post(
       }
     }
 
-    await user.save();
+    // Get stripped down populated friends list
+    const populatedFriends = await populateFriends(user.friends);
 
-    res.send({ user });
+    res.send({ user, populatedFriends });
   })
 );
 

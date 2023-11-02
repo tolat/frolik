@@ -3,7 +3,6 @@ import { fetchPhotos, fetchProfilePic } from "../utils/data-fetch";
 import { dataActions } from "./data-slice";
 
 export const initializeUserPhotos = (user, newOnly = true) => {
-
   // If newOnly is flagged,
   // Only download image data if is hasen't been downloaded
   const dataStore = store.getState().data;

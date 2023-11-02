@@ -17,17 +17,12 @@ const Navbar = (props) => {
     fetchLogout();
   };
 
-
   return (
     <div className={styles.header}>
       <div className={styles.innerContainer}>
         <NavLink className={(navData) => makeActive(navData)} to="/go">
           <div className={styles.goButton}>
-            <img
-              className={styles.logo}
-              src={logo}
-              alt="logo"
-            />
+            <img className={styles.logo} src={logo} alt="logo" />
           </div>
         </NavLink>
 

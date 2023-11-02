@@ -27,11 +27,7 @@ new connection to create an outing! Need to add   (1 day)
 DONE
 
 - Finish chat page layout / interface. Put Chat in modal (1 day)
-
-- ** MAKE SURE THE daily matches photos are loading!!!
-
-- Make sure the all user profile pictures are saved into the datastore
-(look at ChatCard / UserIcon)
+DONE
 
 - Get chat functionality working. (5 days)
 need to make a chat object
@@ -53,7 +49,7 @@ is uploaded can the outing be marked as completed! (3 days)
 - Need notifications page showing freind requests, outing requests, and 
 confirmations. do this in modal. dispatch notifications (1 day)
 
-- Change photogrid to be adaptive and always be square
+- Change photogrid to be adaptive and always be square (1day)
 
 
 
