@@ -1,5 +1,6 @@
 @import "../../../utils/responsive.scss";
 
+
 .container {
   width: 100%;
   display: flex;
@@ -42,10 +43,10 @@
   justify-content: space-between;
 }
 
-.lastActive{
-    font-size: 1rem;
-    color: grey;
-    margin-bottom: 1rem;
+.lastActive {
+  font-size: 1rem;
+  color: grey;
+  margin-bottom: 1rem;
 }
 
 .chatName {
@@ -100,4 +101,67 @@
 .sendIcon:hover {
   cursor: pointer;
   opacity: 0.7;
+}
+
+.chatContainer {
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.bubbleContainer {
+  display: flex;
+  width: 100%;
+  padding: 1rem;
+  flex-direction: row-reverse;
+  box-sizing: border-box;
+}
+
+.bubbleContainerForeign {
+  display: flex;
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.bubble {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-radius: 3px;
+  max-width: 80%;
+}
+
+.bubbleUser {
+  font-size: 1rem;
+  color: grey;
+  margin-bottom: 0.4rem;
+}
+
+.bubbleMessage {
+  font-size: 1.2rem;
+}
+
+.bubbleTail {
+  border-left: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  position: absolute;
+  bottom: -20px;
+  right: 1rem;
+}
+
+.bubbleTailForeign {
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  position: absolute;
+  bottom: -20px;
+  left: 1rem;
+}
+
+.sent{
+  font-size: 0.9rem;
+  color: grey;
+  margin-top: 0.5rem;
 }

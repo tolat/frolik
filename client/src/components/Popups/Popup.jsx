@@ -11,4 +11,13 @@ const Popup = (props) => {
   );
 };
 
+export const showPopup = () => {
+  document.getElementById("popup").style.display = "block";
+};
+
+export const hidePopup = () => {
+  document.getElementById("popup").style.display = "none";
+};
+
+
 export default Popup;

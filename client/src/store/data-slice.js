@@ -28,6 +28,11 @@ const dataSlice = createSlice({
   name: "modal",
   initialState: initialState,
   reducers: {
+    setUserName(state,action){
+      const user = findOrCreateUser(state, action);
+      user.first_name = action.payload.first_name;
+      user.last_name = action.payload.last_name;
+    },
     setUserProfilePicture(state, action) {
       const user = findOrCreateUser(state, action);
       user.profile_picture = action.payload.photoString;

@@ -55,13 +55,6 @@ export const loadImageAsBase64 = async (imageUrl, setImage) => {
   }
 };
 
-export const showPopup = () => {
-  document.getElementById("popup").style.display = "block";
-};
-
-export const hidePopup = () => {
-  document.getElementById("popup").style.display = "none";
-};
 
 export const genMembersString = (memberNames) => {
   let result = "";

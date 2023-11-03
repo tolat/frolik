@@ -252,12 +252,32 @@ const seedChats = async () => {
     await outing.populate("activity");
 
     // Create chat for this outing
-    const chat = new Chat({
+    let chat = new Chat({
       name: outing.activity.name,
       outing,
-      messages: [],
+      messages: [
+        {
+          message: "Hey, how's it going?",
+          sent: Date.now() - 10000000,
+          user: outing.users[0],
+        },
+        {
+          message: "Pretty good, ready for our adventure?!",
+          sent: Date.now() - 5000000,
+          user: outing.users[1],
+        },
+      ],
       touched: Date.now(),
     });
+
+    if (outing.users[2]) {
+      chat.messages.push({
+        message:
+          "Stoked! Where should we meet? This will be fun, I've never user this app before.",
+        sent: Date.now() - 1000000,
+        user: outing.users[2],
+      });
+    }
     await chat.save();
 
     // Add chat to chats list for all outing users
@@ -296,7 +316,7 @@ const seedDB = async () => {
 
   await Chat.deleteMany({});
   await seedChats();
-  console.log('done chats..')
+  console.log("done chats..");
 };
 
 const awaitSeed = async () => {

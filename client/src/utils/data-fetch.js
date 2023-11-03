@@ -273,12 +273,19 @@ export const fetchChats = (user) => {
   const requestConfig = { url: `${getServer()}/user/${user._id}/chats` };
 
   const handleResponse = (response) => {
-    // Insert populated members lists from response for each chat 
-    for(let chat of response.chats){
-      chat.outing.users = response.chatMembersMap[chat._id]
+    // Insert populated members lists from response for each chat
+    for (let chat of response.chats) {
+      chat.outing.users = response.chatMembersMap[chat._id];
       // Get any missing user photos
-      for(let member of chat.outing.users){
-        fetchProfilePic(member._id)
+      for (let member of chat.outing.users) {
+        fetchProfilePic(member._id);
+        store.dispatch(
+          dataActions.setUserName({
+            userID: member._id,
+            first_name: member.first_name,
+            last_name: member.last_name,
+          })
+        );
       }
     }
 
@@ -286,7 +293,6 @@ export const fetchChats = (user) => {
     dispatch(
       dataActions.setUserChats({ userID: user._id, chats: response.chats })
     );
-
   };
 
   const handleError = (err) => {

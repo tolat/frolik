@@ -7,10 +7,10 @@ import placeholderPhoto from "../../images/placeholder-user-photo.png";
 import SimpleInput from "../UI/SimpleInput";
 import ValidatorBubble, { runValidators } from "../UI/ValidatorBubble";
 import { createAccount, fetchGobals } from "../../utils/data-fetch";
-import { hidePopup, loadImageAsBase64, showPopup } from "../../utils/utils";
+import { loadImageAsBase64 } from "../../utils/utils";
 import { createProfileValidators } from "../../utils/validators";
 import SimpleButton from "../UI/SimpleButton";
-import Popup from "../Popups/Popup";
+import Popup, {hidePopup, showPopup} from "../Popups/Popup";
 import WarningPopup from "../Popups/WarningPopup";
 
 const stagedDataReducer = (state, action) => {
