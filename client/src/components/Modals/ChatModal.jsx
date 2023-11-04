@@ -4,7 +4,7 @@ import UserIconCluster from "../UI/UserIconCluster";
 import ModalPortal from "./ModalPortal";
 import styles from "./styles/ChatModal.module.scss";
 import sendIcon from "../../images/send.png";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { socket } from "../../socket";
 import { sendChatMessage } from "../../store/chat-actions";
 import { fetchChat } from "../../utils/data-fetch";
