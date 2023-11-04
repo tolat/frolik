@@ -8,7 +8,7 @@ import editIcon from "../../images/edit.png";
 import plusIcon from "../../images/plus.png";
 import EditUsersModal from "../Modals/EditUsersModal";
 import UserIconCluster from "../UI/UserIconCluster";
-import { fetchActivities } from "../../utils/data-fetch";
+import { createOuting, fetchActivities } from "../../utils/data-fetch";
 import ActivityCard from "../UI/ActivityCard";
 import FilterActivitiesModal from "../Modals/FilterActivitiesModal";
 import balloonIcon from "../../images/air-balloon-light.png";
@@ -18,6 +18,9 @@ import { calcAvgRating, pageRouteLoader } from "../../utils/utils";
 import store from "../../store";
 import { goActions } from "../../store/go-slice";
 import SimpleSearch from "../UI/SimpleSearch";
+import WarningPopup from "../Popups/WarningPopup";
+import Popup, { hidePopup, showPopup } from "../Popups/Popup";
+import { useNavigate } from "react-router-dom";
 
 const initialActivityFilter = {
   filter: {
@@ -105,8 +108,10 @@ const filtersAreEqual = (f1, f2) => {
 };
 
 const Go = (props) => {
+  const user = useSelector((state) => state.auth.user);
   const goUsers = useSelector((state) => state.go.outing.users);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const outings = useSelector((state) => state.auth.user.outings);
   const completedActivities = outings?.map((outing) => outing.activity._id);
   const goState = useSelector((state) => state.go);
@@ -114,6 +119,18 @@ const Go = (props) => {
     filterReducer,
     initialActivityFilter
   );
+
+  // Show popup for redirect back to profile if user has 5 pending outings
+  useEffect(() => {
+    if (user.outings.filter((o) => o.status === "Pending").length > 4) {
+      showPopup();
+    }
+  }, [user]);
+
+  const handleHideWarning = () => {
+    hidePopup();
+    navigate("/profile");
+  };
 
   // Get all activities
   useEffect(() => {
@@ -149,6 +166,14 @@ const Go = (props) => {
     dispatch(modalActions.showModal());
   };
 
+  // Create Pending outing for all added users
+  const handleCreateOuting = () => {
+    createOuting(goState.outing, user);
+  };
+
+  console.log(goState);
+  console.log(user);
+
   return (
     <Fragment>
       <AddUserModal />
@@ -158,6 +183,17 @@ const Go = (props) => {
         dispatchFilter={dispatchFilter}
         initialActivityFilter={initialActivityFilter}
       />
+      <Popup>
+        <WarningPopup
+          header={"You have too many Pending Outings!"}
+          message={
+            "You can only have up to 5 pending outings at a time. To reduce your pending outings, either complete or delete outings. You can view your outings in the 'Profile' page. "
+          }
+          ok={"Return to Profile page"}
+          okClick={handleHideWarning}
+        />
+      </Popup>
+
       <div className={styles.container}>
         <div className={styles.usersContainer}>
           <button
@@ -197,7 +233,10 @@ const Go = (props) => {
             <div className={styles.addPeopleHeader}>Add People</div>
           </Fragment>
         ) : (
-          <SimpleButton className={styles.goButton}>
+          <SimpleButton
+            onClick={handleCreateOuting}
+            className={styles.goButton}
+          >
             <img
               className={styles.balloonIcon}
               src={balloonIcon}

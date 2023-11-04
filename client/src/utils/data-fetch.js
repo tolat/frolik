@@ -4,6 +4,7 @@ import { dataActions } from "../store/data-slice";
 import store from "../store";
 import { authActions } from "../store/auth-slice";
 import { chatActions } from "../store/chat-slice";
+import { goActions } from "../store/go-slice";
 
 export const fetchActivities = async (setData) => {
   return new Promise((resolve, reject) => {
@@ -224,7 +225,7 @@ export const fetchMatchedUsers = (user, setMatchedUsers) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
-// Get chat from server
+// Get a chat with given id from server
 export const fetchChat = (userID, chatID) => {
   if (!userID || !chatID) return;
   const requestConfig = { url: `${getServer()}/user/${userID}/chat/${chatID}` };
@@ -249,6 +250,7 @@ export const fetchChat = (userID, chatID) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Get all chats for a user
 export const fetchChats = (user) => {
   const dispatch = store.dispatch;
 
@@ -281,3 +283,31 @@ export const fetchChats = (user) => {
 
   httpFetch(requestConfig, handleResponse, handleError);
 };
+
+// Create a pending outing
+export const createOuting = (outing, user) =>{
+  
+  const requestConfig = {
+    url: `${getServer()}/user/${user._id}/create-outing`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(outing),
+  };
+
+  const handleResponse = (response) => {
+    response.user.friends = response.populatedFriends
+   // Update user in redux store
+   store.dispatch(authActions.setUser(response.user))
+
+   // Reset outing in gostate
+   store.dispatch(goActions.reset(user))
+  };
+
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+}

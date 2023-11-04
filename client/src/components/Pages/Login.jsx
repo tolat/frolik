@@ -12,7 +12,7 @@ import SimpleButton from "../UI/SimpleButton";
 import { modalActions } from "../../store/modal-slice";
 import { authActions } from "../../store/auth-slice";
 import { initializeUserPhotos } from "../../store/data-actions";
-import { fetchChats } from "../../utils/data-fetch";
+import { fetchChats, fetchGobals } from "../../utils/data-fetch";
 
 function Login() {
   const usernameRef = useRef();
@@ -24,6 +24,7 @@ function Login() {
 
   // If authenticated, navigate to profile
   useEffect(() => {
+    fetchGobals()
     if (authState.isAuthenticated) {
       navigate("/profile");
     }

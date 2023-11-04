@@ -12,10 +12,14 @@ const Popup = (props) => {
 };
 
 export const showPopup = () => {
+  console.log("showing popup")
+  console.trace()
   document.getElementById("popup").style.display = "block";
 };
 
 export const hidePopup = () => {
+  console.log("hiding popup")
+
   document.getElementById("popup").style.display = "none";
 };
 

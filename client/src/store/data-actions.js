@@ -36,13 +36,17 @@ export const initializeUserPhotos = (user, newOnly = true) => {
     fetchPhotos(user);
   }
 
-  // Fetch friend user profile pictures
-  for (let friend of user.friends) {
-    initCropZoom(friend);
-    if (newOnly && !dataStore.users[friend]) {
-      fetchProfilePic(friend._id);
+  // Fetch all related user profile pictures
+  const allOutingUsers = user.outings
+    .map((o) => o.users)
+    .reduce((acc, curr) => acc.concat(curr), []);
+  const allRelatedUsers = user.friends.concat(allOutingUsers);
+  for (let relatedUser of allRelatedUsers) {
+    initCropZoom(relatedUser);
+    if (newOnly && !dataStore.users[relatedUser]) {
+      fetchProfilePic(relatedUser._id);
     } else if (!newOnly) {
-      fetchProfilePic(friend._id);
+      fetchProfilePic(relatedUser._id);
     }
   }
 };

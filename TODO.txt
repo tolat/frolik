@@ -44,6 +44,8 @@ outing as completed or cancelled). Can also rate activity here - ratings
 only apply once outingis competed. Only once ratings AND minimum 1 photo 
 is uploaded can the outing be marked as completed! (3 days)
 
+- Need OutingModal, and profile viewer modal
+
 - Completed outing updates activity rating, and photos. (1 day)
 
 - Need notifications page showing freind requests, outing requests, and 

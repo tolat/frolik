@@ -150,7 +150,11 @@ router.post(
     const imageString = reducedImageBuffer.toString("base64");
 
     // Upload image to S3
-    uploadToS3(process.env.AWS_BUCKET, profileData.profile_picture.key, imageString)
+    uploadToS3(
+      process.env.AWS_BUCKET,
+      profileData.profile_picture.key,
+      imageString
+    )
       .then(() => {
         res.send({ user, populatedFriends });
       })
@@ -220,16 +224,38 @@ router.get(
   reqAuthenticated,
   tryCatch(async (req, res) => {
     const user = await User.findById(req.params.id);
+    await user.populate('outings')
     const validStatuses = ["Ready", "Searching"];
+
+    // Return if user already has 5+ pending outings
+    if(user.outings.filter(o=> o.statu == 'Pending').length >4){
+      res.status(406).send('User has too many pending outings')
+      return
+    }
+
+    // Limit matches to users who have status ready or searching
     let allAvailable = await User.find({
       "status.status": { $in: validStatuses },
     });
 
-    // Filter out friends and this user
-    allAvailable = allAvailable.filter(
-      (u) =>
-        !user.friends.includes(u._id.toString()) && u.username != user.username
-    );
+    // Populate the available matches user outings
+    for (u of allAvailable) {
+      await u.populate("outings");
+    }
+
+    // Filter out invalid matches
+    allAvailable = allAvailable.filter((u) => {
+      return (
+        // No friends matches
+        !user.friends.map((f) => f.toString()).includes(u._id.toString()) &&
+        // Don't match same user
+        u._id.toString() !== user._id.toString() &&
+        // No users with 5 or more pending outings
+        u.outings.filter((o) => o.status == "Pending").length < 5 &&
+        // No users that are alredy in the user's matches
+        !user.matches.find(m => m.user.toString() == u._id.toString())
+      );
+    });
 
     // If no full matches set, generate matches set with at most 5 matches
     if (!user.matches || !user.matches[0]) {
@@ -246,10 +272,20 @@ router.get(
         }
       }
     } else {
-      // Replace or delete any matches that are 24 hrs or older
+      // Replace or delete any invalid matches
       for (match of user.matches) {
-        if (Date.now() - new Date(match.updated).getTime() > 86400000) {
+        const matchUser = await User.findById(match.user);
+        await matchUser.populate("outings");
+        if (
+          // Match is 24 hrs old or more
+          Date.now() - new Date(match.updated).getTime() > 86400000 ||
+          // Match status has changed to Busy or Incative
+          !validStatuses.includes(matchUser.status.status) ||
+          // Match has 5 or more pending outings
+          matchUser.outings.filter((o) => o.status == "Pending").length > 4
+        ) {
           const replaceIndex = user.matches.indexOf(match);
+          // If available matches exists, pull form there
           if (allAvailable.length > 0) {
             const newIndex = parseInt(
               (Math.random() * 1000000) % allAvailable.length
@@ -259,7 +295,9 @@ router.get(
               updated: Date.now(),
             };
             allAvailable.splice(newIndex, 1);
-          } else {
+          }
+          // Else just delete the invalid match 
+          else {
             user.matches.splice(replaceIndex, 1);
           }
         }
@@ -339,5 +377,45 @@ router.get(
     res.send({ chats: user.chats, chatMembersMap });
   })
 );
+
+router.post("/:id/create-outing", reqAuthenticated, async (req, res) => {
+  let user = await User.findById(req.params.id);
+
+  // Update outing status and date created
+  let outing = req.body;
+  outing.status = "Pending";
+  outing.date_created = new Date(Date.now());
+
+  const newOuting = new Outing(outing);
+  await newOuting.save();
+  await newOuting.populate("activity");
+  await newOuting.populate("users");
+  await newOuting.populate("users.outings");
+  await newOuting.populate("users.outings.activity");
+
+  // Add outing to user outings and popualte user for response
+  user.outings.push(newOuting);
+  await user.save();
+  await populateUser(user);
+  const populatedFriends = await populateFriends(user.friends);
+
+  // Create a new outing request to send to other users
+  const outingRequest = {
+    outing: newOuting,
+    created: new Date(Date.now()),
+    read: false,
+  };
+
+  for (let u of newOuting.users) {
+    if (u._id.toString() !== user._id.toString()) {
+      const otherUser = await User.findById(u._id.toString());
+      otherUser.outing_requests.push(outingRequest);
+      await otherUser.save();
+    }
+  }
+
+  // Send updated user and populated friends back
+  res.send({ user, populatedFriends });
+});
 
 module.exports = router;

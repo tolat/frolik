@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  radius: 20,
   outing: {
     activity: {},
     users: [],
@@ -29,6 +28,9 @@ const goSlice = createSlice({
     },
     removeActivity(state) {
       state.outing.activity = {};
+    },
+    reset(state, action) {
+      state.outing = { activity: {}, users: [action.payload] };
     },
   },
 });
