@@ -32,7 +32,7 @@ DONE
 - Get chat functionality working. (5 days)
 need to make a chat object
 in the databases 
-need to make 
+DONE
 
 - Creat Outing Funcitonality. 
 Set up a pending outing for all users, and take user to outing modal. 
@@ -63,9 +63,11 @@ BUGS:
 
 - When modal is scrolled down and then hidden (changind user status e.g.) 
 the baffle doesn;t come down with tho modal and the hidden modal is visible
+FIXED
 
 - Changing any profile fields other than picture doesn't stay (reverts after a second,
 presumably when the post call to the server resolves)
+FIXED
 
 
 NOTES:
