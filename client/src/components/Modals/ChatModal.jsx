@@ -5,6 +5,9 @@ import ModalPortal from "./ModalPortal";
 import styles from "./styles/ChatModal.module.scss";
 import sendIcon from "../../images/send.png";
 import { useEffect, useState } from "react";
+import { socket } from "../../socket";
+import { sendChatMessage } from "../../store/chat-actions";
+import { fetchChat } from "../../utils/data-fetch";
 
 const bubbleColours = [
   "rgb(247, 226, 250)",
@@ -17,111 +20,145 @@ const bubbleColours = [
 const ChatModal = (props) => {
   const user = useSelector((state) => state.auth.user);
   const modalState = useSelector((state) => state.modal);
-  const usersData = useSelector((state) => state.data.users);
+  const chatsState = useSelector((state) => state.chat.chats);
   const modalDisplay = modalState.selector === "chat-modal" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
-  const [messages, setMessages] = useState([]);
-  const memberNames =
-    props.chat && props.chat.outing.users.map((u) => u.first_name);
+  const [composerValue, setComposerValue] = useState("");
+  const chat = chatsState.find((c) => c._id === props.chat._id)
+  const memberNames = !!chat && chat.outing.users.map((u) => u.first_name);
   const membersString = genMembersString(memberNames);
+  const messages = chat?.messages;
 
-  // Initialize messages when the chat loads
+
+  // Fetch chat from server just to make sure no messages are missed
+  // which can happen if chat modal is closed and message is sent while
+  // user is on chat page. updates the chat state once chat is fetched.
   useEffect(() => {
-    const initialMessages = !props.chat
-      ? []
-      : props.chat.messages.toSorted(
-          (a, b) => new Date(b.sent).getTime() - new Date(a.sent).getTime()
-        );
+    fetchChat(user._id, chat?._id);
+  },[user._id, chat]);
 
-    setMessages(initialMessages);
-  }, [props.chat]);
+  // Connect to the websocket for chat
+  useEffect(() => {
+    console.log('connecting to socket')
+    if (chat) {
+      // no-op if the socket is already connected
+      socket.connect();
+      socket.emit("join-room", chat._id);
+    }
 
-  const MessageBubble = (props) => {
-    const messageUser = usersData[props.user];
-    const foreign = props.user !== user._id;
-    const sentDate = new Date(props.sent);
-    const colourIndex =
-      props.chatMembers &&
-      props.chatMembers.map((u) => u._id).indexOf(props.user) % 5;
-    const bubbleColour = bubbleColours[colourIndex];
-    const tailStyle = {
-      borderRight: `15px solid ${bubbleColour}`,
-      borderTop: `15px solid ${bubbleColour}`,
+    return () => {
+      socket.disconnect();
     };
-    const foreignTailStyle = {
-      borderLeft: `15px solid ${bubbleColour}`,
-      borderTop: `15px solid ${bubbleColour}`,
-    };
+  }, [chat]);
 
-    return (
-      <div
-        className={`${
-          foreign ? styles.bubbleContainerForeign : styles.bubbleContainer
-        }`}
-      >
-        <div
-          style={{ backgroundColor: bubbleColour }}
-          className={styles.bubble}
-        >
-          <div
-            className={styles.bubbleUser}
-          >{`${messageUser.first_name} ${messageUser.last_name}`}</div>
-          <div className={styles.bubbleMessage}>{props.message}</div>
-          <div
-            style={foreign ? foreignTailStyle : tailStyle}
-            className={foreign ? styles.bubbleTailForeign : styles.bubbleTail}
-          ></div>
-          <div className={styles.sent}>
-            {sentDate.toDateString().slice(4, 15)} -{" "}
-            {sentDate.toTimeString().slice(0, 5)}
-          </div>
-        </div>
-      </div>
-    );
+  const handleComposerChange = (e) => {
+    setComposerValue(e.target.value);
   };
 
-  return !props.chat ? null : (
+  const handleSendMessage = () => {
+    // Create new message
+    const newMessage = {
+      id: Math.random() + Date.now(),
+      message: composerValue,
+      user: user._id,
+      sent: Date.now(),
+    };
+
+    // Update to this chat in chat store to add message and
+    // emit a message-sent event over the web socket connection
+    sendChatMessage(newMessage, chat);
+    setComposerValue("");
+  };
+
+  return !chat ? null : (
     <ModalPortal>
       <div style={modalStyle} className={styles.container}>
         <div className={styles.header}>
           <div className={styles.headerLeftContainer}>
             <div>
-              <div className={styles.chatName}>{props.chat.name}</div>
+              <div className={styles.chatName}>{chat.name}</div>
               <div className={styles.chatMembers}>{membersString}</div>
             </div>
             <div className={styles.lastActive}>
-              Last active - {new Date(props.chat.touched).toDateString()}
+              Last active - {new Date(chat.touched).toDateString()}
             </div>
           </div>
 
           <div className={styles.headerRightContainer}>
             <UserIconCluster
               backerClassName={styles.iconBacker}
-              users={props.chat.outing.users}
+              users={chat.outing.users}
               sizeInRem={7}
               borderSizeInRem={0.8}
             />
           </div>
         </div>
-        <div className={styles.chatContainer}>
+        <div className={`${styles.chatContainer} noscroll`}>
           {messages.map((m) => (
             <MessageBubble
               key={Math.random()}
               user={m.user}
               message={m.message}
               sent={m.sent}
-              chatMembers={props.chat.outing.users}
+              chatMembers={chat.outing.users}
             />
           ))}
         </div>
         <div className={styles.composeContainer}>
-          <textarea className={styles.composer} />
-          <button className={styles.sendButton}>
+          <textarea
+            onChange={handleComposerChange}
+            value={composerValue}
+            className={styles.composer}
+          />
+          <button onClick={handleSendMessage} className={styles.sendButton}>
             <img className={styles.sendIcon} src={sendIcon} alt="send-icon" />
           </button>
         </div>
       </div>
     </ModalPortal>
+  );
+};
+
+const MessageBubble = (props) => {
+  const user = useSelector((state) => state.auth.user);
+  const usersData = useSelector((state) => state.data.users);
+  const messageUser = usersData[props.user];
+  const foreign = props.user !== user._id;
+  const sentDate = new Date(props.sent);
+  const colourIndex =
+    props.chatMembers &&
+    props.chatMembers.map((u) => u._id).indexOf(props.user) % 5;
+  const bubbleColour = bubbleColours[colourIndex];
+  const tailStyle = {
+    borderRight: `15px solid ${bubbleColour}`,
+    borderTop: `15px solid ${bubbleColour}`,
+  };
+  const foreignTailStyle = {
+    borderLeft: `15px solid ${bubbleColour}`,
+    borderTop: `15px solid ${bubbleColour}`,
+  };
+
+  return (
+    <div
+      className={`${
+        foreign ? styles.bubbleContainerForeign : styles.bubbleContainer
+      }`}
+    >
+      <div style={{ backgroundColor: bubbleColour }} className={styles.bubble}>
+        <div
+          className={styles.bubbleUser}
+        >{`${messageUser.first_name} ${messageUser.last_name}`}</div>
+        <div className={styles.bubbleMessage}>{props.message}</div>
+        <div
+          style={foreign ? foreignTailStyle : tailStyle}
+          className={foreign ? styles.bubbleTailForeign : styles.bubbleTail}
+        ></div>
+        <div className={styles.sent}>
+          {sentDate.toDateString().slice(4, 15)} -{" "}
+          {sentDate.toTimeString().slice(0, 5)}
+        </div>
+      </div>
+    </div>
   );
 };
 

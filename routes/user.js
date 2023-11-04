@@ -265,6 +265,7 @@ router.get(
 router.get(
   "/:id/chat/:chatid",
   reqAuthenticated,
+  sameUserOnly,
   tryCatch(async (req, res) => {
     const chat = await Chat.findById(req.params.chatid);
     const user = await User.findById(req.params.id);
@@ -295,6 +296,7 @@ router.get(
 router.get(
   "/:id/chats/",
   reqAuthenticated,
+  sameUserOnly,
   tryCatch(async (req, res) => {
     const user = await User.findById(req.params.id);
 

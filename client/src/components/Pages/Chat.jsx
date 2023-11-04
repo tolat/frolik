@@ -8,8 +8,7 @@ import ChatModal from "../Modals/ChatModal";
 import { memo, useState } from "react";
 
 const Chat = memo((props) => {
-  const user = useSelector((state) => state.auth.user);
-  const userData = useSelector((state) => state.data.users[user._id]);
+  const chats = useSelector((state) => state.chat.chats);
   const [activeChat, setActiveChat] = useState(false);
 
   return (
@@ -17,14 +16,14 @@ const Chat = memo((props) => {
       <ChatModal chat={activeChat} />
       <h1>Chats</h1>
       <div className={styles.upperContainer}>
-        <SimpleSearch placeholder={"Search chats"}/>
+        <SimpleSearch placeholder={"Search chats"} />
         <SimpleButton className={styles.newChatButton}>+ New Chat</SimpleButton>
       </div>
-      {!userData.chats[0] ? (
+      {!chats[0] ? (
         <h2 style={{ width: "100%", textAlign: "center" }}>Loading Chats..</h2>
       ) : (
         <div className={styles.chatsContainer}>
-          {userData.chats.map((c) => (
+          {chats.map((c) => (
             <ChatCard setActiveChat={setActiveChat} key={c._id} chat={c} />
           ))}
         </div>

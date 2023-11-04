@@ -3,6 +3,7 @@ import { getServer } from "./env-utils";
 import { dataActions } from "../store/data-slice";
 import store from "../store";
 import { authActions } from "../store/auth-slice";
+import { chatActions } from "../store/chat-slice";
 
 export const fetchActivities = async (setData) => {
   return new Promise((resolve, reject) => {
@@ -245,7 +246,8 @@ export const fetchMatchedUsers = (user, setMatchedUsers) => {
 };
 
 // Get chat from server
-export const fetchChat = (userID, chatID, setChat) => {
+export const fetchChat = (userID, chatID) => {
+  if(!userID || !chatID) return
   const requestConfig = { url: `${getServer()}/user/${userID}/chat/${chatID}` };
 
   const handleResponse = (response) => {
@@ -257,7 +259,8 @@ export const fetchChat = (userID, chatID, setChat) => {
       fetchProfilePic(user._id);
     }
 
-    setChat(response.chat);
+    // Set chats in data store 
+    store.dispatch(chatActions.updateChat({ chat: response.chat }));
   };
 
   const handleError = (err) => {
@@ -289,10 +292,8 @@ export const fetchChats = (user) => {
       }
     }
 
-    // Set userData chats in data store to the response's fetched chats
-    dispatch(
-      dataActions.setUserChats({ userID: user._id, chats: response.chats })
-    );
+    // Set chats in data store 
+    dispatch(chatActions.setChats({ chats: response.chats }));
   };
 
   const handleError = (err) => {

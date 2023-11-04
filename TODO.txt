@@ -59,6 +59,14 @@ TOTAL: 23 days  / ~3 weeks
 
 REMAINING: 17 days 
 
+BUGS:
+
+- When modal is scrolled down and then hidden (changind user status e.g.) 
+the baffle doesn;t come down with tho modal and the hidden modal is visible
+
+- Changing any profile fields other than picture doesn't stay (reverts after a second,
+presumably when the post call to the server resolves)
+
 
 NOTES:
 

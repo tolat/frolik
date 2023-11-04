@@ -8,7 +8,6 @@ const CustomSelect = forwardRef((props, ref) => {
   const [optionsDisplay, setOptionsDisplay] = useState("none");
 
   const handleChange = (o) => {
-    console.log("setting name: ", o.name)
     handleToggleOptions();
     setValue(o.name);
     props.setDataChanged && props.setDataChanged(o.name)

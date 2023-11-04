@@ -8,7 +8,7 @@ const initialState = {
 const findOrCreateUser = (state, action) => {
   if (!action.payload.userID) {
     console.log("NO USERID PASSED TO DATASLICE");
-    console.trace()
+    console.trace();
   }
 
   // Create user objet in store if none exists
@@ -18,7 +18,6 @@ const findOrCreateUser = (state, action) => {
       zoom: 1,
       crop: { x: 0, y: 0 },
       photos: [],
-      chats:[]
     };
   }
   return state.users[action.payload.userID];
@@ -28,7 +27,7 @@ const dataSlice = createSlice({
   name: "modal",
   initialState: initialState,
   reducers: {
-    setUserName(state,action){
+    setUserName(state, action) {
       const user = findOrCreateUser(state, action);
       user.first_name = action.payload.first_name;
       user.last_name = action.payload.last_name;
@@ -74,10 +73,6 @@ const dataSlice = createSlice({
     clearAllUserData(state) {
       state.users = initialState;
     },
-    setUserChats(state, action){
-      const user = findOrCreateUser(state, action);
-      user.chats = action.payload.chats
-    }
   },
 });
 

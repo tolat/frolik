@@ -8,11 +8,3 @@ export function onConnect() {
 export function onDisconnect() {
   store.dispatch(socketActions.setConnected(false));
 }
-
-export function onMessageReceive(value) {
-  console.log(value);
-}
-
-export function onMessageSend(value) {
-  console.log(value);
-}

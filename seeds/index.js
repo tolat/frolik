@@ -257,11 +257,13 @@ const seedChats = async () => {
       outing,
       messages: [
         {
+          id: Date.now() + Math.random(),
           message: "Hey, how's it going?",
-          sent: Date.now() - 10000000,
+          sent: Date.now() - 1000000,
           user: outing.users[0],
         },
         {
+          id: Date.now() + Math.random(),
           message: "Pretty good, ready for our adventure?!",
           sent: Date.now() - 5000000,
           user: outing.users[1],
@@ -272,9 +274,10 @@ const seedChats = async () => {
 
     if (outing.users[2]) {
       chat.messages.push({
+        id: Date.now() + Math.random(),
         message:
           "Stoked! Where should we meet? This will be fun, I've never user this app before.",
-        sent: Date.now() - 1000000,
+        sent: Date.now() - 10000000,
         user: outing.users[2],
       });
     }
