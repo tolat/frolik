@@ -38,7 +38,6 @@ const ChatModal = (props) => {
 
   // Connect to the websocket for chat
   useEffect(() => {
-    console.log("connecting to socket");
     if (chat) {
       // no-op if the socket is already connected
       socket.connect();
