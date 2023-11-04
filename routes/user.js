@@ -88,6 +88,8 @@ router.post(
     // Populate user
     await populateUser(user);
 
+    console.log(user);
+
     // Get stripped down populated friends list
     const populatedFriends = await populateFriends(user.friends);
 
@@ -104,7 +106,7 @@ router.post(
       // Upload image to S3
       uploadToS3(process.env.AWS_BUCKET, req.body.key, imageString)
         .then((response) => {
-          res.send({ user, populatedFriends });
+          res.sendStatus(200);
         })
         .catch((error) => {
           console.error("Error uploading image:", error);
@@ -123,22 +125,39 @@ router.post(
   sameUserOnly,
   tryCatch(async (req, res) => {
     const user = req.user;
+    const profileData = req.body.profileData;
+    const photoString = req.body.photoString;
 
-    for (let key in req.body) {
-      if (req.body[key] || req.body[key] == "") {
-        key == "status"
-          ? (user.status = {
-              status: req.body.status,
-              updated: Date.now(),
-            })
-          : (user[key] = req.body[key]);
-      }
+    // Set user profile data
+    for (let key in profileData) {
+      if (profileData[key] || profileData[key] == "")
+        user[key] = profileData[key];
     }
+
+    // Save & Populate user
+    await user.save();
+    await populateUser(user);
 
     // Get stripped down populated friends list
     const populatedFriends = await populateFriends(user.friends);
 
-    res.send({ user, populatedFriends });
+    // Resize/compress image before upload
+    const imageBuffer = Buffer.from(photoString, "base64");
+    const reducedImageBuffer = await sharp(imageBuffer)
+      .jpeg({ quality: 50 })
+      .withMetadata()
+      .toBuffer();
+    const imageString = reducedImageBuffer.toString("base64");
+
+    // Upload image to S3
+    uploadToS3(process.env.AWS_BUCKET, profileData.profile_picture.key, imageString)
+      .then(() => {
+        res.send({ user, populatedFriends });
+      })
+      .catch((error) => {
+        console.error("Error uploading image:", error);
+        res.status(500).send("Internal Server Error");
+      });
   })
 );
 
@@ -309,12 +328,12 @@ router.get(
     await user.populate("chats.outing");
 
     // For each chat, populate the outing users with stripped data
-    let chatMembersMap = {}
+    let chatMembersMap = {};
     for (let chat of user.chats) {
       const populatedMembers = await populateFriends(
         chat.outing.users.map((u) => u.toString())
       );
-      chatMembersMap[chat._id.toString()] = populatedMembers
+      chatMembersMap[chat._id.toString()] = populatedMembers;
     }
 
     res.send({ chats: user.chats, chatMembersMap });

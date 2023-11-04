@@ -3,7 +3,7 @@ import styles from "./styles/EditProfileModal.module.scss";
 import ModalPortal from "./ModalPortal";
 import { useEffect, useMemo, useReducer, useState } from "react";
 import { dataActions } from "../../store/data-slice";
-import { fetchGobals, uploadProfileData } from "../../utils/data-fetch";
+import { uploadProfileData } from "../../utils/data-fetch";
 import CustomSelect from "../UI/CustomSelect";
 import balloonIcon from "../../images/balloon1.png";
 import ProfileEditor from "./ProfileEditor";
@@ -32,7 +32,7 @@ const EditProfileModal = (props) => {
   const [validationMessage, setValidationMessage] = useState(false);
   const [validationDisplay, setValidationDisplay] = useState("none");
   const [validationID, setValidationID] = useState(false);
-  const [globals, setGlobals] = useState({});
+  const globals = useSelector((state) => state.auth.globals);
   const buttonTextOnSubmit = "Saving..";
   const [stagedData, dispatchStageData] = useReducer(stagedDataReducer);
 
@@ -51,10 +51,8 @@ const EditProfileModal = (props) => {
   }, [userData, user]);
 
   // Initialize the staged data reducer state with the default values
-  // and get globals from server
   useEffect(() => {
     dispatchStageData({ type: "setAll", values: defaultValues });
-    fetchGobals(setGlobals);
   }, [defaultValues]);
 
   // Data has been changed if stagedData values differ from defaultValues
@@ -63,26 +61,26 @@ const EditProfileModal = (props) => {
     : Object.keys(stagedData)?.find((key) => {
         return key === "crop"
           ? stagedData[key].x !== defaultValues[key].x ||
-            stagedData[key].y !== defaultValues[key].y
+              stagedData[key].y !== defaultValues[key].y
           : stagedData[key] !== defaultValues[key];
       });
 
-  const statusOptions = !globals.statusMap
-    ? []
-    : Object.keys(globals.statusMap).map((key) => {
-        const selectable = key === "Ready" || key === "Busy";
-        return {
-          selectable,
-          name: key,
-          component: (
-            <StatusOption
-              unselectable={!selectable}
-              name={key}
-              details={globals?.statusMap[key]}
-            />
-          ),
-        };
-      });
+  const statusOptions =
+    globals &&
+    Object.keys(globals.statusMap).map((key) => {
+      const selectable = key === "Ready" || key === "Busy";
+      return {
+        selectable,
+        name: key,
+        component: (
+          <StatusOption
+            unselectable={!selectable}
+            name={key}
+            details={globals?.statusMap[key]}
+          />
+        ),
+      };
+    });
 
   const runValidation = () => {
     return runValidators(

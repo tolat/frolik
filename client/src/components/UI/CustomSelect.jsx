@@ -62,7 +62,7 @@ const CustomSelect = forwardRef((props, ref) => {
           style={{ display: optionsDisplay }}
           className={styles.optionsContainer}
         >
-          {props.options.map((o) => (
+          {props.options && props.options.map((o) => (
             <div
               key={Math.random()}
               onClick={

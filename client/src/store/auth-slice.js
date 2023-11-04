@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isAuthenticated: false,
   user: false,
-  globals: {}
+  globals: false
 };
 const authSlice = createSlice({
   name: "auth",
@@ -27,6 +27,9 @@ const authSlice = createSlice({
     },
     setUserFriends(state, action){
       state.user.friends = action.payload
+    },
+    setGlobals(state, action){
+      state.globals = action.payload
     }
   },
 });

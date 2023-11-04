@@ -8,7 +8,7 @@ const OutingCard = (props) => {
   );
   const o = props.outing;
 
-  return (
+  return !categoryColorMap ? null : (
     <div style={props.style} className={styles.outerContainer}>
       <div
         style={{ backgroundColor: categoryColorMap[o.activity?.category] }}

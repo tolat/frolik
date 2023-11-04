@@ -7,14 +7,12 @@ import ImageCropper from "../UI/ImageCropper";
 import { arrayBufferToBase64 } from "../../utils/utils";
 import CroppedImage from "../UI/CroppedImage";
 import CustomAutocomplete from "../UI/CustomAutocomplete";
-import { useEffect, useState } from "react";
-import { fetchGobals } from "../../utils/data-fetch";
 
 const ProfileEditor = (props) => {
   const dataState = useSelector((state) => state.data);
   const master = dataState.masterPhotoDimension;
   const photoDimentionStyle = { width: `${master}rem`, height: `${master}rem` };
-  const [globals, setGlobals] = useState(false);
+  const globals = useSelector(state=> state.auth.globals)
 
   const defaultValues = props.defaultValues;
   const stagedData = props.stagedData;
@@ -26,11 +24,6 @@ const ProfileEditor = (props) => {
   const setEditingPhoto = props.setEditingPhoto;
   const allowCrop = props.allowCrop;
   const dataChanged = props.dataChanged;
-
-  // Get globals from server
-  useEffect(() => {
-    fetchGobals(setGlobals);
-  }, []);
 
   // Set editing photo state to true
   const handleShowCropper = (e) => {
@@ -206,7 +199,7 @@ const ProfileEditor = (props) => {
         </div>
         {props.children}
         <CustomAutocomplete
-          options={globals.cityData}
+          options={globals?.cityData}
           name={"Location"}
           label={"Location:"}
           id={"location"}

@@ -4,10 +4,10 @@ import store from ".";
 import { getServer } from "../utils/env-utils";
 import { dataActions } from "./data-slice";
 import { initializeUserPhotos } from "./data-actions";
-import { fetchChats } from "../utils/data-fetch";
+import { fetchChats, fetchGobals } from "../utils/data-fetch";
 
 // Send request to log the user in and start a session in the browser
-export const fetchLogin = (username, password, handleResponse, handleError) => {
+export const fetchLogin = (username, password, setData ) => {
   const requestConfig = {
     url: `${getServer()}/auth/login`,
     headers: {
@@ -16,6 +16,20 @@ export const fetchLogin = (username, password, handleResponse, handleError) => {
     method: "POST",
     body: JSON.stringify({ username, password }),
   };
+
+  const handleResponse = (response) => {
+    response.user.friends = response.populatedFriends;
+    store.dispatch(authActions.login(response));
+    initializeUserPhotos(response.user);
+    fetchChats(response.user);
+    fetchGobals()
+    setData(false);
+  };
+
+  const handleError = (err) => {
+    console.log(err.status);
+  };
+
 
   httpFetch(requestConfig, handleResponse, handleError);
 };
@@ -32,6 +46,7 @@ export const fetchAuth = () => {
       initializeUserPhotos(response.user);
       fetchChats(response.user)
       dispatch(authActions.login(response));
+      fetchGobals()
     }
   };
 

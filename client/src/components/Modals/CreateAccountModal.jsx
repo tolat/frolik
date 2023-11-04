@@ -6,7 +6,7 @@ import ProfileEditor from "./ProfileEditor";
 import placeholderPhoto from "../../images/placeholder-user-photo.png";
 import SimpleInput from "../UI/SimpleInput";
 import ValidatorBubble, { runValidators } from "../UI/ValidatorBubble";
-import { createAccount, fetchGobals } from "../../utils/data-fetch";
+import { createAccount } from "../../utils/data-fetch";
 import { loadImageAsBase64 } from "../../utils/utils";
 import { createProfileValidators } from "../../utils/validators";
 import SimpleButton from "../UI/SimpleButton";
@@ -33,7 +33,7 @@ const CreateAccountModal = (props) => {
   const [validationMessage, setValidationMessage] = useState(false);
   const [validationDisplay, setValidationDisplay] = useState("none");
   const [validationID, setValidationID] = useState(false);
-  const [globals, setGlobals] = useState({});
+  const globals = useSelector(state=> state.auth.globals)
   const [showConfirmEmail, setShowConfirmEmail] = useState(false);
   const [popupContent, setPoputContent] = useState(null);
   const buttonTextOnSubmit = "Creating Profile..";
@@ -58,7 +58,6 @@ const CreateAccountModal = (props) => {
   // and get globals from server
   useEffect(() => {
     dispatchStageData({ type: "setAll", values: defaultValues });
-    fetchGobals(setGlobals);
     loadImageAsBase64(placeholderPhoto, setDefaultImage);
   }, [defaultValues]);
 

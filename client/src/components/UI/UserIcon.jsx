@@ -13,7 +13,7 @@ const getCategoryPercentage = (category, user) => {
 
 const genBackgroundStr = (user, categoryColorMap) => {
   // Return grey border if user has no outings
-  if (!user.outings[0]) {
+  if (!user.outings[0] || !categoryColorMap) {
     return "rgb(220,220,220)";
   }
 

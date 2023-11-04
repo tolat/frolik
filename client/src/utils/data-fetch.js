@@ -101,35 +101,13 @@ export const fetchPhotos = async (user) => {
   }
 };
 
-export const fetchGobals = async (setGlobals) => {
+export const fetchGobals = async () => {
   const requestConfig = {
     url: `${getServer()}/data/globals`,
   };
 
   const handleResponse = async (response) => {
-    setGlobals(response.globals);
-  };
-
-  const handleError = (err) => {
-    console.log(err);
-  };
-
-  httpFetch(requestConfig, handleResponse, handleError);
-};
-
-export const uploadProfilePictureData = async (userID, data) => {
-  const requestConfig = {
-    url: `${getServer()}/user/${userID}/profile-picture`,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify(data),
-  };
-
-  const handleResponse = (response) => {
-    store.dispatch(dataActions.setUserCrop({userID, crop: data.crop}));
-    store.dispatch(dataActions.setUserZoom({userID, zoom: data.zoom}));
+    store.dispatch(authActions.setGlobals(response.globals));
   };
 
   const handleError = (err) => {
@@ -140,24 +118,19 @@ export const uploadProfilePictureData = async (userID, data) => {
 };
 
 export const uploadProfileData = (userID, data, resetForm) => {
-  const userProfilePictureKey = store.getState().auth.user.profile_picture.key;
-
-  const profilePictureData = {
-    photoString: data.profile_picture,
-    zoom: data.zoom,
-    crop: data.crop,
-    key: userProfilePictureKey,
-  };
-
+  const photoString = data.profile_picture;
   const profileData = {
     first_name: data.first_name,
     last_name: data.last_name,
     location: data.location,
     tagline: data.tagline,
-    status: data.status,
+    status: { status: data.status, updated: Date.now() },
+    profile_picture: {
+      zoom: data.zoom,
+      crop: data.crop,
+      key: store.getState().auth.user.profile_picture.key,
+    },
   };
-
-  console.log(profileData)
 
   const requestConfig = {
     url: `${getServer()}/user/${userID}/profile-data`,
@@ -165,17 +138,20 @@ export const uploadProfileData = (userID, data, resetForm) => {
       "Content-Type": "application/json",
     },
     method: "POST",
-    body: JSON.stringify(profileData),
+    body: JSON.stringify({ profileData, photoString }),
   };
 
   const handleResponse = (response) => {
-    console.log(response.user)
     // Update user in redux store
     response.user.friends = response.populatedFriends;
-    store.dispatch(authActions.setUser(response.user));
+    const user = response.user;
+    const userID = user._id;
 
-    // Upload profile picture data once user data has been updated
-    uploadProfilePictureData(userID, profilePictureData);
+    // Update user data in the store
+    store.dispatch(dataActions.setUserCrop({ userID, crop: data.crop }));
+    store.dispatch(dataActions.setUserZoom({ userID, zoom: data.zoom }));
+    store.dispatch(dataActions.setUserProfilePicture({ userID, photoString }));
+    store.dispatch(authActions.setUser(user));
 
     resetForm();
   };
@@ -250,7 +226,7 @@ export const fetchMatchedUsers = (user, setMatchedUsers) => {
 
 // Get chat from server
 export const fetchChat = (userID, chatID) => {
-  if(!userID || !chatID) return
+  if (!userID || !chatID) return;
   const requestConfig = { url: `${getServer()}/user/${userID}/chat/${chatID}` };
 
   const handleResponse = (response) => {
@@ -262,7 +238,7 @@ export const fetchChat = (userID, chatID) => {
       fetchProfilePic(user._id);
     }
 
-    // Set chats in data store 
+    // Set chats in data store
     store.dispatch(chatActions.updateChat({ chat: response.chat }));
   };
 
@@ -295,7 +271,7 @@ export const fetchChats = (user) => {
       }
     }
 
-    // Set chats in data store 
+    // Set chats in data store
     dispatch(chatActions.setChats({ chats: response.chats }));
   };
 

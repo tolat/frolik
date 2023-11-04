@@ -33,23 +33,10 @@ function Login() {
     e.preventDefault();
     setIsLoggingIn(true);
 
-    const handleLoginResponse = (response) => {
-      response.user.friends = response.populatedFriends;
-      dispatch(authActions.login(response));
-      initializeUserPhotos(response.user);
-      fetchChats(response.user);
-      setIsLoggingIn(false);
-    };
-
-    const handleLoginError = (err) => {
-      console.log(err.status);
-    };
-
     fetchLogin(
       usernameRef.current.value,
       passwordRef.current.value,
-      handleLoginResponse,
-      handleLoginError
+      setIsLoggingIn
     );
   };
 
