@@ -92,8 +92,8 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 
 // Morgan logger
-//const morgan = require("morgan");
-//app.use(morgan("dev"));
+const morgan = require("morgan");
+app.use(morgan("dev"));
 
 // Passport
 app.use(passport.initialize());

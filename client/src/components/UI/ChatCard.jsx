@@ -5,18 +5,17 @@ import { useDispatch } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
 
 const ChatCard = (props) => {
-  const chat = props.chat
+  const chat = props.chat;
   const dispatch = useDispatch();
   const memberNames = !chat
     ? ""
     : genMembersString(chat.outing.users.map((u) => u.first_name));
 
   const handleClick = () => {
-    props.setActiveChat(chat)
+    props.setActiveChat(chat);
     dispatch(modalActions.setSelector(`chat-modal`));
     dispatch(modalActions.showModal());
   };
-
 
   return !chat ? null : (
     <div onClick={handleClick} style={props.style} className={styles.container}>
@@ -34,7 +33,8 @@ const ChatCard = (props) => {
           <div className={styles.memberNames}>{memberNames}</div>
         </div>
         <div className={styles.lastActive}>
-          Last active -{` ${new Date(chat.touched).toDateString()}`}
+          Last Active {new Date(chat.touched).toDateString().slice(4, 15)} -{" "}
+          {new Date(chat.touched).toTimeString().slice(0, 5)}
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@ import UserIconCluster from "../UI/UserIconCluster";
 import ModalPortal from "./ModalPortal";
 import styles from "./styles/ChatModal.module.scss";
 import sendIcon from "../../images/send.png";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { socket } from "../../socket";
 import { sendChatMessage } from "../../store/chat-actions";
 import { fetchChat } from "../../utils/data-fetch";
@@ -23,23 +23,22 @@ const ChatModal = (props) => {
   const chatsState = useSelector((state) => state.chat.chats);
   const modalDisplay = modalState.selector === "chat-modal" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
-  const [composerValue, setComposerValue] = useState("");
-  const chat = chatsState.find((c) => c._id === props.chat._id)
+  const chat = chatsState.find((c) => c._id === props.chat._id);
   const memberNames = !!chat && chat.outing.users.map((u) => u.first_name);
   const membersString = genMembersString(memberNames);
   const messages = chat?.messages;
-
+  const composerRef = useRef();
 
   // Fetch chat from server just to make sure no messages are missed
   // which can happen if chat modal is closed and message is sent while
   // user is on chat page. updates the chat state once chat is fetched.
   useEffect(() => {
     fetchChat(user._id, chat?._id);
-  },[user._id, chat]);
+  }, [user._id, chat]);
 
   // Connect to the websocket for chat
   useEffect(() => {
-    console.log('connecting to socket')
+    console.log("connecting to socket");
     if (chat) {
       // no-op if the socket is already connected
       socket.connect();
@@ -51,15 +50,13 @@ const ChatModal = (props) => {
     };
   }, [chat]);
 
-  const handleComposerChange = (e) => {
-    setComposerValue(e.target.value);
-  };
-
   const handleSendMessage = () => {
+    const text = composerRef.current.value;
+    if (!text || text === "") return;
     // Create new message
     const newMessage = {
       id: Math.random() + Date.now(),
-      message: composerValue,
+      message: text,
       user: user._id,
       sent: Date.now(),
     };
@@ -67,12 +64,14 @@ const ChatModal = (props) => {
     // Update to this chat in chat store to add message and
     // emit a message-sent event over the web socket connection
     sendChatMessage(newMessage, chat);
-    setComposerValue("");
+    composerRef.current.value = "";
+    let chatContainerElt = document.getElementById("chat-container");
+    chatContainerElt.scrollTop = chatContainerElt.scrollHeight;
   };
 
   return !chat ? null : (
     <ModalPortal>
-      <div style={modalStyle} className={styles.container}>
+      <div style={modalStyle} className={`${styles.container} noscroll`}>
         <div className={styles.header}>
           <div className={styles.headerLeftContainer}>
             <div>
@@ -80,7 +79,8 @@ const ChatModal = (props) => {
               <div className={styles.chatMembers}>{membersString}</div>
             </div>
             <div className={styles.lastActive}>
-              Last active - {new Date(chat.touched).toDateString()}
+              Last Active {new Date(chat.touched).toDateString().slice(4, 15)} -{" "}
+              {new Date(chat.touched).toTimeString().slice(0, 5)}
             </div>
           </div>
 
@@ -93,7 +93,7 @@ const ChatModal = (props) => {
             />
           </div>
         </div>
-        <div className={`${styles.chatContainer} noscroll`}>
+        <div id="chat-container" className={`${styles.chatContainer} noscroll`}>
           {messages.map((m) => (
             <MessageBubble
               key={Math.random()}
@@ -105,11 +105,7 @@ const ChatModal = (props) => {
           ))}
         </div>
         <div className={styles.composeContainer}>
-          <textarea
-            onChange={handleComposerChange}
-            value={composerValue}
-            className={styles.composer}
-          />
+          <textarea className={styles.composer} ref={composerRef} />
           <button onClick={handleSendMessage} className={styles.sendButton}>
             <img className={styles.sendIcon} src={sendIcon} alt="send-icon" />
           </button>

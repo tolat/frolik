@@ -128,8 +128,8 @@ export const uploadProfilePictureData = async (userID, data) => {
   };
 
   const handleResponse = (response) => {
-    store.dispatch(authActions.setUser(response.user));
-    store.dispatch(authActions.setUserFriends(response.populatedFriends));
+    store.dispatch(dataActions.setUserCrop({userID, crop: data.crop}));
+    store.dispatch(dataActions.setUserZoom({userID, zoom: data.zoom}));
   };
 
   const handleError = (err) => {
@@ -157,6 +157,8 @@ export const uploadProfileData = (userID, data, resetForm) => {
     status: data.status,
   };
 
+  console.log(profileData)
+
   const requestConfig = {
     url: `${getServer()}/user/${userID}/profile-data`,
     headers: {
@@ -167,6 +169,7 @@ export const uploadProfileData = (userID, data, resetForm) => {
   };
 
   const handleResponse = (response) => {
+    console.log(response.user)
     // Update user in redux store
     response.user.friends = response.populatedFriends;
     store.dispatch(authActions.setUser(response.user));
