@@ -1,7 +1,7 @@
 import styles from "./styles/Go.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import SimpleButton from "../UI/SimpleButton";
-import { Fragment, useEffect, useReducer } from "react";
+import { Fragment, useEffect, useReducer, useState } from "react";
 import AddUserModal from "../Modals/AddUserModal";
 import { modalActions } from "../../store/modal-slice";
 import editIcon from "../../images/edit.png";
@@ -21,6 +21,8 @@ import SimpleSearch from "../UI/SimpleSearch";
 import WarningPopup from "../Popups/WarningPopup";
 import Popup, { hidePopup, showPopup } from "../Popups/Popup";
 import { useNavigate } from "react-router-dom";
+import outingsBarIcon from "../../images/outingsToolbar.png";
+import OutingModal from "../Modals/OutingModal";
 
 const initialActivityFilter = {
   filter: {
@@ -119,6 +121,7 @@ const Go = (props) => {
     filterReducer,
     initialActivityFilter
   );
+  const [modalOuting, setModalOuting] = useState(false);
 
   // Show popup for redirect back to profile if user has 5 pending outings
   useEffect(() => {
@@ -168,16 +171,33 @@ const Go = (props) => {
 
   // Create Pending outing for all added users
   const handleCreateOuting = () => {
-    createOuting(goState.outing, user);
+    const onOutingCreate = (outing) => {
+      setModalOuting(outing);
+      dispatch(modalActions.setSelector("outing"));
+      dispatch(modalActions.showModal());
+    };
+    createOuting(goState.outing, user, onOutingCreate);
   };
 
-  console.log(goState);
-  console.log(user);
+  const tooManyOutingsMessage = (
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <b>You can only have up to 5 pending outings at a time.</b> <br />
+      Either complete or delete some outings before trying to create another
+      one. You can view your outings any time in the 'Profile' page by clicking
+      the following tab:
+      <img
+        className={styles.outingsIcon}
+        src={outingsBarIcon}
+        alt={"outings-icon"}
+      />
+    </div>
+  );
 
   return (
     <Fragment>
       <AddUserModal />
       <EditUsersModal />
+      <OutingModal showInfoPopup={true} outing={modalOuting} />
       <FilterActivitiesModal
         filter={activityFilter.filter}
         dispatchFilter={dispatchFilter}
@@ -186,9 +206,7 @@ const Go = (props) => {
       <Popup>
         <WarningPopup
           header={"You have too many Pending Outings!"}
-          message={
-            "You can only have up to 5 pending outings at a time. To reduce your pending outings, either complete or delete outings. You can view your outings in the 'Profile' page. "
-          }
+          message={tooManyOutingsMessage}
           ok={"Return to Profile page"}
           okClick={handleHideWarning}
         />
@@ -213,6 +231,7 @@ const Go = (props) => {
             users={goUsers}
             sizeInRem={20}
             borderSizeInRem={1.5}
+            //pieShadow={true}
           />
           <button onClick={handleAddUserClick} className={styles.roundButton}>
             <img className={styles.editIcon} src={plusIcon} alt="add-people" />

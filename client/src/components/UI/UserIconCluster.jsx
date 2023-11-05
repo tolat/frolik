@@ -22,6 +22,7 @@ const UserIconCluster = (props) => {
       {props.users?.length === 1 ? (
         <UserIcon
           backer={true}
+          pieShadow={props.pieShadow}
           backerClassName={props.backerClassName}
           sizeInRem={props.sizeInRem}
           user={props.users && props.users[0]}
@@ -31,6 +32,7 @@ const UserIconCluster = (props) => {
         <Fragment>
           <UserIcon
             backer={true}
+            pieShadow={props.pieShadow}
             backerClassName={props.backerClassName}
             style={{
               position: "absolute",
@@ -42,6 +44,7 @@ const UserIconCluster = (props) => {
           />
           <UserIcon
             backer={true}
+            pieShadow={props.pieShadow}
             backerClassName={props.backerClassName}
             style={{
               position: "absolute",
@@ -57,6 +60,7 @@ const UserIconCluster = (props) => {
         <Fragment>
           <UserIcon
             backer={true}
+            pieShadow={props.pieShadow}
             backerClassName={props.backerClassName}
             style={{
               position: "absolute",
@@ -71,6 +75,7 @@ const UserIconCluster = (props) => {
           />
           <UserIcon
             backer={true}
+            pieShadow={props.pieShadow}
             backerClassName={props.backerClassName}
             style={{
               position: "absolute",
@@ -85,6 +90,7 @@ const UserIconCluster = (props) => {
           />
           <UserIcon
             backer={true}
+            pieShadow={props.pieShadow}
             backerClassName={props.backerClassName}
             style={{
               position: "absolute",
@@ -102,6 +108,7 @@ const UserIconCluster = (props) => {
         <Fragment>
           <UserIcon
             backer={true}
+            pieShadow={props.pieShadow}
             backerClassName={props.backerClassName}
             style={{
               position: "absolute",
@@ -118,6 +125,7 @@ const UserIconCluster = (props) => {
           />
           <UserIcon
             backer={true}
+            pieShadow={props.pieShadow}
             backerClassName={props.backerClassName}
             style={{
               position: "absolute",
@@ -130,6 +138,7 @@ const UserIconCluster = (props) => {
           />
           <UserIcon
             backer={true}
+            pieShadow={props.pieShadow}
             backerClassName={props.backerClassName}
             style={{
               position: "absolute",
@@ -147,6 +156,7 @@ const UserIconCluster = (props) => {
 
           <UserIcon
             backer={true}
+            pieShadow={props.pieShadow}
             backerClassName={props.backerClassName}
             style={{
               position: "absolute",
@@ -164,6 +174,7 @@ const UserIconCluster = (props) => {
         <Fragment>
           <UserIcon
             backer={true}
+            pieShadow={props.pieShadow}
             backerClassName={props.backerClassName}
             style={{
               position: "absolute",
@@ -192,6 +203,7 @@ const UserIconCluster = (props) => {
           </div>
           <UserIcon
             backer={true}
+            pieShadow={props.pieShadow}
             backerClassName={props.backerClassName}
             style={{
               position: "absolute",
@@ -209,6 +221,7 @@ const UserIconCluster = (props) => {
 
           <UserIcon
             backer={true}
+            pieShadow={props.pieShadow}
             backerClassName={props.backerClassName}
             style={{
               position: "absolute",

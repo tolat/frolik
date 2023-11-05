@@ -415,7 +415,7 @@ router.post("/:id/create-outing", reqAuthenticated, async (req, res) => {
   }
 
   // Send updated user and populated friends back
-  res.send({ user, populatedFriends });
+  res.send({ user, populatedFriends, outing: newOuting });
 });
 
 module.exports = router;

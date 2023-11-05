@@ -285,7 +285,7 @@ export const fetchChats = (user) => {
 };
 
 // Create a pending outing
-export const createOuting = (outing, user) =>{
+export const createOuting = (outing, user, setOutingData) =>{
   
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/create-outing`,
@@ -303,6 +303,9 @@ export const createOuting = (outing, user) =>{
 
    // Reset outing in gostate
    store.dispatch(goActions.reset(user))
+
+   // Set data
+   setOutingData(response.outing)
   };
 
   const handleError = (err) => {

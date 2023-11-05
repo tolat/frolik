@@ -85,6 +85,7 @@ const UserIcon = memo(function UserIcon(props) {
     width: pieDimension,
     height: pieDimension,
     background: backgroundString,
+    boxShadow: props.pieShadow && "rgba(0, 0, 0, 0.24) 0px 3px 8px"
   };
 
   const backerStyle = {

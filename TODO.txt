@@ -34,9 +34,16 @@ need to make a chat object
 in the databases 
 DONE
 
+- Popup needs to have a state slice so popup contents don't overlap
+
+- Need to finish Outing Modal
+
+- Need to create notifications modal that can be used to display 
+notifications and accept outings
+
 - Creat Outing Funcitonality. 
 Set up a pending outing for all users, and take user to outing modal. 
-Only 3 pending outings at a time.Can only cancel outings that have not 
+Only 3 pending outings at a time. Can only cancel outings that have not 
 been accepted by others. Outing Modal will show activuty, users, link to 
 chat, upload photos area (1 photo per user), change outing status to 
 competed or cancelled area (all users who accepted the outing must mark
@@ -44,12 +51,11 @@ outing as completed or cancelled). Can also rate activity here - ratings
 only apply once outingis competed. Only once ratings AND minimum 1 photo 
 is uploaded can the outing be marked as completed! (3 days)
 
-- Need OutingModal, and profile viewer modal
+- Need profile viewer modal
 
 - Completed outing updates activity rating, and photos. (1 day)
 
-- Need notifications page showing freind requests, outing requests, and 
-confirmations. do this in modal. dispatch notifications (1 day)
+
 
 - Change photogrid to be adaptive and always be square (1day)
 
