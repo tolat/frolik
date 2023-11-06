@@ -225,13 +225,13 @@ router.get(
   reqAuthenticated,
   tryCatch(async (req, res) => {
     const user = await User.findById(req.params.id);
-    await user.populate('outings')
+    await user.populate("outings");
     const validStatuses = ["Ready", "Searching"];
 
     // Return if user already has 5+ pending outings
-    if(user.outings.filter(o=> o.statu == 'Pending').length >4){
-      res.status(406).send('User has too many pending outings')
-      return
+    if (user.outings.filter((o) => o.statu == "Pending").length > 4) {
+      res.status(406).send("User has too many pending outings");
+      return;
     }
 
     // Limit matches to users who have status ready or searching
@@ -254,20 +254,19 @@ router.get(
         // No users with 5 or more pending outings
         u.outings.filter((o) => o.status == "Pending").length < 5 &&
         // No users that are alredy in the user's matches
-        !user.matches.find(m => m.user.toString() == u._id.toString())
+        !user.matches.find((m) => m.user.toString() == u._id.toString())
       );
     });
 
     // If no full matches set, generate matches set with at most 5 matches
-    if (!user.matches || !user.matches[0]) {
-      user.matches = [];
+    if (!user.matches || !user.matches[4]) {
+      const neededMatches = 5 - user.matches.length;
       // Pick 5 available users at random
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < neededMatches; i++) {
         if (allAvailable.length > 0) {
           const index = parseInt(
             (Math.random() * 1000000) % allAvailable.length
           );
-          console.log(index);
           user.matches.push({ user: allAvailable[index], updated: Date.now() });
           allAvailable.splice(index, 1);
         }
@@ -297,7 +296,7 @@ router.get(
             };
             allAvailable.splice(newIndex, 1);
           }
-          // Else just delete the invalid match 
+          // Else just delete the invalid match
           else {
             user.matches.splice(replaceIndex, 1);
           }
@@ -306,14 +305,8 @@ router.get(
     }
     await user.save();
 
-    let matches = [];
     // Just send matched users back to the server
-    for (match of user.matches) {
-      let matchedUser = await User.findById(match.user);
-      await matchedUser.populate("outings");
-      await matchedUser.populate("outings.activity");
-      matches.push(matchedUser);
-    }
+    const matches = await populateFriends(user.matches.map((m) => m.user));
 
     res.send({ matches });
   })
@@ -387,7 +380,7 @@ router.post("/:id/create-outing", reqAuthenticated, async (req, res) => {
   let outing = req.body;
   outing.status = "Pending";
   outing.date_created = new Date(Date.now());
-  outing.name = generateUniqueName()
+  outing.name = generateUniqueName();
 
   const newOuting = new Outing(outing);
   await newOuting.save();

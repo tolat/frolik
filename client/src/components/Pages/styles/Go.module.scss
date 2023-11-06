@@ -169,8 +169,27 @@
   }
 }
 
-.outingsIcon{
- 
+.outingsIcon {
   width: 90%;
   margin: 1rem 1rem 0;
+}
+
+.infoBar {
+  display: flex;
+  width: 100%;
+  margin-bottom: 1rem;
+  justify-content: center;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+  margin-right: 2rem;
+}
+
+.infoIcon {
+  height: 2rem;
+  width: 2rem;
+  margin-right: 1rem;
 }

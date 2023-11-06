@@ -5,6 +5,7 @@ const initialState = {
     activity: {},
     users: [],
   },
+  setExcuse5th: false,
 };
 const goSlice = createSlice({
   name: "modal",
@@ -31,6 +32,9 @@ const goSlice = createSlice({
     },
     reset(state, action) {
       state.outing = { activity: {}, users: [action.payload] };
+    },
+    setExcuse5th(state, action) {
+      state.setExcuse5th = action.payload;
     },
   },
 });

@@ -21,7 +21,7 @@ const FriendCard = memo(function FriendCard(props) {
             backer={true}
             backerClassName={styles.iconBacker}
             sizeInRem="6"
-            borderSizeInRem="0.8"
+            borderSizeInRem="0.7"
             user={props.user}
           />
         </div>

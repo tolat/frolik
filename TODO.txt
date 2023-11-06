@@ -77,6 +77,11 @@ FIXED
 presumably when the post call to the server resolves)
 FIXED
 
+- Popups both rendering on og page when 5th activity is added, need a way to omit the 
+too many outings popup when 5th outing created.
+
+- Matches don't update when a match goes from ready to busy and back
+FIXED
 
 NOTES:
 

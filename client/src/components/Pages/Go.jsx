@@ -23,6 +23,8 @@ import { useNavigate } from "react-router-dom";
 import outingsBarIcon from "../../images/outingsToolbar.png";
 import OutingModal from "../Modals/OutingModal";
 import { popupActions } from "../../store/popup-slice";
+import completeIcon from "../../images/complete.png";
+import featuredIcon from "../../images/feature.png";
 
 const initialActivityFilter = {
   filter: {
@@ -117,6 +119,7 @@ const Go = (props) => {
   const outings = useSelector((state) => state.auth.user.outings);
   const completedActivities = outings?.map((outing) => outing.activity._id);
   const goState = useSelector((state) => state.go);
+  const excuse5th = useSelector((state) => state.go.excuse5th);
   const [activityFilter, dispatchFilter] = useReducer(
     filterReducer,
     initialActivityFilter
@@ -125,9 +128,12 @@ const Go = (props) => {
 
   // Show popup for redirect back to profile if user has 5 pending outings
   useEffect(() => {
-    if (user.outings.filter((o) => o.status === "Pending").length > 4)
+    if (
+      user.outings.filter((o) => o.status === "Pending").length > 4 &&
+      !excuse5th
+    )
       dispatch(popupActions.showPopup("too-many-outings"));
-  }, [user, dispatch]);
+  }, [user, dispatch, excuse5th]);
 
   // Navigate
   const handleHideWarning = () => {
@@ -171,11 +177,16 @@ const Go = (props) => {
 
   // Create Pending outing for all added users
   const handleCreateOuting = () => {
+    if (user.outings.filter((o) => o.status === "Pending").length > 4) {
+      dispatch(popupActions.showPopup("too-many-outings"));
+      return;
+    }
     const onOutingCreate = (outing) => {
       setModalOuting(outing);
       dispatch(modalActions.setSelector("outing"));
       dispatch(modalActions.showModal());
     };
+    dispatch(goActions.setExcuse5th(true));
     createOuting(goState.outing, user, onOutingCreate);
   };
 
@@ -299,6 +310,24 @@ const Go = (props) => {
                 className={styles.activitySearch}
                 placeholder={"Search Activities"}
               />
+            </div>
+            <div className={styles.infoBar}>
+              <div className={styles.infoItem}>
+                <img
+                  src={completeIcon}
+                  className={styles.infoIcon}
+                  alt="completed-icon"
+                />
+                Previously Done
+              </div>
+              <div className={styles.infoItem}>
+                <img
+                  src={featuredIcon}
+                  className={styles.infoIcon}
+                  alt="featured-icon"
+                />
+                Featured
+              </div>
             </div>
 
             {!activityFilter.activities[0] ? (
