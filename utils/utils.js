@@ -1,6 +1,12 @@
 const User = require("../models/user");
-const Chat = require("../models/chat")
+const Chat = require("../models/chat");
 const nodemailer = require("nodemailer");
+const {
+  uniqueNamesGenerator,
+  adjectives,
+  colors,
+  animals,
+} = require("unique-names-generator");
 
 // Populates an array with stripped down version of friends
 module.exports.populateFriends = async (friends) => {
@@ -40,8 +46,8 @@ module.exports.populateUser = async (user) => {
   await user.populate("outings.users");
   await user.populate("outings.users.outings");
   await user.populate("outings.users.outings.activity");
-  await user.populate("chats")
-  await user.populate("chats.outing")
+  await user.populate("chats");
+  await user.populate("chats.outing");
 };
 
 module.exports.sendEmail = async (to, subject, text) => {
@@ -76,4 +82,22 @@ module.exports.getPhotosFromOutings = (user) => {
     }
   }
   return photoKeys;
+};
+
+module.exports.generateUniqueName = () => {
+  // Generate random unique name
+  let uniqueName = [
+    ...uniqueNamesGenerator({
+      dictionaries: [adjectives, colors, animals],
+    }),
+  ];
+  uniqueName[0] = uniqueName[0].toUpperCase();
+  for (let i = 0; i < uniqueName.length; i++) {
+    if (uniqueName[i] == "_") {
+      uniqueName[i] = "-";
+      uniqueName[i + 1] = uniqueName[i + 1].toUpperCase();
+    }
+  }
+  uniqueName = uniqueName.toString().replaceAll(",", "");
+  return uniqueName;
 };

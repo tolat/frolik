@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const OutingSchema = new Schema(
   {
     activity: { type: Schema.Types.ObjectId, ref: "Activity" },
+    name: String,
     date_created: Date,
     date_completed: Date,
     users: [{ type: Schema.Types.ObjectId, ref: "User" }],

@@ -20,7 +20,11 @@ const SimpleSearch = forwardRef((props, ref) => {
   }, [props.defaultVal]);
 
   return (
-    <div id={inputID} className={`${styles.container} ${props.className}`}>
+    <div
+      style={props.style}
+      id={inputID}
+      className={`${styles.container} ${props.className}`}
+    >
       <input
         placeholder={props.placeholder}
         onChange={onChange}

@@ -43,6 +43,7 @@
 .leftUpperSection {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 .rightUpperSection {
@@ -55,9 +56,19 @@
   align-items: center;
 }
 
+.nameActivityContainer{
+    display: flex;
+    flex-direction: column;
+}
+
 .name {
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 1.2rem;
+  
+}
+
+.activity{
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 .status {

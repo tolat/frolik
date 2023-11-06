@@ -2,7 +2,6 @@ import { redirect } from "react-router-dom";
 import store from "../store";
 import { fetchAuth } from "../store/auth-actions";
 import { hideModal } from "../store/modal-actions";
-import { popupActions } from "../store/popup-slice";
 
 export const calcAvgRating = (activity) => {
   return (

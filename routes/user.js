@@ -15,6 +15,7 @@ const {
   populateFriends,
   sendEmail,
   getPhotosFromOutings,
+  generateUniqueName,
 } = require("../utils/utils");
 const sharp = require("sharp");
 
@@ -378,6 +379,7 @@ router.get(
   })
 );
 
+// Create a new outing
 router.post("/:id/create-outing", reqAuthenticated, async (req, res) => {
   let user = await User.findById(req.params.id);
 
@@ -385,6 +387,7 @@ router.post("/:id/create-outing", reqAuthenticated, async (req, res) => {
   let outing = req.body;
   outing.status = "Pending";
   outing.date_created = new Date(Date.now());
+  outing.name = generateUniqueName()
 
   const newOuting = new Outing(outing);
   await newOuting.save();

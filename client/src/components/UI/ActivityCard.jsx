@@ -11,10 +11,10 @@ import communicateIcon from "../../images/talking.png";
 import purchaseIcon from "../../images/cart.png";
 import captureIcon from "../../images/camera.png";
 import trophyIcon from "../../images/trophy.png";
-import whistleIcon from "../../images/whistle.png"
+import whistleIcon from "../../images/whistle.png";
 import completeIcon from "../../images/complete.png";
 import featuredIcon from "../../images/feature.png";
-import createIcon from "../../images/paint.png"
+import createIcon from "../../images/paint.png";
 import { calcAvgRating } from "../../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { goActions } from "../../store/go-slice";
@@ -25,7 +25,7 @@ const instructionIconMap = {
   purchase: purchaseIcon,
   capture: captureIcon,
   play: whistleIcon,
-  create: createIcon
+  create: createIcon,
 };
 
 const ActivityCard = (props) => {
@@ -61,7 +61,9 @@ const ActivityCard = (props) => {
           <div className={styles.name}>
             <div className={styles.innerNameContainer}>
               {props.activity.name}
-              <div className={styles.category}>{`- ${props.activity.category}`}</div>
+              <div
+                className={styles.category}
+              >{`- ${props.activity.category}`}</div>
             </div>
 
             <div className={styles.nameRightContainer}>
@@ -145,7 +147,9 @@ const ActivityCard = (props) => {
                 : "Hide Instructions"
               : null}
           </SimpleButton>
-          {goState.outing.activity.name === props.activity.name ? (
+
+          {props.hideSelect ? null : goState.outing.activity.name ===
+            props.activity.name ? (
             <SimpleButton onClick={handleRemove} className={styles.remove}>
               Remove
             </SimpleButton>

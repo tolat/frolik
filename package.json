@@ -22,7 +22,8 @@
     "sharp": "^0.32.6",
     "socket.io": "^4.7.2",
     "stream": "^0.0.2",
-    "talkjs": "^0.16.6"
+    "talkjs": "^0.16.6",
+    "unique-names-generator": "^4.7.1"
   },
   "scripts": {
     "start": "nodemon server.js",

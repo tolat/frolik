@@ -8,13 +8,13 @@ const OutingCard = (props) => {
     (state) => state.auth.globals.categoryColorMap
   );
   const o = props.outing;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const handleClick = () =>{
-    props.setModalOuting(o)
+  const handleClick = () => {
+    props.setModalOuting(o);
     dispatch(modalActions.setSelector("outing"));
     dispatch(modalActions.showModal());
-  }
+  };
 
   return !categoryColorMap ? null : (
     <div style={props.style} className={styles.outerContainer}>
@@ -25,9 +25,15 @@ const OutingCard = (props) => {
       <div onClick={handleClick} className={styles.innerContainer}>
         <div className={styles.upperSection}>
           <div className={styles.leftUpperSection}>
-            <div className={styles.name}>{o.activity?.name}</div>
+            <div className={styles.nameActivityContainer}>
+              <div className={styles.activity}>{o.activity?.name}</div>
+              <div className={styles.name}>{o.name}</div>
+            </div>
+
             <div className={styles.status}>
-              {`${o.status} - ${new Date(o.date_completed).toDateString()}`}
+              {`${o.status} - ${new Date(
+                o.status === "Completed" ? o.date_completed : o.date_created
+              ).toDateString()}`}
             </div>
           </div>
           <div className={styles.rightUpperSection}>

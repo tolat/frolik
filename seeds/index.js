@@ -14,6 +14,7 @@ const path = require("path");
 const { userSeeds, userSeeds2, userSeeds3 } = require("./user");
 const { activitySeeds } = require("./activity");
 const { uploadToS3, deleteFromS3, deleteAllFromS3 } = require("../utils/S3");
+const { generateUniqueName } = require("../utils/utils");
 
 // Connect to the database and handle connection errors
 mongoose.connect(dbUrl, {
@@ -207,6 +208,7 @@ const seedOutings = async (seeds) => {
       outing.users = [user, user2];
       outing.status = "Completed";
       outing.photos.push(outingPhotoKeys.pop());
+      outing.name = generateUniqueName()
 
       user.outings.push(outing);
       user2.outings.push(outing);

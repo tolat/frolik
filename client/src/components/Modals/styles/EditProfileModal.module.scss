@@ -54,3 +54,13 @@
   font-size: 1.1rem;
   font-weight: normal;
 }
+
+.unselectable {
+  color: grey;
+}
+
+.unselectable:hover {
+  cursor: auto;
+  background-color: white;
+}
+

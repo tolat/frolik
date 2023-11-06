@@ -24,6 +24,7 @@ import IconButton from "../UI/IconButton";
 import chatIcon from "../../images/chat.png";
 import getOutIcon from "../../images/air-balloon.png";
 import OutingModal from "../Modals/OutingModal";
+import SimpleSearch from "../UI/SimpleSearch";
 
 const sliderIcons = [
   {
@@ -196,15 +197,27 @@ const Profile = (props) => {
           </div>
         </Fragment>
       ) : selectedSliderKey === "_outings" ? (
-        <OutingList setModalOuting={setModalOuting} user={user} />
-      ) : (
-        user.friends.map((f) => (
-          <FriendCard
-            buttons={<FriendCardButtons user={f} />}
-            key={Math.random()}
-            user={f}
+        <Fragment>
+          <SimpleSearch
+            style={{ marginTop: "1rem" }}
+            placeholder={"Search Outings"}
           />
-        ))
+          <OutingList setModalOuting={setModalOuting} user={user} />
+        </Fragment>
+      ) : (
+        <Fragment>
+          <SimpleSearch
+            style={{ marginTop: "1rem" }}
+            placeholder={"Search Friends"}
+          />
+          {user.friends.map((f) => (
+            <FriendCard
+              buttons={<FriendCardButtons user={f} />}
+              key={Math.random()}
+              user={f}
+            />
+          ))}
+        </Fragment>
       )}
     </div>
   );
