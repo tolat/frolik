@@ -10,6 +10,7 @@ const UserSchema = new Schema(
     tagline: String,
     flake: Number,
     location: String,
+    notifications: [Object],
     chats: [{ type: Schema.Types.ObjectId, ref: "Chat" }],
     friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
     outings: [{ type: Schema.Types.ObjectId, ref: "Outing" }],

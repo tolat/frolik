@@ -39,27 +39,31 @@ const io = inDevelopment
 
 // Chat socket logic
 io.on("connection", (socket) => {
-  // Message sent handler
-  socket.on("message-sent", async (data) => {
-    const chat = await Chat.findById(data.chat._id);
+  try {
+    // Message sent handler
+    socket.on("message-sent", async (data) => {
+      const chat = await Chat.findById(data.chat._id);
 
-    // Only add message if it has not bed added
-    if (!chat.messages.find((m) => m.id == data.message.id)) {
-      chat.messages.unshift(data.message);
-      chat.touched = Date.now();
-      await chat.save();
-      socket.broadcast
-        .to(data.chat._id)
-        .emit("new-message", { message: data.message, chat });
-    }
-  });
+      // Only add message if it has not bed added
+      if (!chat.messages.find((m) => m.id == data.message.id)) {
+        chat.messages.unshift(data.message);
+        chat.touched = Date.now();
+        await chat.save();
+        socket.broadcast
+          .to(data.chat._id)
+          .emit("new-message", { message: data.message, chat });
+      }
+    });
 
-  // Join connection to a room
-  socket.on("join-room", (room) => {
-    socket.join(room);
-  });
+    // Join connection to a room
+    socket.on("join-room", (room) => {
+      socket.join(room);
+    });
 
-  // Echo message handler
+    // Echo message handler
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 // Connect to the database and handle connection errors
@@ -85,7 +89,7 @@ const sessionConfig = {
   secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
-  expires: Date.now() + (1000 * 60 * 60),
+  expires: Date.now() + 1000 * 60 * 60,
 };
 app.use(session(sessionConfig));
 

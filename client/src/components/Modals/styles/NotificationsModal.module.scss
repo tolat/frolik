@@ -1,0 +1,63 @@
+@import "../../../utils/responsive.scss";
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    background-color: white;
+    padding: 0rem 2rem;
+  }
+
+  .outingInviteContainer{
+    display: flex;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    box-sizing: border-box;
+    margin-bottom: 2rem;
+  }
+
+  .outingInviteInnerContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 2rem;
+    background-color: $card_grey;
+  }
+
+  .outingInviteHeader{
+    font-size: 1.6rem;
+    font-weight: bold;
+  }
+
+  .outingInviteActivity{
+    font-size: 1.4rem;
+    color: rgb(95, 95, 95);
+  }
+
+  .outingInviteButtons{
+    display: flex;
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .colorStripe{
+    height: 100%;
+    width: 1rem;
+    box-sizing: border-box;
+  }
+
+  .buttonSpacer{
+    width: 3rem;
+    height: 1rem;
+  }
+
+  .acceptInvite{
+    background-color: $green;
+    color: white;
+  }
+  
+ 

@@ -226,7 +226,7 @@ export const fetchMatchedUsers = (user, setMatchedUsers) => {
 };
 
 // Get a chat with given id from server
-export const fetchChat = (userID, chatID, onComplete = ()=>{}) => {
+export const fetchChat = (userID, chatID, onComplete = () => {}) => {
   if (!userID || !chatID) return;
   const requestConfig = { url: `${getServer()}/user/${userID}/chat/${chatID}` };
 
@@ -244,7 +244,7 @@ export const fetchChat = (userID, chatID, onComplete = ()=>{}) => {
     // Set chats in data store
     store.dispatch(chatActions.updateChat({ chat: response.chat }));
 
-    onComplete()
+    onComplete();
   };
 
   const handleError = (err) => {
@@ -309,6 +309,24 @@ export const createOuting = (outing, user, setOutingData) => {
 
     // Set data
     setOutingData(response.outing);
+  };
+
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};
+
+export const fetchOuting = (outingID, user, onComplete) => {
+  const requestConfig = {
+    url: `${getServer()}/user/${user._id}/outing/${outingID}`
+  };
+
+  const handleResponse = (response) => {
+    
+
+    onComplete(response.outing)
   };
 
   const handleError = (err) => {

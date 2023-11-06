@@ -373,65 +373,113 @@ router.get(
 );
 
 // Create a new outing
-router.post("/:id/create-outing", reqAuthenticated, async (req, res) => {
-  let user = await User.findById(req.params.id);
+router.post(
+  "/:id/create-outing",
+  reqAuthenticated,
+  tryCatch(async (req, res) => {
+    let user = await User.findById(req.params.id);
 
-  // Add outing status and date created
-  let outing = req.body;
-  outing.status = "Pending";
-  outing.date_created = new Date(Date.now());
-  outing.name = generateUniqueName();
-  let invited = [];
-  let users = [];
+    // Add outing status and date created
+    let outing = req.body;
+    outing.status = "Pending";
+    outing.date_created = new Date(Date.now());
+    outing.name = generateUniqueName();
+    let invited = [];
+    let users = [];
 
-  // Move all users other than request user to the outing 'invited' list
-  for (let i = 0; i < outing.users.length; i++) {
-    const usr = await User.findById(outing.users[i]);
-    if (usr._id.toString() != user._id.toString()) {
-      invited.push(usr);
-    } else {
-      users.push(usr);
+    // Move all users other than request user to the outing 'invited' list
+    for (let i = 0; i < outing.users.length; i++) {
+      const usr = await User.findById(outing.users[i]);
+      if (usr._id.toString() != user._id.toString()) {
+        invited.push(usr);
+      } else {
+        users.push(usr);
+      }
     }
-  }
 
-  outing.users = users;
-  outing.invited = invited;
+    outing.users = users;
+    outing.invited = invited;
 
-  // Save and populate new Outing
-  const newOuting = new Outing(outing);
+    // Save and populate new Outing
+    const newOuting = new Outing(outing);
 
-  // Create outing chat
-  const newChat = new Chat({
-    outing: newOuting,
-    name: newOuting.name,
-    messages: [],
-    touched: new Date(Date.now()),
-  });
-  await newChat.save();
-  newOuting.chat = newChat._id;
+    // Add a notification for all invited users
+    for (u of invited) {
+      const newNotification = {
+        type: "outing-invite",
+        outing: newOuting._id.toString(),
+        created: new Date(Date.now()),
+        active: true,
+      };
+      !u.notifications
+        ? (u.notifications = [newNotification])
+        : u.notifications.unshift(newNotification);
+      await u.save();
+    }
 
-  
+    // Create outing chat
+    const newChat = new Chat({
+      outing: newOuting,
+      name: newOuting.name,
+      messages: [],
+      touched: new Date(Date.now()),
+    });
+    await newChat.save();
+    newOuting.chat = newChat._id;
 
-  await newOuting.populate("activity");
-  await newOuting.populate("users");
-  await newOuting.populate("users.outings");
-  await newOuting.populate("users.outings.activity");
-  await newOuting.populate("invited");
-  await newOuting.populate("invited.outings");
-  await newOuting.populate("invited.outings.activity");
+    await newOuting.populate("activity");
+    await newOuting.populate("users");
+    await newOuting.populate("users.outings");
+    await newOuting.populate("users.outings.activity");
+    await newOuting.populate("invited");
+    await newOuting.populate("invited.outings");
+    await newOuting.populate("invited.outings.activity");
 
-  // Save outing
-  await newOuting.save();
+    // Save outing
+    await newOuting.save();
 
-  // Add outing to user outings and popualte user for response
-  user.outings.push(newOuting);
-  user.chats.push(newChat)
-  await user.save();
-  await populateUser(user);
-  const populatedFriends = await populateFriends(user.friends);
+    // Add outing to user outings and popualte user for response
+    user.outings.push(newOuting);
+    user.chats.push(newChat);
+    await user.save();
+    await populateUser(user);
+    const populatedFriends = await populateFriends(user.friends);
 
-  // Send updated user and populated friends back
-  res.send({ user, populatedFriends, outing: newOuting });
-});
+    // Send updated user and populated friends back
+    res.send({ user, populatedFriends, outing: newOuting });
+  })
+);
+
+// Send back a populated outing
+router.get(
+  "/:id/outing/:outingid",
+  reqAuthenticated,
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    const outingID = req.params.outingid;
+
+    // send unauthorized if this outing is not related to the user
+    if (
+      // outing is not in user outings
+      !user.outings.find((o) => o.toString() == outingID) &&
+      // outing is not referenced in user notifications
+      !user.notifications.find((n) => n.outing == outingID)
+    ) {
+      res.status(406).send("User does not have access to this outing");
+      return;
+    }
+
+    const outing = await Outing.findById(outingID);
+    await outing.populate("users");
+    await outing.populate("activity");
+    await outing.populate("users.outings");
+    await outing.populate("users.outings.activity");
+    await outing.populate("invited");
+    await outing.populate("invited.outings");
+    await outing.populate("invited.outings.activity");
+
+    res.send({ outing });
+  })
+);
 
 module.exports = router;

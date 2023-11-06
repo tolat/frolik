@@ -129,8 +129,7 @@ const Go = (props) => {
   // Show popup for redirect back to profile if user has 5 pending outings
   useEffect(() => {
     if (
-      user.outings.filter((o) => o.status === "Pending").length > 4 &&
-      !excuse5th
+      user.outings.filter((o) => o.status === "Pending").length > 4
     )
       dispatch(popupActions.showPopup("too-many-outings"));
   }, [user, dispatch, excuse5th]);
@@ -178,6 +177,7 @@ const Go = (props) => {
   // Create Pending outing for all added users
   const handleCreateOuting = () => {
     if (user.outings.filter((o) => o.status === "Pending").length > 4) {
+      console.log("CREATING OUTING")
       dispatch(popupActions.showPopup("too-many-outings"));
       return;
     }

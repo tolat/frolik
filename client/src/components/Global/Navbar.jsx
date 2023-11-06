@@ -1,13 +1,18 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom"; // Import Link from react-router-dom
 import styles from "./styles/Navbar.module.scss";
 import { fetchLogout } from "../../store/auth-actions";
 import NavButton from "../UI/NavButton";
 import logo from "../../images/balloon1.png";
+import bell from "../../images/bell.png";
 import { hideModal } from "../../store/modal-actions";
+import NotificationsModal from "../Modals/NotificationsModal";
+import { modalActions } from "../../store/modal-slice";
 
 const Navbar = (props) => {
+  const user = useSelector((state) => state.auth.user);
   const authState = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const makeActive = (navData) =>
     navData.isActive ? styles.activeLink : "none";
 
@@ -17,8 +22,14 @@ const Navbar = (props) => {
     fetchLogout();
   };
 
+  const handleShowNotifications = () => {
+    dispatch(modalActions.setSelector("notifications"));
+    dispatch(modalActions.showModal());
+  };
+
   return (
     <div className={styles.header}>
+      {user && <NotificationsModal />}
       <div className={styles.innerContainer}>
         <NavLink className={(navData) => makeActive(navData)} to="/go">
           <div className={styles.goButton}>
@@ -28,6 +39,21 @@ const Navbar = (props) => {
 
         {authState.isAuthenticated ? (
           <div className={styles.navItems}>
+            <button
+              onClick={handleShowNotifications}
+              className={styles.notificationsButton}
+            >
+              <img
+                className={styles.bellIcon}
+                src={bell}
+                alt={"notificaitons-bell"}
+              />
+              {user && user.notifications.length > 0 ? (
+                <div className={styles.notificationBadge}>
+                  {user && user.notifications.length}
+                </div>
+              ) : null}
+            </button>
             <NavLink className={(navData) => makeActive(navData)} to="/profile">
               <NavButton text={"Profile"} className={styles.navButton} />
             </NavLink>

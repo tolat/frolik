@@ -32,6 +32,7 @@ const OutingModal = (props) => {
   const [completed, setCompleted] = useState(false);
   const chatsState = useSelector((state) => state.chat.chats);
   const outingChat = chatsState.find((c) => c._id === outing.chat);
+  const joining = !!outing?.invited?.find((i) => i._id === user?._id);
   const activityIsCompletedType = user.outings?.find(
     (o) => o?.activity?._id === outing?.activity?._id
   );
@@ -76,7 +77,6 @@ const OutingModal = (props) => {
   };
 
   const onShowChatModal = () => {
-    console.log("SHOWING CHAT:", outing.chat)
     const showChat = async () => {
       await hideModal();
       dispatch(modalActions.setSelector("chat-modal"));
@@ -108,16 +108,22 @@ const OutingModal = (props) => {
           </div>
         </div>
         <div className={styles.sideBySide}>
-          <SimpleButton onClick={onShowChatModal} className={styles.chatButton}>
-            Chat
-          </SimpleButton>
+          {joining ? null : (
+            <SimpleButton
+              onClick={onShowChatModal}
+              className={styles.chatButton}
+            >
+              Chat
+            </SimpleButton>
+          )}
+          {!joining && !completed ? (
+            <div className={styles.buttonSpacer}></div>
+          ) : null}
+
           {completed ? null : (
-            <Fragment>
-              <div className={styles.buttonSpacer}></div>
-              <SimpleButton className={styles.completedButton}>
-                Mark Completed
-              </SimpleButton>
-            </Fragment>
+            <SimpleButton className={styles.completedButton}>
+              {joining ? "Join Outing" : "Mark Completed"}
+            </SimpleButton>
           )}
         </div>
         <h2 className={styles.sectionHeader}>
@@ -145,7 +151,9 @@ const OutingModal = (props) => {
           Photos
         </h2>
         {outing.photos[0] ? (
-          <PhotoGrid images={photos} gridTemplateColumns="1fr 1fr" />
+          <div className={styles.photoGridContainer}>
+            <PhotoGrid images={photos} gridTemplateColumns="1fr 1fr" />
+          </div>
         ) : (
           <div className={styles.noPhotosMessage}>
             <div className={styles.noPhotosMessageHeader}>None Yet!</div>
@@ -183,7 +191,7 @@ const OutingModal = (props) => {
           </Fragment>
         ) : null}
 
-        {outing.status !== "Completed" ? (
+        {outing.status !== "Completed" && !joining ? (
           <Fragment>
             <SimpleButton className={styles.leaveButton}>
               {outing.users.length < 2 ? "Delete Outing" : "Leave Outing"}
