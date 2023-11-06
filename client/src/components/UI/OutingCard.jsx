@@ -12,7 +12,7 @@ const OutingCard = (props) => {
 
   const handleClick = () => {
     props.setModalOuting(o);
-    dispatch(modalActions.setSelector("outing"));
+    dispatch(modalActions.setSelector("view-outing"));
     dispatch(modalActions.showModal());
   };
 

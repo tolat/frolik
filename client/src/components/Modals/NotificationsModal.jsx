@@ -41,7 +41,11 @@ const NotificationsModal = (props) => {
         ok={"OK"}
         okClick={onPopupOk}
       />
-      <OutingModal showInfoPopup={false} outing={activeOuting} />
+      <OutingModal
+        selector={"notification-outing"}
+        showInfoPopup={false}
+        outing={activeOuting}
+      />
       <div style={modalStyle} className={styles.container}>
         <div className={modalStyles.header}>Notifications</div>
         {user.notifications.map((n) => {
@@ -80,7 +84,7 @@ const OutingInvite = (props) => {
   const handleViewOuting = async () => {
     await hideModal();
     props.setActiveOuting(outing);
-    dispatch(modalActions.setSelector("outing"));
+    dispatch(modalActions.setSelector("notification-outing"));
     dispatch(modalActions.showModal());
   };
 
@@ -102,6 +106,11 @@ const OutingInvite = (props) => {
             <SimpleButton noShadow={true} onClick={handleViewOuting}>
               {" "}
               View Outing
+            </SimpleButton>
+            <div className={styles.buttonSpacer}></div>
+            <SimpleButton noShadow={true} className={styles.deleteNotification}>
+              {" "}
+              Delete
             </SimpleButton>
           </div>
         </div>

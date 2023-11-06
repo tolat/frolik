@@ -119,7 +119,6 @@ const Go = (props) => {
   const outings = useSelector((state) => state.auth.user.outings);
   const completedActivities = outings?.map((outing) => outing.activity._id);
   const goState = useSelector((state) => state.go);
-  const excuse5th = useSelector((state) => state.go.excuse5th);
   const [activityFilter, dispatchFilter] = useReducer(
     filterReducer,
     initialActivityFilter
@@ -131,7 +130,7 @@ const Go = (props) => {
   useEffect(() => {
     if (user.outings.filter((o) => o.status === "Pending").length > 4)
       dispatch(popupActions.showPopup("too-many-outings"));
-  }, [user, dispatch, excuse5th]);
+  }, [user, dispatch]);
 
   // Navigate
   const handleHideWarning = () => {
@@ -208,7 +207,11 @@ const Go = (props) => {
     <Fragment>
       <AddUserModal />
       <EditUsersModal />
-      <OutingModal showInfoPopup={showInfoPopup} outing={modalOuting} />
+      <OutingModal
+        selector={"view-outing"}
+        showInfoPopup={showInfoPopup}
+        outing={modalOuting}
+      />
       <FilterActivitiesModal
         filter={activityFilter.filter}
         dispatchFilter={dispatchFilter}

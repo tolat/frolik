@@ -12,6 +12,7 @@ import { modalActions } from "../../store/modal-slice";
 const Navbar = (props) => {
   const user = useSelector((state) => state.auth.user);
   const authState = useSelector((state) => state.auth);
+  const modalState = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   const makeActive = (navData) =>
     navData.isActive ? styles.activeLink : "none";
@@ -22,7 +23,10 @@ const Navbar = (props) => {
     fetchLogout();
   };
 
-  const handleShowNotifications = () => {
+  const handleShowNotifications = async () => {
+    if (modalState.selector) {
+      await hideModal();
+    }
     dispatch(modalActions.setSelector("notifications"));
     dispatch(modalActions.showModal());
   };

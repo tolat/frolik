@@ -108,7 +108,7 @@ const Profile = (props) => {
   return (
     <div className={styles.container}>
       <EditProfileModal />
-      <OutingModal outing={modalOuting} />
+      <OutingModal selector={"view-outing"} outing={modalOuting} />
       <div className={styles.nonMediaSection}>
         <div className={styles.profilePicContainer}>
           <StatIcon

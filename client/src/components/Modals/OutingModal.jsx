@@ -20,7 +20,7 @@ import { fetchChat } from "../../utils/data-fetch";
 
 const OutingModal = (props) => {
   const modalState = useSelector((state) => state.modal);
-  const modalDisplay = modalState.selector === "outing" ? "flex" : "none";
+  const modalDisplay = modalState.selector === props.selector ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
   const showInfoPupup = props.showInfoPopup;
   const user = useSelector((state) => state.auth.user);
@@ -43,7 +43,6 @@ const OutingModal = (props) => {
   // Show the info popup if this is the first time opening
   useEffect(() => {
     if (showInfoPupup && modalDisplay === "flex") {
-      console.log("show info popup: ", showInfoPupup)
       dispatch(popupActions.showPopup("outing-created"));
     }
   }, [showInfoPupup, dispatch, modalDisplay]);
