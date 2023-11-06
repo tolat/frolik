@@ -125,12 +125,11 @@ const Go = (props) => {
     initialActivityFilter
   );
   const [modalOuting, setModalOuting] = useState(false);
+  const [showInfoPopup, setShowInfoPopup] = useState(false);
 
   // Show popup for redirect back to profile if user has 5 pending outings
   useEffect(() => {
-    if (
-      user.outings.filter((o) => o.status === "Pending").length > 4
-    )
+    if (user.outings.filter((o) => o.status === "Pending").length > 4)
       dispatch(popupActions.showPopup("too-many-outings"));
   }, [user, dispatch, excuse5th]);
 
@@ -177,12 +176,13 @@ const Go = (props) => {
   // Create Pending outing for all added users
   const handleCreateOuting = () => {
     if (user.outings.filter((o) => o.status === "Pending").length > 4) {
-      console.log("CREATING OUTING")
+      console.log("CREATING OUTING");
       dispatch(popupActions.showPopup("too-many-outings"));
       return;
     }
     const onOutingCreate = (outing) => {
       setModalOuting(outing);
+      setShowInfoPopup(true);
       dispatch(modalActions.setSelector("outing"));
       dispatch(modalActions.showModal());
     };
@@ -208,7 +208,7 @@ const Go = (props) => {
     <Fragment>
       <AddUserModal />
       <EditUsersModal />
-      <OutingModal showInfoPopup={true} outing={modalOuting} />
+      <OutingModal showInfoPopup={showInfoPopup} outing={modalOuting} />
       <FilterActivitiesModal
         filter={activityFilter.filter}
         dispatchFilter={dispatchFilter}

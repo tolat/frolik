@@ -78,7 +78,7 @@ const OutingInvite = (props) => {
 
   // Show outing modal
   const handleViewOuting = async () => {
-    await hideModal()
+    await hideModal();
     props.setActiveOuting(outing);
     dispatch(modalActions.setSelector("outing"));
     dispatch(modalActions.showModal());
@@ -102,11 +102,6 @@ const OutingInvite = (props) => {
             <SimpleButton noShadow={true} onClick={handleViewOuting}>
               {" "}
               View Outing
-            </SimpleButton>
-            <div className={styles.buttonSpacer}></div>
-            <SimpleButton noShadow={true} className={styles.acceptInvite}>
-              {" "}
-              Accept Invite
             </SimpleButton>
           </div>
         </div>
