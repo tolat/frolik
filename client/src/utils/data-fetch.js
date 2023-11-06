@@ -226,7 +226,7 @@ export const fetchMatchedUsers = (user, setMatchedUsers) => {
 };
 
 // Get a chat with given id from server
-export const fetchChat = (userID, chatID) => {
+export const fetchChat = (userID, chatID, onComplete = ()=>{}) => {
   if (!userID || !chatID) return;
   const requestConfig = { url: `${getServer()}/user/${userID}/chat/${chatID}` };
 
@@ -236,11 +236,15 @@ export const fetchChat = (userID, chatID) => {
 
     // Get any missing user photos
     for (let user of populatedUsers) {
-      fetchProfilePic(user._id);
+      if (!store.getState().data.users[user._id]) {
+        fetchProfilePic(user._id);
+      }
     }
 
     // Set chats in data store
     store.dispatch(chatActions.updateChat({ chat: response.chat }));
+
+    onComplete()
   };
 
   const handleError = (err) => {
@@ -285,8 +289,7 @@ export const fetchChats = (user) => {
 };
 
 // Create a pending outing
-export const createOuting = (outing, user, setOutingData) =>{
-  
+export const createOuting = (outing, user, setOutingData) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/create-outing`,
     headers: {
@@ -297,15 +300,15 @@ export const createOuting = (outing, user, setOutingData) =>{
   };
 
   const handleResponse = (response) => {
-    response.user.friends = response.populatedFriends
-   // Update user in redux store
-   store.dispatch(authActions.setUser(response.user))
+    response.user.friends = response.populatedFriends;
+    // Update user in redux store
+    store.dispatch(authActions.setUser(response.user));
 
-   // Reset outing in gostate
-   store.dispatch(goActions.reset(user))
+    // Reset outing in gostate
+    store.dispatch(goActions.reset(user));
 
-   // Set data
-   setOutingData(response.outing)
+    // Set data
+    setOutingData(response.outing);
   };
 
   const handleError = (err) => {
@@ -313,4 +316,4 @@ export const createOuting = (outing, user, setOutingData) =>{
   };
 
   httpFetch(requestConfig, handleResponse, handleError);
-}
+};

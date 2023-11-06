@@ -8,6 +8,8 @@ const OutingSchema = new Schema(
     date_created: Date,
     date_completed: Date,
     users: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    invited: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    flakes: [{ type: Schema.Types.ObjectId, ref: "User" }],
     status: String,
     chat: { type: Schema.Types.ObjectId, ref: "Chat" },
     photos: [String],

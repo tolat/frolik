@@ -18,6 +18,7 @@ const OutingCard = (props) => {
 
   return !categoryColorMap ? null : (
     <div style={props.style} className={styles.outerContainer}>
+      
       <div
         style={{ backgroundColor: categoryColorMap[o.activity?.category] }}
         className={styles.categoryStripe}

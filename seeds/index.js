@@ -255,7 +255,7 @@ const seedChats = async () => {
 
     // Create chat for this outing
     let chat = new Chat({
-      name: outing.activity.name,
+      name: outing.name,
       outing,
       messages: [
         {

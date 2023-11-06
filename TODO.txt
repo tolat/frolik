@@ -35,21 +35,17 @@ in the databases
 DONE
 
 - Popup needs to have a state slice so popup contents don't overlap
+DONE
 
 - Need to finish Outing Modal
+DONE
 
 - Need to create notifications modal that can be used to display 
 notifications and accept outings
 
 - Creat Outing Funcitonality. 
-Set up a pending outing for all users, and take user to outing modal. 
-Only 3 pending outings at a time. Can only cancel outings that have not 
-been accepted by others. Outing Modal will show activuty, users, link to 
-chat, upload photos area (1 photo per user), change outing status to 
-competed or cancelled area (all users who accepted the outing must mark
-outing as completed or cancelled). Can also rate activity here - ratings 
-only apply once outingis competed. Only once ratings AND minimum 1 photo 
-is uploaded can the outing be marked as completed! (3 days)
+If users leave an outing, their flake rating is affected IF the outing is completed
+Outings can only be completed if more than one person completes the outing
 
 - Need profile viewer modal
 
@@ -79,6 +75,9 @@ FIXED
 
 - Popups both rendering on og page when 5th activity is added, need a way to omit the 
 too many outings popup when 5th outing created.
+
+- When a new outing is created, it changes the usericon piecolor only on the
+profile page
 
 - Matches don't update when a match goes from ready to busy and back
 FIXED

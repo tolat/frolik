@@ -43,8 +43,6 @@ io.on("connection", (socket) => {
   socket.on("message-sent", async (data) => {
     const chat = await Chat.findById(data.chat._id);
 
-    console.log('New message sent!')
-
     // Only add message if it has not bed added
     if (!chat.messages.find((m) => m.id == data.message.id)) {
       chat.messages.unshift(data.message);

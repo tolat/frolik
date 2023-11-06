@@ -13,8 +13,7 @@ const OutingList = (props) => {
           <div className={styles.headingBlurb}>
             <b>You can have up to 5 pending outings at a time.</b>
             <br />
-            To complete an outing, all outing members must mark the outing
-            completed.
+            <br/>
           </div>
           {pending.map((o) => (
             <div key={Math.random()} className={styles.outingContainer}>

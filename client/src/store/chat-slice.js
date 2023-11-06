@@ -22,7 +22,7 @@ const chatSlice = createSlice({
         (c) => c._id === action.payload.chat._id
       );
       const chatIndex = state.chats.indexOf(oldChat);
-      if (oldChat.touched !== action.payload.chat.touched) {
+      if (!oldChat || oldChat.touched !== action.payload.chat.touched) {
         state.chats.splice(chatIndex, 1, action.payload.chat);
       }
     },

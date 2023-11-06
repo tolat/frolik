@@ -376,39 +376,59 @@ router.get(
 router.post("/:id/create-outing", reqAuthenticated, async (req, res) => {
   let user = await User.findById(req.params.id);
 
-  // Update outing status and date created
+  // Add outing status and date created
   let outing = req.body;
   outing.status = "Pending";
   outing.date_created = new Date(Date.now());
   outing.name = generateUniqueName();
+  let invited = [];
+  let users = [];
 
+  // Move all users other than request user to the outing 'invited' list
+  for (let i = 0; i < outing.users.length; i++) {
+    const usr = await User.findById(outing.users[i]);
+    if (usr._id.toString() != user._id.toString()) {
+      invited.push(usr);
+    } else {
+      users.push(usr);
+    }
+  }
+
+  outing.users = users;
+  outing.invited = invited;
+
+  // Save and populate new Outing
   const newOuting = new Outing(outing);
-  await newOuting.save();
+
+  // Create outing chat
+  const newChat = new Chat({
+    outing: newOuting,
+    name: newOuting.name,
+    messages: [],
+    touched: new Date(Date.now()),
+  });
+  await newChat.save();
+  newOuting.chat = newChat._id;
+
+  
+
   await newOuting.populate("activity");
   await newOuting.populate("users");
   await newOuting.populate("users.outings");
   await newOuting.populate("users.outings.activity");
+  await newOuting.populate("invited");
+  await newOuting.populate("invited.outings");
+  await newOuting.populate("invited.outings.activity");
+
+  // Save outing
+  await newOuting.save();
 
   // Add outing to user outings and popualte user for response
   user.outings.push(newOuting);
+  user.chats.push(newChat)
   await user.save();
   await populateUser(user);
   const populatedFriends = await populateFriends(user.friends);
-
-  // Create a new outing request to send to other users
-  const outingRequest = {
-    outing: newOuting,
-    created: new Date(Date.now()),
-    read: false,
-  };
-
-  for (let u of newOuting.users) {
-    if (u._id.toString() !== user._id.toString()) {
-      const otherUser = await User.findById(u._id.toString());
-      otherUser.outing_requests.push(outingRequest);
-      await otherUser.save();
-    }
-  }
 
   // Send updated user and populated friends back
   res.send({ user, populatedFriends, outing: newOuting });

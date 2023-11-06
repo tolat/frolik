@@ -46,6 +46,9 @@ module.exports.populateUser = async (user) => {
   await user.populate("outings.users");
   await user.populate("outings.users.outings");
   await user.populate("outings.users.outings.activity");
+  await user.populate("outings.invited");
+  await user.populate("outings.invited.outings");
+  await user.populate("outings.invited.outings.activity");
   await user.populate("chats");
   await user.populate("chats.outing");
 };

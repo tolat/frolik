@@ -32,7 +32,7 @@
 
 .buttonSpacer{
     display: flex;
-    width: 3rem;
+    width: 4rem;
     height: 1rem;
 }
 
@@ -44,14 +44,14 @@
     //background-color: $blue;
     //color: white;
     //font-weight: bold;
-    width: 47%;
+    width: 100%;
 }
 
 .completedButton{
     background-color: $green;
     color: white;
     font-weight: bold;
-    width: 47%;
+    width: 100%;
 }
 
 .leaveButton{
@@ -72,7 +72,7 @@
 
 .outingsIcon {
   width: 90%;
-  margin: 1rem 1rem 0;
+  margin: 1rem 1rem 2rem;
 }
 
 .outingPopup {
@@ -127,3 +127,12 @@
     font-weight: bold;
     margin: 0 0 1rem 0;
 }
+
+.deleteHelp{
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: grey;
+    width: 100%;
+    text-align: center;
+}
+

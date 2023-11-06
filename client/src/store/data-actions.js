@@ -37,10 +37,17 @@ export const initializeUserPhotos = (user, newOnly = true) => {
   }
 
   // Fetch all related user profile pictures
+  // including all user friends, outing members and outing invitees
   const allOutingUsers = user.outings
     .map((o) => o.users)
-    .reduce((acc, curr) => acc.concat(curr), []);
-  const allRelatedUsers = user.friends.concat(allOutingUsers);
+    ?.reduce((acc, curr) => acc.concat(curr), []);
+  const allOutingInvited = user.outings
+    .map((o) => o.invited)
+    ?.reduce((acc, curr) => acc.concat(curr), []);
+
+  const allRelatedUsers = user.friends
+    .concat(allOutingUsers)
+    .concat(allOutingInvited);
   for (let relatedUser of allRelatedUsers) {
     initCropZoom(relatedUser);
     if (newOnly && !dataStore.users[relatedUser]) {

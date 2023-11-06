@@ -23,7 +23,7 @@ const ChatModal = (props) => {
   const chatsState = useSelector((state) => state.chat.chats);
   const modalDisplay = modalState.selector === "chat-modal" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
-  const chat = chatsState.find((c) => c._id === props.chat._id);
+  const chat = chatsState.find((c) => c._id === props.chat?._id);
   const memberNames = !!chat && chat.outing.users.map((u) => u.first_name);
   const membersString = genMembersString(memberNames);
   const messages = chat?.messages;

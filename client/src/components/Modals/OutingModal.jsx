@@ -4,14 +4,19 @@ import styles from "./styles/OutingModal.module.scss";
 import SimpleButton from "../UI/SimpleButton";
 import WarningPopup from "../Popups/WarningPopup";
 import outingsBarIcon from "../../images/outingsToolbar.png";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { popupActions } from "../../store/popup-slice";
 import PhotoGrid from "../UI/PhotoGrid";
 import photosIcon from "../../images/photos.png";
 import activityIcon from "../../images/activity.png";
 import membersIcon from "../../images/people.png";
+import inviteIcon from "../../images/invite.png";
 import FriendCard from "../UI/FriendCard";
 import ActivityCard from "../UI/ActivityCard";
+import ChatModal from "./ChatModal";
+import { modalActions } from "../../store/modal-slice";
+import { hideModal } from "../../store/modal-actions";
+import { fetchChat } from "../../utils/data-fetch";
 
 const OutingModal = (props) => {
   const modalState = useSelector((state) => state.modal);
@@ -25,6 +30,8 @@ const OutingModal = (props) => {
   const globals = useSelector((state) => state.auth.globals);
   const [categoryColor, setCategoryColor] = useState(null);
   const [completed, setCompleted] = useState(false);
+  const chatsState = useSelector((state) => state.chat.chats);
+  const outingChat = chatsState.find((c) => c._id === outing.chat);
   const activityIsCompletedType = user.outings?.find(
     (o) => o?.activity?._id === outing?.activity?._id
   );
@@ -50,13 +57,17 @@ const OutingModal = (props) => {
   const newOutingMessage = (
     <div className={styles.outingPopup}>
       <div className={styles.outingCreatedName}>{outing.name}</div>
-      A request to accept the Outing has been sent to the other users. You can
-      view this outing any time on the Profile page under the following tab:
+      An invite has been sent to the other users. You can view this outing any
+      time on the Profile page under the following tab:
       <img
         className={styles.outingsIcon}
         src={outingsBarIcon}
         alt={"outings-icon"}
       />
+      <div>
+        A new chat for this outing has also been created! When others accept the
+        Outing they will be added to the chat.
+      </div>
     </div>
   );
 
@@ -64,8 +75,19 @@ const OutingModal = (props) => {
     dispatch(popupActions.hidePopup());
   };
 
+  const onShowChatModal = () => {
+    console.log("SHOWING CHAT:", outing.chat)
+    const showChat = async () => {
+      await hideModal();
+      dispatch(modalActions.setSelector("chat-modal"));
+      dispatch(modalActions.showModal());
+    };
+    fetchChat(user._id, outing.chat, showChat);
+  };
+
   return !outing || !userData ? null : (
     <ModalPortal>
+      <ChatModal chat={outingChat} />
       <WarningPopup
         selector={"outing-created"}
         header={"Your new outing is called:"}
@@ -86,10 +108,17 @@ const OutingModal = (props) => {
           </div>
         </div>
         <div className={styles.sideBySide}>
-          <SimpleButton className={styles.chatButton}>Chat</SimpleButton>
-          <SimpleButton className={styles.completedButton}>
-            {completed ? "Completed!" : "Mark Completed"}
+          <SimpleButton onClick={onShowChatModal} className={styles.chatButton}>
+            Chat
           </SimpleButton>
+          {completed ? null : (
+            <Fragment>
+              <div className={styles.buttonSpacer}></div>
+              <SimpleButton className={styles.completedButton}>
+                Mark Completed
+              </SimpleButton>
+            </Fragment>
+          )}
         </div>
         <h2 className={styles.sectionHeader}>
           {" "}
@@ -135,12 +164,44 @@ const OutingModal = (props) => {
           Members
         </h2>
         {outing.users.map((u) => (
-          <FriendCard buttonSet={"add"} user={u} key={Math.random()} />
+          <FriendCard user={u} key={Math.random()} />
         ))}
+        {outing.invited[0] ? (
+          <Fragment>
+            <h2 className={styles.sectionHeader}>
+              {" "}
+              <img
+                className={styles.sectionHeaderIcon}
+                src={inviteIcon}
+                alt={"invited"}
+              />{" "}
+              Invited
+            </h2>
+            {outing.invited.map((u) => (
+              <FriendCard user={u} key={Math.random()} />
+            ))}
+          </Fragment>
+        ) : null}
+
         {outing.status !== "Completed" ? (
-          <SimpleButton className={styles.leaveButton}>
-            Leave Outing
-          </SimpleButton>
+          <Fragment>
+            <SimpleButton className={styles.leaveButton}>
+              {outing.users.length < 2 ? "Delete Outing" : "Leave Outing"}
+            </SimpleButton>
+            {outing.users.length < 2 ? (
+              <div className={styles.deleteHelp}>
+                You can delete the outing becauase you are the only member.
+                Deleting the outing <b>will not negatively affect</b> your flake
+                rating.
+              </div>
+            ) : (
+              <div className={styles.deleteHelp}>
+                You cannot delete the outing becauase there are other members.
+                Leaving the outing <b>will negatively affect</b> your flake
+                rating.
+              </div>
+            )}
+          </Fragment>
         ) : null}
       </div>
     </ModalPortal>
