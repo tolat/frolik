@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles/EditProfileModal.module.scss";
+import modalStyles from "./styles/SlideInModal.module.scss"
 import ModalPortal from "./ModalPortal";
 import { useEffect, useMemo, useReducer, useState } from "react";
 import { dataActions } from "../../store/data-slice";
@@ -107,6 +108,7 @@ const EditProfileModal = (props) => {
   return (
     <ModalPortal>
       <div style={modalStyle} className={`${styles.container} noscroll`}>
+        <div className={modalStyles.header}>Edit Profile</div>
         <ValidatorBubble
           id={validatorBubbleID}
           elementID={validationID}

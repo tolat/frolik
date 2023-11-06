@@ -1,10 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./auth-slice"
-import modalReducer from "./modal-slice"
-import goReducer from "./go-slice"
-import dataReducer from "./data-slice"
-import socketReducer from "./socket-slice"
-import chatReducer from "./chat-slice"
+import authReducer from "./auth-slice";
+import modalReducer from "./modal-slice";
+import goReducer from "./go-slice";
+import dataReducer from "./data-slice";
+import socketReducer from "./socket-slice";
+import chatReducer from "./chat-slice";
+import popupReducer from "./popup-slice";
 
 const store = configureStore({
   reducer: {
@@ -13,9 +14,9 @@ const store = configureStore({
     go: goReducer,
     data: dataReducer,
     socket: socketReducer,
-    chat: chatReducer
+    chat: chatReducer,
+    popup: popupReducer,
   },
 });
-
 
 export default store;

@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 import SimpleButton from "../UI/SimpleButton";
 import SimpleInput from "../UI/SimpleInput";
 import styles from "./styles/ProfileEditor.module.scss";
-import ModalPortal from "./ModalPortal";
 import ImageCropper from "../UI/ImageCropper";
 import { arrayBufferToBase64 } from "../../utils/utils";
 import CroppedImage from "../UI/CroppedImage";
@@ -12,7 +11,7 @@ const ProfileEditor = (props) => {
   const dataState = useSelector((state) => state.data);
   const master = dataState.masterPhotoDimension;
   const photoDimentionStyle = { width: `${master}rem`, height: `${master}rem` };
-  const globals = useSelector(state=> state.auth.globals)
+  const globals = useSelector((state) => state.auth.globals);
 
   const defaultValues = props.defaultValues;
   const stagedData = props.stagedData;
@@ -126,131 +125,125 @@ const ProfileEditor = (props) => {
   };
 
   return (
-    <ModalPortal>
-      <form className={`${styles.container} noscroll`}>
-        <div className={styles.photoEditor}>
-          <input
-            onChange={updateProfilePicture}
-            type="file"
-            id="profile-editor-img-upload"
-            style={{ display: "none" }}
-          />
-          {editingPhoto ? (
-            <ImageCropper
-              image={stagedData.profile_picture}
-              zoom={stagedData.zoom}
-              crop={stagedData.crop}
-              containerStyle={{
-                ...photoDimentionStyle,
-                marginBottom: "2rem",
-                borderRadius: "100rem",
-              }}
-              setCropChanged={(value) =>
-                dispatchStageData({ id: "crop", value })
-              }
-              setZoomChanged={(value) =>
-                dispatchStageData({ id: "zoom", value })
-              }
-            />
-          ) : (
-            <CroppedImage
-              id={"profile_picture"}
-              image={stagedData.profile_picture}
-              zoom={stagedData.zoom}
-              crop={stagedData.crop}
-              style={photoDimentionStyle}
-              className={styles.userPhoto}
-            />
-          )}
-          <div className={styles.sideBySide}>
-            {editingPhoto ? (
-              <SimpleButton
-                onClick={handleHideCropper}
-                className={styles.cropButton}
-              >
-                Done Cropping
-              </SimpleButton>
-            ) : !allowCrop ? null : (
-              <SimpleButton
-                onClick={handleShowCropper}
-                className={styles.cropButton}
-              >
-                Crop Photo
-              </SimpleButton>
-            )}
-          </div>
-          <div className={styles.sideBySide}>
-            <SimpleButton
-              onClick={handleUploadClick}
-              className={styles.uploadButton}
-            >
-              Upload New Picture
-            </SimpleButton>
-            {stagedData.profile_picture &&
-            stagedData.profile_picture !== defaultValues.profile_picture ? (
-              <SimpleButton
-                onClick={handleRevert}
-                className={styles.revertButton}
-              >
-                Revert
-              </SimpleButton>
-            ) : null}
-          </div>
-        </div>
-        {props.children}
-        <CustomAutocomplete
-          options={globals?.cityData}
-          name={"Location"}
-          label={"Location:"}
-          id={"location"}
-          className={styles.locationSelect}
-          defaultVal={defaultValues.location}
-          setDataChanged={(value) => {
-            dispatchStageData({ id: "location", value });
-          }}
+    <form className={`${styles.container} noscroll`}>
+      <div className={styles.photoEditor}>
+        <input
+          onChange={updateProfilePicture}
+          type="file"
+          id="profile-editor-img-upload"
+          style={{ display: "none" }}
         />
+        {editingPhoto ? (
+          <ImageCropper
+            image={stagedData.profile_picture}
+            zoom={stagedData.zoom}
+            crop={stagedData.crop}
+            containerStyle={{
+              ...photoDimentionStyle,
+              marginBottom: "2rem",
+              borderRadius: "100rem",
+            }}
+            setCropChanged={(value) => dispatchStageData({ id: "crop", value })}
+            setZoomChanged={(value) => dispatchStageData({ id: "zoom", value })}
+          />
+        ) : (
+          <CroppedImage
+            id={"profile_picture"}
+            image={stagedData.profile_picture}
+            zoom={stagedData.zoom}
+            crop={stagedData.crop}
+            style={photoDimentionStyle}
+            className={styles.userPhoto}
+          />
+        )}
         <div className={styles.sideBySide}>
-          <SimpleInput
-            type="text"
-            id="first_name"
-            name="first_name"
-            label="First Name:"
-            defaultVal={defaultValues.first_name}
-            setDataChanged={(value) => {
-              dispatchStageData({ id: "first_name", value });
-            }}
-          />
-          <div className={styles.formSpacer} />
-          <SimpleInput
-            type="text"
-            id="last_name"
-            name="last_name"
-            label="Last Name:"
-            defaultVal={defaultValues.last_name}
-            setDataChanged={(value) => {
-              dispatchStageData({ id: "last_name", value });
-            }}
-          />
+          {editingPhoto ? (
+            <SimpleButton
+              onClick={handleHideCropper}
+              className={styles.cropButton}
+            >
+              Done Cropping
+            </SimpleButton>
+          ) : !allowCrop ? null : (
+            <SimpleButton
+              onClick={handleShowCropper}
+              className={styles.cropButton}
+            >
+              Crop Photo
+            </SimpleButton>
+          )}
         </div>
+        <div className={styles.sideBySide}>
+          <SimpleButton
+            onClick={handleUploadClick}
+            className={styles.uploadButton}
+          >
+            Upload New Picture
+          </SimpleButton>
+          {stagedData.profile_picture &&
+          stagedData.profile_picture !== defaultValues.profile_picture ? (
+            <SimpleButton
+              onClick={handleRevert}
+              className={styles.revertButton}
+            >
+              Revert
+            </SimpleButton>
+          ) : null}
+        </div>
+      </div>
+      {props.children}
+      <CustomAutocomplete
+        options={globals?.cityData}
+        name={"Location"}
+        label={"Location:"}
+        id={"location"}
+        className={styles.locationSelect}
+        defaultVal={defaultValues.location}
+        setDataChanged={(value) => {
+          dispatchStageData({ id: "location", value });
+        }}
+      />
+      <div className={styles.sideBySide}>
         <SimpleInput
           type="text"
-          id="tagline"
-          name="tagline"
-          label="Tagline:"
-          defaultVal={defaultValues.tagline}
+          id="first_name"
+          name="first_name"
+          label="First Name:"
+          defaultVal={defaultValues.first_name}
           setDataChanged={(value) => {
-            dispatchStageData({ id: "tagline", value });
+            dispatchStageData({ id: "first_name", value });
           }}
         />
-        <SimpleButton
-          onClick={dataChanged ? handleSave : (e) => e.preventDefault()}
-          onBlur={onSubmitBlur}
-          className={dataChanged ? styles.saveButton : styles.unclickableButton}
-        >
-          {buttonText}
-        </SimpleButton>
-      </form>
-    </ModalPortal>
+        <div className={styles.formSpacer} />
+        <SimpleInput
+          type="text"
+          id="last_name"
+          name="last_name"
+          label="Last Name:"
+          defaultVal={defaultValues.last_name}
+          setDataChanged={(value) => {
+            dispatchStageData({ id: "last_name", value });
+          }}
+        />
+      </div>
+      <SimpleInput
+        type="text"
+        id="tagline"
+        name="tagline"
+        label="Tagline:"
+        defaultVal={defaultValues.tagline}
+        setDataChanged={(value) => {
+          dispatchStageData({ id: "tagline", value });
+        }}
+      />
+      <SimpleButton
+        onClick={dataChanged ? handleSave : (e) => e.preventDefault()}
+        onBlur={onSubmitBlur}
+        className={dataChanged ? styles.saveButton : styles.unclickableButton}
+      >
+        {buttonText}
+      </SimpleButton>
+    </form>
   );
 };
 

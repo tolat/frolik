@@ -1,0 +1,121 @@
+@import "../../../utils/responsive.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 0rem 2rem;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: white;
+  padding-bottom: 4rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  //background-color: rgb(224, 240, 255);
+  padding: 2rem;
+  padding-left: 5rem;
+  margin-bottom: 2rem;
+}
+
+.headerInnerContainer{
+    display: flex;
+    flex-direction: column;
+    padding-left: 2rem;
+}
+
+.sideBySide{
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttonSpacer{
+    display: flex;
+    width: 3rem;
+    height: 1rem;
+}
+
+.sideBySideButton{
+    width: 47%;
+}
+
+.chatButton{
+    //background-color: $blue;
+    //color: white;
+    //font-weight: bold;
+    width: 47%;
+}
+
+.completedButton{
+    background-color: $green;
+    color: white;
+    font-weight: bold;
+    width: 47%;
+}
+
+.leaveButton{
+    margin-top: 3rem;
+    background-color: $red;
+    color: white;
+    font-weight: bold;
+}
+
+.outingName {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.outingStatus {
+  font-size: 1.4rem;
+}
+
+.outingsIcon {
+  width: 90%;
+  margin: 1rem 1rem 0;
+}
+
+.outingPopup {
+  font-size: 1.2rem;
+  text-align: left;
+  width: 100%;
+}
+
+.sectionHeader{
+    font-size: 1.6rem;
+    font-weight: bold;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-top: 3rem;
+}
+
+.sectionHeaderIcon{
+    height: 3rem;
+    width: 3rem;
+    margin-right: 2rem;
+}
+
+.noPhotosMessage{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    background-color: $card_grey;
+    padding: 2rem;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.noPhotosMessageText{
+    font-size: 1.1rem;
+    color: grey;
+    width: 54%;
+}
+
+.noPhotosMessageHeader{
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}

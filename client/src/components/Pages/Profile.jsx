@@ -23,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import IconButton from "../UI/IconButton";
 import chatIcon from "../../images/chat.png";
 import getOutIcon from "../../images/air-balloon.png";
+import OutingModal from "../Modals/OutingModal";
 
 const sliderIcons = [
   {
@@ -56,6 +57,7 @@ const Profile = (props) => {
   const userPhotos = getPhotosFromState(userData);
   const userStatus = user?.status?.status;
   const friendCardButtonStyle = { width: "3rem", height: "3rem" };
+  const [modalOuting, setModalOuting] = useState(false);
 
   const onBalloonIconClick = () => {
     console.log("click");
@@ -105,6 +107,7 @@ const Profile = (props) => {
   return (
     <div className={styles.container}>
       <EditProfileModal />
+      <OutingModal outing={modalOuting} />
       <div className={styles.nonMediaSection}>
         <div className={styles.profilePicContainer}>
           <StatIcon
@@ -193,7 +196,7 @@ const Profile = (props) => {
           </div>
         </Fragment>
       ) : selectedSliderKey === "_outings" ? (
-        <OutingList user={user} />
+        <OutingList setModalOuting={setModalOuting} user={user} />
       ) : (
         user.friends.map((f) => (
           <FriendCard

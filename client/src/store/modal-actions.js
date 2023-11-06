@@ -9,6 +9,7 @@ export const hideModal = () => {
 
     setTimeout(() => {
       dispatch(modalActions.setZIndex("-1"));
+      dispatch(modalActions.setSelector(null))
       resolve(); // Resolve the promise when the setTimeout finishes
     }, 300);
   });

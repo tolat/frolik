@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import styles from "./styles/FilterActivitiesModal.module.scss";
+import modalStyles from "./styles/SlideInModal.module.scss";
 import ModalPortal from "./ModalPortal";
 import CustomSelect from "../UI/CustomSelect";
 import SimpleInput from "../UI/SimpleInput";
@@ -76,6 +77,8 @@ const FilterActivitiesModal = (props) => {
   return (
     <ModalPortal>
       <div style={modalStyle} className={`${styles.container} noscroll`}>
+        <div className={modalStyles.header}>Filter Activities</div>
+
         <SimpleButton
           onClick={handleApplyFilter}
           className={styles.applyButton}
@@ -155,24 +158,27 @@ const FilterActivitiesModal = (props) => {
           ref={filterRefs.maxTime}
           defaultVal={props.filter.maxTime}
         />
-        <SimpleCheckbox
-          label={"Completed Only"}
-          name={"completedOnly"}
-          ref={filterRefs.completedOnly}
-          defaultVal={props.filter.completedOnly}
-        />
-        <SimpleCheckbox
-          label={"New Only"}
-          name={"newOnly"}
-          ref={filterRefs.newOnly}
-          defaultVal={props.filter.newOnly}
-        />
-        <SimpleCheckbox
-          label={"Featured Only"}
-          name={"featuredOnly"}
-          ref={filterRefs.featuredOnly}
-          defaultVal={props.filter.featuredOnly}
-        />
+        <div className={styles.checkboxContainer}>
+          <h2>Show Only:</h2>
+          <SimpleCheckbox
+            label={"Completed"}
+            name={"completedOnly"}
+            ref={filterRefs.completedOnly}
+            defaultVal={props.filter.completedOnly}
+          />
+          <SimpleCheckbox
+            label={"New"}
+            name={"newOnly"}
+            ref={filterRefs.newOnly}
+            defaultVal={props.filter.newOnly}
+          />
+          <SimpleCheckbox
+            label={"Featured"}
+            name={"featuredOnly"}
+            ref={filterRefs.featuredOnly}
+            defaultVal={props.filter.featuredOnly}
+          />
+        </div>
       </div>
     </ModalPortal>
   );

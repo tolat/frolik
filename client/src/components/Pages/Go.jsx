@@ -19,10 +19,10 @@ import store from "../../store";
 import { goActions } from "../../store/go-slice";
 import SimpleSearch from "../UI/SimpleSearch";
 import WarningPopup from "../Popups/WarningPopup";
-import Popup, { hidePopup, showPopup } from "../Popups/Popup";
 import { useNavigate } from "react-router-dom";
 import outingsBarIcon from "../../images/outingsToolbar.png";
 import OutingModal from "../Modals/OutingModal";
+import { popupActions } from "../../store/popup-slice";
 
 const initialActivityFilter = {
   filter: {
@@ -125,13 +125,13 @@ const Go = (props) => {
 
   // Show popup for redirect back to profile if user has 5 pending outings
   useEffect(() => {
-    if (user.outings.filter((o) => o.status === "Pending").length > 4) {
-      showPopup();
-    }
-  }, [user]);
+    if (user.outings.filter((o) => o.status === "Pending").length > 4)
+      dispatch(popupActions.showPopup("too-many-outings"));
+  }, [user, dispatch]);
 
+  // Navigate
   const handleHideWarning = () => {
-    hidePopup();
+    dispatch(popupActions.hidePopup());
     navigate("/profile");
   };
 
@@ -203,15 +203,13 @@ const Go = (props) => {
         dispatchFilter={dispatchFilter}
         initialActivityFilter={initialActivityFilter}
       />
-      <Popup>
-        <WarningPopup
-          header={"You have too many Pending Outings!"}
-          message={tooManyOutingsMessage}
-          ok={"Return to Profile page"}
-          okClick={handleHideWarning}
-        />
-      </Popup>
-
+      <WarningPopup
+        selector={"too-many-outings"}
+        header={"You have too many Pending Outings!"}
+        message={tooManyOutingsMessage}
+        ok={"Return to Profile page"}
+        okClick={handleHideWarning}
+      />
       <div className={styles.container}>
         <div className={styles.usersContainer}>
           <button

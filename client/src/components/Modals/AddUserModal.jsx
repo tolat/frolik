@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles/AddUserModal.module.scss";
+import modalStyles from "./styles/SlideInModal.module.scss";
+
 import ModalPortal from "./ModalPortal";
 import FriendCard from "../UI/FriendCard";
 import { goActions } from "../../store/go-slice";
@@ -47,6 +49,7 @@ const AddUserModal = (props) => {
   return (
     <ModalPortal>
       <div style={modalStyle} className={styles.container}>
+        <div className={modalStyles.header}>Add Outing Members</div>
         <div className={styles.dailyMatchesContainer}>
           <h2 className={styles.matchesHeader}>Daily Matches</h2>
           <div className={styles.headerSubtext}>
@@ -65,7 +68,7 @@ const AddUserModal = (props) => {
             />
           ))}
         </div>
-        <h2>Active Friends</h2>
+        <h2 style={{width: '100%'}}>Active Friends</h2>
         {availableFriends.map((f) => (
           <FriendCard
             buttonSet={"add"}

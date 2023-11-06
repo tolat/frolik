@@ -1,55 +1,68 @@
 @import "../../../utils/responsive.scss";
 
-.container{
-    display: flex;
-    flex-direction: column;
-    margin-top: 6rem;
-    padding: 2rem;
-    background-color: white;
-    padding-bottom: 10rem;
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  background-color: white;
+  padding: 0rem 2rem;
 }
 
-.sideBySide{
-    display: flex;
-    margin-top: 1rem;
+.sideBySide {
+  display: flex;
+  margin-top: 1rem;
+  width: 100%;
 }
 
-.spacer{
-    width: 2rem;
-    height: 1rem;
+.spacer {
+  width: 2rem;
+  height: 1rem;
 }
 
-.applyButton{
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-    margin-bottom: 2rem;
-    font-size: 1.2rem;
+.applyButton {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  margin-top: 2rem;
 }
 
-.clearButton{
-    margin-bottom: 2rem;
+.clearButton {
+  margin-bottom: 2rem;
 }
 
-.inactiveButton{
-    background-color: #f6f6f6;
-    color: grey;
+.inactiveButton {
+  background-color: #f6f6f6;
+  color: grey;
 }
 
-.inactiveButton:hover{
-    cursor: none;
-    opacity: 1;
+.inactiveButton:hover {
+  cursor: none;
+  opacity: 1;
 }
 
-.select{
-    font-size: 1.2rem;
+.checkboxContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  margin-top: 1rem;
+  align-items: center;
 }
 
-.categoryOption{
-    background-color: white;
-    padding: 1rem;
+.select {
+  font-size: 1.2rem;
 }
 
-.categoryOption:hover{
-    background-color: $card_grey;
+.categoryOption {
+  background-color: white;
+  padding: 1rem;
+}
+
+.categoryOption:hover {
+  background-color: $card_grey;
 }

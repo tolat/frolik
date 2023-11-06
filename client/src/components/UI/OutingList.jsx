@@ -4,6 +4,7 @@ import styles from "./styles/OutingList.module.scss";
 const OutingList = (props) => {
   const completed = props.user.outings.filter((o) => o.status === "Completed");
   const pending = props.user.outings.filter((o) => o.status === "Pending");
+
   return (
     <div className={styles.container}>
       {pending[0] && (
@@ -17,7 +18,11 @@ const OutingList = (props) => {
           </div>
           {pending.map((o) => (
             <div key={Math.random()} className={styles.outingContainer}>
-              <OutingCard outing={o} user={props.user} />
+              <OutingCard
+                setModalOuting={props.setModalOuting}
+                outing={o}
+                user={props.user}
+              />
             </div>
           ))}
         </div>
@@ -25,7 +30,11 @@ const OutingList = (props) => {
       {completed[0] &&
         completed.map((o) => (
           <div key={Math.random()} className={styles.outingContainer}>
-            <OutingCard outing={o} user={props.user} />
+            <OutingCard
+              setModalOuting={props.setModalOuting}
+              outing={o}
+              user={props.user}
+            />
           </div>
         ))}
     </div>

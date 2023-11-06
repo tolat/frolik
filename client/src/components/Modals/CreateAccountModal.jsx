@@ -1,7 +1,7 @@
 import styles from "./styles/CreateAccountModal.module.scss";
 import ModalPortal from "./ModalPortal";
 import { useEffect, useMemo, useReducer, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProfileEditor from "./ProfileEditor";
 import placeholderPhoto from "../../images/placeholder-user-photo.png";
 import SimpleInput from "../UI/SimpleInput";
@@ -10,8 +10,8 @@ import { createAccount } from "../../utils/data-fetch";
 import { loadImageAsBase64 } from "../../utils/utils";
 import { createProfileValidators } from "../../utils/validators";
 import SimpleButton from "../UI/SimpleButton";
-import Popup, {hidePopup, showPopup} from "../Popups/Popup";
 import WarningPopup from "../Popups/WarningPopup";
+import { popupActions } from "../../store/popup-slice";
 
 const stagedDataReducer = (state, action) => {
   return action.type === "setAll"
@@ -33,11 +33,11 @@ const CreateAccountModal = (props) => {
   const [validationMessage, setValidationMessage] = useState(false);
   const [validationDisplay, setValidationDisplay] = useState("none");
   const [validationID, setValidationID] = useState(false);
-  const globals = useSelector(state=> state.auth.globals)
+  const globals = useSelector((state) => state.auth.globals);
   const [showConfirmEmail, setShowConfirmEmail] = useState(false);
-  const [popupContent, setPoputContent] = useState(null);
   const buttonTextOnSubmit = "Creating Profile..";
   const validatorBubbleID = "validator-bubble";
+  const dispatch = useDispatch();
 
   // Set memoized default values based on user data
   const defaultValues = useMemo(() => {
@@ -87,17 +87,9 @@ const CreateAccountModal = (props) => {
     if (err) {
       // User already created error
       if (err.status === 406) {
-        setPoputContent(
-          <WarningPopup
-            header={`Account for ${stagedData["create-email"]} already exists.`}
-            message={"Please try again with a different email."}
-            ok={"OK"}
-            okClick={hidePopup}
-          />
-        );
+        dispatch(popupActions.showPopup("user-already-exists"));
       }
 
-      showPopup();
       setButtonText("Create Acount");
     } else {
       setShowConfirmEmail(true);
@@ -121,7 +113,13 @@ const CreateAccountModal = (props) => {
 
   return (
     <ModalPortal>
-      <Popup>{popupContent}</Popup>
+      <WarningPopup
+        selector={"user-already-exists"}
+        header={`Account for ${stagedData["create-email"]} already exists.`}
+        message={"Please try again with a different email."}
+        ok={"OK"}
+        okClick={() => dispatch(popupActions.hidePopup())}
+      />
       <div className={styles.container} style={modalStyle}>
         <ValidatorBubble
           id={validatorBubbleID}
