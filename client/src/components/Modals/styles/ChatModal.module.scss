@@ -1,6 +1,5 @@
 @import "../../../utils/responsive.scss";
 
-
 .container {
   width: 100%;
   display: flex;
@@ -136,6 +135,8 @@
   padding: 1rem;
   border-radius: 3px;
   max-width: 80%;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
 
 .bubbleUser {
@@ -164,7 +165,7 @@
   left: 1rem;
 }
 
-.sent{
+.sent {
   font-size: 0.9rem;
   color: grey;
   margin-top: 0.5rem;
