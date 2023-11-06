@@ -139,6 +139,7 @@ const ActivityCard = (props) => {
         </div>
         <div className={styles.buttonContainer}>
           <SimpleButton
+            style={{ boxShadow: "none" }}
             onClick={props.showInstructions ? null : handleToggleInstructions}
           >
             {!props.showInstructions

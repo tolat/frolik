@@ -4,6 +4,8 @@
   display: flex;
   width: 100%;
   margin-bottom: 1rem;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
 
 .categoryStripe {
@@ -36,12 +38,12 @@
   align-items: center;
 }
 
-.innerNameContainer{
+.innerNameContainer {
   display: flex;
   align-items: center;
 }
 
-.category{
+.category {
   margin-left: 0.4rem;
   font-size: 1.1rem;
   color: grey;
@@ -58,12 +60,12 @@
   border-bottom-left-radius: 0;
 }
 
-.remove{
-    background-color: $red;
-    width: 7rem;
-    color: white;
-    display: flex;
-    align-items: center;
+.remove {
+  background-color: $red;
+  width: 7rem;
+  color: white;
+  display: flex;
+  align-items: center;
 }
 
 .description {
@@ -90,10 +92,10 @@
   overflow-y: hidden;
 }
 
-.iHeader{
-    margin: 1rem;
-    font-size: 1.5rem;
-    font-weight: bold;
+.iHeader {
+  margin: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .iContainer {
@@ -130,27 +132,27 @@
   font-size: 1.2rem;
 }
 
-.goalContainer{
-    display: flex;
-    padding: 0rem 1rem 1rem 1rem;
-    align-items: center;
+.goalContainer {
+  display: flex;
+  padding: 0rem 1rem 1rem 1rem;
+  align-items: center;
 }
 
-.goalIcon{
-    height: 3rem;
-    padding: 1rem 1rem 1rem 1rem;
+.goalIcon {
+  height: 3rem;
+  padding: 1rem 1rem 1rem 1rem;
 }
 
-.goal{
-    font-size: 1.4rem;
-    font-weight: bold;
+.goal {
+  font-size: 1.4rem;
+  font-weight: bold;
 }
 
-.completedIcon{
-    height: 2.2rem;
-    margin-left: 1rem;
+.completedIcon {
+  height: 2.2rem;
+  margin-left: 1rem;
 }
 
-.nameRightContainer{
-    display: flex;
+.nameRightContainer {
+  display: flex;
 }

@@ -122,7 +122,7 @@ const Profile = (props) => {
             sizeInRem={20}
             user={user}
             borderSizeInRem={"1.5"}
-            //pieShadow={true}
+            pieShadow={true}
           />
           <StatIcon
             alt="outings"

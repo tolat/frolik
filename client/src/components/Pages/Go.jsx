@@ -229,7 +229,7 @@ const Go = (props) => {
             users={goUsers}
             sizeInRem={20}
             borderSizeInRem={1.5}
-            //pieShadow={true}
+            pieShadow={true}
           />
           <button onClick={handleAddUserClick} className={styles.roundButton}>
             <img className={styles.editIcon} src={plusIcon} alt="add-people" />
