@@ -10,6 +10,7 @@ import { modalActions } from "../../store/modal-slice";
 import { fetchOuting } from "../../utils/data-fetch";
 import modalStyles from "./styles/SlideInModal.module.scss";
 import { hideModal } from "../../store/modal-actions";
+import { initializeUserPhotos } from "../../store/data-actions";
 
 const NotificationsModal = (props) => {
   const dispatch = useDispatch();
@@ -53,6 +54,7 @@ const NotificationsModal = (props) => {
             case "outing-invite":
               return (
                 <OutingInvite
+                  key={Math.random()}
                   setActiveOuting={setActiveOuting}
                   notification={n}
                 />
@@ -77,7 +79,13 @@ const OutingInvite = (props) => {
 
   // Fetch outing from server
   useEffect(() => {
-    fetchOuting(outingID, user, setOuting);
+    const onComplete = (outing) => {
+      setOuting(outing);
+      const newOutings = user.outings.concat([outing])
+      const newUser = { ...user, outings: newOutings}
+      initializeUserPhotos(newUser);
+    };
+    fetchOuting(outingID, user, onComplete);
   }, [outingID, user]);
 
   // Show outing modal
@@ -110,7 +118,7 @@ const OutingInvite = (props) => {
             <div className={styles.buttonSpacer}></div>
             <SimpleButton noShadow={true} className={styles.deleteNotification}>
               {" "}
-              Delete
+              Dismiss
             </SimpleButton>
           </div>
         </div>

@@ -45,7 +45,7 @@ label {
   margin-top: 5px;
 }
 
-button[type="submit"] {
+.loginButton {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -58,7 +58,7 @@ button[type="submit"] {
   font-size: 1.2rem;
 }
 
-button[type="submit"]:hover {
+.loginButton:hover {
   background-color: #0056b3;
 }
 

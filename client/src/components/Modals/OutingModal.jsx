@@ -16,7 +16,9 @@ import ActivityCard from "../UI/ActivityCard";
 import ChatModal from "./ChatModal";
 import { modalActions } from "../../store/modal-slice";
 import { hideModal } from "../../store/modal-actions";
-import { fetchChat } from "../../utils/data-fetch";
+import { fetchChat, joinOuting } from "../../utils/data-fetch";
+import { authActions } from "../../store/auth-slice";
+import { initializeUserPhotos } from "../../store/data-actions";
 
 const OutingModal = (props) => {
   const modalState = useSelector((state) => state.modal);
@@ -26,12 +28,13 @@ const OutingModal = (props) => {
   const user = useSelector((state) => state.auth.user);
   const userData = useSelector((state) => state.data.users[user._id]);
   const dispatch = useDispatch();
-  const outing = props.outing;
+  const outing =
+    user?.outings?.find((o) => o._id === props.outing._id) || props.outing;
   const globals = useSelector((state) => state.auth.globals);
   const [categoryColor, setCategoryColor] = useState(null);
   const [completed, setCompleted] = useState(false);
   const chatsState = useSelector((state) => state.chat.chats);
-  const outingChat = chatsState.find((c) => c._id === outing.chat);
+  const outingChat = chatsState.find((c) => c._id === outing?.chat);
   const joining = !!outing?.invited?.find((i) => i._id === user?._id);
   const activityIsCompletedType = user.outings?.find(
     (o) => o?.activity?._id === outing?.activity?._id
@@ -45,19 +48,21 @@ const OutingModal = (props) => {
     if (showInfoPupup && modalDisplay === "flex") {
       dispatch(popupActions.showPopup("outing-created"));
     }
+
+    return () => dispatch(popupActions.hidePopup())
   }, [showInfoPupup, dispatch, modalDisplay]);
 
   // Set categoryColour
   useEffect(() => {
     if (outing && globals && globals.categoryColorMap) {
-      setCategoryColor(globals.categoryColorMap[outing.activity.category]);
-      setCompleted(outing.status === "Completed");
+      setCategoryColor(globals.categoryColorMap[outing?.activity.category]);
+      setCompleted(outing?.status === "Completed");
     }
   }, [outing, globals]);
 
   const newOutingMessage = (
     <div className={styles.outingPopup}>
-      <div className={styles.outingCreatedName}>{outing.name}</div>
+      <div className={styles.outingCreatedName}>{outing?.name}</div>
       An invite has been sent to the other users. You can view this outing any
       time on the Profile page under the following tab:
       <img
@@ -79,15 +84,22 @@ const OutingModal = (props) => {
   const onShowChatModal = () => {
     const showChat = async () => {
       await hideModal();
-      dispatch(modalActions.setSelector("chat-modal"));
+      dispatch(modalActions.setSelector("view-outing-chat"));
       dispatch(modalActions.showModal());
     };
-    fetchChat(user._id, outing.chat, showChat);
+    fetchChat(user._id, outing?.chat, showChat);
+  };
+
+  const onOutingJoin = () => {
+    const onComplete = (user) => {
+      dispatch(authActions.setUser(user));
+    };
+    joinOuting(user, outing, onComplete);
   };
 
   return !outing || !userData ? null : (
     <ModalPortal>
-      <ChatModal chat={outingChat} />
+      <ChatModal selector={"view-outing-chat"} chat={outingChat} />
       <WarningPopup
         selector={"outing-created"}
         header={"Your new outing is called:"}
@@ -121,7 +133,10 @@ const OutingModal = (props) => {
           ) : null}
 
           {completed ? null : (
-            <SimpleButton className={styles.completedButton}>
+            <SimpleButton
+              onClick={joining ? onOutingJoin : null}
+              className={styles.completedButton}
+            >
               {joining ? "Join Outing" : "Mark Completed"}
             </SimpleButton>
           )}

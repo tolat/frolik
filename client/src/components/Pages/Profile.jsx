@@ -25,6 +25,10 @@ import chatIcon from "../../images/chat.png";
 import getOutIcon from "../../images/air-balloon.png";
 import OutingModal from "../Modals/OutingModal";
 import SimpleSearch from "../UI/SimpleSearch";
+import WarningPopup from "../Popups/WarningPopup";
+import { popupActions } from "../../store/popup-slice";
+import outingsBarIcon from "../../images/outingsToolbar.png";
+
 
 const sliderIcons = [
   {
@@ -105,9 +109,35 @@ const Profile = (props) => {
     );
   };
 
+  const tooManyOutingsMessage = (
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <b>You can only have up to 5 pending outings at a time.</b> <br />
+      Either complete or delete some outings before trying to create another
+      one. You can view your outings any time in the 'Profile' page by clicking
+      the following tab:
+      <img
+        className={styles.outingsIcon}
+        src={outingsBarIcon}
+        alt={"outings-icon"}
+      />
+    </div>
+  );
+
+  const handleHideWarning = () => {
+    dispatch(popupActions.hidePopup());
+  };
+
+
   return (
     <div className={styles.container}>
       <EditProfileModal />
+      <WarningPopup
+        selector={"too-many-outings"}
+        header={"You have too many Pending Outings!"}
+        message={tooManyOutingsMessage}
+        ok={"OK"}
+        okClick={handleHideWarning}
+      />
       <OutingModal selector={"view-outing"} outing={modalOuting} />
       <div className={styles.nonMediaSection}>
         <div className={styles.profilePicContainer}>

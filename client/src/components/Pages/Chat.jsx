@@ -13,7 +13,7 @@ const Chat = memo((props) => {
 
   return (
     <div className={styles.container}>
-      <ChatModal chat={activeChat} />
+      <ChatModal selector={"chatcard-chat"} chat={activeChat} />
       <h1>Chats</h1>
       <div className={styles.upperContainer}>
         <SimpleSearch placeholder={"Search chats"} />

@@ -19,7 +19,7 @@ import store from "../../store";
 import { goActions } from "../../store/go-slice";
 import SimpleSearch from "../UI/SimpleSearch";
 import WarningPopup from "../Popups/WarningPopup";
-import { useNavigate } from "react-router-dom";
+import { redirectDocument, useNavigate } from "react-router-dom";
 import outingsBarIcon from "../../images/outingsToolbar.png";
 import OutingModal from "../Modals/OutingModal";
 import { popupActions } from "../../store/popup-slice";
@@ -126,13 +126,7 @@ const Go = (props) => {
   const [modalOuting, setModalOuting] = useState(false);
   const [showInfoPopup, setShowInfoPopup] = useState(false);
 
-  // Show popup for redirect back to profile if user has 5 pending outings
-  useEffect(() => {
-    if (user.outings.filter((o) => o.status === "Pending").length > 4)
-      dispatch(popupActions.showPopup("too-many-outings"));
-  }, [user, dispatch]);
-
-  // Navigate
+  // Navigate to profile page if too many outings
   const handleHideWarning = () => {
     dispatch(popupActions.hidePopup());
     navigate("/profile");
@@ -182,10 +176,10 @@ const Go = (props) => {
     const onOutingCreate = (outing) => {
       setModalOuting(outing);
       setShowInfoPopup(true);
-      dispatch(modalActions.setSelector("outing"));
+      dispatch(modalActions.setSelector("view-outing"));
       dispatch(modalActions.showModal());
     };
-    dispatch(goActions.setExcuse5th(true));
+  
     createOuting(goState.outing, user, onOutingCreate);
   };
 

@@ -50,4 +50,6 @@ a:link {
   width: 100vw;
   height: 100vh;
   display: none;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
 }

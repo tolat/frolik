@@ -21,13 +21,15 @@ const ChatModal = (props) => {
   const user = useSelector((state) => state.auth.user);
   const modalState = useSelector((state) => state.modal);
   const chatsState = useSelector((state) => state.chat.chats);
-  const modalDisplay = modalState.selector === "chat-modal" ? "flex" : "none";
+  const modalDisplay = modalState.selector === props.selector ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
   const chat = chatsState.find((c) => c._id === props.chat?._id);
   const memberNames = !!chat && chat.outing.users.map((u) => u.first_name);
   const membersString = genMembersString(memberNames);
   const messages = chat?.messages;
   const composerRef = useRef();
+
+  console.log("SELECTOR:",props.selector)
 
   // Fetch chat from server just to make sure no messages are missed
   // which can happen if chat modal is closed and message is sent while

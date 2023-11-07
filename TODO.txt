@@ -73,14 +73,16 @@ FIXED
 presumably when the post call to the server resolves)
 FIXED
 
-- Popups both rendering on og page when 5th activity is added, need a way to omit the 
-too many outings popup when 5th outing created.
-
 - When a new outing is created, it changes the usericon piecolor only on the
 profile page
 
-- Problem with the state based modal and popup rendering. if a page has two instanced of 
-a popup or a modal, they may both render.
+- two chats in chat modal on profile page sometimes, unsure of cause. seems to happen
+onnly when having joined a chat from the notifications screen
+
+- if a user joins an outing while other users are in chat, it crashes the app for those
+other users. 
+
+- user pictures for new outings just accepted don't load. 
 
 - Matches don't update when a match goes from ready to busy and back
 FIXED

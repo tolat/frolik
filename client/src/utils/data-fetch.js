@@ -320,13 +320,28 @@ export const createOuting = (outing, user, setOutingData) => {
 
 export const fetchOuting = (outingID, user, onComplete) => {
   const requestConfig = {
-    url: `${getServer()}/user/${user._id}/outing/${outingID}`
+    url: `${getServer()}/user/${user._id}/outing/${outingID}`,
   };
 
   const handleResponse = (response) => {
-    
+    onComplete(response.outing);
+  };
 
-    onComplete(response.outing)
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};
+
+export const joinOuting = (user, outing, onComplete) => {
+  const requestConfig = {
+    url: `${getServer()}/user/${user._id}/outing/${outing._id}/join`,
+  };
+
+  const handleResponse = (response) => {
+    const newUser = { ...response.user, friends: user.friends };
+    onComplete(newUser, response.outing);
   };
 
   const handleError = (err) => {

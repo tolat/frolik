@@ -4,6 +4,7 @@ import { fetchAuth } from "../store/auth-actions";
 import { hideModal } from "../store/modal-actions";
 
 export const calcAvgRating = (activity) => {
+  if(!activity.ratings){return 0 }
   return (
     activity.ratings.reduce((acc, rating) => acc + rating.rating, 0) /
     activity.ratings.length

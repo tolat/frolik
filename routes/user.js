@@ -482,4 +482,63 @@ router.get(
   })
 );
 
+router.get(
+  "/:id/outing/:outingid/join",
+  reqAuthenticated,
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    const outing = await Outing.findById(req.params.outingid);
+
+    await outing.populate("users");
+    await outing.populate("invited");
+
+    // If outing does not exists send 404
+    if (!user || !outing) {
+      res.status(404).send("User was not invited to this outing");
+      return;
+    }
+
+    // If user is not in the invited list, they cannot join. send 406
+    if (!outing.invited.find((u) => u._id.toString() == user._id.toString())) {
+      res.status(406).send("User was not invited to this outing");
+      return;
+    }
+
+    // Add outing to user outings
+    user.outings.push(outing);
+
+    // Remove the notificaiton
+    user.notifications.splice(
+      user.notifications.indexOf(
+        user.notifications.find(
+          (n) => n.type == "outing-invite" && n.outing == outing._id
+        )
+      ),
+      1
+    );
+
+    // Add outing chat to user chats
+    user.chats.push(outing.chat);
+    await user.save();
+
+    // Add user to outing users
+    if (!outing.users.find((u) => u._id.toString() == user._id.toString())) {
+      // add user to outing users
+      outing.users.push(user);
+      // remove user from outing invited
+      outing.invited.splice(
+        outing.invited
+          .map((u) => u._id.toString())
+          .indexOf(user._id.toString()),
+        1
+      );
+     
+    }
+    await outing.save();
+
+    await populateUser(user);
+    res.send({ user, outing });
+  })
+);
+
 module.exports = router;

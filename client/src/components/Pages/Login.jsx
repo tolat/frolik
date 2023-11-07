@@ -24,7 +24,7 @@ function Login() {
 
   // If authenticated, navigate to profile
   useEffect(() => {
-    fetchGobals()
+    fetchGobals();
     if (authState.isAuthenticated) {
       navigate("/profile");
     }
@@ -76,7 +76,7 @@ function Login() {
           />
         </div>
 
-        <SimpleButton type={"submit"}>
+        <SimpleButton className={styles.loginButton} type={"submit"}>
           {!isLoggingIn && !authState.isAuthenticated
             ? "Login"
             : "Logging in..."}

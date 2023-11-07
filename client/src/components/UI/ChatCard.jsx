@@ -13,7 +13,7 @@ const ChatCard = (props) => {
 
   const handleClick = () => {
     props.setActiveChat(chat);
-    dispatch(modalActions.setSelector(`chat-modal`));
+    dispatch(modalActions.setSelector(`chatcard-chat`));
     dispatch(modalActions.showModal());
   };
 
