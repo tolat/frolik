@@ -7,6 +7,10 @@
 .outerContainer {
   display: flex;
   width: 100%;
+  border: none ;
+  outline: none;
+  background-color: transparent;
+  border-radius: 3px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
@@ -33,6 +37,16 @@
   border-bottom-right-radius: 3px;
 }
 
+.flakedInnerContainer{
+  width: 100%;
+  flex-grow: 1;
+  box-sizing: border-box;
+  border-left: none;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  background-color: rgb(255, 203, 203);
+}
+
 .upperSection {
   width: 100%;
   padding: 1rem;
@@ -40,6 +54,7 @@
   flex-grow: 1;
   display: flex;
   justify-content: space-between;
+  background-color: inherit;
 }
 
 .leftUpperSection {
@@ -50,6 +65,7 @@
 
 .rightUpperSection {
   display: flex;
+  background-color: inherit;
 }
 
 .nameStatusContainer {

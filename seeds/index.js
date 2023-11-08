@@ -9,12 +9,12 @@ const Chat = require("../models/chat");
 const dbUrl = process.env.DB_URL;
 const fs = require("fs");
 const sharp = require("sharp");
-const path = require("path");
 
 const { userSeeds, userSeeds2, userSeeds3 } = require("./user");
 const { activitySeeds } = require("./activity");
 const { uploadToS3, deleteFromS3, deleteAllFromS3 } = require("../utils/S3");
 const { generateUniqueName } = require("../utils/utils");
+const { categoryColorMap, statusMap, loadCityData } = require("./globals");
 
 // Connect to the database and handle connection errors
 mongoose.connect(dbUrl, {
@@ -70,43 +70,7 @@ const UploadImagesToS3 = async (directoryPath) => {
 };
 
 const seedGlobals = async () => {
-  const categoryColorMap = {
-    Games: "rgb(117, 204, 255)",
-    Art: "rgb(186, 255, 169)",
-    Sports: "rgb(255 236 69)",
-    Food: "rgb(238 183 220)",
-    Adventure: "rgb(248 157 157)",
-  };
-
-  const statusMap = {
-    Ready: "You are available for outing requests from anyone!",
-    Busy: "You are busy doing other, less fun things.",
-    Searching: "Your status is set to Searching when you are on the 'Go' page.",
-    Inactive:
-      "Your status will be set to Inactive after two weeks of inactivity.",
-  };
-
-  // Load city data
-  const cityDataPath = path.join(__dirname, "/city-data/cities10000.json");
-  const readCityData = new Promise((resolve, reject) => {
-    fs.readFile(cityDataPath, "utf8", async (err, data) => {
-      if (err) {
-        console.error("Error reading JSON file:", err);
-        reject();
-        return;
-      }
-
-      const filteredData = JSON.parse(data).map((city) => {
-        return {
-          name: city.name,
-          country: city.country_code,
-          timezone: city.timezone,
-        };
-      });
-      resolve(filteredData);
-    });
-  });
-  const cityData = await readCityData;
+  const cityData = await loadCityData();
 
   const globals = new Globals({ categoryColorMap, statusMap, cityData });
   await globals.save();
@@ -208,7 +172,7 @@ const seedOutings = async (seeds) => {
       outing.users = [user, user2];
       outing.status = "Completed";
       outing.photos.push(outingPhotoKeys.pop());
-      outing.name = generateUniqueName()
+      outing.name = generateUniqueName();
 
       user.outings.push(outing);
       user2.outings.push(outing);

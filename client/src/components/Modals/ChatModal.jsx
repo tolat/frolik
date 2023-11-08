@@ -22,20 +22,13 @@ const ChatModal = (props) => {
   const modalState = useSelector((state) => state.modal);
   const modalDisplay = modalState.selector === "chat-modal" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
-  const chat = useSelector((state) => state.modal.activeChat);
+  const chatState = useSelector((state) => state.chat.chats);
+  const activeChat = useSelector((state) => state.modal.activeChat);
+  const chat = chatState.find((c) => c._id === activeChat._id);
   const memberNames = chat?.outing?.users.map((u) => u.first_name);
   const membersString = chat && genMembersString(memberNames);
   const messages = chat?.messages;
   const composerRef = useRef();
-
-  // Fetch chat from server just to make sure no messages are missed
-  // which can happen if chat modal is closed and message is sent while
-  // user is on chat page. updates the chat state once chat is fetched.
-  useEffect(() => {
-    if (chat) {
-      fetchChat(user._id, chat._id);
-    }
-  }, [user._id, chat]);
 
   // Connect to the websocket for chat
   useEffect(() => {

@@ -97,7 +97,7 @@ const UserIcon = memo(function UserIcon(props) {
     <div className={styles.container}>
       <div
         style={{ ...backerStyle, ...props.style }}
-        className={`${styles.whiteBacker} ${props.backerClassName}`}
+        className={styles.whiteBacker}
       >
         {props.badge ? (
           <div className={`${styles.badgeContainer} ${props.backerClassName}`}>
