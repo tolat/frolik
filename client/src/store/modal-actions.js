@@ -7,7 +7,6 @@ const modalCleanup = () => {
   dispatch(modalActions.setSelector(null));
   dispatch(modalActions.setActiveChat(false));
   dispatch(modalActions.setActiveOuting(false));
-  dispatch(modalActions.setCreateOutingPopup(false));
 };
 
 export const hideModal = () => {

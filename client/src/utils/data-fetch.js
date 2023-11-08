@@ -242,7 +242,7 @@ export const fetchChat = (userID, chatID, onComplete = () => {}) => {
     }
 
     // Set chats in data store
-    store.dispatch(chatActions.updateChat({ chat: response.chat }));
+    store.dispatch(chatActions.updateChat(response.chat));
 
     onComplete();
   };
@@ -324,7 +324,6 @@ export const fetchOuting = (outingID, user, onComplete) => {
   };
 
   const handleResponse = (response) => {
-    store.dispatch(dataActions.addInviteOuting(response.outing));
     onComplete(response.outing);
   };
 

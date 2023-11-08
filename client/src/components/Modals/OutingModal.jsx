@@ -12,8 +12,10 @@ import FriendCard from "../UI/FriendCard";
 import ActivityCard from "../UI/ActivityCard";
 import { modalActions } from "../../store/modal-slice";
 import { hideModal } from "../../store/modal-actions";
-import { fetchChat, joinOuting } from "../../utils/data-fetch";
+import { fetchChat, fetchOuting, joinOuting } from "../../utils/data-fetch";
 import { authActions } from "../../store/auth-slice";
+import { popupActions } from "../../store/popup-slice";
+import { chatActions } from "../../store/chat-slice";
 
 const OutingModal = (props) => {
   const modalState = useSelector((state) => state.modal);
@@ -50,7 +52,20 @@ const OutingModal = (props) => {
   const onOutingJoin = () => {
     const onComplete = (user) => {
       dispatch(authActions.setUser(user));
+
+      // Fetch updated outing
+      const onFetchOuting = (outing) => {
+        dispatch(modalActions.setActiveOuting(outing));
+        dispatch(chatActions.updateChat(outing.chat))
+      };
+      fetchOuting(outing._id, user, onFetchOuting);
     };
+    // Don't join if user has too many penidng outings
+    if (user.outings.filter((o) => o.status === "Pending").length >= 5) {
+      dispatch(popupActions.showPopup("too-many-outings"));
+      return;
+    }
+
     joinOuting(user, outing, onComplete);
   };
 

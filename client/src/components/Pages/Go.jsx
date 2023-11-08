@@ -1,143 +1,55 @@
 import styles from "./styles/Go.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import SimpleButton from "../UI/SimpleButton";
-import { Fragment, useEffect, useReducer, useState } from "react";
+import { Fragment, useEffect, useReducer } from "react";
 import AddUserModal from "../Modals/AddUserModal";
 import { modalActions } from "../../store/modal-slice";
 import editIcon from "../../images/edit.png";
 import plusIcon from "../../images/plus.png";
 import EditUsersModal from "../Modals/EditUsersModal";
 import UserIconCluster from "../UI/UserIconCluster";
-import {
-  createOuting,
-  fetchActivities,
-  fetchChat,
-} from "../../utils/data-fetch";
 import ActivityCard from "../UI/ActivityCard";
 import FilterActivitiesModal from "../Modals/FilterActivitiesModal";
 import balloonIcon from "../../images/air-balloon-light.png";
 import downIcon from "../../images/down.png";
 import upIcon from "../../images/up.png";
-import { calcAvgRating, pageRouteLoader } from "../../utils/utils";
+import { pageRouteLoader } from "../../utils/utils";
 import store from "../../store";
 import { goActions } from "../../store/go-slice";
 import SimpleSearch from "../UI/SimpleSearch";
 import WarningPopup from "../Popups/WarningPopup";
-import { useNavigate } from "react-router-dom";
 import outingsBarIcon from "../../images/outingsToolbar.png";
 import { popupActions } from "../../store/popup-slice";
 import completeIcon from "../../images/complete.png";
 import featuredIcon from "../../images/feature.png";
-
-const initialActivityFilter = {
-  filter: {
-    category: "Any",
-    maxParticipants: "",
-    minParticipants: "",
-    minRating: "",
-    maxCost: "",
-    minCost: "",
-    maxTime: "",
-    newOnly: false,
-    completedOnly: false,
-    featuredOnly: false,
-  },
-  activities: [],
-  initialActivities: [],
-  active: false,
-};
-
-const filterReducer = (state, action) => {
-  const applyFilter = (activities, filter) => {
-    const filteredActivities = [];
-    const completedActivities = store
-      .getState()
-      .auth.user?.outings?.map((outing) => outing.activity._id);
-
-    // Apply category filter
-    for (let activity of activities) {
-      if (
-        // Category
-        (filter?.category &&
-          filter?.category !== "Any" &&
-          activity?.category !== filter?.category) ||
-        // Participant
-        (filter?.minParticipants &&
-          activity.participants < filter?.minParticipants) ||
-        (filter?.maxParticipants &&
-          activity.participants > filter?.maxParticipants) ||
-        // Rating
-        (filter?.minRating && calcAvgRating(activity) < filter?.minRating) ||
-        // Cost
-        (filter?.minCost && activity.cost < filter?.minCost) ||
-        (filter?.maxCost && activity.cost > filter?.maxCost) ||
-        // Time
-        (filter?.maxTime && activity.duration > filter?.maxTime) ||
-        // Fetured Only
-        (filter?.featuredOnly && !activity.featured) ||
-        // New Only
-        (filter?.newOnly && completedActivities.includes(activity._id)) ||
-        // Completed Only
-        (filter?.completedOnly && !completedActivities.includes(activity._id))
-      ) {
-        continue;
-      } else {
-        filteredActivities.push(activity);
-      }
-    }
-
-    return filteredActivities;
-  };
-
-  if (action.type === "set-initial") {
-    return { ...state, initialActivities: action.activities };
-  }
-
-  if (action.type === "apply-filter") {
-    const activities = applyFilter(state.initialActivities, action.filter);
-    return {
-      ...state,
-      activities: activities,
-      filter: action.filter,
-      active: action.active,
-    };
-  }
-};
-
-const filtersAreEqual = (f1, f2) => {
-  for (let key in f1) {
-    if (f1?.[key] !== f2?.[key]) {
-      return false;
-    }
-  }
-
-  return true;
-};
+import {
+  filterReducer,
+  initialActivityFilter,
+  filtersAreEqual,
+} from "../../utils/utils";
+import {
+  createOuting,
+  fetchActivities,
+  fetchChat,
+} from "../../utils/data-fetch";
 
 const Go = (props) => {
   const user = useSelector((state) => state.auth.user);
   const goUsers = useSelector((state) => state.go.outing.users);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const outings = useSelector((state) => state.auth.user.outings);
   const completedActivities = outings?.map((outing) => outing.activity._id);
   const goState = useSelector((state) => state.go);
   const activeOuting = useSelector((state) => state.modal.activeOuting);
   const showCreateOutingPopup = useSelector(
-    (state) => state.modal.showCreateOutingPopup
+    (state) => state.popup.showCreateOutingPopup
   );
   const [activityFilter, dispatchFilter] = useReducer(
     filterReducer,
     initialActivityFilter
   );
 
-  // Navigate to profile page if too many outings
-  const handleHideWarning = () => {
-    dispatch(popupActions.hidePopup());
-    navigate("/profile");
-  };
-
-  // Show warning popup if required by state
+  // Show newly created outing popup if required by state
   useEffect(() => {
     if (showCreateOutingPopup) {
       dispatch(popupActions.showPopup("outing-created"));
@@ -186,7 +98,7 @@ const Go = (props) => {
     }
     const onOutingCreate = (outing) => {
       dispatch(modalActions.setActiveOuting(outing));
-      dispatch(modalActions.setCreateOutingPopup(true));
+      dispatch(popupActions.setShowCreateOutingPopup(true));
       dispatch(modalActions.setSelector("outing-modal"));
       dispatch(modalActions.showModal());
       fetchChat(user._id, outing.chat, () => {});
@@ -194,20 +106,6 @@ const Go = (props) => {
 
     createOuting(goState.outing, user, onOutingCreate);
   };
-
-  const tooManyOutingsMessage = (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <b>You can only have up to 5 pending outings at a time.</b> <br />
-      Either complete or delete some outings before trying to create another
-      one. You can view your outings any time in the 'Profile' page by clicking
-      the following tab:
-      <img
-        className={styles.outingsIcon}
-        src={outingsBarIcon}
-        alt={"outings-icon"}
-      />
-    </div>
-  );
 
   const newOutingMessage = (
     <div className={styles.outingPopup}>
@@ -238,13 +136,6 @@ const Go = (props) => {
         filter={activityFilter.filter}
         dispatchFilter={dispatchFilter}
         initialActivityFilter={initialActivityFilter}
-      />
-      <WarningPopup
-        selector={"too-many-outings"}
-        header={"You have too many Pending Outings!"}
-        message={tooManyOutingsMessage}
-        ok={"Return to Profile page"}
-        okClick={handleHideWarning}
       />
       <WarningPopup
         selector={"outing-created"}

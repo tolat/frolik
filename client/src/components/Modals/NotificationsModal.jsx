@@ -11,6 +11,7 @@ import modalStyles from "./styles/SlideInModal.module.scss";
 import { hideModal } from "../../store/modal-actions";
 import { initializeUserPhotos } from "../../store/data-actions";
 import sampleNotificationIcon from "../../images/active.png";
+import { dataActions } from "../../store/data-slice";
 
 const NotificationsModal = (props) => {
   const dispatch = useDispatch();
@@ -83,6 +84,7 @@ const OutingInvite = (props) => {
   // Fetch outing from server if is hasn't been fetched
   useEffect(() => {
     const onComplete = (outing) => {
+      dispatch(dataActions.addInviteOuting(outing));
       const newOutings = user.outings.concat([outing]);
       const newUser = { ...user, outings: newOutings };
       initializeUserPhotos(newUser);
@@ -91,7 +93,7 @@ const OutingInvite = (props) => {
     if (!outing) {
       fetchOuting(outingID, user, onComplete);
     }
-  }, [outingID, user, outing]);
+  }, [outingID, user, outing, dispatch]);
 
   // Show outing modal
   const handleViewOuting = async () => {

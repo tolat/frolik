@@ -6,8 +6,7 @@ const initialState = {
   zIndex: "-1",
   opacity: "1",
   activeChat: false,
-  activeOuting: false,
-  createOutingPopup: false
+  activeOuting: false
 };
 const modalSlice = createSlice({
   name: "modal",
@@ -39,9 +38,6 @@ const modalSlice = createSlice({
     setActiveOuting(state,action){
       state.activeOuting = action.payload
     },
-    setCreateOutingPopup(state,action){
-      state.createOutingPopup = action.payload
-    }
   },
 });
 

@@ -19,11 +19,11 @@ const chatSlice = createSlice({
     },
     updateChat(state, action) {
       const oldChat = state.chats.find(
-        (c) => c._id === action.payload.chat._id
+        (c) => c._id === action.payload._id
       );
       const chatIndex = state.chats.indexOf(oldChat);
-      if (!oldChat || oldChat.touched !== action.payload.chat.touched) {
-        state.chats.splice(chatIndex, 1, action.payload.chat);
+      if (!oldChat || oldChat.touched !== action.payload.touched) {
+        state.chats.splice(chatIndex, 1, action.payload);
       }
     },
   },
