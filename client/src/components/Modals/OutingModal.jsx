@@ -56,7 +56,7 @@ const OutingModal = (props) => {
       // Fetch updated outing
       const onFetchOuting = (outing) => {
         dispatch(modalActions.setActiveOuting(outing));
-        dispatch(chatActions.updateChat(outing.chat))
+        fetchChat(user._id,outing.chat,()=>{})
       };
       fetchOuting(outing._id, user, onFetchOuting);
     };
