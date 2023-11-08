@@ -12,7 +12,7 @@ const FriendCard = memo(function FriendCard(props) {
   return (
     <div
       onClick={props.onClick}
-      style={props.style}
+      style={{ ...props.style, boxShadow: props.noShadow ? "none" : null }}
       className={styles.container}
     >
       <div className={styles.leftContainer}>

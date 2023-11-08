@@ -44,11 +44,10 @@ DONE
 notifications and accept outings
 DONE
 
-- Creat Outing Funcitonality. 
-If users leave an outing, their flake rating is affected IF the outing is completed
-Outings can only be completed if more than one person completes the outing
-
 - Need Delete and Leave Outing
+DONE
+
+- Need to finish notification on outing invite accepted or denied
 
 - Need completion object for outing
 

@@ -359,8 +359,6 @@ router.get(
     await user.populate("chats");
     await user.populate("chats.outing");
 
-    
-
     // For each chat, populate the outing users with stripped data
     let chatMembersMap = {};
     for (let chat of user.chats) {
@@ -386,6 +384,7 @@ router.post(
     outing.status = "Pending";
     outing.date_created = new Date(Date.now());
     outing.name = generateUniqueName();
+    outing.created_by = user;
     let invited = [];
     let users = [];
 
@@ -408,6 +407,7 @@ router.post(
     // Add a notification for all invited users
     for (u of invited) {
       const newNotification = {
+        id: Date.now() + Math.random(),
         type: "outing-invite",
         outing: newOuting._id.toString(),
         created: new Date(Date.now()),
@@ -616,12 +616,97 @@ router.get(
     }
 
     // Delete outing chat
-    await Chat.deleteOne({_id: outing.chat.toString()})
+    await Chat.deleteOne({ _id: outing.chat.toString() });
 
     // delete outing
     await Outing.deleteOne({ _id: outing._id.toString() });
 
     await populateUser(user);
+
+    res.send({ user });
+  })
+);
+
+router.get(
+  "/:id/notification/:notificationid/dismiss",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    const notifID = req.params.notificationid;
+    await populateUser(user);
+
+    // Remove specified notification
+    const oldNotification = user.notifications.find((n) => n.id == notifID);
+
+    // Return if no notification exists
+    if (!oldNotification) {
+      res.status(404).send("notification not found");
+      return;
+    }
+
+    user.notifications.splice(
+      user.notifications.map((n) => n.id).indexOf(notifID),
+      1
+    );
+
+    // Switch for different notification types
+    switch (oldNotification.type) {
+      case "outing-invite":
+        const outing = await Outing.findById(oldNotification.outing);
+        if (outing.invited.find((u) => u.toString() == user._id.toString())) {
+          // Remove user from outing invited list
+          outing.invited.splice(
+            outing.invited
+              .map((u) => u.toString())
+              .indexOf(user._id.toString()),
+            1
+          );
+          await outing.save();
+
+          // Make a new notification to push to outing creator
+          const outingCreator = await User.findById(outing.created_by);
+          const newNotification = {
+            id: Date.now() + Math.random(),
+            type: "outing-invite-update",
+            status: "denied",
+            userID: user._id.toString(),
+            outing: outing._id.toString(),
+            created: new Date(Date.now()),
+            active: true,
+          };
+          outingCreator.notifications.push(newNotification);
+          await outingCreator.save();
+        }
+        break;
+
+      default:
+        break;
+    }
+
+    await user.save();
+    await populateUser(user);
+
+    res.send({ user });
+  })
+);
+
+// Send back a user with stripped down data
+router.get(
+  "/stripped-user/:id",
+  reqAuthenticated,
+  tryCatch(async (req, res) => {
+    let user = await User.findById(req.params.id);
+
+    if (!user) {
+      res.status(404).send("User not found");
+      return;
+    }
+
+    user = await populateFriends([user._id]);
+    user = user[0];
+
+    console.log("USER:", user);
 
     res.send({ user });
   })

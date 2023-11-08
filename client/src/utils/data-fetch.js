@@ -385,3 +385,37 @@ export const deleteOuting = (user, outing, onComplete) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+export const dismissNotification = (user, notification, onComplete) => {
+  const requestConfig = {
+    url: `${getServer()}/user/${user._id}/notification/${
+      notification.id
+    }/dismiss`,
+  };
+
+  const handleResponse = (response) => {
+    const newUser = { ...response.user, friends: user.friends };
+    onComplete(newUser);
+  };
+
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};
+
+export const fetchStrippedUser = (userID, onComplete) => {
+  const requestConfig = {
+    url: `${getServer()}/user/stripped-user/${userID}`,
+  };
+
+  const handleResponse = (response) => {
+    onComplete(response.user);
+  };
+
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};

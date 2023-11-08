@@ -6,6 +6,7 @@ const OutingSchema = new Schema(
     activity: { type: Schema.Types.ObjectId, ref: "Activity" },
     name: String,
     date_created: Date,
+    created_by:{ type: Schema.Types.ObjectId, ref: "User" },
     date_completed: Date,
     users: [{ type: Schema.Types.ObjectId, ref: "User" }],
     invited: [{ type: Schema.Types.ObjectId, ref: "User" }],

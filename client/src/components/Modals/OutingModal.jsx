@@ -76,6 +76,7 @@ const OutingModal = (props) => {
     }
 
     joinOuting(user, outing, onComplete);
+    dispatch(popupActions.hidePopup())
   };
 
   const onOutingLeave = () => {
@@ -128,6 +129,21 @@ const OutingModal = (props) => {
     </div>
   );
 
+  const showConfirmOutingJoin = () => {
+    dispatch(popupActions.showPopup("confirm-join-outing"));
+  };
+
+  const confirmJoinOutingMessage = (
+    <div className={styles.warningContainer}>
+      <div className={styles.warningName}>{outing.name}</div>
+      <div className={styles.warningText}>
+        Once you join the Outing, it must be completed or deleted
+        in order to maintain your flake rating. Outings can only be 
+        deleted while there is <b>one member</b> in the members list.  
+      </div>
+    </div>
+  );
+
   return !outing || !userData ? null : (
     <ModalPortal>
       <WarningPopup
@@ -136,6 +152,17 @@ const OutingModal = (props) => {
         message={confirmDeleteOutingMessage}
         delete={"Delete"}
         deleteClick={onOutingDelete}
+        cancel={"Cancel"}
+        cancelClick={() => {
+          dispatch(popupActions.hidePopup());
+        }}
+      />
+      <WarningPopup
+        selector={"confirm-join-outing"}
+        header={"Confirm join Outing:"}
+        message={confirmJoinOutingMessage}
+        ok={"Join"}
+        okClick={onOutingJoin}
         cancel={"Cancel"}
         cancelClick={() => {
           dispatch(popupActions.hidePopup());
@@ -179,7 +206,7 @@ const OutingModal = (props) => {
 
           {completed || userFlaked ? null : (
             <SimpleButton
-              onClick={joining ? onOutingJoin : null}
+              onClick={joining ? showConfirmOutingJoin : null}
               className={styles.completedButton}
             >
               {joining ? "Join Outing" : "Mark Completed"}
