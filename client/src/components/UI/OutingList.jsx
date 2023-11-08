@@ -3,10 +3,14 @@ import OutingCard from "./OutingCard";
 import styles from "./styles/OutingList.module.scss";
 
 const OutingList = (props) => {
-  const user = useSelector(state=>state.auth.user)
-  const completed = user?.outings.filter((o) => o.status === "Completed");
-  const pending = user?.outings.filter((o) => o.status === "Pending");
-  
+  const user = useSelector((state) => state.auth.user);
+  const nonPending = user?.outings.filter(
+    (o) => o.status === "Completed" || o.flakes.find((id) => id === user._id)
+  );
+  const pending = user?.outings.filter(
+    (o) => o.status === "Pending" && !o.flakes.find((id) => id === user._id)
+  );
+
   return (
     <div className={styles.container}>
       {pending[0] && (
@@ -15,20 +19,17 @@ const OutingList = (props) => {
           <div className={styles.headingBlurb}>
             <b>You can have up to 5 pending outings at a time.</b>
             <br />
-            <br/>
+            <br />
           </div>
           {pending.map((o) => (
             <div key={Math.random()} className={styles.outingContainer}>
-              <OutingCard
-                outing={o}
-                user={user}
-              />
+              <OutingCard outing={o} user={user} />
             </div>
           ))}
         </div>
       )}
-      {completed[0] &&
-        completed.map((o) => (
+      {nonPending[0] &&
+        nonPending.map((o) => (
           <div key={Math.random()} className={styles.outingContainer}>
             <OutingCard
               setModalOuting={props.setModalOuting}

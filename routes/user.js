@@ -359,6 +359,8 @@ router.get(
     await user.populate("chats");
     await user.populate("chats.outing");
 
+    
+
     // For each chat, populate the outing users with stripped data
     let chatMembersMap = {};
     for (let chat of user.chats) {
@@ -612,6 +614,9 @@ router.get(
         .send("User is not unique member and cannot delete, they must leave.");
       return;
     }
+
+    // Delete outing chat
+    await Chat.deleteOne({_id: outing.chat.toString()})
 
     // delete outing
     await Outing.deleteOne({ _id: outing._id.toString() });

@@ -143,7 +143,6 @@ const Profile = (props) => {
             rating={user.flake}
           />
           <UserIcon
-            backerClassName={styles.iconBacker}
             sizeInRem={20}
             user={user}
             borderSizeInRem={"1.5"}

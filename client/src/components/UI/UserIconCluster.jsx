@@ -23,7 +23,6 @@ const UserIconCluster = (props) => {
         <UserIcon
           backer={true}
           pieShadow={props.pieShadow}
-          backerClassName={props.backerClassName}
           sizeInRem={props.sizeInRem}
           user={props.users && props.users[0]}
           borderSizeInRem={props.borderSizeInRem}
@@ -33,7 +32,6 @@ const UserIconCluster = (props) => {
           <UserIcon
             backer={true}
             pieShadow={props.pieShadow}
-            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginRight: `${props.sizeInRem - props.sizeInRem / mag21}rem`,
@@ -45,7 +43,6 @@ const UserIconCluster = (props) => {
           <UserIcon
             backer={true}
             pieShadow={props.pieShadow}
-            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginLeft: `${props.sizeInRem - props.sizeInRem / mag22}rem`,
@@ -61,7 +58,6 @@ const UserIconCluster = (props) => {
           <UserIcon
             backer={true}
             pieShadow={props.pieShadow}
-            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginRight: `${props.sizeInRem - props.sizeInRem / mag31}rem`,
@@ -76,7 +72,6 @@ const UserIconCluster = (props) => {
           <UserIcon
             backer={true}
             pieShadow={props.pieShadow}
-            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginLeft: `${props.sizeInRem - props.sizeInRem / mag32}rem`,
@@ -91,7 +86,6 @@ const UserIconCluster = (props) => {
           <UserIcon
             backer={true}
             pieShadow={props.pieShadow}
-            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginLeft: `${
@@ -109,7 +103,6 @@ const UserIconCluster = (props) => {
           <UserIcon
             backer={true}
             pieShadow={props.pieShadow}
-            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginRight: `${
@@ -126,7 +119,6 @@ const UserIconCluster = (props) => {
           <UserIcon
             backer={true}
             pieShadow={props.pieShadow}
-            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginLeft: `${props.sizeInRem - props.sizeInRem / mag43}rem`,
@@ -139,7 +131,6 @@ const UserIconCluster = (props) => {
           <UserIcon
             backer={true}
             pieShadow={props.pieShadow}
-            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginLeft: `${
@@ -157,7 +148,6 @@ const UserIconCluster = (props) => {
           <UserIcon
             backer={true}
             pieShadow={props.pieShadow}
-            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginRight: `${props.sizeInRem - props.sizeInRem / mag44}rem`,
@@ -175,7 +165,6 @@ const UserIconCluster = (props) => {
           <UserIcon
             backer={true}
             pieShadow={props.pieShadow}
-            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginRight: `${
@@ -204,7 +193,6 @@ const UserIconCluster = (props) => {
           <UserIcon
             backer={true}
             pieShadow={props.pieShadow}
-            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginLeft: `${
@@ -222,7 +210,6 @@ const UserIconCluster = (props) => {
           <UserIcon
             backer={true}
             pieShadow={props.pieShadow}
-            backerClassName={props.backerClassName}
             style={{
               position: "absolute",
               marginRight: `${props.sizeInRem - props.sizeInRem / mag44}rem`,

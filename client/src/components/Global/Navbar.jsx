@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom"; // Import Link from react-router-dom
+import { NavLink } from "react-router-dom"; // Import Link from react-router-dom
 import styles from "./styles/Navbar.module.scss";
 import { fetchLogout } from "../../store/auth-actions";
 import NavButton from "../UI/NavButton";

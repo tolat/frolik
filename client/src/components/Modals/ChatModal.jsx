@@ -7,7 +7,6 @@ import sendIcon from "../../images/send.png";
 import { useEffect, useRef } from "react";
 import { socket } from "../../socket";
 import { sendChatMessage } from "../../store/chat-actions";
-import { fetchChat } from "../../utils/data-fetch";
 
 const bubbleColours = [
   "rgb(247, 226, 250)",
@@ -24,7 +23,7 @@ const ChatModal = (props) => {
   const modalStyle = { display: modalDisplay };
   const chatState = useSelector((state) => state.chat.chats);
   const activeChat = useSelector((state) => state.modal.activeChat);
-  const chat = chatState.find((c) => c._id === activeChat._id);
+  const chat = chatState.find((c) => c._id === activeChat?._id);
   const memberNames = chat?.outing?.users.map((u) => u.first_name);
   const membersString = chat && genMembersString(memberNames);
   const messages = chat?.messages;
@@ -61,7 +60,11 @@ const ChatModal = (props) => {
     chatContainerElt.scrollTop = chatContainerElt.scrollHeight;
   };
 
-  return !chat ? null : (
+  return !chat ? (
+    modalState.selector === 'chat-modal' ? (
+      <h1>Loading Chat..</h1>
+    ) : null
+  ) : (
     <ModalPortal>
       <div style={modalStyle} className={`${styles.container} noscroll`}>
         <div className={styles.header}>
@@ -78,7 +81,6 @@ const ChatModal = (props) => {
 
           <div className={styles.headerRightContainer}>
             <UserIconCluster
-              backerClassName={styles.iconBacker}
               users={chat.outing.users}
               sizeInRem={7}
               borderSizeInRem={0.8}

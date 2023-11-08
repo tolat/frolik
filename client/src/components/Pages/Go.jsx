@@ -159,7 +159,6 @@ const Go = (props) => {
             />
           </button>
           <UserIconCluster
-            backerClassName={styles.iconBacker}
             users={goUsers}
             sizeInRem={20}
             borderSizeInRem={1.5}

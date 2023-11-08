@@ -83,6 +83,7 @@ FIXED
 
 - if a user joins an outing while other users are in chat, it crashes the app for those
 other users. 
+FIXED
 
 - user pictures for new outings just accepted don't load. 
 FIXED

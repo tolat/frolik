@@ -22,6 +22,7 @@ import {
 import { authActions } from "../../store/auth-slice";
 import { popupActions } from "../../store/popup-slice";
 import WarningPopup from "../Popups/WarningPopup";
+import flakeIcon from "../../images/snowflake.png";
 
 const OutingModal = (props) => {
   const modalState = useSelector((state) => state.modal);
@@ -38,6 +39,7 @@ const OutingModal = (props) => {
   const outingChat = chatsState.find((c) => c._id === outing?.chat);
   const joining = !!outing?.invited?.find((i) => i._id === user?._id);
   const isOnlyUser = outing?.users?.length < 2;
+  const userFlaked = outing?.flakes?.find((id) => id === user._id);
   const activityIsCompletedType = user.outings?.find(
     (o) => o?.activity?._id === outing?.activity?._id
   );
@@ -163,7 +165,7 @@ const OutingModal = (props) => {
           </div>
         </div>
         <div className={styles.sideBySide}>
-          {joining ? null : (
+          {joining || userFlaked ? null : (
             <SimpleButton
               onClick={onShowChatModal}
               className={styles.chatButton}
@@ -171,11 +173,11 @@ const OutingModal = (props) => {
               Chat
             </SimpleButton>
           )}
-          {!joining && !completed ? (
+          {!joining && !completed && !userFlaked ? (
             <div className={styles.buttonSpacer}></div>
           ) : null}
 
-          {completed ? null : (
+          {completed || userFlaked ? null : (
             <SimpleButton
               onClick={joining ? onOutingJoin : null}
               className={styles.completedButton}
@@ -184,6 +186,14 @@ const OutingModal = (props) => {
             </SimpleButton>
           )}
         </div>
+        {userFlaked && (
+          <Fragment>
+            <div className={styles.flakeContainer}>
+              <img className={styles.flakeIcon} src={flakeIcon} alt={"flake"} />
+              <h1 className={styles.flakeText}>You flaked out!</h1>
+            </div>
+          </Fragment>
+        )}
         <h2 className={styles.sectionHeader}>
           {" "}
           <img

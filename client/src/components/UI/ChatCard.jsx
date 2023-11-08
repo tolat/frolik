@@ -26,7 +26,6 @@ const ChatCard = (props) => {
     <div onClick={handleClick} style={props.style} className={styles.container}>
       <div className={styles.iconClusterContainer}>
         <UserIconCluster
-          backerClassName={styles.iconBacker}
           users={chat.outing.users}
           sizeInRem={7}
           borderSizeInRem={0.8}
