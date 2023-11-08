@@ -485,6 +485,7 @@ router.get(
 router.get(
   "/:id/outing/:outingid/join",
   reqAuthenticated,
+  sameUserOnly,
   tryCatch(async (req, res) => {
     const user = await User.findById(req.params.id);
     const outing = await Outing.findById(req.params.outingid);
@@ -532,12 +533,92 @@ router.get(
           .indexOf(user._id.toString()),
         1
       );
-     
     }
     await outing.save();
 
     await populateUser(user);
     res.send({ user, outing });
+  })
+);
+
+router.get(
+  "/:id/outing/:outingid/leave",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    const outing = await Outing.findById(req.params.outingid);
+    await outing.populate("users");
+
+    // If outing does not exists send 404
+    if (!user || !outing) {
+      res.status(404).send("User was not invited to this outing");
+      return;
+    }
+
+    // If user is not in the members list, they cannot leave.
+    if (!outing.users.find((u) => u._id.toString() == user._id.toString())) {
+      res.status(406).send("User was not a member of this outing");
+      return;
+    }
+
+    // They also cannot leave if they are the only member
+    if (outing.users.length <= 1) {
+      res
+        .status(406)
+        .send("User is unique member and cannot leave, they must delete.");
+      return;
+    }
+
+    // Add user to outing flakes and remove user form outing members
+    outing.flakes.push(user);
+    outing.users.splice(
+      outing.users.map((u) => u._id.toString()).indexOf(user._id.toString()),
+      1
+    );
+    await outing.save();
+
+    await populateUser(user);
+
+    res.send({ user });
+  })
+);
+
+router.get(
+  "/:id/outing/:outingid/delete",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    const outing = await Outing.findById(req.params.outingid);
+    await outing.populate("users");
+
+    // If outing does not exists send 404
+    if (!user || !outing) {
+      res.status(404).send("User was not invited to this outing");
+      return;
+    }
+
+    // If user is not in the members list, they cannot delete.
+    if (!outing.users.find((u) => u._id.toString() == user._id.toString())) {
+      res.status(406).send("User was not a member of this outing");
+      return;
+    }
+
+    // They also cannot delete if there are more than 1 members
+    if (outing.users.length > 1) {
+      res
+        .status(406)
+        .send("User is not unique member and cannot delete, they must leave.");
+      return;
+    }
+
+    // delete outing
+    await Outing.deleteOne({ _id: outing._id.toString() });
+
+    await populateUser(user);
+
+    res.send({ user });
   })
 );
 

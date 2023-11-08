@@ -5,11 +5,11 @@ import styles from "./styles/WarningPopup.module.scss";
 
 const WarningPopup = (props) => {
   const popupState = useSelector((state) => state.popup);
-  const showPopup = popupState.selector === props.selector
-  const popupDisplay =  showPopup? "flex" : "none";
+  const showPopup = popupState.selector === props.selector;
+  const popupDisplay = showPopup ? "flex" : "none";
 
   return (
-    <Popup style={{display: popupDisplay }} showPopup={showPopup}>
+    <Popup style={{ display: popupDisplay }} showPopup={showPopup}>
       <div onLoad={props.onLoad} id={props.id} className={styles.container}>
         <div className={styles.header}>{props.header}</div>
         <div className={styles.message}>{props.message}</div>
@@ -19,7 +19,7 @@ const WarningPopup = (props) => {
               {props.ok}
             </SimpleButton>
           ) : null}
-          {props.ok && props.cancel ? (
+          {props.ok && (props.cancel || props.delete) ? (
             <div className={styles.buttonSpacer} />
           ) : null}
           {props.cancel ? (
@@ -28,6 +28,17 @@ const WarningPopup = (props) => {
               className={styles.cancelButton}
             >
               {props.cancel}
+            </SimpleButton>
+          ) : null}
+          {(props.ok || props.cancel) && props.delete ? (
+            <div className={styles.buttonSpacer} />
+          ) : null}
+          {props.delete ? (
+            <SimpleButton
+              onClick={props.deleteClick}
+              className={styles.deleteButton}
+            >
+              {props.delete}
             </SimpleButton>
           ) : null}
         </div>

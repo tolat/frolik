@@ -20,7 +20,6 @@ const Navbar = (props) => {
   const authState = useSelector((state) => state.auth);
   const modalState = useSelector((state) => state.modal);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const makeActive = (navData) =>
     navData.isActive ? styles.activeLink : "none";
 
@@ -55,7 +54,6 @@ const Navbar = (props) => {
   // Navigate to profile page if too many outings
   const handleHideWarning = () => {
     dispatch(popupActions.hidePopup());
-    navigate("/profile");
   };
 
   return (
@@ -69,7 +67,7 @@ const Navbar = (props) => {
             selector={"too-many-outings"}
             header={"You have too many Pending Outings!"}
             message={tooManyOutingsMessage}
-            ok={"Return to Profile page"}
+            ok={"OK"}
             okClick={handleHideWarning}
           />
         </Fragment>

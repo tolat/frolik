@@ -12,10 +12,16 @@ import FriendCard from "../UI/FriendCard";
 import ActivityCard from "../UI/ActivityCard";
 import { modalActions } from "../../store/modal-slice";
 import { hideModal } from "../../store/modal-actions";
-import { fetchChat, fetchOuting, joinOuting } from "../../utils/data-fetch";
+import {
+  deleteOuting,
+  fetchChat,
+  fetchOuting,
+  joinOuting,
+  leaveOuting,
+} from "../../utils/data-fetch";
 import { authActions } from "../../store/auth-slice";
 import { popupActions } from "../../store/popup-slice";
-import { chatActions } from "../../store/chat-slice";
+import WarningPopup from "../Popups/WarningPopup";
 
 const OutingModal = (props) => {
   const modalState = useSelector((state) => state.modal);
@@ -31,6 +37,7 @@ const OutingModal = (props) => {
   const chatsState = useSelector((state) => state.chat.chats);
   const outingChat = chatsState.find((c) => c._id === outing?.chat);
   const joining = !!outing?.invited?.find((i) => i._id === user?._id);
+  const isOnlyUser = outing?.users?.length < 2;
   const activityIsCompletedType = user.outings?.find(
     (o) => o?.activity?._id === outing?.activity?._id
   );
@@ -56,11 +63,11 @@ const OutingModal = (props) => {
       // Fetch updated outing
       const onFetchOuting = (outing) => {
         dispatch(modalActions.setActiveOuting(outing));
-        fetchChat(user._id,outing.chat,()=>{})
+        fetchChat(user._id, outing.chat, () => {});
       };
       fetchOuting(outing._id, user, onFetchOuting);
     };
-    // Don't join if user has too many penidng outings
+    // Don't join if user has too many pending outings
     if (user.outings.filter((o) => o.status === "Pending").length >= 5) {
       dispatch(popupActions.showPopup("too-many-outings"));
       return;
@@ -69,8 +76,80 @@ const OutingModal = (props) => {
     joinOuting(user, outing, onComplete);
   };
 
+  const onOutingLeave = () => {
+    const onComplete = (user) => {
+      dispatch(authActions.setUser(user));
+      hideModal();
+    };
+
+    leaveOuting(user, outing, onComplete);
+    dispatch(popupActions.hidePopup());
+  };
+
+  const onOutingDelete = () => {
+    const onComplete = (user) => {
+      dispatch(authActions.setUser(user));
+      hideModal();
+    };
+
+    deleteOuting(user, outing, onComplete);
+    dispatch(popupActions.hidePopup());
+  };
+
+  const showConfirmOutingDelete = () => {
+    dispatch(popupActions.showPopup("confirm-delete-outing"));
+  };
+
+  const confirmDeleteOutingMessage = (
+    <div className={styles.warningContainer}>
+      <div className={styles.warningName}>{outing.name}</div>
+      <div className={styles.warningText}>
+        Once you have deleted the Outing, it will no longer be joinable by any
+        invitees. Deleting this Outing <b>will not</b> affect your flake rating.
+        This action is permanent.
+      </div>
+    </div>
+  );
+
+  const showConfirmOutingLeave = () => {
+    dispatch(popupActions.showPopup("confirm-leave-outing"));
+  };
+
+  const confirmLeaveOutingMessage = (
+    <div className={styles.warningContainer}>
+      <div className={styles.warningName}>{outing.name}</div>
+      <div className={styles.warningText}>
+        Once you leave the Outing, it may still be completed by the other
+        members. If it is, you <b>will negatively affect</b>affect your flake
+        rating. This action is permanent (you cannot re-join after leaving).
+      </div>
+    </div>
+  );
+
   return !outing || !userData ? null : (
     <ModalPortal>
+      <WarningPopup
+        selector={"confirm-delete-outing"}
+        header={"Confirm delete Outing:"}
+        message={confirmDeleteOutingMessage}
+        delete={"Delete"}
+        deleteClick={onOutingDelete}
+        cancel={"Cancel"}
+        cancelClick={() => {
+          dispatch(popupActions.hidePopup());
+        }}
+      />
+      <WarningPopup
+        selector={"confirm-leave-outing"}
+        header={"Confirm leave Outing:"}
+        message={confirmLeaveOutingMessage}
+        delete={"Leave"}
+        deleteClick={onOutingLeave}
+        cancel={"Cancel"}
+        cancelClick={() => {
+          dispatch(popupActions.hidePopup());
+        }}
+      />
       <div style={modalStyle} className={styles.container}>
         <div className={styles.header}>
           <div
@@ -170,12 +249,19 @@ const OutingModal = (props) => {
           </Fragment>
         ) : null}
 
-        {outing.status !== "Completed" && !joining ? (
+        {outing.status !== "Completed" &&
+        !joining &&
+        !outing.flakes.find((id) => id === user._id) ? (
           <Fragment>
-            <SimpleButton className={styles.leaveButton}>
-              {outing.users.length < 2 ? "Delete Outing" : "Leave Outing"}
+            <SimpleButton
+              onClick={
+                isOnlyUser ? showConfirmOutingDelete : showConfirmOutingLeave
+              }
+              className={styles.leaveButton}
+            >
+              {isOnlyUser ? "Delete Outing" : "Leave Outing"}
             </SimpleButton>
-            {outing.users.length < 2 ? (
+            {isOnlyUser ? (
               <div className={styles.deleteHelp}>
                 You can delete the outing becauase you are the only member.
                 Deleting the outing <b>will not negatively affect</b> your flake
