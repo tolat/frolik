@@ -8,11 +8,15 @@ import bell from "../../images/bell.png";
 import { hideModal } from "../../store/modal-actions";
 import NotificationsModal from "../Modals/NotificationsModal";
 import { modalActions } from "../../store/modal-slice";
+import OutingModal from "../Modals/OutingModal";
+import ChatModal from "../Modals/ChatModal";
 
 const Navbar = (props) => {
   const user = useSelector((state) => state.auth.user);
   const authState = useSelector((state) => state.auth);
   const modalState = useSelector((state) => state.modal);
+  const activeChat = useSelector((state) => state.modal.activeChat);
+  const activeOuting = useSelector((state) => state.modal.activeOuting);
   const dispatch = useDispatch();
   const makeActive = (navData) =>
     navData.isActive ? styles.activeLink : "none";
@@ -34,6 +38,9 @@ const Navbar = (props) => {
   return (
     <div className={styles.header}>
       {user && <NotificationsModal />}
+      {user && <ChatModal chat={activeChat} />}
+      {user && <OutingModal outing={activeOuting} />}
+
       <div className={styles.innerContainer}>
         <NavLink className={(navData) => makeActive(navData)} to="/go">
           <div className={styles.goButton}>

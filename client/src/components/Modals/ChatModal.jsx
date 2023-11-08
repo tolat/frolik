@@ -20,22 +20,21 @@ const bubbleColours = [
 const ChatModal = (props) => {
   const user = useSelector((state) => state.auth.user);
   const modalState = useSelector((state) => state.modal);
-  const chatsState = useSelector((state) => state.chat.chats);
-  const modalDisplay = modalState.selector === props.selector ? "flex" : "none";
+  const modalDisplay = modalState.selector === "chat-modal" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
-  const chat = chatsState.find((c) => c._id === props.chat?._id);
-  const memberNames = !!chat && chat.outing.users.map((u) => u.first_name);
-  const membersString = genMembersString(memberNames);
+  const chat = useSelector((state) => state.modal.activeChat);
+  const memberNames = chat?.outing?.users.map((u) => u.first_name);
+  const membersString = chat && genMembersString(memberNames);
   const messages = chat?.messages;
   const composerRef = useRef();
-
-  console.log("SELECTOR:",props.selector)
 
   // Fetch chat from server just to make sure no messages are missed
   // which can happen if chat modal is closed and message is sent while
   // user is on chat page. updates the chat state once chat is fetched.
   useEffect(() => {
-    fetchChat(user._id, chat?._id);
+    if (chat) {
+      fetchChat(user._id, chat._id);
+    }
   }, [user._id, chat]);
 
   // Connect to the websocket for chat
@@ -51,6 +50,7 @@ const ChatModal = (props) => {
     };
   }, [chat]);
 
+  // Send Message
   const handleSendMessage = () => {
     const text = composerRef.current.value;
     if (!text || text === "") return;
@@ -62,8 +62,6 @@ const ChatModal = (props) => {
       sent: Date.now(),
     };
 
-    // Update to this chat in chat store to add message and
-    // emit a message-sent event over the web socket connection
     sendChatMessage(newMessage, chat);
     composerRef.current.value = "";
     let chatContainerElt = document.getElementById("chat-container");

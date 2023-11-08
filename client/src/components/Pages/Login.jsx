@@ -10,9 +10,7 @@ import SimpleInput from "../UI/SimpleInput";
 import CreateAccountModal from "../Modals/CreateAccountModal";
 import SimpleButton from "../UI/SimpleButton";
 import { modalActions } from "../../store/modal-slice";
-import { authActions } from "../../store/auth-slice";
-import { initializeUserPhotos } from "../../store/data-actions";
-import { fetchChats, fetchGobals } from "../../utils/data-fetch";
+import { fetchGobals } from "../../utils/data-fetch";
 
 function Login() {
   const usernameRef = useRef();

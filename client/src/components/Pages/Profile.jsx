@@ -23,12 +23,10 @@ import { useNavigate } from "react-router-dom";
 import IconButton from "../UI/IconButton";
 import chatIcon from "../../images/chat.png";
 import getOutIcon from "../../images/air-balloon.png";
-import OutingModal from "../Modals/OutingModal";
 import SimpleSearch from "../UI/SimpleSearch";
 import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
 import outingsBarIcon from "../../images/outingsToolbar.png";
-
 
 const sliderIcons = [
   {
@@ -62,7 +60,6 @@ const Profile = (props) => {
   const userPhotos = getPhotosFromState(userData);
   const userStatus = user?.status?.status;
   const friendCardButtonStyle = { width: "3rem", height: "3rem" };
-  const [modalOuting, setModalOuting] = useState(false);
 
   const onBalloonIconClick = () => {
     console.log("click");
@@ -127,7 +124,6 @@ const Profile = (props) => {
     dispatch(popupActions.hidePopup());
   };
 
-
   return (
     <div className={styles.container}>
       <EditProfileModal />
@@ -138,7 +134,6 @@ const Profile = (props) => {
         ok={"OK"}
         okClick={handleHideWarning}
       />
-      <OutingModal selector={"view-outing"} outing={modalOuting} />
       <div className={styles.nonMediaSection}>
         <div className={styles.profilePicContainer}>
           <StatIcon
@@ -232,7 +227,7 @@ const Profile = (props) => {
             style={{ marginTop: "1rem" }}
             placeholder={"Search Outings"}
           />
-          <OutingList setModalOuting={setModalOuting} user={user} />
+          <OutingList />
         </Fragment>
       ) : (
         <Fragment>

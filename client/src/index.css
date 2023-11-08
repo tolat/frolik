@@ -42,14 +42,12 @@ a:link {
   text-decoration: none;
 }
 
-#popup{
-  position: absolute;
+#popup {
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 4;
   width: 100vw;
   height: 100vh;
   display: none;
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out;
 }

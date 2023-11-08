@@ -9,11 +9,11 @@ const ChatCard = (props) => {
   const dispatch = useDispatch();
   const memberNames = !chat
     ? ""
-    : genMembersString(chat.outing.users.map((u) => u.first_name));
+    : genMembersString(chat?.outing?.users.map((u) => u.first_name));
 
   const handleClick = () => {
-    props.setActiveChat(chat);
-    dispatch(modalActions.setSelector(`chatcard-chat`));
+    dispatch(modalActions.setActiveChat(props.chat));
+    dispatch(modalActions.setSelector("chat-modal"));
     dispatch(modalActions.showModal());
   };
 

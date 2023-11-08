@@ -4,7 +4,10 @@ const initialState = {
   selector: "none",
   marginLeft: "50%",
   zIndex: "-1",
-  opacity: "1"
+  opacity: "1",
+  activeChat: false,
+  activeOuting: false,
+  createOutingPopup: false
 };
 const modalSlice = createSlice({
   name: "modal",
@@ -19,7 +22,7 @@ const modalSlice = createSlice({
     showModal(state) {
       if (state.marginLeft === "50%") {
         state.marginLeft = "0%";
-        state.zIndex = "1"
+        state.zIndex = "1";
       }
     },
     hideModal(state) {
@@ -27,8 +30,17 @@ const modalSlice = createSlice({
         state.marginLeft = "50%";
       }
     },
-    setOpacity(state, action){
-      state.opacity = action.payload
+    setOpacity(state, action) {
+      state.opacity = action.payload;
+    },
+    setActiveChat(state, action){
+      state.activeChat = action.payload
+    },
+    setActiveOuting(state,action){
+      state.activeOuting = action.payload
+    },
+    setCreateOutingPopup(state,action){
+      state.createOutingPopup = action.payload
     }
   },
 });

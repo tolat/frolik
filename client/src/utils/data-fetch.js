@@ -324,6 +324,7 @@ export const fetchOuting = (outingID, user, onComplete) => {
   };
 
   const handleResponse = (response) => {
+    store.dispatch(dataActions.addInviteOuting(response.outing));
     onComplete(response.outing);
   };
 

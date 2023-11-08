@@ -4,16 +4,13 @@ import { pageRouteLoader } from "../../utils/utils";
 import ChatCard from "../UI/ChatCard";
 import SimpleSearch from "../UI/SimpleSearch";
 import SimpleButton from "../UI/SimpleButton";
-import ChatModal from "../Modals/ChatModal";
-import { memo, useState } from "react";
+import { memo } from "react";
 
 const Chat = memo((props) => {
   const chats = useSelector((state) => state.chat.chats);
-  const [activeChat, setActiveChat] = useState(false);
 
   return (
     <div className={styles.container}>
-      <ChatModal selector={"chatcard-chat"} chat={activeChat} />
       <h1>Chats</h1>
       <div className={styles.upperContainer}>
         <SimpleSearch placeholder={"Search chats"} />
@@ -24,7 +21,7 @@ const Chat = memo((props) => {
       ) : (
         <div className={styles.chatsContainer}>
           {chats.map((c) => (
-            <ChatCard setActiveChat={setActiveChat} key={c._id} chat={c} />
+            <ChatCard key={c._id} chat={c} />
           ))}
         </div>
       )}

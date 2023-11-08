@@ -2,10 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ModalPortal from "./ModalPortal";
 import styles from "./styles/OutingModal.module.scss";
 import SimpleButton from "../UI/SimpleButton";
-import WarningPopup from "../Popups/WarningPopup";
-import outingsBarIcon from "../../images/outingsToolbar.png";
-import { Fragment, useEffect, useState } from "react";
-import { popupActions } from "../../store/popup-slice";
+import { Fragment } from "react";
 import PhotoGrid from "../UI/PhotoGrid";
 import photosIcon from "../../images/photos.png";
 import activityIcon from "../../images/activity.png";
@@ -13,26 +10,22 @@ import membersIcon from "../../images/people.png";
 import inviteIcon from "../../images/invite.png";
 import FriendCard from "../UI/FriendCard";
 import ActivityCard from "../UI/ActivityCard";
-import ChatModal from "./ChatModal";
 import { modalActions } from "../../store/modal-slice";
 import { hideModal } from "../../store/modal-actions";
 import { fetchChat, joinOuting } from "../../utils/data-fetch";
 import { authActions } from "../../store/auth-slice";
-import { initializeUserPhotos } from "../../store/data-actions";
 
 const OutingModal = (props) => {
   const modalState = useSelector((state) => state.modal);
-  const modalDisplay = modalState.selector === props.selector ? "flex" : "none";
+  const modalDisplay = modalState.selector === "outing-modal" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
-  const showInfoPupup = props.showInfoPopup;
   const user = useSelector((state) => state.auth.user);
   const userData = useSelector((state) => state.data.users[user._id]);
   const dispatch = useDispatch();
-  const outing =
-    user?.outings?.find((o) => o._id === props.outing._id) || props.outing;
+  const outing = useSelector((state) => state.modal.activeOuting);
   const globals = useSelector((state) => state.auth.globals);
-  const [categoryColor, setCategoryColor] = useState(null);
-  const [completed, setCompleted] = useState(false);
+  const categoryColor = globals?.categoryColorMap[outing?.activity?.category];
+  const completed = outing?.status === "Completed";
   const chatsState = useSelector((state) => state.chat.chats);
   const outingChat = chatsState.find((c) => c._id === outing?.chat);
   const joining = !!outing?.invited?.find((i) => i._id === user?._id);
@@ -43,48 +36,12 @@ const OutingModal = (props) => {
     (key) => userData?.photos?.find((p) => p.key === key).photo
   );
 
-  // Show the info popup if this is the first time opening
-  useEffect(() => {
-    if (showInfoPupup && modalDisplay === "flex") {
-      dispatch(popupActions.showPopup("outing-created"));
-    }
-
-    return () => dispatch(popupActions.hidePopup())
-  }, [showInfoPupup, dispatch, modalDisplay]);
-
-  // Set categoryColour
-  useEffect(() => {
-    if (outing && globals && globals.categoryColorMap) {
-      setCategoryColor(globals.categoryColorMap[outing?.activity.category]);
-      setCompleted(outing?.status === "Completed");
-    }
-  }, [outing, globals]);
-
-  const newOutingMessage = (
-    <div className={styles.outingPopup}>
-      <div className={styles.outingCreatedName}>{outing?.name}</div>
-      An invite has been sent to the other users. You can view this outing any
-      time on the Profile page under the following tab:
-      <img
-        className={styles.outingsIcon}
-        src={outingsBarIcon}
-        alt={"outings-icon"}
-      />
-      <div>
-        A new chat for this outing has also been created! When others accept the
-        Outing they will be added to the chat.
-      </div>
-    </div>
-  );
-
-  const onPopupOk = () => {
-    dispatch(popupActions.hidePopup());
-  };
-
+  // Handle the chat modal being shown
   const onShowChatModal = () => {
     const showChat = async () => {
       await hideModal();
-      dispatch(modalActions.setSelector("view-outing-chat"));
+      dispatch(modalActions.setActiveChat(outingChat));
+      dispatch(modalActions.setSelector("chat-modal"));
       dispatch(modalActions.showModal());
     };
     fetchChat(user._id, outing?.chat, showChat);
@@ -99,14 +56,6 @@ const OutingModal = (props) => {
 
   return !outing || !userData ? null : (
     <ModalPortal>
-      <ChatModal selector={"view-outing-chat"} chat={outingChat} />
-      <WarningPopup
-        selector={"outing-created"}
-        header={"Your new outing is called:"}
-        message={newOutingMessage}
-        ok={"OK"}
-        okClick={onPopupOk}
-      />
       <div style={modalStyle} className={styles.container}>
         <div className={styles.header}>
           <div

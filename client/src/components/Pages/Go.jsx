@@ -8,7 +8,11 @@ import editIcon from "../../images/edit.png";
 import plusIcon from "../../images/plus.png";
 import EditUsersModal from "../Modals/EditUsersModal";
 import UserIconCluster from "../UI/UserIconCluster";
-import { createOuting, fetchActivities } from "../../utils/data-fetch";
+import {
+  createOuting,
+  fetchActivities,
+  fetchChat,
+} from "../../utils/data-fetch";
 import ActivityCard from "../UI/ActivityCard";
 import FilterActivitiesModal from "../Modals/FilterActivitiesModal";
 import balloonIcon from "../../images/air-balloon-light.png";
@@ -19,9 +23,8 @@ import store from "../../store";
 import { goActions } from "../../store/go-slice";
 import SimpleSearch from "../UI/SimpleSearch";
 import WarningPopup from "../Popups/WarningPopup";
-import { redirectDocument, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import outingsBarIcon from "../../images/outingsToolbar.png";
-import OutingModal from "../Modals/OutingModal";
 import { popupActions } from "../../store/popup-slice";
 import completeIcon from "../../images/complete.png";
 import featuredIcon from "../../images/feature.png";
@@ -119,18 +122,27 @@ const Go = (props) => {
   const outings = useSelector((state) => state.auth.user.outings);
   const completedActivities = outings?.map((outing) => outing.activity._id);
   const goState = useSelector((state) => state.go);
+  const activeOuting = useSelector((state) => state.modal.activeOuting);
+  const showCreateOutingPopup = useSelector(
+    (state) => state.modal.showCreateOutingPopup
+  );
   const [activityFilter, dispatchFilter] = useReducer(
     filterReducer,
     initialActivityFilter
   );
-  const [modalOuting, setModalOuting] = useState(false);
-  const [showInfoPopup, setShowInfoPopup] = useState(false);
 
   // Navigate to profile page if too many outings
   const handleHideWarning = () => {
     dispatch(popupActions.hidePopup());
     navigate("/profile");
   };
+
+  // Show warning popup if required by state
+  useEffect(() => {
+    if (showCreateOutingPopup) {
+      dispatch(popupActions.showPopup("outing-created"));
+    }
+  }, [showCreateOutingPopup, dispatch]);
 
   // Get all activities
   useEffect(() => {
@@ -169,17 +181,17 @@ const Go = (props) => {
   // Create Pending outing for all added users
   const handleCreateOuting = () => {
     if (user.outings.filter((o) => o.status === "Pending").length > 4) {
-      console.log("CREATING OUTING");
       dispatch(popupActions.showPopup("too-many-outings"));
       return;
     }
     const onOutingCreate = (outing) => {
-      setModalOuting(outing);
-      setShowInfoPopup(true);
-      dispatch(modalActions.setSelector("view-outing"));
+      dispatch(modalActions.setActiveOuting(outing));
+      dispatch(modalActions.setCreateOutingPopup(true));
+      dispatch(modalActions.setSelector("outing-modal"));
       dispatch(modalActions.showModal());
+      fetchChat(user._id, outing.chat, () => {});
     };
-  
+
     createOuting(goState.outing, user, onOutingCreate);
   };
 
@@ -197,15 +209,31 @@ const Go = (props) => {
     </div>
   );
 
+  const newOutingMessage = (
+    <div className={styles.outingPopup}>
+      <div className={styles.outingCreatedName}>{activeOuting?.name}</div>
+      An invite has been sent to the other users. You can view this outing any
+      time on the Profile page under the following tab:
+      <img
+        className={styles.outingsIcon}
+        src={outingsBarIcon}
+        alt={"outings-icon"}
+      />
+      <div>
+        A new chat for this outing has also been created! When others accept the
+        Outing they will be added to the chat.
+      </div>
+    </div>
+  );
+
+  const onPopupOk = () => {
+    dispatch(popupActions.hidePopup());
+  };
+
   return (
     <Fragment>
       <AddUserModal />
       <EditUsersModal />
-      <OutingModal
-        selector={"view-outing"}
-        showInfoPopup={showInfoPopup}
-        outing={modalOuting}
-      />
       <FilterActivitiesModal
         filter={activityFilter.filter}
         dispatchFilter={dispatchFilter}
@@ -217,6 +245,13 @@ const Go = (props) => {
         message={tooManyOutingsMessage}
         ok={"Return to Profile page"}
         okClick={handleHideWarning}
+      />
+      <WarningPopup
+        selector={"outing-created"}
+        header={"Your new outing is called:"}
+        message={newOutingMessage}
+        ok={"OK"}
+        okClick={onPopupOk}
       />
       <div className={styles.container}>
         <div className={styles.usersContainer}>

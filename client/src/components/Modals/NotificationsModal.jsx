@@ -4,13 +4,13 @@ import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
 import { useDispatch, useSelector } from "react-redux";
 import SimpleButton from "../UI/SimpleButton";
-import OutingModal from "./OutingModal";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect } from "react";
 import { modalActions } from "../../store/modal-slice";
 import { fetchOuting } from "../../utils/data-fetch";
 import modalStyles from "./styles/SlideInModal.module.scss";
 import { hideModal } from "../../store/modal-actions";
 import { initializeUserPhotos } from "../../store/data-actions";
+import sampleNotificationIcon from "../../images/active.png";
 
 const NotificationsModal = (props) => {
   const dispatch = useDispatch();
@@ -19,7 +19,6 @@ const NotificationsModal = (props) => {
     modalState.selector === "notifications" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
   const user = useSelector((state) => state.auth.user);
-  const [activeOuting, setActiveOuting] = useState(false);
 
   const onPopupOk = () => {
     dispatch(popupActions.hidePopup());
@@ -42,28 +41,31 @@ const NotificationsModal = (props) => {
         ok={"OK"}
         okClick={onPopupOk}
       />
-      <OutingModal
-        selector={"notification-outing"}
-        showInfoPopup={false}
-        outing={activeOuting}
-      />
       <div style={modalStyle} className={styles.container}>
         <div className={modalStyles.header}>Notifications</div>
-        {user.notifications.map((n) => {
-          switch (n.type) {
-            case "outing-invite":
-              return (
-                <OutingInvite
-                  key={Math.random()}
-                  setActiveOuting={setActiveOuting}
-                  notification={n}
-                />
-              );
+        {user.notifications[0] ? (
+          user.notifications.map((n) => {
+            switch (n.type) {
+              case "outing-invite":
+                return <OutingInvite key={Math.random()} notification={n} />;
 
-            default:
-              return null;
-          }
-        })}
+              default:
+                return null;
+            }
+          })
+        ) : (
+          <div className={styles.nothingContainer}>
+            <img
+              src={sampleNotificationIcon}
+              className={styles.nothingIcon}
+              alt="bell"
+            />
+            <div className={styles.nothingRightContainer}>
+              <div className={styles.nothingRightHeader}>Nothing Here!</div>
+              <div>Your notifications will show up here</div>
+            </div>
+          </div>
+        )}
       </div>
     </ModalPortal>
   );
@@ -73,57 +75,67 @@ const OutingInvite = (props) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const outingID = props.notification.outing;
-  const [outing, setOuting] = useState(false);
+  const inviteOutings = useSelector((state) => state.data.inviteOutings);
+  const outing = inviteOutings?.find((o) => o._id === outingID);
   const globals = useSelector((state) => state.auth.globals);
   const stripeColor = globals?.categoryColorMap[outing?.activity?.category];
 
-  // Fetch outing from server
+  // Fetch outing from server if is hasn't been fetched
   useEffect(() => {
     const onComplete = (outing) => {
-      setOuting(outing);
-      const newOutings = user.outings.concat([outing])
-      const newUser = { ...user, outings: newOutings}
+      const newOutings = user.outings.concat([outing]);
+      const newUser = { ...user, outings: newOutings };
       initializeUserPhotos(newUser);
     };
-    fetchOuting(outingID, user, onComplete);
-  }, [outingID, user]);
+
+    if (!outing) {
+      fetchOuting(outingID, user, onComplete);
+    }
+  }, [outingID, user, outing]);
 
   // Show outing modal
   const handleViewOuting = async () => {
     await hideModal();
-    props.setActiveOuting(outing);
-    dispatch(modalActions.setSelector("notification-outing"));
+    dispatch(modalActions.setActiveOuting(outing));
+    dispatch(modalActions.setSelector("outing-modal"));
     dispatch(modalActions.showModal());
   };
 
   return (
-    outing && (
-      <div className={styles.outingInviteContainer}>
-        <div
-          style={{ backgroundColor: stripeColor }}
-          className={styles.colorStripe}
-        ></div>
-        <div className={styles.outingInviteInnerContainer}>
-          <div className={styles.outingInviteHeader}>
-            You have been invited to an outing!
-          </div>
-          <div className={styles.outingInviteActivity}>
-            Activity: {outing.activity.name}
-          </div>
-          <div className={styles.outingInviteButtons}>
-            <SimpleButton noShadow={true} onClick={handleViewOuting}>
-              {" "}
-              View Outing
-            </SimpleButton>
-            <div className={styles.buttonSpacer}></div>
-            <SimpleButton noShadow={true} className={styles.deleteNotification}>
-              {" "}
-              Dismiss
-            </SimpleButton>
-          </div>
+    <div className={styles.outingInviteContainer}>
+      <div
+        style={{ backgroundColor: stripeColor }}
+        className={styles.colorStripe}
+      ></div>
+      <div className={styles.outingInviteInnerContainer}>
+        <div className={styles.outingInviteHeader}>
+          You have been invited to an outing!
         </div>
+        {outing ? (
+          <Fragment>
+            <div className={styles.outingInviteActivity}>
+              Activity: {outing.activity.name}
+            </div>
+            <div className={styles.outingInviteButtons}>
+              <SimpleButton noShadow={true} onClick={handleViewOuting}>
+                {" "}
+                View Outing
+              </SimpleButton>
+              <div className={styles.buttonSpacer}></div>
+              <SimpleButton
+                noShadow={true}
+                className={styles.deleteNotification}
+              >
+                {" "}
+                Dismiss
+              </SimpleButton>
+            </div>
+          </Fragment>
+        ) : (
+          "Loading.."
+        )}
       </div>
-    )
+    </div>
   );
 };
 

@@ -1,10 +1,12 @@
+import { useSelector } from "react-redux";
 import OutingCard from "./OutingCard";
 import styles from "./styles/OutingList.module.scss";
 
 const OutingList = (props) => {
-  const completed = props.user.outings.filter((o) => o.status === "Completed");
-  const pending = props.user.outings.filter((o) => o.status === "Pending");
-
+  const user = useSelector(state=>state.auth.user)
+  const completed = user?.outings.filter((o) => o.status === "Completed");
+  const pending = user?.outings.filter((o) => o.status === "Pending");
+  
   return (
     <div className={styles.container}>
       {pending[0] && (
@@ -18,9 +20,8 @@ const OutingList = (props) => {
           {pending.map((o) => (
             <div key={Math.random()} className={styles.outingContainer}>
               <OutingCard
-                setModalOuting={props.setModalOuting}
                 outing={o}
-                user={props.user}
+                user={user}
               />
             </div>
           ))}
@@ -32,7 +33,7 @@ const OutingList = (props) => {
             <OutingCard
               setModalOuting={props.setModalOuting}
               outing={o}
-              user={props.user}
+              user={user}
             />
           </div>
         ))}

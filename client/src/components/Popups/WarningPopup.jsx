@@ -5,16 +5,12 @@ import styles from "./styles/WarningPopup.module.scss";
 
 const WarningPopup = (props) => {
   const popupState = useSelector((state) => state.popup);
-  const popupDisplay = popupState.selector === props.selector ? "flex" : "none";
+  const showPopup = popupState.selector === props.selector
+  const popupDisplay =  showPopup? "flex" : "none";
 
   return (
-    <Popup>
-      <div
-        onLoad={props.onLoad}
-        id={props.id}
-        className={styles.container}
-        style={{ ...props.style, display: popupDisplay }}
-      >
+    <Popup style={{display: popupDisplay }} showPopup={showPopup}>
+      <div onLoad={props.onLoad} id={props.id} className={styles.container}>
         <div className={styles.header}>{props.header}</div>
         <div className={styles.message}>{props.message}</div>
         <div className={styles.buttonContainer}>

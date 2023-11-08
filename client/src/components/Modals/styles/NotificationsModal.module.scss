@@ -59,5 +59,36 @@
     background-color: $green;
     color: white;
   }
+
+  .nothingContainer{
+    display: flex;
+    padding: 4rem 2rem;
+    background-color: $card_grey;
+    box-sizing: border-box;justify-content: center;
+    align-items: center;
+    width: 100%;
+    border-radius: 5px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    margin-bottom: 2rem;
+  }
+
+  .nothingIcon{
+    height: 3rem;
+    margin-right: 1rem;
+    opacity: 0.7;
+  }
+
+  .nothingRightContainer{
+    display: flex;
+    flex-direction: column;
+    color: rgb(77, 77, 77);
+    font-size: 1.3rem;
+  }
+
+  .nothingRightHeader{
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
   
  

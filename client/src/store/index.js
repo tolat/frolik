@@ -7,6 +7,13 @@ import socketReducer from "./socket-slice";
 import chatReducer from "./chat-slice";
 import popupReducer from "./popup-slice";
 
+// Remove the serializableCheck middleware
+const customizedMiddleware = (getDefaultMiddleware) => {
+  return getDefaultMiddleware({
+    serializableCheck: false, // Disable the serializable state check
+  });
+};
+
 const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -17,6 +24,7 @@ const store = configureStore({
     chat: chatReducer,
     popup: popupReducer,
   },
+  middleware: customizedMiddleware,
 });
 
 export default store;

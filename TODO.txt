@@ -42,20 +42,21 @@ DONE
 
 - Need to create notifications modal that can be used to display 
 notifications and accept outings
+DONE
 
 - Creat Outing Funcitonality. 
 If users leave an outing, their flake rating is affected IF the outing is completed
 Outings can only be completed if more than one person completes the outing
 
+- Need Delete and Leave Outing
+
+- Need completion object for outing
+
+- Need to add Photo uploading to outing
+
 - Need profile viewer modal
 
-- Completed outing updates activity rating, and photos. (1 day)
-
-
-
 - Change photogrid to be adaptive and always be square (1day)
-
-
 
 - DEPLOY WOO!!! (3 days)
 
@@ -78,14 +79,18 @@ profile page
 
 - two chats in chat modal on profile page sometimes, unsure of cause. seems to happen
 onnly when having joined a chat from the notifications screen
+FIXED
 
 - if a user joins an outing while other users are in chat, it crashes the app for those
 other users. 
 
 - user pictures for new outings just accepted don't load. 
+FIXED
 
 - Matches don't update when a match goes from ready to busy and back
 FIXED
+
+- socket timeout error on amazon downloads sometimes..
 
 NOTES:
 

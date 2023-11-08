@@ -1,15 +1,22 @@
 import { modalActions } from "./modal-slice";
 import store from ".";
 
+const modalCleanup = () => {
+  const dispatch = store.dispatch;
+  dispatch(modalActions.setZIndex("-1"));
+  dispatch(modalActions.setSelector(null));
+  dispatch(modalActions.setActiveChat(false));
+  dispatch(modalActions.setActiveOuting(false));
+  dispatch(modalActions.setCreateOutingPopup(false));
+};
+
 export const hideModal = () => {
   return new Promise((resolve) => {
     const dispatch = store.dispatch;
-    
-    dispatch(modalActions.hideModal());
 
+    dispatch(modalActions.hideModal());
     setTimeout(() => {
-      dispatch(modalActions.setZIndex("-1"));
-      dispatch(modalActions.setSelector(null))
+      modalCleanup();
       resolve(); // Resolve the promise when the setTimeout finishes
     }, 300);
   });
@@ -20,7 +27,7 @@ export const hideModalFast = () => {
   dispatch(modalActions.setOpacity(0));
   dispatch(modalActions.hideModal());
   setTimeout(() => {
-    dispatch(modalActions.setZIndex("-1"));
+    modalCleanup();
     dispatch(modalActions.setOpacity("1"));
   }, 300);
 };

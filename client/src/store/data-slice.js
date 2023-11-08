@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   users: {},
   masterPhotoDimension: 25,
+  inviteOutings :[]
 };
 
 const findOrCreateUser = (state, action) => {
@@ -73,6 +74,9 @@ const dataSlice = createSlice({
     clearAllUserData(state) {
       state.users = initialState;
     },
+    addInviteOuting(state, action){
+      state.inviteOutings.push(action.payload)
+    }
   },
 });
 
