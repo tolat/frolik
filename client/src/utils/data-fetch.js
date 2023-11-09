@@ -385,12 +385,18 @@ export const deleteOuting = (user, outing, onComplete) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
-export const dismissNotification = (user, notification, onComplete) => {
+export const dismissNotification = (user, notification, onComplete, status) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/notification/${
       notification.id
     }/dismiss`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({status}),
   };
+
 
   const handleResponse = (response) => {
     const newUser = { ...response.user, friends: user.friends };

@@ -139,6 +139,7 @@ const ActivityCard = (props) => {
         </div>
         <div className={styles.buttonContainer}>
           <SimpleButton
+            noShadow={true}
             style={{ boxShadow: "none" }}
             onClick={props.showInstructions ? null : handleToggleInstructions}
           >
@@ -151,11 +152,19 @@ const ActivityCard = (props) => {
 
           {props.hideSelect ? null : goState.outing.activity.name ===
             props.activity.name ? (
-            <SimpleButton onClick={handleRemove} className={styles.remove}>
+            <SimpleButton
+              noShadow={true}
+              onClick={handleRemove}
+              className={styles.remove}
+            >
               Remove
             </SimpleButton>
           ) : (
-            <SimpleButton onClick={handleSelect} className={styles.select}>
+            <SimpleButton
+              noShadow={true}
+              onClick={handleSelect}
+              className={styles.select}
+            >
               Select
             </SimpleButton>
           )}

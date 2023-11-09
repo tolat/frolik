@@ -30,7 +30,7 @@ const Navbar = (props) => {
   };
 
   const handleShowNotifications = async () => {
-    if (modalState.selector) {
+    if (modalState.selector && modalState.selector !== "notifications") {
       await hideModal();
     }
     dispatch(modalActions.setSelector("notifications"));

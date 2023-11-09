@@ -4,20 +4,21 @@ const Outing = require("../models/outing");
 const Activity = require("../models/activity");
 const Chat = require("../models/chat");
 const express = require("express");
-const {
-  reqAuthenticated,
-  tryCatch,
-  sameUserOnly,
-} = require("../utils/middleware");
+const sharp = require("sharp");
 const { downloadFromS3, uploadToS3 } = require("../utils/S3");
 const {
   populateUser,
   populateFriends,
   sendEmail,
   getPhotosFromOutings,
-  generateUniqueName,
+  handleOutingInviteAction,
+  handleOutingUpdate,
 } = require("../utils/utils");
-const sharp = require("sharp");
+const {
+  reqAuthenticated,
+  tryCatch,
+  sameUserOnly,
+} = require("../utils/middleware");
 
 const router = express.Router({ mergeParams: true });
 
@@ -68,7 +69,7 @@ router.get(
   })
 );
 
-// Upload user profile picture
+// Upload User profile picture
 router.post(
   "/:id/profile-picture",
   reqAuthenticated,
@@ -88,8 +89,6 @@ router.post(
 
     // Populate user
     await populateUser(user);
-
-    console.log(user);
 
     // Get stripped down populated friends list
     const populatedFriends = await populateFriends(user.friends);
@@ -204,14 +203,12 @@ router.post(
   })
 );
 
-// email verification route for new users
+// Email verification route for new users
 router.get(
   "/:id/verify",
   tryCatch(async (req, res) => {
     const user = await User.findById(req.params.id);
     user.status = { status: "Ready", updated: Date.now() };
-
-    console.log(user);
 
     await user.save();
 
@@ -484,6 +481,7 @@ router.get(
   })
 );
 
+// Join an Outing
 router.get(
   "/:id/outing/:outingid/join",
   reqAuthenticated,
@@ -491,12 +489,12 @@ router.get(
   tryCatch(async (req, res) => {
     const user = await User.findById(req.params.id);
     const outing = await Outing.findById(req.params.outingid);
-
-    await outing.populate("users");
-    await outing.populate("invited");
+    const notification = user.notifications.find(
+      (n) => n.outing == outing._id.toString() && n.type == "outing-invite"
+    );
 
     // If outing does not exists send 404
-    if (!user || !outing) {
+    if (!user || !outing || !notification) {
       res.status(404).send("User was not invited to this outing");
       return;
     }
@@ -507,42 +505,13 @@ router.get(
       return;
     }
 
-    // Add outing to user outings
-    user.outings.push(outing);
+    await handleOutingInviteAction(notification, user, outing, "accepted");
 
-    // Remove the notificaiton
-    user.notifications.splice(
-      user.notifications.indexOf(
-        user.notifications.find(
-          (n) => n.type == "outing-invite" && n.outing == outing._id
-        )
-      ),
-      1
-    );
-
-    // Add outing chat to user chats
-    user.chats.push(outing.chat);
-    await user.save();
-
-    // Add user to outing users
-    if (!outing.users.find((u) => u._id.toString() == user._id.toString())) {
-      // add user to outing users
-      outing.users.push(user);
-      // remove user from outing invited
-      outing.invited.splice(
-        outing.invited
-          .map((u) => u._id.toString())
-          .indexOf(user._id.toString()),
-        1
-      );
-    }
-    await outing.save();
-
-    await populateUser(user);
     res.send({ user, outing });
   })
 );
 
+// Leave an Outing
 router.get(
   "/:id/outing/:outingid/leave",
   reqAuthenticated,
@@ -586,6 +555,7 @@ router.get(
   })
 );
 
+// Delete an outing
 router.get(
   "/:id/outing/:outingid/delete",
   reqAuthenticated,
@@ -627,65 +597,44 @@ router.get(
   })
 );
 
-router.get(
+// Dismiss a notification
+router.post(
   "/:id/notification/:notificationid/dismiss",
   reqAuthenticated,
   sameUserOnly,
   tryCatch(async (req, res) => {
     const user = await User.findById(req.params.id);
     const notifID = req.params.notificationid;
-    await populateUser(user);
-
-    // Remove specified notification
-    const oldNotification = user.notifications.find((n) => n.id == notifID);
+    const dismissStatus = req.body.status;
+    const notification = user.notifications.find((n) => n.id == notifID);
 
     // Return if no notification exists
-    if (!oldNotification) {
+    if (!notification) {
       res.status(404).send("notification not found");
       return;
     }
 
-    user.notifications.splice(
-      user.notifications.map((n) => n.id).indexOf(notifID),
-      1
-    );
-
-    // Switch for different notification types
-    switch (oldNotification.type) {
+    // Handle dismissal of different notification types
+    switch (notification.type) {
       case "outing-invite":
-        const outing = await Outing.findById(oldNotification.outing);
-        if (outing.invited.find((u) => u.toString() == user._id.toString())) {
-          // Remove user from outing invited list
-          outing.invited.splice(
-            outing.invited
-              .map((u) => u.toString())
-              .indexOf(user._id.toString()),
-            1
-          );
-          await outing.save();
-
-          // Make a new notification to push to outing creator
-          const outingCreator = await User.findById(outing.created_by);
-          const newNotification = {
-            id: Date.now() + Math.random(),
-            type: "outing-invite-update",
-            status: "denied",
-            userID: user._id.toString(),
-            outing: outing._id.toString(),
-            created: new Date(Date.now()),
-            active: true,
-          };
-          outingCreator.notifications.push(newNotification);
-          await outingCreator.save();
-        }
+        const outing = await Outing.findById(notification.outing);
+        await handleOutingInviteAction(
+          notification,
+          user,
+          outing,
+          dismissStatus
+        );
+        break;
+      case "outing-invite-update":
+        const nIndex = user.notifications.map((n) => n.id).indexOf(notifID);
+        user.notifications.splice(nIndex, 1);
+        await user.save();
+        await populateUser(user);
         break;
 
       default:
         break;
     }
-
-    await user.save();
-    await populateUser(user);
 
     res.send({ user });
   })
@@ -705,8 +654,6 @@ router.get(
 
     user = await populateFriends([user._id]);
     user = user[0];
-
-    console.log("USER:", user);
 
     res.send({ user });
   })

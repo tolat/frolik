@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const Chat = require("../models/chat");
+const Outing = require("../models/outing");
 const nodemailer = require("nodemailer");
 const {
   uniqueNamesGenerator,
@@ -91,16 +92,64 @@ module.exports.generateUniqueName = () => {
   // Generate random unique name
   let uniqueName = [
     ...uniqueNamesGenerator({
-      dictionaries: [adjectives, colors, animals],
+      dictionaries: [adjectives, animals],
     }),
   ];
   uniqueName[0] = uniqueName[0].toUpperCase();
   for (let i = 0; i < uniqueName.length; i++) {
     if (uniqueName[i] == "_") {
-      uniqueName[i] = "-";
+      uniqueName[i] = " ";
       uniqueName[i + 1] = uniqueName[i + 1].toUpperCase();
     }
   }
   uniqueName = uniqueName.toString().replaceAll(",", "");
   return uniqueName;
+};
+
+// Send an invite update to the creator of the outing in the old Notification
+// Update the invited and users list for the outing
+// Update the invited user outings list and chat
+module.exports.handleOutingInviteAction = async (
+  notification,
+  user,
+  outing,
+  status
+) => {
+
+  // Remove the notificaiton
+  user.notifications.splice(user.notifications.indexOf(notification), 1);
+
+  // Remove user from outing invited list
+  outing.invited.splice(
+    outing.invited.map((u) => u.toString()).indexOf(user._id.toString()),
+    1
+  );
+
+  // If status is accepted, add user to Outing users list and
+  // add outing to invited user's outing list
+  if (status == "accepted") {
+    outing.users.push(user);
+    user.chats.push(outing.chat);
+    user.outings.push(outing);
+  }
+
+  // Make a new notification to send to outing creator
+  const outingCreator = await User.findById(outing.created_by);
+  const newNotification = {
+    id: Date.now() + Math.random(),
+    type: "outing-invite-update",
+    status,
+    userID: user._id.toString(),
+    outing: outing._id.toString(),
+    created: new Date(Date.now()),
+    active: true,
+  };
+  outingCreator.notifications.push(newNotification);
+
+  await outing.save();
+  await user.save();
+  await outingCreator.save();
+  await outing.populate("users")
+  await outing.populate("invited")
+  await this.populateUser(user)
 };

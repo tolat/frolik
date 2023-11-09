@@ -115,12 +115,12 @@ const OutingInvite = (props) => {
     dispatch(modalActions.showModal());
   };
 
-  const handleDeleteInvite = () => {
+  const handleDismissInvite = () => {
     const onComplete = (user) => {
       dispatch(authActions.setUser(user));
     };
 
-    dismissNotification(user, props.notification, onComplete);
+    dismissNotification(user, props.notification, onComplete, "denied");
   };
 
   return (
@@ -144,7 +144,7 @@ const OutingInvite = (props) => {
                 View Outing
               </SimpleButton>
               <div className={styles.buttonSpacer}></div>
-              <SimpleButton onClick={handleDeleteInvite} noShadow={true}>
+              <SimpleButton onClick={handleDismissInvite} noShadow={true}>
                 {" "}
                 Clear
               </SimpleButton>
@@ -167,17 +167,16 @@ const OutingInviteUpdate = (props) => {
   const globals = useSelector((state) => state.auth.globals);
   const stripeColor = globals?.categoryColorMap[outing?.activity?.category];
   const n = props.notification;
-  const notificationUserID = n.userID;
-  const [notificationUser, setNotificationUser] = useState(false);
+  const nUserID = n.userID;
+  const nUser = outing?.users.find(u=>u._id === nUserID)
+  const nUserData = useSelector(state=>state.data.users[nUserID])
 
   // Fetch notification user from server
   useEffect(() => {
-    const onComplete = (user) => {
-      setNotificationUser(user);
-      fetchProfilePic(user._id);
-    };
-    fetchStrippedUser(notificationUserID, onComplete);
-  }, [notificationUserID]);
+    if(!nUserData){
+      fetchProfilePic(nUserID)
+    }
+  }, [nUserID, nUserData]);
 
   // Fetch outing from server if is hasn't been fetched
   useEffect(() => {
@@ -220,12 +219,8 @@ const OutingInviteUpdate = (props) => {
           {n.status === "denied"
             ? `Your Outing invite has been denied by:`
             : `Your Outing invite has been accepted by: `}
-          {notificationUser ? (
-            <FriendCard
-              noShadow={true}
-              key={Math.random()}
-              user={notificationUser}
-            />
+          {nUser ? (
+            <FriendCard noShadow={true} key={Math.random()} user={nUser} />
           ) : (
             <h5>Loading User..</h5>
           )}
