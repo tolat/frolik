@@ -159,3 +159,7 @@ export const toAppDate = (date) => {
   return `${new Date(date).toDateString().slice(4, 15)} - 
   ${new Date(date).toTimeString().slice(0, 5)}`;
 };
+
+export const sortByDate = (a, b) => {
+  return new Date(a).getTime() - new Date(b).getTime();
+};

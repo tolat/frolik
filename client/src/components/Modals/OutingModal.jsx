@@ -31,8 +31,9 @@ const OutingModal = (props) => {
   const user = useSelector((state) => state.auth.user);
   const userData = useSelector((state) => state.data.users[user._id]);
   const dispatch = useDispatch();
-  const activeOuting = useSelector((state) => state.modal.activeOuting)
-  const outing = user?.outings?.find(o => o._id === activeOuting._id) || activeOuting;
+  const activeOuting = useSelector((state) => state.modal.activeOuting);
+  const outing =
+    user?.outings?.find((o) => o._id === activeOuting._id) || activeOuting;
   const globals = useSelector((state) => state.auth.globals);
   const categoryColor = globals?.categoryColorMap[outing?.activity?.category];
   const completed = outing?.status === "Completed";
@@ -77,7 +78,7 @@ const OutingModal = (props) => {
     }
 
     joinOuting(user, outing, onComplete);
-    dispatch(popupActions.hidePopup())
+    dispatch(popupActions.hidePopup());
   };
 
   const onOutingLeave = () => {
@@ -138,9 +139,9 @@ const OutingModal = (props) => {
     <div className={styles.warningContainer}>
       <div className={styles.warningName}>{outing?.name}</div>
       <div className={styles.warningText}>
-        Once you join the Outing, it must be completed or deleted
-        in order to maintain your flake rating. Outings can only be 
-        deleted while there is <b>one member</b> in the members list.  
+        Once you join the Outing, it must be completed or deleted in order to
+        maintain your flake rating. Outings can only be deleted while there is{" "}
+        <b>one member</b> in the members list.
       </div>
     </div>
   );
@@ -187,9 +188,7 @@ const OutingModal = (props) => {
             className={styles.headerInnerContainer}
           >
             <div className={styles.outingName}>{outing.name}</div>
-            <div
-              className={styles.outingStatus}
-            >{`Status: ${outing.status}`}</div>
+            <div className={styles.outingStatus}>{outing.status}</div>
           </div>
         </div>
         <div className={styles.sideBySide}>

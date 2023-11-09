@@ -17,6 +17,7 @@ import {
   dismissNotification,
   fetchOuting,
   fetchProfilePic,
+  fetchStrippedUser,
 } from "../../utils/data-fetch";
 import { toAppDate } from "../../utils/utils";
 
@@ -39,10 +40,6 @@ const NotificationsModal = (props) => {
       negatively affect your flake rating!
     </div>
   );
-
-  const sortByDate = (a, b) => {
-    return new Date(a.created).getTime() - new Date(b.created).getTime();
-  };
 
   return (
     <ModalPortal>
@@ -171,10 +168,13 @@ const OutingInviteUpdate = (props) => {
   const outing = inviteOutings?.find((o) => o._id === outingID);
   const globals = useSelector((state) => state.auth.globals);
   const stripeColor = globals?.categoryColorMap[outing?.activity?.category];
+  const cachedUsers = useSelector((state) => state.data.cachedUsers);
   const n = props.notification;
   const nUserID = n.userID;
-  const nUser = outing?.users.find((u) => u._id === nUserID);
   const nUserData = useSelector((state) => state.data.users[nUserID]);
+  const nUser =
+    outing?.users.find((u) => u._id === nUserID) ||
+    cachedUsers.find((u) => u._id === nUserID);
 
   // Fetch notification user from server
   useEffect(() => {
@@ -182,6 +182,16 @@ const OutingInviteUpdate = (props) => {
       fetchProfilePic(nUserID);
     }
   }, [nUserID, nUserData]);
+
+  // Fetch notification user form server if it is not in outing (user denied invite)
+  useEffect(() => {
+    if (!nUser) {
+      const onComplete = (fetchedUser) => {
+        dispatch(dataActions.addCachedUser(fetchedUser));
+      };
+      fetchStrippedUser(nUserID, onComplete);
+    }
+  });
 
   // Fetch outing from server if is hasn't been fetched
   useEffect(() => {

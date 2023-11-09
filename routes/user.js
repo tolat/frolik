@@ -590,6 +590,24 @@ router.get(
       return;
     }
 
+    // Clear any invites left for invited users
+    for (u of outing.invited) {
+      const invitedUser = await User.findById(u);
+      const inviteNotificaiton = invitedUser.notifications.find(
+        (n) => n.type == "outing-invite" && n.outing == outing._id.toString()
+      );
+      if (inviteNotificaiton) {
+        invitedUser.notifications.splice(
+          invitedUser.notifications
+            .map((n) => n.id)
+            .indexOf(inviteNotificaiton.id),
+          1
+        );
+        await invitedUser.save();
+        pushUserUpdate([invitedUser]);
+      }
+    }
+
     // Delete outing chat
     await Chat.deleteOne({ _id: outing.chat.toString() });
 
