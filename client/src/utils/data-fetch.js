@@ -6,6 +6,7 @@ import { authActions } from "../store/auth-slice";
 import { chatActions } from "../store/chat-slice";
 import { goActions } from "../store/go-slice";
 
+// Get all activities 
 export const fetchActivities = async (setData) => {
   return new Promise((resolve, reject) => {
     const requestConfig = {
@@ -25,6 +26,7 @@ export const fetchActivities = async (setData) => {
   });
 };
 
+// Get user's profile picture and update redux store
 export const fetchProfilePic = async (userID) => {
   const userData = store.getState().data.users[userID];
   // Don't fetch if photo has been downloaded
@@ -59,6 +61,7 @@ export const fetchProfilePic = async (userID) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Get all photos from user outings
 export const fetchPhotos = async (user) => {
   const userData = store.getState().data.users[user._id];
 
@@ -102,6 +105,7 @@ export const fetchPhotos = async (user) => {
   }
 };
 
+// Get the app globals
 export const fetchGobals = async () => {
   const requestConfig = {
     url: `${getServer()}/data/globals`,
@@ -118,6 +122,7 @@ export const fetchGobals = async () => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Update all the non-photo data for a user
 export const uploadProfileData = (userID, data, resetForm) => {
   const photoString = data.profile_picture;
   const profileData = {
@@ -305,7 +310,9 @@ export const createOuting = (outing, user, setOutingData) => {
     store.dispatch(authActions.setUser(response.user));
 
     // Reset outing in gostate
-    store.dispatch(goActions.reset(user));
+    setTimeout(() => {
+      store.dispatch(goActions.reset(user));
+    }, 1000);
 
     // Set data
     setOutingData(response.outing);
@@ -318,6 +325,7 @@ export const createOuting = (outing, user, setOutingData) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Get one outing
 export const fetchOuting = (outingID, user, onComplete) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/outing/${outingID}`,
@@ -334,6 +342,7 @@ export const fetchOuting = (outingID, user, onComplete) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Joing an Outing
 export const joinOuting = (user, outing, onComplete) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/outing/${outing._id}/join`,
@@ -351,6 +360,7 @@ export const joinOuting = (user, outing, onComplete) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// leave an Outing
 export const leaveOuting = (user, outing, onComplete) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/outing/${outing._id}/leave`,
@@ -368,6 +378,7 @@ export const leaveOuting = (user, outing, onComplete) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Delete an Outing
 export const deleteOuting = (user, outing, onComplete) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/outing/${outing._id}/delete`,
@@ -385,6 +396,7 @@ export const deleteOuting = (user, outing, onComplete) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Dismiss a notification
 export const dismissNotification = (user, notification, onComplete, status) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/notification/${
@@ -394,9 +406,8 @@ export const dismissNotification = (user, notification, onComplete, status) => {
       "Content-Type": "application/json",
     },
     method: "POST",
-    body: JSON.stringify({status}),
+    body: JSON.stringify({ status }),
   };
-
 
   const handleResponse = (response) => {
     const newUser = { ...response.user, friends: user.friends };
@@ -410,6 +421,7 @@ export const dismissNotification = (user, notification, onComplete, status) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Fetch a user with stripped down data
 export const fetchStrippedUser = (userID, onComplete) => {
   const requestConfig = {
     url: `${getServer()}/user/stripped-user/${userID}`,

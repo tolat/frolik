@@ -23,11 +23,15 @@ const ChatModal = (props) => {
   const modalStyle = { display: modalDisplay };
   const chatState = useSelector((state) => state.chat.chats);
   const activeChat = useSelector((state) => state.modal.activeChat);
-  const chat = chatState.find((c) => c._id === activeChat?._id);
+  const chat =
+    chatState.find((c) => c._id === activeChat?._id) ||
+    activeChat;
   const memberNames = chat?.outing?.users.map((u) => u.first_name);
   const membersString = chat && genMembersString(memberNames);
   const messages = chat?.messages;
   const composerRef = useRef();
+
+  console.log(chat);
 
   // Connect to the websocket for chat
   useEffect(() => {
@@ -61,7 +65,7 @@ const ChatModal = (props) => {
   };
 
   return !chat ? (
-    modalState.selector === 'chat-modal' ? (
+    modalState.selector === "chat-modal" ? (
       <h1>Loading Chat..</h1>
     ) : null
   ) : (

@@ -1,4 +1,6 @@
 import store from ".";
+import { fetchChats } from "../utils/data-fetch";
+import { fetchAuth } from "./auth-actions";
 import { socketActions } from "./socket-slice";
 
 export function onConnect() {
@@ -7,4 +9,9 @@ export function onConnect() {
 
 export function onDisconnect() {
   store.dispatch(socketActions.setConnected(false));
+}
+
+export function onUpdateUser(){
+  fetchAuth()
+  fetchChats(store.getState().auth.user)
 }

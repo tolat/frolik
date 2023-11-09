@@ -1,6 +1,5 @@
 import { modalActions } from "./modal-slice";
 import store from ".";
-import { fetchAuth } from "./auth-actions";
 
 const modalCleanup = () => {
   const dispatch = store.dispatch;
@@ -8,13 +7,11 @@ const modalCleanup = () => {
   dispatch(modalActions.setSelector(null));
   dispatch(modalActions.setActiveChat(false));
   dispatch(modalActions.setActiveOuting(false));
-  fetchAuth()
 };
 
 export const hideModal = () => {
   return new Promise((resolve) => {
     const dispatch = store.dispatch;
-    
 
     dispatch(modalActions.hideModal());
     setTimeout(() => {

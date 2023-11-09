@@ -31,7 +31,8 @@ const OutingModal = (props) => {
   const user = useSelector((state) => state.auth.user);
   const userData = useSelector((state) => state.data.users[user._id]);
   const dispatch = useDispatch();
-  const outing = useSelector((state) => state.modal.activeOuting);
+  const activeOuting = useSelector((state) => state.modal.activeOuting)
+  const outing = user?.outings?.find(o => o._id === activeOuting._id) || activeOuting;
   const globals = useSelector((state) => state.auth.globals);
   const categoryColor = globals?.categoryColorMap[outing?.activity?.category];
   const completed = outing?.status === "Completed";
@@ -105,7 +106,7 @@ const OutingModal = (props) => {
 
   const confirmDeleteOutingMessage = (
     <div className={styles.warningContainer}>
-      <div className={styles.warningName}>{outing.name}</div>
+      <div className={styles.warningName}>{outing?.name}</div>
       <div className={styles.warningText}>
         Once you have deleted the Outing, it will no longer be joinable by any
         invitees. Deleting this Outing <b>will not</b> affect your flake rating.
@@ -120,7 +121,7 @@ const OutingModal = (props) => {
 
   const confirmLeaveOutingMessage = (
     <div className={styles.warningContainer}>
-      <div className={styles.warningName}>{outing.name}</div>
+      <div className={styles.warningName}>{outing?.name}</div>
       <div className={styles.warningText}>
         Once you leave the Outing, it may still be completed by the other
         members. If it is, you <b>will negatively affect</b>affect your flake
@@ -135,7 +136,7 @@ const OutingModal = (props) => {
 
   const confirmJoinOutingMessage = (
     <div className={styles.warningContainer}>
-      <div className={styles.warningName}>{outing.name}</div>
+      <div className={styles.warningName}>{outing?.name}</div>
       <div className={styles.warningText}>
         Once you join the Outing, it must be completed or deleted
         in order to maintain your flake rating. Outings can only be 

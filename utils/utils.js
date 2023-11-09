@@ -2,10 +2,11 @@ const User = require("../models/user");
 const Chat = require("../models/chat");
 const Outing = require("../models/outing");
 const nodemailer = require("nodemailer");
+const { io } = require("../server");
+
 const {
   uniqueNamesGenerator,
   adjectives,
-  colors,
   animals,
 } = require("unique-names-generator");
 
@@ -115,9 +116,11 @@ module.exports.handleOutingInviteAction = async (
   outing,
   status
 ) => {
-
   // Remove the notificaiton
-  user.notifications.splice(user.notifications.indexOf(notification), 1);
+  user.notifications.splice(
+    user.notifications.map((n) => n.id).indexOf(notification.id),
+    1
+  );
 
   // Remove user from outing invited list
   outing.invited.splice(
@@ -149,7 +152,21 @@ module.exports.handleOutingInviteAction = async (
   await outing.save();
   await user.save();
   await outingCreator.save();
-  await outing.populate("users")
-  await outing.populate("invited")
-  await this.populateUser(user)
+  await outing.populate("users");
+  await outing.populate("invited");
+  await this.populateUser(user);
+
+  // Push updates to the socket
+  this.pushUserUpdate([
+    user,
+    outingCreator,
+    ...outing.users,
+    ...outing.invited,
+  ]);
+};
+
+module.exports.pushUserUpdate = (users) => {
+  for (user of users) {
+    io.to(user._id ? user._id.toString() : user.toString()).emit("update-user");
+  }
 };

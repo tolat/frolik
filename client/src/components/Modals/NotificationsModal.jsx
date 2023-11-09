@@ -4,14 +4,8 @@ import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
 import { useDispatch, useSelector } from "react-redux";
 import SimpleButton from "../UI/SimpleButton";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect } from "react";
 import { modalActions } from "../../store/modal-slice";
-import {
-  dismissNotification,
-  fetchOuting,
-  fetchProfilePic,
-  fetchStrippedUser,
-} from "../../utils/data-fetch";
 import modalStyles from "./styles/SlideInModal.module.scss";
 import { hideModal } from "../../store/modal-actions";
 import { initializeUserPhotos } from "../../store/data-actions";
@@ -19,6 +13,12 @@ import sampleNotificationIcon from "../../images/active.png";
 import { dataActions } from "../../store/data-slice";
 import { authActions } from "../../store/auth-slice";
 import FriendCard from "../UI/FriendCard";
+import {
+  dismissNotification,
+  fetchOuting,
+  fetchProfilePic,
+} from "../../utils/data-fetch";
+import { toAppDate } from "../../utils/utils";
 
 const NotificationsModal = (props) => {
   const dispatch = useDispatch();
@@ -39,6 +39,10 @@ const NotificationsModal = (props) => {
       negatively affect your flake rating!
     </div>
   );
+
+  const sortByDate = (a, b) => {
+    return new Date(a.created).getTime() - new Date(b.created).getTime();
+  };
 
   return (
     <ModalPortal>
@@ -136,8 +140,9 @@ const OutingInvite = (props) => {
         {outing ? (
           <Fragment>
             <div className={styles.outingInviteActivity}>
-              Activity: {outing.activity.name}
+              Activity:<b> {outing.activity.name} </b>
             </div>
+            <div>{toAppDate(props.notification.created)}</div>
             <div className={styles.outingInviteButtons}>
               <SimpleButton noShadow={true} onClick={handleViewOuting}>
                 {" "}
@@ -168,13 +173,13 @@ const OutingInviteUpdate = (props) => {
   const stripeColor = globals?.categoryColorMap[outing?.activity?.category];
   const n = props.notification;
   const nUserID = n.userID;
-  const nUser = outing?.users.find(u=>u._id === nUserID)
-  const nUserData = useSelector(state=>state.data.users[nUserID])
+  const nUser = outing?.users.find((u) => u._id === nUserID);
+  const nUserData = useSelector((state) => state.data.users[nUserID]);
 
   // Fetch notification user from server
   useEffect(() => {
-    if(!nUserData){
-      fetchProfilePic(nUserID)
+    if (!nUserData) {
+      fetchProfilePic(nUserID);
     }
   }, [nUserID, nUserData]);
 
@@ -228,8 +233,9 @@ const OutingInviteUpdate = (props) => {
         {outing ? (
           <Fragment>
             <div className={styles.outingInviteActivity}>
-              Outing: {outing.name}
+              Outing: <b>{outing.name}</b>
             </div>
+            <div>{toAppDate(n.created)}</div>
             <div className={styles.outingInviteButtons}>
               <SimpleButton noShadow={true} onClick={handleViewOuting}>
                 {" "}

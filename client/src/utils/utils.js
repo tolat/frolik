@@ -4,7 +4,9 @@ import { fetchAuth } from "../store/auth-actions";
 import { hideModal } from "../store/modal-actions";
 
 export const calcAvgRating = (activity) => {
-  if(!activity.ratings){return 0 }
+  if (!activity.ratings) {
+    return 0;
+  }
   return (
     activity.ratings.reduce((acc, rating) => acc + rating.rating, 0) /
     activity.ratings.length
@@ -23,7 +25,6 @@ export const pageRouteLoader = async () => {
   if (!store.getState().auth.isAuthenticated) {
     return redirect("/login");
   } else {
-   
     return false;
   }
 };
@@ -56,12 +57,11 @@ export const loadImageAsBase64 = async (imageUrl, setImage) => {
   }
 };
 
-
 export const genMembersString = (memberNames) => {
   let result = "";
   for (let i = 0; i < memberNames.length; i++) {
     if (i > 3) {
-      return result.slice(0,result.length - 2).concat(".. 4+");
+      return result.slice(0, result.length - 2).concat(".. 4+");
     } else if (i === memberNames.length - 1) {
       return result.concat(`${memberNames[i]}`);
     } else {
@@ -153,4 +153,9 @@ export const filtersAreEqual = (f1, f2) => {
   }
 
   return true;
+};
+
+export const toAppDate = (date) => {
+  return `${new Date(date).toDateString().slice(4, 15)} - 
+  ${new Date(date).toTimeString().slice(0, 5)}`;
 };
