@@ -1,99 +1,55 @@
 @import "../../../utils/responsive.scss";
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow-x: hidden;
-    box-sizing: border-box;
-    flex-shrink: 0;
-    background-color: white;
-    padding: 0rem 2rem;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  background-color: white;
+  padding: 0rem 2rem;
+}
 
-  .outingInviteContainer{
-    display: flex;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+.acceptInvite {
+  background-color: $green;
+  color: white;
+}
+
+.nothingContainer {
+  display: flex;
+  padding: 4rem 2rem;
+  background-color: $card_grey;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border-radius: 5px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-    box-sizing: border-box;
-    margin-bottom: 2rem;
-  }
+  margin-bottom: 2rem;
+}
 
-  .outingInviteInnerContainer{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: 2rem;
-    background-color: $card_grey;
-  }
+.nothingIcon {
+  height: 3rem;
+  margin-right: 1rem;
+  opacity: 0.7;
+}
 
-  .outingInviteHeader{
-    font-size: 1.6rem;
-    font-weight: bold;
-  }
+.nothingRightContainer {
+  display: flex;
+  flex-direction: column;
+  color: rgb(77, 77, 77);
+  font-size: 1.3rem;
+}
 
-  .outingInviteActivity{
-    font-size: 1.4rem;
-    color: rgb(95, 95, 95);
-  }
+.nothingRightHeader {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
 
-  .outingInviteButtons{
-    display: flex;
-    width: 100%;
-    margin-top: 1rem;
-  }
-
-  .colorStripe{
-    height: 100%;
-    width: 1rem;
-    box-sizing: border-box;
-  }
-
-  .buttonSpacer{
-    width: 3rem;
-    height: 1rem;
-  }
-
-  .acceptInvite{
-    background-color: $green;
-    color: white;
-  }
-
-  .nothingContainer{
-    display: flex;
-    padding: 4rem 2rem;
-    background-color: $card_grey;
-    box-sizing: border-box;justify-content: center;
-    align-items: center;
-    width: 100%;
-    border-radius: 5px;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-    margin-bottom: 2rem;
-  }
-
-  .nothingIcon{
-    height: 3rem;
-    margin-right: 1rem;
-    opacity: 0.7;
-  }
-
-  .nothingRightContainer{
-    display: flex;
-    flex-direction: column;
-    color: rgb(77, 77, 77);
-    font-size: 1.3rem;
-  }
-
-  .nothingRightHeader{
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
-
-  .deleteNotification{
-    background-color: $red;
-    color: white;
-  }
-  
- 
+.deleteNotification {
+  background-color: $red;
+  color: white;
+}

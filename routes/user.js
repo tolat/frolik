@@ -554,6 +554,9 @@ router.get(
     );
     await outing.save();
 
+    // Push user update to user members
+    // **** IMPLEMENT NOTIFICATION ON OUTING LEAVE *****
+
     await populateUser(user);
 
     res.send({ user });
