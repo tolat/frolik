@@ -23,6 +23,7 @@ import { authActions } from "../../store/auth-slice";
 import { popupActions } from "../../store/popup-slice";
 import WarningPopup from "../Popups/WarningPopup";
 import flakeIcon from "../../images/snowflake.png";
+import { arrayBufferToBase64 } from "../../utils/utils";
 
 const OutingModal = (props) => {
   const modalState = useSelector((state) => state.modal);
@@ -48,8 +49,6 @@ const OutingModal = (props) => {
   const photos = outing?.photos?.map(
     (p) => userData?.photos?.find((photo) => photo.key === p.key).photo
   );
-
-  console.log(outing);
 
   // Handle the chat modal being shown
   const onShowChatModal = () => {
@@ -149,6 +148,40 @@ const OutingModal = (props) => {
   );
 
   const onMarkCompleted = () => {};
+
+  const onUploadClick = () => {
+    if (outing.photos.filter((p) => p.uploader === user._id).length >= 2) {
+      // ***Show Warning phopup that you can only upload 2 photos
+    } else {
+      document.getElementById("upload-outing-photos").click();
+    }
+  };
+
+  const onPhotoUpload = async () => {
+    // ***show uploading modal or text in component
+    console.log("phtos added")
+    const newPhotos = document.getElementById(
+      "upload-outing-photos"
+    ).files;
+
+    if (newPhotos.length > 2) {
+      // ***Show Warning phopup that you can only upload 2 photos
+      console.log("more than 2 photos")
+      return;
+    }
+
+    for (let photo of newPhotos) {
+      // Read file into a base64String and update the staged image
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64Image = arrayBufferToBase64(reader.result);
+        // ***Post photo to outing on server
+        console.log("uploading photo")
+      };
+
+      reader.readAsArrayBuffer(photo);
+    }
+  };
 
   return !outing || !userData ? null : (
     <ModalPortal>
@@ -259,9 +292,21 @@ const OutingModal = (props) => {
               </div>
             </h2>
             {!completed ? (
-              <SimpleButton className={styles.uploadPhotos}>
-                + Upload
-              </SimpleButton>
+              <Fragment>
+                <input
+                  onChange={onPhotoUpload}
+                  type="file"
+                  multiple
+                  id="upload-outing-photos"
+                  className={styles.uploadInput}
+                />
+                <SimpleButton
+                  onClick={onUploadClick}
+                  className={styles.uploadPhotos}
+                >
+                  + Upload
+                </SimpleButton>
+              </Fragment>
             ) : null}
 
             <div className={styles.photoGridContainer}>
