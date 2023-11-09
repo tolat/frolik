@@ -171,7 +171,7 @@ const seedOutings = async (seeds) => {
       outing.date_completed = outing.date_created;
       outing.users = [user, user2];
       outing.status = "Completed";
-      outing.photos.push(outingPhotoKeys.pop());
+      outing.photos.push({ uploader: user, key: outingPhotoKeys.pop() });
       outing.name = generateUniqueName();
 
       user.outings.push(outing);

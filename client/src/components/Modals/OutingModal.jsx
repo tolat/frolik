@@ -46,8 +46,10 @@ const OutingModal = (props) => {
     (o) => o?.activity?._id === outing?.activity?._id
   );
   const photos = outing?.photos?.map(
-    (key) => userData?.photos?.find((p) => p.key === key).photo
+    (p) => userData?.photos?.find((photo) => photo.key === p.key).photo
   );
+
+  console.log(outing);
 
   // Handle the chat modal being shown
   const onShowChatModal = () => {
@@ -146,6 +148,8 @@ const OutingModal = (props) => {
     </div>
   );
 
+  const onMarkCompleted = () => {};
+
   return !outing || !userData ? null : (
     <ModalPortal>
       <WarningPopup
@@ -236,27 +240,36 @@ const OutingModal = (props) => {
           completed={activityIsCompletedType}
           hideSelect={true}
         />
-        <h2 className={styles.sectionHeader}>
-          {" "}
-          <img
-            className={styles.sectionHeaderIcon}
-            src={photosIcon}
-            alt={"photos"}
-          />{" "}
-          Photos
-        </h2>
-        {outing.photos[0] ? (
-          <div className={styles.photoGridContainer}>
-            <PhotoGrid images={photos} gridTemplateColumns="1fr 1fr" />
-          </div>
-        ) : (
-          <div className={styles.noPhotosMessage}>
-            <div className={styles.noPhotosMessageHeader}>None Yet!</div>
-            <div className={styles.noPhotosMessageText}>
-              Each outing member can add one photo when the Outing is completed!
+        {joining ? null : (
+          <Fragment>
+            <h2 className={styles.sectionHeader}>
+              {" "}
+              <img
+                className={styles.sectionHeaderIcon}
+                src={photosIcon}
+                alt={"photos"}
+              />{" "}
+              <div className={styles.photosHeader}>
+                Photos
+                {!completed ? (
+                  <div className={styles.photosHeaderText}>
+                    Each member can upload up to 2 photos.
+                  </div>
+                ) : null}
+              </div>
+            </h2>
+            {!completed ? (
+              <SimpleButton className={styles.uploadPhotos}>
+                + Upload
+              </SimpleButton>
+            ) : null}
+
+            <div className={styles.photoGridContainer}>
+              <PhotoGrid images={photos} gridTemplateColumns="1fr 1fr" />
             </div>
-          </div>
+          </Fragment>
         )}
+
         <h2 className={styles.sectionHeader}>
           {" "}
           <img

@@ -68,7 +68,7 @@ export const fetchPhotos = async (user) => {
   // Create array of photo keys from user outings
   let photoKeys = [];
   for (let outing of user.outings) {
-    for (let photoKey of outing.photos) {
+    for (let photoKey of outing.photos.map(p=>p.key)) {
       photoKeys.push(photoKey);
     }
   }

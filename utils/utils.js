@@ -82,7 +82,7 @@ module.exports.sendEmail = async (to, subject, text) => {
 module.exports.getPhotosFromOutings = (user) => {
   let photoKeys = [];
   for (outing of user.outings) {
-    for (photoKey of outing.photos) {
+    for (photoKey of outing.photos.map((p) => p.key)) {
       photoKeys.push(photoKey);
     }
   }

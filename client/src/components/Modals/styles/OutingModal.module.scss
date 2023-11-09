@@ -99,7 +99,7 @@
     width: 100%;
     align-items: center;
     text-align: center;
-    background-color: $card_grey;
+    //background-color: $card_grey;
     padding: 2rem;
     border-radius: 3px;
     box-sizing: border-box;
@@ -109,7 +109,7 @@
 .noPhotosMessageText{
     font-size: 1.1rem;
     color: grey;
-    width: 80%;
+    width: 70%;
     padding-bottom: 1rem;
 }
 
@@ -161,5 +161,16 @@
 .flakeText{
     width: 100%;
 }
+
+.photosHeaderText{
+    font-size: 1.2rem;
+    color: grey;
+    font-weight: normal;
+}
+
+.uploadPhotos{
+    margin-bottom: 1rem;
+}
+
 
 
