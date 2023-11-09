@@ -5,9 +5,8 @@ import ModalPortal from "./ModalPortal";
 import styles from "./styles/ChatModal.module.scss";
 import sendIcon from "../../images/send.png";
 import { useEffect, useRef } from "react";
-import { socket } from "../../socket";
 import { sendChatMessage } from "../../store/chat-actions";
-
+import { socket } from "../../socket";
 const bubbleColours = [
   "rgb(247, 226, 250)",
   "rgb(252, 225, 225)",
@@ -23,27 +22,17 @@ const ChatModal = (props) => {
   const modalStyle = { display: modalDisplay };
   const chatState = useSelector((state) => state.chat.chats);
   const activeChat = useSelector((state) => state.modal.activeChat);
-  const chat =
-    chatState.find((c) => c._id === activeChat?._id) ||
-    activeChat;
+  const chat = chatState.find((c) => c._id === activeChat?._id) || activeChat;
   const memberNames = chat?.outing?.users.map((u) => u.first_name);
   const membersString = chat && genMembersString(memberNames);
   const messages = chat?.messages;
   const composerRef = useRef();
 
-  console.log(chat);
-
   // Connect to the websocket for chat
   useEffect(() => {
     if (chat) {
-      // no-op if the socket is already connected
-      socket.connect();
       socket.emit("join-room", chat._id);
     }
-
-    return () => {
-      socket.disconnect();
-    };
   }, [chat]);
 
   // Send Message

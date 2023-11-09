@@ -12,6 +12,8 @@ export function onDisconnect() {
 }
 
 export function onUpdateUser(){
+  const user = store.getState().auth.user
+  console.log("PUSH UPDATE FOR: ", user)
   fetchAuth()
-  fetchChats(store.getState().auth.user)
+  fetchChats(user)
 }

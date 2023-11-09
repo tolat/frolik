@@ -28,7 +28,7 @@ const server = http.createServer(app);
 const socket = require("socket.io");
 
 // Add cors to the socket server if in development
-module.exports.io = inDevelopment
+const io = inDevelopment
   ? socket(server, {
       cors: {
         origin: "http://localhost:3000",
@@ -36,9 +36,11 @@ module.exports.io = inDevelopment
       },
     })
   : socket(server);
+  
+module.exports = io;
 
 // Chat socket logic
-this.io.on("connection", (socket) => {
+io.on("connection", (socket) => {
   try {
     // Message sent handler
     socket.on("message-sent", async (data) => {

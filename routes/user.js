@@ -14,6 +14,7 @@ const {
   handleOutingInviteAction,
   handleOutingUpdate,
   generateUniqueName,
+  pushUserUpdate,
 } = require("../utils/utils");
 const {
   reqAuthenticated,
@@ -444,6 +445,9 @@ router.post(
     await user.save();
     await populateUser(user);
     const populatedFriends = await populateFriends(user.friends);
+
+    // Push updates to the socket
+    pushUserUpdate(newOuting.invited);
 
     // Send updated user and populated friends back
     res.send({ user, populatedFriends, outing: newOuting });
