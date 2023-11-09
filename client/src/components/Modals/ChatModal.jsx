@@ -31,7 +31,11 @@ const ChatModal = (props) => {
   // Connect to the websocket for chat
   useEffect(() => {
     if (chat) {
-      socket.emit("join-room", chat._id);
+      try {
+        socket.emit("join-room", chat._id);
+      } catch (err) {
+        console.log(err);
+      }
     }
   }, [chat]);
 

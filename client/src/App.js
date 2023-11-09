@@ -18,8 +18,12 @@ function App() {
 
     // Connect once user is authenticated
     if (user) {
-      socket.connect();
-      socket.emit("join-room", user._id);
+      try {
+        socket.connect();
+        socket.emit("join-room", user._id);
+      } catch (err) {
+        console.log(err);
+      }
     }
 
     return () => {
@@ -28,7 +32,7 @@ function App() {
       socket.off("message-sent", sendChatMessage);
       socket.off("message-received", receiveChatMessage);
       socket.off("update-user", onUpdateUser);
-      socket.disconnect()
+      socket.disconnect();
     };
   }, [user]);
 

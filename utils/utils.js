@@ -2,8 +2,7 @@ const User = require("../models/user");
 const Chat = require("../models/chat");
 const Outing = require("../models/outing");
 const nodemailer = require("nodemailer");
-const io = require("../server")
-
+const io = require("../server");
 
 const {
   uniqueNamesGenerator,
@@ -119,7 +118,9 @@ module.exports.handleOutingInviteAction = async (
 ) => {
   // Remove the notificaiton
   user.notifications.splice(
-    user.notifications.map((n) => n.id).indexOf(notification.id),
+    user.notifications
+      .map((n) => n.id.toString())
+      .indexOf(notification.id.toString()),
     1
   );
 
@@ -128,8 +129,6 @@ module.exports.handleOutingInviteAction = async (
     outing.invited.map((u) => u.toString()).indexOf(user._id.toString()),
     1
   );
-
-  console.log("STATUS:", status)
 
   // If status is accepted, add user to Outing users list and
   // add outing to invited user's outing list

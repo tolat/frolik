@@ -554,8 +554,18 @@ router.get(
     );
     await outing.save();
 
-    // Push user update to user members
-    // **** IMPLEMENT NOTIFICATION ON OUTING LEAVE *****
+    // Make a new notification to send to outing creator
+    const outingCreator = await User.findById(outing.created_by);
+    const newNotification = {
+      id: Date.now() + Math.random(),
+      type: "outing-leave",
+      userID: user._id.toString(),
+      outing: outing._id.toString(),
+      created: new Date(Date.now()),
+    };
+    outingCreator.notifications.push(newNotification);
+    await outingCreator.save();
+    pushUserUpdate([outingCreator]);
 
     await populateUser(user);
 
@@ -593,21 +603,17 @@ router.get(
       return;
     }
 
-    // Clear any invites left for invited users
-    for (u of outing.invited) {
-      const invitedUser = await User.findById(u);
-      const inviteNotificaiton = invitedUser.notifications.find(
-        (n) => n.type == "outing-invite" && n.outing == outing._id.toString()
-      );
-      if (inviteNotificaiton) {
-        invitedUser.notifications.splice(
-          invitedUser.notifications
-            .map((n) => n.id)
-            .indexOf(inviteNotificaiton.id),
+    // Clear any invites left for invited users or notifications for the deleting user
+    for (u of outing.invited.concat([user])) {
+      const u = await User.findById(u);
+      const n = u.notifications.find((n) => n.outing == outing._id.toString());
+      if (n) {
+        u.notifications.splice(
+          u.notifications.map((n) => n.id.toString()).indexOf(n.id.toString()),
           1
         );
-        await invitedUser.save();
-        pushUserUpdate([invitedUser]);
+        await u.save();
+        pushUserUpdate([u]);
       }
     }
 
@@ -632,7 +638,12 @@ router.post(
     const user = await User.findById(req.params.id);
     const notifID = req.params.notificationid;
     const dismissStatus = req.body.status;
-    const notification = user.notifications.find((n) => n.id == notifID);
+    const notification = user.notifications.find(
+      (n) => n.id.toString() == notifID.toString()
+    );
+    const nIndex = user.notifications
+      .map((n) => n.id.toString())
+      .indexOf(notifID.toString());
 
     // Return if no notification exists
     if (!notification) {
@@ -651,14 +662,11 @@ router.post(
           dismissStatus
         );
         break;
-      case "outing-invite-update":
-        const nIndex = user.notifications.map((n) => n.id).indexOf(notifID);
+
+      default:
         user.notifications.splice(nIndex, 1);
         await user.save();
         await populateUser(user);
-        break;
-
-      default:
         break;
     }
 

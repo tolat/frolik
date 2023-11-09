@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import modalStyles from "./styles/SlideInModal.module.scss";
 import sampleNotificationIcon from "../../images/active.png";
 import OutingInvite from "./OutingInvite";
-import OutingInviteUpdate from "./OutingInviteUpdate";
+import OutingUpdate from "./OutingUpdate";
 
 const NotificationsModal = (props) => {
   const dispatch = useDispatch();
@@ -44,10 +44,25 @@ const NotificationsModal = (props) => {
             switch (n.type) {
               case "outing-invite":
                 return <OutingInvite key={Math.random()} notification={n} />;
-
               case "outing-invite-update":
                 return (
-                  <OutingInviteUpdate key={Math.random()} notification={n} />
+                  <OutingUpdate
+                    header={
+                      n.status === "denied"
+                        ? `Your Outing invite was denied by:`
+                        : `Your Outing invite was accepted by: `
+                    }
+                    key={Math.random()}
+                    notification={n}
+                  />
+                );
+              case "outing-leave":
+                return (
+                  <OutingUpdate
+                    header={"Your Outing was left by:"}
+                    key={Math.random()}
+                    notification={n}
+                  />
                 );
 
               default:
