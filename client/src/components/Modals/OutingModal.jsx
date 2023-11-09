@@ -49,10 +49,9 @@ const OutingModal = (props) => {
   const activityIsCompletedType = user.outings?.find(
     (o) => o?.activity?._id === outing?.activity?._id
   );
-  console.log(outing)
-  const photos = outing?.photos?.map(
-    (p) => userData?.photos?.find((photo) => photo.key === p.key).photo
-  );
+  const photos = outing?.photos
+    ?.map((p) => userData?.photos?.find((photo) => photo.key === p.key)?.photo)
+    .filter((foundPhoto) => foundPhoto);
 
   // Handle the chat modal being shown
   const onShowChatModal = () => {
@@ -163,14 +162,12 @@ const OutingModal = (props) => {
 
   const onPhotoUpload = async () => {
     // ***show uploading modal or text in component
-    console.log("phtos added")
-    const newPhotos = document.getElementById(
-      "upload-outing-photos"
-    ).files;
+    console.log("phtos added");
+    const newPhotos = document.getElementById("upload-outing-photos").files;
 
     if (newPhotos.length > 2) {
       // ***Show Warning phopup that you can only upload 2 photos
-      console.log("more than 2 photos")
+      console.log("more than 2 photos");
       return;
     }
 
@@ -179,14 +176,12 @@ const OutingModal = (props) => {
       const reader = new FileReader();
       reader.onload = () => {
         const base64Image = arrayBufferToBase64(reader.result);
-        const onComplete = () =>{
-          fetchAuth()
-          fetchPhotos(user)
-        }
+        const onComplete = (response) => {
+          fetchAuth();
+          fetchPhotos(response.user);
+        };
         // Upload photo and add photo to photos for display
-        uploadOutingPhoto(user, outing, base64Image, onComplete)
-        
-        console.log("uploading photo")
+        uploadOutingPhoto(user, outing, base64Image, onComplete);
       };
 
       reader.readAsArrayBuffer(photo);

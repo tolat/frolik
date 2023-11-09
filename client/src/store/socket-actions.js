@@ -1,5 +1,5 @@
 import store from ".";
-import { fetchChats } from "../utils/data-fetch";
+import { fetchChats, fetchPhotos } from "../utils/data-fetch";
 import { fetchAuth } from "./auth-actions";
 import { socketActions } from "./socket-slice";
 
@@ -15,4 +15,5 @@ export function onUpdateUser(){
   const user = store.getState().auth.user
   fetchAuth()
   fetchChats(user)
+  fetchPhotos(user)
 }

@@ -48,10 +48,13 @@ DONE
 DONE
 
 - Need to finish notification on outing invite accepted or denied
+DONE
+
+- Need to add Photo uploading to outing
+*** NEED TO DELETE PHOTOS FROM S3 ON OUTING DELETE ***
 
 - Need completion object for outing
 
-- Need to add Photo uploading to outing
 
 - Need profile viewer modal
 

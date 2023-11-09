@@ -699,7 +699,7 @@ router.post(
   sameUserOnly,
   tryCatch(async (req, res) => {
     const outing = await Outing.findById(req.params.outingid);
-    const user = await User.findById(req.params.id);
+    let user = await User.findById(req.params.id);
     const photoString = req.body.photoString;
 
     // Only add if outing does not already have two photos uploaded
@@ -726,7 +726,11 @@ router.post(
       outing.users.filter((u) => u.toString() != user._id.toString())
     );
 
-    // Upload image if it has been included in teh request
+    // Get user again and populate
+    user = await User.findById(user._id.toString());
+    await populateUser(user);
+
+    // Upload image if it has been included in the request
     if (photoString) {
       // Resize/compress image before upload
       const imageBuffer = Buffer.from(photoString, "base64");
@@ -739,7 +743,7 @@ router.post(
       // Upload image to S3
       uploadToS3(process.env.AWS_BUCKET, newPhotoKey, imageString)
         .then((response) => {
-          res.sendStatus(200);
+          res.send({ user });
         })
         .catch((error) => {
           console.error("Error uploading image:", error);
