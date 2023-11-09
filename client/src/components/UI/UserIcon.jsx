@@ -43,8 +43,8 @@ const genBackgroundStr = (user, categoryColorMap) => {
       /* `${categoryColorMap[category]} ${cumulativePercentage}% ${
         percentage + cumulativePercentage
       }%` */
-      
-       `${categoryColorMap[category]} ${cumulativePercentage}%, 
+
+      `${categoryColorMap[category]} ${cumulativePercentage}%, 
          ${categoryColorMap[nextCategory]} ${
         cumulativePercentage + percentage
       }%`
@@ -85,7 +85,7 @@ const UserIcon = memo(function UserIcon(props) {
     width: pieDimension,
     height: pieDimension,
     background: backgroundString,
-    boxShadow: props.pieShadow && "rgba(0, 0, 0, 0.24) 0px 3px 8px"
+    boxShadow: props.pieShadow && "rgba(0, 0, 0, 0.24) 0px 3px 8px",
   };
 
   const backerStyle = {
@@ -104,7 +104,7 @@ const UserIcon = memo(function UserIcon(props) {
             <div className={styles.badgeContent}>{props.badge}</div>
           </div>
         ) : null}
-        {!photoString ? null : (
+        {!photoString || photoString === "queued" ? null : (
           <div style={pieStyle} className={styles.pieChart}>
             <CroppedImage
               image={photoString}

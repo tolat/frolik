@@ -6,7 +6,7 @@ import { authActions } from "../store/auth-slice";
 import { chatActions } from "../store/chat-slice";
 import { goActions } from "../store/go-slice";
 
-// Get all activities 
+// Get all activities
 export const fetchActivities = async (setData) => {
   return new Promise((resolve, reject) => {
     const requestConfig = {
@@ -58,6 +58,7 @@ export const fetchProfilePic = async (userID) => {
     console.log(err);
   };
 
+  store.dispatch(dataActions.setUserProfilePicture({userID, photoString: "queued"}));
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
@@ -68,7 +69,7 @@ export const fetchPhotos = async (user) => {
   // Create array of photo keys from user outings
   let photoKeys = [];
   for (let outing of user.outings) {
-    for (let photoKey of outing.photos.map(p=>p.key)) {
+    for (let photoKey of outing.photos.map((p) => p.key)) {
       photoKeys.push(photoKey);
     }
   }
@@ -429,6 +430,33 @@ export const fetchStrippedUser = (userID, onComplete) => {
 
   const handleResponse = (response) => {
     onComplete(response.user);
+  };
+
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};
+
+export const uploadOutingPhoto = (
+  user,
+  outing,
+  photoString,
+  onComplete = () => {}
+) => {
+  const requestConfig = {
+    url: `${getServer()}/user/${user._id}/outing/${outing._id}/upload-photo`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({photoString}),
+  };
+
+  const handleResponse = (response) => {
+    onComplete(response);
+    console.log("photo uploaded");
   };
 
   const handleError = (err) => {

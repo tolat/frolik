@@ -693,4 +693,60 @@ router.get(
   })
 );
 
+router.post(
+  "/:id/outing/:outingid/upload-photo",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const outing = await Outing.findById(req.params.outingid);
+    const user = await User.findById(req.params.id);
+    const photoString = req.body.photoString;
+
+    // Only add if outing does not already have two photos uploaded
+    if (
+      outing.photos.filter((p) => p.uploader.toString() == user._id.toString())
+        .length > 1
+    ) {
+      res.status(406).send("User has already uploaded 2 photos");
+      return;
+    }
+
+    // Don't allow upload if user isn't in outing users
+    if (!outing.users.find((u) => u._id.toString() == user._id.toString())) {
+      res.status(406).send("User is not a member of this outing");
+      return;
+    }
+
+    // Add photo with new key to outing photos and push an update to all users
+    // except the request user. They will fetch auth on request completion in client.
+    const newPhotoKey = `${user._id.toString()}-${outing._id.toString()}-${Date.now()}`;
+    outing.photos.push({ uploader: user, key: newPhotoKey });
+    await outing.save();
+    pushUserUpdate(
+      outing.users.filter((u) => u.toString() != user._id.toString())
+    );
+
+    // Upload image if it has been included in teh request
+    if (photoString) {
+      // Resize/compress image before upload
+      const imageBuffer = Buffer.from(photoString, "base64");
+      const reducedImageBuffer = await sharp(imageBuffer)
+        .jpeg({ quality: 50 })
+        .withMetadata()
+        .toBuffer();
+      const imageString = reducedImageBuffer.toString("base64");
+
+      // Upload image to S3
+      uploadToS3(process.env.AWS_BUCKET, newPhotoKey, imageString)
+        .then((response) => {
+          res.sendStatus(200);
+        })
+        .catch((error) => {
+          console.error("Error uploading image:", error);
+          res.status(500).send("Internal Server Error");
+        });
+    }
+  })
+);
+
 module.exports = router;

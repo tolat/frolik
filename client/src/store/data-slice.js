@@ -9,8 +9,7 @@ const initialState = {
 
 const findOrCreateUser = (state, action) => {
   if (!action.payload.userID) {
-    console.log("NO USERID PASSED TO DATASLICE");
-    console.trace();
+    //console.log("NO USERID PASSED TO DATASLICE");
   }
 
   // Create user objet in store if none exists

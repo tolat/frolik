@@ -16,14 +16,17 @@ import {
   deleteOuting,
   fetchChat,
   fetchOuting,
+  fetchPhotos,
   joinOuting,
   leaveOuting,
+  uploadOutingPhoto,
 } from "../../utils/data-fetch";
 import { authActions } from "../../store/auth-slice";
 import { popupActions } from "../../store/popup-slice";
 import WarningPopup from "../Popups/WarningPopup";
 import flakeIcon from "../../images/snowflake.png";
 import { arrayBufferToBase64 } from "../../utils/utils";
+import { fetchAuth } from "../../store/auth-actions";
 
 const OutingModal = (props) => {
   const modalState = useSelector((state) => state.modal);
@@ -46,6 +49,7 @@ const OutingModal = (props) => {
   const activityIsCompletedType = user.outings?.find(
     (o) => o?.activity?._id === outing?.activity?._id
   );
+  console.log(outing)
   const photos = outing?.photos?.map(
     (p) => userData?.photos?.find((photo) => photo.key === p.key).photo
   );
@@ -175,7 +179,13 @@ const OutingModal = (props) => {
       const reader = new FileReader();
       reader.onload = () => {
         const base64Image = arrayBufferToBase64(reader.result);
-        // ***Post photo to outing on server
+        const onComplete = () =>{
+          fetchAuth()
+          fetchPhotos(user)
+        }
+        // Upload photo and add photo to photos for display
+        uploadOutingPhoto(user, outing, base64Image, onComplete)
+        
         console.log("uploading photo")
       };
 
