@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ModalPortal from "./ModalPortal";
 import styles from "./styles/OutingModal.module.scss";
 import SimpleButton from "../UI/SimpleButton";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import PhotoGrid from "../UI/PhotoGrid";
 import photosIcon from "../../images/photos.png";
 import activityIcon from "../../images/activity.png";
@@ -27,6 +27,7 @@ import WarningPopup from "../Popups/WarningPopup";
 import flakeIcon from "../../images/snowflake.png";
 import { arrayBufferToBase64 } from "../../utils/utils";
 import { fetchAuth } from "../../store/auth-actions";
+import CropperPopup from "../Popups/CropperPopup";
 
 const OutingModal = (props) => {
   const modalState = useSelector((state) => state.modal);
@@ -46,6 +47,10 @@ const OutingModal = (props) => {
   const joining = !!outing?.invited?.find((i) => i._id === user?._id);
   const isOnlyUser = outing?.users?.length < 2;
   const userFlaked = outing?.flakes?.find((id) => id === user._id);
+  const [uploads, setUploads] = useState([]);
+  const userPhotoCount = outing?.photos?.filter(
+    (p) => p.uploader === user?._id
+  )?.length;
   const activityIsCompletedType = user.outings?.find(
     (o) => o?.activity?._id === outing?.activity?._id
   );
@@ -74,6 +79,7 @@ const OutingModal = (props) => {
         fetchChat(user._id, outing.chat, () => {});
       };
       fetchOuting(outing._id, user, onFetchOuting);
+      fetchPhotos(user);
     };
     // Don't join if user has too many pending outings
     if (user.outings.filter((o) => o.status === "Pending").length >= 5) {
@@ -153,40 +159,81 @@ const OutingModal = (props) => {
   const onMarkCompleted = () => {};
 
   const onUploadClick = () => {
-    if (outing.photos.filter((p) => p.uploader === user._id).length >= 2) {
-      // ***Show Warning phopup that you can only upload 2 photos
+    if (userPhotoCount > 1) {
+      dispatch(popupActions.showPopup("maximum-2-photos"));
+      resetUploads();
     } else {
       document.getElementById("upload-outing-photos").click();
     }
   };
 
-  const onPhotoUpload = async () => {
-    // ***show uploading modal or text in component
-    console.log("phtos added");
+  const onPhotosSelected = async () => {
     const newPhotos = document.getElementById("upload-outing-photos").files;
 
-    if (newPhotos.length > 2) {
-      // ***Show Warning phopup that you can only upload 2 photos
-      console.log("more than 2 photos");
+    // Check if user has met upload quota
+    if (newPhotos.length + userPhotoCount > 2) {
+      dispatch(popupActions.showPopup("maximum-2-photos"));
+      resetUploads();
       return;
     }
 
+    // Show cropper popup
+    dispatch(popupActions.showPopup("outing-upload-popup"));
+
+    // Set uploads state with base64 images strings
     for (let photo of newPhotos) {
       // Read file into a base64String and update the staged image
       const reader = new FileReader();
       reader.onload = () => {
         const base64Image = arrayBufferToBase64(reader.result);
-        const onComplete = (response) => {
-          fetchAuth();
-          fetchPhotos(response.user);
-        };
-        // Upload photo and add photo to photos for display
-        uploadOutingPhoto(user, outing, base64Image, onComplete);
+        setUploads((prevState) => prevState.concat(base64Image));
       };
 
       reader.readAsArrayBuffer(photo);
     }
   };
+
+  const resetUploads = () => {
+    setUploads([]);
+    document.getElementById("upload-outing-photos-form").reset();
+  };
+
+  const onPhotoUpload = (index) => {
+    const photoString = uploads[index];
+    const onComplete = (response) => {
+      // Remove photo form uploads state
+      onPhotoUploadDismiss(index);
+
+      // SHOW PHOTO UPLOADING TILE
+      fetchAuth();
+      fetchPhotos(response.user);
+    };
+
+    // Upload photo and add photo to photos for display
+    uploadOutingPhoto(user, outing, photoString, onComplete);
+  };
+
+  const onPhotoUploadDismiss = (index) => {
+    setUploads((prevState) => {
+      const newState = [...prevState];
+      newState.splice(index, 1);
+
+      // Hide popup if no photos left to upload
+      if (newState.length === 0) {
+        dispatch(popupActions.hidePopup());
+        resetUploads();
+      }
+
+      return newState;
+    });
+  };
+
+  const tooManyPhotosMessage = (
+    <div>
+      Each Outing member can only upload up to 2 photos. You can remove some of
+      your photos if you want to change or edit your uploads for this Outing.
+    </div>
+  );
 
   return !outing || !userData ? null : (
     <ModalPortal>
@@ -222,6 +269,22 @@ const OutingModal = (props) => {
         cancelClick={() => {
           dispatch(popupActions.hidePopup());
         }}
+      />
+      <WarningPopup
+        selector={"maximum-2-photos"}
+        header={"Too many photos!"}
+        message={tooManyPhotosMessage}
+        ok={"OK"}
+        okClick={() => {
+          dispatch(popupActions.hidePopup());
+          resetUploads();
+        }}
+      />
+      <CropperPopup
+        images={uploads}
+        selector={"outing-upload-popup"}
+        onCancel={onPhotoUploadDismiss}
+        onUpload={onPhotoUpload}
       />
       <div style={modalStyle} className={styles.container}>
         <div className={styles.header}>
@@ -297,25 +360,41 @@ const OutingModal = (props) => {
               </div>
             </h2>
             {!completed ? (
-              <Fragment>
-                <input
-                  onChange={onPhotoUpload}
-                  type="file"
-                  multiple
-                  id="upload-outing-photos"
+              <div
+                style={{ marginBottom: "2rem" }}
+                className={styles.uploadPhotosContainer}
+              >
+                <form
                   className={styles.uploadInput}
-                />
-                <SimpleButton
-                  onClick={onUploadClick}
-                  className={styles.uploadPhotos}
+                  id="upload-outing-photos-form"
                 >
-                  + Upload
-                </SimpleButton>
-              </Fragment>
+                  <input
+                    onChange={onPhotosSelected}
+                    type="file"
+                    multiple
+                    id="upload-outing-photos"
+                  />
+                </form>
+
+                <div className={styles.sideBySide}>
+                  {userPhotoCount < 2 ? (
+                    <SimpleButton onClick={onUploadClick}>
+                      + Upload
+                    </SimpleButton>
+                  ) : null}
+
+                  {userPhotoCount === 1 ? (
+                    <div className={styles.buttonSpacer}></div>
+                  ) : null}
+                  {userPhotoCount > 0 ? (
+                    <SimpleButton onClick={null}>Edit</SimpleButton>
+                  ) : null}
+                </div>
+              </div>
             ) : null}
 
             <div className={styles.photoGridContainer}>
-              <PhotoGrid images={photos} gridTemplateColumns="1fr 1fr" />
+              <PhotoGrid images={photos} gridTemplateColumns="1fr 1fr 1fr" />
             </div>
           </Fragment>
         )}

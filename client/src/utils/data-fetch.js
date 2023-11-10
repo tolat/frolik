@@ -456,7 +456,6 @@ export const uploadOutingPhoto = (
 
   const handleResponse = (response) => {
     onComplete(response);
-    console.log("photo uploaded");
   };
 
   const handleError = (err) => {

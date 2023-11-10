@@ -2,6 +2,7 @@ import { redirect } from "react-router-dom";
 import store from "../store";
 import { fetchAuth } from "../store/auth-actions";
 import { hideModal } from "../store/modal-actions";
+import loadImage from "blueimp-load-image";
 
 export const calcAvgRating = (activity) => {
   if (!activity.ratings) {
@@ -162,4 +163,56 @@ export const toAppDate = (date) => {
 
 export const sortByDate = (a, b) => {
   return new Date(a).getTime() - new Date(b).getTime();
+};
+
+export const getCroppedImgBase64 = (file, croppedAreaPixels, zoom) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const image = new Image();
+      image.src = event.target.result;
+
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const scaleX = image.naturalWidth / image.width;
+        const scaleY = image.naturalHeight / image.height;
+        canvas.width = croppedAreaPixels.width;
+        canvas.height = croppedAreaPixels.height;
+
+        ctx.drawImage(
+          image,
+          croppedAreaPixels.x * scaleX * zoom,
+          croppedAreaPixels.y * scaleY * zoom,
+          croppedAreaPixels.width * scaleX * zoom,
+          croppedAreaPixels.height * scaleY * zoom,
+          0,
+          0,
+          croppedAreaPixels.width,
+          croppedAreaPixels.height
+        );
+
+        loadImage(
+          canvas.toDataURL('image/png'),
+          (canvas) => {
+            const croppedBase64 = canvas.toDataURL('image/png');
+            resolve(croppedBase64);
+          },
+          {
+            orientation: true, // Use EXIF orientation
+            maxWidth: 800,
+            canvas: true,
+          }
+        );
+      };
+
+      image.onerror = (error) => {
+        reject(error);
+      };
+    };
+
+    reader.readAsDataURL(file);
+  });
 };

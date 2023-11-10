@@ -1,0 +1,60 @@
+@import "../../../utils/responsive.scss";
+
+.outerContainer {
+  position: relative;
+}
+
+.container {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
+
+.cropperContainer {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  margin-bottom: 1rem;
+}
+
+.cropperSpacer{
+    width: 100%;
+    padding-top: calc(100% + 9rem);
+    position: relative;
+    font-size: 1.5rem;
+}
+
+.saveButton {
+  background-color: $blue;
+  color: white;
+  font-weight: bold;
+  width: 48%;
+}
+
+.cancelButton {
+  width: 48%;
+}
+
+.header {
+  font-size: 1.7rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.count{
+    font-size: 1.4rem;
+    color: grey;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}

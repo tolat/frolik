@@ -735,7 +735,7 @@ router.post(
       // Resize/compress image before upload
       const imageBuffer = Buffer.from(photoString, "base64");
       const reducedImageBuffer = await sharp(imageBuffer)
-        .jpeg({ quality: 50 })
+        .jpeg({ quality: 30 })
         .withMetadata()
         .toBuffer();
       const imageString = reducedImageBuffer.toString("base64");
@@ -743,6 +743,7 @@ router.post(
       // Upload image to S3
       uploadToS3(process.env.AWS_BUCKET, newPhotoKey, imageString)
         .then((response) => {
+          pushUserUpdate(outing.users)
           res.send({ user });
         })
         .catch((error) => {
