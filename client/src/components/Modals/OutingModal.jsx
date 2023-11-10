@@ -156,8 +156,6 @@ const OutingModal = (props) => {
     </div>
   );
 
-  const onMarkCompleted = () => {};
-
   const onUploadClick = () => {
     if (userPhotoCount > 1) {
       dispatch(popupActions.showPopup("maximum-2-photos"));
@@ -198,8 +196,7 @@ const OutingModal = (props) => {
     document.getElementById("upload-outing-photos-form").reset();
   };
 
-  const onPhotoUpload = (index) => {
-    const photoString = uploads[index];
+  const onPhotoUpload = (index, photoString, resetCropper) => {
     const onComplete = (response) => {
       // Remove photo form uploads state
       onPhotoUploadDismiss(index);
@@ -207,6 +204,9 @@ const OutingModal = (props) => {
       // SHOW PHOTO UPLOADING TILE
       fetchAuth();
       fetchPhotos(response.user);
+
+      // Reset the cropper
+      resetCropper();
     };
 
     // Upload photo and add photo to photos for display
@@ -394,7 +394,7 @@ const OutingModal = (props) => {
             ) : null}
 
             <div className={styles.photoGridContainer}>
-              <PhotoGrid images={photos} gridTemplateColumns="1fr 1fr 1fr" />
+              <PhotoGrid images={photos} gridTemplateColumns="1fr 1fr" />
             </div>
           </Fragment>
         )}

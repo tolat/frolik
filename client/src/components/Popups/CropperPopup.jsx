@@ -3,7 +3,8 @@ import SimpleButton from "../UI/SimpleButton";
 import Popup from "./Popup";
 import styles from "./styles/CropperPopup.module.scss";
 import Cropper from "react-easy-crop";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { getCroppedImageBase64 } from "../../utils/utils";
 
 const CropperPopup = (props) => {
   const popupState = useSelector((state) => state.popup);
@@ -15,7 +16,13 @@ const CropperPopup = (props) => {
   const [crop2, setCrop2] = useState({ x: 0, y: 0 });
   const [button1Text, setButton1Text] = useState("Upload");
   const [button2Text, setButton2Text] = useState("Upload");
+  const [cropComplete1, setCropComplete1] = useState();
+  const [cropComplete2, setCropComplete2] = useState();
+  const cropCompletes = [cropComplete1, cropComplete2];
+  const setCropCompletes = [setCropComplete1, setCropComplete2];
   const crops = [crop1, crop2];
+  const setCrops = [setCrop1, setCrop2];
+  const setZooms = [setZoom1, setZoom2];
   const zooms = [zoom1, zoom2];
   const buttonTexts = [button1Text, button2Text];
   const buttonSetters = [setButton1Text, setButton2Text];
@@ -38,6 +45,23 @@ const CropperPopup = (props) => {
 
   const cropChangers = [onCrop1Change, onCrop2Change];
   const zoomChangers = [onZoom1Change, onZoom2Change];
+
+  const onUploadImage = async (img) => {
+    const index = props.images.indexOf(img);
+    buttonSetters[index]("Uploading..");
+    const croppedImage = await getCroppedImageBase64(
+      img,
+      cropCompletes[index].cap
+    );
+
+    const resetCropper = () => {
+      setCrops[index]({ x: 0, y: 0 });
+      setZooms[index](1);
+      buttonSetters[index]("Upload");
+    };
+    
+    props.onUpload(index, croppedImage, resetCropper);
+  };
 
   return (
     <Popup style={{ display: popupDisplay }} showPopup={showPopup}>
@@ -73,6 +97,9 @@ const CropperPopup = (props) => {
                   onZoomChange={zoomChangers[props.images.indexOf(img)]}
                   objectFit={"cover"}
                   showGrid={true}
+                  onCropComplete={(ca, cap) =>
+                    setCropCompletes[props.images.indexOf(img)]({ ca, cap })
+                  }
                   style={{
                     containerStyle: {
                       width: "100%",
@@ -84,10 +111,7 @@ const CropperPopup = (props) => {
               </div>
               <div className={styles.buttonsContainer}>
                 <SimpleButton
-                  onClick={() => {
-                    buttonSetters[props.images.indexOf(img)]("Uploading..");
-                    props.onUpload(props.images.indexOf(img));
-                  }}
+                  onClick={(e) => onUploadImage(img)}
                   className={styles.saveButton}
                 >
                   {buttonTexts[props.images.indexOf(img)]}

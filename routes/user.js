@@ -605,15 +605,19 @@ router.get(
 
     // Clear any invites left for invited users or notifications for the deleting user
     for (u of outing.invited.concat([user])) {
-      const u = await User.findById(u);
-      const n = u.notifications.find((n) => n.outing == outing._id.toString());
+      const usr = await User.findById(u);
+      const n = usr.notifications.find(
+        (n) => n.outing == outing._id.toString()
+      );
       if (n) {
-        u.notifications.splice(
-          u.notifications.map((n) => n.id.toString()).indexOf(n.id.toString()),
+        usr.notifications.splice(
+          usr.notifications
+            .map((n) => n.id.toString())
+            .indexOf(n.id.toString()),
           1
         );
-        await u.save();
-        pushUserUpdate([u]);
+        await usr.save();
+        pushUserUpdate([usr]);
       }
     }
 
@@ -702,6 +706,11 @@ router.post(
     let user = await User.findById(req.params.id);
     const photoString = req.body.photoString;
 
+    if (!photoString) {
+      res.status(406).send("No photo received");
+      return;
+    }
+
     // Only add if outing does not already have two photos uploaded
     if (
       outing.photos.filter((p) => p.uploader.toString() == user._id.toString())
@@ -730,27 +739,24 @@ router.post(
     user = await User.findById(user._id.toString());
     await populateUser(user);
 
-    // Upload image if it has been included in the request
-    if (photoString) {
-      // Resize/compress image before upload
-      const imageBuffer = Buffer.from(photoString, "base64");
-      const reducedImageBuffer = await sharp(imageBuffer)
-        .jpeg({ quality: 30 })
-        .withMetadata()
-        .toBuffer();
-      const imageString = reducedImageBuffer.toString("base64");
+    // Resize/compress image before upload
+    const imageBuffer = Buffer.from(photoString, "base64");
+    const reducedImageBuffer = await sharp(imageBuffer)
+      .jpeg({ quality: 30 })
+      .withMetadata()
+      .toBuffer();
+    const imageString = reducedImageBuffer.toString("base64");
 
-      // Upload image to S3
-      uploadToS3(process.env.AWS_BUCKET, newPhotoKey, imageString)
-        .then((response) => {
-          pushUserUpdate(outing.users)
-          res.send({ user });
-        })
-        .catch((error) => {
-          console.error("Error uploading image:", error);
-          res.status(500).send("Internal Server Error");
-        });
-    }
+    // Upload image to S3
+    uploadToS3(process.env.AWS_BUCKET, newPhotoKey, imageString)
+      .then((response) => {
+        pushUserUpdate(outing.users);
+        res.send({ user });
+      })
+      .catch((error) => {
+        console.error("Error uploading image:", error);
+        res.status(500).send("Internal Server Error");
+      });
   })
 );
 

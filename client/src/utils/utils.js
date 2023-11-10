@@ -165,54 +165,33 @@ export const sortByDate = (a, b) => {
   return new Date(a).getTime() - new Date(b).getTime();
 };
 
-export const getCroppedImgBase64 = (file, croppedAreaPixels, zoom) => {
+export function getCroppedImageBase64(imageBase64, crop) {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader();
+    const image = new Image();
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
 
-    reader.onload = (event) => {
-      const image = new Image();
-      image.src = event.target.result;
+      const x = crop.x 
+      const y = crop.y 
+      const width = crop.width 
+      const height = crop.height  
 
-      image.onload = () => {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
+      canvas.width = width;
+      canvas.height = height;
 
-        const scaleX = image.naturalWidth / image.width;
-        const scaleY = image.naturalHeight / image.height;
-        canvas.width = croppedAreaPixels.width;
-        canvas.height = croppedAreaPixels.height;
+      ctx.drawImage(image, x, y, width, height, 0, 0, width, height);
 
-        ctx.drawImage(
-          image,
-          croppedAreaPixels.x * scaleX * zoom,
-          croppedAreaPixels.y * scaleY * zoom,
-          croppedAreaPixels.width * scaleX * zoom,
-          croppedAreaPixels.height * scaleY * zoom,
-          0,
-          0,
-          croppedAreaPixels.width,
-          croppedAreaPixels.height
-        );
-
-        loadImage(
-          canvas.toDataURL('image/png'),
-          (canvas) => {
-            const croppedBase64 = canvas.toDataURL('image/png');
-            resolve(croppedBase64);
-          },
-          {
-            orientation: true, // Use EXIF orientation
-            maxWidth: 800,
-            canvas: true,
-          }
-        );
-      };
-
-      image.onerror = (error) => {
-        reject(error);
-      };
+      const croppedImageBase64 = canvas.toDataURL("image/jpeg"); 
+      resolve(croppedImageBase64.slice(23));
     };
 
-    reader.readAsDataURL(file);
+    image.onerror = (error) => {
+      console.error("Image load error:", error);
+      reject(error);
+    };
+
+    image.src = `data:image/png;base64,${imageBase64}`;
   });
-};
+}
+
