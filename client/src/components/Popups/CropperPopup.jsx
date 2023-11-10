@@ -3,7 +3,7 @@ import SimpleButton from "../UI/SimpleButton";
 import Popup from "./Popup";
 import styles from "./styles/CropperPopup.module.scss";
 import Cropper from "react-easy-crop";
-import { useCallback, useState } from "react";
+import {  useState } from "react";
 import { getCroppedImageBase64 } from "../../utils/utils";
 
 const CropperPopup = (props) => {
@@ -59,7 +59,7 @@ const CropperPopup = (props) => {
       setZooms[index](1);
       buttonSetters[index]("Upload");
     };
-    
+
     props.onUpload(index, croppedImage, resetCropper);
   };
 

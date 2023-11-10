@@ -2,7 +2,6 @@ import { redirect } from "react-router-dom";
 import store from "../store";
 import { fetchAuth } from "../store/auth-actions";
 import { hideModal } from "../store/modal-actions";
-import loadImage from "blueimp-load-image";
 
 export const calcAvgRating = (activity) => {
   if (!activity.ratings) {
