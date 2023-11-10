@@ -15,9 +15,8 @@ const PhotoGrid = (props) => {
             src={`data:image/png;base64,${m}`}
           />
           {props.showDeleteable &&
-          props.deleteableIndexes?.find(
-            (i) => i === props.images.indexOf(m)
-          ) ? (
+          props.deleteableIndexes?.find((i) => i === props.images.indexOf(m)) +
+            1 ? (
             <div
               onClick={() => props.onDeleteClick(props.images.indexOf(m))}
               className={styles.deleteButton}

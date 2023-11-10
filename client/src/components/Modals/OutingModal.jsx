@@ -62,8 +62,10 @@ const OutingModal = (props) => {
 
   const [showDeleteable, setShowDeleteable] = useState(false);
   const deleteableIndexes = outing?.photos
-    ?.map((p) => (p.uploader === user._id ? outing?.photos.indexOf(p) : false))
-    .filter((i) => i);
+    ?.map((p) => (p.uploader === user._id ? outing?.photos.indexOf(p) : -1))
+    .filter((i) => i >= 0);
+  const [deleteKey, setDeleteKey] = useState(false);
+  const [deletePhotoButtonText, setDeletePhotoButtonText] = useState("Delete");
 
   // Handle the chat modal being shown
   const onShowChatModal = () => {
@@ -216,7 +218,7 @@ const OutingModal = (props) => {
 
     // Upload photo and add photo to photos for display
     uploadOutingPhoto(user, outing, photoString, onComplete);
-    setShowDeleteable(false)
+    setShowDeleteable(false);
   };
 
   const onPhotoUploadDismiss = (index) => {
@@ -249,16 +251,21 @@ const OutingModal = (props) => {
   };
 
   const onDeletePhoto = (index) => {
-    const deleteKey = outing.photos[index].key;
+    setDeleteKey(outing.photos[index].key);
+    dispatch(popupActions.showPopup("confirm-delete-photo"));
+  };
 
+  const onDeleteConfirm = () => {
     const onComplete = (response) => {
       fetchAuth();
       fetchPhotos(response.user);
-
+      dispatch(popupActions.hidePopup());
+      setDeletePhotoButtonText("Delete");
     };
 
     // Upload photo and add photo to photos for display
     deleteOutingPhoto(user, outing, deleteKey, onComplete);
+    setDeletePhotoButtonText("Deleting..");
   };
 
   return !outing || !userData ? null : (
@@ -306,6 +313,17 @@ const OutingModal = (props) => {
           resetUploads();
         }}
       />
+      <WarningPopup
+        selector={"confirm-delete-photo"}
+        header={"Delete Photo?"}
+        message={null}
+        delete={deletePhotoButtonText}
+        deleteClick={onDeleteConfirm}
+        cancel={"Cancel"}
+        cancelClick={() => {
+          dispatch(popupActions.hidePopup());
+        }}
+      />
       <CropperPopup
         images={uploads}
         selector={"outing-upload-popup"}
@@ -318,7 +336,7 @@ const OutingModal = (props) => {
             style={{ borderLeft: `10px solid ${categoryColor}` }}
             className={styles.headerInnerContainer}
           >
-            <div className={styles.outingName}>{outing.name}</div>
+            <div className={styles.outingName}>Outing: {outing.name}</div>
             <div className={styles.outingStatus}>{outing.status}</div>
           </div>
         </div>
