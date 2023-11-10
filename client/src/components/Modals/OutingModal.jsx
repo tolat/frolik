@@ -14,6 +14,7 @@ import { modalActions } from "../../store/modal-slice";
 import { hideModal } from "../../store/modal-actions";
 import {
   deleteOuting,
+  deleteOutingPhoto,
   fetchChat,
   fetchOuting,
   fetchPhotos,
@@ -47,6 +48,7 @@ const OutingModal = (props) => {
   const joining = !!outing?.invited?.find((i) => i._id === user?._id);
   const isOnlyUser = outing?.users?.length < 2;
   const userFlaked = outing?.flakes?.find((id) => id === user._id);
+  const [editButtonText, setEditButtonText] = useState("Edit");
   const [uploads, setUploads] = useState([]);
   const userPhotoCount = outing?.photos?.filter(
     (p) => p.uploader === user?._id
@@ -57,6 +59,11 @@ const OutingModal = (props) => {
   const photos = outing?.photos
     ?.map((p) => userData?.photos?.find((photo) => photo.key === p.key)?.photo)
     .filter((foundPhoto) => foundPhoto);
+
+  const [showDeleteable, setShowDeleteable] = useState(false);
+  const deleteableIndexes = outing?.photos
+    ?.map((p) => (p.uploader === user._id ? outing?.photos.indexOf(p) : false))
+    .filter((i) => i);
 
   // Handle the chat modal being shown
   const onShowChatModal = () => {
@@ -200,8 +207,6 @@ const OutingModal = (props) => {
     const onComplete = (response) => {
       // Remove photo form uploads state
       onPhotoUploadDismiss(index);
-
-      // SHOW PHOTO UPLOADING TILE
       fetchAuth();
       fetchPhotos(response.user);
 
@@ -211,6 +216,7 @@ const OutingModal = (props) => {
 
     // Upload photo and add photo to photos for display
     uploadOutingPhoto(user, outing, photoString, onComplete);
+    setShowDeleteable(false)
   };
 
   const onPhotoUploadDismiss = (index) => {
@@ -234,6 +240,26 @@ const OutingModal = (props) => {
       your photos if you want to change or edit your uploads for this Outing.
     </div>
   );
+
+  const onEditPhotosClick = () => {
+    setShowDeleteable((prevState) => (prevState ? false : true));
+    setEditButtonText((preveState) =>
+      preveState === "Edit" ? "Done Editing" : "Edit"
+    );
+  };
+
+  const onDeletePhoto = (index) => {
+    const deleteKey = outing.photos[index].key;
+
+    const onComplete = (response) => {
+      fetchAuth();
+      fetchPhotos(response.user);
+
+    };
+
+    // Upload photo and add photo to photos for display
+    deleteOutingPhoto(user, outing, deleteKey, onComplete);
+  };
 
   return !outing || !userData ? null : (
     <ModalPortal>
@@ -387,14 +413,22 @@ const OutingModal = (props) => {
                     <div className={styles.buttonSpacer}></div>
                   ) : null}
                   {userPhotoCount > 0 ? (
-                    <SimpleButton onClick={null}>Edit</SimpleButton>
+                    <SimpleButton onClick={onEditPhotosClick}>
+                      {editButtonText}
+                    </SimpleButton>
                   ) : null}
                 </div>
               </div>
             ) : null}
 
             <div className={styles.photoGridContainer}>
-              <PhotoGrid images={photos} gridTemplateColumns="1fr 1fr" />
+              <PhotoGrid
+                deleteableIndexes={deleteableIndexes}
+                showDeleteable={showDeleteable}
+                onDeleteClick={onDeletePhoto}
+                images={photos}
+                gridTemplateColumns="1fr 1fr"
+              />
             </div>
           </Fragment>
         )}

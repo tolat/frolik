@@ -464,3 +464,24 @@ export const uploadOutingPhoto = (
 
   httpFetch(requestConfig, handleResponse, handleError);
 };
+
+export const deleteOutingPhoto = (user, outing, key, onComplete) =>{
+  const requestConfig = {
+    url: `${getServer()}/user/${user._id}/outing/${outing._id}/delete-photo`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({key}),
+  };
+
+  const handleResponse = (response) => {
+    onComplete(response);
+  };
+
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+}

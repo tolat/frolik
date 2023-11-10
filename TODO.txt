@@ -52,7 +52,7 @@ DONE
 
 - Need to add Photo uploading to outing
 *** NEED TO DELETE PHOTOS FROM S3 ON OUTING DELETE ***
-Need phto uploader square crop.
+Need phto uploader square crop. DONE
 
 - Need Photo deletion for outing.
 

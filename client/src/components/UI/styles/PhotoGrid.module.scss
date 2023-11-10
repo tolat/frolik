@@ -1,3 +1,6 @@
+@import "../../../utils/responsive.scss";
+
+
 .container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -13,4 +16,31 @@
 .img:hover{
     cursor: pointer;
     opacity: 0.8;
+}
+
+.imageContainer{
+  position: relative;
+}
+
+.deleteButton{
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 1.5rem;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $red;
+  cursor: pointer;
+}
+
+.deleteButton:active{
+  background-color: rgb(230, 95, 95);
+}
+
+.deleteIcon{
+  width: 45%;
+  height: 45%;
 }

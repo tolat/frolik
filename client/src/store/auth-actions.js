@@ -27,6 +27,7 @@ export const fetchLogin = (username, password, setData ) => {
   };
 
   const handleError = (err) => {
+    setData(false)
     console.log(err.status);
   };
 

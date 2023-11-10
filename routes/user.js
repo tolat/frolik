@@ -5,7 +5,7 @@ const Activity = require("../models/activity");
 const Chat = require("../models/chat");
 const express = require("express");
 const sharp = require("sharp");
-const { downloadFromS3, uploadToS3 } = require("../utils/S3");
+const { downloadFromS3, uploadToS3, deleteFromS3 } = require("../utils/S3");
 const {
   populateUser,
   populateFriends,
@@ -749,6 +749,57 @@ router.post(
 
     // Upload image to S3
     uploadToS3(process.env.AWS_BUCKET, newPhotoKey, imageString)
+      .then((response) => {
+        pushUserUpdate(outing.users);
+        res.send({ user });
+      })
+      .catch((error) => {
+        console.error("Error uploading image:", error);
+        res.status(500).send("Internal Server Error");
+      });
+  })
+);
+
+router.post(
+  "/:id/outing/:outingid/delete-photo",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const outing = await Outing.findById(req.params.outingid);
+    let user = await User.findById(req.params.id);
+    const photoKey = req.body.key;
+
+    if (!photoKey) {
+      res.status(406).send("No photo key received");
+      return;
+    }
+
+    // Only delete if outing has photo with key
+    if (!outing.photos.find((p) => p.key == photoKey)) {
+      res.status(406).send("Photo not found in Outing");
+      return;
+    }
+
+    // Don't allow delete if user isn't in outing users
+    if (!outing.users.find((u) => u._id.toString() == user._id.toString())) {
+      res.status(406).send("User is not a member of this outing");
+      return;
+    }
+
+    // Remove photo with key from outing photos and push an update to all users
+    // except the request user. They will fetch auth on request completion in client.
+    outing.photos.splice(outing.photos.map((p) => p.key).indexOf(photoKey), 1);
+    await outing.save();
+    pushUserUpdate(
+      outing.users.filter((u) => u.toString() != user._id.toString())
+    );
+
+    // Get user again and populate
+    user = await User.findById(user._id.toString());
+    await populateUser(user);
+
+    // Upload image to S3
+    deleteFromS3(process.env.AWS_BUCKET, photoKey)
       .then((response) => {
         pushUserUpdate(outing.users);
         res.send({ user });
