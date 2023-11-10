@@ -219,6 +219,7 @@ const OutingModal = (props) => {
     // Upload photo and add photo to photos for display
     uploadOutingPhoto(user, outing, photoString, onComplete);
     setShowDeleteable(false);
+    setEditButtonText("Edit")
   };
 
   const onPhotoUploadDismiss = (index) => {
@@ -385,7 +386,7 @@ const OutingModal = (props) => {
           completed={activityIsCompletedType}
           hideSelect={true}
         />
-        {joining ? null : (
+        {joining || userFlaked ? null : (
           <Fragment>
             <h2 className={styles.sectionHeader}>
               {" "}

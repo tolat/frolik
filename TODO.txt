@@ -55,9 +55,13 @@ DONE
 Need phto uploader square crop. DONE
 
 - Need Photo deletion for outing.
+DONE
+
+- Need Captain for outings who will get notifications
 
 - Need completion object for outing
-** JUST do rating in a modal when outing is completed by a user
+do rating in a modal when outing is completed by a user
+add userid to completions field of outing
 
 - Need profile viewer modal
 
