@@ -171,17 +171,17 @@ export function getCroppedImageBase64(imageBase64, crop) {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
 
-      const x = crop.x 
-      const y = crop.y 
-      const width = crop.width 
-      const height = crop.height  
+      const x = crop.x;
+      const y = crop.y;
+      const width = crop.width;
+      const height = crop.height;
 
       canvas.width = width;
       canvas.height = height;
 
       ctx.drawImage(image, x, y, width, height, 0, 0, width, height);
 
-      const croppedImageBase64 = canvas.toDataURL("image/jpeg"); 
+      const croppedImageBase64 = canvas.toDataURL("image/jpeg");
       resolve(croppedImageBase64.slice(23));
     };
 
@@ -194,3 +194,15 @@ export function getCroppedImageBase64(imageBase64, crop) {
   });
 }
 
+export const outingIsCompleted = (outing) => {
+  return (
+    outing?.users[1] && outing?.users?.length === outing?.completions?.length
+  );
+};
+
+export const userIsLastCompletion = (user, outing) => {
+  return (
+    !outing.completions.find((c) => c === user._id) &&
+    outing.completions.length === outing.users.length - 1
+  );
+};

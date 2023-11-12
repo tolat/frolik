@@ -380,7 +380,6 @@ router.post(
 
     // Add outing status and date created
     let outing = req.body;
-    outing.status = "Pending";
     outing.date_created = new Date(Date.now());
     outing.name = generateUniqueName();
     outing.created_by = user;
@@ -576,7 +575,7 @@ router.get(
     user.notifications = user.notifications.filter((n) =>
       n.outing ? n.outing != outing._id.toString() : true
     );
-    await user.save()
+    await user.save();
 
     await populateUser(user);
 
@@ -822,6 +821,33 @@ router.post(
         console.error("Error uploading image:", error);
         res.status(500).send("Internal Server Error");
       });
+  })
+);
+
+router.get(
+  "/:id/outing/:outingid/add-completion",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    const outing = await Outing.findById(req.params.outingid);
+
+    // Don't allow if user us not in outing members
+    if (!outing.users.find((uid) => uid.toString() == user._id.toString())) {
+      res.status(406).send("User is not an outing member.");
+      return;
+    }
+
+    pushUserUpdate([...outing.users, ...outing.invited, ...outing.flakes]);
+    outing.completions.push(user);
+
+    // If this is final completion, set date_completed
+    if (outing.completions.length == outing.users.length) {
+      outing.date_completed = new Date(Date.now());
+    }
+
+    await outing.save();
+    res.sendStatus(200);
   })
 );
 

@@ -18,42 +18,42 @@
   margin-bottom: 2rem;
 }
 
-.headerInnerContainer{
-    display: flex;
-    flex-direction: column;
-    padding-left: 2rem;
+.headerInnerContainer {
+  display: flex;
+  flex-direction: column;
+  padding-left: 2rem;
 }
 
-.sideBySide{
-    display: flex;
-    justify-content: space-between;
+.sideBySide {
+  display: flex;
+  justify-content: space-between;
 }
 
-.buttonSpacer{
-    display: flex;
-    width: 4rem;
-    height: 1rem;
+.buttonSpacer {
+  display: flex;
+  width: 4rem;
+  height: 1rem;
 }
 
-.chatButton{
-    //background-color: $blue;
-    //color: white;
-    //font-weight: bold;
-    width: 100%;
+.chatButton {
+  //background-color: $blue;
+  //color: white;
+  //font-weight: bold;
+  width: 100%;
 }
 
-.completedButton{
-    background-color: $green;
-    color: white;
-    font-weight: bold;
-    width: 100%;
+.completedButton {
+  background-color: $green;
+  color: white;
+  font-weight: bold;
+  width: 100%;
 }
 
-.leaveButton{
-    margin-top: 3rem;
-    background-color: $red;
-    color: white;
-    font-weight: bold;
+.leaveButton {
+  margin-top: 3rem;
+  background-color: $red;
+  color: white;
+  font-weight: bold;
 }
 
 .outingName {
@@ -77,103 +77,121 @@
   width: 100%;
 }
 
-.sectionHeader{
-    font-size: 1.6rem;
-    font-weight: bold;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    margin-top: 2rem;
+.sectionHeader {
+  font-size: 1.6rem;
+  font-weight: bold;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-top: 2rem;
 }
 
-.sectionHeaderIcon{
-    height: 3rem;
-    width: 3rem;
-    margin-right: 2rem;
+.sectionHeaderIcon {
+  height: 3rem;
+  width: 3rem;
+  margin-right: 2rem;
 }
 
-.noPhotosMessage{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-    text-align: center;
-    //background-color: $card_grey;
-    padding: 2rem;
-    border-radius: 3px;
-    box-sizing: border-box;
-  
+.noPhotosMessage {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  text-align: center;
+  //background-color: $card_grey;
+  padding: 2rem;
+  border-radius: 3px;
+  box-sizing: border-box;
 }
 
-.noPhotosMessageText{
-    font-size: 1.1rem;
-    color: grey;
-    width: 70%;
-    padding-bottom: 1rem;
+.noPhotosMessageText {
+  font-size: 1.1rem;
+  color: grey;
+  width: 70%;
+  padding-bottom: 1rem;
 }
 
-.noPhotosMessageHeader{
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
+.noPhotosMessageHeader {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
 
-.deleteHelp{
-    margin-top: 1rem;
-    font-size: 1.2rem;
-    color: grey;
-    width: 100%;
-    text-align: center;
+.deleteHelp {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  color: grey;
+  width: 100%;
+  text-align: center;
 }
 
-.warningContainer{
-    padding: 1rem;
+.warningContainer {
+  padding: 1rem;
 }
 
-.warningText{
-    font-size: 1.2rem;
+.warningText {
+  font-size: 1.2rem;
 }
 
-.warningName{
-    font-size: 1.8rem;
-    font-weight: bold;
-    padding: 1rem;
+.warningName {
+  font-size: 1.8rem;
+  font-weight: bold;
+  padding: 1rem;
 }
 
-.flakeContainer{
-    display: flex;
-    align-items: center;
-    width: 100%;
-    background-color: $card_grey;
-    box-sizing: border-box;
-    padding: 1rem;
-    background-color: rgb(255, 218, 218);
-    border-radius: 3px;
-
+.flakeContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: $card_grey;
+  box-sizing: border-box;
+  padding: 1rem;
+  background-color: rgb(255, 218, 218);
+  border-radius: 3px;
 }
 
-.flakeIcon{
-    height: 4rem;
-    margin-right: 1rem;
+.flakeIcon {
+  height: 4rem;
+  margin-right: 1rem;
 }
 
-.flakeText{
-    width: 100%;
+.flakeText {
+  width: 100%;
 }
 
-.photosHeaderText{
-    font-size: 1.2rem;
-    color: grey;
-    font-weight: normal;
+.photosHeaderText {
+  font-size: 1.2rem;
+  color: grey;
+  font-weight: normal;
 }
 
-.uploadPhotosContainer{
-    margin-bottom: 1rem;
+.uploadPhotosContainer {
+  margin-bottom: 1rem;
 }
 
-.uploadInput{
-    display: none;
+.uploadInput {
+  display: none;
 }
 
+.addPhotosButton {
+  width: 100%;
+  margin: 1rem 0;
+}
 
+.completionMessage {
+  font-size: 1.2rem;
+  padding: 1rem;
+  font-weight: bold;
+}
 
+.unclickableButton {
+  background-color: $button_grey;
+  color: grey;
+  cursor: auto;
+  box-shadow: none !important;
+}
+
+.unclickableButton:hover {
+  cursor: not-allowed !important;
+  background-color: $button_grey !important;
+}

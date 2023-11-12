@@ -13,6 +13,7 @@ import ActivityCard from "../UI/ActivityCard";
 import { modalActions } from "../../store/modal-slice";
 import { hideModal } from "../../store/modal-actions";
 import {
+  addOutingCompletion,
   deleteOuting,
   deleteOutingPhoto,
   fetchChat,
@@ -26,9 +27,14 @@ import { authActions } from "../../store/auth-slice";
 import { popupActions } from "../../store/popup-slice";
 import WarningPopup from "../Popups/WarningPopup";
 import flakeIcon from "../../images/snowflake.png";
-import { arrayBufferToBase64 } from "../../utils/utils";
+import {
+  arrayBufferToBase64,
+  outingIsCompleted,
+  userIsLastCompletion,
+} from "../../utils/utils";
 import { fetchAuth } from "../../store/auth-actions";
 import CropperPopup from "../Popups/CropperPopup";
+import addPhotosButton from "../../images/add-photos-button.png";
 
 const OutingModal = (props) => {
   const modalState = useSelector((state) => state.modal);
@@ -42,7 +48,9 @@ const OutingModal = (props) => {
     user?.outings?.find((o) => o._id === activeOuting._id) || activeOuting;
   const globals = useSelector((state) => state.auth.globals);
   const categoryColor = globals?.categoryColorMap[outing?.activity?.category];
-  const completed = outing?.status === "Completed";
+  const completed = outing && outingIsCompleted(outing);
+  const status = completed ? "Completed" : "Pending";
+  const isLastCompletion = user && outing && userIsLastCompletion(user, outing);
   const chatsState = useSelector((state) => state.chat.chats);
   const outingChat = chatsState.find((c) => c._id === outing?.chat);
   const joining = !!outing?.invited?.find((i) => i._id === user?._id);
@@ -144,8 +152,8 @@ const OutingModal = (props) => {
       <div className={styles.warningName}>{outing?.name}</div>
       <div className={styles.warningText}>
         Once you leave the Outing, it may still be completed by the other
-        members. If it is, you <b>will negatively affect</b> your flake
-        rating. This action is permanent (you cannot re-join after leaving).
+        members. If it is, you <b>will negatively affect</b> your flake rating.
+        This action is permanent (you cannot re-join after leaving).
       </div>
     </div>
   );
@@ -219,7 +227,7 @@ const OutingModal = (props) => {
     // Upload photo and add photo to photos for display
     uploadOutingPhoto(user, outing, photoString, onComplete);
     setShowDeleteable(false);
-    setEditButtonText("Edit")
+    setEditButtonText("Edit");
   };
 
   const onPhotoUploadDismiss = (index) => {
@@ -267,6 +275,74 @@ const OutingModal = (props) => {
     // Upload photo and add photo to photos for display
     deleteOutingPhoto(user, outing, deleteKey, onComplete);
     setDeletePhotoButtonText("Deleting..");
+  };
+
+  const noPhotosMessage = (
+    <div>
+      Outings need to have at least one photo uploaded before they can be marked
+      completed. You can add photos in the Outing page using the button shown
+      below:
+      <img
+        className={styles.addPhotosButton}
+        src={addPhotosButton}
+        alt="add-photos-button"
+      />
+      <br />
+      <b>All Outing members must mark the Outing completed!</b>
+    </div>
+  );
+
+  const needUsersMessage = (
+    <div className={styles.completionMessage}>
+      Outing must have 2+ members to be marked completed.
+    </div>
+  );
+
+  const completionCountMessage = (
+    <div className={styles.completionMessage}>
+      {outing?.completions?.length} / {outing?.users?.length} Members have
+      marked this Outing completed.
+    </div>
+  );
+
+  const confirmCompletionMessage = (
+    <div>
+      {isLastCompletion && (
+        <>
+          <b>You are the last member to mark the Outing completed!</b>
+          <br />
+          <br />
+        </>
+      )}
+      Once {isLastCompletion ? " you " : " all members "} mark the Outing
+      complete, the Outing status will update to 'Completed' and no more changes
+      can be made, including uploading or removing photos.
+      <br />
+      <br />
+      The chat for this Outing will stay active indefinitely so you can keep in
+      touch with Outing memebers!
+      <br />
+      <br />
+      <b>Marking the Outing compelete is permanent.</b>
+    </div>
+  );
+
+  const onMarkCompletedClick = () => {
+    // Block completion if no photos uploaded
+    if (!outing?.photos[0]) {
+      dispatch(popupActions.showPopup("no-photos"));
+    } else {
+      dispatch(popupActions.showPopup("confirm-completion"));
+    }
+  };
+
+  const handleMarkCompleted = () => {
+    const onComplete = () => {
+      fetchAuth();
+      dispatch(popupActions.hidePopup());
+    };
+
+    addOutingCompletion(user, outing, onComplete);
   };
 
   return !outing || !userData ? null : (
@@ -325,6 +401,26 @@ const OutingModal = (props) => {
           dispatch(popupActions.hidePopup());
         }}
       />
+      <WarningPopup
+        selector={"no-photos"}
+        header={"No Photos Uploaded!"}
+        message={noPhotosMessage}
+        ok={"OK"}
+        okClick={() => {
+          dispatch(popupActions.hidePopup());
+        }}
+      />
+      <WarningPopup
+        selector={"confirm-completion"}
+        header={"Confirm Outing Completion"}
+        message={confirmCompletionMessage}
+        ok={"Mark Completed"}
+        okClick={handleMarkCompleted}
+        cancel={"Cancel"}
+        cancelClick={() => {
+          dispatch(popupActions.hidePopup());
+        }}
+      />
       <CropperPopup
         images={uploads}
         selector={"outing-upload-popup"}
@@ -338,10 +434,30 @@ const OutingModal = (props) => {
             className={styles.headerInnerContainer}
           >
             <div className={styles.outingName}>Outing: {outing.name}</div>
-            <div className={styles.outingStatus}>{outing.status}</div>
+            <div className={styles.outingStatus}>{status}</div>
           </div>
         </div>
         <div className={styles.sideBySide}>
+          {completed || userFlaked ? null : (
+            <SimpleButton
+              onClick={
+                joining
+                  ? showConfirmOutingJoin
+                  : outing.users[1]
+                  ? onMarkCompletedClick
+                  : null
+              }
+              className={`${styles.completedButton} ${
+                outing.users[1] || joining ? null : styles.unclickableButton
+              }`}
+            >
+              {joining ? "Join Outing" : "Mark Completed"}
+            </SimpleButton>
+          )}
+
+          {!joining && !completed && !userFlaked ? (
+            <div className={styles.buttonSpacer}></div>
+          ) : null}
           {joining || userFlaked ? null : (
             <SimpleButton
               onClick={onShowChatModal}
@@ -350,19 +466,12 @@ const OutingModal = (props) => {
               Chat
             </SimpleButton>
           )}
-          {!joining && !completed && !userFlaked ? (
-            <div className={styles.buttonSpacer}></div>
-          ) : null}
-
-          {completed || userFlaked ? null : (
-            <SimpleButton
-              onClick={joining ? showConfirmOutingJoin : null}
-              className={styles.completedButton}
-            >
-              {joining ? "Join Outing" : "Mark Completed"}
-            </SimpleButton>
-          )}
         </div>
+        {!userFlaked && !joining
+          ? outing.users[1]
+            ? completionCountMessage
+            : needUsersMessage
+          : null}
         {userFlaked && (
           <Fragment>
             <div className={styles.flakeContainer}>
@@ -481,7 +590,7 @@ const OutingModal = (props) => {
           </Fragment>
         ) : null}
 
-        {outing.status !== "Completed" &&
+        {!completed &&
         !joining &&
         !outing.flakes.find((id) => id === user._id) ? (
           <Fragment>

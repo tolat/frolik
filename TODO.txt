@@ -73,6 +73,8 @@ add userid to completions field of outing
 
 - Get search bars working
 
+- Add error modal for server errors
+
 - Add feed page that shows all new outings for user network
 (3days)
 

@@ -170,7 +170,6 @@ const seedOutings = async (seeds) => {
       outing.date_created = new Date();
       outing.date_completed = outing.date_created;
       outing.users = [user, user2];
-      outing.status = "Completed";
       outing.photos.push({ uploader: user, key: outingPhotoKeys.pop() });
       outing.name = generateUniqueName();
 
@@ -179,12 +178,15 @@ const seedOutings = async (seeds) => {
       await user.save();
       await user2.save();
 
+      outing.completions.push(user,user2)
+
       let user3 = null;
       if (Math.random() > 0.5) {
         user3 = users.filter((u) => u != user && u != user2)[0];
         user3.outings.push(outing);
         outing.users.push(user3);
         await user3.save();
+        outing.completions.push(user3)
       }
 
       let user4 = null;
@@ -193,6 +195,7 @@ const seedOutings = async (seeds) => {
         user4.outings.push(outing);
         outing.users.push(user4);
         await user4.save();
+        outing.completions.push(user4)
       }
 
       let user5 = null;
@@ -203,6 +206,7 @@ const seedOutings = async (seeds) => {
         user5.outings.push(outing);
         outing.users.push(user5);
         await user5.save();
+        outing.completions.push(user5)
       }
 
       await outing.save();

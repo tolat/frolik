@@ -58,7 +58,9 @@ export const fetchProfilePic = async (userID) => {
     console.log(err);
   };
 
-  store.dispatch(dataActions.setUserProfilePicture({userID, photoString: "queued"}));
+  store.dispatch(
+    dataActions.setUserProfilePicture({ userID, photoString: "queued" })
+  );
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
@@ -451,7 +453,7 @@ export const uploadOutingPhoto = (
       "Content-Type": "application/json",
     },
     method: "POST",
-    body: JSON.stringify({photoString}),
+    body: JSON.stringify({ photoString }),
   };
 
   const handleResponse = (response) => {
@@ -465,14 +467,14 @@ export const uploadOutingPhoto = (
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
-export const deleteOutingPhoto = (user, outing, key, onComplete) =>{
+export const deleteOutingPhoto = (user, outing, key, onComplete) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/outing/${outing._id}/delete-photo`,
     headers: {
       "Content-Type": "application/json",
     },
     method: "POST",
-    body: JSON.stringify({key}),
+    body: JSON.stringify({ key }),
   };
 
   const handleResponse = (response) => {
@@ -484,4 +486,20 @@ export const deleteOutingPhoto = (user, outing, key, onComplete) =>{
   };
 
   httpFetch(requestConfig, handleResponse, handleError);
-}
+};
+
+export const addOutingCompletion = (user, outing, onComplete = () => {}) => {
+  const requestConfig = {
+    url: `${getServer()}/user/${user._id}/outing/${outing._id}/add-completion`,
+  };
+
+  const handleResponse = (response) => {
+    onComplete(response);
+  };
+
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};
