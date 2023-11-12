@@ -554,8 +554,7 @@ router.get(
     );
     await outing.save();
 
-    // Make a new notification to send to outing creator
-    const outingCreator = await User.findById(outing.created_by);
+    // Make a new notification to send to outing members
     const newNotification = {
       id: Date.now() + Math.random(),
       type: "outing-leave",
@@ -563,9 +562,21 @@ router.get(
       outing: outing._id.toString(),
       created: new Date(Date.now()),
     };
-    outingCreator.notifications.push(newNotification);
-    await outingCreator.save();
-    pushUserUpdate([outingCreator]);
+
+    // Send notification to all outing users
+    for (usr of outing.users) {
+      const foundUsr = await User.findById(usr);
+      foundUsr.notifications.push(newNotification);
+      await foundUsr.save();
+      pushUserUpdate([]);
+    }
+    pushUserUpdate([outing.users]);
+
+    // Remove all notifications from this outing for the leaving user
+    user.notifications = user.notifications.filter((n) =>
+      n.outing ? n.outing != outing._id.toString() : true
+    );
+    await user.save()
 
     await populateUser(user);
 
@@ -604,7 +615,7 @@ router.get(
     }
 
     // Clear any invites left for invited users or notifications for the deleting user
-    for (u of outing.invited.concat([user])) {
+    for (u of outing.invited.concat([user._id]).concat(outing.flakes)) {
       const usr = await User.findById(u);
       const n = usr.notifications.find(
         (n) => n.outing == outing._id.toString()
@@ -651,6 +662,9 @@ router.post(
 
     // Return if no notification exists
     if (!notification) {
+      user.notifications.splice(nIndex, 1);
+      await user.save();
+      await populateUser(user);
       res.status(404).send("notification not found");
       return;
     }

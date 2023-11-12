@@ -2,6 +2,7 @@ import styles from "./styles/PhotoGrid.module.scss";
 import closeIcon from "../../images/close.png";
 
 const PhotoGrid = (props) => {
+  
   return (
     <div
       style={{ gridTemplateColumns: props.gridTemplateColumns }}

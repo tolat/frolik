@@ -64,6 +64,14 @@ const NotificationsModal = (props) => {
                     notification={n}
                   />
                 );
+                case "outing-join":
+                return (
+                  <OutingUpdate
+                    header={"Your Outing was joined by:"}
+                    key={Math.random()}
+                    notification={n}
+                  />
+                );
 
               default:
                 return null;

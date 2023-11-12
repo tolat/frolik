@@ -144,7 +144,7 @@ const OutingModal = (props) => {
       <div className={styles.warningName}>{outing?.name}</div>
       <div className={styles.warningText}>
         Once you leave the Outing, it may still be completed by the other
-        members. If it is, you <b>will negatively affect</b>affect your flake
+        members. If it is, you <b>will negatively affect</b> your flake
         rating. This action is permanent (you cannot re-join after leaving).
       </div>
     </div>
@@ -295,7 +295,7 @@ const OutingModal = (props) => {
       />
       <WarningPopup
         selector={"confirm-leave-outing"}
-        header={"Confirm leave Outing:"}
+        header={"Confirm Leave Outing:"}
         message={confirmLeaveOutingMessage}
         delete={"Leave"}
         deleteClick={onOutingLeave}
