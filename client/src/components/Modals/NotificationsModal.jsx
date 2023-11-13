@@ -43,7 +43,13 @@ const NotificationsModal = (props) => {
           user.notifications.map((n) => {
             switch (n.type) {
               case "outing-invite":
-                return <OutingInvite key={Math.random()} notification={n} />;
+                return (
+                  <OutingInvite
+                    header={"You have been invited to an outing!"}
+                    key={Math.random()}
+                    notification={n}
+                  />
+                );
               case "outing-invite-update":
                 return (
                   <OutingUpdate
@@ -64,12 +70,21 @@ const NotificationsModal = (props) => {
                     notification={n}
                   />
                 );
-                case "outing-join":
+              case "outing-join":
                 return (
                   <OutingUpdate
                     header={"Your Outing was joined by:"}
                     key={Math.random()}
                     notification={n}
+                  />
+                );
+                case "outing-complete":
+                return (
+                  <OutingInvite
+                    header={"Your Outing was completed!"}
+                    key={Math.random()}
+                    notification={n}
+                    showOuting={true}
                   />
                 );
 

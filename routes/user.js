@@ -183,7 +183,7 @@ router.post(
       const user = new User(userData);
       await User.register(user, userData.password);
 
-      // Send email confirmation link
+      // Send email confirmation linkand set user status as pending
       const link = `${process.env.SERVER}/user/${user._id.toString()}/verify`;
       sendEmail(userData.username, "Confirm Email", link);
       user.status = { status: "Pending", updated: Date.now() };
@@ -710,6 +710,7 @@ router.get(
   })
 );
 
+// Upload outing photo
 router.post(
   "/:id/outing/:outingid/upload-photo",
   reqAuthenticated,
@@ -773,6 +774,7 @@ router.post(
   })
 );
 
+// delete outing photo
 router.post(
   "/:id/outing/:outingid/delete-photo",
   reqAuthenticated,
@@ -824,6 +826,7 @@ router.post(
   })
 );
 
+// Add a completion to an outing
 router.get(
   "/:id/outing/:outingid/add-completion",
   reqAuthenticated,
@@ -841,11 +844,47 @@ router.get(
     pushUserUpdate([...outing.users, ...outing.invited, ...outing.flakes]);
     outing.completions.push(user);
 
-    // If this is final completion, set date_completed
+    // If this is final completion, set date_completed and notify all members
     if (outing.completions.length == outing.users.length) {
       outing.date_completed = new Date(Date.now());
+
+      // Notify all members
+      for (u of outing.users) {
+        const foundUser = await User.findById(u);
+        const newNotification = {
+          id: Date.now() + Math.random(),
+          type: "outing-complete",
+          outing: outing._id.toString(),
+          created: new Date(Date.now()),
+          active: true,
+        };
+        foundUser.notifications.push(newNotification);
+        await foundUser.save();
+      }
+
+      // Remove all invited
+      for (u of outing.invited) {
+        // Clear all notifications to do with outing
+        const foundUser = await User.findById(u);
+        foundUser.notifications = foundUser.notifications.filter((n) =>
+          n.outing ? n.outing != outing._id.toString() : true
+        );
+
+        await foundUser.save();
+      }
     }
 
+    // push an update through socket to users other than the request user
+    pushUserUpdate(
+      outing.users.filter((u) =>
+        u._id
+          ? u._id.toString() != user._id.toString()
+          : u.toString() != user._id.toString()
+      )
+    );
+
+    // remove user from outing invited
+    outing.invited = [];
     await outing.save();
     res.sendStatus(200);
   })

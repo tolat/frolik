@@ -56,13 +56,20 @@ const OutingInvite = (props) => {
         className={styles.colorStripe}
       ></div>
       <div className={styles.outingInviteInnerContainer}>
-        <div className={styles.outingInviteHeader}>
-          You have been invited to an outing!
-        </div>
+        <div className={styles.outingInviteHeader}>{props.header}</div>
         {outing ? (
           <Fragment>
             <div className={styles.outingInviteActivity}>
-              Activity:<b> {outing.activity.name} </b>
+              {props.showOuting ? (
+                <div>
+                  Outing:<b> {outing.name} </b>
+                </div>
+              ) : (
+                <div>
+                  {" "}
+                  Activity:<b> {outing.activity.name} </b>
+                </div>
+              )}
             </div>
             <div>{toAppDate(props.notification.created)}</div>
             <div className={styles.outingInviteButtons}>

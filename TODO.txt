@@ -63,13 +63,16 @@ DONE
 - Need completion object for outing
 do rating in a modal when outing is completed by a user
 add userid to completions field of outing
+DONE
 
 - Need profile viewer modal
 
-- Change photogrid to be adaptive and always be square (1day)
+- Display flake rating based on outings flaked
 
 - Need to show chats for pending outings first, show chat update badge
 + read receipts for chat, + sort by most recently updated
+
+- Change photogrid to be adaptive and always be square (1day)
 
 - Get search bars working
 

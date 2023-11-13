@@ -51,6 +51,7 @@ const OutingModal = (props) => {
   const completed = outing && outingIsCompleted(outing);
   const status = completed ? "Completed" : "Pending";
   const isLastCompletion = user && outing && userIsLastCompletion(user, outing);
+  const userHasCompleted = outing?.completions?.find((id) => user._id === id);
   const chatsState = useSelector((state) => state.chat.chats);
   const outingChat = chatsState.find((c) => c._id === outing?.chat);
   const joining = !!outing?.invited?.find((i) => i._id === user?._id);
@@ -443,15 +444,21 @@ const OutingModal = (props) => {
               onClick={
                 joining
                   ? showConfirmOutingJoin
-                  : outing.users[1]
+                  : outing.users[1] && !userHasCompleted
                   ? onMarkCompletedClick
                   : null
               }
               className={`${styles.completedButton} ${
-                outing.users[1] || joining ? null : styles.unclickableButton
+                (outing.users[1] || joining) && !userHasCompleted
+                  ? null
+                  : styles.unclickableButton
               }`}
             >
-              {joining ? "Join Outing" : "Mark Completed"}
+              {joining
+                ? "Join Outing"
+                : userHasCompleted
+                ? `Marked Completed!`
+                : "Mark Completed"}
             </SimpleButton>
           )}
 

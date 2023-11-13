@@ -192,6 +192,6 @@
 }
 
 .unclickableButton:hover {
-  cursor: not-allowed !important;
+  cursor: default !important;
   background-color: $button_grey !important;
 }

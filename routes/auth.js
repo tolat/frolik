@@ -17,6 +17,11 @@ router.post(
     const user = await User.findOne({ username: req.body.username });
     const globals = await Globals.findOne({});
 
+    // If user status is pending, don;t allow login
+    if(user.status == 'Pending'){
+      res.status(406).send('User must verify account via email')
+    }
+
     // Populate user
     await populateUser(user);
 
