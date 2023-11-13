@@ -35,6 +35,7 @@ module.exports.populateFriends = async (friends) => {
       outings: strippedOutings,
       status: friendUser.status,
       location: friendUser.location,
+      tagline: friendUser.tagline,
       profile_picture: friendUser.profile_picture,
     };
 

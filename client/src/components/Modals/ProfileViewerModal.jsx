@@ -18,18 +18,20 @@ const ProfileViewerModal = (props) => {
   const modalDisplay =
     modalState.selector === "profile-viewer-modal" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
-  const user = useSelector((state) => state.modal.activeModalUser);
+  const modalUser = useSelector((state) => state.modal.activeModalUser);
+  const user = useSelector((state) => state.auth.user);
   const dataState = useSelector((state) => state.data);
-  const userData = dataState.users[user._id];
+  const userData = dataState.users[modalUser._id];
   const userPhotos = getPhotosFromState(userData);
-  const userStatus = user?.status?.status;
+  const userStatus = modalUser?.status?.status;
+  const isFriend = user.friends.find(f=> f._id === modalUser._id);
 
   // Get photos for this user
   useEffect(() => {
-    if (user) {
-      fetchPhotos(user);
+    if (modalUser) {
+      fetchPhotos(modalUser);
     }
-  }, [user]);
+  }, [modalUser]);
 
   let statusClassName = null;
   switch (userStatus) {
@@ -57,13 +59,30 @@ const ProfileViewerModal = (props) => {
     <ModalPortal>
       <div style={modalStyle} className={styles.container}>
         <div className={styles.nonMediaSection}>
-          <ProfileHeader user={user} />
-          <SimpleButton
-            onClick={handleAddFriendButtonClick}
-            className={styles.addFriend}
-          >
-            + Add Friend
-          </SimpleButton>
+          <ProfileHeader user={modalUser} />
+          {!isFriend ? (
+            <SimpleButton
+              onClick={handleAddFriendButtonClick}
+              className={styles.addFriend}
+            >
+              + Add Friend
+            </SimpleButton>
+          ) : (
+            <div className={styles.sideBySide}>
+              <SimpleButton
+                onClick={handleAddFriendButtonClick}
+                className={styles.createOutingButton}
+              >
+                Create Outing
+              </SimpleButton>
+              <SimpleButton
+                onClick={handleAddFriendButtonClick}
+                className={styles.removeFriendButton}
+              >
+                Remove Friend
+              </SimpleButton>
+            </div>
+          )}
         </div>
         <Fragment>
           {userPhotos[0] ? (

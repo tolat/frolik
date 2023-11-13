@@ -14,3 +14,21 @@
     margin: 2rem 0;
     color: white;
 }
+
+.sideBySide{
+    margin: 2rem 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.createOutingButton{
+    width: 48%;
+    background-color: $blue;
+    color: white;
+}
+
+.removeFriendButton{
+    width: 48%;
+    background-color: $button_grey;
+    color: black;
+}

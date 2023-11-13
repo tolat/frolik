@@ -2,6 +2,7 @@ import { redirect } from "react-router-dom";
 import store from "../store";
 import { fetchAuth } from "../store/auth-actions";
 import { hideModal } from "../store/modal-actions";
+import { modalActions } from "../store/modal-slice";
 
 export const calcAvgRating = (activity) => {
   if (!activity.ratings) {
@@ -17,10 +18,16 @@ export const pageRouteLoader = async () => {
   // fetch session authentication in the background
   fetchAuth();
 
+  // Don't use previous modal
+  store.dispatch(modalActions.setUsePrevious(false));
+
   // Hide Modal if it is visible. await it to make sure visible modal
   // doesn't disappear until the modal is hidden
-  if (store.getState().modal.marginLeft === "0%") await hideModal();
+  if (store.getState().modal.marginLeft === "0%") {
+    await hideModal();
+  }
 
+  
   // Redirect if user is not authenticated
   if (!store.getState().auth.isAuthenticated) {
     return redirect("/login");
