@@ -488,9 +488,14 @@ export const deleteOutingPhoto = (user, outing, key, onComplete) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
-export const addOutingCompletion = (user, outing, onComplete = () => {}) => {
+export const addOutingCompletion = (user, outing, rating, onComplete = () => {}) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/outing/${outing._id}/add-completion`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({ rating }),
   };
 
   const handleResponse = (response) => {

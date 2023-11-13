@@ -187,11 +187,26 @@
 .unclickableButton {
   background-color: $button_grey;
   color: grey;
-  cursor: auto;
+  cursor: not-allowed;
   box-shadow: none !important;
 }
 
 .unclickableButton:hover {
   cursor: default !important;
   background-color: $button_grey !important;
+}
+
+.rateActivityHeader{
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    
+}
+
+.rateActivityName{
+    color: rgb(255, 255, 255);
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+    padding: 0.5rem;
+    border-radius: 3px;
 }

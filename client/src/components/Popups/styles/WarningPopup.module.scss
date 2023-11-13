@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  text-align: center;
+  text-align: left;
 }
 
 .header {
@@ -44,4 +44,16 @@
   background-color: $red;
   color: white;
   font-weight: bold;
+}
+
+.unclickableButton {
+  background-color: $button_grey;
+  color: grey;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+}
+
+.unclickableButton:hover {
+  cursor: not-allowed !important;
+  background-color: $button_grey !important;
 }

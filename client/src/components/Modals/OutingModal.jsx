@@ -35,6 +35,7 @@ import {
 import { fetchAuth } from "../../store/auth-actions";
 import CropperPopup from "../Popups/CropperPopup";
 import addPhotosButton from "../../images/add-photos-button.png";
+import StarRate from "../UI/StarRate";
 
 const OutingModal = (props) => {
   const modalState = useSelector((state) => state.modal);
@@ -75,6 +76,8 @@ const OutingModal = (props) => {
     .filter((i) => i >= 0);
   const [deleteKey, setDeleteKey] = useState(false);
   const [deletePhotoButtonText, setDeletePhotoButtonText] = useState("Delete");
+  const [activityRating, setActivityRating] = useState(5);
+  const [ratingTouched, setRatingTouched] = useState(false);
 
   // Handle the chat modal being shown
   const onShowChatModal = () => {
@@ -324,6 +327,20 @@ const OutingModal = (props) => {
       touch with Outing memebers!
       <br />
       <br />
+      <div className={styles.rateActivityHeader}>
+        Rate the activity to mark Outing Complete.{" "}
+      </div>
+      <div
+        className={styles.rateActivityName}
+        style={{ backgroundColor: categoryColor }}
+      >
+        Activity: <b>{outing?.activity?.name}</b>
+      </div>
+      <StarRate
+        setTouched={setRatingTouched}
+        rating={activityRating}
+        setRating={setActivityRating}
+      />
       <b>Marking the Outing compelete is permanent.</b>
     </div>
   );
@@ -343,7 +360,7 @@ const OutingModal = (props) => {
       dispatch(popupActions.hidePopup());
     };
 
-    addOutingCompletion(user, outing, onComplete);
+    addOutingCompletion(user, outing, activityRating, onComplete);
   };
 
   return !outing || !userData ? null : (
@@ -417,8 +434,10 @@ const OutingModal = (props) => {
         message={confirmCompletionMessage}
         ok={"Mark Completed"}
         okClick={handleMarkCompleted}
+        okUnclickable={!ratingTouched}
         cancel={"Cancel"}
         cancelClick={() => {
+          setRatingTouched(false);
           dispatch(popupActions.hidePopup());
         }}
       />

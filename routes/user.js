@@ -827,22 +827,26 @@ router.post(
 );
 
 // Add a completion to an outing
-router.get(
+router.post(
   "/:id/outing/:outingid/add-completion",
   reqAuthenticated,
   sameUserOnly,
   tryCatch(async (req, res) => {
     const user = await User.findById(req.params.id);
     const outing = await Outing.findById(req.params.outingid);
+    const rating = req.body.rating
+    const activity = await Activity.findById(outing.activity)
 
     // Don't allow if user us not in outing members
     if (!outing.users.find((uid) => uid.toString() == user._id.toString())) {
       res.status(406).send("User is not an outing member.");
       return;
     }
-
-    pushUserUpdate([...outing.users, ...outing.invited, ...outing.flakes]);
     outing.completions.push(user);
+
+    // Add rating to activity ratings
+    activity.ratings.push({ user, rating})
+    await activity.save()
 
     // If this is final completion, set date_completed and notify all members
     if (outing.completions.length == outing.users.length) {

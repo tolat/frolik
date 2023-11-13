@@ -8,6 +8,8 @@ const WarningPopup = (props) => {
   const showPopup = popupState.selector === props.selector;
   const popupDisplay = showPopup ? "flex" : "none";
 
+  console.log(props.okUnclickable)
+
   return (
     <Popup style={{ display: popupDisplay }} showPopup={showPopup}>
       <div onLoad={props.onLoad} id={props.id} className={styles.container}>
@@ -15,7 +17,13 @@ const WarningPopup = (props) => {
         <div className={styles.message}>{props.message}</div>
         <div className={styles.buttonContainer}>
           {props.ok ? (
-            <SimpleButton onClick={props.okClick} className={styles.okButton}>
+            <SimpleButton
+              noShadow={true}
+              onClick={props.okUnclickable? null : props.okClick}
+              className={`${styles.okButton} ${
+                props.okUnclickable ? styles.unclickableButton : null
+              }`}
+            >
               {props.ok}
             </SimpleButton>
           ) : null}
@@ -24,6 +32,7 @@ const WarningPopup = (props) => {
           ) : null}
           {props.cancel ? (
             <SimpleButton
+              noShadow={true}
               onClick={props.cancelClick}
               className={styles.cancelButton}
             >
@@ -35,6 +44,7 @@ const WarningPopup = (props) => {
           ) : null}
           {props.delete ? (
             <SimpleButton
+              noShadow={true}
               onClick={props.deleteClick}
               className={styles.deleteButton}
             >

@@ -1,0 +1,13 @@
+@import '../../../utils/responsive.scss';
+
+.container{
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    margin-bottom: 3rem;
+}
+
+.ratingStar{
+    height: 3rem;
+    cursor: pointer;
+}

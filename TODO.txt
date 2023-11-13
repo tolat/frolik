@@ -65,6 +65,8 @@ do rating in a modal when outing is completed by a user
 add userid to completions field of outing
 DONE
 
+- Need acticity rater for completion modal
+
 - Need profile viewer modal
 
 - Display flake rating based on outings flaked
