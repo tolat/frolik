@@ -66,6 +66,7 @@ add userid to completions field of outing
 DONE
 
 - Need acticity rater for completion modal
+DONE
 
 - Need profile viewer modal
 

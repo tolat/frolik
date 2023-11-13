@@ -6,7 +6,8 @@ const initialState = {
   zIndex: "-1",
   opacity: "1",
   activeChat: false,
-  activeOuting: false
+  activeOuting: false,
+  activeModalUser: false,
 };
 const modalSlice = createSlice({
   name: "modal",
@@ -32,11 +33,14 @@ const modalSlice = createSlice({
     setOpacity(state, action) {
       state.opacity = action.payload;
     },
-    setActiveChat(state, action){
-      state.activeChat = action.payload
+    setActiveChat(state, action) {
+      state.activeChat = action.payload;
     },
-    setActiveOuting(state,action){
-      state.activeOuting = action.payload
+    setActiveOuting(state, action) {
+      state.activeOuting = action.payload;
+    },
+    setActiveModalUser(state, action) {
+      state.activeModalUser = action.payload;
     },
   },
 });

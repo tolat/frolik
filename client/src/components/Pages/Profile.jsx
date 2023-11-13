@@ -8,15 +8,10 @@ import friends from "../../images/friends.png";
 import outings from "../../images/outing2.png";
 import SimpleButton from "../UI/SimpleButton";
 import OutingList from "../UI/OutingList";
-import UserIcon from "../UI/UserIcon";
 import buttonStyles from "../UI/styles/SimpleButton.module.scss";
-import flakeIcon from "../../images/snowflake.png";
-import outingsIcon from "../../images/outing2.png";
-import StatIcon from "../UI/StatIcon";
 import { modalActions } from "../../store/modal-slice";
 import EditProfileModal from "../Modals/EditProfileModal";
 import FriendCard from "../UI/FriendCard";
-import locationIcon from "../../images/location-dark.png";
 import { pageRouteLoader } from "../../utils/utils";
 import balloonIcon from "../../images/balloon1.png";
 import { useNavigate } from "react-router-dom";
@@ -27,6 +22,7 @@ import SimpleSearch from "../UI/SimpleSearch";
 import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
 import outingsBarIcon from "../../images/outingsToolbar.png";
+import ProfileHeader from "../UI/ProfileHeader";
 
 const sliderIcons = [
   {
@@ -52,7 +48,6 @@ const getPhotosFromState = (userData) => {
 const Profile = (props) => {
   const user = { ...useSelector((state) => state.auth.user) };
   const [selectedSliderKey, setSelectedSliderKey] = useState("_photos");
-  const iconStyle = { width: "4rem", height: "4rem" };
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const dataState = useSelector((state) => state.data);
@@ -135,45 +130,7 @@ const Profile = (props) => {
         okClick={handleHideWarning}
       />
       <div className={styles.nonMediaSection}>
-        <div className={styles.profilePicContainer}>
-          <StatIcon
-            alt="flake"
-            icon={flakeIcon}
-            iconStyle={iconStyle}
-            rating={user.flake}
-          />
-          <UserIcon
-            sizeInRem={20}
-            user={user}
-            borderSizeInRem={"1.5"}
-            pieShadow={true}
-          />
-          <StatIcon
-            alt="outings"
-            icon={outingsIcon}
-            iconStyle={iconStyle}
-            rating={user.outings?.length}
-          />
-        </div>
-        <div
-          className={styles.userName}
-        >{`${user.first_name} ${user.last_name}`}</div>
-        <div className={styles.tagline}>{user.tagline}</div>
-        <div className={styles.sideBySide}>
-          <div className={`${styles.statusContainer} ${statusClassName}`}>
-            Status: {user?.status?.status}
-          </div>
-          <div className={styles.locationContainer}>
-            <img
-              style={{ marginRight: "10px" }}
-              className={styles.smallIcon}
-              src={locationIcon}
-              alt="location-icon"
-            />
-            {user.location}
-          </div>
-        </div>
-
+        <ProfileHeader user={user} />
         <SimpleButton
           onClick={handleEditButtonClick}
           className={buttonStyles.greyButton}

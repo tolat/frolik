@@ -8,8 +8,6 @@ const WarningPopup = (props) => {
   const showPopup = popupState.selector === props.selector;
   const popupDisplay = showPopup ? "flex" : "none";
 
-  console.log(props.okUnclickable)
-
   return (
     <Popup style={{ display: popupDisplay }} showPopup={showPopup}>
       <div onLoad={props.onLoad} id={props.id} className={styles.container}>

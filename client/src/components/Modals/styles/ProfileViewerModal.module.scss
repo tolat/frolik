@@ -1,0 +1,16 @@
+@import "../../../utils/responsive.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 85rem;
+  width: 100%;
+  margin-top: 5rem;
+}
+
+.addFriend{
+    background-color: $blue;
+    margin: 2rem 0;
+    color: white;
+}

@@ -14,6 +14,7 @@ import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
 import outingsBarIcon from "../../images/outingsToolbar.png";
 import { Fragment } from "react";
+import ProfileViewerModal from "../Modals/ProfileViewerModal";
 
 const Navbar = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -63,6 +64,7 @@ const Navbar = (props) => {
           <NotificationsModal />
           <ChatModal />
           <OutingModal />
+          <ProfileViewerModal/>
           <WarningPopup
             selector={"too-many-outings"}
             header={"You have too many Pending Outings!"}

@@ -9,6 +9,7 @@ const {
   adjectives,
   animals,
 } = require("unique-names-generator");
+const outing = require("../models/outing");
 
 // Populates an array with stripped down version of friends
 module.exports.populateFriends = async (friends) => {
@@ -18,10 +19,11 @@ module.exports.populateFriends = async (friends) => {
     await friendUser.populate("outings");
     await friendUser.populate("outings.activity");
 
-    const strippedOutings = [];
-    for (outing of friendUser.outings) {
+    let strippedOutings = [];
+    for (let outing of friendUser.outings) {
       strippedOutings.push({
-        activity: { category: outing.activity.category },
+        activity: { category: outing.activity.category},
+        photos: outing.photos 
       });
     }
 
@@ -32,6 +34,7 @@ module.exports.populateFriends = async (friends) => {
       flake: friendUser.flake,
       outings: strippedOutings,
       status: friendUser.status,
+      location: friendUser.location,
       profile_picture: friendUser.profile_picture,
     };
 
@@ -81,7 +84,7 @@ module.exports.sendEmail = async (to, subject, text) => {
 
 module.exports.getPhotosFromOutings = (user) => {
   let photoKeys = [];
-  for (outing of user.outings) {
+  for (let outing of user.outings) {
     for (photoKey of outing.photos.map((p) => p.key)) {
       photoKeys.push(photoKey);
     }

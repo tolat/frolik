@@ -4,10 +4,16 @@ import UserIcon from "./UserIcon";
 import flakeIcon from "../../images/snowflake.png";
 import outingsIcon from "../../images/outing2.png";
 import { memo } from "react";
+import { useDispatch } from "react-redux";
+import { modalActions } from "../../store/modal-slice";
 
 const FriendCard = memo(function FriendCard(props) {
   const statIconStyle = { width: "2rem", height: "2rem" };
   const statContainerStyle = { marginLeft: "1rem" };
+  const sizeInRem = props.small ? "5" : "6";
+  const borderSizeInRem = props.small ? "0.5" : "0.8";
+  const nameStyle = { fontSize: props.small ? "1.8rem" : null };
+  const dispatch = useDispatch();
   const detailsContainerStyle = props.small
     ? {
         display: "flex",
@@ -16,17 +22,19 @@ const FriendCard = memo(function FriendCard(props) {
         justifyContent: "space-between",
       }
     : null;
-  const sizeInRem = props.small ? "5" : "6";
-  const borderSizeInRem = props.small ? "0.5" : "0.8";
-  const nameStyle = { fontSize: props.small ? "1.8rem" : null };
+
+  const showProfileViewerModal = () => {
+    dispatch(modalActions.setActiveModalUser(props.user));
+    dispatch(modalActions.setSelector("profile-viewer-modal"));
+    dispatch(modalActions.showModal());
+  };
 
   return (
     <div
-      onClick={props.onClick}
       style={{ ...props.style, boxShadow: props.noShadow ? "none" : null }}
       className={styles.container}
     >
-      <div className={styles.leftContainer}>
+      <div className={styles.leftContainer} onClick={showProfileViewerModal}>
         <div className={styles.iconContainer}>
           <UserIcon
             backer={true}
