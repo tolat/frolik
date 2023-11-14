@@ -55,6 +55,7 @@ const ProfileViewerModal = (props) => {
       break;
     default:
       statusClassName = null;
+      break;
   }
 
   const onAddFriend = () => {
@@ -107,7 +108,7 @@ const ProfileViewerModal = (props) => {
           </div>
         )}
         <Fragment>
-          {userPhotos[0] ? (
+          {userPhotos[0] && userPhotos.length === userData.photos.length? (
             <PhotoGrid
               images={userPhotos}
               gridTemplateColumns={
@@ -119,7 +120,7 @@ const ProfileViewerModal = (props) => {
               }
             />
           ) : (
-            <h1>Loading..</h1>
+            <h2>Loading Photos..</h2>
           )}
         </Fragment>
       </div>

@@ -162,16 +162,21 @@ const Profile = (props) => {
         </div>
       ) : selectedSliderKey === "_photos" ? (
         <Fragment>
-          <PhotoGrid
-            images={userPhotos}
-            gridTemplateColumns={
-              userPhotos.length === 1
-                ? `1fr`
-                : userPhotos.length === 2
-                ? "1fr 1fr"
-                : "1fr 1fr 1fr"
-            }
-          />
+          {userPhotos.length === userData.photos.length ? (
+            <PhotoGrid
+              images={userPhotos}
+              gridTemplateColumns={
+                userPhotos.length === 1
+                  ? `1fr`
+                  : userPhotos.length === 2
+                  ? "1fr 1fr"
+                  : "1fr 1fr 1fr"
+              }
+            />
+          ) : (
+            <h2>Loading Photos..</h2>
+          )}
+
           <div className={styles.noImagesBlurb}>
             <div>To add photos, complete more </div>
             <div style={{ display: "flex", alignItems: "center" }}>

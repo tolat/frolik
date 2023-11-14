@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles/FriendRequest.module.scss";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {} from "../../store/data-actions";
 import {
   dismissNotification,

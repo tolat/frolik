@@ -244,11 +244,13 @@ router.get(
       await u.populate("outings");
     }
 
+    console.log(allAvailable.map((f) => f.first_name));
+
     // Filter out invalid matches
     allAvailable = allAvailable.filter((u) => {
       return (
         // No friends matches
-        !user.friends.map((f) => f.toString()).includes(u._id.toString()) &&
+        !user.friends.map((f) => f._id.toString()).includes(u._id.toString()) &&
         // Don't match same user
         u._id.toString() !== user._id.toString() &&
         // No users with 5 or more pending outings
@@ -257,6 +259,8 @@ router.get(
         !user.matches.find((m) => m.user.toString() == u._id.toString())
       );
     });
+
+    console.log(allAvailable.map((f) => f.first_name));
 
     // If no full matches set, generate matches set with at most 5 matches
     if (!user.matches || !user.matches[4]) {
@@ -282,7 +286,11 @@ router.get(
           // Match status has changed to Busy or Incative
           !validStatuses.includes(matchUser.status.status) ||
           // Match has 5 or more pending outings
-          matchUser.outings.filter((o) => o.status == "Pending").length > 4
+          matchUser.outings.filter((o) => o.status == "Pending").length > 4 ||
+          // Match has become a friend
+          user.friends
+            .map((f) => f._id.toString())
+            .includes(matchUser._id.toString())
         ) {
           const replaceIndex = user.matches.indexOf(match);
           // If available matches exists, pull form there
