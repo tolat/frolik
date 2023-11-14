@@ -25,7 +25,6 @@ const ProfileViewerModal = (props) => {
   const dataState = useSelector((state) => state.data);
   const userData = dataState.users[modalUser._id];
   const userPhotos = getPhotosFromState(userData);
-  const userStatus = modalUser?.status?.status;
   const isFriend = user.friends.find((f) => f._id === modalUser._id);
   const friendRequested = user.friend_requests.find(
     (fr) => fr === modalUser._id
@@ -38,25 +37,6 @@ const ProfileViewerModal = (props) => {
       fetchPhotos(modalUser);
     }
   }, [modalUser]);
-
-  let statusClassName = null;
-  switch (userStatus) {
-    case "Ready":
-      statusClassName = styles.statusReady;
-      break;
-    case "Searching":
-      statusClassName = styles.statusSearching;
-      break;
-    case "Busy":
-      statusClassName = styles.statusBusy;
-      break;
-    case "Inactive":
-      statusClassName = styles.statusInactive;
-      break;
-    default:
-      statusClassName = null;
-      break;
-  }
 
   const onAddFriend = () => {
     const onComplete = (response) => {
@@ -108,7 +88,7 @@ const ProfileViewerModal = (props) => {
           </div>
         )}
         <Fragment>
-          {userPhotos[0] && userPhotos.length === userData.photos.length? (
+          {userPhotos[0] && userPhotos.length === userData.photos.length ? (
             <PhotoGrid
               images={userPhotos}
               gridTemplateColumns={

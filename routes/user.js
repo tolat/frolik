@@ -12,7 +12,6 @@ const {
   sendEmail,
   getPhotosFromOutings,
   handleOutingInviteAction,
-  handleOutingUpdate,
   generateUniqueName,
   pushUserUpdate,
   handleFriendRequestAction,
@@ -244,8 +243,6 @@ router.get(
       await u.populate("outings");
     }
 
-    console.log(allAvailable.map((f) => f.first_name));
-
     // Filter out invalid matches
     allAvailable = allAvailable.filter((u) => {
       return (
@@ -259,8 +256,6 @@ router.get(
         !user.matches.find((m) => m.user.toString() == u._id.toString())
       );
     });
-
-    console.log(allAvailable.map((f) => f.first_name));
 
     // If no full matches set, generate matches set with at most 5 matches
     if (!user.matches || !user.matches[4]) {
