@@ -5,7 +5,6 @@ import store from "../store";
 import { authActions } from "../store/auth-slice";
 import { chatActions } from "../store/chat-slice";
 import { goActions } from "../store/go-slice";
-import { printNodeReadableStream } from "./utils";
 
 // Get all activities
 export const fetchActivities = async (setData) => {
