@@ -15,6 +15,7 @@ const {
   generateUniqueName,
   pushUserUpdate,
   handleFriendRequestAction,
+  findNonOutingChat,
 } = require("../utils/utils");
 const {
   reqAuthenticated,
@@ -336,10 +337,13 @@ router.get(
     }
 
     await chat.populate("outing");
+    await chat.populate("outing.activity")
 
     // Populate chat users with stripped down data
     const populatedUsers = await populateFriends(
-      chat.outing.users.map((u) => u.toString())
+      chat.outing
+        ? chat.outing.users.map((u) => u.toString())
+        : chat.users.map((u) => u.toString())
     );
 
     res.send({ chat, populatedUsers });
@@ -361,12 +365,15 @@ router.get(
 
     await user.populate("chats");
     await user.populate("chats.outing");
+    await user.populate("chats.outing.activity")
 
     // For each chat, populate the outing users with stripped data
     let chatMembersMap = {};
     for (let chat of user.chats) {
       const populatedMembers = await populateFriends(
-        chat.outing.users.map((u) => u.toString())
+        chat.outing
+          ? chat.outing.users.map((u) => u.toString())
+          : chat.users.map((u) => u.toString())
       );
       chatMembersMap[chat._id.toString()] = populatedMembers;
     }
@@ -917,7 +924,7 @@ router.post(
     const user = await User.findById(req.params.id);
     const friendUser = await User.findById(req.body.friendID);
 
-    // send back 406 if user has already requested thie friend
+    // send back 406 if user has already requested this friend
     if (user.friend_requests.find((id) => id.toString() == req.body.freindID)) {
       res.status(406).send("User has already requested this friend.");
     }
@@ -941,6 +948,128 @@ router.post(
     await populateUser(user);
 
     res.send({ user });
+  })
+);
+
+// Remove friend
+router.post(
+  "/:id/remove-friend",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    const friendUser = await User.findById(req.body.friendID);
+
+    // send back 406 if user does not have this friend
+    if (user.friends.find((id) => id.toString() == req.body.freindID)) {
+      res.status(406).send("User has already requested this friend.");
+    }
+
+    // Remove friends
+    user.friends = user.friends.filter(
+      (id) => id.toString() != friendUser._id.toString()
+    );
+    friendUser.friends = friendUser.friends.filter(
+      (id) => id.toString() != user._id.toString()
+    );
+
+    // Notify FriendUser
+    const newNotification = {
+      id: Date.now() + Math.random(),
+      type: "friend-removed",
+      by: user._id.toString(),
+      created: new Date(Date.now()),
+      active: true,
+    };
+    friendUser.notifications.push(newNotification);
+
+    await user.save();
+    await friendUser.save();
+
+    pushUserUpdate([user, friendUser]);
+
+    await populateUser(user);
+    const populatedFriends = await populateFriends(user.friends);
+
+    res.send({ user, populatedFriends });
+  })
+);
+
+// Remove friend
+router.post(
+  "/:id/chat/create",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    let withUsers = [];
+
+    // Get users other than requesting user to be added to the chat
+    for (let u of req.body.withUsers) {
+      const id = u._id || u;
+      const usr = await User.findById(id);
+
+      // Check for non-existant users
+      if (!usr) {
+        res.status(406).send({
+          message: `Trying to add a user that does not exist to chat. Invalid id: ${id}`,
+        });
+        return;
+      }
+      withUsers.push(usr);
+    }
+
+    // send back 406 if user does not have this friend
+    for (usr of withUsers) {
+      if (!user.friends.find((id) => id.toString() == usr._id.toString())) {
+        res.status(406).send({ message: "User is not friends with this user" });
+      }
+    }
+
+    // if chat with users found already, send back that chat
+    const foundChat = findNonOutingChat(user, withUsers);
+    if (foundChat) {
+      console.log("FOUND EXISTING CHAT");
+      res.send({ chat: foundChat });
+      return;
+    }
+
+    // Create new chat if no chat exists
+    const chat = new Chat({
+      users: [user, ...withUsers],
+      messages: [],
+      touched: new Date(Date.now()),
+    });
+
+    // Add notification for withUser
+    const newNotification = {
+      id: Date.now() + Math.random(),
+      type: "chat-created",
+      by: user._id.toString(),
+      chat: chat._id.toString(),
+      created: new Date(Date.now()),
+      active: true,
+    };
+
+    // Save Chat
+    await chat.save();
+
+    // Save user
+    user.chats.push(chat);
+    await user.save();
+
+    // Save withUsers
+    for (usr of withUsers) {
+      usr.chats.push(chat);
+      usr.notifications.push(newNotification);
+      await usr.save();
+    }
+
+    // Send push update to all involved users
+    pushUserUpdate([user, ...withUsers]);
+
+    console.log("CREATING NEW CHAT");
+    res.send({ chat });
   })
 );
 

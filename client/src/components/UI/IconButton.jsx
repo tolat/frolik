@@ -2,7 +2,10 @@ import styles from "./styles/IconButton.module.scss";
 
 const IconButton = (props) => {
   return (
-    <div className={`${styles.container} ${props.className}`}>
+    <div
+      onClick={props.onClick}
+      className={`${styles.container} ${props.className}`}
+    >
       <img
         style={props.iconStyle}
         src={props.icon}

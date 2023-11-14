@@ -2,7 +2,11 @@ import styles from "./styles/StatIcon.module.scss";
 
 const StatIcon = (props) => {
   return (
-    <div style={props.style} className={styles.container}>
+    <div
+      onClick={props.onClick}
+      style={props.style}
+      className={styles.container}
+    >
       <img
         style={props.iconStyle}
         src={props.icon}

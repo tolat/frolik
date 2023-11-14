@@ -23,6 +23,10 @@ import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
 import outingsBarIcon from "../../images/outingsToolbar.png";
 import ProfileHeader from "../UI/ProfileHeader";
+import { goActions } from "../../store/go-slice";
+import { createChat, fetchChats } from "../../utils/data-fetch";
+import { dataActions } from "../../store/data-slice";
+import { hideModal } from "../../store/modal-actions";
 
 const sliderIcons = [
   {
@@ -54,9 +58,11 @@ const Profile = (props) => {
   const userData = dataState.users[user._id];
   const userPhotos = getPhotosFromState(userData);
   const friendCardButtonStyle = { width: "3rem", height: "3rem" };
+  const modalIsShowing = useSelector(
+    (state) => state.modal.selector !== "none"
+  );
 
   const onBalloonIconClick = () => {
-    console.log("click");
     navigate("/go");
   };
 
@@ -65,15 +71,34 @@ const Profile = (props) => {
     dispatch(modalActions.showModal());
   };
 
+  const onCreateOuting = (withUser) => {
+    dispatch(goActions.addUser(withUser));
+    navigate("/go");
+  };
+
+  const onCreateChat = (withUser) => {
+    const onComplete = async (response) => {
+      fetchChats(user);
+      dispatch(modalActions.setActiveChat(response.chat));
+      if (modalIsShowing) await hideModal(true);
+      dispatch(modalActions.setSelector("chat-modal"));
+      dispatch(modalActions.showModal());
+    };
+
+    createChat(user, [withUser], onComplete);
+  };
+
   const FriendCardButtons = (props) => {
     return (
       <div className={styles.friendCardButtons}>
         <IconButton
+          onClick={() => onCreateChat(props.user)}
           className={styles.friendCardButton}
           iconStyle={friendCardButtonStyle}
           icon={chatIcon}
         />
         <IconButton
+          onClick={() => onCreateOuting(props.user)}
           className={styles.friendCardButton}
           iconStyle={friendCardButtonStyle}
           icon={getOutIcon}

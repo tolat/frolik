@@ -5,6 +5,7 @@ import store from "../store";
 import { authActions } from "../store/auth-slice";
 import { chatActions } from "../store/chat-slice";
 import { goActions } from "../store/go-slice";
+import { printNodeReadableStream } from "./utils";
 
 // Get all activities
 export const fetchActivities = async (setData) => {
@@ -240,7 +241,12 @@ export const fetchChat = (userID, chatID, onComplete = () => {}) => {
 
   const handleResponse = (response) => {
     const populatedUsers = response.populatedUsers;
-    response.chat.outing.users = populatedUsers;
+    if(response.chat.outing){
+      response.chat.outing.users = populatedUsers;
+    }else{
+      response.chat.users = populatedUsers;
+    }
+    
 
     // Get any missing user photos
     for (let user of populatedUsers) {
@@ -271,9 +277,15 @@ export const fetchChats = (user) => {
   const handleResponse = (response) => {
     // Insert populated members lists from response for each chat
     for (let chat of response.chats) {
-      chat.outing.users = response.chatMembersMap[chat._id];
+      if (chat.outing) {
+        chat.outing.users = response.chatMembersMap[chat._id];
+      } else {
+        chat.users = response.chatMembersMap[chat._id];
+      }
+
       // Get any missing user photos
-      for (let member of chat.outing.users) {
+      const chatUsers = chat.outing? chat.outing.users : chat.users
+      for (let member of chatUsers) {
         fetchProfilePic(member._id);
         store.dispatch(
           dataActions.setUserName({
@@ -488,7 +500,12 @@ export const deleteOutingPhoto = (user, outing, key, onComplete) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
-export const addOutingCompletion = (user, outing, rating, onComplete = () => {}) => {
+export const addOutingCompletion = (
+  user,
+  outing,
+  rating,
+  onComplete = () => {}
+) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/outing/${outing._id}/add-completion`,
     headers: {
@@ -530,3 +547,44 @@ export const sendFriendRequest = (user, friend, onComplete = () => {}) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+export const removeFriend = (user, friend, onComplete = () => {}) => {
+  const requestConfig = {
+    url: `${getServer()}/user/${user._id}/remove-friend`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({ friendID: friend._id }),
+  };
+
+  const handleResponse = (response) => {
+    onComplete(response);
+  };
+
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};
+
+export const createChat = (user, withUsers, onComplete) => {
+  const requestConfig = {
+    url: `${getServer()}/user/${user._id}/chat/create`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({ withUsers }),
+  };
+
+  const handleResponse = (response) => {
+    onComplete(response);
+  };
+
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};

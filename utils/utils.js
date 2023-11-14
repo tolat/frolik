@@ -15,7 +15,7 @@ const outing = require("../models/outing");
 module.exports.populateFriends = async (friends) => {
   let populatedFriends = [];
   for (friend of friends) {
-    const friendUser = await User.findById(friend);
+    const friendUser = await User.findById(friend._id || friend);
     await friendUser.populate("outings");
     await friendUser.populate("outings.activity");
 
@@ -261,4 +261,27 @@ module.exports.handleFriendRequestAction = async (
   this.pushUserUpdate([user, requestingUser]);
 
   await this.populateUser(user);
+};
+
+module.exports.findNonOutingChat = (user, withUsers) => {
+  const arraysAreEqual = (arr1, arr2) => {
+    if ((arr1, length != arr2.length)) {
+      return false;
+    }
+
+    for (let i = 0; i < arr1.length; i++) {
+      if (arr1[i].toString() != arr2[i].toString()) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const foundChat = user.chats.find(
+    (c) =>
+      c.users &&
+      arraysAreEqual(c.users, [user._id, ...withUsers.map((wu) => wu._id)])
+  );
+
+  return foundChat;
 };

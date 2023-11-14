@@ -23,7 +23,9 @@ const ChatModal = (props) => {
   const chatState = useSelector((state) => state.chat.chats);
   const activeChat = useSelector((state) => state.modal.activeChat);
   const chat = chatState.find((c) => c._id === activeChat?._id) || activeChat;
-  const memberNames = chat?.outing?.users.map((u) => u.first_name);
+  const memberNames = chat?.outing
+    ? chat.outing.users.map((u) => u.first_name)
+    : chat?.users?.map((u) => u.first_name);
   const membersString = chat && genMembersString(memberNames);
   const messages = chat?.messages;
   const composerRef = useRef();
@@ -68,7 +70,13 @@ const ChatModal = (props) => {
           <div className={styles.headerLeftContainer}>
             <div>
               <div className={styles.chatName}>{chat.name}</div>
-              <div className={styles.chatMembers}>{membersString}</div>
+              <div
+                className={`${styles.chatMembers} ${
+                  chat.outing ? null : styles.nonUserMembers
+                }`}
+              >
+                {membersString}
+              </div>
             </div>
             <div className={styles.lastActive}>
               Last Active {new Date(chat.touched).toDateString().slice(4, 15)} -{" "}
@@ -78,7 +86,7 @@ const ChatModal = (props) => {
 
           <div className={styles.headerRightContainer}>
             <UserIconCluster
-              users={chat.outing.users}
+              users={chat.outing ? chat.outing.users : chat.users}
               sizeInRem={7}
               borderSizeInRem={0.8}
             />
@@ -91,7 +99,7 @@ const ChatModal = (props) => {
               user={m.user}
               message={m.message}
               sent={m.sent}
-              chatMembers={chat.outing.users}
+              chatMembers={chat.outing ? chat.outing.users : chat.users}
             />
           ))}
         </div>

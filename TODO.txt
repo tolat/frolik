@@ -71,6 +71,11 @@ DONE
 - Need profile viewer modal
 DONE
 
+- Set up creat chat functionality
+need to change chat display to use chat.users instead of chat.outing.users if there is no outing
+need to finish and add createChatModal and add it to the chats page. Need to finish addUsersArea 
+to do this, and also use addUsersArea in Go page.
+
 - Set Stripped User fetch to only fetch if there is not data
 
 - Display flake rating based on outings flaked

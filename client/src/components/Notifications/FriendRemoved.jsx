@@ -1,10 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import styles from "./styles/FriendRequestUpdate.module.scss";
+import styles from "./styles/FriendRemoved.module.scss";
 import { useEffect } from "react";
-import {} from "../../store/data-actions";
 import {
   dismissNotification,
-  fetchMatchedUsers,
   fetchPhotos,
   fetchProfilePic,
   fetchStrippedUser,
@@ -15,18 +13,16 @@ import SimpleButton from "../UI/SimpleButton";
 import FriendCard from "../UI/FriendCard";
 import { dataActions } from "../../store/data-slice";
 
-const FriendRequestUpdate = (props) => {
+const FriendRemoved = (props) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const notification = props.notification;
   const cachedUsers = useSelector((state) => state.data.cachedUsers);
-  const requestingUser = cachedUsers.find((u) => u._id === notification.from);
-  const status = notification.status;
+  const removingUser = cachedUsers.find((u) => u._id === notification.by);
 
   const handleDismissRequest = () => {
-    const onComplete = (user) => {
-      dispatch(authActions.setUser(user));
-      fetchMatchedUsers()
+    const onComplete = (newUser) => {
+      dispatch(authActions.setUser(newUser));
     };
 
     dismissNotification(user, props.notification, onComplete, null);
@@ -34,31 +30,33 @@ const FriendRequestUpdate = (props) => {
 
   // Get requesting user and their data from server
   useEffect(() => {
-    if (!requestingUser) {
+    if (!removingUser) {
       const onComplete = (strippedUser) => {
         dispatch(dataActions.addCachedUser(strippedUser));
         fetchPhotos(strippedUser);
         fetchProfilePic(strippedUser._id);
       };
-      fetchStrippedUser(notification.from, onComplete);
+      fetchStrippedUser(notification.by, onComplete);
     }
-  }, [notification, requestingUser, dispatch]);
+  }, [notification, removingUser, dispatch]);
 
   return (
-    requestingUser && (
+    removingUser && (
       <div className={styles.container}>
-        <div className={styles.header}>
-          Your friend request was {status} by:
-        </div>
+        <div className={styles.header}>You were unfriended by:</div>
         <FriendCard
           style={{ margin: "0" }}
           noShadow={true}
           small={true}
-          user={requestingUser}
+          user={removingUser}
         />
         <div>{toAppDate(props.notification.created)}</div>
         <div className={styles.buttons}>
-          <SimpleButton onClick={() => handleDismissRequest()} noShadow={true}>
+          <SimpleButton
+            className={styles.clearButton}
+            onClick={() => handleDismissRequest()}
+            noShadow={true}
+          >
             {" "}
             Clear
           </SimpleButton>
@@ -68,4 +66,4 @@ const FriendRequestUpdate = (props) => {
   );
 };
 
-export default FriendRequestUpdate;
+export default FriendRemoved;

@@ -9,6 +9,7 @@ import OutingInvite from "./OutingInvite";
 import OutingUpdate from "./OutingUpdate";
 import FriendRequest from "./FriendRequest";
 import FriendRequestUpdate from "./FriendRequestUpdate";
+import FriendRemoved from "./FriendRemoved";
 
 const NotificationsModal = (props) => {
   const dispatch = useDispatch();
@@ -95,6 +96,8 @@ const NotificationsModal = (props) => {
                 return (
                   <FriendRequestUpdate key={Math.random()} notification={n} />
                 );
+              case "friend-removed":
+                return <FriendRemoved key={Math.random()} notification={n} />;
 
               default:
                 return null;

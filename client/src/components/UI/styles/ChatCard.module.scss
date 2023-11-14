@@ -1,14 +1,35 @@
 @import "../../../utils/responsive.scss";
 
+.outerContainer {
+  display: flex;
+  box-sizing: border-box;
+  margin-bottom: 1.2rem;
+}
+
 .container {
   width: 100%;
   display: flex;
   justify-content: flex-start;
   background-color: $card_grey;
-  margin-bottom: 1.2rem;
+
   padding: 1rem;
   box-sizing: border-box;
-  border-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+.rightContainer {
+  display: flex;
+}
+
+.categoryStripe {
+  width: 1rem;
+  height: auto;
+  padding-bottom: 1rem;
+  border-bottom-left-radius: 3px;
+  border-top-left-radius: 3px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
@@ -24,7 +45,6 @@
   justify-content: space-between;
 }
 
-
 .iconClusterContainer {
   margin-right: 2rem;
   background-color: inherit;
@@ -37,4 +57,9 @@
 
 .memberNames {
   font-size: 1.3rem;
+}
+
+.nonUserMembers {
+  font-size: 1.6rem;
+  font-weight: bold;
 }

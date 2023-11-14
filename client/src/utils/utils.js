@@ -27,7 +27,6 @@ export const pageRouteLoader = async () => {
     await hideModal();
   }
 
-  
   // Redirect if user is not authenticated
   if (!store.getState().auth.isAuthenticated) {
     return redirect("/login");

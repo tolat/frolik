@@ -5,9 +5,15 @@ import PhotoGrid from "../UI/PhotoGrid";
 import SimpleButton from "../UI/SimpleButton";
 import ProfileHeader from "../UI/ProfileHeader";
 import ModalPortal from "./ModalPortal";
-import { fetchPhotos, sendFriendRequest } from "../../utils/data-fetch";
+import {
+  fetchPhotos,
+  removeFriend,
+  sendFriendRequest,
+} from "../../utils/data-fetch";
 import { authActions } from "../../store/auth-slice";
 import modalStyles from "./styles/SlideInModal.module.scss";
+import { useNavigate } from "react-router-dom";
+import { goActions } from "../../store/go-slice";
 
 const getPhotosFromState = (userData) => {
   return !userData
@@ -26,6 +32,7 @@ const ProfileViewerModal = (props) => {
   const userData = dataState.users[modalUser._id];
   const userPhotos = getPhotosFromState(userData);
   const isFriend = user.friends.find((f) => f._id === modalUser._id);
+  const navigate = useNavigate()
   const friendRequested = user.friend_requests.find(
     (fr) => fr === modalUser._id
   );
@@ -50,9 +57,22 @@ const ProfileViewerModal = (props) => {
     sendFriendRequest(user, modalUser, onComplete);
   };
 
-  const onRemoveFriend = () => {};
+  const onRemoveFriend = () => {
+    const onComplete = (response) => {
+      dispatch(
+        authActions.setUser({
+          ...response.user,
+          friends: response.populatedFriends,
+        })
+      );
+    };
+    removeFriend(user, modalUser, onComplete);
+  };
 
-  const onCreateOuting = () => {};
+  const onCreateOuting = () => {
+    dispatch(goActions.addUser(modalUser))
+    navigate('/go')
+  };
 
   return (
     <ModalPortal>
