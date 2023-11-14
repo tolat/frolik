@@ -53,31 +53,12 @@ const Profile = (props) => {
   const dataState = useSelector((state) => state.data);
   const userData = dataState.users[user._id];
   const userPhotos = getPhotosFromState(userData);
-  const userStatus = user?.status?.status;
   const friendCardButtonStyle = { width: "3rem", height: "3rem" };
 
   const onBalloonIconClick = () => {
     console.log("click");
     navigate("/go");
   };
-
-  let statusClassName = null;
-  switch (userStatus) {
-    case "Ready":
-      statusClassName = styles.statusReady;
-      break;
-    case "Searching":
-      statusClassName = styles.statusSearching;
-      break;
-    case "Busy":
-      statusClassName = styles.statusBusy;
-      break;
-    case "Inactive":
-      statusClassName = styles.statusInactive;
-      break;
-    default:
-      statusClassName = null;
-  }
 
   const handleEditButtonClick = (e) => {
     dispatch(modalActions.setSelector("edit-profile"));
