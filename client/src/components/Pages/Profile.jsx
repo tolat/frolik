@@ -25,7 +25,6 @@ import outingsBarIcon from "../../images/outingsToolbar.png";
 import ProfileHeader from "../UI/ProfileHeader";
 import { goActions } from "../../store/go-slice";
 import { createChat, fetchChats } from "../../utils/data-fetch";
-import { dataActions } from "../../store/data-slice";
 import { hideModal } from "../../store/modal-actions";
 
 const sliderIcons = [

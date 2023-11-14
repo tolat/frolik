@@ -265,7 +265,7 @@ module.exports.handleFriendRequestAction = async (
 
 module.exports.findNonOutingChat = (user, withUsers) => {
   const arraysAreEqual = (arr1, arr2) => {
-    if ((arr1, length != arr2.length)) {
+    if (arr1.length != arr2.length) {
       return false;
     }
 

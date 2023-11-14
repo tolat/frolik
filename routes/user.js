@@ -337,7 +337,7 @@ router.get(
     }
 
     await chat.populate("outing");
-    await chat.populate("outing.activity")
+    await chat.populate("outing.activity");
 
     // Populate chat users with stripped down data
     const populatedUsers = await populateFriends(
@@ -365,7 +365,7 @@ router.get(
 
     await user.populate("chats");
     await user.populate("chats.outing");
-    await user.populate("chats.outing.activity")
+    await user.populate("chats.outing.activity");
 
     // For each chat, populate the outing users with stripped data
     let chatMembersMap = {};
@@ -1026,10 +1026,10 @@ router.post(
       }
     }
 
+    await user.populate("chats");
     // if chat with users found already, send back that chat
     const foundChat = findNonOutingChat(user, withUsers);
     if (foundChat) {
-      console.log("FOUND EXISTING CHAT");
       res.send({ chat: foundChat });
       return;
     }
@@ -1068,7 +1068,8 @@ router.post(
     // Send push update to all involved users
     pushUserUpdate([user, ...withUsers]);
 
-    console.log("CREATING NEW CHAT");
+    const unpopulatedUser = await User.findById(user._id);
+    chat.users = [unpopulatedUser, ...withUsers];
     res.send({ chat });
   })
 );
