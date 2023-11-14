@@ -15,6 +15,7 @@ const {
   handleOutingUpdate,
   generateUniqueName,
   pushUserUpdate,
+  handleFriendRequestAction,
 } = require("../utils/utils");
 const {
   reqAuthenticated,
@@ -680,8 +681,18 @@ router.post(
         );
         break;
 
+      case "friend-request":
+        const requestingUser = await User.findById(notification.from);
+        await handleFriendRequestAction(
+          notification,
+          user,
+          requestingUser,
+          dismissStatus
+        );
+        break;
+
       default:
-        user.notifications.splice(nIndex, 1);
+        nIndex != -1 && user.notifications.splice(nIndex, 1);
         await user.save();
         await populateUser(user);
         break;
@@ -834,8 +845,8 @@ router.post(
   tryCatch(async (req, res) => {
     const user = await User.findById(req.params.id);
     const outing = await Outing.findById(req.params.outingid);
-    const rating = req.body.rating
-    const activity = await Activity.findById(outing.activity)
+    const rating = req.body.rating;
+    const activity = await Activity.findById(outing.activity);
 
     // Don't allow if user us not in outing members
     if (!outing.users.find((uid) => uid.toString() == user._id.toString())) {
@@ -845,8 +856,8 @@ router.post(
     outing.completions.push(user);
 
     // Add rating to activity ratings
-    activity.ratings.push({ user, rating})
-    await activity.save()
+    activity.ratings.push({ user, rating });
+    await activity.save();
 
     // If this is final completion, set date_completed and notify all members
     if (outing.completions.length == outing.users.length) {
@@ -891,6 +902,42 @@ router.post(
     outing.invited = [];
     await outing.save();
     res.sendStatus(200);
+  })
+);
+
+// Add friend
+router.post(
+  "/:id/add-friend",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    const friendUser = await User.findById(req.body.friendID);
+
+    // send back 406 if user has already requested thie friend
+    if (user.friend_requests.find((id) => id.toString() == req.body.freindID)) {
+      res.status(406).send("User has already requested this friend.");
+    }
+
+    const friendRequestNotification = {
+      id: Date.now() + Math.random(),
+      type: "friend-request",
+      from: user._id.toString(),
+      created: new Date(Date.now()),
+      active: true,
+    };
+
+    friendUser.notifications.push(friendRequestNotification);
+    await friendUser.save();
+
+    user.friend_requests.push(friendUser);
+    await user.save();
+
+    pushUserUpdate([user, friendUser]);
+
+    await populateUser(user);
+
+    res.send({ user });
   })
 );
 

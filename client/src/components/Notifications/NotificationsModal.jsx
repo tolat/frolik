@@ -1,12 +1,14 @@
-import ModalPortal from "./ModalPortal";
+import ModalPortal from "../Modals/ModalPortal";
 import styles from "./styles/NotificationsModal.module.scss";
 import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
 import { useDispatch, useSelector } from "react-redux";
-import modalStyles from "./styles/SlideInModal.module.scss";
+import modalStyles from "../Modals/styles/SlideInModal.module.scss";
 import sampleNotificationIcon from "../../images/active.png";
 import OutingInvite from "./OutingInvite";
 import OutingUpdate from "./OutingUpdate";
+import FriendRequest from "./FriendRequest";
+import FriendRequestUpdate from "./FriendRequestUpdate";
 
 const NotificationsModal = (props) => {
   const dispatch = useDispatch();
@@ -78,7 +80,7 @@ const NotificationsModal = (props) => {
                     notification={n}
                   />
                 );
-                case "outing-complete":
+              case "outing-complete":
                 return (
                   <OutingInvite
                     header={"Your Outing was completed!"}
@@ -86,6 +88,12 @@ const NotificationsModal = (props) => {
                     notification={n}
                     showOuting={true}
                   />
+                );
+              case "friend-request":
+                return <FriendRequest key={Math.random()} notification={n} />;
+              case "friend-request-update":
+                return (
+                  <FriendRequestUpdate key={Math.random()} notification={n} />
                 );
 
               default:

@@ -70,12 +70,17 @@ DONE
 
 - Need profile viewer modal
 
+-Set Stripped User fetch to only fetch if there is not data
+
 - Display flake rating based on outings flaked
 
 - Need to show chats for pending outings first, show chat update badge
 + read receipts for chat, + sort by most recently updated
 
 - Change photogrid to be adaptive and always be square (1day)
+
+- Break out routes in server and data fetch. chagne all routes to send back a user object instead of 
+just triggering a fetch-auth on the front end wehere possible.
 
 - Get search bars working
 

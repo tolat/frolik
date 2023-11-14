@@ -13,6 +13,7 @@ const UserSchema = new Schema(
     notifications: [Object],
     chats: [{ type: Schema.Types.ObjectId, ref: "Chat" }],
     friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    friend_requests:[{ type: Schema.Types.ObjectId, ref: "User" }],
     outings: [{ type: Schema.Types.ObjectId, ref: "Outing" }],
     status: {
       updated: Date,

@@ -6,7 +6,7 @@ import NavButton from "../UI/NavButton";
 import logo from "../../images/balloon1.png";
 import bell from "../../images/bell.png";
 import { hideModal } from "../../store/modal-actions";
-import NotificationsModal from "../Modals/NotificationsModal";
+import NotificationsModal from "../Notifications/NotificationsModal";
 import { modalActions } from "../../store/modal-slice";
 import OutingModal from "../Modals/OutingModal";
 import ChatModal from "../Modals/ChatModal";

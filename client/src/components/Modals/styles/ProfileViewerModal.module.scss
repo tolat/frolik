@@ -3,10 +3,13 @@
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  min-height: 85rem;
-  width: 100%;
-  margin-top: 5rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0rem;
+  margin-bottom: 5rem;
+  padding: 0rem 1rem;
+  background-color: white;
+  box-sizing: border-box;
 }
 
 .addFriend{
@@ -19,6 +22,7 @@
     margin: 2rem 0;
     display: flex;
     justify-content: space-between;
+    width: 100%;
 }
 
 .createOutingButton{
@@ -32,3 +36,19 @@
     background-color: $button_grey;
     color: black;
 }
+
+
+.unclickableButton {
+    background-color: $button_grey;
+    color: grey;
+    cursor: default;
+    box-shadow: none !important;
+    margin: 2rem 0;
+  }
+  
+  .unclickableButton:hover {
+    cursor: default !important;
+    background-color: $button_grey !important;
+    opacity: 1 !important;
+  }
+  

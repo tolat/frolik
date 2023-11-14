@@ -508,3 +508,25 @@ export const addOutingCompletion = (user, outing, rating, onComplete = () => {})
 
   httpFetch(requestConfig, handleResponse, handleError);
 };
+
+export const sendFriendRequest = (user, friend, onComplete = () => {}) => {
+  const requestConfig = {
+    url: `${getServer()}/user/${user._id}/add-friend`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({ friendID: friend._id }),
+  };
+
+  const handleResponse = (response) => {
+    onComplete(response);
+  };
+
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};
+

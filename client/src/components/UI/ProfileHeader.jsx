@@ -29,42 +29,44 @@ const ProfileHeader = (props) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.profilePicContainer}>
-        <StatIcon
-          alt="flake"
-          icon={flakeIcon}
-          iconStyle={iconStyle}
-          rating={props.user.flake}
-        />
-        <UserIcon
-          sizeInRem={20}
-          user={props.user}
-          borderSizeInRem={"1.5"}
-          pieShadow={true}
-        />
-        <StatIcon
-          alt="outings"
-          icon={outingsIcon}
-          iconStyle={iconStyle}
-          rating={props.user.outings?.length}
-        />
-      </div>
-      <div
-        className={styles.userName}
-      >{`${props.user.first_name} ${props.user.last_name}`}</div>
-      <div className={styles.tagline}>{props.user.tagline}</div>
-      <div className={styles.sideBySide}>
-        <div className={`${styles.statusContainer} ${statusClassName}`}>
-          Status: {userStatus}
-        </div>
-        <div className={styles.locationContainer}>
-          <img
-            style={{ marginRight: "10px" }}
-            className={styles.smallIcon}
-            src={locationIcon}
-            alt="location-icon"
+      <div className={styles.innerContainer}>
+        <div className={styles.profilePicContainer}>
+          <StatIcon
+            alt="flake"
+            icon={flakeIcon}
+            iconStyle={iconStyle}
+            rating={props.user.flake}
           />
-          {props.user.location}
+          <UserIcon
+            sizeInRem={20}
+            user={props.user}
+            borderSizeInRem={"1.5"}
+            pieShadow={true}
+          />
+          <StatIcon
+            alt="outings"
+            icon={outingsIcon}
+            iconStyle={iconStyle}
+            rating={props.user.outings?.length}
+          />
+        </div>
+        <div
+          className={styles.userName}
+        >{`${props.user.first_name} ${props.user.last_name}`}</div>
+        <div className={styles.tagline}>{props.user.tagline}</div>
+        <div className={styles.sideBySide}>
+          <div className={`${styles.statusContainer} ${statusClassName}`}>
+            Status: {userStatus}
+          </div>
+          <div className={styles.locationContainer}>
+            <img
+              style={{ marginRight: "10px" }}
+              className={styles.smallIcon}
+              src={locationIcon}
+              alt="location-icon"
+            />
+            {props.user.location}
+          </div>
         </div>
       </div>
     </div>

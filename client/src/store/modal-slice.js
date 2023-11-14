@@ -22,12 +22,10 @@ const modalSlice = createSlice({
           activeOuting: state.activeOuting,
           activeChat: state.activeChat,
         };
-        console.log('setting prevModal: ', state.previousModal)
       }
       state.selector = action.payload;
     },
     setUsePrevious(state, action) {
-      console.log("setting use previous: ", action.payload)
       state.usePrevious = action.payload;
     },
     setZIndex(state, action) {

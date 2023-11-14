@@ -22,8 +22,8 @@ module.exports.populateFriends = async (friends) => {
     let strippedOutings = [];
     for (let outing of friendUser.outings) {
       strippedOutings.push({
-        activity: { category: outing.activity.category},
-        photos: outing.photos 
+        activity: { category: outing.activity.category },
+        photos: outing.photos,
       });
     }
 
@@ -209,4 +209,56 @@ module.exports.pushUserUpdate = (users) => {
   for (user of users) {
     io.to(user._id ? user._id.toString() : user.toString()).emit("update-user");
   }
+};
+
+module.exports.handleFriendRequestAction = async (
+  notification,
+  user,
+  requestingUser,
+  status
+) => {
+  // Remove user from friendRequests
+  user.friend_requests = user.friend_requests.filter(
+    (id) => id.toString() != requestingUser._id.toString()
+  );
+
+  if (status == "denied") {
+    // Notify requesting user of denial
+    const requestDeniedNotification = {
+      id: Date.now() + Math.random(),
+      type: "friend-request-update",
+      status: "denied",
+      from: user._id.toString(),
+      created: new Date(Date.now()),
+      active: true,
+    };
+    requestingUser.notifications.push(requestDeniedNotification);
+  } else {
+    // Notify requesting user of acceptance
+    const requestAcceptedNotification = {
+      id: Date.now() + Math.random(),
+      type: "friend-request-update",
+      status: "accepted",
+      from: user._id.toString(),
+      created: new Date(Date.now()),
+      active: true,
+    };
+    requestingUser.notifications.push(requestAcceptedNotification);
+
+    // Add users to eachother's friends list
+    requestingUser.friends.push(user);
+    user.friends.push(requestingUser);
+  }
+
+  // Clear notification for user
+  user.notifications = user.notifications.filter(
+    (n) => n.id != notification.id
+  );
+
+  await user.save();
+  await requestingUser.save();
+
+  this.pushUserUpdate([user, requestingUser]);
+
+  await this.populateUser(user);
 };
