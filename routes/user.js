@@ -1019,10 +1019,17 @@ router.post(
       withUsers.push(usr);
     }
 
+    // Check for empty withUsers
+    if (withUsers.length == 0) {
+      res.status(406).send({ message: "Chat must have more than one user" });
+      return
+    }
+
     // send back 406 if user does not have this friend
     for (usr of withUsers) {
       if (!user.friends.find((id) => id.toString() == usr._id.toString())) {
         res.status(406).send({ message: "User is not friends with this user" });
+        return
       }
     }
 

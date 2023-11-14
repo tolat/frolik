@@ -1,0 +1,59 @@
+@import "../../../utils/responsive.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  background-color: white;
+  padding: 0rem 1rem;
+}
+
+.addButton {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3.5rem;
+  margin-right: 1rem;
+  width: 4rem;
+}
+
+.header {
+  font-size: 1.4rem;
+  font-weight: bold;
+  display: flex;
+  width: 100%;
+}
+
+.removeButton {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3.5rem;
+  margin-right: 1rem;
+  width: 4rem;
+}
+
+.createChatButton {
+  margin-bottom: 1rem;
+  background-color: $blue;
+  color: white;
+}
+
+.unclickableButton {
+  background-color: $button_grey;
+  color: #bbbbbb;
+  border: none;
+  cursor: auto;
+  box-shadow: none !important;
+}
+
+.unclickableButton:hover {
+  cursor: auto;
+  opacity: 1;
+}
