@@ -218,8 +218,8 @@ module.exports.handleFriendRequestAction = async (
   status
 ) => {
   // Remove user from friendRequests
-  user.friend_requests = user.friend_requests.filter(
-    (id) => id.toString() != requestingUser._id.toString()
+  requestingUser.friend_requests = requestingUser.friend_requests.filter(
+    (id) => id.toString() != user._id.toString()
   );
 
   if (status == "denied") {

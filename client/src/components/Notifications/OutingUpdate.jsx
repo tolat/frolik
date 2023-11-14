@@ -65,7 +65,7 @@ const OutingUpdate = (props) => {
 
   // Show outing modal
   const handleViewOuting = async () => {
-    await hideModal();
+    await hideModal(true);
     dispatch(modalActions.setActiveOuting(outing));
     dispatch(modalActions.setSelector("outing-modal"));
     dispatch(modalActions.showModal());
