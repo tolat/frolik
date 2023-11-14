@@ -9,7 +9,6 @@ const modalCleanup = (setUsePrevious) => {
   const usePrevious = store.getState().modal.usePrevious;
   if (usePrevious) {
     const previousModal = store.getState().modal.previousModal;
-    console.log("USING PREVIOUS: ", previousModal);
     dispatch(modalActions.setSelector(previousModal.selector));
     dispatch(modalActions.setActiveChat(previousModal.activeChat));
     dispatch(modalActions.setActiveOuting(previousModal.activeOuting));

@@ -10,6 +10,7 @@ import OutingUpdate from "./OutingUpdate";
 import FriendRequest from "./FriendRequest";
 import FriendRequestUpdate from "./FriendRequestUpdate";
 import FriendRemoved from "./FriendRemoved";
+import ChatCreated from "./ChatCreated";
 
 const NotificationsModal = (props) => {
   const dispatch = useDispatch();
@@ -98,6 +99,8 @@ const NotificationsModal = (props) => {
                 );
               case "friend-removed":
                 return <FriendRemoved key={Math.random()} notification={n} />;
+              case "chat-created":
+                return <ChatCreated key={Math.random()} notification={n} />;
 
               default:
                 return null;
