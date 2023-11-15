@@ -31,7 +31,6 @@ const modalCleanup = (setUsePrevious) => {
 export const hideModal = (setUsePrevious = false) => {
   return new Promise((resolve) => {
     const dispatch = store.dispatch;
-    setLastReadMessage()
 
     dispatch(modalActions.hideModal());
     setTimeout(() => {
@@ -43,7 +42,6 @@ export const hideModal = (setUsePrevious = false) => {
 
 export const hideModalFast = () => {
   const dispatch = store.dispatch;
-  setLastReadMessage()
   dispatch(modalActions.setOpacity(0));
   dispatch(modalActions.hideModal());
   setTimeout(() => {

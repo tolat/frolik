@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { genMembersString, setLastReadMessage } from "../../utils/utils";
+import { genMembersString, getUnreadChatMessages } from "../../utils/utils";
 import UserIconCluster from "../UI/UserIconCluster";
 import ModalPortal from "./ModalPortal";
 import styles from "./styles/ChatModal.module.scss";
@@ -23,12 +23,15 @@ const ChatModal = (props) => {
   const chatState = useSelector((state) => state.chat.chats);
   const activeChat = useSelector((state) => state.modal.activeChat);
   const chat = chatState.find((c) => c._id === activeChat?._id) || activeChat;
+  const lastReadMessage = getUnreadChatMessages(user, props.chat);
   const memberNames = chat?.outing
     ? chat.outing.users.map((u) => u.first_name)
     : chat?.users?.map((u) => u.first_name);
   const membersString = chat && genMembersString(memberNames);
   const messages = chat?.messages;
   const composerRef = useRef();
+
+  console.log(chat)
 
   // Connect to the websocket for chat
   useEffect(() => {
@@ -41,7 +44,7 @@ const ChatModal = (props) => {
     }
   }, [chat]);
 
- /*  useEffect(() =>{
+  /*  useEffect(() =>{
     setLastReadMessage()
   }) */
 
@@ -55,7 +58,7 @@ const ChatModal = (props) => {
       message: text,
       user: user._id,
       sent: Date.now(),
-      readBy: [user._id]
+      readBy: [user._id],
     };
 
     sendChatMessage(newMessage, chat);
@@ -100,6 +103,7 @@ const ChatModal = (props) => {
         <div id="chat-container" className={`${styles.chatContainer} noscroll`}>
           {messages.map((m) => (
             <MessageBubble
+              lastReadID={lastReadMessage}
               key={Math.random()}
               user={m.user}
               message={m.message}
@@ -125,6 +129,7 @@ const MessageBubble = (props) => {
   const messageUser = usersData[props.user];
   const foreign = props.user !== user._id;
   const sentDate = new Date(props.sent);
+  const isLastRead = props.message.id === props.lastReadID;
   const colourIndex =
     props.chatMembers &&
     props.chatMembers.map((u) => u._id).indexOf(props.user) % 5;
@@ -158,6 +163,7 @@ const MessageBubble = (props) => {
           {sentDate.toTimeString().slice(0, 5)}
         </div>
       </div>
+      {isLastRead && <div className={styles.lastReadIndicator}> New Below</div>}
     </div>
   );
 };

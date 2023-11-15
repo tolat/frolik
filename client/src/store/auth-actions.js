@@ -7,7 +7,7 @@ import { initializeUserPhotos } from "./data-actions";
 import { fetchChats, fetchGobals } from "../utils/data-fetch";
 
 // Send request to log the user in and start a session in the browser
-export const fetchLogin = (username, password, setData ) => {
+export const fetchLogin = (username, password, setData) => {
   const requestConfig = {
     url: `${getServer()}/auth/login`,
     headers: {
@@ -22,15 +22,14 @@ export const fetchLogin = (username, password, setData ) => {
     store.dispatch(authActions.login(response));
     initializeUserPhotos(response.user);
     fetchChats(response.user);
-    fetchGobals()
+    fetchGobals();
     setData(false);
   };
 
   const handleError = (err) => {
-    setData(false)
+    setData(false);
     console.log(err.status);
   };
-
 
   httpFetch(requestConfig, handleResponse, handleError);
 };
@@ -38,27 +37,36 @@ export const fetchLogin = (username, password, setData ) => {
 export const fetchAuth = () => {
   const dispatch = store.dispatch;
 
+  // return if already fetching auth
+  if (store.getState().auth.fetchingAuth) return;
+
   const requestConfig = { url: `${getServer()}/auth/check` };
 
   // If session is authenticated, dispatch login to state
   const handleResponse = (response) => {
+    store.dispatch(authActions.setFetchingAuth(false));
+
     if (response.user) {
       response.user.friends = response.populatedFriends;
       initializeUserPhotos(response.user);
-      fetchChats(response.user)
+      fetchChats(response.user);
       dispatch(authActions.login(response));
-      fetchGobals()
+      fetchGobals();
     }
   };
 
   const handleError = (err) => {
-    console.log("ERROR: ", err)
+    store.dispatch(authActions.setFetchingAuth(false));
+
+    console.log("ERROR: ", err);
     dispatch(authActions.logout());
   };
 
   try {
+    store.dispatch(authActions.setFetchingAuth(true));
     httpFetch(requestConfig, handleResponse, handleError);
   } catch (err) {
+    store.dispatch(authActions.setFetchingAuth(false));
     console.log(err);
   }
 };
@@ -85,4 +93,3 @@ export const fetchLogout = () => {
 
   httpFetch(requestConfig, handleResponse, handleError);
 };
-

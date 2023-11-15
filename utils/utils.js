@@ -175,6 +175,10 @@ module.exports.handleOutingInviteAction = async (
       active: true,
     };
 
+    // Initialize user in chat last_read
+    await outing.populate("chat")
+    outing.chat.last_read[user._id] = false
+
     // Don's send join notification to the outing creator
     for (usr of outing.users) {
       const foundUsr = await User.findById(usr);

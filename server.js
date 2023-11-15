@@ -51,9 +51,25 @@ io.on("connection", (socket) => {
       if (!chat.messages.find((m) => m.id == data.message.id)) {
         chat.messages.unshift(data.message);
         chat.touched = Date.now();
+
+        // Make sure last_read for all users is this message if it is first message
+        if (chat.messages.length == 1) {
+          console.log("INITIALIZING ALL USERS FOR: ", chat.last_read)
+          const chatUsers = chat.outing ? chat.outing.users : chat.users;
+          for (let usr of chatUsers) {
+            const usrID = usr._id ? usr._id.toString() : usr.toString();
+            if (!chat.last_read[usrID]) {
+              chat.last_read[usrID] = `${data.message.id}`;
+              chat.markModified('last_read')
+            }
+          }
+        }
+
+        console.log("INITIALIZed ALL USERS FOR: ", chat.last_read)
+
         await chat.save();
         socket.broadcast
-          .to(data.chat._id)
+          .to(chat._id.toString())
           .emit("new-message", { message: data.message, chat });
 
         // Send push update to chat users
@@ -102,6 +118,7 @@ app.use(session(sessionConfig));
 // Morgan logger
 const morgan = require("morgan");
 const { pushUserUpdate } = require("./utils/utils");
+const user = require("./models/user");
 app.use(morgan("dev"));
 
 // Passport

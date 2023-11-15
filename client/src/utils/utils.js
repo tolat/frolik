@@ -231,13 +231,18 @@ export const dateSort = (a, b) => {
 export const getTotalUnreadMessages = (user) => {
   return user?.chats?.reduce((count, chat) => {
     const lastRead = chat?.last_read;
-    if (!lastRead) {
-      return count + chat.messages.length;
+    if (!lastRead || !lastRead[user._id]) {
+      return count;
     } else {
-      const lastReadMessageIndex = chat?.messages.indexOf(
-        chat?.messages.find((m) => m.id === lastRead[user._id])
+      const lastReadMessage = chat?.messages.find(
+        (m) => m.id === lastRead[user._id]
       );
-      return count + lastReadMessageIndex;
+      const lastReadMessageIndex = chat?.messages.indexOf(lastReadMessage);
+      if (!lastReadMessage) {
+        return count;
+      } else {
+        return count + lastReadMessageIndex;
+      }
     }
   }, 0);
 };
@@ -245,7 +250,7 @@ export const getTotalUnreadMessages = (user) => {
 export const getUnreadChatMessages = (user, chat) => {
   const lastRead = chat?.last_read;
   if (!lastRead) {
-    return chat.messages.length;
+    return 0;
   } else {
     const lastReadMessageIndex = chat?.messages.indexOf(
       chat?.messages.find((m) => m.id === lastRead[user._id])
@@ -255,13 +260,11 @@ export const getUnreadChatMessages = (user, chat) => {
 };
 
 export const setLastReadMessage = (message = false) => {
+  const lastChat = store.getState().modal.activeChat;
   // Set last read message if chat modal is being closed
-  if (store.getState().modal.selector === "chat-modal") {
-    const lastChat = store.getState().modal.activeChat;
+  if (lastChat) {
     const lastMessage = message ? message : lastChat?.messages[0];
     const user = store.getState().auth.user;
-
-    console.log("LAST MESSAGE: ", lastMessage);
 
     const onComplete = () => {
       fetchChats(user);

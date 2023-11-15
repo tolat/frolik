@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { chats: [] };
+const initialState = {
+  chats: [],
+  fetchingChats: false,
+  updatingLastRead: false,
+};
 const chatSlice = createSlice({
   name: "chat",
   initialState: initialState,
@@ -18,13 +22,17 @@ const chatSlice = createSlice({
       }
     },
     updateChat(state, action) {
-      const oldChat = state.chats.find(
-        (c) => c._id === action.payload._id
-      );
+      const oldChat = state.chats.find((c) => c._id === action.payload._id);
       const chatIndex = state.chats.indexOf(oldChat);
       if (!oldChat || oldChat.touched !== action.payload.touched) {
         state.chats.splice(chatIndex, 1, action.payload);
       }
+    },
+    setFetchingChats(state, action) {
+      state.fetchingChats = action.payload;
+    },
+    setUpdatingLastRead(state, action) {
+      state.updatingLastRead = action.payload;
     },
   },
 });

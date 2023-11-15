@@ -22,6 +22,7 @@ const {
   tryCatch,
   sameUserOnly,
 } = require("../utils/middleware");
+const { urlencoded } = require("body-parser");
 
 const router = express.Router({ mergeParams: true });
 
@@ -429,11 +430,14 @@ router.post(
     }
 
     // Create outing chat
+    let lastRead = {}
+    lastRead[user._id.toString()] = false
     const newChat = new Chat({
       outing: newOuting,
       name: newOuting.name,
       messages: [],
       touched: new Date(Date.now()),
+      last_read:lastRead
     });
     await newChat.save();
     newOuting.chat = newChat._id;
@@ -1003,7 +1007,7 @@ router.post(
   })
 );
 
-// Remove friend
+// Create Chat
 router.post(
   "/:id/chat/create",
   reqAuthenticated,
@@ -1050,12 +1054,17 @@ router.post(
     }
 
     // Create new chat if no chat exists
+    
     const chat = new Chat({
       users: [user, ...withUsers],
       messages: [],
       touched: new Date(Date.now()),
       last_read: {}
     });
+    let lastRead = {}
+    for(usr of chat.users){
+        lastRead[usr._id.toString()] = false
+    }
 
     // Add notification for withUser
     const newNotification = {
@@ -1090,7 +1099,7 @@ router.post(
   })
 );
 
-// Remove friend
+// Update Last Read chat message
 router.post(
   "/:id/chat/:chatid/update-last-read",
   reqAuthenticated,
@@ -1103,7 +1112,7 @@ router.post(
     if(!chat.last_read){
       chat.last_read = {}
     }
-    chat.last_read[user._id.toString()] = messageID;
+    chat.last_read[user._id.toString()] = messageID.toString();
     chat.markModified('last_read')
     await chat.save();
 

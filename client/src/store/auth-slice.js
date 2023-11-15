@@ -3,7 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isAuthenticated: false,
   user: false,
-  globals: false
+  globals: false,
+  updatingGlobals: false,
+  fetchingAuth: false
 };
 const authSlice = createSlice({
   name: "auth",
@@ -30,6 +32,12 @@ const authSlice = createSlice({
     },
     setGlobals(state, action){
       state.globals = action.payload
+    }, 
+    setUpdatingGlobals(state,action){
+      state.updatingGlobals = action.payload
+    },
+    setFetchingAuth(state,action) {
+      state.fetchingAuth = action.payload
     }
   },
 });

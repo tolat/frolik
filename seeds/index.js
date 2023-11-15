@@ -252,16 +252,20 @@ const seedChats = async () => {
         user: outing.users[2],
       });
     }
-    await chat.save();
+
+    
 
     // Add chat to chats list for all outing users
     for (user of outing.users) {
+      chat.last_read[user._id.toString()] = chat.messages[0].id
       if (!user.chats) {
         user.chats = [];
       }
       user.chats.push(chat);
       await user.save();
     }
+
+    await chat.save();
 
     // set chat as the chat for this outing
     outing.chat = chat;
