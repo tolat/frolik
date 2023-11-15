@@ -240,12 +240,11 @@ export const fetchChat = (userID, chatID, onComplete = () => {}) => {
 
   const handleResponse = (response) => {
     const populatedUsers = response.populatedUsers;
-    if(response.chat.outing){
+    if (response.chat.outing) {
       response.chat.outing.users = populatedUsers;
-    }else{
+    } else {
       response.chat.users = populatedUsers;
     }
-    
 
     // Get any missing user photos
     for (let user of populatedUsers) {
@@ -283,7 +282,7 @@ export const fetchChats = (user) => {
       }
 
       // Get any missing user photos
-      const chatUsers = chat.outing? chat.outing.users : chat.users
+      const chatUsers = chat.outing ? chat.outing.users : chat.users;
       for (let member of chatUsers) {
         fetchProfilePic(member._id);
         store.dispatch(
@@ -575,6 +574,27 @@ export const createChat = (user, withUsers, onComplete) => {
     },
     method: "POST",
     body: JSON.stringify({ withUsers }),
+  };
+
+  const handleResponse = (response) => {
+    onComplete(response);
+  };
+
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};
+
+export const updateChatLastRead = (user, chat, messageID, onComplete) => {
+  const requestConfig = {
+    url: `${getServer()}/user/${user._id}/chat/${chat._id}/update-last-read`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({ messageID }),
   };
 
   const handleResponse = (response) => {

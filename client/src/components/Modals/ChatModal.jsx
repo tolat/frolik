@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { genMembersString } from "../../utils/utils";
+import { genMembersString, setLastReadMessage } from "../../utils/utils";
 import UserIconCluster from "../UI/UserIconCluster";
 import ModalPortal from "./ModalPortal";
 import styles from "./styles/ChatModal.module.scss";
@@ -41,6 +41,10 @@ const ChatModal = (props) => {
     }
   }, [chat]);
 
+ /*  useEffect(() =>{
+    setLastReadMessage()
+  }) */
+
   // Send Message
   const handleSendMessage = () => {
     const text = composerRef.current.value;
@@ -51,6 +55,7 @@ const ChatModal = (props) => {
       message: text,
       user: user._id,
       sent: Date.now(),
+      readBy: [user._id]
     };
 
     sendChatMessage(newMessage, chat);

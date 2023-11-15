@@ -36,7 +36,7 @@ const io = inDevelopment
       },
     })
   : socket(server);
-  
+
 module.exports = io;
 
 // Chat socket logic
@@ -45,8 +45,9 @@ io.on("connection", (socket) => {
     // Message sent handler
     socket.on("message-sent", async (data) => {
       const chat = await Chat.findById(data.chat._id);
+      await chat.populate("outing");
 
-      // Only add message if it has not bed added
+      // Only add message if it has not been added
       if (!chat.messages.find((m) => m.id == data.message.id)) {
         chat.messages.unshift(data.message);
         chat.touched = Date.now();
@@ -54,6 +55,9 @@ io.on("connection", (socket) => {
         socket.broadcast
           .to(data.chat._id)
           .emit("new-message", { message: data.message, chat });
+
+        // Send push update to chat users
+        pushUserUpdate(chat.outing ? chat.outing.users : chat.users);
       }
     });
 
@@ -97,6 +101,7 @@ app.use(session(sessionConfig));
 
 // Morgan logger
 const morgan = require("morgan");
+const { pushUserUpdate } = require("./utils/utils");
 app.use(morgan("dev"));
 
 // Passport

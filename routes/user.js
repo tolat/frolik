@@ -1054,6 +1054,7 @@ router.post(
       users: [user, ...withUsers],
       messages: [],
       touched: new Date(Date.now()),
+      last_read: {}
     });
 
     // Add notification for withUser
@@ -1086,6 +1087,29 @@ router.post(
     const unpopulatedUser = await User.findById(user._id);
     chat.users = [unpopulatedUser, ...withUsers];
     res.send({ chat });
+  })
+);
+
+// Remove friend
+router.post(
+  "/:id/chat/:chatid/update-last-read",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    const chat = await Chat.findById(req.params.chatid);
+    const messageID = req.body.messageID;
+
+    if(!chat.last_read){
+      chat.last_read = {}
+    }
+    chat.last_read[user._id.toString()] = messageID;
+    chat.markModified('last_read')
+    await chat.save();
+
+    pushUserUpdate([user]);
+
+    res.sendStatus(200);
   })
 );
 

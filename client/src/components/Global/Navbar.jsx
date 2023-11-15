@@ -18,12 +18,14 @@ import ProfileViewerModal from "../Modals/ProfileViewerModal";
 import profileIcon from "../../images/account.png";
 import chatIcon from "../../images/chat.png";
 import logoutIcon from "../../images/logout.png";
+import { getTotalUnreadMessages } from "../../utils/utils";
 
 const Navbar = (props) => {
   const user = useSelector((state) => state.auth.user);
   const authState = useSelector((state) => state.auth);
   const modalState = useSelector((state) => state.modal);
   const dispatch = useDispatch();
+  const unreadChatMessages = user && getTotalUnreadMessages(user);
   const makeActive = (navData) =>
     navData.isActive ? styles.activeLink : "none";
 
@@ -107,9 +109,9 @@ const Navbar = (props) => {
             </NavLink>
             <NavLink className={(navData) => makeActive(navData)} to="/chat">
               <NavButton icon={chatIcon} className={styles.navButton}>
-                {user && user.notifications.length > 0 ? (
+                {unreadChatMessages > 0 ? (
                   <div className={styles.notificationBadge}>
-                    {user && user.notifications.length}
+                    {unreadChatMessages > 0 && unreadChatMessages}
                   </div>
                 ) : null}
               </NavButton>

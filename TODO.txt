@@ -83,7 +83,7 @@ DONE
 - Need to show chats for pending outings first, show chat update badge
 + read receipts for chat, + sort by most recently updated
 
-- Break out routes in server and data fetch. chagne all routes to send back a user object instead of 
+- Break out routes in server and data fetch. change all routes to send back a user object instead of 
 just triggering a fetch-auth on the front end wehere possible.
 
 - Get search bars working

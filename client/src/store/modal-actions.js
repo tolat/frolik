@@ -1,5 +1,7 @@
 import { modalActions } from "./modal-slice";
 import store from ".";
+import { fetchChats, updateChatLastRead } from "../utils/data-fetch";
+import { setLastReadMessage } from "../utils/utils";
 
 const modalCleanup = (setUsePrevious) => {
   const dispatch = store.dispatch;
@@ -12,14 +14,14 @@ const modalCleanup = (setUsePrevious) => {
     dispatch(modalActions.setSelector(previousModal.selector));
     dispatch(modalActions.setActiveChat(previousModal.activeChat));
     dispatch(modalActions.setActiveOuting(previousModal.activeOuting));
-    
+
     dispatch(modalActions.showModal());
     dispatch(modalActions.setUsePrevious(false));
   } else {
     dispatch(modalActions.setSelector("none"));
     dispatch(modalActions.setActiveChat(false));
     dispatch(modalActions.setActiveOuting(false));
-    
+
     if (setUsePrevious) {
       dispatch(modalActions.setUsePrevious(true));
     }
@@ -29,6 +31,7 @@ const modalCleanup = (setUsePrevious) => {
 export const hideModal = (setUsePrevious = false) => {
   return new Promise((resolve) => {
     const dispatch = store.dispatch;
+    setLastReadMessage()
 
     dispatch(modalActions.hideModal());
     setTimeout(() => {
@@ -40,6 +43,7 @@ export const hideModal = (setUsePrevious = false) => {
 
 export const hideModalFast = () => {
   const dispatch = store.dispatch;
+  setLastReadMessage()
   dispatch(modalActions.setOpacity(0));
   dispatch(modalActions.hideModal());
   setTimeout(() => {

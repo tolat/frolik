@@ -1,6 +1,6 @@
 import styles from "./styles/ChatCard.module.scss";
 import UserIconCluster from "./UserIconCluster";
-import { genMembersString } from "../../utils/utils";
+import { genMembersString, getUnreadChatMessages, setLastReadMessage } from "../../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
 import { fetchChat } from "../../utils/data-fetch";
@@ -10,6 +10,8 @@ const ChatCard = (props) => {
   const chat = props.chat;
   const globals = useSelector((state) => state.auth.globals);
   const dispatch = useDispatch();
+  const unreadChatMessages = user && getUnreadChatMessages(user, chat);
+
   const memberNames = !chat
     ? ""
     : genMembersString(
@@ -23,6 +25,7 @@ const ChatCard = (props) => {
       dispatch(modalActions.setActiveChat(props.chat));
       dispatch(modalActions.setSelector("chat-modal"));
       dispatch(modalActions.showModal());
+      setLastReadMessage()
     };
     fetchChat(user._id, props.chat._id, onChatFetched);
   };
@@ -43,6 +46,11 @@ const ChatCard = (props) => {
         style={props.style}
         className={styles.container}
       >
+        {unreadChatMessages > 0 ? (
+          <div className={styles.notificationBadge}>
+            {unreadChatMessages > 0 && unreadChatMessages}
+          </div>
+        ) : null}
         <div className={styles.iconClusterContainer}>
           <UserIconCluster
             users={chat.outing ? chat.outing.users : chat.users}

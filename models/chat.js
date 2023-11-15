@@ -6,6 +6,7 @@ const ChatSchema = new Schema(
     outing: { type: Schema.Types.ObjectId, ref: "Outing" },
     users: [{ type: Schema.Types.ObjectId, ref: "User" }],
     name: String,
+    last_read: Object,
     messages: [
       {
         id: String,

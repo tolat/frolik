@@ -11,6 +11,7 @@ import { modalActions } from "../../store/modal-slice";
 const Chat = memo((props) => {
   const chats = useSelector((state) => state.chat.chats);
   const dispatch = useDispatch();
+  
 
   const onCreateChat = () => {
     dispatch(modalActions.setSelector("create-chat-modal"));

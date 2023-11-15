@@ -225,6 +225,7 @@ const seedChats = async () => {
     let chat = new Chat({
       name: outing.name,
       outing,
+      last_read: {},
       messages: [
         {
           id: Date.now() + Math.random(),
