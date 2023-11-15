@@ -10,8 +10,11 @@ import { modalActions } from "../../store/modal-slice";
 
 const Chat = memo((props) => {
   const chats = useSelector((state) => state.chat.chats);
+  const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
-  
+  const validChats = chats?.filter((c) =>
+    c.outing ? !c.outing.flakes.find((uid) => uid === user._id) : true
+  );
 
   const onCreateChat = () => {
     dispatch(modalActions.setSelector("create-chat-modal"));
@@ -32,7 +35,7 @@ const Chat = memo((props) => {
         <h2 style={{ width: "100%", textAlign: "center" }}>Loading Chats..</h2>
       ) : (
         <div className={styles.chatsContainer}>
-          {chats
+          {validChats
             .toSorted((a, b) => dateSort(b.touched, a.touched))
             .map((c) => (
               <ChatCard key={c._id} chat={c} />

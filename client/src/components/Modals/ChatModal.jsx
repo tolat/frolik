@@ -42,10 +42,6 @@ const ChatModal = (props) => {
     }
   }, [chat]);
 
-  /*  useEffect(() =>{
-    setLastReadMessage()
-  }) */
-
   // Send Message
   const handleSendMessage = () => {
     const text = composerRef.current.value;

@@ -1,5 +1,6 @@
 import store from ".";
 import { fetchChats, fetchPhotos } from "../utils/data-fetch";
+import { setLastReadMessage } from "../utils/utils";
 import { fetchAuth } from "./auth-actions";
 import { socketActions } from "./socket-slice";
 
@@ -12,8 +13,10 @@ export function onDisconnect() {
 }
 
 export function onUpdateUser(){
+  console.log('receivedUserUpdate')
   const user = store.getState().auth.user
   fetchAuth()
   fetchChats(user)
   fetchPhotos(user)
+  setLastReadMessage()
 }
