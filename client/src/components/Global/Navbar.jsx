@@ -81,34 +81,37 @@ const Navbar = (props) => {
       )}
 
       <div className={styles.innerContainer}>
-        <NavLink className={(navData) => makeActive(navData)} to="/go">
-          <div className={styles.goButton}>
-            <img className={styles.logo} src={logo} alt="logo" />
-          </div>
-        </NavLink>
-
         {authState.isAuthenticated ? (
           <div className={styles.navItems}>
-            <button
+            <NavButton
               onClick={handleShowNotifications}
-              className={styles.notificationsButton}
+              icon={bell}
+              className={`${styles.navButton} ${styles.notificationsHover}`}
             >
-              <img
-                className={styles.bellIcon}
-                src={bell}
-                alt={"notificaitons-bell"}
-              />
               {user && user.notifications.length > 0 ? (
                 <div className={styles.notificationBadge}>
                   {user && user.notifications.length}
                 </div>
               ) : null}
-            </button>
+            </NavButton>
+            <NavLink className={(navData) => makeActive(navData)} to="/go">
+              <NavButton
+                imgStyle={{ width: "2.9rem", height: "2.9rem" }}
+                icon={logo}
+                className={`${styles.navButton} ${styles.createOutingHover}`}
+              />
+            </NavLink>
             <NavLink className={(navData) => makeActive(navData)} to="/profile">
-              <NavButton icon={profileIcon} className={styles.navButton} />
+              <NavButton
+                icon={profileIcon}
+                className={`${styles.navButton} ${styles.profileHover}`}
+              />
             </NavLink>
             <NavLink className={(navData) => makeActive(navData)} to="/chat">
-              <NavButton icon={chatIcon} className={styles.navButton}>
+              <NavButton
+                icon={chatIcon}
+                className={`${styles.navButton} ${styles.chatsHover}`}
+              >
                 {unreadChatMessages > 0 ? (
                   <div className={styles.notificationBadge}>
                     {unreadChatMessages > 0 && unreadChatMessages}
@@ -120,7 +123,7 @@ const Navbar = (props) => {
             <NavButton
               onClick={handleLogout}
               icon={logoutIcon}
-              className={styles.navButton}
+              className={`${styles.navButton} ${styles.logoutHover}`}
             />
           </div>
         ) : (

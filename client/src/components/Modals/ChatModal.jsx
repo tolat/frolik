@@ -31,8 +31,6 @@ const ChatModal = (props) => {
   const messages = chat?.messages;
   const composerRef = useRef();
 
-  console.log(chat)
-
   // Connect to the websocket for chat
   useEffect(() => {
     if (chat) {

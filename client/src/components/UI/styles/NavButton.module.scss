@@ -11,14 +11,16 @@
 .button {
   width: 100%;
   height: 100%;
-  padding: 0.5rem;
   background: none;
   border: none;
   font-weight: inherit;
+  padding-bottom: 0.5rem;
+  box-sizing: border-box;
 }
 
 .iconButton {
   height: 80%;
+  box-sizing: border-box;
 }
 
 .textButton {
