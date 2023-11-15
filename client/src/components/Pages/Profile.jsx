@@ -210,13 +210,15 @@ const Profile = (props) => {
             style={{ marginTop: "1rem" }}
             placeholder={"Search Friends"}
           />
-          {user.friends.map((f) => (
-            <FriendCard
-              buttons={<FriendCardButtons user={f} />}
-              key={Math.random()}
-              user={f}
-            />
-          ))}
+          {user.friends
+            .toSorted((a, b) => a.first_name - b.first_name)
+            .map((f) => (
+              <FriendCard
+                buttons={<FriendCardButtons user={f} />}
+                key={Math.random()}
+                user={f}
+              />
+            ))}
         </Fragment>
       )}
     </div>

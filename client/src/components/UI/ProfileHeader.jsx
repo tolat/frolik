@@ -4,10 +4,12 @@ import flakeIcon from "../../images/snowflake.png";
 import outingsIcon from "../../images/outing2.png";
 import StatIcon from "./StatIcon";
 import locationIcon from "../../images/location-dark.png";
+import { calculateFlakeRating } from "../../utils/utils";
 
 const ProfileHeader = (props) => {
   const iconStyle = { width: "4rem", height: "4rem" };
   const userStatus = props.user?.status?.status;
+  const flakeRating = props.user && calculateFlakeRating(props.user)
 
   let statusClassName = null;
   switch (userStatus) {
@@ -35,7 +37,7 @@ const ProfileHeader = (props) => {
             alt="flake"
             icon={flakeIcon}
             iconStyle={iconStyle}
-            rating={props.user.flake}
+            rating={flakeRating}
           />
           <UserIcon
             sizeInRem={20}

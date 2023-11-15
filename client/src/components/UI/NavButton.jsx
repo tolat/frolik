@@ -16,6 +16,7 @@ const NavButton = (props) => {
           </div>
         )}
       </button>
+      {props.children}
     </div>
   );
 };

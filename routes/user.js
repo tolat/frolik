@@ -642,6 +642,14 @@ router.get(
       }
     }
 
+    // Update all users related to the outing
+    pushUserUpdate([
+      user,
+      ...outing.users,
+      ...outing.invited,
+      ...outing.flakes,
+    ]);
+
     // Delete outing chat
     await Chat.deleteOne({ _id: outing.chat.toString() });
 
@@ -1022,14 +1030,14 @@ router.post(
     // Check for empty withUsers
     if (withUsers.length == 0) {
       res.status(406).send({ message: "Chat must have more than one user" });
-      return
+      return;
     }
 
     // send back 406 if user does not have this friend
     for (usr of withUsers) {
       if (!user.friends.find((id) => id.toString() == usr._id.toString())) {
         res.status(406).send({ message: "User is not friends with this user" });
-        return
+        return;
       }
     }
 

@@ -212,3 +212,18 @@ export const userIsLastCompletion = (user, outing) => {
     outing.completions.length === outing.users.length - 1
   );
 };
+
+export const calculateFlakeRating = (user) => {
+  const outingCount = user.outings.length;
+  const flakeCount = user.outings.filter((o) =>
+    o.flakes.find((id) => id === user._id)
+  ).length;
+  return ((flakeCount / outingCount) * 5).toFixed(1);
+};
+
+export const dateSort = (a, b) => {
+  const aTime = new Date(a).getTime();
+  const bTime = new Date(b).getTime();
+  return aTime - bTime;
+};
+

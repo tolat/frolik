@@ -75,10 +75,10 @@ DONE
 need to change chat display to use chat.users instead of chat.outing.users if there is no outing
 need to finish and add createChatModal and add it to the chats page. Need to finish addUsersArea 
 to do this, and also use addUsersArea in Go page.
-
-- Set Stripped User fetch to only fetch if there is not data
+DONE
 
 - Display flake rating based on outings flaked
+DONE
 
 - Need to show chats for pending outings first, show chat update badge
 + read receipts for chat, + sort by most recently updated

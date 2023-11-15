@@ -8,7 +8,6 @@ const UserSchema = new Schema(
     last_name: String,
     username: String,
     tagline: String,
-    flake: Number,
     location: String,
     notifications: [Object],
     chats: [{ type: Schema.Types.ObjectId, ref: "Chat" }],

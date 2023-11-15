@@ -52,10 +52,14 @@
   width: 4rem;
   height: 4rem;
   margin-right: 2rem;
+  position: relative;
 }
 
 .activeLink{
   font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .goButton{

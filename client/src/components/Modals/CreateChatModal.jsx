@@ -93,6 +93,7 @@ const CreateChatModal = (props) => {
         <h2 className={styles.header}>Add Friends:</h2>
         <SimpleSearch placeholder={"Search Friends.."} />
         {user.friends
+          .toSorted((a, b) => a.first_name - b.first_name)
           .filter((f) => !newChatMembers.find((m) => m._id === f._id))
           .map((f) => (
             <FriendCard

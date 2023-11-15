@@ -6,6 +6,7 @@ import outingsIcon from "../../images/outing2.png";
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
 import { hideModal } from "../../store/modal-actions";
+import { calculateFlakeRating } from "../../utils/utils";
 
 const FriendCard = (props) => {
   const statIconStyle = { width: "2rem", height: "2rem" };
@@ -15,6 +16,7 @@ const FriendCard = (props) => {
   const nameStyle = { fontSize: props.small ? "1.8rem" : null };
   const dispatch = useDispatch();
   const modalState = useSelector((state) => state.modal);
+  const flakeRating = props.user && calculateFlakeRating(props.user)
   const detailsContainerStyle = props.small
     ? {
         display: "flex",
@@ -58,7 +60,7 @@ const FriendCard = (props) => {
               icon={flakeIcon}
               style={statContainerStyle}
               iconStyle={statIconStyle}
-              rating={props.user.flake}
+              rating={flakeRating}
             />
             <StatIcon
               alt="outings"

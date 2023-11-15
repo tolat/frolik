@@ -24,6 +24,7 @@ module.exports.populateFriends = async (friends) => {
       strippedOutings.push({
         activity: { category: outing.activity.category },
         photos: outing.photos,
+        flakes: outing.flakes,
       });
     }
 
@@ -31,7 +32,6 @@ module.exports.populateFriends = async (friends) => {
       _id: friendUser._id,
       first_name: friendUser.first_name,
       last_name: friendUser.last_name,
-      flake: friendUser.flake,
       outings: strippedOutings,
       status: friendUser.status,
       location: friendUser.location,

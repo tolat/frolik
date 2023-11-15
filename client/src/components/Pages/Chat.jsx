@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles/Chat.module.scss";
-import { pageRouteLoader } from "../../utils/utils";
+import { dateSort, pageRouteLoader } from "../../utils/utils";
 import ChatCard from "../UI/ChatCard";
 import SimpleSearch from "../UI/SimpleSearch";
 import SimpleButton from "../UI/SimpleButton";
@@ -10,11 +10,11 @@ import { modalActions } from "../../store/modal-slice";
 
 const Chat = memo((props) => {
   const chats = useSelector((state) => state.chat.chats);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const onCreateChat = () => {
-      dispatch(modalActions.setSelector('create-chat-modal'))
-      dispatch(modalActions.showModal())
+    dispatch(modalActions.setSelector("create-chat-modal"));
+    dispatch(modalActions.showModal());
   };
 
   return (
@@ -31,9 +31,11 @@ const Chat = memo((props) => {
         <h2 style={{ width: "100%", textAlign: "center" }}>Loading Chats..</h2>
       ) : (
         <div className={styles.chatsContainer}>
-          {chats.map((c) => (
-            <ChatCard key={c._id} chat={c} />
-          ))}
+          {chats
+            .toSorted((a, b) => dateSort(b.touched, a.touched))
+            .map((c) => (
+              <ChatCard key={c._id} chat={c} />
+            ))}
         </div>
       )}
     </div>

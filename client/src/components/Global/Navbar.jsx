@@ -15,6 +15,9 @@ import { popupActions } from "../../store/popup-slice";
 import outingsBarIcon from "../../images/outingsToolbar.png";
 import { Fragment } from "react";
 import ProfileViewerModal from "../Modals/ProfileViewerModal";
+import profileIcon from "../../images/account.png";
+import chatIcon from "../../images/chat.png";
+import logoutIcon from "../../images/logout.png";
 
 const Navbar = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -64,7 +67,7 @@ const Navbar = (props) => {
           <NotificationsModal />
           <ChatModal />
           <OutingModal />
-          <ProfileViewerModal/>
+          <ProfileViewerModal />
           <WarningPopup
             selector={"too-many-outings"}
             header={"You have too many Pending Outings!"}
@@ -100,15 +103,21 @@ const Navbar = (props) => {
               ) : null}
             </button>
             <NavLink className={(navData) => makeActive(navData)} to="/profile">
-              <NavButton text={"Profile"} className={styles.navButton} />
+              <NavButton icon={profileIcon} className={styles.navButton} />
             </NavLink>
             <NavLink className={(navData) => makeActive(navData)} to="/chat">
-              <NavButton text={"Chat"} className={styles.navButton} />
+              <NavButton icon={chatIcon} className={styles.navButton}>
+                {user && user.notifications.length > 0 ? (
+                  <div className={styles.notificationBadge}>
+                    {user && user.notifications.length}
+                  </div>
+                ) : null}
+              </NavButton>
             </NavLink>
 
             <NavButton
               onClick={handleLogout}
-              text={"Logout"}
+              icon={logoutIcon}
               className={styles.navButton}
             />
           </div>
