@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import OutingCard from "./OutingCard";
 import styles from "./styles/OutingList.module.scss";
-import { outingIsCompleted } from "../../utils/utils";
+import { outingIsCompleted, sortByDate } from "../../utils/utils";
 
 const OutingList = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -22,23 +22,27 @@ const OutingList = (props) => {
             <br />
             <br />
           </div>
-          {pending.map((o) => (
-            <div key={Math.random()} className={styles.outingContainer}>
-              <OutingCard outing={o} user={user} />
-            </div>
-          ))}
+          {pending
+            .toSorted((a, b) => sortByDate(b.date_created, a.date_created))
+            .map((o) => (
+              <div key={Math.random()} className={styles.outingContainer}>
+                <OutingCard outing={o} user={user} />
+              </div>
+            ))}
         </div>
       )}
       {nonPending[0] &&
-        nonPending.map((o) => (
-          <div key={Math.random()} className={styles.outingContainer}>
-            <OutingCard
-              setModalOuting={props.setModalOuting}
-              outing={o}
-              user={user}
-            />
-          </div>
-        ))}
+        nonPending
+          .toSorted((a, b) => sortByDate(b.date_created, a.date_created))
+          .map((o) => (
+            <div key={Math.random()} className={styles.outingContainer}>
+              <OutingCard
+                setModalOuting={props.setModalOuting}
+                outing={o}
+                user={user}
+              />
+            </div>
+          ))}
     </div>
   );
 };

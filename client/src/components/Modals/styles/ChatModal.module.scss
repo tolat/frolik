@@ -15,6 +15,7 @@
   box-sizing: border-box;
   background-color: $card_grey;
   overflow-y: scroll;
+  border: 1px solid $light_grey;
 }
 
 .iconBacker {
@@ -27,12 +28,15 @@
   align-items: center;
   background-color: $button_grey;
   box-sizing: border-box;
+  border-left: 1px solid $light_grey;
+  border-right: 1px solid $light_grey;
 }
 
 .headerRightContainer {
   display: flex;
   padding: 1rem;
   box-sizing: border-box;
+  background-color: inherit;
 }
 
 .headerLeftContainer {
@@ -68,11 +72,12 @@
   box-sizing: border-box;
   display: flex;
   padding-bottom: 2rem;
+  border-left: 1px solid $light_grey;
+  border-right: 1px solid $light_grey;
 }
 
 .composer {
   padding: 1rem;
-  border: none;
   border-radius: 4px;
   background-color: $card_grey;
   width: 100%;
@@ -81,6 +86,8 @@
   outline: none !important;
   resize: none;
   font-family: Arial, Helvetica, sans-serif;
+  border: 1px solid $light_grey;
+  overflow-y: visible;
 }
 
 .sendButton {
@@ -171,14 +178,14 @@
   margin-top: 0.5rem;
 }
 
-.nonUserMembers{
+.nonUserMembers {
   padding-top: 0.5rem;
   font-size: 1.8rem;
   font-weight: bold;
   color: black;
 }
 
-.lastReadIndicator{
+.lastReadIndicator {
   margin-top: 1rem;
   font-size: 1.2rem;
   color: $light_grey;
@@ -187,4 +194,11 @@
   justify-content: center;
   border-top: 3px solid $light_grey;
   padding: 0.5rem;
+}
+
+.createOutingButton {
+  margin: 1rem 0;
+  background-color: $blue;
+  color: white;
+  width: fit-content;
 }

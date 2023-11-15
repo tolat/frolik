@@ -243,6 +243,9 @@ export const getUnreadChatMessages = (user, chat) => {
   if (!lastRead) {
     return 0;
   } else {
+    if (lastRead[user._id] === "initialized") {
+      return chat.messages.length;
+    }
     const lastReadMessage = chat?.messages.find(
       (m) => m.id === lastRead[user._id]
     );

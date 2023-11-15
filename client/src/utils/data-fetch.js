@@ -339,7 +339,7 @@ export const createOuting = (outing, user, setOutingData) => {
 
     // Reset outing in gostate
     setTimeout(() => {
-      store.dispatch(goActions.reset(user));
+      store.dispatch(goActions.reset([user]));
     }, 1000);
 
     // Set data
@@ -482,6 +482,7 @@ export const uploadOutingPhoto = (
   };
 
   const handleResponse = (response) => {
+    fetchPhotos(store.getState().auth.user)
     onComplete(response);
   };
 

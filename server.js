@@ -54,18 +54,15 @@ io.on("connection", (socket) => {
 
         // Make sure last_read for all users is this message if it is first message
         if (chat.messages.length == 1) {
-          console.log("INITIALIZING ALL USERS FOR: ", chat.last_read)
           const chatUsers = chat.outing ? chat.outing.users : chat.users;
           for (let usr of chatUsers) {
             const usrID = usr._id ? usr._id.toString() : usr.toString();
             if (!chat.last_read[usrID]) {
-              chat.last_read[usrID] = `${data.message.id}`;
-              chat.markModified('last_read')
+              chat.last_read[usrID] = 'initialized';
+              chat.markModified("last_read");
             }
           }
         }
-
-        console.log("INITIALIZed ALL USERS FOR: ", chat.last_read)
 
         await chat.save();
         socket.broadcast

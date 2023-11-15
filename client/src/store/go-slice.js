@@ -30,7 +30,7 @@ const goSlice = createSlice({
       state.outing.activity = {};
     },
     reset(state, action) {
-      state.outing = { activity: {}, users: [action.payload] };
+      state.outing = { activity: {}, users: action.payload };
     },
   },
 });

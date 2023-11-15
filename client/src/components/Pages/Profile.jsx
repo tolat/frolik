@@ -71,6 +71,7 @@ const Profile = (props) => {
   };
 
   const onCreateOuting = (withUser) => {
+    dispatch(goActions.reset([user]))
     dispatch(goActions.addUser(withUser));
     navigate("/go");
   };

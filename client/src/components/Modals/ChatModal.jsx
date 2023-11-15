@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { genMembersString, getUnreadChatMessages } from "../../utils/utils";
 import UserIconCluster from "../UI/UserIconCluster";
 import ModalPortal from "./ModalPortal";
@@ -7,6 +7,9 @@ import sendIcon from "../../images/send.png";
 import { useEffect, useRef } from "react";
 import { sendChatMessage } from "../../store/chat-actions";
 import { socket } from "../../socket";
+import SimpleButton from "../UI/SimpleButton";
+import { goActions } from "../../store/go-slice";
+import { useNavigate } from "react-router-dom";
 const bubbleColours = [
   "rgb(247, 226, 250)",
   "rgb(252, 225, 225)",
@@ -30,6 +33,8 @@ const ChatModal = (props) => {
   const membersString = chat && genMembersString(memberNames);
   const messages = chat?.messages;
   const composerRef = useRef();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Connect to the websocket for chat
   useEffect(() => {
@@ -59,6 +64,16 @@ const ChatModal = (props) => {
     composerRef.current.value = "";
     let chatContainerElt = document.getElementById("chat-container");
     chatContainerElt.scrollTop = chatContainerElt.scrollHeight;
+
+    // reset textarea height
+    document.getElementById("composer-textarea").style.height = "";
+    document.getElementById("composer-textarea").style.height =
+      document.getElementById("composer-textarea").scrollHeight + "px";
+  };
+
+  const handleCreateOuting = () => {
+    dispatch(goActions.reset(chat.users));
+    navigate("/go");
   };
 
   return !chat ? (
@@ -80,6 +95,15 @@ const ChatModal = (props) => {
                 {membersString}
               </div>
             </div>
+            {chat.outing ? null : (
+              <SimpleButton
+                onClick={handleCreateOuting}
+                className={styles.createOutingButton}
+              >
+                + Outing With Chat Members
+              </SimpleButton>
+            )}
+
             <div className={styles.lastActive}>
               Last Active {new Date(chat.touched).toDateString().slice(4, 15)} -{" "}
               {new Date(chat.touched).toTimeString().slice(0, 5)}
@@ -107,7 +131,15 @@ const ChatModal = (props) => {
           ))}
         </div>
         <div className={styles.composeContainer}>
-          <textarea className={styles.composer} ref={composerRef} />
+          <textarea
+            id="composer-textarea"
+            onChange={(e) => {
+              e.target.style.height = "";
+              e.target.style.height = e.target.scrollHeight + "px";
+            }}
+            className={`${styles.composer} noscroll`}
+            ref={composerRef}
+          />
           <button onClick={handleSendMessage} className={styles.sendButton}>
             <img className={styles.sendIcon} src={sendIcon} alt="send-icon" />
           </button>

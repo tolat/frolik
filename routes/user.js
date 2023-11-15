@@ -430,14 +430,14 @@ router.post(
     }
 
     // Create outing chat
-    let lastRead = {}
-    lastRead[user._id.toString()] = false
+    let lastRead = {};
+    lastRead[user._id.toString()] = "initialized";
     const newChat = new Chat({
       outing: newOuting,
       name: newOuting.name,
       messages: [],
       touched: new Date(Date.now()),
-      last_read:lastRead
+      last_read: lastRead,
     });
     await newChat.save();
     newOuting.chat = newChat._id;
@@ -1054,16 +1054,16 @@ router.post(
     }
 
     // Create new chat if no chat exists
-    
+
     const chat = new Chat({
       users: [user, ...withUsers],
       messages: [],
       touched: new Date(Date.now()),
-      last_read: {}
+      last_read: {},
     });
-    let lastRead = {}
-    for(usr of chat.users){
-        lastRead[usr._id.toString()] = false
+    let lastRead = {};
+    for (usr of chat.users) {
+      lastRead[usr._id.toString()] = "initialized";
     }
 
     // Add notification for withUser
@@ -1109,11 +1109,11 @@ router.post(
     const chat = await Chat.findById(req.params.chatid);
     const messageID = req.body.messageID;
 
-    if(!chat.last_read){
-      chat.last_read = {}
+    if (!chat.last_read) {
+      chat.last_read = {};
     }
     chat.last_read[user._id.toString()] = messageID.toString();
-    chat.markModified('last_read')
+    chat.markModified("last_read");
     await chat.save();
 
     pushUserUpdate([user]);
