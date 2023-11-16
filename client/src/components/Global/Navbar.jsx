@@ -16,7 +16,7 @@ import outingsBarIcon from "../../images/outingsToolbar.png";
 import { Fragment } from "react";
 import ProfileViewerModal from "../Modals/ProfileViewerModal";
 import profileIcon from "../../images/account2.png";
-import chatIcon from "../../images/chat4.png";
+import chatIcon from "../../images/chat2.png";
 import logoutIcon from "../../images/logout.png";
 import { getTotalUnreadMessages } from "../../utils/utils";
 

@@ -8,7 +8,7 @@ const CroppedImage = (props) => {
       className={`${styles.container} ${props.className}`}
       id={props.id}
     >
-      {!props.image ? null : (
+      {!props.image || props.image === 'queued' ? null : (
         <Cropper
           image={`data:image/png;base64,${props.image}`}
           crop={props.crop}

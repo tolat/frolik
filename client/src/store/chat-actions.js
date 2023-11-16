@@ -19,6 +19,5 @@ export function receiveChatMessage({ message, chat }) {
 export function sendChatMessage(message, chat) {
   socket.emit("message-sent", { chat, message });
   store.dispatch(chatActions.addMessageToChat({ message, chat }));
-  console.log("sending message: ", message)
   setLastReadMessage(message);
 }

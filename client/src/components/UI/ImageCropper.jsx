@@ -16,7 +16,7 @@ const ImageCropper = (props) => {
     setZoom(newZoom);
   };
 
-  return !props.image ? null : (
+  return !props.image || props.image === 'queued' ? null : (
     <div
       style={props.containerStyle}
       className={`${styles.container} ${props.containerClassName}`}

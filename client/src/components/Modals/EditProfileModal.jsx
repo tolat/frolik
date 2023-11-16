@@ -95,6 +95,7 @@ const EditProfileModal = (props) => {
   };
 
   const resetForm = () => {
+    hideModal();
     setButtonText("Save");
   };
 
@@ -102,7 +103,6 @@ const EditProfileModal = (props) => {
     dispatch(dataActions.updateUserPhotoData({ userID: user._id, data }));
     const fullData = { ...data, status: stagedData.status };
     uploadProfileData(user._id, fullData, resetForm);
-    hideModal();
   };
 
   return (
