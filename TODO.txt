@@ -88,7 +88,8 @@ DONE
 - Break out routes in server and data fetch. change all routes to send back a user object instead of 
 just triggering a fetch-auth on the front end wehere possible.
 
--Get Photo viewer modal and 
+- Get Photo viewer modal
+DONE
 
 - Get search bars working
 

@@ -17,7 +17,9 @@ const Popup = (props) => {
       className={styles.container}
     >
       <div className={styles.blackout}></div>
-      <div className={styles.popup}>{props.children}</div>
+      <div className={styles.popup}>
+        {props.children}
+      </div>
     </div>,
     document.getElementById("popup")
   );
