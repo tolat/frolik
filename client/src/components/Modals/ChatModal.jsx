@@ -10,6 +10,8 @@ import { socket } from "../../socket";
 import SimpleButton from "../UI/SimpleButton";
 import { goActions } from "../../store/go-slice";
 import { useNavigate } from "react-router-dom";
+import { modalActions } from "../../store/modal-slice";
+import { hideModal } from "../../store/modal-actions";
 const bubbleColours = [
   "rgb(247, 226, 250)",
   "rgb(252, 225, 225)",
@@ -35,8 +37,6 @@ const ChatModal = (props) => {
   const composerRef = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  //console.log(chat, user)
 
   // Connect to the websocket for chat
   useEffect(() => {
@@ -78,6 +78,14 @@ const ChatModal = (props) => {
     navigate("/go");
   };
 
+  const handleShowOuting = async () => {
+    console.log(chat.outing);
+    await hideModal(true);
+    dispatch(modalActions.setActiveOuting(chat.outing));
+    dispatch(modalActions.setSelector("outing-modal"));
+    dispatch(modalActions.showModal());
+  };
+
   return !chat ? (
     modalState.selector === "chat-modal" ? (
       <h1>Loading Chat..</h1>
@@ -97,7 +105,14 @@ const ChatModal = (props) => {
                 {membersString}
               </div>
             </div>
-            {chat.outing ? null : (
+            {chat.outing ? (
+              <SimpleButton
+                onClick={handleShowOuting}
+                className={styles.createOutingButton}
+              >
+                View Outing
+              </SimpleButton>
+            ) : (
               <SimpleButton
                 onClick={handleCreateOuting}
                 className={styles.createOutingButton}

@@ -1,7 +1,5 @@
 import { modalActions } from "./modal-slice";
 import store from ".";
-import { fetchChats, updateChatLastRead } from "../utils/data-fetch";
-import { setLastReadMessage } from "../utils/utils";
 
 const modalCleanup = (setUsePrevious) => {
   const dispatch = store.dispatch;
