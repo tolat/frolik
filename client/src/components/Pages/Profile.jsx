@@ -139,7 +139,7 @@ const Profile = (props) => {
         <ProfileHeader user={user} />
         <SimpleButton
           onClick={handleEditButtonClick}
-          className={buttonStyles.greyButton}
+          className={styles.editButton}
         >
           Edit Profile
         </SimpleButton>

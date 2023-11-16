@@ -12,6 +12,7 @@
   justify-content: center;
   transition: all 0.1s ease-in-out;
   opacity: 0;
+  box-sizing: border-box;
 }
 
 .blackout {
@@ -29,10 +30,11 @@
 }
 
 .popup {
-  width: calc(0.8 * $central_span_width);
+  width: calc($central_span_width - 2rem);
   padding: 2rem;
   background-color: white;
   border-radius: 3px;
   position: fixed;
   zoom: 0.65;
+  box-sizing: border-box;
 }

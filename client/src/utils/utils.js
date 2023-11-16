@@ -274,3 +274,13 @@ export const setLastReadMessage = (message = false) => {
     }
   }
 };
+
+
+export function pixelsToRem(pixels) {
+  // Get the root font size from the computed style of the document element
+  const rootFontSize = parseFloat(
+    getComputedStyle(document.documentElement).fontSize
+  );
+
+  return pixels / rootFontSize;
+}
