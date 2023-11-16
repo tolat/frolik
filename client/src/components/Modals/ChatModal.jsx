@@ -36,6 +36,8 @@ const ChatModal = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  //console.log(chat, user)
+
   // Connect to the websocket for chat
   useEffect(() => {
     if (chat) {

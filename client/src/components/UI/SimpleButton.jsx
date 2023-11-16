@@ -5,6 +5,8 @@ const SimpleButton = (props) => {
     "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px";
   return (
     <button
+      onBlur={props.onBlur}
+      tabIndex={0}
       onChange={props.onChange}
       value={props.value}
       id={props.id}

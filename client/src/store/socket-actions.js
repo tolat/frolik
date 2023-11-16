@@ -13,7 +13,6 @@ export function onDisconnect() {
 }
 
 export function onUpdateUser(){
-  console.log('receivedUserUpdate')
   const user = store.getState().auth.user
   fetchAuth()
   fetchChats(user)

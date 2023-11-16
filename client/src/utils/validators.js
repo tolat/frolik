@@ -62,9 +62,9 @@ export const createProfileValidators = (globals, defaultImage) => {
       },
       {
         isValid(value) {
-          return value.length < 30;
+          return value.length < 50;
         },
-        message: "Tagline must be less than 30 characters",
+        message: "Tagline must be less than 50 characters",
       },
     ],
     profile_picture: [
@@ -125,9 +125,9 @@ export const editProfileValidators = (globals) => {
       },
       {
         isValid(value) {
-          return value.length < 30;
+          return value.length < 50;
         },
-        message: "Tagline must be less than 30 characters",
+        message: "Tagline must be less than 50 characters",
       },
     ],
   };

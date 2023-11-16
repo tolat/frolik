@@ -8,7 +8,6 @@ import friends from "../../images/friends.png";
 import outings from "../../images/outing2.png";
 import SimpleButton from "../UI/SimpleButton";
 import OutingList from "../UI/OutingList";
-import buttonStyles from "../UI/styles/SimpleButton.module.scss";
 import { modalActions } from "../../store/modal-slice";
 import EditProfileModal from "../Modals/EditProfileModal";
 import FriendCard from "../UI/FriendCard";

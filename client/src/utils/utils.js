@@ -258,13 +258,17 @@ export const getUnreadChatMessages = (user, chat) => {
   }
 };
 
-export const setLastReadMessage = (message = false) => {
-  const lastChat = store.getState().modal.activeChat;
+export const setLastReadMessage = (message) => {
+  if (message && store.getState().chat.updatingLastRead === message._id) {
+    return;
+  }
+  const lastChat = store
+    .getState()
+    .chat.chats.find((c) => c._id === store.getState().modal.activeChat._id);
   // Set last read message if chat modal is being closed
   if (lastChat) {
-    const lastMessage = message ? message : lastChat?.messages[0];
+    const lastMessage = message ? message : lastChat.messages[0];
     const user = store.getState().auth.user;
-
     const onComplete = () => {
       fetchChats(user);
     };
@@ -274,7 +278,6 @@ export const setLastReadMessage = (message = false) => {
     }
   }
 };
-
 
 export function pixelsToRem(pixels) {
   // Get the root font size from the computed style of the document element

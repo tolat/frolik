@@ -10,6 +10,8 @@ const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
 const s3Client = new S3Client({
   region: process.env.AWS_DEFAULT_REGION,
+  maxAttempts: 3,
+  maxErrorRetry: 3,
 });
 
 module.exports.uploadToS3 = async (Bucket, Key, Body) => {

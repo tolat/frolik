@@ -24,7 +24,6 @@ const Chat = memo((props) => {
   return (
     <div className={styles.container}>
       <CreateChatModal />
-      <h1>Chats</h1>
       <div className={styles.upperContainer}>
         <SimpleSearch placeholder={"Search chats"} />
         <SimpleButton onClick={onCreateChat} className={styles.newChatButton}>

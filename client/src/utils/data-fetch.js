@@ -111,24 +111,24 @@ export const fetchPhotos = async (user) => {
 // Get the app globals
 export const fetchGobals = async () => {
   // Don;t fetch if globals are already being fetched
-  if(store.getState().auth.fetchingGlobals){
-    return
+  if (store.getState().auth.fetchingGlobals) {
+    return;
   }
   const requestConfig = {
     url: `${getServer()}/data/globals`,
   };
-  
+
   const handleResponse = async (response) => {
-    store.dispatch(authActions.setUpdatingGlobals(false))
+    store.dispatch(authActions.setUpdatingGlobals(false));
     store.dispatch(authActions.setGlobals(response.globals));
   };
 
   const handleError = (err) => {
-    store.dispatch(authActions.setUpdatingGlobals(false))
+    store.dispatch(authActions.setUpdatingGlobals(false));
     console.log(err);
   };
 
-  store.dispatch(authActions.setUpdatingGlobals(true))
+  store.dispatch(authActions.setUpdatingGlobals(true));
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
@@ -278,14 +278,14 @@ export const fetchChats = (user) => {
   const dispatch = store.dispatch;
 
   // Don;t fetch if chats are already being fetched
-  if(store.getState().chat.fetchingChats){
-    return
+  if (store.getState().chat.fetchingChats) {
+    return;
   }
 
   const requestConfig = { url: `${getServer()}/user/${user._id}/chats` };
 
   const handleResponse = (response) => {
-    dispatch(chatActions.setFetchingChats(false))
+    dispatch(chatActions.setFetchingChats(false));
     // Insert populated members lists from response for each chat
     for (let chat of response.chats) {
       if (chat.outing) {
@@ -313,11 +313,11 @@ export const fetchChats = (user) => {
   };
 
   const handleError = (err) => {
-    dispatch(chatActions.setFetchingChats(false))
+    dispatch(chatActions.setFetchingChats(false));
     console.log(err);
   };
 
-  dispatch(chatActions.setFetchingChats(true))
+  dispatch(chatActions.setFetchingChats(true));
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
@@ -482,7 +482,7 @@ export const uploadOutingPhoto = (
   };
 
   const handleResponse = (response) => {
-    fetchPhotos(store.getState().auth.user)
+    fetchPhotos(store.getState().auth.user);
     onComplete(response);
   };
 
@@ -613,16 +613,20 @@ export const updateChatLastRead = (user, chat, messageID, onComplete) => {
     body: JSON.stringify({ messageID }),
   };
 
+  if (store.getState().chat.updatingLastRead === messageID) {
+    return;
+  }
+
   const handleResponse = (response) => {
-    store.dispatch(chatActions.setUpdatingLastRead(false))
     onComplete(response);
+    store.dispatch(chatActions.setUpdatingLastRead(false));
   };
 
   const handleError = (err) => {
-    store.dispatch(chatActions.setUpdatingLastRead(false))
+    store.dispatch(chatActions.setUpdatingLastRead(false));
     console.log(err);
   };
 
-  store.dispatch(chatActions.setUpdatingLastRead(true))
+  store.dispatch(chatActions.setUpdatingLastRead(messageID));
   httpFetch(requestConfig, handleResponse, handleError);
 };

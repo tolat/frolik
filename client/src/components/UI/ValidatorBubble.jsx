@@ -3,8 +3,9 @@ import styles from "./styles/ValidatorBubble.module.scss";
 const ValidatorBubble = (props) => {
   const targetElement = document.getElementById(props.elementID);
   const coordinates = getElementCoordinates(targetElement);
+  const display = props.display;
   const containerStyle = {
-    display: props.display,
+    display: display,
     top: coordinates.y || 0,
     left: coordinates.x || 0,
   };
@@ -29,8 +30,19 @@ const ValidatorBubble = (props) => {
     return { x, y };
   }
 
+  const handleBlur = () => {
+    console.log("blur validator bubble");
+    props.setDisplay("none");
+  };
+
   return (
-    <div id={props.id} style={containerStyle} className={styles.container}>
+    <div
+      tabIndex={0}
+      onBlur={handleBlur}
+      id={props.id}
+      style={containerStyle}
+      className={styles.container}
+    >
       <div className={styles.arrow}></div>
       <div className={styles.exclamation}>!</div>
       <div className={styles.message}>{props.message}</div>

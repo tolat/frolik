@@ -9,7 +9,7 @@
   box-sizing: border-box;
   flex-shrink: 0;
   background-color: white;
-  padding: 2rem;
+  padding: 0 2rem 2rem 2rem;
   width: 100%;
 }
 
@@ -49,6 +49,10 @@
   font-size: 1.2rem;
   justify-self: flex-end;
   margin-bottom: 5rem;
+  position: absolute;
+  top: 0;
+  right: 3rem;
+  width: fit-content;
 }
 
 .unclickableButton {
@@ -63,6 +67,11 @@
   font-size: 1.2rem;
   justify-self: flex-end;
   margin-bottom: 5rem;
+  box-shadow: none !important;
+  position: absolute;
+  top: 0;
+  right: 3rem;
+  width: fit-content;
 }
 
 .unclickableButton:hover {

@@ -104,7 +104,14 @@ const UserIcon = memo(function UserIcon(props) {
             <div className={styles.badgeContent}>{props.badge}</div>
           </div>
         ) : null}
-        {!photoString || photoString === "queued" ? null : (
+        {!photoString || photoString === "queued" ? (
+          true ? null : (
+            <div
+              style={{ height: photoDimension, width: photoDimension }}
+              className={styles.placeholderImage}
+            ></div>
+          )
+        ) : (
           <div style={pieStyle} className={styles.pieChart}>
             <CroppedImage
               image={photoString}

@@ -83,7 +83,7 @@ function Login() {
           onClick={handleCreateAccountButtonClick}
           className={styles.createAccountButton}
         >
-          Create Account
+          Create Profile
         </SimpleButton>
       </form>
     </div>

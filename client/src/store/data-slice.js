@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   users: {},
-  masterPhotoDimension: 25,
+  masterPhotoDimension: 30,
   inviteOutings: [],
   cachedUsers: [],
 };

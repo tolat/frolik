@@ -12,6 +12,7 @@ import { createProfileValidators } from "../../utils/validators";
 import SimpleButton from "../UI/SimpleButton";
 import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
+import modalStyles from "./styles/SlideInModal.module.scss";
 
 const stagedDataReducer = (state, action) => {
   return action.type === "setAll"
@@ -26,7 +27,7 @@ const CreateAccountModal = (props) => {
   const modalStyle = { display: modalDisplay };
 
   const [stagedData, dispatchStageData] = useReducer(stagedDataReducer, {});
-  const [buttonText, setButtonText] = useState("Create Profile");
+  const [buttonText, setButtonText] = useState("+ Create");
   const [editingPhoto, setEditingPhoto] = useState(false);
   const [defaultImage, setDefaultImage] = useState(false);
   const [allowCrop, setAllowCrop] = useState(false);
@@ -121,6 +122,7 @@ const CreateAccountModal = (props) => {
         okClick={() => dispatch(popupActions.hidePopup())}
       />
       <div className={styles.container} style={modalStyle}>
+        <div className={modalStyles.header}>Create Profile</div>
         <ValidatorBubble
           id={validatorBubbleID}
           elementID={validationID}
