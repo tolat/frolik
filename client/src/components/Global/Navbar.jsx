@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom"; // Import Link from react-router-dom
 import styles from "./styles/Navbar.module.scss";
-import { fetchLogout } from "../../store/auth-actions";
 import NavButton from "../UI/NavButton";
 import logo from "../../images/air-balloon.png";
 import bell from "../../images/bell3.png";
@@ -17,7 +16,7 @@ import { Fragment } from "react";
 import ProfileViewerModal from "../Modals/ProfileViewerModal";
 import profileIcon from "../../images/account.png";
 import chatIcon from "../../images/chat.png";
-import logoutIcon from "../../images/logout.png";
+import feedIcon from "../../images/post2.png";
 import { getTotalUnreadMessages } from "../../utils/utils";
 
 const Navbar = (props) => {
@@ -28,12 +27,6 @@ const Navbar = (props) => {
   const unreadChatMessages = user && getTotalUnreadMessages(user);
   const makeActive = (navData) =>
     navData.isActive ? styles.activeLink : "none";
-
-  const handleLogout = async (e) => {
-    e.preventDefault();
-    await hideModal();
-    fetchLogout();
-  };
 
   const handleShowNotifications = async () => {
     if (modalState.selector && modalState.selector !== "notifications") {
@@ -96,7 +89,6 @@ const Navbar = (props) => {
             </NavButton>
             <NavLink className={(navData) => makeActive(navData)} to="/go">
               <NavButton
-                imgStyle={{ width: "2.9rem", height: "2.9rem" }}
                 icon={logo}
                 className={`${styles.navButton} ${styles.createOutingHover}`}
               />
@@ -105,6 +97,12 @@ const Navbar = (props) => {
               <NavButton
                 icon={profileIcon}
                 className={`${styles.navButton} ${styles.profileHover}`}
+              />
+            </NavLink>
+            <NavLink className={(navData) => makeActive(navData)} to="/social">
+              <NavButton
+                icon={feedIcon}
+                className={`${styles.navButton} ${styles.socialHover}`}
               />
             </NavLink>
             <NavLink className={(navData) => makeActive(navData)} to="/chat">
@@ -119,12 +117,6 @@ const Navbar = (props) => {
                 ) : null}
               </NavButton>
             </NavLink>
-
-            <NavButton
-              onClick={handleLogout}
-              icon={logoutIcon}
-              className={`${styles.navButton} ${styles.logoutHover}`}
-            />
           </div>
         ) : (
           <div></div>

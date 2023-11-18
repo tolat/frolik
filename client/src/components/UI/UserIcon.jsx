@@ -99,7 +99,7 @@ const UserIcon = memo(function UserIcon(props) {
         style={{ ...backerStyle, ...props.style }}
         className={styles.whiteBacker}
       >
-        {props.badge ? (
+        {props.badge && photoString && photoString !== "queued" ? (
           <div className={styles.badgeContainer}>
             <div className={styles.badgeContent}>{props.badge}</div>
           </div>

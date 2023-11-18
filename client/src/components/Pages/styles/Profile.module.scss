@@ -10,6 +10,7 @@
 }
 
 .nonMediaSection {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -105,4 +106,21 @@
 
 .editButton{
   margin: 2rem 0;
+}
+
+.logoutBadge{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  right: 2rem;
+  font-weight: bold;
+  opacity: 0.5;
+}
+
+.logoutLogo{
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: 0.5rem;
 }

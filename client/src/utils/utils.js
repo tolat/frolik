@@ -22,6 +22,14 @@ export const pageRouteLoader = async () => {
   // Don't use previous modal
   store.dispatch(modalActions.setUsePrevious(false));
 
+  // Blur everything
+  const tmp = document.createElement("input");
+  document.body.appendChild(tmp);
+  setTimeout(() => {
+    tmp.click();
+    document.body.removeChild(tmp);
+  }, 100);
+
   // Hide Modal if it is visible. await it to make sure visible modal
   // doesn't disappear until the modal is hidden
   if (store.getState().modal.marginLeft === "0%") {

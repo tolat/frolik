@@ -5,11 +5,12 @@ import outingsIcon from "../../images/outing2.png";
 import StatIcon from "./StatIcon";
 import locationIcon from "../../images/location-dark.png";
 import { calculateFlakeRating } from "../../utils/utils";
+import taglineIcon from "../../images/quote.png";
 
 const ProfileHeader = (props) => {
   const iconStyle = { width: "4rem", height: "4rem" };
   const userStatus = props.user?.status?.status;
-  const flakeRating = props.user && calculateFlakeRating(props.user)
+  const flakeRating = props.user && calculateFlakeRating(props.user);
 
   let statusClassName = null;
   switch (userStatus) {
@@ -40,6 +41,7 @@ const ProfileHeader = (props) => {
             rating={flakeRating}
           />
           <UserIcon
+            badge={props.badge}
             sizeInRem={20}
             user={props.user}
             borderSizeInRem={"1.5"}
@@ -55,7 +57,9 @@ const ProfileHeader = (props) => {
         <div
           className={styles.userName}
         >{`${props.user.first_name} ${props.user.last_name}`}</div>
-        <div className={styles.tagline}>{props.user.tagline}</div>
+        <div className={styles.tagline}>
+          {props.user.tagline}
+        </div>
         <div className={styles.sideBySide}>
           <div className={`${styles.statusContainer} ${statusClassName}`}>
             Status: {userStatus}

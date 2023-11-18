@@ -630,3 +630,35 @@ export const updateChatLastRead = (user, chat, messageID, onComplete) => {
   store.dispatch(chatActions.setUpdatingLastRead(messageID));
   httpFetch(requestConfig, handleResponse, handleError);
 };
+
+export const fetchFeedOutings = (user, onComplete) => {
+  const requestConfig = {
+    url: `${getServer()}/user/${user._id}/feed-outings`,
+  };
+
+  const handleResponse = (response) => {
+    onComplete(response);
+  };
+
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};
+
+export const fetchOutingPhotos = (user, outing, onComplete) => {
+  const requestConfig = {
+    url: `${getServer()}/user/${user._id}/outing/${outing._id}/photos`,
+  };
+
+  const handleResponse = (response) => {
+    onComplete(response);
+  };
+
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};

@@ -73,25 +73,26 @@
 }
 
 .badgeContainer{
-  width: 30%;
-  height: 30%;
+  width: 25%;
+  height: 25%;
   position: absolute;
   background-color: rgb(255, 255, 255);
-  bottom: 0;
-  right: 0;
+  bottom: 1rem;
+  right: 1rem;
   border-radius: 100rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2;
 }
 
 .badgeContent{
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 87%;
-  height: 87%;
-  background-color: aqua;
+  width: 85%;
+  height: 85%;
+  background-color: $blue;
   border-radius: 100rem;
 }
 

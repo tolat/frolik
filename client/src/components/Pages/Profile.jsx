@@ -25,6 +25,8 @@ import ProfileHeader from "../UI/ProfileHeader";
 import { goActions } from "../../store/go-slice";
 import { createChat, fetchChats } from "../../utils/data-fetch";
 import { hideModal } from "../../store/modal-actions";
+import { fetchLogout } from "../../store/auth-actions";
+import logoutIcon from "../../images/logout.png";
 
 const sliderIcons = [
   {
@@ -56,6 +58,7 @@ const Profile = (props) => {
   const userData = dataState.users[user._id];
   const userPhotos = getPhotosFromState(userData);
   const friendCardButtonStyle = { width: "3rem", height: "3rem" };
+  const [logoutText, setLogoutText] = useState("Logout");
   const modalIsShowing = useSelector(
     (state) => state.modal.selector !== "none"
   );
@@ -124,6 +127,13 @@ const Profile = (props) => {
     dispatch(popupActions.hidePopup());
   };
 
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    setLogoutText("Logging Out..");
+    await hideModal();
+    fetchLogout();
+  };
+
   return (
     <div className={styles.container}>
       <EditProfileModal />
@@ -135,6 +145,12 @@ const Profile = (props) => {
         okClick={handleHideWarning}
       />
       <div className={styles.nonMediaSection}>
+        <div onClick={handleLogout} className={styles.logoutBadge}>
+          {logoutText}
+          {logoutText === "Logout" && (
+            <img className={styles.logoutLogo} src={logoutIcon} alt="logout" />
+          )}
+        </div>
         <ProfileHeader user={user} />
         <SimpleButton
           onClick={handleEditButtonClick}

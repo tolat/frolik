@@ -35,6 +35,7 @@ const ActivityCard = (props) => {
   const statIconStyle = { width: "2rem", height: "2rem" };
   const statContainerStyle = { marginLeft: "1rem" };
   const [instructionsVisible, setInstructionsVisible] = useState(false);
+  const [headerOnly, setHeaderOnly] = useState(props.headerOnly || true);
   const dispatch = useDispatch();
   const goState = useSelector((state) => state.go);
 
@@ -87,36 +88,40 @@ const ActivityCard = (props) => {
               ) : null}
             </div>
           </div>
-          <div className={styles.description}>{props.activity.description}</div>
-          <div className={styles.specsContainer}>
-            <StatIcon
-              alt="time"
-              icon={timeIcon}
-              style={statContainerStyle}
-              iconStyle={statIconStyle}
-              rating={`${props.activity.duration} hrs`}
-            />
-            <StatIcon
-              alt="cost"
-              icon={costIcon}
-              style={statContainerStyle}
-              iconStyle={statIconStyle}
-              rating={`$${props.activity.cost}`}
-            />
-            <StatIcon
-              alt="group"
-              icon={groupIcon}
-              style={statContainerStyle}
-              iconStyle={statIconStyle}
-              rating={`${props.activity.participants} +`}
-            />
-            <StatIcon
-              alt="rating"
-              icon={ratingIcon}
-              style={statContainerStyle}
-              iconStyle={statIconStyle}
-              rating={`${calcAvgRating(props.activity)}/5`}
-            />
+          <div>
+            <div className={styles.description}>
+              {props.activity.description}
+            </div>
+            <div className={styles.specsContainer}>
+              <StatIcon
+                alt="time"
+                icon={timeIcon}
+                style={statContainerStyle}
+                iconStyle={statIconStyle}
+                rating={`${props.activity.duration} hrs`}
+              />
+              <StatIcon
+                alt="cost"
+                icon={costIcon}
+                style={statContainerStyle}
+                iconStyle={statIconStyle}
+                rating={`$${props.activity.cost}`}
+              />
+              <StatIcon
+                alt="group"
+                icon={groupIcon}
+                style={statContainerStyle}
+                iconStyle={statIconStyle}
+                rating={`${props.activity.participants} +`}
+              />
+              <StatIcon
+                alt="rating"
+                icon={ratingIcon}
+                style={statContainerStyle}
+                iconStyle={statIconStyle}
+                rating={`${calcAvgRating(props.activity)}/5`}
+              />
+            </div>
           </div>
         </div>
         <div

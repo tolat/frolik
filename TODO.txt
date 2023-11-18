@@ -96,6 +96,7 @@ send one message once the last one has been saved on server and
 also if the message is not successfullt sent, do not put new messageBubble in
 
 - Get search bars working
+DONE
 
 - Add error modal for server errors
 

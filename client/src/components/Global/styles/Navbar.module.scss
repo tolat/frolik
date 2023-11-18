@@ -30,7 +30,6 @@
   flex-direction: row;
   justify-content: space-evenly;
   width: 100%;
-  margin-left: -0.4rem;
 }
 
 .username {
@@ -94,8 +93,8 @@
   bottom: -2.5rem;
   z-index: 1;
 }
-.logoutHover:hover::after {
-  content: "Logout";
+.socialHover:hover::after {
+  content: "Social";
   border: 1px solid lightgray;
   border-radius: 3px;
   font-weight: bold;
@@ -124,7 +123,7 @@
   background-color: $blue;
   border: 0.25rem solid $light_grey;
   content: "";
-  bottom: -1rem;
+  bottom: -0.8rem;
   left: 50%;
   transform: translate(-50%, 0%);
 }
