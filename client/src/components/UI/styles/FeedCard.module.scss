@@ -28,7 +28,7 @@
 }
 
 .colorStripe {
-  height: 0.7rem;
+  height: 0.8rem;
   min-width: 100%;
   flex-grow: 1;
 }
@@ -132,9 +132,10 @@
   grid-row: span 2;
 }
 
-.outingIcon {
-  height: 3rem;
+.likeIcon {
+  height: 2.5rem;
   margin-left: 0.3rem;
+  margin-right: 0.5rem;
   cursor: pointer;
 }
 

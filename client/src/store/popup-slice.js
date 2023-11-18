@@ -11,7 +11,6 @@ const popupSlice = createSlice({
   initialState: initialState,
   reducers: {
     showPopup(state, action) {
-      console.log("showing popup")
       document.getElementById("popup").style.display = "flex";
       state.selector = action.payload;
     },

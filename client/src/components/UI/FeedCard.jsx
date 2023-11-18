@@ -1,12 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import UserIconCluster from "./UserIconCluster";
 import styles from "./styles/FeedCard.module.scss";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchOutingPhoto, fetchProfilePic } from "../../utils/data-fetch";
 import { dataActions } from "../../store/data-slice";
 import SimpleButton from "./SimpleButton";
-import balloon from "../../images/air-balloon.png";
+import heart from "../../images/heart.png";
+import heartFull from "../../images/heart2.png";
 import { popupActions } from "../../store/popup-slice";
+import EmptyPopup from "../Popups/EmptyPopup";
+import ActivityCard from "./ActivityCard";
 
 const FeedCard = (props) => {
   const globals = useSelector((state) => state.auth.globals);
@@ -19,6 +22,8 @@ const FeedCard = (props) => {
   const photoGridNumber = outingPhotos?.length > 6 ? 6 : outingPhotos?.length;
   const dispatch = useDispatch();
   const outingUsers = outing?.users;
+  const [liked, setLiked] = useState(false);
+  const activityPopupSelector = `${outing?._id}-activity-popup`;
   let memberNames = outingUsers
     .map((u) => `${u.first_name}, `)
     .reduce((acc, curr) => (acc = acc.concat(curr)), "");
@@ -51,9 +56,24 @@ const FeedCard = (props) => {
     }
   }, [outingUsers]);
 
+  const onShowActivityPopup = () => {
+    dispatch(popupActions.showPopup(activityPopupSelector));
+  };
+
+  const onLikeClick = () => {
+    setLiked((prevState) => !prevState);
+  };
+
   return (
     outing && (
       <div className={styles.container}>
+        <EmptyPopup selector={activityPopupSelector}>
+          <ActivityCard
+            showInstructions={true}
+            activity={outing.activity}
+            hideSelect={true}
+          />
+        </EmptyPopup>
         <div
           className={`${styles.photosContainer} ${
             styles[`container_${photoGridNumber}`]
@@ -61,7 +81,7 @@ const FeedCard = (props) => {
         >
           {outingPhotos[0] && !outingPhotos.find((img) => img === "queued") ? (
             outingPhotos.map((img) => (
-              <div className={styles.imageContainer}>
+              <div key={Math.random()} className={styles.imageContainer}>
                 <img
                   onClick={(e) => onImageClick(img)}
                   key={Math.random()}
@@ -94,6 +114,7 @@ const FeedCard = (props) => {
                 </div>
                 <div className={styles.buttonsContainer}>
                   <SimpleButton
+                    onClick={onShowActivityPopup}
                     className={styles.viewActivityButton}
                     noShadow={true}
                   >
@@ -104,8 +125,9 @@ const FeedCard = (props) => {
             </div>
 
             <img
-              src={balloon}
-              className={styles.outingIcon}
+              onClick={onLikeClick}
+              src={liked ? heartFull : heart}
+              className={styles.likeIcon}
               alt="feed-outing-icon"
             />
           </div>

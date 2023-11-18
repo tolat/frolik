@@ -13,6 +13,7 @@ const OutingSchema = new Schema(
     invited: [{ type: Schema.Types.ObjectId, ref: "User" }],
     flakes: [{ type: Schema.Types.ObjectId, ref: "User" }],
     chat: { type: Schema.Types.ObjectId, ref: "Chat" },
+    likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
     photos: [
       { uploader: { type: Schema.Types.ObjectId, ref: "User" }, key: String },
     ],
