@@ -5,7 +5,6 @@ import outingsIcon from "../../images/outing2.png";
 import StatIcon from "./StatIcon";
 import locationIcon from "../../images/location-dark.png";
 import { calculateFlakeRating } from "../../utils/utils";
-import taglineIcon from "../../images/quote.png";
 
 const ProfileHeader = (props) => {
   const iconStyle = { width: "4rem", height: "4rem" };

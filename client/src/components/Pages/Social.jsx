@@ -4,30 +4,41 @@ import styles from "./styles/Social.module.scss";
 import { useEffect, useState } from "react";
 import FeedCard from "../UI/FeedCard";
 import { fetchFeedOutings } from "../../utils/data-fetch";
-import PhotoPopup from "../Popups/PhotoPopup";
+import SimpleButton from "../UI/SimpleButton";
 
 const Social = (props) => {
   const [outings, setOutings] = useState(false);
-  const [popupImage, setPopupImage] = useState(false);
+  const [refreshText, setRefreshText] = useState("Refresh");
   const user = useSelector((state) => state.auth.user);
 
   const sortedKeys = Object.keys(outings).toSorted((a, b) =>
     sortByDate(outings[b].date_created, outings[a].date_created)
   );
 
-  useEffect(() => {
+  const getOutings = (user) => {
     const onComplete = (response) => {
+      setRefreshText("Refresh");
       setOutings(response.outings);
     };
+    setRefreshText("Loading..");
     fetchFeedOutings(user, onComplete);
+  };
+
+  useEffect(() => {
+    getOutings(user);
   }, [user]);
+
+  const onRefresh = () => {
+    getOutings(user);
+  };
   return (
     outings && (
       <div className={styles.container}>
-        <PhotoPopup selector={"view-feed-image"} image={popupImage} />
+        <SimpleButton className={styles.refreshButton} onClick={onRefresh}>
+          {refreshText}
+        </SimpleButton>
         {sortedKeys.map((k) => (
           <FeedCard
-            setPopupImage={setPopupImage}
             key={Math.random()}
             outing={outings[k]}
           />

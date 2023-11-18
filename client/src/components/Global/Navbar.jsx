@@ -18,6 +18,7 @@ import profileIcon from "../../images/account.png";
 import chatIcon from "../../images/chat.png";
 import feedIcon from "../../images/post2.png";
 import { getTotalUnreadMessages } from "../../utils/utils";
+import PhotoPopup from "../Popups/PhotoPopup";
 
 const Navbar = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -63,6 +64,7 @@ const Navbar = (props) => {
           <ChatModal />
           <OutingModal />
           <ProfileViewerModal />
+          <PhotoPopup/>
           <WarningPopup
             selector={"too-many-outings"}
             header={"You have too many Pending Outings!"}

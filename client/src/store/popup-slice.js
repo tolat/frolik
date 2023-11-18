@@ -4,12 +4,14 @@ const initialState = {
   selector: "none",
   display: "none",
   showCreateOutingPopup: false,
+  popupImage: false,
 };
 const popupSlice = createSlice({
   name: "popup",
   initialState: initialState,
   reducers: {
     showPopup(state, action) {
+      console.log("showing popup")
       document.getElementById("popup").style.display = "flex";
       state.selector = action.payload;
     },
@@ -20,6 +22,9 @@ const popupSlice = createSlice({
     },
     setShowCreateOutingPopup(state, action) {
       state.showCreateOutingPopup = action.payload;
+    },
+    setPopupImage(state, action) {
+      state.popupImage = action.payload;
     },
   },
 });

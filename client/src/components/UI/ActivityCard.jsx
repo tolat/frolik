@@ -35,7 +35,6 @@ const ActivityCard = (props) => {
   const statIconStyle = { width: "2rem", height: "2rem" };
   const statContainerStyle = { marginLeft: "1rem" };
   const [instructionsVisible, setInstructionsVisible] = useState(false);
-  const [headerOnly, setHeaderOnly] = useState(props.headerOnly || true);
   const dispatch = useDispatch();
   const goState = useSelector((state) => state.go);
 

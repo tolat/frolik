@@ -4,4 +4,11 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  position: relative;
+}
+
+.refreshButton {
+  margin-bottom: 1rem;
+  color: white;
+  background-color: $blue;
 }

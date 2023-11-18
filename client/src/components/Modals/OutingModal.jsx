@@ -36,6 +36,7 @@ import { fetchAuth } from "../../store/auth-actions";
 import CropperPopup from "../Popups/CropperPopup";
 import addPhotosButton from "../../images/add-photos-button.png";
 import StarRate from "../UI/StarRate";
+import FeedCard from "../UI/FeedCard";
 
 const OutingModal = (props) => {
   const modalState = useSelector((state) => state.modal);
@@ -365,285 +366,306 @@ const OutingModal = (props) => {
 
   return !outing || !userData ? null : (
     <ModalPortal>
-      <WarningPopup
-        selector={"confirm-delete-outing"}
-        header={"Confirm delete Outing:"}
-        message={confirmDeleteOutingMessage}
-        delete={"Delete"}
-        deleteClick={onOutingDelete}
-        cancel={"Cancel"}
-        cancelClick={() => {
-          dispatch(popupActions.hidePopup());
-        }}
-      />
-      <WarningPopup
-        selector={"confirm-join-outing"}
-        header={"Confirm join Outing:"}
-        message={confirmJoinOutingMessage}
-        ok={"Join"}
-        okClick={onOutingJoin}
-        cancel={"Cancel"}
-        cancelClick={() => {
-          dispatch(popupActions.hidePopup());
-        }}
-      />
-      <WarningPopup
-        selector={"confirm-leave-outing"}
-        header={"Confirm Leave Outing:"}
-        message={confirmLeaveOutingMessage}
-        delete={"Leave"}
-        deleteClick={onOutingLeave}
-        cancel={"Cancel"}
-        cancelClick={() => {
-          dispatch(popupActions.hidePopup());
-        }}
-      />
-      <WarningPopup
-        selector={"maximum-2-photos"}
-        header={"Too many photos!"}
-        message={tooManyPhotosMessage}
-        ok={"OK"}
-        okClick={() => {
-          dispatch(popupActions.hidePopup());
-          resetUploads();
-        }}
-      />
-      <WarningPopup
-        selector={"confirm-delete-photo"}
-        header={"Delete Photo?"}
-        message={null}
-        delete={deletePhotoButtonText}
-        deleteClick={onDeleteConfirm}
-        cancel={"Cancel"}
-        cancelClick={() => {
-          dispatch(popupActions.hidePopup());
-        }}
-      />
-      <WarningPopup
-        selector={"no-photos"}
-        header={"No Photos Uploaded!"}
-        message={noPhotosMessage}
-        ok={"OK"}
-        okClick={() => {
-          dispatch(popupActions.hidePopup());
-        }}
-      />
-      <WarningPopup
-        selector={"confirm-completion"}
-        header={"Confirm Outing Completion"}
-        message={confirmCompletionMessage}
-        ok={"Mark Completed"}
-        okClick={handleMarkCompleted}
-        okUnclickable={!ratingTouched}
-        cancel={"Cancel"}
-        cancelClick={() => {
-          setRatingTouched(false);
-          dispatch(popupActions.hidePopup());
-        }}
-      />
-      <CropperPopup
-        images={uploads}
-        selector={"outing-upload-popup"}
-        onCancel={onPhotoUploadDismiss}
-        onUpload={onPhotoUpload}
-      />
-      <div style={modalStyle} className={styles.container}>
-        <div className={styles.header}>
+      {outing.date_completed ? (
+        <div className={styles.feedCardContainer}>
           <div
             style={{ borderLeft: `10px solid ${categoryColor}` }}
-            className={styles.headerInnerContainer}
+            className={styles.headerInnerContainerFeedCard}
           >
             <div className={styles.outingName}>Outing: {outing.name}</div>
             <div className={styles.outingStatus}>{status}</div>
           </div>
+          <FeedCard outing={outing} />
         </div>
-        <div className={styles.sideBySide}>
-          {completed || userFlaked ? null : (
-            <SimpleButton
-              onClick={
-                joining
-                  ? showConfirmOutingJoin
-                  : outing.users[1] && !userHasCompleted
-                  ? onMarkCompletedClick
-                  : null
-              }
-              className={`${styles.completedButton} ${
-                (outing.users[1] || joining) && !userHasCompleted
-                  ? null
-                  : styles.unclickableButton
-              }`}
-            >
-              {joining
-                ? "Join Outing"
-                : userHasCompleted
-                ? `Marked Completed!`
-                : "Mark Completed"}
-            </SimpleButton>
-          )}
-
-          {!joining && !completed && !userFlaked ? (
-            <div className={styles.buttonSpacer}></div>
-          ) : null}
-          {joining || userFlaked ? null : (
-            <SimpleButton
-              onClick={onShowChatModal}
-              className={styles.chatButton}
-            >
-              Chat
-            </SimpleButton>
-          )}
-        </div>
-        {!userFlaked && !joining
-          ? outing.users[1]
-            ? completionCountMessage
-            : needUsersMessage
-          : null}
-        {userFlaked && (
-          <Fragment>
-            <div className={styles.flakeContainer}>
-              <img className={styles.flakeIcon} src={flakeIcon} alt={"flake"} />
-              <h1 className={styles.flakeText}>You flaked out!</h1>
+      ) : (
+        <Fragment>
+          <WarningPopup
+            selector={"confirm-delete-outing"}
+            header={"Confirm delete Outing:"}
+            message={confirmDeleteOutingMessage}
+            delete={"Delete"}
+            deleteClick={onOutingDelete}
+            cancel={"Cancel"}
+            cancelClick={() => {
+              dispatch(popupActions.hidePopup());
+            }}
+          />
+          <WarningPopup
+            selector={"confirm-join-outing"}
+            header={"Confirm join Outing:"}
+            message={confirmJoinOutingMessage}
+            ok={"Join"}
+            okClick={onOutingJoin}
+            cancel={"Cancel"}
+            cancelClick={() => {
+              dispatch(popupActions.hidePopup());
+            }}
+          />
+          <WarningPopup
+            selector={"confirm-leave-outing"}
+            header={"Confirm Leave Outing:"}
+            message={confirmLeaveOutingMessage}
+            delete={"Leave"}
+            deleteClick={onOutingLeave}
+            cancel={"Cancel"}
+            cancelClick={() => {
+              dispatch(popupActions.hidePopup());
+            }}
+          />
+          <WarningPopup
+            selector={"maximum-2-photos"}
+            header={"Too many photos!"}
+            message={tooManyPhotosMessage}
+            ok={"OK"}
+            okClick={() => {
+              dispatch(popupActions.hidePopup());
+              resetUploads();
+            }}
+          />
+          <WarningPopup
+            selector={"confirm-delete-photo"}
+            header={"Delete Photo?"}
+            message={null}
+            delete={deletePhotoButtonText}
+            deleteClick={onDeleteConfirm}
+            cancel={"Cancel"}
+            cancelClick={() => {
+              dispatch(popupActions.hidePopup());
+            }}
+          />
+          <WarningPopup
+            selector={"no-photos"}
+            header={"No Photos Uploaded!"}
+            message={noPhotosMessage}
+            ok={"OK"}
+            okClick={() => {
+              dispatch(popupActions.hidePopup());
+            }}
+          />
+          <WarningPopup
+            selector={"confirm-completion"}
+            header={"Confirm Outing Completion"}
+            message={confirmCompletionMessage}
+            ok={"Mark Completed"}
+            okClick={handleMarkCompleted}
+            okUnclickable={!ratingTouched}
+            cancel={"Cancel"}
+            cancelClick={() => {
+              setRatingTouched(false);
+              dispatch(popupActions.hidePopup());
+            }}
+          />
+          <CropperPopup
+            images={uploads}
+            selector={"outing-upload-popup"}
+            onCancel={onPhotoUploadDismiss}
+            onUpload={onPhotoUpload}
+          />
+          <div style={modalStyle} className={styles.container}>
+            <div className={styles.header}>
+              <div
+                style={{ borderLeft: `10px solid ${categoryColor}` }}
+                className={styles.headerInnerContainer}
+              >
+                <div className={styles.outingName}>Outing: {outing.name}</div>
+                <div className={styles.outingStatus}>{status}</div>
+              </div>
             </div>
-          </Fragment>
-        )}
-        <h2 className={styles.sectionHeader}>
-          {" "}
-          <img
-            className={styles.sectionHeaderIcon}
-            src={activityIcon}
-            alt={"activity"}
-          />{" "}
-          Activity
-        </h2>
-        <ActivityCard
-          key={Math.random()}
-          activity={outing.activity}
-          completed={activityIsCompletedType}
-          hideSelect={true}
-        />
-        {joining || userFlaked ? null : (
-          <Fragment>
+            <div className={styles.sideBySide}>
+              {completed || userFlaked ? null : (
+                <SimpleButton
+                  onClick={
+                    joining
+                      ? showConfirmOutingJoin
+                      : outing.users[1] && !userHasCompleted
+                      ? onMarkCompletedClick
+                      : null
+                  }
+                  className={`${styles.completedButton} ${
+                    (outing.users[1] || joining) && !userHasCompleted
+                      ? null
+                      : styles.unclickableButton
+                  }`}
+                >
+                  {joining
+                    ? "Join Outing"
+                    : userHasCompleted
+                    ? `Marked Completed!`
+                    : "Mark Completed"}
+                </SimpleButton>
+              )}
+
+              {!joining && !completed && !userFlaked ? (
+                <div className={styles.buttonSpacer}></div>
+              ) : null}
+              {joining || userFlaked ? null : (
+                <SimpleButton
+                  onClick={onShowChatModal}
+                  className={styles.chatButton}
+                >
+                  Chat
+                </SimpleButton>
+              )}
+            </div>
+            {!userFlaked && !joining
+              ? outing.users[1]
+                ? completionCountMessage
+                : needUsersMessage
+              : null}
+            {userFlaked && (
+              <Fragment>
+                <div className={styles.flakeContainer}>
+                  <img
+                    className={styles.flakeIcon}
+                    src={flakeIcon}
+                    alt={"flake"}
+                  />
+                  <h1 className={styles.flakeText}>You flaked out!</h1>
+                </div>
+              </Fragment>
+            )}
             <h2 className={styles.sectionHeader}>
               {" "}
               <img
                 className={styles.sectionHeaderIcon}
-                src={photosIcon}
-                alt={"photos"}
+                src={activityIcon}
+                alt={"activity"}
               />{" "}
-              <div className={styles.photosHeader}>
-                Photos
+              Activity
+            </h2>
+            <ActivityCard
+              key={Math.random()}
+              activity={outing.activity}
+              completed={activityIsCompletedType}
+              hideSelect={true}
+            />
+            {joining || userFlaked ? null : (
+              <Fragment>
+                <h2 className={styles.sectionHeader}>
+                  {" "}
+                  <img
+                    className={styles.sectionHeaderIcon}
+                    src={photosIcon}
+                    alt={"photos"}
+                  />{" "}
+                  <div className={styles.photosHeader}>
+                    Photos
+                    {!completed ? (
+                      <div className={styles.photosHeaderText}>
+                        Each member can upload up to 2 photos.
+                      </div>
+                    ) : null}
+                  </div>
+                </h2>
                 {!completed ? (
-                  <div className={styles.photosHeaderText}>
-                    Each member can upload up to 2 photos.
+                  <div
+                    style={{ marginBottom: "2rem" }}
+                    className={styles.uploadPhotosContainer}
+                  >
+                    <form
+                      className={styles.uploadInput}
+                      id="upload-outing-photos-form"
+                    >
+                      <input
+                        onChange={onPhotosSelected}
+                        type="file"
+                        multiple
+                        id="upload-outing-photos"
+                      />
+                    </form>
+
+                    <div className={styles.sideBySide}>
+                      {userPhotoCount < 2 ? (
+                        <SimpleButton onClick={onUploadClick}>
+                          + Upload
+                        </SimpleButton>
+                      ) : null}
+
+                      {userPhotoCount === 1 ? (
+                        <div className={styles.buttonSpacer}></div>
+                      ) : null}
+                      {userPhotoCount > 0 ? (
+                        <SimpleButton onClick={onEditPhotosClick}>
+                          {editButtonText}
+                        </SimpleButton>
+                      ) : null}
+                    </div>
                   </div>
                 ) : null}
-              </div>
-            </h2>
-            {!completed ? (
-              <div
-                style={{ marginBottom: "2rem" }}
-                className={styles.uploadPhotosContainer}
-              >
-                <form
-                  className={styles.uploadInput}
-                  id="upload-outing-photos-form"
-                >
-                  <input
-                    onChange={onPhotosSelected}
-                    type="file"
-                    multiple
-                    id="upload-outing-photos"
+
+                <div className={styles.photoGridContainer}>
+                  <PhotoGrid
+                    deleteableIndexes={deleteableIndexes}
+                    showDeleteable={showDeleteable}
+                    onDeleteClick={onDeletePhoto}
+                    images={photos}
+                    gridTemplateColumns="1fr 1fr"
                   />
-                </form>
-
-                <div className={styles.sideBySide}>
-                  {userPhotoCount < 2 ? (
-                    <SimpleButton onClick={onUploadClick}>
-                      + Upload
-                    </SimpleButton>
-                  ) : null}
-
-                  {userPhotoCount === 1 ? (
-                    <div className={styles.buttonSpacer}></div>
-                  ) : null}
-                  {userPhotoCount > 0 ? (
-                    <SimpleButton onClick={onEditPhotosClick}>
-                      {editButtonText}
-                    </SimpleButton>
-                  ) : null}
                 </div>
-              </div>
-            ) : null}
+              </Fragment>
+            )}
 
-            <div className={styles.photoGridContainer}>
-              <PhotoGrid
-                deleteableIndexes={deleteableIndexes}
-                showDeleteable={showDeleteable}
-                onDeleteClick={onDeletePhoto}
-                images={photos}
-                gridTemplateColumns="1fr 1fr"
-              />
-            </div>
-          </Fragment>
-        )}
-
-        <h2 className={styles.sectionHeader}>
-          {" "}
-          <img
-            className={styles.sectionHeaderIcon}
-            src={membersIcon}
-            alt={"members"}
-          />{" "}
-          Members
-        </h2>
-        {outing.users.map((u) => (
-          <FriendCard user={u} key={Math.random()} />
-        ))}
-        {outing.invited[0] ? (
-          <Fragment>
             <h2 className={styles.sectionHeader}>
               {" "}
               <img
                 className={styles.sectionHeaderIcon}
-                src={inviteIcon}
-                alt={"invited"}
+                src={membersIcon}
+                alt={"members"}
               />{" "}
-              Invited
+              Members
             </h2>
-            {outing.invited.map((u) => (
+            {outing.users.map((u) => (
               <FriendCard user={u} key={Math.random()} />
             ))}
-          </Fragment>
-        ) : null}
+            {outing.invited[0] ? (
+              <Fragment>
+                <h2 className={styles.sectionHeader}>
+                  {" "}
+                  <img
+                    className={styles.sectionHeaderIcon}
+                    src={inviteIcon}
+                    alt={"invited"}
+                  />{" "}
+                  Invited
+                </h2>
+                {outing.invited.map((u) => (
+                  <FriendCard user={u} key={Math.random()} />
+                ))}
+              </Fragment>
+            ) : null}
 
-        {!completed &&
-        !joining &&
-        !outing.flakes.find((id) => id === user._id) ? (
-          <Fragment>
-            <SimpleButton
-              onClick={
-                isOnlyUser ? showConfirmOutingDelete : showConfirmOutingLeave
-              }
-              className={styles.leaveButton}
-            >
-              {isOnlyUser ? "Delete Outing" : "Leave Outing"}
-            </SimpleButton>
-            {isOnlyUser ? (
-              <div className={styles.deleteHelp}>
-                You can delete the outing becauase you are the only member.
-                Deleting the outing <b>will not negatively affect</b> your flake
-                rating.
-              </div>
-            ) : (
-              <div className={styles.deleteHelp}>
-                You cannot delete the outing becauase there are other members.
-                Leaving the outing <b>will negatively affect</b> your flake
-                rating.
-              </div>
-            )}
-          </Fragment>
-        ) : null}
-      </div>
+            {!completed &&
+            !joining &&
+            !outing.flakes.find((id) => id === user._id) ? (
+              <Fragment>
+                <SimpleButton
+                  onClick={
+                    isOnlyUser
+                      ? showConfirmOutingDelete
+                      : showConfirmOutingLeave
+                  }
+                  className={styles.leaveButton}
+                >
+                  {isOnlyUser ? "Delete Outing" : "Leave Outing"}
+                </SimpleButton>
+                {isOnlyUser ? (
+                  <div className={styles.deleteHelp}>
+                    You can delete the outing becauase you are the only member.
+                    Deleting the outing <b>will not negatively affect</b> your
+                    flake rating.
+                  </div>
+                ) : (
+                  <div className={styles.deleteHelp}>
+                    You cannot delete the outing becauase there are other
+                    members. Leaving the outing <b>will negatively affect</b>{" "}
+                    your flake rating.
+                  </div>
+                )}
+              </Fragment>
+            ) : null}
+          </div>
+        </Fragment>
+      )}
     </ModalPortal>
   );
 };
