@@ -647,18 +647,26 @@ export const fetchFeedOutings = (user, onComplete) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
-export const fetchOutingPhotos = (user, outing, onComplete) => {
+export const fetchOutingPhoto = (outing, key, onComplete) => {
   const requestConfig = {
-    url: `${getServer()}/user/${user._id}/outing/${outing._id}/photos`,
+    url: `${getServer()}/data/outing/${outing._id}/photo/${key}`,
   };
 
+  // Don't fetch cached photos more than once
+  if (store.getState().data.cachedPhotos[key]) {
+    return;
+  }
+
   const handleResponse = (response) => {
-    onComplete(response);
+    response.text().then((imageDataString) => {
+      onComplete(imageDataString);
+    });
   };
 
   const handleError = (err) => {
     console.log(err);
   };
 
+  store.dispatch(dataActions.queueCachedPhoto(key));
   httpFetch(requestConfig, handleResponse, handleError);
 };

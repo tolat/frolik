@@ -1,0 +1,138 @@
+@import "../../../utils/responsive.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 1rem;
+  border-radius: 3px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(101, 141, 171, 0.15) 0px 2px 6px 2px;
+}
+
+.topContainer {
+  display: flex;
+  width: 100%;
+  border-top-right-radius: 3px;
+}
+
+.topInnerContainer {
+  display: flex;
+  background-color: $card_grey;
+  padding: 1rem;
+  width: 100%;
+  border-top-right-radius: 3px;
+  justify-content: space-between;
+}
+
+.colorStripe {
+  min-height: 100%;
+  width: 1rem;
+  flex-grow: 1;
+  border-top-left-radius: 3px;
+}
+
+.outingDetailsContainer {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+}
+
+.activityName {
+  font-size: 1.3rem;
+  color: grey;
+  font-weight: bold;
+}
+
+.outingMembers {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.buttonsContainer {
+  display: flex;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.button {
+  margin-right: 1rem;
+  width: fit-content;
+}
+
+.imageContainer {
+  display: flex;
+}
+
+.image {
+  width: 100%;
+  cursor: pointer;
+}
+
+.innerContainerLeft{
+    display: flex;
+    background-color: inherit;
+}
+
+.photosContainer {
+  display: grid;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 2px;
+}
+
+.container_1 {
+  grid-template-columns: 1fr;
+}
+
+.container_2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.container_3 {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 2fr;
+}
+
+.container_3 > :nth-child(3) {
+  grid-column: span 2;
+}
+
+.container_4 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.container_5 {
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1.5fr;
+}
+.container_5 > :nth-child(1) {
+  grid-column: span 2;
+}
+.container_5 > :nth-child(2) {
+  grid-column: span 2;
+}
+.container_5 > :nth-child(3) {
+  grid-column: span 2;
+}
+.container_5 > :nth-child(4) {
+  grid-column: span 3;
+}
+.container_5 > :nth-child(5) {
+  grid-column: span 3;
+}
+
+.container_6 {
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.container_6 > :nth-child(4) {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.outingIcon {
+  height: 3rem;
+  margin-left: 0.3rem;
+  cursor: pointer;
+}

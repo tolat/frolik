@@ -1134,38 +1134,19 @@ router.get(
     await user.populate("friends.outings");
     await user.populate("friends.outings.activity");
     await user.populate("friends.outings.users");
+    await user.populate("friends.outings.users.outings");
+    await user.populate("friends.outings.users.outings.activity");
 
     let outings = {};
     for (let usr of user.friends) {
       for (let outing of usr.outings) {
-        if (!outings[outing._id.toString()]) {
+        if (outing.date_completed && !outings[outing._id.toString()]) {
           outings[outing._id.toString()] = outing;
         }
       }
     }
 
     res.send({ outings });
-  })
-);
-
-router.get(
-  "/:id/outing/:outingid/photo",
-  reqAuthenticated,
-  sameUserOnly,
-  tryCatch(async (req, res) => {
-    const user = await User.findById(req.params.id);
-    const outing = await Outing.findById(req.params.outingid);
-
-    // NOT FINISHED - CHANGE DATA FETCH TO GET ONE PHOTO AT A TIME
-    // AND SAVE TO CACHED PHOTOS
-
-    // Download image stream from S3 and pipe into response
-    downloadFromS3(process.env.AWS_BUCKET, req.params.key)
-      .then((imageStream) => imageStream.pipe(res))
-      .catch((error) => {
-        console.error("Error downloading image:", error);
-        res.status(500).send("Internal Server Error");
-      });
   })
 );
 

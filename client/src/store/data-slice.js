@@ -5,6 +5,7 @@ const initialState = {
   masterPhotoDimension: 30,
   inviteOutings: [],
   cachedUsers: [],
+  cachedPhotos: {},
 };
 
 const findOrCreateUser = (state, action) => {
@@ -79,6 +80,12 @@ const dataSlice = createSlice({
     },
     addCachedUser(state, action) {
       state.cachedUsers.push(action.payload);
+    },
+    addCachedPhoto(state, action) {
+      state.cachedPhotos[action.payload.key] = action.payload.photoString;
+    },
+    queueCachedPhoto(state, action) {
+      state.cachedPhotos[action.payload] = "queued";
     },
   },
 });

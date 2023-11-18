@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   selector: "none",
   display: "none",
-  showCreateOutingPopup: false
+  showCreateOutingPopup: false,
 };
 const popupSlice = createSlice({
   name: "popup",
@@ -15,12 +15,12 @@ const popupSlice = createSlice({
     },
     hidePopup(state) {
       document.getElementById("popup").style.display = "none";
-      state.showCreateOutingPopup=false
+      state.showCreateOutingPopup = false;
       state.selector = "none";
     },
-    setShowCreateOutingPopup(state,action){
-      state.showCreateOutingPopup = action.payload
-    }
+    setShowCreateOutingPopup(state, action) {
+      state.showCreateOutingPopup = action.payload;
+    },
   },
 });
 
