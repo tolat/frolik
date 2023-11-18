@@ -12,7 +12,7 @@ import { modalActions } from "../../store/modal-slice";
 import EditProfileModal from "../Modals/EditProfileModal";
 import FriendCard from "../UI/FriendCard";
 import { pageRouteLoader } from "../../utils/utils";
-import balloonIcon from "../../images/balloon1.png";
+import balloonIcon from "../../images/air-balloon.png";
 import { useNavigate } from "react-router-dom";
 import IconButton from "../UI/IconButton";
 import chatIcon from "../../images/chat.png";
@@ -70,7 +70,7 @@ const Profile = (props) => {
   };
 
   const onCreateOuting = (withUser) => {
-    dispatch(goActions.reset([user]))
+    dispatch(goActions.reset([user]));
     dispatch(goActions.addUser(withUser));
     navigate("/go");
   };
@@ -198,10 +198,6 @@ const Profile = (props) => {
         </Fragment>
       ) : selectedSliderKey === "_outings" ? (
         <Fragment>
-          <SimpleSearch
-            style={{ marginTop: "1rem" }}
-            placeholder={"Search Outings"}
-          />
           <OutingList />
         </Fragment>
       ) : (

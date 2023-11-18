@@ -1,11 +1,11 @@
 import styles from "./styles/Go.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import SimpleButton from "../UI/SimpleButton";
-import { Fragment, useEffect, useReducer } from "react";
+import { Fragment, useEffect, useReducer, useState } from "react";
 import AddUserModal from "../Modals/AddUserModal";
 import { modalActions } from "../../store/modal-slice";
 import editIcon from "../../images/edit.png";
-import plusIcon from "../../images/plus.png";
+import plusIcon from "../../images/add-group.png";
 import EditUsersModal from "../Modals/EditUsersModal";
 import UserIconCluster from "../UI/UserIconCluster";
 import ActivityCard from "../UI/ActivityCard";
@@ -41,6 +41,8 @@ const Go = (props) => {
   const completedActivities = outings?.map((outing) => outing.activity._id);
   const goState = useSelector((state) => state.go);
   const activeOuting = useSelector((state) => state.modal.activeOuting);
+  const [activitySearch, setActivitySearch] = useState("");
+
   const showCreateOutingPopup = useSelector(
     (state) => state.popup.showCreateOutingPopup
   );
@@ -71,6 +73,35 @@ const Go = (props) => {
 
     fetchActivityData();
   }, []);
+
+  function applyActivitySearch(activities) {
+    return activitySearch || activitySearch !== ""
+      ? activities.filter((a) => {
+          return (
+            a?.name
+              .toLowerCase()
+              .trim()
+              .includes(activitySearch.toLowerCase().trim()) ||
+            a?.category
+              .toLowerCase()
+              .trim()
+              .includes(activitySearch.toLowerCase().trim()) ||
+            a?.description
+              .toLowerCase()
+              .trim()
+              .includes(activitySearch.toLowerCase().trim()) ||
+            a?.location
+              .toLowerCase()
+              .trim()
+              .includes(activitySearch.toLowerCase().trim()) ||
+            a?.goal
+              .toLowerCase()
+              .trim()
+              .includes(activitySearch.toLowerCase().trim())
+          );
+        })
+      : activities;
+  }
 
   // Handle Add user button click
   const handleAddUserClick = () => {
@@ -229,8 +260,10 @@ const Go = (props) => {
               </SimpleButton>
               <div className={styles.buttonSpacer}></div>
               <SimpleSearch
+                defaultVal={""}
+                setValue={setActivitySearch}
                 className={styles.activitySearch}
-                placeholder={"Search Activities"}
+                placeholder={"Search Activities.."}
               />
             </div>
             <div className={styles.infoBar}>
@@ -240,7 +273,7 @@ const Go = (props) => {
                   className={styles.infoIcon}
                   alt="completed-icon"
                 />
-                Previously Done
+                Completed
               </div>
               <div className={styles.infoItem}>
                 <img
@@ -259,7 +292,7 @@ const Go = (props) => {
                   : "Loading Activities.."}
               </div>
             ) : (
-              activityFilter.activities.map((a) => (
+              applyActivitySearch(activityFilter.activities).map((a) => (
                 <ActivityCard
                   key={Math.random()}
                   activity={a}

@@ -6,7 +6,7 @@ import { useEffect, useMemo, useReducer, useState } from "react";
 import { dataActions } from "../../store/data-slice";
 import { uploadProfileData } from "../../utils/data-fetch";
 import CustomSelect from "../UI/CustomSelect";
-import balloonIcon from "../../images/balloon1.png";
+import balloonIcon from "../../images/air-balloon.png";
 import ProfileEditor from "./ProfileEditor";
 import { hideModal } from "../../store/modal-actions";
 import ValidatorBubble, { runValidators } from "../UI/ValidatorBubble";

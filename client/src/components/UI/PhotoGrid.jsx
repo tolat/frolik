@@ -20,29 +20,37 @@ const PhotoGrid = (props) => {
       className={styles.container}
     >
       <PhotoPopup selector={"view-image"} image={activeImage} />
-      {props.images.map((m) => (
-        <div
-          onClick={() => onImageClick(m)}
-          key={Math.random()}
-          className={styles.imageContainer}
-        >
-          <img
-            className={styles.img}
-            alt="userImage"
-            src={`data:image/png;base64,${m}`}
-          />
-          {props.showDeleteable &&
-          props.deleteableIndexes?.find((i) => i === props.images.indexOf(m)) +
-            1 ? (
+      {props.images.map(
+        (m) =>
+          m && (
             <div
-              onClick={() => props.onDeleteClick(props.images.indexOf(m))}
-              className={styles.deleteButton}
+              onClick={() => onImageClick(m)}
+              key={Math.random()}
+              className={styles.imageContainer}
             >
-              <img className={styles.deleteIcon} src={closeIcon} alt="close" />
+              <img
+                className={styles.img}
+                alt="userImage"
+                src={`data:image/png;base64,${m}`}
+              />
+              {props.showDeleteable &&
+              props.deleteableIndexes?.find(
+                (i) => i === props.images.indexOf(m)
+              ) + 1 ? (
+                <div
+                  onClick={() => props.onDeleteClick(props.images.indexOf(m))}
+                  className={styles.deleteButton}
+                >
+                  <img
+                    className={styles.deleteIcon}
+                    src={closeIcon}
+                    alt="close"
+                  />
+                </div>
+              ) : null}
             </div>
-          ) : null}
-        </div>
-      ))}
+          )
+      )}
     </div>
   );
 };

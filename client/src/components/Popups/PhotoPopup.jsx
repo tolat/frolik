@@ -19,7 +19,9 @@ const PhotoPopup = (props) => {
     paddingBottom: noGutters ? "100%" : null,
   };
 
-  const imageString = `data:image/png;base64,${props.image}`;
+  const imageString = props.image
+    ? `data:image/png;base64,${props.image}`
+    : null;
 
   const dispatch = useDispatch();
 
@@ -34,10 +36,7 @@ const PhotoPopup = (props) => {
 
   return createPortal(
     <div style={popupStyle} id={props.id} className={styles.container}>
-      <div
-        onClick={handleClosePopup}
-        className={styles.blackout}
-      ></div>
+      <div onClick={handleClosePopup} className={styles.blackout}></div>
       <div style={containerStyle} className={styles.imageContainer}>
         <img className={styles.image} src={imageString} alt="viewing" />
       </div>

@@ -17,7 +17,12 @@ export function receiveChatMessage({ message, chat }) {
 }
 
 export function sendChatMessage(message, chat) {
-  socket.emit("message-sent", { chat, message });
-  store.dispatch(chatActions.addMessageToChat({ message, chat }));
-  setLastReadMessage(message);
+  try {
+    // NEED TO ENSUER
+    socket.emit("message-sent", { chat, message });
+    store.dispatch(chatActions.addMessageToChat({ message, chat }));
+    setLastReadMessage(message);
+  } catch (err) {
+    console.log(err);
+  }
 }

@@ -91,8 +91,9 @@ just triggering a fetch-auth on the front end wehere possible.
 - Get Photo viewer modal
 DONE
 
-- User gets notifications from own messages. Need to make user only able to 
-send one message once the last one has been saved on server
+- Need to make user only able to 
+send one message once the last one has been saved on server and
+also if the message is not successfullt sent, do not put new messageBubble in
 
 - Get search bars working
 

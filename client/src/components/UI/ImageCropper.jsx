@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import Cropper from "react-easy-crop";
 import styles from "./styles/ImageCropper.module.scss";
 
@@ -16,22 +16,24 @@ const ImageCropper = (props) => {
     setZoom(newZoom);
   };
 
-  return !props.image || props.image === 'queued' ? null : (
+  return !props.image || props.image === "queued" ? null : (
     <div
       style={props.containerStyle}
       className={`${styles.container} ${props.containerClassName}`}
     >
-      <Cropper
-        image={`data:image/png;base64,${props.image}`}
-        crop={crop}
-        zoom={zoom}
-        aspect={3 / 3}
-        cropShape={"round"}
-        onCropChange={onCropChange}
-        onZoomChange={onZoomChange}
-        objectFit={"cover"}
-        style={{ containerStyle: { width: "100%", height: "100%" } }}
-      />
+      {props.image && (
+        <Cropper
+          image={`data:image/png;base64,${props.image}`}
+          crop={crop}
+          zoom={zoom}
+          aspect={3 / 3}
+          cropShape={"round"}
+          onCropChange={onCropChange}
+          onZoomChange={onZoomChange}
+          objectFit={"cover"}
+          style={{ containerStyle: { width: "100%", height: "100%" } }}
+        />
+      )}
     </div>
   );
 };

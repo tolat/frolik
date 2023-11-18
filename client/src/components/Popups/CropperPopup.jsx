@@ -3,7 +3,7 @@ import SimpleButton from "../UI/SimpleButton";
 import Popup from "./Popup";
 import styles from "./styles/CropperPopup.module.scss";
 import Cropper from "react-easy-crop";
-import {  useState } from "react";
+import { useState } from "react";
 import { getCroppedImageBase64 } from "../../utils/utils";
 
 const CropperPopup = (props) => {
@@ -86,28 +86,30 @@ const CropperPopup = (props) => {
                 </div>
               </div>
               <div className={styles.cropperContainer}>
-                <Cropper
-                  image={`data:image/png;base64,${img}`}
-                  crop={crops[props.images.indexOf(img)]}
-                  zoom={zooms[props.images.indexOf(img)]}
-                  rotation={0}
-                  aspect={3 / 3}
-                  cropShape={"rect"}
-                  onCropChange={cropChangers[props.images.indexOf(img)]}
-                  onZoomChange={zoomChangers[props.images.indexOf(img)]}
-                  objectFit={"cover"}
-                  showGrid={true}
-                  onCropComplete={(ca, cap) =>
-                    setCropCompletes[props.images.indexOf(img)]({ ca, cap })
-                  }
-                  style={{
-                    containerStyle: {
-                      width: "100%",
-                      height: "100%",
-                      borderRadius: "4px",
-                    },
-                  }}
-                />
+                {img && (
+                  <Cropper
+                    image={`data:image/png;base64,${img}`}
+                    crop={crops[props.images.indexOf(img)]}
+                    zoom={zooms[props.images.indexOf(img)]}
+                    rotation={0}
+                    aspect={3 / 3}
+                    cropShape={"rect"}
+                    onCropChange={cropChangers[props.images.indexOf(img)]}
+                    onZoomChange={zoomChangers[props.images.indexOf(img)]}
+                    objectFit={"cover"}
+                    showGrid={true}
+                    onCropComplete={(ca, cap) =>
+                      setCropCompletes[props.images.indexOf(img)]({ ca, cap })
+                    }
+                    style={{
+                      containerStyle: {
+                        width: "100%",
+                        height: "100%",
+                        borderRadius: "4px",
+                      },
+                    }}
+                  />
+                )}
               </div>
               <div className={styles.buttonsContainer}>
                 <SimpleButton

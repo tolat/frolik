@@ -4,16 +4,19 @@ import { dateSort, pageRouteLoader } from "../../utils/utils";
 import ChatCard from "../UI/ChatCard";
 import SimpleSearch from "../UI/SimpleSearch";
 import SimpleButton from "../UI/SimpleButton";
-import { memo } from "react";
+import { memo, useState } from "react";
 import CreateChatModal from "../Modals/CreateChatModal";
 import { modalActions } from "../../store/modal-slice";
 
 const Chat = memo((props) => {
   const chats = useSelector((state) => state.chat.chats);
   const user = useSelector((state) => state.auth.user);
+  const [chatSearch, setChatSearch] = useState("");
   const dispatch = useDispatch();
-  const validChats = chats?.filter((c) =>
-    c.outing ? !c.outing.flakes.find((uid) => uid === user._id) : true
+  const validChats = applyChatSearch(
+    chats?.filter((c) =>
+      c.outing ? !c.outing.flakes.find((uid) => uid === user._id) : true
+    )
   );
 
   const onCreateChat = () => {
@@ -21,11 +24,42 @@ const Chat = memo((props) => {
     dispatch(modalActions.showModal());
   };
 
+  function applyChatSearch(rawChats) {
+    return chatSearch || chatSearch !== ""
+      ? rawChats.filter((c) => {
+          const chatUsers = c.outing ? c.outing.users : c.users;
+
+          return (
+            (c.name &&
+              c.name
+                .toLowerCase()
+                .trim()
+                .includes(chatSearch.toLowerCase().trim())) ||
+            chatUsers.find(
+              (u) =>
+                u.first_name
+                  ?.toLowerCase()
+                  .trim()
+                  .includes(chatSearch.toLowerCase().trim()) ||
+                u.last_name
+                  ?.toLowerCase()
+                  .trim()
+                  .includes(chatSearch.toLowerCase().trim())
+            )
+          );
+        })
+      : rawChats;
+  }
+
   return (
     <div className={styles.container}>
       <CreateChatModal />
       <div className={styles.upperContainer}>
-        <SimpleSearch placeholder={"Search chats"} />
+        <SimpleSearch
+          setValue={setChatSearch}
+          defaultVal={""}
+          placeholder={"Search Chats.."}
+        />
         <SimpleButton onClick={onCreateChat} className={styles.newChatButton}>
           + New Chat
         </SimpleButton>
