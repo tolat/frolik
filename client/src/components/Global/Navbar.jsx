@@ -64,7 +64,7 @@ const Navbar = (props) => {
           <ChatModal />
           <OutingModal />
           <ProfileViewerModal />
-          <PhotoPopup/>
+          <PhotoPopup />
           <WarningPopup
             selector={"too-many-outings"}
             header={"You have too many Pending Outings!"}
