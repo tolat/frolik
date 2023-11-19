@@ -113,12 +113,14 @@ const CropperPopup = (props) => {
               </div>
               <div className={styles.buttonsContainer}>
                 <SimpleButton
+                  noShadow={true}
                   onClick={(e) => onUploadImage(img)}
                   className={styles.saveButton}
                 >
                   {buttonTexts[props.images.indexOf(img)]}
                 </SimpleButton>
                 <SimpleButton
+                  noShadow={true}
                   onClick={() => props.onCancel(props.images.indexOf(img))}
                   className={styles.cancelButton}
                 >

@@ -102,6 +102,9 @@ DONE
 
 - Add feed page that shows all new outings for user network
 (3days)
+DONE
+
+- NEED TO ADD LIKES FUNCITONALITY
 
 - DEPLOY WOO!!! (3 days)
 

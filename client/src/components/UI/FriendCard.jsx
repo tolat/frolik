@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
 import { hideModal } from "../../store/modal-actions";
 import { calculateFlakeRating } from "../../utils/utils";
+import { popupActions } from "../../store/popup-slice";
 
 const FriendCard = (props) => {
   const statIconStyle = { width: "2rem", height: "2rem" };
@@ -30,6 +31,7 @@ const FriendCard = (props) => {
     if (modalState.selector !== "none") {
       await hideModal(true);
     }
+    dispatch(popupActions.hidePopup())
     dispatch(modalActions.setActiveModalUser(props.user));
     dispatch(modalActions.setSelector("profile-viewer-modal"));
     dispatch(modalActions.showModal());

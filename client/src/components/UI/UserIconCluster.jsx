@@ -18,7 +18,11 @@ const UserIconCluster = (props) => {
   const mag44 = 1.55;
 
   return !props.users ? null : (
-    <div className={styles.container} style={containerStyle}>
+    <div
+      onClick={props.onClick}
+      className={styles.container}
+      style={{ ...containerStyle, ...props.style }}
+    >
       {props.users?.length === 1 ? (
         <UserIcon
           backer={true}

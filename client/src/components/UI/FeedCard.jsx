@@ -10,6 +10,7 @@ import heartFull from "../../images/heart2.png";
 import { popupActions } from "../../store/popup-slice";
 import EmptyPopup from "../Popups/EmptyPopup";
 import ActivityCard from "./ActivityCard";
+import FriendCard from "./FriendCard";
 
 const FeedCard = (props) => {
   const globals = useSelector((state) => state.auth.globals);
@@ -24,6 +25,7 @@ const FeedCard = (props) => {
   const outingUsers = outing?.users;
   const [liked, setLiked] = useState(false);
   const activityPopupSelector = `${outing?._id}-activity-popup`;
+  const usersPopupSelector = `${outing?._id}-users-popup`;
   let memberNames = outingUsers
     .map((u) => `${u.first_name}, `)
     .reduce((acc, curr) => (acc = acc.concat(curr)), "");
@@ -64,6 +66,10 @@ const FeedCard = (props) => {
     setLiked((prevState) => !prevState);
   };
 
+  const onClusterClick = () => {
+    dispatch(popupActions.showPopup(usersPopupSelector));
+  };
+
   return (
     outing && (
       <div className={styles.container}>
@@ -73,6 +79,14 @@ const FeedCard = (props) => {
             activity={outing.activity}
             hideSelect={true}
           />
+        </EmptyPopup>
+        <EmptyPopup selector={usersPopupSelector}>
+          <div className={styles.friendsPopupContainer}>
+            <h2 className={styles.friendsPopupHeader}>Outing Members</h2>
+            {outing.users.map((u) => (
+              <FriendCard key={Math.random()} user={u} />
+            ))}
+          </div>
         </EmptyPopup>
         <div
           className={`${styles.photosContainer} ${
@@ -103,6 +117,7 @@ const FeedCard = (props) => {
           <div className={styles.topInnerContainer}>
             <div className={styles.innerContainerLeft}>
               <UserIconCluster
+                onClick={onClusterClick}
                 users={outing.users}
                 sizeInRem={8}
                 borderSizeInRem={0.8}

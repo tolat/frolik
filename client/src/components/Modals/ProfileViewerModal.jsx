@@ -32,7 +32,7 @@ const ProfileViewerModal = (props) => {
   const userData = dataState.users[modalUser._id];
   const userPhotos = getPhotosFromState(userData);
   const isFriend = user.friends.find((f) => f._id === modalUser._id);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const friendRequested = user.friend_requests.find(
     (fr) => fr === modalUser._id
   );
@@ -70,8 +70,8 @@ const ProfileViewerModal = (props) => {
   };
 
   const onCreateOuting = () => {
-    dispatch(goActions.addUser(modalUser))
-    navigate('/go')
+    dispatch(goActions.addUser(modalUser));
+    navigate("/go");
   };
 
   return (
@@ -79,7 +79,7 @@ const ProfileViewerModal = (props) => {
       <div style={modalStyle} className={styles.container}>
         <div className={modalStyles.header}>Viewing Profile</div>
         <ProfileHeader user={modalUser} />
-        {!isFriend ? (
+        {user._id === modalUser._id ? null : !isFriend ? (
           <SimpleButton
             onClick={friendRequested ? null : onAddFriend}
             className={
@@ -107,7 +107,14 @@ const ProfileViewerModal = (props) => {
             </SimpleButton>
           </div>
         )}
+
         <Fragment>
+          {user._id === modalUser._id ? (
+            <Fragment>
+              <br />
+              <br />
+            </Fragment>
+          ) : null}
           {userPhotos[0] && userPhotos.length === userData.photos.length ? (
             <PhotoGrid
               images={userPhotos}

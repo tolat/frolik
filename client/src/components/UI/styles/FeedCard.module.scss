@@ -142,3 +142,17 @@
 .viewActivityButton {
   width: fit-content;
 }
+
+.friendsPopupContainer{
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 3px;
+}
+
+.friendsPopupHeader{
+    margin: 1rem 0 2rem 0;
+    font-size: 1.6rem;
+    font-weight: bold;
+}
