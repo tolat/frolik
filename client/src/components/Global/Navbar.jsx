@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom"; // Import Link from react-router-dom
 import styles from "./styles/Navbar.module.scss";
 import NavButton from "../UI/NavButton";
 import logo from "../../images/air-balloon.png";
-import bell from "../../images/bell3.png";
+import bell from "../../images/bell6.png";
 import { hideModal } from "../../store/modal-actions";
 import NotificationsModal from "../Notifications/NotificationsModal";
 import { modalActions } from "../../store/modal-slice";
