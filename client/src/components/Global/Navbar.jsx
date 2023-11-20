@@ -19,6 +19,8 @@ import chatIcon from "../../images/chat.png";
 import feedIcon from "../../images/post2.png";
 import { getTotalUnreadMessages } from "../../utils/utils";
 import PhotoPopup from "../Popups/PhotoPopup";
+import logoutIcon from "../../images/logout.png";
+import { fetchLogout } from "../../store/auth-actions";
 
 const Navbar = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -54,6 +56,12 @@ const Navbar = (props) => {
   // Navigate to profile page if too many outings
   const handleHideWarning = () => {
     dispatch(popupActions.hidePopup());
+  };
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    await hideModal();
+    fetchLogout();
   };
 
   return (
@@ -119,6 +127,11 @@ const Navbar = (props) => {
                 ) : null}
               </NavButton>
             </NavLink>
+            <NavButton
+              onClick={handleLogout}
+              icon={logoutIcon}
+              className={`${styles.navButton} ${styles.logoutHover}`}
+            />
           </div>
         ) : (
           <div></div>
