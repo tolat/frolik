@@ -79,7 +79,6 @@ const ChatModal = (props) => {
   };
 
   const handleShowOuting = async () => {
-    console.log(chat.outing);
     await hideModal(true);
     dispatch(modalActions.setActiveOuting(chat.outing));
     dispatch(modalActions.setSelector("outing-modal"));

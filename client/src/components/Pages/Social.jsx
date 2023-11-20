@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { pageRouteLoader, sortByDate } from "../../utils/utils";
 import styles from "./styles/Social.module.scss";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import FeedCard from "../UI/FeedCard";
 import { fetchFeedOutings } from "../../utils/data-fetch";
 import SimpleButton from "../UI/SimpleButton";
@@ -32,19 +32,20 @@ const Social = (props) => {
     getOutings(user);
   };
   return (
-    outings && (
-      <div className={styles.container}>
-        <SimpleButton className={styles.refreshButton} onClick={onRefresh}>
-          {refreshText}
-        </SimpleButton>
-        {sortedKeys.map((k) => (
-          <FeedCard
-            key={Math.random()}
-            outing={outings[k]}
-          />
-        ))}
-      </div>
-    )
+    <Fragment>
+      <SimpleButton className={styles.refreshButton} onClick={onRefresh}>
+        {refreshText}
+      </SimpleButton>
+      {outings ? (
+        <div className={styles.container}>
+          {sortedKeys.map((k) => (
+            <FeedCard key={Math.random()} outing={outings[k]} />
+          ))}
+        </div>
+      ) : (
+        <h2>Loading Feed..</h2>
+      )}
+    </Fragment>
   );
 };
 

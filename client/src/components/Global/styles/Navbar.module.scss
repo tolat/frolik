@@ -28,8 +28,9 @@
 .navItems {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
   width: 100%;
+  padding: 0 1rem;
 }
 
 .username {
@@ -105,6 +106,19 @@
   bottom: -2.5rem;
   z-index: 1;
 }
+.logoutHover:hover::after {
+  content: "Logout";
+  border: 1px solid lightgray;
+  border-radius: 3px;
+  font-weight: bold;
+  background-color: grey;
+  color: white;
+  padding: 0.5rem 1rem;
+  position: absolute;
+  bottom: -2.5rem;
+  z-index: 1;
+}
+
 
 .logoButton {
   width: 4rem;
