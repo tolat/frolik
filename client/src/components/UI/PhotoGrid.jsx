@@ -19,12 +19,9 @@ const PhotoGrid = (props) => {
       {props.images.map(
         (m) =>
           m && (
-            <div
-              onClick={() => onImageClick(m)}
-              key={Math.random()}
-              className={styles.imageContainer}
-            >
+            <div key={Math.random()} className={styles.imageContainer}>
               <img
+                onClick={() => onImageClick(m)}
                 onLoad={(e) => e.target.classList.remove(`hidden`)}
                 className={`${styles.img} hidden`}
                 alt="userImage"
