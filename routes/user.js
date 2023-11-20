@@ -5,7 +5,7 @@ const Activity = require("../models/activity");
 const Chat = require("../models/chat");
 const express = require("express");
 const sharp = require("sharp");
-const { downloadFromS3, uploadToS3, deleteFromS3, getSignedURLFromS3 } = require("../utils/S3");
+const { downloadFromS3, uploadToS3, deleteFromS3 } = require("../utils/S3");
 const {
   populateUser,
   populateFriends,
@@ -43,14 +43,8 @@ router.get(
     }
 
     // Download image stream from S3 and pipe into response
-    /*  downloadFromS3(process.env.AWS_BUCKET, req.params.key)
+    downloadFromS3(process.env.AWS_BUCKET, req.params.key)
       .then((imageStream) => imageStream.pipe(res))
-      .catch((error) => {
-        console.error("Error downloading image:", error);
-        res.status(500).send("Internal Server Error");
-      }); */
-    getSignedURLFromS3(process.env.AWS_BUCKET, req.params.key)
-      .then((url) => res.send({ url }))
       .catch((error) => {
         console.error("Error downloading image:", error);
         res.status(500).send("Internal Server Error");

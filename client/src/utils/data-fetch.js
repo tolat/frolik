@@ -88,15 +88,7 @@ export const fetchPhotos = async (user) => {
       };
 
       const handleResponse = async (response) => {
-        console.log(response.url)
-        store.dispatch(
-          dataActions.addUserPhoto({
-            userID: user._id,
-            photoKey,
-            photoString: response.url,
-          })
-        );
-        /* response.text().then((imageDataString) => {
+        response.text().then((imageDataString) => {
           store.dispatch(
             dataActions.addUserPhoto({
               userID: user._id,
@@ -104,7 +96,7 @@ export const fetchPhotos = async (user) => {
               photoString: imageDataString,
             })
           );
-        }); */
+        });
       };
 
       const handleError = (err) => {
