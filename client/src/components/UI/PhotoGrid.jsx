@@ -11,6 +11,8 @@ const PhotoGrid = (props) => {
     dispatch(popupActions.showPopup("view-photo"));
   };
 
+  console.log(props.images)
+
   return (
     <div
       style={{ gridTemplateColumns: props.gridTemplateColumns }}
@@ -27,7 +29,7 @@ const PhotoGrid = (props) => {
               <img
                 className={styles.img}
                 alt="userImage"
-                src={`data:image/png;base64,${m}`}
+                src={m}
               />
               {props.showDeleteable &&
               props.deleteableIndexes?.find(
