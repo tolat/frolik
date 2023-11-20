@@ -88,7 +88,7 @@ const CropperPopup = (props) => {
               <div className={styles.cropperContainer}>
                 {img && (
                   <Cropper
-                    image={`data:image/png;base64,${img}`}
+                    image={img}
                     crop={crops[props.images.indexOf(img)]}
                     zoom={zooms[props.images.indexOf(img)]}
                     rotation={0}

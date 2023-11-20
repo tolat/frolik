@@ -108,7 +108,7 @@ const sessionConfig = {
   secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
-  expires: Date.now() + 1000 * 60 * 60,
+  expires: Date.now() + process.env.SESSION_DURATION,
 };
 app.use(session(sessionConfig));
 

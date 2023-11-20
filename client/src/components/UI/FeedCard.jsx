@@ -100,7 +100,7 @@ const FeedCard = (props) => {
                   onClick={(e) => onImageClick(img)}
                   key={Math.random()}
                   className={styles.image}
-                  src={`data:image/png;base64,${img}`}
+                  src={img}
                   alt="feed-pic"
                 />
               </div>

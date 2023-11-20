@@ -44,7 +44,9 @@ module.exports.getSignedURLFromS3 = async (Bucket, Key) => {
     Key,
   });
 
-  const signedURL = await getSignedUrl(s3Client, command, { expiresIn: 3600});
+  const signedURL = await getSignedUrl(s3Client, command, {
+    expiresIn: process.env.SESSION_DURATION / 1000,
+  });
 
   return signedURL;
 };

@@ -55,7 +55,7 @@ const UploadImagesToS3 = async (directoryPath) => {
       .toBuffer();
 
     const imageString = reducedImageBuffer.toString("base64");
-    await uploadToS3(process.env.AWS_BUCKET, simpleKey, imageString);
+    await uploadToS3(process.env.AWS_BUCKET, simpleKey, imageBuffer);
   };
 
   for (key of files) {

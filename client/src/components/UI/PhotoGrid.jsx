@@ -25,9 +25,10 @@ const PhotoGrid = (props) => {
               className={styles.imageContainer}
             >
               <img
-                className={styles.img}
+                onLoad={(e) => e.target.classList.remove(`hidden`)}
+                className={`${styles.img} hidden`}
                 alt="userImage"
-                src={`data:image/png;base64,${m}`}
+                src={m}
               />
               {props.showDeleteable &&
               props.deleteableIndexes?.find(

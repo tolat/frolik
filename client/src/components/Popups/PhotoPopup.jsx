@@ -20,8 +20,6 @@ const PhotoPopup = (props) => {
     paddingBottom: noGutters ? "100%" : null,
   };
 
-  const imageString = popupImage ? `data:image/png;base64,${popupImage}` : null;
-
   const dispatch = useDispatch();
 
   // Change opacity
@@ -37,7 +35,9 @@ const PhotoPopup = (props) => {
     <div style={popupStyle} className={styles.container}>
       <div onClick={handleClosePopup} className={styles.blackout}></div>
       <div style={containerStyle} className={styles.imageContainer}>
-        <img className={styles.image} src={imageString} alt="viewing" />
+        {popupImage && (
+          <img className={styles.image} src={popupImage} alt="viewing" />
+        )}
       </div>
     </div>,
     document.getElementById("popup")

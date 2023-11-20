@@ -2,12 +2,8 @@ const Globals = require("../models/globals");
 const User = require("../models/user");
 const Outing = require("../models/outing");
 const express = require("express");
-const {
-  reqAuthenticated,
-  tryCatch,
-  sameUserOnly,
-} = require("../utils/middleware");
-const { downloadFromS3 } = require("../utils/S3");
+const { reqAuthenticated, tryCatch } = require("../utils/middleware");
+const { getSignedURLFromS3 } = require("../utils/S3");
 
 const router = express.Router({ mergeParams: true });
 
@@ -40,8 +36,8 @@ router.get(
     }
 
     // Download image stream from S3 and pipe into response
-    downloadFromS3(process.env.AWS_BUCKET, req.params.key)
-      .then((imageStream) => imageStream.pipe(res))
+    getSignedURLFromS3(process.env.AWS_BUCKET, req.params.key)
+      .then((url) => res.send(url))
       .catch((error) => {
         console.error("Error downloading image:", error);
         res.status(500).send("Internal Server Error");

@@ -197,7 +197,7 @@ export function getCroppedImageBase64(imageBase64, crop) {
       ctx.drawImage(image, x, y, width, height, 0, 0, width, height);
 
       const croppedImageBase64 = canvas.toDataURL("image/jpeg");
-      resolve(croppedImageBase64.slice(23));
+      resolve(croppedImageBase64);
     };
 
     image.onerror = (error) => {
@@ -205,7 +205,7 @@ export function getCroppedImageBase64(imageBase64, crop) {
       reject(error);
     };
 
-    image.src = `data:image/png;base64,${imageBase64}`;
+    image.src = imageBase64;
   });
 }
 

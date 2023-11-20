@@ -80,6 +80,7 @@ const UserIcon = memo(function UserIcon(props) {
   crop.x = crop.x * scalingFactor;
   crop.y = crop.y * scalingFactor;
   const photoString = userData?.profile_picture;
+  const iconID = `usericon-${Math.random()}`;
 
   const pieStyle = {
     width: pieDimension,
@@ -112,12 +113,22 @@ const UserIcon = memo(function UserIcon(props) {
             ></div>
           )
         ) : (
-          <div style={pieStyle} className={styles.pieChart}>
+          <div
+            id={iconID}
+            style={pieStyle}
+            className={`${styles.pieChart} hidden`}
+          >
             <CroppedImage
+              onLoad={() =>
+                document.getElementById(iconID).classList.remove("hidden")
+              }
               image={photoString}
               zoom={zoom}
               crop={crop}
-              style={{ height: photoDimension, width: photoDimension }}
+              style={{
+                height: photoDimension,
+                width: photoDimension,
+              }}
             />
           </div>
         )}

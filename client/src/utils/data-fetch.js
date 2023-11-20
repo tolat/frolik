@@ -39,18 +39,13 @@ export const fetchProfilePic = async (userID) => {
   };
 
   const handleResponse = async (response) => {
-    response.text().then((imageDataString) => {
-      if (
-        !userData ||
-        (userData && userData.profile_picture !== imageDataString)
-      ) {
-        store.dispatch(
-          dataActions.setUserProfilePicture({
-            userID,
-            photoString: imageDataString,
-          })
-        );
-      }
+    response.text().then((imgUrl) => {
+      store.dispatch(
+        dataActions.setUserProfilePicture({
+          userID,
+          photoString: imgUrl,
+        })
+      );
     });
   };
 
@@ -88,12 +83,12 @@ export const fetchPhotos = async (user) => {
       };
 
       const handleResponse = async (response) => {
-        response.text().then((imageDataString) => {
+        response.text().then((imgUrl) => {
           store.dispatch(
             dataActions.addUserPhoto({
               userID: user._id,
               photoKey,
-              photoString: imageDataString,
+              photoString: imgUrl,
             })
           );
         });
@@ -658,8 +653,8 @@ export const fetchOutingPhoto = (outing, key, onComplete) => {
   }
 
   const handleResponse = (response) => {
-    response.text().then((imageDataString) => {
-      onComplete(imageDataString);
+    response.text().then((imageUrl) => {
+      onComplete(imageUrl);
     });
   };
 

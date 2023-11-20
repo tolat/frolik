@@ -205,7 +205,9 @@ const OutingModal = (props) => {
       // Read file into a base64String and update the staged image
       const reader = new FileReader();
       reader.onload = () => {
-        const base64Image = arrayBufferToBase64(reader.result);
+        const base64Image = `data:image/jpeg;base64,${arrayBufferToBase64(
+          reader.result
+        )}`;
         setUploads((prevState) => prevState.concat(base64Image));
       };
 

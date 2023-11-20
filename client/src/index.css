@@ -51,3 +51,7 @@ a:link {
   height: 100vh;
   display: none;
 }
+
+.hidden{
+  display: none !important;
+}

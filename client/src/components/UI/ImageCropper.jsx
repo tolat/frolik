@@ -23,7 +23,7 @@ const ImageCropper = (props) => {
     >
       {props.image && (
         <Cropper
-          image={`data:image/png;base64,${props.image}`}
+          image={props.image}
           crop={crop}
           zoom={zoom}
           aspect={3 / 3}

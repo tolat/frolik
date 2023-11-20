@@ -5,7 +5,12 @@ const Activity = require("../models/activity");
 const Chat = require("../models/chat");
 const express = require("express");
 const sharp = require("sharp");
-const { downloadFromS3, uploadToS3, deleteFromS3 } = require("../utils/S3");
+const {
+  downloadFromS3,
+  uploadToS3,
+  deleteFromS3,
+  getSignedURLFromS3,
+} = require("../utils/S3");
 const {
   populateUser,
   populateFriends,
@@ -42,9 +47,10 @@ router.get(
       return res.status(404).send("Photo with given key not found");
     }
 
-    // Download image stream from S3 and pipe into response
-    downloadFromS3(process.env.AWS_BUCKET, req.params.key)
-      .then((imageStream) => imageStream.pipe(res))
+    getSignedURLFromS3(process.env.AWS_BUCKET, req.params.key)
+      .then((url) => {
+        res.send(url);
+      })
       .catch((error) => {
         console.error("Error downloading image:", error);
         res.status(500).send("Internal Server Error");
@@ -64,8 +70,8 @@ router.get(
     }
 
     // Download image stream from S3 and pipe into response
-    downloadFromS3(process.env.AWS_BUCKET, user.profile_picture.key)
-      .then((imageStream) => imageStream.pipe(res))
+    getSignedURLFromS3(process.env.AWS_BUCKET, user.profile_picture.key)
+      .then((url) => res.send(url))
       .catch((error) => {
         console.error("Error downloading image:", error);
         res.status(500).send("Internal Server Error");
@@ -100,15 +106,14 @@ router.post(
     // Only upload new image if it has been sent
     if (req.body.photoString) {
       // Resize/compress image before upload
-      const imageBuffer = Buffer.from(req.body.photoString, "base64");
+      const imageBuffer = Buffer.from(req.body.photoString.slice(23), "base64");
       const reducedImageBuffer = await sharp(imageBuffer)
         .jpeg({ quality: 50 })
         .withMetadata()
         .toBuffer();
-      const imageString = reducedImageBuffer.toString("base64");
 
       // Upload image to S3
-      uploadToS3(process.env.AWS_BUCKET, req.body.key, imageString)
+      uploadToS3(process.env.AWS_BUCKET, req.body.key, reducedImageBuffer)
         .then((response) => {
           res.sendStatus(200);
         })
@@ -145,27 +150,31 @@ router.post(
     // Get stripped down populated friends list
     const populatedFriends = await populateFriends(user.friends);
 
-    // Resize/compress image before upload
-    const imageBuffer = Buffer.from(photoString, "base64");
-    const reducedImageBuffer = await sharp(imageBuffer)
-      .jpeg({ quality: 50 })
-      .withMetadata()
-      .toBuffer();
-    const imageString = reducedImageBuffer.toString("base64");
+    // Only upload image if it is not the same as the current
+    if (photoString.length > 10000) {
+      // Resize/compress image before upload
+      const imageBuffer = Buffer.from(photoString.slice(23), "base64");
+      const reducedImageBuffer = await sharp(imageBuffer)
+        .jpeg({ quality: 50 })
+        .withMetadata()
+        .toBuffer();
 
-    // Upload image to S3
-    uploadToS3(
-      process.env.AWS_BUCKET,
-      profileData.profile_picture.key,
-      imageString
-    )
-      .then(() => {
-        res.send({ user, populatedFriends });
-      })
-      .catch((error) => {
-        console.error("Error uploading image:", error);
-        res.status(500).send("Internal Server Error");
-      });
+      // Upload image to S3
+      uploadToS3(
+        process.env.AWS_BUCKET,
+        profileData.profile_picture.key,
+        reducedImageBuffer
+      )
+        .then(() => {
+          res.send({ user, populatedFriends });
+        })
+        .catch((error) => {
+          console.error("Error uploading image:", error);
+          res.status(500).send("Internal Server Error");
+        });
+    } else {
+      res.send({ user, populatedFriends });
+    }
   })
 );
 
@@ -787,15 +796,14 @@ router.post(
     await populateUser(user);
 
     // Resize/compress image before upload
-    const imageBuffer = Buffer.from(photoString, "base64");
+    const imageBuffer = Buffer.from(photoString.slice(23), "base64");
     const reducedImageBuffer = await sharp(imageBuffer)
       .jpeg({ quality: 30 })
       .withMetadata()
       .toBuffer();
-    const imageString = reducedImageBuffer.toString("base64");
 
     // Upload image to S3
-    uploadToS3(process.env.AWS_BUCKET, newPhotoKey, imageString)
+    uploadToS3(process.env.AWS_BUCKET, newPhotoKey, reducedImageBuffer)
       .then((response) => {
         pushUserUpdate(outing.users);
         res.send({ user });

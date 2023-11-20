@@ -8,9 +8,10 @@ const CroppedImage = (props) => {
       className={`${styles.container} ${props.className}`}
       id={props.id}
     >
-      {!props.image || props.image === 'queued' ? null : (
+      {!props.image || props.image === "queued" ? null : (
         <Cropper
-          image={`data:image/png;base64,${props.image}`}
+          onMediaLoaded={props.onLoad}
+          image={props.image}
           crop={props.crop}
           zoom={props.zoom}
           rotation={0}
