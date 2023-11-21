@@ -7,7 +7,6 @@ import { receiveChatMessage, sendChatMessage } from "./store/chat-actions";
 import { useSelector } from "react-redux";
 import store from "./store";
 import { goActions } from "./store/go-slice";
-import { fetchAuth } from "./store/auth-actions";
 
 function App() {
   // Connect socket.io to server for message sending

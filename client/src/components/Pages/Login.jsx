@@ -10,7 +10,6 @@ import SimpleButton from "../UI/SimpleButton";
 import { modalActions } from "../../store/modal-slice";
 import { fetchGobals } from "../../utils/data-fetch";
 import logoIcon from "../../images/balloon1.png";
-import store from "../../store";
 
 function Login() {
   const usernameRef = useRef();

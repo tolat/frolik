@@ -21,6 +21,7 @@ import WarningPopup from "../Popups/WarningPopup";
 import outingsBarIcon from "../../images/outingsToolbar.png";
 import { popupActions } from "../../store/popup-slice";
 import completeIcon from "../../images/complete.png";
+import newIcon from "../../images/new.png";
 import featuredIcon from "../../images/feature.png";
 import {
   filterReducer,
@@ -32,6 +33,7 @@ import {
   fetchActivities,
   fetchChat,
 } from "../../utils/data-fetch";
+import SliderNavber from "../UI/SliderNavbar";
 
 const Go = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -42,6 +44,51 @@ const Go = (props) => {
   const goState = useSelector((state) => state.go);
   const activeOuting = useSelector((state) => state.modal.activeOuting);
   const [activitySearch, setActivitySearch] = useState("");
+  const globals = useSelector((state) => state.auth.globals);
+  const categoryColorMap = globals?.categoryColorMap;
+  const [selected, setSelected] = useState(Object.keys(categoryColorMap)[0]);
+  const selectedSliderKey = `_${selected}_tab`;
+
+  const getHighlightStyle = (key) => {
+    let keyCategory = Object.keys(categoryColorMap).find((k) =>
+      key.includes(k)
+    );
+    //let color = categoryColorMap[keyCategory]
+
+    return {
+      backgroundColor: keyCategory === selected ? null : null,
+    };
+  };
+
+  const handleSetSelectedCategory = (key) => {
+    setSelected(Object.keys(categoryColorMap).find((k) => key.includes(k)));
+  };
+
+  const CategoryTab = (props) => {
+    const tabStyle = {
+      //backgroundColor: props.name === selected ? 'rgb(239, 239, 239)' : null,
+      //border: props.name === selected ? '1px solid lightgrey' : null,
+      //borderBottom: '0'
+    };
+    return (
+      <div style={tabStyle} className={styles.categoryTabContainer}>
+        {props.name}
+      </div>
+    );
+  };
+
+  const sliderTabs = Object.keys(categoryColorMap).map((cat) => {
+    return {
+      key: `_${cat}_tab`,
+      component: (
+        <CategoryTab
+          className={styles.categoryTab}
+          name={cat}
+          color={categoryColorMap[cat]}
+        />
+      ),
+    };
+  });
 
   const showCreateOutingPopup = useSelector(
     (state) => state.popup.showCreateOutingPopup
@@ -283,7 +330,17 @@ const Go = (props) => {
                 />
                 Featured
               </div>
+              <div className={styles.infoItem}>
+                <img src={newIcon} className={styles.infoIcon} alt="new-icon" />
+                New
+              </div>
             </div>
+            <SliderNavber
+              getHighlightStyle={getHighlightStyle}
+              selected={selectedSliderKey}
+              setSelected={handleSetSelectedCategory}
+              tabs={sliderTabs}
+            />
 
             {!activityFilter.activities[0] ? (
               <div className={styles.loading}>
@@ -292,13 +349,15 @@ const Go = (props) => {
                   : "Loading Activities.."}
               </div>
             ) : (
-              applyActivitySearch(activityFilter.activities).map((a) => (
-                <ActivityCard
-                  key={Math.random()}
-                  activity={a}
-                  completed={completedActivities.find((id) => id === a._id)}
-                />
-              ))
+              applyActivitySearch(activityFilter.activities)
+                .filter((a) => a.category === selected)
+                .map((a) => (
+                  <ActivityCard
+                    key={Math.random()}
+                    activity={a}
+                    completed={completedActivities.find((id) => id === a._id)}
+                  />
+                ))
             )}
           </Fragment>
         ) : null}

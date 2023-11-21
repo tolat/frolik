@@ -61,11 +61,7 @@ const ActivityCard = (props) => {
           <div className={styles.name}>
             <div className={styles.innerNameContainer}>
               {props.activity.name}
-              <div
-                className={styles.category}
-              >{`- ${props.activity.category}`}</div>
             </div>
-
             <div className={styles.nameRightContainer}>
               {props.completed ? (
                 <div className={styles.completedIconContainer}>
@@ -142,17 +138,19 @@ const ActivityCard = (props) => {
           </div>
         </div>
         <div className={styles.buttonContainer}>
-          <SimpleButton
-            noShadow={true}
-            style={{ boxShadow: "none" }}
-            onClick={props.showInstructions ? null : handleToggleInstructions}
-          >
-            {!props.showInstructions
-              ? !instructionsVisible
-                ? "Show Instructions"
-                : "Hide Instructions"
-              : null}
-          </SimpleButton>
+          {!props.showInstructions && (
+            <SimpleButton
+              noShadow={true}
+              style={{ boxShadow: "none" }}
+              onClick={props.showInstructions ? null : handleToggleInstructions}
+            >
+              {!props.showInstructions
+                ? !instructionsVisible
+                  ? "Show Instructions"
+                  : "Hide Instructions"
+                : null}
+            </SimpleButton>
+          )}
 
           {props.hideSelect ? null : goState.outing.activity.name ===
             props.activity.name ? (

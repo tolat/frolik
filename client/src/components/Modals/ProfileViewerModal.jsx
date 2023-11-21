@@ -41,7 +41,9 @@ const ProfileViewerModal = (props) => {
   // Get photos for this user
   useEffect(() => {
     if (modalUser) {
-      fetchPhotos(modalUser);
+      setTimeout(() => {
+        fetchPhotos(modalUser);
+      }, 300);
     }
   }, [modalUser]);
 

@@ -30,6 +30,8 @@
 .searchIcon {
   height: 100%;
   padding: 28%;
-  background-color: $light_grey;
+  background-color: $button_grey;
+  border: 1px solid $light_grey;
+  border-left: none;
   box-sizing: border-box;
 }

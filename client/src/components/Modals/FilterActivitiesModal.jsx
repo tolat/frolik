@@ -2,14 +2,11 @@ import { useSelector } from "react-redux";
 import styles from "./styles/FilterActivitiesModal.module.scss";
 import modalStyles from "./styles/SlideInModal.module.scss";
 import ModalPortal from "./ModalPortal";
-import CustomSelect from "../UI/CustomSelect";
 import SimpleInput from "../UI/SimpleInput";
 import SimpleButton from "../UI/SimpleButton";
 import { useRef } from "react";
 import { hideModal } from "../../store/modal-actions";
 import SimpleCheckbox from "../UI/SimpleCheckbox";
-
-const categories = ["Any", "Games", "Food", "Sports", "Art", "Adventure"];
 
 const FilterActivitiesModal = (props) => {
   const modalState = useSelector((state) => state.modal);
@@ -22,9 +19,7 @@ const FilterActivitiesModal = (props) => {
     for (let key in filterRefs) {
       if (["newOnly", "featuredOnly", "completedOnly"].includes(key)) {
         filter[key] = filterRefs[key].current.checked;
-      } else if (key === "category") {
-        filter[key] = filterRefs[key].current.innerHTML;
-      } else {
+      }  else {
         filter[key] = filterRefs[key].current.value;
       }
     }
@@ -32,7 +27,6 @@ const FilterActivitiesModal = (props) => {
   };
 
   const filterRefs = {
-    category: useRef(),
     maxParticipants: useRef(),
     minParticipants: useRef(),
     minRating: useRef(),
@@ -66,40 +60,25 @@ const FilterActivitiesModal = (props) => {
     hideModal();
   }
 
-  const categoryOptions = categories.map((c) => {
-    return {
-      name: c,
-      selectable: true,
-      component: <div className={styles.categoryOption}>{c}</div>,
-    };
-  });
-
   return (
     <ModalPortal>
       <div style={modalStyle} className={`${styles.container} noscroll`}>
         <div className={modalStyles.header}>Filter Activities</div>
+        <div className={styles.sideBySide}>
+          <SimpleButton
+            onClick={handleApplyFilter}
+            className={styles.applyButton}
+          >
+            Apply
+          </SimpleButton>
+          <SimpleButton
+            onClick={handleClearFilter}
+            className={styles.clearButton}
+          >
+            Clear Filters
+          </SimpleButton>
+        </div>
 
-        <SimpleButton
-          onClick={handleApplyFilter}
-          className={styles.applyButton}
-        >
-          Apply
-        </SimpleButton>
-        <SimpleButton
-          onClick={handleClearFilter}
-          className={styles.clearButton}
-        >
-          Clear Filters
-        </SimpleButton>
-
-        <CustomSelect
-          options={categoryOptions}
-          className={styles.select}
-          name={"Category"}
-          label={"Filter By Category:"}
-          ref={filterRefs.category}
-          defaultVal={props.filter.category}
-        />
         <div className={styles.sideBySide}>
           <SimpleInput
             name={"max-participants"}
