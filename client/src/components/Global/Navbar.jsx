@@ -89,6 +89,7 @@ const Navbar = (props) => {
             <NavButton
               onClick={handleShowNotifications}
               icon={bell}
+              text={'Alerts'}
               className={`${styles.navButton} ${styles.notificationsHover}`}
             >
               {user && user.notifications.length > 0 ? (
@@ -100,24 +101,28 @@ const Navbar = (props) => {
             <NavLink className={(navData) => makeActive(navData)} to="/go">
               <NavButton
                 icon={logo}
+                text={'Outing'}
                 className={`${styles.navButton} ${styles.createOutingHover}`}
               />
             </NavLink>
             <NavLink className={(navData) => makeActive(navData)} to="/profile">
               <NavButton
                 icon={profileIcon}
+                text={'Profile'}
                 className={`${styles.navButton} ${styles.profileHover}`}
               />
             </NavLink>
             <NavLink className={(navData) => makeActive(navData)} to="/social">
               <NavButton
                 icon={feedIcon}
+                text={'Social'}
                 className={`${styles.navButton} ${styles.socialHover}`}
               />
             </NavLink>
             <NavLink className={(navData) => makeActive(navData)} to="/chat">
               <NavButton
                 icon={chatIcon}
+                text={'Chats'}
                 className={`${styles.navButton} ${styles.chatsHover}`}
               >
                 {unreadChatMessages > 0 ? (
@@ -129,6 +134,7 @@ const Navbar = (props) => {
             </NavLink>
             <NavButton
               onClick={handleLogout}
+              text={'Logout'}
               icon={logoutIcon}
               className={`${styles.navButton} ${styles.logoutHover}`}
             />

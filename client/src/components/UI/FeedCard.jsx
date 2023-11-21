@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import UserIconCluster from "./UserIconCluster";
 import styles from "./styles/FeedCard.module.scss";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { fetchOutingPhoto, fetchProfilePic } from "../../utils/data-fetch";
 import { dataActions } from "../../store/data-slice";
 import SimpleButton from "./SimpleButton";
@@ -11,21 +11,17 @@ import { popupActions } from "../../store/popup-slice";
 import EmptyPopup from "../Popups/EmptyPopup";
 import ActivityCard from "./ActivityCard";
 import FriendCard from "./FriendCard";
+import ImageLoadingTile from "./ImageLoadingTile";
 
 const FeedCard = (props) => {
-  const globals = useSelector((state) => state.auth.globals);
   const user = useSelector((state) => state.auth.user);
-  const categoryColorMap = globals.categoryColorMap;
   const outing = props.outing;
-  const activityColor = categoryColorMap[outing?.activity?.category];
   const cachedPhotos = useSelector((state) => state.data.cachedPhotos);
   const outingPhotos = outing?.photos.map((p) => cachedPhotos[p.key]);
   const photoGridNumber = outingPhotos?.length > 6 ? 6 : outingPhotos?.length;
   const dispatch = useDispatch();
   const outingUsers = outing?.users;
-  const [liked, setLiked] = useState(false);
-  const activityPopupSelector = `${outing?._id}-activity-popup`;
-  const usersPopupSelector = `${outing?._id}-users-popup`;
+
   let memberNames = outingUsers
     .map((u) => `${u.first_name}, `)
     .reduce((acc, curr) => (acc = acc.concat(curr)), "");
@@ -40,16 +36,21 @@ const FeedCard = (props) => {
 
     // Fetch each photo and add it to cached Photos
     for (let photo of outing?.photos) {
-      fetchOutingPhoto(outing, photo.key, (photoString) =>
-        onComplete(photo.key, photoString)
-      );
+      if (!cachedPhotos[photo.key]) {
+        fetchOutingPhoto(outing, photo.key, (photoString) =>
+          onComplete(photo.key, photoString)
+        );
+      }
     }
-  }, [user, outing, dispatch]);
+  }, [user, outing, dispatch, cachedPhotos]);
 
-  const onImageClick = (img) => {
-    dispatch(popupActions.setPopupImage(img));
-    dispatch(popupActions.showPopup("view-photo"));
-  };
+  const onImageClick = useCallback(
+    (img) => {
+      dispatch(popupActions.setPopupImage(img));
+      dispatch(popupActions.showPopup("view-photo"));
+    },
+    [dispatch]
+  );
 
   // Get missing profile pictures from server
   useEffect(() => {
@@ -57,6 +58,56 @@ const FeedCard = (props) => {
       fetchProfilePic(u._id);
     }
   }, [outingUsers]);
+
+  const onImageLoad = (e, id) => {
+    e.target.classList.remove("hidden");
+    document.getElementById(id).classList.add("hidden");
+  };
+
+  const photoList = useMemo(() => {
+    return outingPhotos.map((img) => (
+      <div key={Math.random()} className={styles.imageContainer}>
+        <ImageLoadingTile id={img} />
+        <img
+          onLoad={(e) => onImageLoad(e, img)}
+          onClick={(e) => onImageClick(img)}
+          key={Math.random()}
+          className={`${styles.image} hidden`}
+          src={img}
+          alt="feed-pic"
+        />
+      </div>
+    ));
+  }, [outingPhotos, onImageClick]);
+
+  return (
+    outing && (
+      <div className={styles.container}>
+        <div
+          className={`${styles.photosContainer} ${
+            styles[`container_${photoGridNumber}`]
+          }`}
+        >
+          {outingPhotos[0] && !outingPhotos.find((img) => img === "queued") ? (
+            photoList
+          ) : (
+            <div style={{ padding: "1rem" }}>Loading Photos..</div>
+          )}
+        </div>
+        <FeedCardFooter outing={outing} memberNames={memberNames} />
+      </div>
+    )
+  );
+};
+
+const FeedCardFooter = (props) => {
+  const globals = useSelector((state) => state.auth.globals);
+  const categoryColorMap = globals.categoryColorMap;
+  const activityColor = categoryColorMap[props.outing?.activity?.category];
+  const [liked, setLiked] = useState(false);
+  const dispatch = useDispatch();
+  const activityPopupSelector = `${props.outing?._id}-activity-popup`;
+  const usersPopupSelector = `${props.outing?._id}-users-popup`;
 
   const onShowActivityPopup = () => {
     dispatch(popupActions.showPopup(activityPopupSelector));
@@ -69,86 +120,60 @@ const FeedCard = (props) => {
   const onClusterClick = () => {
     dispatch(popupActions.showPopup(usersPopupSelector));
   };
-
   return (
-    outing && (
-      <div className={styles.container}>
-        <EmptyPopup selector={activityPopupSelector}>
-          <ActivityCard
-            showInstructions={true}
-            activity={outing.activity}
-            hideSelect={true}
+    <div className={styles.topContainer}>
+      <EmptyPopup selector={activityPopupSelector}>
+        <ActivityCard
+          showInstructions={true}
+          activity={props.outing.activity}
+          hideSelect={true}
+        />
+      </EmptyPopup>
+      <EmptyPopup selector={usersPopupSelector}>
+        <div className={styles.friendsPopupContainer}>
+          <h2 className={styles.friendsPopupHeader}>Outing Members</h2>
+          {props.outing.users.map((u) => (
+            <FriendCard key={Math.random()} user={u} />
+          ))}
+        </div>
+      </EmptyPopup>
+      <div
+        style={{ backgroundColor: activityColor }}
+        className={styles.colorStripe}
+      ></div>
+      <div className={styles.topInnerContainer}>
+        <div className={styles.innerContainerLeft}>
+          <UserIconCluster
+            onClick={onClusterClick}
+            users={props.outing.users}
+            sizeInRem={8}
+            borderSizeInRem={0.8}
           />
-        </EmptyPopup>
-        <EmptyPopup selector={usersPopupSelector}>
-          <div className={styles.friendsPopupContainer}>
-            <h2 className={styles.friendsPopupHeader}>Outing Members</h2>
-            {outing.users.map((u) => (
-              <FriendCard key={Math.random()} user={u} />
-            ))}
-          </div>
-        </EmptyPopup>
-        <div
-          className={`${styles.photosContainer} ${
-            styles[`container_${photoGridNumber}`]
-          }`}
-        >
-          {outingPhotos[0] && !outingPhotos.find((img) => img === "queued") ? (
-            outingPhotos.map((img) => (
-              <div key={Math.random()} className={styles.imageContainer}>
-                <img
-                  onClick={(e) => onImageClick(img)}
-                  key={Math.random()}
-                  className={styles.image}
-                  src={img}
-                  alt="feed-pic"
-                />
-              </div>
-            ))
-          ) : (
-            <div style={{ padding: "1rem" }}>Loading Photos..</div>
-          )}
-        </div>
-        <div className={styles.topContainer}>
-          <div
-            style={{ backgroundColor: activityColor }}
-            className={styles.colorStripe}
-          ></div>
-          <div className={styles.topInnerContainer}>
-            <div className={styles.innerContainerLeft}>
-              <UserIconCluster
-                onClick={onClusterClick}
-                users={outing.users}
-                sizeInRem={8}
-                borderSizeInRem={0.8}
-              />
-              <div className={styles.outingDetailsContainer}>
-                <div className={styles.outingMembers}>{memberNames}</div>
-                <div className={styles.activityName}>
-                  {outing.activity.name}
-                </div>
-                <div className={styles.buttonsContainer}>
-                  <SimpleButton
-                    onClick={onShowActivityPopup}
-                    className={styles.viewActivityButton}
-                    noShadow={true}
-                  >
-                    View Activity
-                  </SimpleButton>
-                </div>
-              </div>
+          <div className={styles.outingDetailsContainer}>
+            <div className={styles.outingMembers}>{props.memberNames}</div>
+            <div className={styles.activityName}>
+              {props.outing.activity.name}
             </div>
-
-            <img
-              onClick={onLikeClick}
-              src={liked ? heartFull : heart}
-              className={styles.likeIcon}
-              alt="feed-outing-icon"
-            />
+            <div className={styles.buttonsContainer}>
+              <SimpleButton
+                onClick={onShowActivityPopup}
+                className={styles.viewActivityButton}
+                noShadow={true}
+              >
+                View Activity
+              </SimpleButton>
+            </div>
           </div>
         </div>
+
+        <img
+          onClick={onLikeClick}
+          src={liked ? heartFull : heart}
+          className={styles.likeIcon}
+          alt="feed-outing-icon"
+        />
       </div>
-    )
+    </div>
   );
 };
 

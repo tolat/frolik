@@ -2,6 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 3rem;
+  padding: 1rem;
 }
 
 .button:hover{
@@ -16,11 +18,21 @@
   font-weight: inherit;
   padding-bottom: 0.5rem;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .iconButton {
   height: 80%;
   box-sizing: border-box;
+  
+}
+
+.iconText{
+  font-size: 1rem;
+  font-weight: inherit;
+  margin-top: 0.5rem;
 }
 
 .textButton {

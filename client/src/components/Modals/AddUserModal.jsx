@@ -5,7 +5,7 @@ import modalStyles from "./styles/SlideInModal.module.scss";
 import ModalPortal from "./ModalPortal";
 import FriendCard from "../UI/FriendCard";
 import { goActions } from "../../store/go-slice";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { fetchMatchedUsers } from "../../utils/data-fetch";
 
 const AddUserModal = (props) => {
@@ -68,15 +68,19 @@ const AddUserModal = (props) => {
             />
           ))}
         </div>
-        <h2 style={{width: '100%'}}>Active Friends</h2>
-        {availableFriends.map((f) => (
-          <FriendCard
-            buttonSet={"add"}
-            user={f}
-            key={Math.random()}
-            buttons={<AddButton user={f} />}
-          />
-        ))}
+        {availableFriends[0]? (
+          <Fragment>
+            <h2 style={{ width: "100%" }}>Active Friends</h2>
+            {availableFriends.map((f) => (
+              <FriendCard
+                buttonSet={"add"}
+                user={f}
+                key={Math.random()}
+                buttons={<AddButton user={f} />}
+              />
+            ))}
+          </Fragment>
+        ) : <h2 style={{marginTop: "3rem"}}>No Friends Available!</h2>}
       </div>
     </ModalPortal>
   );

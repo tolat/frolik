@@ -11,43 +11,43 @@
   box-sizing: border-box;
 }
 
-.addFriend{
-    background-color: $blue;
-    margin: 2rem 0;
-    color: white;
+.addFriend {
+  background-color: $blue;
+  margin: 2rem 0;
+  color: white;
 }
 
-.sideBySide{
-    margin: 2rem 0;
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+.sideBySide {
+  margin: 0 0 2rem 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-between;
+  width: 100%;
 }
 
-.createOutingButton{
-    width: 48%;
-    background-color: $blue;
-    color: white;
+.createOutingButton {
+  background-color: $blue;
+  color: white;
+  margin-bottom: 1rem;
 }
 
-.removeFriendButton{
-    width: 48%;
-    background-color: $button_grey;
-    color: black;
+.removeFriendButton {
+ 
+  background-color: $button_grey;
+  color: black;
 }
-
 
 .unclickableButton {
-    background-color: $button_grey;
-    color: grey;
-    cursor: default;
-    box-shadow: none !important;
-    margin: 2rem 0;
-  }
-  
-  .unclickableButton:hover {
-    cursor: default !important;
-    background-color: $button_grey !important;
-    opacity: 1 !important;
-  }
-  
+  background-color: $button_grey;
+  color: grey;
+  cursor: default;
+  box-shadow: none !important;
+  margin: 0 0 2rem 0;
+}
+
+.unclickableButton:hover {
+  cursor: default !important;
+  background-color: $button_grey !important;
+  opacity: 1 !important;
+}

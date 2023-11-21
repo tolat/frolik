@@ -25,6 +25,7 @@ import ProfileHeader from "../UI/ProfileHeader";
 import { goActions } from "../../store/go-slice";
 import { createChat, fetchChats } from "../../utils/data-fetch";
 import { hideModal } from "../../store/modal-actions";
+import editIcon from "../../images/edit-light.png";
 
 const sliderIcons = [
   {
@@ -124,8 +125,6 @@ const Profile = (props) => {
     dispatch(popupActions.hidePopup());
   };
 
-  
-
   return (
     <div className={styles.container}>
       <EditProfileModal />
@@ -137,13 +136,17 @@ const Profile = (props) => {
         okClick={handleHideWarning}
       />
       <div className={styles.nonMediaSection}>
-        <ProfileHeader user={user} />
-        <SimpleButton
-          onClick={handleEditButtonClick}
-          className={styles.editButton}
-        >
-          Edit Profile
-        </SimpleButton>
+        <ProfileHeader
+          badge={
+            <img
+              onClick={handleEditButtonClick}
+              src={editIcon}
+              className={styles.editIcon}
+              alt="edit"
+            />
+          }
+          user={user}
+        />
 
         <SliderNavbar
           selected={selectedSliderKey}
@@ -184,19 +187,21 @@ const Profile = (props) => {
             <h2>Loading Photos..</h2>
           )}
 
-          <div className={styles.noImagesBlurb}>
-            <div>To add photos, complete more </div>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              outings on the{" "}
-              <img
-                onClick={onBalloonIconClick}
-                className={styles.outingBalloon}
-                src={balloonIcon}
-                alt="outing page icon"
-              />{" "}
-              page!
+          {!userPhotos[0] ? (
+            <div className={styles.noImagesBlurb}>
+              <div>To add photos, complete more </div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                outings on the{" "}
+                <img
+                  onClick={onBalloonIconClick}
+                  className={styles.outingBalloon}
+                  src={balloonIcon}
+                  alt="outing page icon"
+                />{" "}
+                page!
+              </div>
             </div>
-          </div>
+          ) : null}
         </Fragment>
       ) : selectedSliderKey === "_outings" ? (
         <Fragment>

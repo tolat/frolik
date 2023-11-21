@@ -24,10 +24,10 @@
 .pendingContainer {
   display: flex;
   flex-direction: column;
-  padding: 1rem 2rem 2rem 2rem;
   margin-bottom: 3rem;
   border-radius: 3px;
-  background-color:#f4f4f4 
+  border-bottom: 2px solid $light_grey;
+  padding-bottom: 2rem;
 }
 
 .headingBlurb {

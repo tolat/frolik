@@ -295,3 +295,8 @@ export function pixelsToRem(pixels) {
 
   return pixels / rootFontSize;
 }
+
+export const objectsAreEqual = (obj1, obj2) => {
+  console.log(obj1, obj2)
+  return JSON.stringify(obj1) === JSON.stringify(obj2);
+};

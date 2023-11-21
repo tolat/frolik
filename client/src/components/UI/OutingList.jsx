@@ -4,6 +4,7 @@ import styles from "./styles/OutingList.module.scss";
 import { outingIsCompleted, sortByDate } from "../../utils/utils";
 import SimpleSearch from "./SimpleSearch";
 import { useState } from "react";
+import FeedCard from "./FeedCard";
 
 const OutingList = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -77,11 +78,7 @@ const OutingList = (props) => {
           .toSorted((a, b) => sortByDate(b.date_created, a.date_created))
           .map((o) => (
             <div key={Math.random()} className={styles.outingContainer}>
-              <OutingCard
-                setModalOuting={props.setModalOuting}
-                outing={o}
-                user={user}
-              />
+              <FeedCard outing={o} />
             </div>
           ))}
     </div>

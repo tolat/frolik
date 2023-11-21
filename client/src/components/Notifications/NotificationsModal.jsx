@@ -43,7 +43,7 @@ const NotificationsModal = (props) => {
         okClick={onPopupOk}
       />
       <div style={modalStyle} className={styles.container}>
-        <div className={modalStyles.header}>Notifications</div>
+        <div className={modalStyles.header}>Alerts</div>
         {user.notifications[0] ? (
           user.notifications
             .toSorted((a, b) => dateSort(b.created, a.created))
@@ -118,7 +118,7 @@ const NotificationsModal = (props) => {
             />
             <div className={styles.nothingRightContainer}>
               <div className={styles.nothingRightHeader}>Nothing Here!</div>
-              <div>Your notifications will show up here</div>
+              <div>Your alerts will show up here</div>
             </div>
           </div>
         )}
