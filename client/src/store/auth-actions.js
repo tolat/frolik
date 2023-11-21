@@ -34,7 +34,7 @@ export const fetchLogin = (username, password, setData) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
-export const fetchAuth = () => {
+export const fetchAuth = (onComplete = () => {}) => {
   const dispatch = store.dispatch;
 
   // return if already fetching auth
@@ -53,6 +53,8 @@ export const fetchAuth = () => {
       dispatch(authActions.login(response));
       fetchGobals();
     }
+
+    return onComplete(response);
   };
 
   const handleError = (err) => {
@@ -60,11 +62,13 @@ export const fetchAuth = () => {
 
     console.log("ERROR: ", err);
     dispatch(authActions.logout());
+
+    return null
   };
 
   try {
     store.dispatch(authActions.setFetchingAuth(true));
-    httpFetch(requestConfig, handleResponse, handleError);
+    return httpFetch(requestConfig, handleResponse, handleError);
   } catch (err) {
     store.dispatch(authActions.setFetchingAuth(false));
     console.log(err);

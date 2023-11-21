@@ -10,6 +10,16 @@
   width: 60%;
 }
 
+.header{
+  display: flex;
+  align-items: center;
+}
+
+.logo{
+  height: 4rem;
+  margin-right: 1rem;
+}
+
 .container {
   display: flex;
   flex-direction: column;

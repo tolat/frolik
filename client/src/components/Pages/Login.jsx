@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./styles/Login.module.scss";
 import { useDispatch } from "react-redux";
-import { fetchLogin } from "../../store/auth-actions";
+import { fetchAuth, fetchLogin } from "../../store/auth-actions";
 import { useSelector } from "react-redux";
-import { redirect } from "react-router-dom";
-import store from "../../store";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import SimpleInput from "../UI/SimpleInput";
 import CreateAccountModal from "../Modals/CreateAccountModal";
 import SimpleButton from "../UI/SimpleButton";
 import { modalActions } from "../../store/modal-slice";
 import { fetchGobals } from "../../utils/data-fetch";
+import logoIcon from "../../images/balloon1.png";
+import store from "../../store";
 
 function Login() {
   const usernameRef = useRef();
@@ -50,7 +50,11 @@ function Login() {
     <div className={styles["login-page"]}>
       <CreateAccountModal />
       <form className={styles["login-form"]} onSubmit={handleSubmit}>
-        <h2>Login</h2>
+        <h1 className={styles.header}>
+          {" "}
+          <img className={styles.logo} src={logoIcon} alt="logo" />
+          Login
+        </h1>
         <div>
           <SimpleInput
             type="text"
@@ -93,9 +97,12 @@ function Login() {
 export default Login;
 
 export const loginLoader = async () => {
-  if (store.getState().auth.isAuthenticated) {
-    return redirect("/profile");
-  }
+  const onComplete = (response) => {
+    if (response.user) {
+      const previousUrl = localStorage.getItem("previousUrl") || "/profile";
+      return redirect(previousUrl);
+    }
+  };
 
-  return null;
+  return await fetchAuth(onComplete) || null
 };

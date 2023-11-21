@@ -1,6 +1,5 @@
 import { redirect } from "react-router-dom";
 import store from "../store";
-import { fetchAuth } from "../store/auth-actions";
 import { hideModal } from "../store/modal-actions";
 import { modalActions } from "../store/modal-slice";
 import { fetchChats, updateChatLastRead } from "./data-fetch";
@@ -16,9 +15,6 @@ export const calcAvgRating = (activity) => {
 };
 
 export const pageRouteLoader = async () => {
-  // fetch session authentication in the background
-  fetchAuth();
-
   // Don't use previous modal
   store.dispatch(modalActions.setUsePrevious(false));
 

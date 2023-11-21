@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom"; // Import Link from react-router-dom
+import { NavLink, useLocation } from "react-router-dom"; // Import Link from react-router-dom
 import styles from "./styles/Navbar.module.scss";
 import NavButton from "../UI/NavButton";
 import logo from "../../images/air-balloon.png";
@@ -12,7 +12,7 @@ import ChatModal from "../Modals/ChatModal";
 import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
 import outingsBarIcon from "../../images/outingsToolbar.png";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import ProfileViewerModal from "../Modals/ProfileViewerModal";
 import profileIcon from "../../images/account.png";
 import chatIcon from "../../images/chat.png";
@@ -28,9 +28,10 @@ const Navbar = (props) => {
   const modalState = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   const unreadChatMessages = user && getTotalUnreadMessages(user);
+  const location = useLocation();
+  const currentUrl = location.pathname;
   const makeActive = (navData) =>
     navData.isActive ? styles.activeLink : "none";
-
   const handleShowNotifications = async () => {
     if (modalState.selector && modalState.selector !== "notifications") {
       await hideModal();
@@ -64,6 +65,22 @@ const Navbar = (props) => {
     fetchLogout();
   };
 
+  // Save current url for use when window refreshes
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      // Save current url to localstorage
+      localStorage.setItem("previousUrl", currentUrl);
+    };
+
+    // Add event listener for beforeunload
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [currentUrl]);
+
   return (
     <div className={styles.header}>
       {user && (
@@ -89,7 +106,7 @@ const Navbar = (props) => {
             <NavButton
               onClick={handleShowNotifications}
               icon={bell}
-              text={'Alerts'}
+              text={"Alerts"}
               className={`${styles.navButton} ${styles.notificationsHover}`}
             >
               {user && user.notifications.length > 0 ? (
@@ -101,28 +118,28 @@ const Navbar = (props) => {
             <NavLink className={(navData) => makeActive(navData)} to="/go">
               <NavButton
                 icon={logo}
-                text={'Outing'}
+                text={"Outing"}
                 className={`${styles.navButton} ${styles.createOutingHover}`}
               />
             </NavLink>
             <NavLink className={(navData) => makeActive(navData)} to="/profile">
               <NavButton
                 icon={profileIcon}
-                text={'Profile'}
+                text={"Profile"}
                 className={`${styles.navButton} ${styles.profileHover}`}
               />
             </NavLink>
             <NavLink className={(navData) => makeActive(navData)} to="/social">
               <NavButton
                 icon={feedIcon}
-                text={'Social'}
+                text={"Social"}
                 className={`${styles.navButton} ${styles.socialHover}`}
               />
             </NavLink>
             <NavLink className={(navData) => makeActive(navData)} to="/chat">
               <NavButton
                 icon={chatIcon}
-                text={'Chats'}
+                text={"Chats"}
                 className={`${styles.navButton} ${styles.chatsHover}`}
               >
                 {unreadChatMessages > 0 ? (
@@ -134,7 +151,7 @@ const Navbar = (props) => {
             </NavLink>
             <NavButton
               onClick={handleLogout}
-              text={'Logout'}
+              text={"Logout"}
               icon={logoutIcon}
               className={`${styles.navButton} ${styles.logoutHover}`}
             />

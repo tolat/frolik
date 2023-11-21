@@ -7,6 +7,7 @@ import { receiveChatMessage, sendChatMessage } from "./store/chat-actions";
 import { useSelector } from "react-redux";
 import store from "./store";
 import { goActions } from "./store/go-slice";
+import { fetchAuth } from "./store/auth-actions";
 
 function App() {
   // Connect socket.io to server for message sending
@@ -21,8 +22,8 @@ function App() {
     // Connect once user is authenticated
     if (user) {
       //add user to go state
-      store.dispatch(goActions.addUser(user))
-      
+      store.dispatch(goActions.addUser(user));
+
       try {
         socket.connect();
         socket.emit("join-room", user._id);

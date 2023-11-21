@@ -55,14 +55,14 @@ const Chat = memo((props) => {
     <div className={styles.container}>
       <CreateChatModal />
       <div className={styles.upperContainer}>
+        <SimpleButton onClick={onCreateChat} className={styles.newChatButton}>
+          + New Chat
+        </SimpleButton>
         <SimpleSearch
           setValue={setChatSearch}
           defaultVal={""}
           placeholder={"Search Chats.."}
         />
-        <SimpleButton onClick={onCreateChat} className={styles.newChatButton}>
-          + New Chat
-        </SimpleButton>
       </div>
       {!chats[0] ? (
         <h2 style={{ width: "100%", textAlign: "center" }}>Loading Chats..</h2>

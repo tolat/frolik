@@ -11,6 +11,8 @@ function useTraceUpdate(props) {
       }, {});
       if (Object.keys(changedProps).length > 0) {
         console.log('Changed props:', changedProps);
+      } else{
+        console.log('No props changed.')
       }
       prev.current = props;
     });

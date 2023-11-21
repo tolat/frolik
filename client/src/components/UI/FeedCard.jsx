@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import UserIconCluster from "./UserIconCluster";
 import styles from "./styles/FeedCard.module.scss";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchOutingPhoto, fetchProfilePic } from "../../utils/data-fetch";
 import { dataActions } from "../../store/data-slice";
 import SimpleButton from "./SimpleButton";
@@ -11,7 +11,6 @@ import { popupActions } from "../../store/popup-slice";
 import EmptyPopup from "../Popups/EmptyPopup";
 import ActivityCard from "./ActivityCard";
 import FriendCard from "./FriendCard";
-import ImageLoadingTile from "./ImageLoadingTile";
 
 const FeedCard = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -44,13 +43,10 @@ const FeedCard = (props) => {
     }
   }, [user, outing, dispatch, cachedPhotos]);
 
-  const onImageClick = useCallback(
-    (img) => {
-      dispatch(popupActions.setPopupImage(img));
-      dispatch(popupActions.showPopup("view-photo"));
-    },
-    [dispatch]
-  );
+  const onImageClick = (img) => {
+    dispatch(popupActions.setPopupImage(img));
+    dispatch(popupActions.showPopup("view-photo"));
+  };
 
   // Get missing profile pictures from server
   useEffect(() => {
@@ -59,26 +55,17 @@ const FeedCard = (props) => {
     }
   }, [outingUsers]);
 
-  const onImageLoad = (e, id) => {
-    e.target.classList.remove("hidden");
-    document.getElementById(id).classList.add("hidden");
-  };
-
-  const photoList = useMemo(() => {
-    return outingPhotos.map((img) => (
-      <div key={Math.random()} className={styles.imageContainer}>
-        <ImageLoadingTile id={img} />
-        <img
-          onLoad={(e) => onImageLoad(e, img)}
-          onClick={(e) => onImageClick(img)}
-          key={Math.random()}
-          className={`${styles.image} hidden`}
-          src={img}
-          alt="feed-pic"
-        />
-      </div>
-    ));
-  }, [outingPhotos, onImageClick]);
+  const photoList = outingPhotos.map((img) => (
+    <div key={Math.random()} className={styles.imageContainer}>
+      <img
+        onClick={(e) => onImageClick(img)}
+        key={Math.random()}
+        className={`${styles.image}`}
+        src={img}
+        alt="feed-pic"
+      />
+    </div>
+  ));
 
   return (
     outing && (

@@ -24,18 +24,18 @@ export default async function httpFetch(
         store.dispatch(authActions.logout());
         window.location = '/login'
       } else {
-        handleError(response);
+        return handleError(response);
       }
     } else {
       const contentType = response.headers.get("Content-Type");
       if (contentType && contentType.includes("application/json")) {
         const data = await response.json();
-        handleResponse(data);
+        return handleResponse(data);
       } else {
-        handleResponse(response);
+        return handleResponse(response);
       }
     }
   } catch (err) {
-    handleError(err);
+    return handleError(err);
   }
 }

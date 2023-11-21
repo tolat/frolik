@@ -20,6 +20,8 @@ const OutingList = (props) => {
     )
   );
 
+  
+
   function applyOutingSearch(outings) {
     return outingSearch || outingSearch !== ""
       ? outings.filter((o) => {
