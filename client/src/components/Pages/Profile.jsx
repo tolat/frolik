@@ -6,7 +6,6 @@ import PhotoGrid from "../UI/PhotoGrid";
 import photos from "../../images/photogrid.png";
 import friends from "../../images/friends.png";
 import outings from "../../images/outing2.png";
-import SimpleButton from "../UI/SimpleButton";
 import OutingList from "../UI/OutingList";
 import { modalActions } from "../../store/modal-slice";
 import EditProfileModal from "../Modals/EditProfileModal";
