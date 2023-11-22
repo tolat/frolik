@@ -11,6 +11,7 @@ const session = require("express-session");
 const cors = require("cors"); // Add this line
 const inDevelopment = process.env.NODE_ENV == "development";
 const { handleCORS } = require("./utils/middleware");
+const favicon = require('serve-favicon');
 
 // Set up express
 const app = express();
@@ -21,6 +22,9 @@ app.use(
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json({ limit: "50mb" }));
 app.use(handleCORS);
+
+// Set favicon
+app.use(favicon(__dirname + '/public/favicon.ico'));
 
 // Set up socket.io for chat
 const http = require("http");
