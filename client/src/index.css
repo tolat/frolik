@@ -35,7 +35,6 @@ code {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  zoom: 0.65;
 }
 
 a:link {
