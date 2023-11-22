@@ -59,6 +59,7 @@ export const fetchAuth = (onComplete = () => {}) => {
     store.dispatch(authActions.setFetchingAuth(false));
 
     console.log("ERROR: ", err);
+    err.text().then(data=>console.log(data))
     dispatch(authActions.logout());
 
     return null
