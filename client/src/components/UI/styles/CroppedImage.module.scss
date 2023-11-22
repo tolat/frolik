@@ -11,6 +11,10 @@
 
   :global(.reactEasyCrop_Image) {
     cursor: auto;
-    border-radius: 100rem;
+    border-radius: 1000rem;
+  }
+
+  :global(.reactEasyCrop_Container) {
+    border-radius: 1000rem;
   }
 }
