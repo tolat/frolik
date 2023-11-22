@@ -77,8 +77,8 @@ const UserIcon = memo(function UserIcon(props) {
     master;
   let zoom = userData?.zoom;
   let crop = { ...userData?.crop };
-  crop.x = crop.x * scalingFactor;
-  crop.y = crop.y * scalingFactor;
+  crop.x *= scalingFactor;
+  crop.y *= scalingFactor;
   const photoString = userData?.profile_picture;
   const iconID = `usericon-${Math.random()}`;
 
@@ -101,8 +101,13 @@ const UserIcon = memo(function UserIcon(props) {
         className={styles.whiteBacker}
       >
         {props.badge && photoString && photoString !== "queued" ? (
-          <div className={styles.badgeContainer}>
-            <div className={styles.badgeContent}>{props.badge}</div>
+          <div className={styles.badgeContainer} style={props.badgeStyle}>
+            <div
+              className={styles.badgeContent}
+              style={props.badgeContentStyle}
+            >
+              {props.badge}
+            </div>
           </div>
         ) : null}
         {!photoString || photoString === "queued" ? (

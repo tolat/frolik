@@ -12,12 +12,12 @@ import { popupActions } from "../../store/popup-slice";
 const FriendCard = (props) => {
   const statIconStyle = { width: "2rem", height: "2rem" };
   const statContainerStyle = { marginLeft: "1rem" };
-  const sizeInRem = props.small ? "5" : "6";
+  const sizeInRem = props.small ? "5" : "6.5";
   const borderSizeInRem = props.small ? "0.5" : "0.8";
   const nameStyle = { fontSize: props.small ? "1.8rem" : null };
   const dispatch = useDispatch();
   const modalState = useSelector((state) => state.modal);
-  const flakeRating = props.user && calculateFlakeRating(props.user)
+  const flakeRating = props.user && calculateFlakeRating(props.user);
   const detailsContainerStyle = props.small
     ? {
         display: "flex",
@@ -31,11 +31,18 @@ const FriendCard = (props) => {
     if (modalState.selector !== "none") {
       await hideModal(true);
     }
-    dispatch(popupActions.hidePopup())
+    dispatch(popupActions.hidePopup());
     dispatch(modalActions.setActiveModalUser(props.user));
     dispatch(modalActions.setSelector("profile-viewer-modal"));
     dispatch(modalActions.showModal());
   };
+
+  const statusBadge =
+    props.user.status.status === "Ready" ? (
+      <div className={styles.readyBadge} />
+    ) : (
+      <div className={styles.busyBadge} />
+    );
 
   return (
     <div
@@ -49,6 +56,17 @@ const FriendCard = (props) => {
             sizeInRem={sizeInRem}
             borderSizeInRem={borderSizeInRem}
             user={props.user}
+            badge={statusBadge}
+            badgeStyle={{
+              right: "0.5rem",
+              bottom: "0.5rem",
+              width: "25%",
+              height: "25%",
+            }}
+            badgeContentStyle={{
+              width: '75%',
+              height: '75%'
+            }}
           />
         </div>
 

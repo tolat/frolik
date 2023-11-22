@@ -49,7 +49,7 @@ const getPhotosFromState = (userData) => {
 
 const Profile = (props) => {
   const user = { ...useSelector((state) => state.auth.user) };
-  const [selectedSliderKey, setSelectedSliderKey] = useState("_photos");
+  const [selectedSliderKey, setSelectedSliderKey] = useState("_outings");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const dataState = useSelector((state) => state.data);
