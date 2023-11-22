@@ -6,7 +6,7 @@ import { pixelsToRem } from "../../utils/utils";
 const Popup = (props) => {
   const [opacity, setOpacity] = useState(0);
   const showPopup = props.showPopup;
-  const noGutters = pixelsToRem(window.innerWidth) / 0.65 < 40;
+  const noGutters = pixelsToRem(window.innerWidth) < 40;
   const containerStyle = {
     width: noGutters ? "100vw" : null,
     margin: noGutters ? "0" : null,

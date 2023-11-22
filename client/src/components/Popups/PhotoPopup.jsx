@@ -11,7 +11,7 @@ const PhotoPopup = (props) => {
   const showPopup = popupState.selector === "view-photo";
   const popupDisplay = showPopup ? "flex" : "none";
   const [opacity, setOpacity] = useState(0);
-  const noGutters = pixelsToRem(window.innerWidth) / 0.65 < 40;
+  const noGutters = pixelsToRem(window.innerWidth) < 40;
   const popupStyle = { display: popupDisplay, opacity: opacity };
   const popupImage = useSelector((state) => state.popup.popupImage);
   const containerStyle = {

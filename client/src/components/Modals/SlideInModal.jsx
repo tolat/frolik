@@ -15,7 +15,7 @@ function pixelsToRem(pixels) {
 
 const SlideInModal = (props) => {
   const modalState = useSelector((state) => state.modal);
-  const noGutters = pixelsToRem(window.innerWidth) / 0.65 < 40;
+  const noGutters = pixelsToRem(window.innerWidth) < 40;
   const outerContainerWidth = noGutters ? "200%" : null;
   const outerContainerMarginLeft = noGutters ? "100%" : null;
   const containerWidth = noGutters ? "50%" : null;

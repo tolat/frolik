@@ -11,12 +11,11 @@ const EmptyPopup = (props) => {
   const showPopup = popupState.selector === props.selector;
   const popupDisplay = showPopup ? "flex" : "none";
   const [opacity, setOpacity] = useState(0);
-  const noGutters = pixelsToRem(window.innerWidth) / 0.65 < 40;
+  const noGutters = pixelsToRem(window.innerWidth) < 40;
   const popupStyle = { display: popupDisplay, opacity: opacity };
   const containerStyle = {
     width: noGutters ? "100%" : null,
-    height: noGutters ? "0" : null,
-    paddingBottom: noGutters ? "100%" : null,
+    height: noGutters ? "fit-content" : null,
   };
 
   const dispatch = useDispatch();
