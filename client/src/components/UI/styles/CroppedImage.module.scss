@@ -5,16 +5,18 @@
   justify-content: center;
   border-radius: 100rem;
 
-  :global(.reactEasyCrop_CropArea) {
-    display: none;
-  }
-
+  
   :global(.reactEasyCrop_Image) {
     cursor: auto;
-    border-radius: 1000rem;
-  }
+    border-radius: 100rem;
+  };
 
   :global(.reactEasyCrop_Container) {
-    border-radius: 1000rem;
+    border-radius: 100rem;
+    transform: translateZ(0)
+  }
+
+  :global(.reactEasyCrop_CropArea) {
+    display: none;
   }
 }
