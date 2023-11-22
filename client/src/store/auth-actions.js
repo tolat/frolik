@@ -4,7 +4,7 @@ import store from ".";
 import { getServer } from "../utils/env-utils";
 import { dataActions } from "./data-slice";
 import { initializeUserPhotos } from "./data-actions";
-import { fetchChats, fetchGlobals } from "../utils/data-fetch";
+import { fetchChats } from "../utils/data-fetch";
 
 // Send request to log the user in and start a session in the browser
 export const fetchLogin = (username, password, setData) => {

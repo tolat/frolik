@@ -8,7 +8,6 @@ import SimpleInput from "../UI/SimpleInput";
 import CreateAccountModal from "../Modals/CreateAccountModal";
 import SimpleButton from "../UI/SimpleButton";
 import { modalActions } from "../../store/modal-slice";
-import { fetchGlobals } from "../../utils/data-fetch";
 
 function Login() {
   const usernameRef = useRef();
