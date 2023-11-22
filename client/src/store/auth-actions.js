@@ -19,7 +19,7 @@ export const fetchLogin = (username, password, setData) => {
 
   const handleResponse = (response) => {
     console.log("RESPONSE: ", response);
-    response.text().then((data) => console.log("DATA: ", data));
+    response.body.text().then((data) => console.log("DATA: ", data));
     response.user.friends = response.populatedFriends;
     store.dispatch(authActions.login(response));
     initializeUserPhotos(response.user);
