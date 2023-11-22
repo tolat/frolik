@@ -16,7 +16,7 @@ function App() {
   // Fetch Globals once on app load
   useEffect(() => {
     fetchGlobals();
-  });
+  },[]);
 
   useEffect(() => {
     socket.on("connect", onConnect);
