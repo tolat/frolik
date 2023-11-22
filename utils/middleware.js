@@ -6,7 +6,7 @@ module.exports.handleCORS = async (req, res, next) => {
     "Access-Control-Allow-Origin",
     process.env.NODE_ENV == "development"
       ? "http://localhost:3000"
-      : process.env.server
+      : process.env.SERVER
   );
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
   res.header(
