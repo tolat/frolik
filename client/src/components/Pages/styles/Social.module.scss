@@ -12,3 +12,21 @@
   color: white;
   background-color: $blue;
 }
+
+.noOutingsMessage{
+  padding: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: baseline;
+  text-align: center;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+}
+.noOutingsMessageText{
+  width: 70%;
+  font-size: 1.3rem;
+}
+.noOutingsMessageHeader{
+  font-size: 1.8rem;
+}

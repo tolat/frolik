@@ -5,7 +5,7 @@ const StatIcon = (props) => {
     <div
       onClick={props.onClick}
       style={props.style}
-      className={styles.container}
+      className={`${styles.container} ${props.className}`}
     >
       <img
         style={props.iconStyle}

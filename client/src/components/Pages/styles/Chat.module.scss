@@ -17,5 +17,23 @@
   margin-top: 2rem;
 }
 
+.noChatsMessage{
+  padding: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: baseline;
+  text-align: center;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+}
+.noChatsMessageText{
+  width: 70%;
+  font-size: 1.3rem;
+}
+.noChatsMessageHeader{
+  font-size: 1.8rem;
+}
+
 
 

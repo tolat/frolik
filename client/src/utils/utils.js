@@ -223,7 +223,9 @@ export const calculateFlakeRating = (user) => {
   const flakeCount = user.outings.filter((o) =>
     o.flakes.find((id) => id === user._id)
   ).length;
-  return ((flakeCount / outingCount) * 5).toFixed(1);
+
+  const rating = ((flakeCount / outingCount) * 5).toFixed(1);
+  return isNaN(rating) ? 0.0 : rating;
 };
 
 export const dateSort = (a, b) => {
@@ -293,6 +295,6 @@ export function pixelsToRem(pixels) {
 }
 
 export const objectsAreEqual = (obj1, obj2) => {
-  console.log(obj1, obj2)
+  console.log(obj1, obj2);
   return JSON.stringify(obj1) === JSON.stringify(obj2);
 };

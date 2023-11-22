@@ -9,7 +9,6 @@ import CreateAccountModal from "../Modals/CreateAccountModal";
 import SimpleButton from "../UI/SimpleButton";
 import { modalActions } from "../../store/modal-slice";
 import { fetchGobals } from "../../utils/data-fetch";
-import logoIcon from "../../images/balloon1.png";
 
 function Login() {
   const usernameRef = useRef();
@@ -49,11 +48,7 @@ function Login() {
     <div className={styles["login-page"]}>
       <CreateAccountModal />
       <form className={styles["login-form"]} onSubmit={handleSubmit}>
-        <h1 className={styles.header}>
-          {" "}
-          <img className={styles.logo} src={logoIcon} alt="logo" />
-          Login
-        </h1>
+        <h1 className={styles.header}>Login</h1>
         <div>
           <SimpleInput
             type="text"
@@ -103,5 +98,5 @@ export const loginLoader = async () => {
     }
   };
 
-  return await fetchAuth(onComplete) || null
+  return (await fetchAuth(onComplete)) || null;
 };

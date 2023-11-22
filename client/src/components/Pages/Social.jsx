@@ -17,7 +17,7 @@ const Social = (props) => {
     sortByDate(outings[b].date_created, outings[a].date_created)
   );
 
-  const validKeys = applyChatSearch(sortedKeys)
+  const validKeys = applyChatSearch(sortedKeys);
 
   const getOutings = (user) => {
     const onComplete = (response) => {
@@ -79,11 +79,24 @@ const Social = (props) => {
         placeholder={"Search Posts.."}
       />
       {outings ? (
-        <div className={styles.container}>
-          {validKeys.map((k) => (
-            <FeedCard key={Math.random()} outing={outings[k]} />
-          ))}
-        </div>
+        Object.keys(outings)[0] ? (
+          <div className={styles.container}>
+            {validKeys.map((k) => (
+              <FeedCard key={Math.random()} outing={outings[k]} />
+            ))}
+          </div>
+        ) : (
+          <div className={styles.noOutingsMessage}>
+            <h2 className={styles.noOutingsMessageHeader}>
+              Nothing to show yet!
+            </h2>
+
+            <div className={styles.noOutingsMessageText}>
+              You'll see outings completed by people in your friends network
+              here.
+            </div>
+          </div>
+        )
       ) : (
         <h2>Loading Feed..</h2>
       )}

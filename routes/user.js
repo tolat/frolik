@@ -150,8 +150,12 @@ router.post(
     // Get stripped down populated friends list
     const populatedFriends = await populateFriends(user.friends);
 
+    // Push update to all user friends
+    pushUserUpdate(user.friends);
+
     // Only upload image if it is not the same as the current
-    if (photoString.length > 10000) {
+    // (will be a base64 string for new uploads)
+    if (photoString.includes("base64")) {
       // Resize/compress image before upload
       const imageBuffer = Buffer.from(photoString.slice(23), "base64");
       const reducedImageBuffer = await sharp(imageBuffer)
@@ -199,11 +203,18 @@ router.post(
       sendEmail(userData.username, "Confirm Email", link);
       user.status = { status: "Pending", updated: Date.now() };
 
+      // Convert to buffer and adjust quality before uploading
+      const imageBuffer = Buffer.from(req.body.photoString.slice(23), "base64");
+      const reducedImageBuffer = await sharp(imageBuffer)
+        .jpeg({ quality: 30 })
+        .withMetadata()
+        .toBuffer();
+
       // Upload image to S3
       uploadToS3(
         process.env.AWS_BUCKET,
         user.profile_picture.key,
-        req.body.photoString
+        reducedImageBuffer
       )
         .then((response) => {
           res.sendStatus(200);
@@ -1130,6 +1141,7 @@ router.post(
   })
 );
 
+// Get Feed Outings
 router.get(
   "/:id/feed-outings",
   reqAuthenticated,

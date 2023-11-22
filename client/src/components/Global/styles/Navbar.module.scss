@@ -20,6 +20,7 @@
   align-items: center;
   justify-content: center;
   width: $central_span_width;
+  position: relative;
 }
 .none {
   width: 100%;
@@ -185,4 +186,9 @@
   justify-content: center;
   align-items: center;
   position: relative;
+}
+
+.logo{
+  height: 5rem;
+ 
 }

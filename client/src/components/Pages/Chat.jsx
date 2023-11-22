@@ -64,8 +64,18 @@ const Chat = memo((props) => {
           placeholder={"Search Chats.."}
         />
       </div>
-      {!chats[0] ? (
+      {!chats ? (
         <h2 style={{ width: "100%", textAlign: "center" }}>Loading Chats..</h2>
+      ) : !chats[0] ? (
+        <div className={styles.noChatsMessage}>
+          <h2 className={styles.noChatsMessageHeader}>
+            Nothing to show yet!
+          </h2>
+
+          <div className={styles.noChatsMessageText}>
+            You'll see your chats with friends and for specific Outings here.
+          </div>
+        </div>
       ) : (
         <div className={styles.chatsContainer}>
           {validChats

@@ -2,11 +2,11 @@ const path = require("path");
 const fs = require("fs")
 
 module.exports.categoryColorMap = {
-  Games: "rgb(117, 204, 255)",
-  Art: "rgb(186, 255, 169)",
-  Sports: "rgb(255 236 69)",
-  Food: "rgb(238 183 220)",
   Adventure: "rgb(248 157 157)",
+  Art: "rgb(186, 255, 169)",
+  Food: "rgb(238 183 220)",
+  Games: "rgb(117, 204, 255)",
+  Sports: "rgb(255 236 69)"
 };
 
 module.exports.statusMap = {

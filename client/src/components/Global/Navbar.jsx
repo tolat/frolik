@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useLocation } from "react-router-dom"; // Import Link from react-router-dom
 import styles from "./styles/Navbar.module.scss";
 import NavButton from "../UI/NavButton";
-import logo from "../../images/air-balloon.png";
 import bell from "../../images/bell6.png";
 import { hideModal } from "../../store/modal-actions";
 import NotificationsModal from "../Notifications/NotificationsModal";
@@ -21,6 +20,8 @@ import { getTotalUnreadMessages } from "../../utils/utils";
 import PhotoPopup from "../Popups/PhotoPopup";
 import logoutIcon from "../../images/logout.png";
 import { fetchLogout } from "../../store/auth-actions";
+import outingIcon from "../../images/air-balloon.png"
+import logo from "../../images/frolik2.png";
 
 const Navbar = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -117,7 +118,7 @@ const Navbar = (props) => {
             </NavButton>
             <NavLink className={(navData) => makeActive(navData)} to="/go">
               <NavButton
-                icon={logo}
+                icon={outingIcon}
                 text={"Outing"}
                 className={`${styles.navButton} ${styles.createOutingHover}`}
               />
@@ -157,7 +158,7 @@ const Navbar = (props) => {
             />
           </div>
         ) : (
-          <div></div>
+          <img alt="logo" src={logo} className={styles.logo} />
         )}
       </div>
     </div>

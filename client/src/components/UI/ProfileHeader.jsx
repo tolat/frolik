@@ -37,6 +37,7 @@ const ProfileHeader = (props) => {
             alt="flake"
             icon={flakeIcon}
             iconStyle={iconStyle}
+            className={styles.flakeIcon}
             rating={flakeRating}
           />
           <UserIcon
@@ -49,6 +50,7 @@ const ProfileHeader = (props) => {
           <StatIcon
             alt="outings"
             icon={outingsIcon}
+            className={styles.outingsIcon}
             iconStyle={iconStyle}
             rating={props.user.outings?.length}
           />

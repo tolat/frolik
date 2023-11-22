@@ -49,7 +49,9 @@ const ProfileEditor = (props) => {
       // Read file into a base64String and update the staged image
       const reader = new FileReader();
       reader.onload = () => {
-        const base64Image = arrayBufferToBase64(reader.result);
+        const base64Image = `data:image/jpeg;base64,${arrayBufferToBase64(
+          reader.result
+        )}`;
         dispatchStageData({
           id: "profile_picture",
           value: base64Image,
@@ -219,7 +221,7 @@ const ProfileEditor = (props) => {
           type="text"
           id="last_name"
           name="last_name"
-          label="Last Name:"
+          label="Last Name (optional):"
           defaultVal={defaultValues.last_name}
           setDataChanged={(value) => {
             dispatchStageData({ id: "last_name", value });
