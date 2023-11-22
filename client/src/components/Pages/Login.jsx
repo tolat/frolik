@@ -70,12 +70,17 @@ function Login() {
           />
         </div>
 
-        <SimpleButton className={styles.loginButton} type={"submit"}>
+        <SimpleButton
+          noShadow={true}
+          className={styles.loginButton}
+          type={"submit"}
+        >
           {!isLoggingIn && !authState.isAuthenticated
             ? "Login"
             : "Logging in..."}
         </SimpleButton>
         <SimpleButton
+          noShadow={true}
           onClick={handleCreateAccountButtonClick}
           className={styles.createAccountButton}
         >

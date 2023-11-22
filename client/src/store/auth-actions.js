@@ -27,7 +27,7 @@ export const fetchLogin = (username, password, setData) => {
 
   const handleError = (err) => {
     setData(false);
-    console.log(err.status);
+    console.log(err, err.status);
   };
 
   httpFetch(requestConfig, handleResponse, handleError);
