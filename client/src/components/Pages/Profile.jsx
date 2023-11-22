@@ -24,7 +24,7 @@ import ProfileHeader from "../UI/ProfileHeader";
 import { goActions } from "../../store/go-slice";
 import { createChat, fetchChats } from "../../utils/data-fetch";
 import { hideModal } from "../../store/modal-actions";
-import editIcon from "../../images/edit-light.png";
+import editIcon from "../../images/edit-centered.png";
 
 const sliderIcons = [
   {

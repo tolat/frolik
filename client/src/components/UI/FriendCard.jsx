@@ -73,6 +73,7 @@ const FriendCard = (props) => {
         <div className={styles.detailsContainer} style={detailsContainerStyle}>
           <div className={styles.userName} style={nameStyle}>
             {`${props.user.first_name} ${props.user.last_name}`}
+            <div className={styles.location}>{props.user.location}</div>
           </div>
           <div className={styles.ratingsContainer}>
             <StatIcon
