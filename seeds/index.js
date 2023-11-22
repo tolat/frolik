@@ -14,7 +14,7 @@ const { userSeeds, userSeeds2, userSeeds3 } = require("./user");
 const { activitySeeds } = require("./activity");
 const { uploadToS3, deleteFromS3, deleteAllFromS3 } = require("../utils/S3");
 const { generateUniqueName } = require("../utils/utils");
-const { categoryColorMap, statusMap, loadCityData } = require("./globals");
+const { categoryColorMap, statusMap } = require("./globals");
 
 // Connect to the database and handle connection errors
 mongoose.connect(dbUrl, {
@@ -51,11 +51,10 @@ const UploadImagesToS3 = async (directoryPath) => {
     // Upload image to s3
     const imageBuffer = await fs.readFileSync(imagePath);
     const reducedImageBuffer = await sharp(imageBuffer)
-      .jpeg({ quality: 70 })
+      .jpeg({ quality: 60 })
       .toBuffer();
 
-    const imageString = reducedImageBuffer.toString("base64");
-    await uploadToS3(process.env.AWS_BUCKET, simpleKey, imageBuffer);
+    await uploadToS3(process.env.AWS_BUCKET, simpleKey, reducedImageBuffer);
   };
 
   for (key of files) {
@@ -70,9 +69,7 @@ const UploadImagesToS3 = async (directoryPath) => {
 };
 
 const seedGlobals = async () => {
-  const cityData = await loadCityData();
-
-  const globals = new Globals({ categoryColorMap, statusMap, cityData });
+  const globals = new Globals({ categoryColorMap, statusMap });
   await globals.save();
 };
 
@@ -178,7 +175,7 @@ const seedOutings = async (seeds) => {
       await user.save();
       await user2.save();
 
-      outing.completions.push(user,user2)
+      outing.completions.push(user, user2);
 
       let user3 = null;
       if (Math.random() > 0.5) {
@@ -186,7 +183,7 @@ const seedOutings = async (seeds) => {
         user3.outings.push(outing);
         outing.users.push(user3);
         await user3.save();
-        outing.completions.push(user3)
+        outing.completions.push(user3);
       }
 
       let user4 = null;
@@ -195,7 +192,7 @@ const seedOutings = async (seeds) => {
         user4.outings.push(outing);
         outing.users.push(user4);
         await user4.save();
-        outing.completions.push(user4)
+        outing.completions.push(user4);
       }
 
       let user5 = null;
@@ -206,7 +203,7 @@ const seedOutings = async (seeds) => {
         user5.outings.push(outing);
         outing.users.push(user5);
         await user5.save();
-        outing.completions.push(user5)
+        outing.completions.push(user5);
       }
 
       await outing.save();
@@ -253,11 +250,9 @@ const seedChats = async () => {
       });
     }
 
-    
-
     // Add chat to chats list for all outing users
     for (user of outing.users) {
-      chat.last_read[user._id.toString()] = chat.messages[0].id
+      chat.last_read[user._id.toString()] = chat.messages[0].id;
       if (!user.chats) {
         user.chats = [];
       }

@@ -3,10 +3,8 @@ const User = require("../models/user");
 const Outing = require("../models/outing");
 const Activity = require("../models/activity");
 const express = require("express");
-const fs = require("fs/promises");
 const { populateUser, populateFriends } = require("../utils/utils");
 const { tryCatch } = require("../utils/middleware");
-const Globals = require("../models/globals");
 
 const router = express.Router({ mergeParams: true });
 
@@ -15,11 +13,10 @@ router.post(
   passport.authenticate("local"),
   tryCatch(async (req, res) => {
     const user = await User.findOne({ username: req.body.username });
-    const globals = await Globals.findOne({});
 
     // If user status is pending, don;t allow login
-    if(user.status == 'Pending'){
-      res.status(406).send('User must verify account via email')
+    if (user.status == "Pending") {
+      res.status(406).send("User must verify account via email");
     }
 
     // Populate user
@@ -31,7 +28,7 @@ router.post(
     // Send unacceptable status code 406 if user has a 'Pending' status
     user.status.status == "Pending"
       ? res.sendStatus(406)
-      : res.send({ user, populatedFriends, globals });
+      : res.send({ user, populatedFriends });
   })
 );
 
@@ -40,7 +37,6 @@ router.get(
   tryCatch(async (req, res) => {
     if (req.isAuthenticated()) {
       let user = await User.findOne({ username: req.session.passport.user });
-      const globals = await Globals.findOne({});
 
       // Populate user
       await populateUser(user);
@@ -48,7 +44,7 @@ router.get(
       // Get stripped down populated friends list
       const populatedFriends = await populateFriends(user.friends);
 
-      res.send({ user, populatedFriends, globals });
+      res.send({ user, populatedFriends });
     } else {
       res.send({});
     }

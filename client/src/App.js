@@ -7,10 +7,17 @@ import { receiveChatMessage, sendChatMessage } from "./store/chat-actions";
 import { useSelector } from "react-redux";
 import store from "./store";
 import { goActions } from "./store/go-slice";
+import { fetchGlobals } from "./utils/data-fetch";
 
 function App() {
   // Connect socket.io to server for message sending
   const user = useSelector((state) => state.auth.user);
+
+  // Fetch Globals once on app load
+  useEffect(() => {
+    fetchGlobals();
+  });
+
   useEffect(() => {
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);

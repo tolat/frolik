@@ -4,7 +4,7 @@ import styles from "./styles/UserIconCluster.module.scss";
 
 const UserIconCluster = (props) => {
   const containerStyle = {
-    width: `${props.sizeInRem}rem`,
+    minWidth: `${props.sizeInRem}rem`,
     height: `${props.sizeInRem}rem`,
   };
   const mag21 = 1.5;

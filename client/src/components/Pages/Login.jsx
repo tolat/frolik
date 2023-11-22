@@ -8,7 +8,7 @@ import SimpleInput from "../UI/SimpleInput";
 import CreateAccountModal from "../Modals/CreateAccountModal";
 import SimpleButton from "../UI/SimpleButton";
 import { modalActions } from "../../store/modal-slice";
-import { fetchGobals } from "../../utils/data-fetch";
+import { fetchGlobals } from "../../utils/data-fetch";
 
 function Login() {
   const usernameRef = useRef();
@@ -20,7 +20,6 @@ function Login() {
 
   // If authenticated, navigate to profile
   useEffect(() => {
-    fetchGobals();
     if (authState.isAuthenticated) {
       navigate("/profile");
     }

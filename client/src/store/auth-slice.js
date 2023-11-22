@@ -15,7 +15,6 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.user = action.payload.user;
       state.user.friends = action.payload.populatedFriends
-      state.globals = action.payload.globals
     },
     logout(state) {
       console.trace()

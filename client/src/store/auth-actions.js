@@ -4,7 +4,7 @@ import store from ".";
 import { getServer } from "../utils/env-utils";
 import { dataActions } from "./data-slice";
 import { initializeUserPhotos } from "./data-actions";
-import { fetchChats, fetchGobals } from "../utils/data-fetch";
+import { fetchChats, fetchGlobals } from "../utils/data-fetch";
 
 // Send request to log the user in and start a session in the browser
 export const fetchLogin = (username, password, setData) => {
@@ -22,7 +22,6 @@ export const fetchLogin = (username, password, setData) => {
     store.dispatch(authActions.login(response));
     initializeUserPhotos(response.user);
     fetchChats(response.user);
-    fetchGobals();
     setData(false);
   };
 
@@ -51,7 +50,6 @@ export const fetchAuth = (onComplete = () => {}) => {
       initializeUserPhotos(response.user);
       fetchChats(response.user);
       dispatch(authActions.login(response));
-      fetchGobals();
     }
 
     return onComplete(response);

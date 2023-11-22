@@ -47,7 +47,6 @@ const CreateAccountModal = (props) => {
   const [validationMessage, setValidationMessage] = useState(false);
   const [validationDisplay, setValidationDisplay] = useState("none");
   const [validationID, setValidationID] = useState(false);
-  const globals = useSelector((state) => state.auth.globals);
   const [showConfirmEmail, setShowConfirmEmail] = useState(false);
   const buttonTextOnSubmit = "Creating Profile..";
   const validatorBubbleID = "validator-bubble";
@@ -66,7 +65,7 @@ const CreateAccountModal = (props) => {
 
   const runValidation = () => {
     return runValidators(
-      createProfileValidators(globals, placeholderPhoto),
+      createProfileValidators(placeholderPhoto),
       stagedData,
       setValidationMessage,
       setValidationDisplay,

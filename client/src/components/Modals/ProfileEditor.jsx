@@ -6,13 +6,13 @@ import ImageCropper from "../UI/ImageCropper";
 import { arrayBufferToBase64 } from "../../utils/utils";
 import CroppedImage from "../UI/CroppedImage";
 import CustomAutocomplete from "../UI/CustomAutocomplete";
+import cityData from "../../utils/cities100000";
 
 const ProfileEditor = (props) => {
   const dataState = useSelector((state) => state.data);
   const master = dataState.masterPhotoDimension;
   const photoDimentionStyle = { width: `${master}rem`, height: `${master}rem` };
   const globals = useSelector((state) => state.auth.globals);
-
   const defaultValues = props.defaultValues;
   const stagedData = props.stagedData;
   const dispatchStageData = props.dispatchStageData;
@@ -195,7 +195,7 @@ const ProfileEditor = (props) => {
       </div>
       {props.children}
       <CustomAutocomplete
-        options={globals?.cityData}
+        options={cityData}
         name={"Location"}
         label={"Location:"}
         id={"location"}

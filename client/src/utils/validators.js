@@ -1,4 +1,6 @@
-export const createProfileValidators = (globals, defaultImage) => {
+import cityData from "../utils/cities100000";
+
+export const createProfileValidators = (defaultImage) => {
   return {
     "create-email": [
       {
@@ -34,11 +36,8 @@ export const createProfileValidators = (globals, defaultImage) => {
       },
       {
         isValid(value) {
-          return (
-            !globals ||
-            globals?.cityData.find(
-              (city) => `${city.name}, ${city.country}` === value
-            )
+          return cityData.find(
+            (city) => `${city.name}, ${city.country}` === value
           );
         },
         message: "Please choose a city from the dropdown menu only",

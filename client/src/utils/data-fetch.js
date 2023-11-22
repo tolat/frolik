@@ -104,7 +104,7 @@ export const fetchPhotos = async (user) => {
 };
 
 // Get the app globals
-export const fetchGobals = async () => {
+export const fetchGlobals = async () => {
   // Don;t fetch if globals are already being fetched
   if (store.getState().auth.fetchingGlobals) {
     return;

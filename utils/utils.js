@@ -16,8 +16,10 @@ module.exports.populateFriends = async (friends) => {
   let populatedFriends = [];
   for (friend of friends) {
     const friendUser = await User.findById(friend._id || friend);
-    await friendUser.populate("outings");
-    await friendUser.populate("outings.activity");
+    await friendUser.populate({
+      path: "outings",
+      populate: { path: "activity" },
+    });
 
     let strippedOutings = [];
     for (let outing of friendUser.outings) {
@@ -47,16 +49,25 @@ module.exports.populateFriends = async (friends) => {
 
 // Generic user population
 module.exports.populateUser = async (user) => {
-  await user.populate("outings");
-  await user.populate("outings.activity");
-  await user.populate("outings.users");
-  await user.populate("outings.users.outings");
-  await user.populate("outings.users.outings.activity");
-  await user.populate("outings.invited");
-  await user.populate("outings.invited.outings");
-  await user.populate("outings.invited.outings.activity");
-  await user.populate("chats");
-  await user.populate("chats.outing");
+  await user.populate({
+    path: "outings",
+    populate: [
+      { path: "activity" },
+      {
+        path: "users",
+        populate: { path: "outings", populate: { path: "activity" } },
+      },
+      {
+        path: "invited",
+        populate: { path: "outings", populate: { path: "activity" } },
+      },
+    ],
+  });
+
+  await user.populate({
+    path: "chats",
+    populate: { path: "outing" },
+  });
 };
 
 module.exports.sendEmail = async (to, subject, text) => {
@@ -176,8 +187,8 @@ module.exports.handleOutingInviteAction = async (
     };
 
     // Initialize user in chat last_read
-    await outing.populate("chat")
-    outing.chat.last_read[user._id] = false
+    await outing.populate("chat");
+    outing.chat.last_read[user._id] = false;
 
     // Don's send join notification to the outing creator
     for (usr of outing.users) {
