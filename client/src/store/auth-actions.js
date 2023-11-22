@@ -18,6 +18,8 @@ export const fetchLogin = (username, password, setData) => {
   };
 
   const handleResponse = (response) => {
+    console.log("RESPONSE: ", response);
+    response.text().then((data) => console.log("DATA: ", data));
     response.user.friends = response.populatedFriends;
     store.dispatch(authActions.login(response));
     initializeUserPhotos(response.user);
@@ -59,10 +61,10 @@ export const fetchAuth = (onComplete = () => {}) => {
     store.dispatch(authActions.setFetchingAuth(false));
 
     console.log("ERROR: ", err);
-    err.text().then(data=>console.log(data))
+    err.text().then((data) => console.log(data));
     dispatch(authActions.logout());
 
-    return null
+    return null;
   };
 
   try {
