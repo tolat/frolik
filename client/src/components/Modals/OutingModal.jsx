@@ -49,7 +49,7 @@ const OutingModal = (props) => {
   const outing =
     user?.outings?.find((o) => o._id === activeOuting._id) || activeOuting;
   const globals = useSelector((state) => state.auth.globals);
-  const categoryColor = globals?.categoryColorMap[outing?.activity?.category];
+  const categoryColor = globals && globals?.categoryColorMap[outing?.activity?.category];
   const completed = outing && outingIsCompleted(outing);
   const status = completed ? "Completed" : "Pending";
   const isLastCompletion = user && outing && userIsLastCompletion(user, outing);

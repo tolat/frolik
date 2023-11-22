@@ -45,7 +45,7 @@ const Go = (props) => {
   const activeOuting = useSelector((state) => state.modal.activeOuting);
   const [activitySearch, setActivitySearch] = useState("");
   const globals = useSelector((state) => state.auth.globals);
-  const categoryColorMap = globals?.categoryColorMap;
+  const categoryColorMap = globals && globals?.categoryColorMap;
   const [selected, setSelected] = useState(Object.keys(categoryColorMap)[0]);
   const selectedSliderKey = `_${selected}_tab`;
 

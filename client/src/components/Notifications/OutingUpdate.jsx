@@ -23,7 +23,8 @@ const OutingUpdate = (props) => {
   const inviteOutings = useSelector((state) => state.data.inviteOutings);
   const outing = inviteOutings?.find((o) => o._id === outingID);
   const globals = useSelector((state) => state.auth.globals);
-  const stripeColor = globals?.categoryColorMap[outing?.activity?.category];
+  const stripeColor =
+    globals && globals?.categoryColorMap[outing?.activity?.category];
   const cachedUsers = useSelector((state) => state.data.cachedUsers);
   const n = props.notification;
   const nUserID = n.userID;

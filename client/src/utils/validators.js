@@ -77,7 +77,7 @@ export const createProfileValidators = (defaultImage) => {
   };
 };
 
-export const editProfileValidators = (globals) => {
+export const editProfileValidators = () => {
   return {
     status: [
       {
@@ -96,11 +96,8 @@ export const editProfileValidators = (globals) => {
       },
       {
         isValid(value) {
-          return (
-            !globals ||
-            globals?.cityData.find(
-              (city) => `${city.name}, ${city.country}` === value
-            )
+          return cityData.find(
+            (city) => `${city.name}, ${city.country}` === value
           );
         },
         message: "Please choose a city from the dropdown menu only",
