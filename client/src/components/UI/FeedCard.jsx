@@ -16,7 +16,12 @@ const FeedCard = (props) => {
   const user = useSelector((state) => state.auth.user);
   const outing = props.outing;
   const cachedPhotos = useSelector((state) => state.data.cachedPhotos);
-  const outingPhotos = outing?.photos.map((p) => cachedPhotos[p.key]);
+  const userData = useSelector((state) => state.data.users[user._id]);
+  const outingPhotos = outing?.photos.map(
+    (p) =>
+      cachedPhotos[p.key] ||
+      userData.photos.find((photo) => photo.key === p.key)?.photo
+  );
   const photoGridNumber = outingPhotos?.length > 6 ? 6 : outingPhotos?.length;
   const dispatch = useDispatch();
   const outingUsers = outing?.users;
@@ -35,13 +40,11 @@ const FeedCard = (props) => {
 
     // Fetch each photo and add it to cached Photos
     for (let photo of outing?.photos) {
-      if (!cachedPhotos[photo.key]) {
-        fetchOutingPhoto(outing, photo.key, (photoString) =>
-          onComplete(photo.key, photoString)
-        );
-      }
+      fetchOutingPhoto(outing, photo.key, (photoString) =>
+        onComplete(photo.key, photoString)
+      );
     }
-  }, [user, outing, dispatch, cachedPhotos]);
+  }, [user, outing, dispatch, cachedPhotos, userData]);
 
   const onImageClick = (img) => {
     dispatch(popupActions.setPopupImage(img));

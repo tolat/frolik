@@ -72,7 +72,7 @@ export const fetchPhotos = async (user) => {
   }
   for (let photoKey of photoKeys) {
     // Check if photo has already been downloaded or queued
-    if (!userData || !userData.photos.find((p) => p.key === photoKey)) {
+    if (!userData || !userData.photos.find((p) => p.key === photoKey && p.photo)) {
       // Mark photo as queued for donwload in redux store
       store.dispatch(
         dataActions.queueUserPhoto({ userID: user._id, photoKey })
@@ -648,7 +648,11 @@ export const fetchOutingPhoto = (outing, key, onComplete) => {
   };
 
   // Don't fetch cached photos more than once
-  if (store.getState().data.cachedPhotos[key]) {
+  const state = store.getState();
+  if (
+    state.data.cachedPhotos[key] ||
+    state.data.users[state.auth.user._id].photos.find((p) => p.key === key)
+  ) {
     return;
   }
 
