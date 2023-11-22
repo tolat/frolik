@@ -300,6 +300,7 @@ export const objectsAreEqual = (obj1, obj2) => {
 };
 
 export const toSorted = (data, sortingFn) => {
-  data.sort((a, b) => sortingFn(a, b));
-  return data;
+  let newData = [...data];
+  newData.sort((a, b) => sortingFn(a, b));
+  return newData;
 };
