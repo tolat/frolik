@@ -10,7 +10,7 @@ import OutingList from "../UI/OutingList";
 import { modalActions } from "../../store/modal-slice";
 import EditProfileModal from "../Modals/EditProfileModal";
 import FriendCard from "../UI/FriendCard";
-import { pageRouteLoader } from "../../utils/utils";
+import { pageRouteLoader, toSorted } from "../../utils/utils";
 import balloonIcon from "../../images/air-balloon.png";
 import { useNavigate } from "react-router-dom";
 import IconButton from "../UI/IconButton";
@@ -212,15 +212,15 @@ const Profile = (props) => {
             style={{ marginTop: "1rem" }}
             placeholder={"Search Friends"}
           />
-          {user.friends
-            .toSorted((a, b) => a.first_name - b.first_name)
-            .map((f) => (
+          {toSorted(user.friends, (a, b) => a.first_name - b.first_name).map(
+            (f) => (
               <FriendCard
                 buttons={<FriendCardButtons user={f} />}
                 key={Math.random()}
                 user={f}
               />
-            ))}
+            )
+          )}
         </Fragment>
       )}
     </div>

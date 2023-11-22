@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { pageRouteLoader, sortByDate } from "../../utils/utils";
+import { pageRouteLoader, sortByDate, toSorted } from "../../utils/utils";
 import styles from "./styles/Social.module.scss";
 import { Fragment, useEffect, useState } from "react";
 import FeedCard from "../UI/FeedCard";
@@ -13,7 +13,7 @@ const Social = (props) => {
   const [feedSearch, setFeedSearch] = useState("");
   const user = useSelector((state) => state.auth.user);
 
-  const sortedKeys = Object.keys(outings).toSorted((a, b) =>
+  const sortedKeys = toSorted(Object.keys(outings), (a, b) =>
     sortByDate(outings[b].date_created, outings[a].date_created)
   );
 

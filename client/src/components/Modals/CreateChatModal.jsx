@@ -9,6 +9,7 @@ import SimpleButton from "../UI/SimpleButton";
 import { createChat, fetchChats } from "../../utils/data-fetch";
 import { hideModal } from "../../store/modal-actions";
 import { modalActions } from "../../store/modal-slice";
+import { toSorted } from "../../utils/utils";
 
 const CreateChatModal = (props) => {
   const modalState = useSelector((state) => state.modal);
@@ -92,8 +93,7 @@ const CreateChatModal = (props) => {
         ))}
         <h2 className={styles.header}>Add Friends:</h2>
         <SimpleSearch placeholder={"Search Friends.."} />
-        {user.friends
-          .toSorted((a, b) => a.first_name - b.first_name)
+        {toSorted(user.friends, (a, b) => a.first_name - b.first_name)
           .filter((f) => !newChatMembers.find((m) => m._id === f._id))
           .map((f) => (
             <FriendCard

@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import OutingCard from "./OutingCard";
 import styles from "./styles/OutingList.module.scss";
-import { outingIsCompleted, sortByDate } from "../../utils/utils";
+import { outingIsCompleted, sortByDate, toSorted } from "../../utils/utils";
 import SimpleSearch from "./SimpleSearch";
 import { useState } from "react";
 import FeedCard from "./FeedCard";
@@ -19,8 +19,6 @@ const OutingList = (props) => {
       (o) => !outingIsCompleted(o) && !o.flakes.find((id) => id === user._id)
     )
   );
-
-  
 
   function applyOutingSearch(outings) {
     return outingSearch || outingSearch !== ""
@@ -66,23 +64,23 @@ const OutingList = (props) => {
             <br />
             <br />
           </div>
-          {pending
-            .toSorted((a, b) => sortByDate(b.date_created, a.date_created))
-            .map((o) => (
-              <div key={Math.random()} className={styles.outingContainer}>
-                <OutingCard outing={o} user={user} />
-              </div>
-            ))}
+          {toSorted(pending, (a, b) =>
+            sortByDate(b.date_created, a.date_created)
+          ).map((o) => (
+            <div key={Math.random()} className={styles.outingContainer}>
+              <OutingCard outing={o} user={user} />
+            </div>
+          ))}
         </div>
       )}
       {nonPending[0] &&
-        nonPending
-          .toSorted((a, b) => sortByDate(b.date_created, a.date_created))
-          .map((o) => (
-            <div key={Math.random()} className={styles.outingContainer}>
-              <FeedCard outing={o} />
-            </div>
-          ))}
+        toSorted(nonPending, (a, b) =>
+          sortByDate(b.date_created, a.date_created)
+        ).map((o) => (
+          <div key={Math.random()} className={styles.outingContainer}>
+            <FeedCard outing={o} />
+          </div>
+        ))}
     </div>
   );
 };

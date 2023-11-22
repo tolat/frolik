@@ -59,16 +59,20 @@ const AddUserModal = (props) => {
             </div>
           </div>
 
-          {availableMatches.map((u) => (
-            <FriendCard
-              buttonSet={"add"}
-              user={u}
-              key={Math.random()}
-              buttons={<AddButton user={u} />}
-            />
-          ))}
+          {availableMatches[0] ? (
+            availableMatches.map((u) => (
+              <FriendCard
+                buttonSet={"add"}
+                user={u}
+                key={Math.random()}
+                buttons={<AddButton user={u} />}
+              />
+            ))
+          ) : (
+            <h2>Loading Matches..</h2>
+          )}
         </div>
-        {availableFriends[0]? (
+        {availableFriends[0] ? (
           <Fragment>
             <h2 style={{ width: "100%" }}>Active Friends</h2>
             {availableFriends.map((f) => (
@@ -80,7 +84,9 @@ const AddUserModal = (props) => {
               />
             ))}
           </Fragment>
-        ) : <h2 style={{marginTop: "3rem"}}>No Friends Available!</h2>}
+        ) : (
+          <h2 style={{ marginTop: "3rem" }}>No Friends Available!</h2>
+        )}
       </div>
     </ModalPortal>
   );

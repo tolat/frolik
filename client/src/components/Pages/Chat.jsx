@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles/Chat.module.scss";
-import { dateSort, pageRouteLoader } from "../../utils/utils";
+import { dateSort, pageRouteLoader, toSorted } from "../../utils/utils";
 import ChatCard from "../UI/ChatCard";
 import SimpleSearch from "../UI/SimpleSearch";
 import SimpleButton from "../UI/SimpleButton";
@@ -68,9 +68,7 @@ const Chat = memo((props) => {
         <h2 style={{ width: "100%", textAlign: "center" }}>Loading Chats..</h2>
       ) : !chats[0] ? (
         <div className={styles.noChatsMessage}>
-          <h2 className={styles.noChatsMessageHeader}>
-            Nothing to show yet!
-          </h2>
+          <h2 className={styles.noChatsMessageHeader}>Nothing to show yet!</h2>
 
           <div className={styles.noChatsMessageText}>
             You'll see your chats with friends and for specific Outings here.
@@ -78,11 +76,11 @@ const Chat = memo((props) => {
         </div>
       ) : (
         <div className={styles.chatsContainer}>
-          {validChats
-            .toSorted((a, b) => dateSort(b.touched, a.touched))
-            .map((c) => (
+          {toSorted(validChats, (a, b) => dateSort(b.touched, a.touched)).map(
+            (c) => (
               <ChatCard key={c._id} chat={c} />
-            ))}
+            )
+          )}
         </div>
       )}
     </div>
