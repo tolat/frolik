@@ -9,7 +9,6 @@ module.exports.categoryColorMap = {
 module.exports.statusMap = {
   Ready: "You are available for outing requests from anyone!",
   Busy: "You are busy doing other, less fun things.",
-  Searching: "Your status is set to Searching when you are on the 'Go' page.",
   Inactive:
     "Your status will be set to Inactive after two weeks of inactivity.",
 };

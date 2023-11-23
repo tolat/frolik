@@ -81,7 +81,7 @@
   display: grid;
   width: 100%;
   box-sizing: border-box;
-  gap: 2px;
+  gap: 1px;
 }
 
 .container_1 {
@@ -96,10 +96,10 @@
   grid-template-columns: 1fr 1fr;
 }
 .container_2 > :nth-child(1){
-  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
 }
 .container_2 > :nth-child(2){
-  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 }
 
 .container_3 {
@@ -120,10 +120,10 @@
   grid-template-columns: 1fr 1fr;
 }
 .container_4 > :nth-child(1){
-  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
 }
 .container_4 > :nth-child(2){
-  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 }
 
 .container_5 {
@@ -157,10 +157,10 @@
   grid-row: span 2;
 }
 .container_6 > :nth-child(1){
-  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
 }
 .container_6 > :nth-child(3){
-  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 }
 
 .likeIcon {

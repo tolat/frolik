@@ -1,70 +1,53 @@
-import { useSelector } from "react-redux";
 import SimpleButton from "../UI/SimpleButton";
 import SimpleInput from "../UI/SimpleInput";
 import styles from "./styles/ProfileEditor.module.scss";
-import ImageCropper from "../UI/ImageCropper";
-import { arrayBufferToBase64 } from "../../utils/utils";
+import { arrayBufferToBase64, genBackgroundStr } from "../../utils/utils";
 import CroppedImage from "../UI/CroppedImage";
 import CustomAutocomplete from "../UI/CustomAutocomplete";
 import cityData from "../../utils/cities100000";
+import CropperPopup from "../Popups/CropperPopup";
+import { Fragment, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { popupActions } from "../../store/popup-slice";
+import uploadIcon from "../../images/upload.png";
+import undoIcon from "../../images/undo-arrow.png";
 
 const ProfileEditor = (props) => {
-  const dataState = useSelector((state) => state.data);
-  const master = dataState.masterPhotoDimension;
-  const photoDimentionStyle = { width: `${master}rem`, height: `${master}rem` };
+  const dimension = 20;
+  const photoDimentionStyle = {
+    width: `${dimension}rem`,
+    height: `${dimension}rem`,
+  };
   const defaultValues = props.defaultValues;
   const stagedData = props.stagedData;
   const dispatchStageData = props.dispatchStageData;
   const buttonText = props.buttonText;
   const setButtonText = props.setButtonText;
   const buttonTextOnSubmit = props.buttonTextOnSubmit;
-  const editingPhoto = props.editingPhoto;
-  const setEditingPhoto = props.setEditingPhoto;
-  const allowCrop = props.allowCrop;
   const dataChanged = props.dataChanged;
+  const dispatch = useDispatch();
+  const [upload, setUpload] = useState(null);
+  const globals = useSelector((state) => state.auth.globals);
+  const user = useSelector((state) => state.auth.user);
+  const categoryColorMap = globals?.categoryColorMap;
+  const backgroundString = genBackgroundStr(user, categoryColorMap);
+  const photoChanged =
+    stagedData?.profile_picture &&
+    stagedData?.profile_picture !== defaultValues?.profile_picture;
 
-  // Set editing photo state to true
-  const handleShowCropper = (e) => {
-    e.preventDefault();
-    setEditingPhoto(true);
+  const pieStyle = {
+    width: `${dimension + 1.5}rem`,
+    height: `${dimension + 1.5}rem`,
+    background: backgroundString,
+    boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+    margin: "0 2rem",
   };
 
-  // Actions to do on cropper close differs from create account to edit profile
-  const handleHideCropper = (e) => {
-    e.preventDefault();
-    setEditingPhoto(false);
-  };
+  useEffect(() => {
+    setUpload(stagedData.profile_picture);
+  }, [stagedData]);
 
-  const handleUploadClick = (e) => {
-    e.preventDefault();
-    document.getElementById("profile-editor-img-upload").click();
-  };
-
-  const updateProfilePicture = async () => {
-    const newPhoto = document.getElementById("profile-editor-img-upload")
-      .files[0];
-
-    if (newPhoto) {
-      // Read file into a base64String and update the staged image
-      const reader = new FileReader();
-      reader.onload = () => {
-        const base64Image = `data:image/jpeg;base64,${arrayBufferToBase64(
-          reader.result
-        )}`;
-        dispatchStageData({
-          id: "profile_picture",
-          value: base64Image,
-        });
-        props.onPhotoChange && props.onPhotoChange(base64Image);
-      };
-
-      reader.readAsArrayBuffer(newPhoto);
-    }
-  };
-
-  const handleRevert = (e) => {
-    e.preventDefault();
-
+  const resetUploadFileList = () => {
     // Reset fiel input file list
     function createFileList(files) {
       const dataTransfer = new DataTransfer();
@@ -73,9 +56,14 @@ const ProfileEditor = (props) => {
       }
       return dataTransfer.files;
     }
-    document.getElementById("profile-editor-img-upload").files = createFileList(
-      []
-    );
+    document.getElementById("upload-profile-photo").files = createFileList([]);
+  };
+
+  const handleRevert = (e) => {
+    e?.preventDefault();
+
+    // Reset fiel input file list
+    resetUploadFileList();
 
     dispatchStageData({
       id: "profile_picture",
@@ -89,8 +77,6 @@ const ProfileEditor = (props) => {
       id: "zoom",
       value: defaultValues.zoom,
     });
-    handleHideCropper(e);
-    setEditingPhoto(false);
   };
 
   const handleSave = (e) => {
@@ -100,9 +86,6 @@ const ProfileEditor = (props) => {
     if (props.runValidation && !props.runValidation()) {
       return;
     }
-
-    // Hide cropper if it is open
-    handleHideCropper(e);
 
     // Set button text to submitting value
     setButtonText(buttonTextOnSubmit);
@@ -125,126 +108,173 @@ const ProfileEditor = (props) => {
     props.clearValidators && props.clearValidators();
   };
 
+  const onUploadClick = (e) => {
+    e.preventDefault();
+    document.getElementById("upload-profile-photo").click();
+  };
+
+  const onPhotoSelected = async () => {
+    const newPhoto = document.getElementById("upload-profile-photo").files[0];
+
+    if (newPhoto) {
+      // Read file into a base64String and update the staged image
+      const reader = new FileReader();
+      reader.onload = () => {
+        // Get image as base64 string
+        const base64Image = `data:image/jpeg;base64,${arrayBufferToBase64(
+          reader.result
+        )}`;
+
+        // Set upload for popup use
+        setUpload(base64Image);
+
+        // Run onchange funciton from props if there is one
+        props.onPhotoChange && props.onPhotoChange(base64Image);
+
+        // Show cropper popup
+        dispatch(popupActions.showPopup("upload-profile-photo"));
+      };
+
+      reader.readAsArrayBuffer(newPhoto);
+    }
+  };
+
+  const handleCropComplete = (index, croppedImage, resetCropper) => {
+    // Update staged data with new photo
+    dispatchStageData({
+      id: "profile_picture",
+      value: croppedImage,
+    });
+    dispatchStageData({
+      id: "crop",
+      value: { x: 0, y: 0 },
+    });
+    dispatchStageData({
+      id: "zoom",
+      value: 1,
+    });
+
+    dispatch(popupActions.hidePopup());
+    resetUploadFileList();
+    resetCropper(index);
+  };
+
+  const handleCropCancel = (index, resetCropper) => {
+    dispatch(popupActions.hidePopup());
+    resetUploadFileList();
+    resetCropper(index);
+  };
+
   return (
-    <form className={`${styles.container} noscroll`}>
-      <div className={styles.photoEditor}>
+    <Fragment>
+      <CropperPopup
+        images={[upload]}
+        selector={"upload-profile-photo"}
+        onCancel={handleCropCancel}
+        onUpload={handleCropComplete}
+        button1Text={"Done"}
+        button1ActionText={"Done"}
+        defaultCrop={stagedData.crop}
+        defaultZoom={stagedData.zoom}
+        cropShape="round"
+      />
+      <form className={styles.uploadInput} id="upload-profile-photo-form">
         <input
-          onChange={updateProfilePicture}
+          onChange={onPhotoSelected}
           type="file"
-          id="profile-editor-img-upload"
-          style={{ display: "none" }}
+          id="upload-profile-photo"
         />
-        {editingPhoto ? (
-          <ImageCropper
-            image={stagedData.profile_picture}
-            zoom={stagedData.zoom}
-            crop={stagedData.crop}
-            containerStyle={{
-              ...photoDimentionStyle,
-              marginBottom: "2rem",
-              borderRadius: "100rem",
-            }}
-            setCropChanged={(value) => dispatchStageData({ id: "crop", value })}
-            setZoomChanged={(value) => dispatchStageData({ id: "zoom", value })}
+      </form>
+      <form className={`${styles.container} noscroll`}>
+        <div className={styles.photoEditor}>
+          <input
+            onChange={onPhotoSelected}
+            type="file"
+            id="profile-editor-img-upload"
+            style={{ display: "none" }}
           />
-        ) : (
-          <CroppedImage
-            id={"profile_picture"}
-            image={stagedData.profile_picture}
-            zoom={stagedData.zoom}
-            crop={stagedData.crop}
-            style={photoDimentionStyle}
-            className={styles.userPhoto}
-          />
-        )}
-        <div className={styles.sideBySide}>
-          {editingPhoto ? (
-            <SimpleButton
-              onClick={handleHideCropper}
-              className={styles.cropButton}
-            >
-              Done Cropping
-            </SimpleButton>
-          ) : !allowCrop ? null : (
-            <SimpleButton
-              onClick={handleShowCropper}
-              className={styles.cropButton}
-            >
-              Crop Photo
-            </SimpleButton>
-          )}
-        </div>
-        <div className={styles.sideBySide}>
-          <SimpleButton
-            onClick={handleUploadClick}
-            className={styles.uploadButton}
-          >
-            Upload New Picture
-          </SimpleButton>
-          {stagedData.profile_picture &&
-          stagedData.profile_picture !== defaultValues.profile_picture ? (
-            <SimpleButton
+          <div className={styles.photoContainer}>
+            <div
               onClick={handleRevert}
-              className={styles.revertButton}
+              className={`${styles.uploadButton} ${
+                !photoChanged ? styles.noClick : null
+              }`}
             >
-              Revert
-            </SimpleButton>
-          ) : null}
+              <img src={undoIcon} className={styles.buttonIcon} alt="upload" />
+            </div>
+            <div style={pieStyle} className={styles.pieChart}>
+              <CroppedImage
+                id={"profile_picture"}
+                image={stagedData.profile_picture}
+                zoom={stagedData.zoom}
+                crop={stagedData.crop}
+                style={photoDimentionStyle}
+                className={styles.userPhoto}
+              />
+            </div>
+            <div onClick={onUploadClick} className={styles.uploadButton}>
+              <img
+                src={uploadIcon}
+                className={styles.buttonIcon}
+                alt="upload"
+              />
+            </div>
+          </div>
         </div>
-      </div>
-      {props.children}
-      <CustomAutocomplete
-        options={cityData}
-        name={"Location"}
-        label={"Location:"}
-        id={"location"}
-        className={styles.locationSelect}
-        defaultVal={defaultValues.location}
-        setDataChanged={(value) => {
-          dispatchStageData({ id: "location", value });
-        }}
-      />
-      <div className={styles.sideBySide}>
-        <SimpleInput
-          type="text"
-          id="first_name"
-          name="first_name"
-          label="First Name:"
-          defaultVal={defaultValues.first_name}
+        {props.children}
+        <CustomAutocomplete
+          options={cityData}
+          name={"Location"}
+          label={"Location:"}
+          id={"location"}
+          className={styles.locationSelect}
+          defaultVal={defaultValues.location}
           setDataChanged={(value) => {
-            dispatchStageData({ id: "first_name", value });
+            dispatchStageData({ id: "location", value });
           }}
         />
-        <div className={styles.formSpacer} />
+        <div className={styles.sideBySide}>
+          <SimpleInput
+            type="text"
+            id="first_name"
+            name="first_name"
+            label="First Name:"
+            defaultVal={defaultValues.first_name}
+            setDataChanged={(value) => {
+              dispatchStageData({ id: "first_name", value });
+            }}
+          />
+          <div className={styles.formSpacer} />
+          <SimpleInput
+            type="text"
+            id="last_name"
+            name="last_name"
+            label="Last Name (optional):"
+            defaultVal={defaultValues.last_name}
+            setDataChanged={(value) => {
+              dispatchStageData({ id: "last_name", value });
+            }}
+          />
+        </div>
         <SimpleInput
           type="text"
-          id="last_name"
-          name="last_name"
-          label="Last Name (optional):"
-          defaultVal={defaultValues.last_name}
+          id="tagline"
+          name="tagline"
+          label="Tagline:"
+          defaultVal={defaultValues.tagline}
           setDataChanged={(value) => {
-            dispatchStageData({ id: "last_name", value });
+            dispatchStageData({ id: "tagline", value });
           }}
         />
-      </div>
-      <SimpleInput
-        type="text"
-        id="tagline"
-        name="tagline"
-        label="Tagline:"
-        defaultVal={defaultValues.tagline}
-        setDataChanged={(value) => {
-          dispatchStageData({ id: "tagline", value });
-        }}
-      />
-      <SimpleButton
-        onClick={dataChanged ? handleSave : (e) => e.preventDefault()}
-        onBlur={onSubmitBlur}
-        className={dataChanged ? styles.saveButton : styles.unclickableButton}
-      >
-        {buttonText}
-      </SimpleButton>
-    </form>
+        <SimpleButton
+          onClick={dataChanged ? handleSave : (e) => e.preventDefault()}
+          onBlur={onSubmitBlur}
+          className={dataChanged ? styles.saveButton : styles.unclickableButton}
+        >
+          {buttonText}
+        </SimpleButton>
+      </form>
+    </Fragment>
   );
 };
 

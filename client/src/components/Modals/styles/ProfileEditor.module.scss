@@ -11,6 +11,23 @@
   background-color: white;
   padding: 0 2rem 2rem 2rem;
   width: 100%;
+  margin-bottom: 5rem;
+}
+
+.photoContainer {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  box-sizing: border-box;
+  border-radius: 3px;
+  position: relative;
+  justify-content: space-evenly;
+  height: fit-content;
+}
+
+.imageDisplayContainer{
+  display: flex;
+  position: relative;
 }
 
 .photoEditor {
@@ -18,34 +35,30 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-}
-
-.userPhoto {
-  margin-bottom: 2rem;
-}
-
-.sideBySide {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  box-sizing: border-box;
-  margin-bottom: 1rem;
+  justify-content: center;
+  height: fit-content;
 }
 
 .formSpacer {
   width: 2rem;
 }
 
+.sideBySide {
+  display: flex;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
 .saveButton {
   background-color: $blue;
   color: #fff;
   border: none;
-  padding: 15px 20px;
+  padding-left: 2rem;
+  padding-right: 2rem;
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s ease;
   margin-top: 2rem;
-  width: 100%;
   font-size: 1.2rem;
   justify-self: flex-end;
   margin-bottom: 5rem;
@@ -58,12 +71,12 @@
 .unclickableButton {
   background-color: $button_grey;
   color: #bbbbbb;
+  padding-left: 2rem;
+  padding-right: 2rem;
   border: none;
-  padding: 15px 20px;
   cursor: auto;
   font-size: 16px;
   margin-top: 2rem;
-  width: 100%;
   font-size: 1.2rem;
   justify-self: flex-end;
   margin-bottom: 5rem;
@@ -75,7 +88,7 @@
 }
 
 .unclickableButton:hover {
-  cursor: auto;
+  cursor: not-allowed;
   opacity: 1;
 }
 
@@ -91,21 +104,39 @@
 }
 
 .uploadButton {
-  background-color: #f0f0f0;
-  color: #000000;
   border: none;
-  margin-top: 1rem;
   cursor: pointer;
-  font-size: 16px;
-  width: 100%;
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.uploadButton:hover {
+  opacity: 0.6;
+}
+
+.noClick{
+  opacity: 0.3;
+  cursor: not-allowed !important;
+}
+
+.buttonIcon {
+  width: 2.8rem;
+  height: 2.8rem;
+
 }
 
 .revertButton {
   background-color: $red;
   color: white;
-  width: 7rem;
+  border: none;
+  margin-top: 1rem;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
   font-size: 1.2rem;
 }
 
@@ -113,3 +144,17 @@
   font-size: 1.3rem;
   margin-bottom: 1rem;
 }
+
+.uploadInput {
+  display: none;
+}
+
+.pieChart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100rem;
+}
+
+
+

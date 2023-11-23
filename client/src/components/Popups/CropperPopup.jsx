@@ -10,11 +10,11 @@ const CropperPopup = (props) => {
   const popupState = useSelector((state) => state.popup);
   const showPopup = popupState.selector === props.selector;
   const popupDisplay = showPopup ? "flex" : "none";
-  const [zoom1, setZoom1] = useState(1);
-  const [crop1, setCrop1] = useState({ x: 0, y: 0 });
+  const [zoom1, setZoom1] = useState(props.defautlZoom || 1);
+  const [crop1, setCrop1] = useState(props.defaultCrop || { x: 0, y: 0 });
   const [zoom2, setZoom2] = useState(1);
   const [crop2, setCrop2] = useState({ x: 0, y: 0 });
-  const [button1Text, setButton1Text] = useState("Upload");
+  const [button1Text, setButton1Text] = useState(props.button1Text || "Upload");
   const [button2Text, setButton2Text] = useState("Upload");
   const [cropComplete1, setCropComplete1] = useState();
   const [cropComplete2, setCropComplete2] = useState();
@@ -46,19 +46,21 @@ const CropperPopup = (props) => {
   const cropChangers = [onCrop1Change, onCrop2Change];
   const zoomChangers = [onZoom1Change, onZoom2Change];
 
+  const resetCropper = (index) => {
+    setCrops[index]({ x: 0, y: 0 });
+    setZooms[index](1);
+    buttonSetters[index]("Upload");
+  };
+
   const onUploadImage = async (img) => {
     const index = props.images.indexOf(img);
-    buttonSetters[index]("Uploading..");
+    buttonSetters[index](props.button1ActionText || "Uploading..");
     const croppedImage = await getCroppedImageBase64(
       img,
       cropCompletes[index].cap
     );
 
-    const resetCropper = () => {
-      setCrops[index]({ x: 0, y: 0 });
-      setZooms[index](1);
-      buttonSetters[index]("Upload");
-    };
+    resetCropper(index);
 
     props.onUpload(index, croppedImage, resetCropper);
   };
@@ -93,7 +95,7 @@ const CropperPopup = (props) => {
                     zoom={zooms[props.images.indexOf(img)]}
                     rotation={0}
                     aspect={3 / 3}
-                    cropShape={"rect"}
+                    cropShape={props.cropShape || "rect"}
                     onCropChange={cropChangers[props.images.indexOf(img)]}
                     onZoomChange={zoomChangers[props.images.indexOf(img)]}
                     objectFit={"cover"}
@@ -105,7 +107,7 @@ const CropperPopup = (props) => {
                       containerStyle: {
                         width: "100%",
                         height: "100%",
-                        borderRadius: "4px",
+                        borderRadius: props.cropperRadius || "4px",
                       },
                     }}
                   />
@@ -121,7 +123,9 @@ const CropperPopup = (props) => {
                 </SimpleButton>
                 <SimpleButton
                   noShadow={true}
-                  onClick={() => props.onCancel(props.images.indexOf(img))}
+                  onClick={() =>
+                    props.onCancel(props.images.indexOf(img), resetCropper)
+                  }
                   className={styles.cancelButton}
                 >
                   Cancel

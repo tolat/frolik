@@ -141,13 +141,13 @@ const seedOutings = async (seeds) => {
 
   let outingPhotoKeys = [
     "acroyoga",
-    "beach",
+    "jenga",
     "beerpong",
     "drawing",
     "football",
     "icecream",
     "kayaking",
-    "lawngame",
+    "soccer",
     "tenniscourt",
     "beachglass",
   ];
@@ -167,7 +167,20 @@ const seedOutings = async (seeds) => {
       outing.date_created = new Date();
       outing.date_completed = outing.date_created;
       outing.users = [user, user2];
-      outing.photos.push({ uploader: user, key: outingPhotoKeys.pop() });
+      const photoCount = Math.floor((Math.random() * 10) % 6) + 1;
+      const outingPhotoKeysCopy = [...outingPhotoKeys];
+      for (let i = 0; i < photoCount; i++) {
+        const randomIndex = Math.floor(
+          (Math.random() * 10) % outingPhotoKeysCopy.length
+        );
+
+        outing.photos.push({
+          uploader: user,
+          key: outingPhotoKeysCopy[randomIndex],
+        });
+        outingPhotoKeysCopy.splice(randomIndex, 1);
+      }
+
       outing.name = generateUniqueName();
 
       user.outings.push(outing);

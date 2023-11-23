@@ -117,7 +117,7 @@ const ProfileViewerModal = (props) => {
               <br />
             </Fragment>
           ) : null}
-          {userPhotos[0] && userPhotos.length === userData.photos.length ? (
+          {userPhotos[0] ? (
             <PhotoGrid
               images={userPhotos}
               gridTemplateColumns={

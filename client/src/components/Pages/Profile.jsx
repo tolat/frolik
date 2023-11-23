@@ -171,7 +171,7 @@ const Profile = (props) => {
         </div>
       ) : selectedSliderKey === "_photos" ? (
         <Fragment>
-          {userPhotos.length === userData.photos.length ? (
+          {userPhotos[0] ? (
             <PhotoGrid
               images={userPhotos}
               gridTemplateColumns={

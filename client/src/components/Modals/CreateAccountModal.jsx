@@ -48,7 +48,7 @@ const CreateAccountModal = (props) => {
   const [validationDisplay, setValidationDisplay] = useState("none");
   const [validationID, setValidationID] = useState(false);
   const [showConfirmEmail, setShowConfirmEmail] = useState(false);
-  const buttonTextOnSubmit = "Creating Profile..";
+  const buttonTextOnSubmit = "Creating..";
   const validatorBubbleID = "validator-bubble";
   const dispatch = useDispatch();
 

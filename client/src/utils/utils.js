@@ -304,3 +304,73 @@ export const toSorted = (data, sortingFn) => {
   newData.sort((a, b) => sortingFn(a, b));
   return newData;
 };
+
+export const removeDuplicates = (array) => {
+  let newarray = [];
+  for (let item of array) {
+    if (!newarray.includes(item)) {
+      newarray.push(item);
+    }
+  }
+
+  return newarray;
+};
+
+export const getCategoryPercentage = (category, user) => {
+  const numCategory = user.outings?.filter(
+    (o) => o.activity?.category === category
+  ).length;
+
+  return (100 * (numCategory / user?.outings?.length)).toFixed(2);
+};
+
+export const genBackgroundStr = (user, categoryColorMap) => {
+  // Return grey border if user has no outings
+  if (!user || !user.outings[0] || !categoryColorMap) {
+    return "rgb(220,220,220)";
+  }
+
+  let backgroundString = "conic-gradient(";
+  const keys = Object.keys(categoryColorMap);
+  let percentageMap = {};
+
+  // Build percentage map
+  for (let i = 0; i < keys.length; i++) {
+    const category = keys[i];
+    const percentage = parseFloat(getCategoryPercentage(category, user));
+    if (percentage !== 0) {
+      percentageMap[category] = percentage;
+    }
+  }
+
+  // Build color map for the icon circle based on percentage
+  // of each activity category vs total number of that category for user
+  const mapKeys = Object.keys(percentageMap);
+  let cumulativePercentage = 0;
+  for (let i = 0; i < mapKeys.length; i++) {
+    const category = mapKeys[i];
+    const nextCategory = mapKeys[(i + 1) % mapKeys.length];
+    const percentage = percentageMap[category];
+
+    backgroundString = backgroundString.concat(
+      /* `${categoryColorMap[category]} ${cumulativePercentage}% ${
+        percentage + cumulativePercentage
+      }%` */
+
+      `${categoryColorMap[category]} ${cumulativePercentage}%, 
+         ${categoryColorMap[nextCategory]} ${
+        cumulativePercentage + percentage
+      }%`
+    );
+
+    if (i < mapKeys.length - 1) {
+      backgroundString = backgroundString.concat(",");
+    }
+
+    cumulativePercentage = cumulativePercentage + percentage;
+  }
+
+  backgroundString = backgroundString.concat(")");
+  return backgroundString;
+};
+
