@@ -10,6 +10,8 @@ import SimpleButton from "../UI/SimpleButton";
 import { modalActions } from "../../store/modal-slice";
 import { popupActions } from "../../store/popup-slice";
 
+const validPreviousPaths = ["/go", "/profile", "/social", "/chat"];
+
 function Login() {
   const usernameRef = useRef();
   const passwordRef = useRef();
@@ -22,7 +24,9 @@ function Login() {
   useEffect(() => {
     if (authState.isAuthenticated) {
       const prevUrl = localStorage.getItem("previousUrl");
-      navigate((prevUrl !== "/login" && prevUrl) || "/profile");
+      navigate((validPreviousPaths.includes(prevUrl) && prevUrl) || "/profile");
+    } else {
+      localStorage.setItem("previousUrl", "/login");
     }
   }, [authState.isAuthenticated, navigate]);
 
@@ -55,6 +59,11 @@ function Login() {
     dispatch(modalActions.showModal());
   };
 
+  const onForgotPasswordClick = (e) => {
+    e.preventDefault();
+    navigate("/send-reset-password-link");
+  };
+
   return (
     <div className={styles["login-page"]}>
       <CreateAccountModal />
@@ -82,6 +91,14 @@ function Login() {
             required
           />
         </div>
+        <div className={styles.smallButtons}>
+          <button
+            onClick={onForgotPasswordClick}
+            className={styles.forgotButton}
+          >
+            Forgot Password
+          </button>
+        </div>
 
         <SimpleButton
           noShadow={true}
@@ -107,6 +124,6 @@ function Login() {
 export default Login;
 
 export const loginLoader = async () => {
-  await fetchAuth()
+  await fetchAuth();
   return null;
 };

@@ -11,7 +11,7 @@ const session = require("express-session");
 const cors = require("cors"); // Add this line
 const inDevelopment = process.env.NODE_ENV == "development";
 const { handleCORS } = require("./utils/middleware");
-const favicon = require('serve-favicon');
+const favicon = require("serve-favicon");
 
 // Set up express
 const app = express();
@@ -24,7 +24,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(handleCORS);
 
 // Set favicon
-app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(__dirname + "/public/favicon.ico"));
 
 // Set up socket.io for chat
 const http = require("http");
@@ -62,7 +62,7 @@ io.on("connection", (socket) => {
           for (let usr of chatUsers) {
             const usrID = usr._id ? usr._id.toString() : usr.toString();
             if (!chat.last_read[usrID]) {
-              chat.last_read[usrID] = 'initialized';
+              chat.last_read[usrID] = "initialized";
               chat.markModified("last_read");
             }
           }
@@ -90,15 +90,19 @@ io.on("connection", (socket) => {
 });
 
 // Connect to the database and handle connection errors
-mongoose.connect(process.env.DB_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-global.db = mongoose.connection;
-global.db.on("error", console.error.bind(console, "connection error:"));
-global.db.once("open", () => {
-  console.log("Main process connected to database");
-});
+try {
+  mongoose.connect(process.env.DB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  global.db = mongoose.connection;
+  global.db.on("error", console.error.bind(console, "connection error:"));
+  global.db.once("open", () => {
+    console.log("Main process connected to database");
+  });
+} catch (e) {
+  console.log(e);
+}
 
 // Session config for express
 const sessionConfig = {

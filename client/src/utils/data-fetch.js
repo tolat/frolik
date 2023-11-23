@@ -72,7 +72,10 @@ export const fetchPhotos = async (user) => {
   }
   for (let photoKey of photoKeys) {
     // Check if photo has already been downloaded or queued
-    if (!userData || !userData.photos.find((p) => p.key === photoKey && p.photo)) {
+    if (
+      !userData ||
+      !userData.photos.find((p) => p.key === photoKey && p.photo)
+    ) {
       // Mark photo as queued for donwload in redux store
       store.dispatch(
         dataActions.queueUserPhoto({ userID: user._id, photoKey })
@@ -667,5 +670,49 @@ export const fetchOutingPhoto = (outing, key, onComplete) => {
   };
 
   store.dispatch(dataActions.queueCachedPhoto(key));
+  httpFetch(requestConfig, handleResponse, handleError);
+};
+
+export const sendResetLink = (username, onComplete) => {
+  const requestConfig = {
+    url: `${getServer()}/auth/send-reset-link`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({ username }),
+  };
+
+  const handleResponse = (response) => {
+    onComplete(response);
+  };
+
+  const handleError = (err) => {
+    onComplete(err);
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};
+
+export const resetPassword = (userID, password, onComplete) => {
+  const requestConfig = {
+    url: `${getServer()}/auth/reset-password`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({ userID, password }),
+  };
+
+  const handleResponse = (response) => {
+    onComplete(response);
+  };
+
+  const handleError = (err) => {
+    onComplete(err);
+    console.log(err);
+  };
+
   httpFetch(requestConfig, handleResponse, handleError);
 };

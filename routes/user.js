@@ -194,6 +194,7 @@ router.post(
         header: `User ${userData.username} already exists`,
         message: "Try another username.",
       });
+      return;
     } else {
       // Else create new user and upload photo
       const user = new User(userData);
@@ -201,7 +202,18 @@ router.post(
 
       // Send email confirmation linkand set user status as pending
       const link = `${process.env.SERVER}/user/${user._id.toString()}/verify`;
-      sendEmail(userData.username, "Confirm Email", link);
+      sendEmail(
+        userData.username,
+        "Confirm frolik.ca Email",
+        `
+      Click the link below to verify your email you (or someone else) 
+      used to set up an account on frolik.ca:
+      \n
+      ${link}
+      \n
+      If you did not request this, please ignore this email.
+    `
+      );
       user.status = { status: "Pending", updated: Date.now() };
       await user.save();
 
@@ -233,7 +245,19 @@ router.post(
 router.get(
   "/:id/verify",
   tryCatch(async (req, res) => {
+    console.log("HERE")
     const user = await User.findById(req.params.id);
+
+    // If user not found, send unacceptable (406)
+    if (!user) {
+      res.status(406).send({
+        header: "User Not Found",
+        message: `We can't find a user with the username you provided!`,
+      });
+      return;
+    }
+
+
     user.status = { status: "Ready", updated: Date.now() };
     await user.save();
 
@@ -998,6 +1022,7 @@ router.post(
         header: `Friend request already sent`,
         message: `You have already asked ${friendUser.first_name} ${friendUser.last_name} to be your friend.`,
       });
+      return;
     }
 
     const friendRequestNotification = {
@@ -1037,6 +1062,7 @@ router.post(
         header: `Could not remove friend`,
         message: `You are not friends with ${friendUser.first_name} ${friendUser.last_name}`,
       });
+      return;
     }
 
     // Remove friends

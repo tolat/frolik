@@ -300,3 +300,8 @@ module.exports.findNonOutingChat = (user, withUsers) => {
 
   return foundChat;
 };
+
+module.exports.genRanHex = (size) =>
+  [...Array(size)]
+    .map(() => Math.floor(Math.random() * 16).toString(16))
+    .join("");

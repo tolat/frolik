@@ -79,3 +79,12 @@ label {
   color: rgb(0, 0, 0);
   margin-top: 1rem;
 }
+
+.forgotButton{
+  background-color: $card_grey;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 0.4rem;
+}

@@ -81,7 +81,7 @@ const CreateAccountModal = (props) => {
         dispatch(popupActions.showPopup("user-already-exists"));
       }
 
-      setButtonText("Create Acount");
+      setButtonText("+ Create");
     } else {
       setShowConfirmEmail(true);
     }
@@ -99,6 +99,7 @@ const CreateAccountModal = (props) => {
   };
 
   const resendConfirmationEmail = () => {
+    // NOT DONE YET
     console.log("resend confirmation");
   };
 

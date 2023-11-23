@@ -3,7 +3,12 @@ const User = require("../models/user");
 const Outing = require("../models/outing");
 const Activity = require("../models/activity");
 const express = require("express");
-const { populateUser, populateFriends } = require("../utils/utils");
+const {
+  populateUser,
+  populateFriends,
+  genRanHex,
+  sendEmail,
+} = require("../utils/utils");
 const { tryCatch } = require("../utils/middleware");
 
 const router = express.Router({ mergeParams: true });
@@ -61,5 +66,63 @@ router.get("/logout", (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+router.post(
+  "/send-reset-link",
+  tryCatch(async (req, res) => {
+    const user = await User.findOne({ username: req.body.username });
+
+    // If user status is pending, don't allow login
+    if (!user) {
+      res.status(406).send({
+        header: "User Not Found",
+        message: `We can't find a user with the username you provided!`,
+      });
+      return;
+    }
+
+    // Send email with reset link
+    const link = `${process.env.SERVER}/reset-password/${user._id.toString()}`;
+    sendEmail(
+      req.body.username,
+      "Reset frolik.ca Password",
+      `
+      You are receiving this because you (or someone else) have requested the reset of the password for your account.
+      Please click on the following link, or paste this into your browser to complete the process:
+      \n
+      ${link}
+      \n
+      If you did not request this, please ignore this email and your password will remain unchanged.
+    `
+    );
+    user.reset_token = { expires: Date.now() + 1000 * 60 * 60 * 10 };
+    await user.save();
+    res.sendStatus(200);
+  })
+);
+
+router.post(
+  "/reset-password",
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.body.userID);
+
+    // If user not found, send unacceptable (406)
+    if (!user) {
+      res.status(406).send({
+        header: "User Not Found",
+        message: `We can't find a user with the username you provided!`,
+      });
+      return;
+    }
+
+    // Create new user with new password but same _id
+    let newUser = new User(JSON.parse(JSON.stringify(user)))
+    newUser._id = user._id.toString()
+    await User.deleteOne({_id: user._id.toString()})
+    await User.register(newUser, req.body.password);
+
+    res.sendStatus(200);
+  })
+);
 
 module.exports = router;

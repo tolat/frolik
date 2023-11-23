@@ -8,7 +8,7 @@ import ErrorPage from "./components/Global/ErrorPage";
 import Navbar from "./components/Global/Navbar";
 import MainContainer from "./components/UI/MainContainer";
 import Social, { socialLoader } from "./components/Pages/Social";
-import EmailVerified from "./components/Pages/EmailVerified";
+import Utility from "./components/Pages/Utility";
 
 const router = createBrowserRouter([
   {
@@ -55,10 +55,24 @@ const router = createBrowserRouter([
       },
       {
         path: "/email-verified",
-        element: <EmailVerified />,
+        element: <Utility page={"email-verified"} />,
       },
-     
-     
+      {
+        path: "/send-reset-password-link",
+        element: <Utility page={"send-reset-password-link"} />,
+      },
+      {
+        path: "/reset-password-link-sent",
+        element: <Utility page={"reset-password-link-sent"} />,
+      },
+      {
+        path: "/reset-password/:userID",
+        element: <Utility page={"reset-password"} />,
+      },
+      {
+        path: "/password-reset-success",
+        element: <Utility page={"password-reset-success"} />,
+      },
     ],
   },
 ]);
