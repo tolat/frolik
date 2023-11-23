@@ -36,7 +36,7 @@ const ProfileEditor = (props) => {
     stagedData?.profile_picture !== defaultValues?.profile_picture;
 
   const pieStyle = {
-    width: `${dimension + 1.5}rem`,
+    minWidth: `${dimension + 1.5}rem`,
     height: `${dimension + 1.5}rem`,
     background: backgroundString,
     boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
