@@ -99,6 +99,7 @@ also if the message is not successfullt sent, do not put new messageBubble in
 DONE
 
 - Add error modal for server errors
+DONE
 
 - Smooth message buble popup
 
@@ -113,6 +114,7 @@ DONE
 - NEED TO LIMIT PHOTO UPLOADS TO 6 PER OUTING
 
 - DEPLOY WOO!!! (3 days)
+DONE
 
 TOTAL: 23 days  / ~3 weeks
 
