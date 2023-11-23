@@ -20,7 +20,7 @@ import { getTotalUnreadMessages } from "../../utils/utils";
 import PhotoPopup from "../Popups/PhotoPopup";
 import logoutIcon from "../../images/logout.png";
 import { fetchLogout } from "../../store/auth-actions";
-import outingIcon from "../../images/air-balloon.png"
+import outingIcon from "../../images/air-balloon.png";
 import logo from "../../images/frolik2.png";
 
 const Navbar = (props) => {
@@ -31,6 +31,8 @@ const Navbar = (props) => {
   const unreadChatMessages = user && getTotalUnreadMessages(user);
   const location = useLocation();
   const currentUrl = location.pathname;
+  const warningMessage = useSelector((state) => state.popup.warningMessage);
+  const warningHeader = useSelector((state) => state.popup.warningHeader);
   const makeActive = (navData) =>
     navData.isActive ? styles.activeLink : "none";
   const handleShowNotifications = async () => {
@@ -84,6 +86,13 @@ const Navbar = (props) => {
 
   return (
     <div className={styles.header}>
+      <WarningPopup
+        selector={"generic-warning"}
+        header={warningHeader}
+        message={warningMessage}
+        ok={"OK"}
+        okClick={handleHideWarning}
+      />
       {user && (
         <Fragment>
           <NotificationsModal />

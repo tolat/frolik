@@ -188,11 +188,12 @@ router.post(
   tryCatch(async (req, res) => {
     const userData = req.body.user;
 
-    //Send back error code if user already exists
+    // Send back error code if user already exists
     if (await User.findOne({ username: userData.username })) {
-      res
-        .status(406)
-        .send(`User with username ${userData.username} already exists`);
+      res.status(406).send({
+        header: `User ${userData.username} already exists`,
+        message: "Try another username.",
+      });
     } else {
       // Else create new user and upload photo
       const user = new User(userData);
@@ -202,6 +203,7 @@ router.post(
       const link = `${process.env.SERVER}/user/${user._id.toString()}/verify`;
       sendEmail(userData.username, "Confirm Email", link);
       user.status = { status: "Pending", updated: Date.now() };
+      await user.save();
 
       // Convert to buffer and adjust quality before uploading
       const imageBuffer = Buffer.from(req.body.photoString.slice(23), "base64");
@@ -233,10 +235,9 @@ router.get(
   tryCatch(async (req, res) => {
     const user = await User.findById(req.params.id);
     user.status = { status: "Ready", updated: Date.now() };
-
     await user.save();
 
-    res.redirect("/login");
+    res.redirect("/email-verified");
   })
 );
 
@@ -251,7 +252,7 @@ router.get(
 
     // Return if user already has 5+ pending outings
     if (user.outings.filter((o) => o.statu == "Pending").length > 4) {
-      res.status(406).send("User has too many pending outings");
+      res.sendStatus(200);
       return;
     }
 
@@ -503,7 +504,10 @@ router.get(
       // outing is not referenced in user notifications
       !user.notifications.find((n) => n.outing == outingID)
     ) {
-      res.status(406).send("User does not have access to this outing");
+      res.status(406).send({
+        header: `User does not have access to Outing ${outingID}`,
+        message: "",
+      });
       return;
     }
 
@@ -540,7 +544,10 @@ router.get(
 
     // If user is not in the invited list, they cannot join. send 406
     if (!outing.invited.find((u) => u._id.toString() == user._id.toString())) {
-      res.status(406).send("User was not invited to this outing");
+      res.status(406).send({
+        header: `Cannot joing Outing`,
+        message: "User was not invited to this Outing.",
+      });
       return;
     }
 
@@ -568,15 +575,19 @@ router.get(
 
     // If user is not in the members list, they cannot leave.
     if (!outing.users.find((u) => u._id.toString() == user._id.toString())) {
-      res.status(406).send("User was not a member of this outing");
+      res.status(406).send({
+        header: `Cannot leave Outing`,
+        message: "You must be in the Outing members list to leave the Outing.",
+      });
       return;
     }
 
     // They also cannot leave if they are the only member
     if (outing.users.length <= 1) {
-      res
-        .status(406)
-        .send("User is unique member and cannot leave, they must delete.");
+      res.status(406).send({
+        header: `Cannot leave Outing.`,
+        message: "You are the only member - you can only delete this Outing.",
+      });
       return;
     }
 
@@ -636,15 +647,20 @@ router.get(
 
     // If user is not in the members list, they cannot delete.
     if (!outing.users.find((u) => u._id.toString() == user._id.toString())) {
-      res.status(406).send("User was not a member of this outing");
+      res.status(406).send({
+        header: `Cannot delete Outing`,
+        message: "Only Outing members can delete an Outing.",
+      });
       return;
     }
 
     // They also cannot delete if there are more than 1 members
     if (outing.users.length > 1) {
-      res
-        .status(406)
-        .send("User is not unique member and cannot delete, they must leave.");
+      res.status(406).send({
+        header: `Cannot delete Outing`,
+        message:
+          "You can only delete an Outing if there are 2 or more members.",
+      });
       return;
     }
 
@@ -774,7 +790,10 @@ router.post(
     const photoString = req.body.photoString;
 
     if (!photoString) {
-      res.status(406).send("No photo received");
+      res.status(406).send({
+        header: `Could not upload photo`,
+        message: "No photo was received.",
+      });
       return;
     }
 
@@ -783,13 +802,19 @@ router.post(
       outing.photos.filter((p) => p.uploader.toString() == user._id.toString())
         .length > 1
     ) {
-      res.status(406).send("User has already uploaded 2 photos");
+      res.status(406).send({
+        header: `Too many photos`,
+        message: "You can only upload maximum 2 photos per user per Outing.",
+      });
       return;
     }
 
     // Don't allow upload if user isn't in outing users
     if (!outing.users.find((u) => u._id.toString() == user._id.toString())) {
-      res.status(406).send("User is not a member of this outing");
+      res.status(406).send({
+        header: `Could not upload photo`,
+        message: "You are not a member of the Outing.",
+      });
       return;
     }
 
@@ -837,19 +862,28 @@ router.post(
     const photoKey = req.body.key;
 
     if (!photoKey) {
-      res.status(406).send("No photo key received");
+      res.status(406).send({
+        header: `Could not delete photo`,
+        message: "No deletion key received.",
+      });
       return;
     }
 
     // Only delete if outing has photo with key
     if (!outing.photos.find((p) => p.key == photoKey)) {
-      res.status(406).send("Photo not found in Outing");
+      res.status(406).send({
+        header: `Could not delet photo`,
+        message: `Could not find photo ${photoKey} in Outing photos.`,
+      });
       return;
     }
 
     // Don't allow delete if user isn't in outing users
     if (!outing.users.find((u) => u._id.toString() == user._id.toString())) {
-      res.status(406).send("User is not a member of this outing");
+      res.status(406).send({
+        header: `Could not delete photo`,
+        message: "You are not a member of the Outing.",
+      });
       return;
     }
 
@@ -891,7 +925,10 @@ router.post(
 
     // Don't allow if user us not in outing members
     if (!outing.users.find((uid) => uid.toString() == user._id.toString())) {
-      res.status(406).send("User is not an outing member.");
+      res.status(406).send({
+        header: `Could not complete Outing`,
+        message: "You are not a member of the Outing.",
+      });
       return;
     }
     outing.completions.push(user);
@@ -957,7 +994,10 @@ router.post(
 
     // send back 406 if user has already requested this friend
     if (user.friend_requests.find((id) => id.toString() == req.body.freindID)) {
-      res.status(406).send("User has already requested this friend.");
+      res.status(406).send({
+        header: `Friend request already sent`,
+        message: `You have already asked ${friendUser.first_name} ${friendUser.last_name} to be your friend.`,
+      });
     }
 
     const friendRequestNotification = {
@@ -993,7 +1033,10 @@ router.post(
 
     // send back 406 if user does not have this friend
     if (user.friends.find((id) => id.toString() == req.body.freindID)) {
-      res.status(406).send("User has already requested this friend.");
+      res.status(406).send({
+        header: `Could not remove friend`,
+        message: `You are not friends with ${friendUser.first_name} ${friendUser.last_name}`,
+      });
     }
 
     // Remove friends
@@ -1043,7 +1086,8 @@ router.post(
       // Check for non-existant users
       if (!usr) {
         res.status(406).send({
-          message: `Trying to add a user that does not exist to chat. Invalid id: ${id}`,
+          header: `Could not add user to chat`,
+          message: `User does not exist, or has been deleted.`,
         });
         return;
       }
@@ -1052,14 +1096,20 @@ router.post(
 
     // Check for empty withUsers
     if (withUsers.length == 0) {
-      res.status(406).send({ message: "Chat must have more than one user" });
+      res.status(406).send({
+        header: `Could not create chat`,
+        message: `Chats must have more than one member.`,
+      });
       return;
     }
 
     // send back 406 if user does not have this friend
     for (usr of withUsers) {
       if (!user.friends.find((id) => id.toString() == usr._id.toString())) {
-        res.status(406).send({ message: "User is not friends with this user" });
+        res.status(406).send({
+          header: `Could not add friend to chat`,
+          message: `You are not friends with ${usr.first_name} ${usr.last_name}`,
+        });
         return;
       }
     }

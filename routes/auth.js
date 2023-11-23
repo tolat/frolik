@@ -14,9 +14,13 @@ router.post(
   tryCatch(async (req, res) => {
     const user = await User.findOne({ username: req.body.username });
 
-    // If user status is pending, don;t allow login
-    if (user.status == "Pending") {
-      res.status(406).send("User must verify account via email");
+    // If user status is pending, don't allow login
+    if (user.status.status == "Pending") {
+      res.status(406).send({
+        header: "Email Verification Required",
+        message: `Check your email at ${req.body.username} for a verification link.`,
+      });
+      return;
     }
 
     // Populate user
@@ -25,10 +29,7 @@ router.post(
     // Get stripped down populated friends list
     const populatedFriends = await populateFriends(user.friends);
 
-    // Send unacceptable status code 406 if user has a 'Pending' status
-    user.status.status == "Pending"
-      ? res.sendStatus(406)
-      : res.send({ user, populatedFriends });
+    res.send({ user, populatedFriends });
   })
 );
 

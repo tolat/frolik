@@ -3,11 +3,12 @@ import styles from "./styles/Login.module.scss";
 import { useDispatch } from "react-redux";
 import { fetchAuth, fetchLogin } from "../../store/auth-actions";
 import { useSelector } from "react-redux";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SimpleInput from "../UI/SimpleInput";
 import CreateAccountModal from "../Modals/CreateAccountModal";
 import SimpleButton from "../UI/SimpleButton";
 import { modalActions } from "../../store/modal-slice";
+import { popupActions } from "../../store/popup-slice";
 
 function Login() {
   const usernameRef = useRef();
@@ -20,7 +21,8 @@ function Login() {
   // If authenticated, navigate to profile
   useEffect(() => {
     if (authState.isAuthenticated) {
-      navigate("/profile");
+      const prevUrl = localStorage.getItem("previousUrl");
+      navigate((prevUrl !== "/login" && prevUrl) || "/profile");
     }
   }, [authState.isAuthenticated, navigate]);
 
@@ -28,10 +30,21 @@ function Login() {
     e.preventDefault();
     setIsLoggingIn(true);
 
+    const onComplete = (response) => {
+      setIsLoggingIn(false);
+      if (response.status === 401) {
+        dispatch(
+          popupActions.setWarningHeader("Incorrect Username or Password")
+        );
+        dispatch(popupActions.setWarningMessage("Try again."));
+        dispatch(popupActions.showPopup("generic-warning"));
+      }
+    };
+
     fetchLogin(
       usernameRef.current.value,
       passwordRef.current.value,
-      setIsLoggingIn
+      onComplete
     );
   };
 
@@ -94,12 +107,6 @@ function Login() {
 export default Login;
 
 export const loginLoader = async () => {
-  const onComplete = (response) => {
-    if (response.user) {
-      const previousUrl = localStorage.getItem("previousUrl") || "/profile";
-      return redirect(previousUrl);
-    }
-  };
-
-  return (await fetchAuth(onComplete)) || null;
+  await fetchAuth()
+  return null;
 };

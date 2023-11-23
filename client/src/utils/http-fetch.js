@@ -1,5 +1,5 @@
 import store from "../store";
-import { authActions } from "../store/auth-slice";
+import { popupActions } from "../store/popup-slice";
 
 export default async function httpFetch(
   requestConfig,
@@ -19,12 +19,16 @@ export default async function httpFetch(
 
     // Handle other status codes (e.g., 401, 500) here
     if (!response.ok) {
-      // Logout if unauthorized
-      if (response.status === 401) {
-        store.dispatch(authActions.logout());
-        window.location = '/login'
+      // Show warning popup with message if unacceptable (406)
+      if (response.status === 406) {
+        response.json().then((body) => {
+          store.dispatch(popupActions.setWarningHeader(body.header));
+          store.dispatch(popupActions.setWarningMessage(body.message));
+          store.dispatch(popupActions.showPopup("generic-warning"));
+          handleError(response);
+        });
       } else {
-        return handleError(response);
+        handleError(response);
       }
     } else {
       const contentType = response.headers.get("Content-Type");

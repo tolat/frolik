@@ -5,6 +5,8 @@ const initialState = {
   display: "none",
   showCreateOutingPopup: false,
   popupImage: false,
+  warningMessage: "",
+  warningHeader: "",
 };
 const popupSlice = createSlice({
   name: "popup",
@@ -24,6 +26,12 @@ const popupSlice = createSlice({
     },
     setPopupImage(state, action) {
       state.popupImage = action.payload;
+    },
+    setWarningMessage(state, action) {
+      state.warningMessage = action.payload;
+    },
+    setWarningHeader(state, action) {
+      state.warningHeader = action.payload;
     },
   },
 });

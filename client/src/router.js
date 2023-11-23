@@ -8,6 +8,7 @@ import ErrorPage from "./components/Global/ErrorPage";
 import Navbar from "./components/Global/Navbar";
 import MainContainer from "./components/UI/MainContainer";
 import Social, { socialLoader } from "./components/Pages/Social";
+import EmailVerified from "./components/Pages/EmailVerified";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,12 @@ const router = createBrowserRouter([
         element: <Social />,
         loader: socialLoader,
       },
+      {
+        path: "/email-verified",
+        element: <EmailVerified />,
+      },
+     
+     
     ],
   },
 ]);
