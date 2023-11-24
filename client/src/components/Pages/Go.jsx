@@ -67,14 +67,14 @@ const Go = (props) => {
     return <div className={styles.categoryTabContainer}>{props.name}</div>;
   };
 
-  const sliderTabs = Object.keys(categoryColorMap).map((cat) => {
+  const sliderTabs = [...Object.keys(categoryColorMap), "Custom"].map((cat) => {
     return {
       key: `_${cat}_tab`,
       component: (
         <CategoryTab
           className={styles.categoryTab}
           name={cat}
-          color={categoryColorMap[cat]}
+          color={cat !== "Custom" ? categoryColorMap[cat] : null}
         />
       ),
     };
@@ -232,14 +232,14 @@ const Go = (props) => {
           <button
             onClick={goState.outing.users[1] ? handleEditUsersClick : null}
             className={styles.roundButton}
+            style={{ opacity: goState.outing.users[1] ? 1 : 0.2 }}
           >
             <img
-              className={
-                goState.outing.users[1] ? styles.editIcon : styles.iconBlocked
-              }
+              className={styles.editIcon}
               src={editIcon}
               alt="edit-friends"
             />
+            Remove
           </button>
           <UserIconCluster
             users={goUsers}
@@ -249,6 +249,7 @@ const Go = (props) => {
           />
           <button onClick={handleAddUserClick} className={styles.roundButton}>
             <img className={styles.editIcon} src={plusIcon} alt="add-people" />
+            Add
           </button>
         </div>
         {!goState.outing.activity.name ? (

@@ -13,7 +13,7 @@ import uploadIcon from "../../images/upload.png";
 import undoIcon from "../../images/undo-arrow.png";
 
 const ProfileEditor = (props) => {
-  const dimension = 20;
+  const dimension = 19;
   const photoDimentionStyle = {
     width: `${dimension}rem`,
     height: `${dimension}rem`,
@@ -200,7 +200,8 @@ const ProfileEditor = (props) => {
                 !photoChanged ? styles.noClick : null
               }`}
             >
-              <img src={undoIcon} className={styles.buttonIcon} alt="upload" />
+              <img src={undoIcon} className={styles.buttonIcon} alt="revert" />
+              Revert
             </div>
             <div style={pieStyle} className={styles.pieChart}>
               <CroppedImage
@@ -218,6 +219,7 @@ const ProfileEditor = (props) => {
                 className={styles.buttonIcon}
                 alt="upload"
               />
+              Upload
             </div>
           </div>
         </div>

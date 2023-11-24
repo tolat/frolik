@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles/AddUserModal.module.scss";
 import modalStyles from "./styles/SlideInModal.module.scss";
-
 import ModalPortal from "./ModalPortal";
 import FriendCard from "../UI/FriendCard";
 import { goActions } from "../../store/go-slice";

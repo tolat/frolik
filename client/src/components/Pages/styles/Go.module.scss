@@ -31,6 +31,9 @@
   background-color: white;
   outline: none;
   border: none;
+  flex-direction: column;
+  width: 4rem;
+  font-size: 1.2rem;
 }
 
 .roundButton:hover {
@@ -41,6 +44,7 @@
 .editIcon {
   width: 3rem;
   height: 3rem;
+  margin-bottom: 0.5rem;
 }
 
 .editIcon:hover {

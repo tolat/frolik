@@ -3,6 +3,7 @@ import styles from "./styles/EditUsersModal.module.scss";
 import ModalPortal from "./ModalPortal";
 import FriendCard from "../UI/FriendCard";
 import { goActions } from "../../store/go-slice";
+import modalStyles from "./styles/SlideInModal.module.scss";
 
 const EditUsersModal = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -43,6 +44,7 @@ const EditUsersModal = (props) => {
   return (
     <ModalPortal>
       <div style={modalStyle} className={styles.container}>
+      <div className={modalStyles.header}>Remove Outing Members</div>
         {goState.outing.users.map((u) => (
           <FriendCard
             id={`${u.username}-friendCard-removeUserModal`}
