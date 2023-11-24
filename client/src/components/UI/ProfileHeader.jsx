@@ -46,6 +46,7 @@ const ProfileHeader = (props) => {
             user={props.user}
             borderSizeInRem={"1.5"}
             pieShadow={true}
+            showPhotoOnClick={true}
           />
           <StatIcon
             alt="outings"

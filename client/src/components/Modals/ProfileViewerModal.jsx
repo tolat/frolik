@@ -73,7 +73,7 @@ const ProfileViewerModal = (props) => {
 
   const onCreateOuting = () => {
     dispatch(goActions.addUser(modalUser));
-    navigate("/go");
+    navigate("/outing");
   };
 
   return (

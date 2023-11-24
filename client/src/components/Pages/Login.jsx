@@ -10,7 +10,7 @@ import SimpleButton from "../UI/SimpleButton";
 import { modalActions } from "../../store/modal-slice";
 import { popupActions } from "../../store/popup-slice";
 
-const validPreviousPaths = ["/go", "/profile", "/social", "/chat"];
+const validPreviousPaths = ["/outing", "/profile", "/social", "/chat"];
 
 function Login() {
   const usernameRef = useRef();
@@ -68,7 +68,7 @@ function Login() {
     <div className={styles["login-page"]}>
       <CreateAccountModal />
       <form className={styles["login-form"]} onSubmit={handleSubmit}>
-        <h1 className={styles.header}>Login</h1>
+        <h1 className={styles.header}>Login!</h1>
         <div>
           <SimpleInput
             type="text"

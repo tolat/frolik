@@ -13,7 +13,20 @@ const EditUsersModal = (props) => {
   const modalStyle = { display: modalDisplay };
 
   const removeUser = (u) => {
-    if (u._id !== user._id) dispatch(goActions.removeUser(u));
+    if (u._id !== user._id) {
+      const elt = document.getElementById(
+        `${u.username}-friendCard-removeUserModal`
+      );
+      elt.style.opacity = 0;
+      setTimeout(() => {
+        elt.style.padding = 0;
+        elt.style.maxHeight = 0;
+      }, 150);
+      setTimeout(() => {
+        elt.style.display = "none";
+        dispatch(goActions.removeUser(u));
+      }, 300);
+    }
   };
 
   const RemoveButton = (props) => {
@@ -32,6 +45,7 @@ const EditUsersModal = (props) => {
       <div style={modalStyle} className={styles.container}>
         {goState.outing.users.map((u) => (
           <FriendCard
+            id={`${u.username}-friendCard-removeUserModal`}
             user={u}
             key={Math.random()}
             buttons={u._id === user._id ? null : <RemoveButton user={u} />}

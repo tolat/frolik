@@ -73,6 +73,7 @@ const UserIcon = memo(function UserIcon(props) {
               image={photoString}
               zoom={zoom}
               crop={crop}
+              showPhotoOnClick={props.showPhotoOnClick}
               style={{
                 height: photoDimension,
                 width: photoDimension,

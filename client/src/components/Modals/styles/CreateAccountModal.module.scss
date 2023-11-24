@@ -41,4 +41,15 @@
     font-weight: bold;
     color: white;
     width: 50%;
+    margin-bottom: 2rem;
+}
+
+.unclickable{
+    background-color: $button_grey;
+    color: grey;
+}
+
+.unclickable:hover{
+    cursor: not-allowed !important;
+    opacity: 1 !important;
 }

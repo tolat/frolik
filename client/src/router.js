@@ -39,7 +39,7 @@ const router = createBrowserRouter([
         loader: profileLoader,
       },
       {
-        path: "/go",
+        path: "/outing",
         element: <Go />,
         loader: goLoader,
       },

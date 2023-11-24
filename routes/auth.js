@@ -116,12 +116,54 @@ router.post(
     }
 
     // Create new user with new password but same _id
-    let newUser = new User(JSON.parse(JSON.stringify(user)))
-    newUser._id = user._id.toString()
-    await User.deleteOne({_id: user._id.toString()})
+    let newUser = new User(JSON.parse(JSON.stringify(user)));
+    newUser._id = user._id.toString();
+    await User.deleteOne({ _id: user._id.toString() });
     await User.register(newUser, req.body.password);
 
     res.sendStatus(200);
+  })
+);
+
+router.post(
+  "/resend-verification-email",
+  tryCatch(async (req, res) => {
+    const user = await User.findOne({ username: req.body.username });
+
+    // If user not found, send unacceptable (406)
+    if (!user) {
+      res.status(406).send({
+        header: "User Not Found",
+        message: `We can't find a user with the username you provided!`,
+      });
+      return;
+    }
+
+    // If user not found, send unacceptable (406)
+    if (!user.status.status === "Pending") {
+      res.status(406).send({
+        header: `Could not send email`,
+        message: `User ${req.body.username} has already been verified.`,
+      });
+      return;
+    }
+
+    // Send email confirmation link
+    const link = `${process.env.SERVER}/user/${user._id.toString()}/verify`;
+    sendEmail(
+      req.body.username,
+      "Confirm frolik.ca Email",
+      `
+    Click the link below to verify your email you (or someone else) 
+    used to set up an account on frolik.ca:
+    \n
+    ${link}
+    \n
+    If you did not request this, please ignore this email.
+  `
+    );
+
+    res.sendStatus(200)
   })
 );
 

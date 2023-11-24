@@ -125,7 +125,7 @@ const Navbar = (props) => {
                 </div>
               ) : null}
             </NavButton>
-            <NavLink className={(navData) => makeActive(navData)} to="/go">
+            <NavLink className={(navData) => makeActive(navData)} to="/outing">
               <NavButton
                 icon={outingIcon}
                 text={"Outing"}

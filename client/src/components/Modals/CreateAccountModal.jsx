@@ -6,7 +6,7 @@ import ProfileEditor from "./ProfileEditor";
 import placeholderPhoto from "../../images/placeholder-user-photo.png";
 import SimpleInput from "../UI/SimpleInput";
 import ValidatorBubble, { runValidators } from "../UI/ValidatorBubble";
-import { createAccount } from "../../utils/data-fetch";
+import { createAccount, resendVerificationEmail } from "../../utils/data-fetch";
 import { createProfileValidators } from "../../utils/validators";
 import SimpleButton from "../UI/SimpleButton";
 import WarningPopup from "../Popups/WarningPopup";
@@ -48,6 +48,11 @@ const CreateAccountModal = (props) => {
   const [validationDisplay, setValidationDisplay] = useState("none");
   const [validationID, setValidationID] = useState(false);
   const [showConfirmEmail, setShowConfirmEmail] = useState(false);
+  const [prevUsername, setPrevUsername] = useState(false);
+  const [resentEmail, setResentEmail] = useState(false);
+  const [resendButtonText, setResendButtonText] = useState(
+    "Resend Confirmation Email"
+  );
   const buttonTextOnSubmit = "Creating..";
   const validatorBubbleID = "validator-bubble";
   const dispatch = useDispatch();
@@ -88,6 +93,7 @@ const CreateAccountModal = (props) => {
   };
 
   const onSubmit = (data) => {
+    setPrevUsername(stagedData["create-email"]);
     createAccount(
       {
         ...data,
@@ -98,9 +104,21 @@ const CreateAccountModal = (props) => {
     );
   };
 
-  const resendConfirmationEmail = () => {
-    // NOT DONE YET
-    console.log("resend confirmation");
+  const handleResendEmail = () => {
+    if (prevUsername) {
+      const onComplete = (response) => {
+        if (response.ok) {
+          setResendButtonText("Email Sent!");
+        } else {
+          setResentEmail(false);
+          setResendButtonText("Resend Confirmation Email");
+        }
+      };
+
+      setResendButtonText("Sending Email..");
+      setResentEmail(true);
+      resendVerificationEmail(prevUsername, onComplete);
+    }
   };
 
   return (
@@ -122,18 +140,18 @@ const CreateAccountModal = (props) => {
         />
         {showConfirmEmail ? (
           <div className={styles.confirmEmailContainer}>
-            <h2 className={styles.confirmEmailHeader}>
-              Please confirm your email!
-            </h2>
+            <h2 className={styles.confirmEmailHeader}>Check your email!</h2>
             <div className={styles.confirmEmailText}>
               {`We've sent a link to ${stagedData["create-email"]}
               that you can use to finish creating your account.`}
             </div>
             <SimpleButton
-              className={styles.resendEmailButton}
-              onClick={resendConfirmationEmail}
+              className={`${styles.resendEmailButton} ${
+                resentEmail ? styles.unclickable : null
+              }`}
+              onClick={resentEmail ? null : handleResendEmail}
             >
-              Resend confirmation email
+              {resendButtonText}
             </SimpleButton>
           </div>
         ) : (

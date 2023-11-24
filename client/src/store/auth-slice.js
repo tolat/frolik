@@ -5,7 +5,8 @@ const initialState = {
   user: false,
   globals: false,
   updatingGlobals: false,
-  fetchingAuth: false
+  fetchingAuth: false,
+  fetchingMatchedUsers: false
 };
 const authSlice = createSlice({
   name: "auth",
@@ -36,6 +37,9 @@ const authSlice = createSlice({
     },
     setFetchingAuth(state,action) {
       state.fetchingAuth = action.payload
+    },
+    setFetchingMatchedUsers(state,action){
+      state.fetchingMatchedUsers = action.payload
     }
   },
 });

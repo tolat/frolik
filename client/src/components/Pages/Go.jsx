@@ -53,7 +53,6 @@ const Go = (props) => {
     let keyCategory = Object.keys(categoryColorMap).find((k) =>
       key.includes(k)
     );
-    //let color = categoryColorMap[keyCategory]
 
     return {
       backgroundColor: keyCategory === selected ? null : null,
@@ -65,16 +64,7 @@ const Go = (props) => {
   };
 
   const CategoryTab = (props) => {
-    const tabStyle = {
-      //backgroundColor: props.name === selected ? 'rgb(239, 239, 239)' : null,
-      //border: props.name === selected ? '1px solid lightgrey' : null,
-      //borderBottom: '0'
-    };
-    return (
-      <div style={tabStyle} className={styles.categoryTabContainer}>
-        {props.name}
-      </div>
-    );
+    return <div className={styles.categoryTabContainer}>{props.name}</div>;
   };
 
   const sliderTabs = Object.keys(categoryColorMap).map((cat) => {
@@ -120,6 +110,21 @@ const Go = (props) => {
 
     fetchActivityData();
   }, []);
+
+  // Make sure user in users list is updated to the auth user
+  useEffect(() => {
+    const goUser = goState.outing.users.find((u) => u._id === user._id);
+    if (goUser.outings.length !== user.outings.length) {
+      let newUsers = [];
+      for (let u of goState.outing.users) {
+        if (u._id !== user._id) {
+          newUsers.push(u);
+        }
+        newUsers.unshift(user);
+      }
+      dispatch(goActions.setUsers(newUsers));
+    }
+  }, [goState, user, dispatch]);
 
   function applyActivitySearch(activities) {
     return activitySearch || activitySearch !== ""

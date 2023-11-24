@@ -46,6 +46,7 @@ const FriendCard = (props) => {
 
   return (
     <div
+      id={props.id}
       style={{ ...props.style, boxShadow: props.noShadow ? "none" : null }}
       className={styles.container}
     >
@@ -64,8 +65,8 @@ const FriendCard = (props) => {
               height: "25%",
             }}
             badgeContentStyle={{
-              width: '75%',
-              height: '75%'
+              width: "75%",
+              height: "75%",
             }}
           />
         </div>

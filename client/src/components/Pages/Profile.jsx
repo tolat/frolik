@@ -61,7 +61,7 @@ const Profile = (props) => {
   );
 
   const onBalloonIconClick = () => {
-    navigate("/go");
+    navigate("/outing");
   };
 
   const handleEditButtonClick = (e) => {
@@ -72,7 +72,7 @@ const Profile = (props) => {
   const onCreateOuting = (withUser) => {
     dispatch(goActions.reset([user]));
     dispatch(goActions.addUser(withUser));
-    navigate("/go");
+    navigate("/outing");
   };
 
   const onCreateChat = (withUser) => {

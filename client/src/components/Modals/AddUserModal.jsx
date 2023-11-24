@@ -16,6 +16,9 @@ const AddUserModal = (props) => {
   const modalDisplay = modalState.selector === "add-user" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
   const [matchedUsers, setMatchedUsers] = useState([]);
+  const fetchingMatchedUsers = useSelector(
+    (state) => state.auth.fetchingMatchedUsers
+  );
   const availableFriends = user.friends.filter(
     (f) =>
       (f.status.status === "Ready" || f.status.status === "Searching") &&
@@ -27,7 +30,18 @@ const AddUserModal = (props) => {
   );
 
   const addUserToOuting = (u) => {
-    dispatch(goActions.addUser(u));
+    const elt = document.getElementById(
+      `${u.username}-friendCard-addUserModal`
+    );
+    elt.style.opacity = 0;
+    setTimeout(() => {
+      elt.style.padding = 0;
+      elt.style.maxHeight = 0;
+    }, 150);
+    setTimeout(() => {
+      elt.style.display = "none";
+      dispatch(goActions.addUser(u));
+    }, 300);
   };
 
   // Get matched users
@@ -62,14 +76,17 @@ const AddUserModal = (props) => {
           {availableMatches[0] ? (
             availableMatches.map((u) => (
               <FriendCard
+                id={`${u.username}-friendCard-addUserModal`}
                 buttonSet={"add"}
                 user={u}
                 key={Math.random()}
                 buttons={<AddButton user={u} />}
               />
             ))
-          ) : (
+          ) : fetchingMatchedUsers ? (
             <h2>Loading Matches..</h2>
+          ) : (
+            <h2>No Available Matches!</h2>
           )}
         </div>
         {availableFriends[0] ? (

@@ -75,7 +75,7 @@ const ChatModal = (props) => {
 
   const handleCreateOuting = () => {
     dispatch(goActions.reset(chat.users));
-    navigate("/go");
+    navigate("/outing");
   };
 
   const handleShowOuting = async () => {
