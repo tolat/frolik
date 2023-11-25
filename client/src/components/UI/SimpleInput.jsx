@@ -19,13 +19,18 @@ const SimpleInput = forwardRef((props, ref) => {
   }, [props.defaultVal]);
 
   return (
-    <div id={inputID} className={`${styles.container} ${props.className}`}>
+    <div
+      style={props.style}
+      id={inputID}
+      className={`${styles.container} ${props.className}`}
+    >
       {!props.label ? null : (
         <label className={styles.label} htmlFor={props.name}>
           {props.label}
         </label>
       )}
       <input
+        placeholder={props.placeholder}
         onChange={onChange}
         value={value}
         ref={ref || null}

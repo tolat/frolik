@@ -39,6 +39,7 @@ const CustomAutocomplete = forwardRef((props, ref) => {
         onFocus={() => {
           setShowOptions(true);
         }}
+        placeholder={props.placeholder}
         onBlur={handleInputBlur}
         name={props.name}
         id={`${props.name}-select`}

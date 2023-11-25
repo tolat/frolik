@@ -5,7 +5,7 @@ import costIcon from "../../images/bill.png";
 import ratingIcon from "../../images/star.png";
 import groupIcon from "../../images/friends.png";
 import SimpleButton from "./SimpleButton";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import travelIcon from "../../images/walk.png";
 import communicateIcon from "../../images/talking.png";
 import purchaseIcon from "../../images/cart.png";
@@ -18,6 +18,7 @@ import createIcon from "../../images/paint.png";
 import { calcAvgRating } from "../../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { goActions } from "../../store/go-slice";
+import SimpleSelect from "./SimpleSelect";
 
 const instructionIconMap = {
   communicate: communicateIcon,
@@ -33,7 +34,6 @@ const ActivityCard = (props) => {
     (state) => state.auth.globals.categoryColorMap
   );
   const statIconStyle = { width: "2rem", height: "2rem" };
-  const statContainerStyle = { marginLeft: "1rem" };
   const [instructionsVisible, setInstructionsVisible] = useState(false);
   const dispatch = useDispatch();
   const goState = useSelector((state) => state.go);
@@ -60,7 +60,8 @@ const ActivityCard = (props) => {
         <div className={styles.upperContainer}>
           <div className={styles.name}>
             <div className={styles.innerNameContainer}>
-              {props.activity.name}
+              {props.activity.name}{" "}
+              <div className={styles.location}>{props.activity.location}</div>
             </div>
             <div className={styles.nameRightContainer}>
               {props.completed ? (
@@ -87,35 +88,53 @@ const ActivityCard = (props) => {
             <div className={styles.description}>
               {props.activity.description}
             </div>
-            <div className={styles.specsContainer}>
+            <div
+              style={props.creatingActivity ? { padding: 0 } : null}
+              className={styles.specsContainer}
+            >
               <StatIcon
                 alt="time"
                 icon={timeIcon}
-                style={statContainerStyle}
                 iconStyle={statIconStyle}
-                rating={`${props.activity.duration} hrs`}
+                rating={
+                  props.creatingActivity
+                    ? props.activity.duration
+                    : `${props.activity.duration} hrs`
+                }
               />
+              <div className={styles.spacer} />
               <StatIcon
                 alt="cost"
                 icon={costIcon}
-                style={statContainerStyle}
                 iconStyle={statIconStyle}
-                rating={`$${props.activity.cost}`}
+                rating={
+                  props.creatingActivity
+                    ? props.activity.cost
+                    : `$${props.activity.cost}`
+                }
               />
+              <div className={styles.spacer} />
               <StatIcon
                 alt="group"
                 icon={groupIcon}
-                style={statContainerStyle}
                 iconStyle={statIconStyle}
-                rating={`${props.activity.participants} +`}
+                rating={
+                  props.creatingActivity
+                    ? props.activity.participants
+                    : `${props.activity.participants} +`
+                }
               />
-              <StatIcon
-                alt="rating"
-                icon={ratingIcon}
-                style={statContainerStyle}
-                iconStyle={statIconStyle}
-                rating={`${calcAvgRating(props.activity)}/5`}
-              />
+              {!props.creatingActivity && (
+                <Fragment>
+                  <div className={styles.spacer} />
+                  <StatIcon
+                    alt="rating"
+                    icon={ratingIcon}
+                    iconStyle={statIconStyle}
+                    rating={`${calcAvgRating(props.activity)}/5`}
+                  />
+                </Fragment>
+              )}
             </div>
           </div>
         </div>
@@ -129,8 +148,21 @@ const ActivityCard = (props) => {
           <div className={styles.iHeader}>Instructions:</div>
 
           {props.activity.instructions.map((i) => (
-            <InstructionCard key={Math.random()} instruction={i} />
+            <InstructionCard
+              creatingActivity={props.creatingActivity}
+              key={Math.random()}
+              instruction={i}
+            />
           ))}
+          {props.creatingActivity && (
+            <SimpleButton
+              onClick={props.creatingActivity && props.onAddInstructionClick}
+              noShadow={true}
+              className={styles.addInstructionButton}
+            >
+              + Add Instruction
+            </SimpleButton>
+          )}
           <div className={styles.iHeader}>Goal:</div>
           <div className={styles.goalContainer}>
             <img className={styles.goalIcon} src={trophyIcon} alt="goalIcon" />
@@ -177,18 +209,49 @@ const ActivityCard = (props) => {
 };
 
 const InstructionCard = (props) => {
+  const globals = useSelector((state) => state.auth.globals);
+  const instructionTypes = globals?.instructionTypes;
+  const [kind, setKind] = useState(props.instruction.kind);
+
+  const onDeleteInstruction = (e) => {
+    e.preventDefault();
+    props.instruction.deleteInstruction(props.instruction.instructionID);
+  };
+
   return (
     <div className={styles.iContainer}>
-      <div className={styles.iIconContainer}>
+      <div
+        style={props.creatingActivity ? { paddingTop: "3rem" } : null}
+        className={styles.iIconContainer}
+      >
         <img
-          src={instructionIconMap[props.instruction.kind]}
+          src={instructionIconMap[`${kind}`]}
           className={styles.iIcon}
-          alt={`${props.instruction.name}`}
+          alt={props.instruction.kind}
         />
       </div>
       <div className={styles.iRightContainer}>
-        <div className={styles.iName}>{`${props.instruction.title}`}</div>
+        {props.creatingActivity && (
+          <SimpleSelect
+            id={`${props.instruction.instructionID}-kind`}
+            placeholder="Type"
+            options={instructionTypes}
+            label="Instruction Type:"
+            inputClassName={styles.selectKindInput}
+            setDataChanged={(value) => setKind(value)}
+          />
+        )}
+        <div className={styles.iName}>{props.instruction.title}</div>
         <div className={styles.iDetails}>{props.instruction.details}</div>
+        {props.creatingActivity && (
+          <SimpleButton
+            noShadow={true}
+            className={styles.deleteInstructionButton}
+            onClick={onDeleteInstruction}
+          >
+            Delete Instruction
+          </SimpleButton>
+        )}
       </div>
     </div>
   );

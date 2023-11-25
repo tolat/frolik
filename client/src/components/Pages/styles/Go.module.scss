@@ -208,6 +208,7 @@
 
 .categoryTabContainer{
   width: 100%;
+  min-width: 6rem;
   padding: 1.2rem 0.8rem;
   box-sizing: border-box;
   font-size: 1.3rem;
@@ -216,5 +217,11 @@
   font-weight: bold;
   justify-content: center;
   display: flex;
+}
+
+.createActivityButton{
+  color: white !important;
+  background-color: $blue;
+  margin-bottom: 1rem;
 }
 

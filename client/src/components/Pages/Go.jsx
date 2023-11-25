@@ -34,6 +34,7 @@ import {
   fetchChat,
 } from "../../utils/data-fetch";
 import SliderNavber from "../UI/SliderNavbar";
+import CreateActivityModal from "../Modals/CreateActivityModal";
 
 const Go = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -67,14 +68,14 @@ const Go = (props) => {
     return <div className={styles.categoryTabContainer}>{props.name}</div>;
   };
 
-  const sliderTabs = [...Object.keys(categoryColorMap), "Custom"].map((cat) => {
+  const sliderTabs = Object.keys(categoryColorMap).map((cat) => {
     return {
       key: `_${cat}_tab`,
       component: (
         <CategoryTab
           className={styles.categoryTab}
           name={cat}
-          color={cat !== "Custom" ? categoryColorMap[cat] : null}
+          color={categoryColorMap[cat]}
         />
       ),
     };
@@ -211,10 +212,16 @@ const Go = (props) => {
     dispatch(popupActions.hidePopup());
   };
 
+  const onCreateActivityClick = () => {
+    dispatch(modalActions.setSelector("create-activity"));
+    dispatch(modalActions.showModal());
+  };
+
   return (
     <Fragment>
       <AddUserModal />
       <EditUsersModal />
+      <CreateActivityModal />
       <FilterActivitiesModal
         filter={activityFilter.filter}
         dispatchFilter={dispatchFilter}
@@ -319,6 +326,12 @@ const Go = (props) => {
                 placeholder={"Search Activities.."}
               />
             </div>
+            <SimpleButton
+              onClick={onCreateActivityClick}
+              className={styles.createActivityButton}
+            >
+              Create Custom Activity
+            </SimpleButton>
             <div className={styles.infoBar}>
               <div className={styles.infoItem}>
                 <img

@@ -37,11 +37,22 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .innerNameContainer {
   display: flex;
   align-items: center;
+  flex-direction: column;
+  align-items: baseline;
+  width: 100%;
+}
+
+.location {
+  font-size: 1.1rem;
+  color: grey;
+  width: 100%;
 }
 
 .category {
@@ -91,6 +102,8 @@
   flex-direction: column;
   transition: all 0.5s ease;
   overflow-y: hidden;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .iHeader {
@@ -122,6 +135,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
 }
 
 .iName {
@@ -137,6 +151,8 @@
   display: flex;
   padding: 0rem 1rem 1rem 1rem;
   align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .goalIcon {
@@ -147,6 +163,7 @@
 .goal {
   font-size: 1.4rem;
   font-weight: bold;
+  width: 100%;
 }
 
 .completedIcon {
@@ -156,4 +173,24 @@
 
 .nameRightContainer {
   display: flex;
+}
+
+.addInstructionButton {
+  box-sizing: border-box;
+  width: calc(100% - 2rem);
+  margin: 0 1rem;
+}
+
+.spacer {
+  width: 1.5rem;
+}
+
+.selectKindInput {
+  text-transform: capitalize;
+}
+
+.deleteInstructionButton{
+  background-color: $red;
+  color: white !important;
+  margin-top: 0.5rem;
 }

@@ -14,7 +14,7 @@ const { userSeeds, userSeeds2, userSeeds3 } = require("./user");
 const { activitySeeds } = require("./activity");
 const { uploadToS3, deleteFromS3, deleteAllFromS3 } = require("../utils/S3");
 const { generateUniqueName } = require("../utils/utils");
-const { categoryColorMap, statusMap } = require("./globals");
+const { categoryColorMap, statusMap, instructionTypes } = require("./globals");
 
 // Connect to the database and handle connection errors
 mongoose.connect(dbUrl, {
@@ -69,7 +69,7 @@ const UploadImagesToS3 = async (directoryPath) => {
 };
 
 const seedGlobals = async () => {
-  const globals = new Globals({ categoryColorMap, statusMap });
+  const globals = new Globals({ categoryColorMap, statusMap, instructionTypes });
   await globals.save();
 };
 

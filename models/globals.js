@@ -6,6 +6,7 @@ const GlobalsSchema = new Schema(
     type: String,
     categoryColorMap: Object,
     statusMap: Object,
+    instructionTypes: Array,
   },
   { minimize: false }
 );
