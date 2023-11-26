@@ -1,5 +1,9 @@
 import cityData from "../utils/cities100000";
 
+const isNotEmpty = (value) => {
+  return value && value !== "";
+};
+
 export const createProfileValidators = (defaultImage) => {
   return {
     "create-email": [
@@ -127,4 +131,112 @@ export const editProfileValidators = () => {
       },
     ],
   };
+};
+
+export const createActivityValidators = (instructions) => {
+  let validators = {
+    "create-activity-name": [
+      {
+        isValid(value) {
+          return isNotEmpty(value);
+        },
+        message: "Please enter an activity name",
+      },
+    ],
+    "create-activity-location": [
+      {
+        isValid(value) {
+          return isNotEmpty(value);
+        },
+        message: "Please enter a valid location.",
+      },
+      {
+        isValid(value) {
+          return cityData.find(
+            (city) => `${city.name}, ${city.country}` === value
+          );
+        },
+        message: "Please choose a city from the dropdown menu only.",
+      },
+    ],
+    "create-activity-description": [
+      {
+        isValid(value) {
+          return value && value !== "";
+        },
+        message: "Please enter an activity description.",
+      },
+    ],
+    "create-activity-category": [
+      {
+        isValid(value) {
+          return value && value !== "";
+        },
+        message: "Please enter an activity description.",
+      },
+    ],
+    "create-activity-duration": [
+      {
+        isValid(value) {
+          return value && value !== "";
+        },
+        message: "Please enter an activity description.",
+      },
+    ],
+    "create-activity-cost": [
+      {
+        isValid(value) {
+          return value && value !== "";
+        },
+        message: "Please enter an activity description.",
+      },
+    ],
+    "create-activity-participants": [
+      {
+        isValid(value) {
+          return value && value !== "";
+        },
+        message: "Please enter an activity description.",
+      },
+    ],
+    "create-activity-goal": [
+      {
+        isValid(value) {
+          return value && value !== "";
+        },
+        message: "Please enter an activity description.",
+      },
+    ],
+  };
+
+  instructions.forEach((i) => {
+    validators[`${i.instructionID}-kind`] = [
+      {
+        isValid(value) {
+          return value && value !== "";
+        },
+        message: "Please enter instruction type.",
+      },
+    ];
+
+    validators[`${i.instructionID}-title`] = [
+      {
+        isValid(value) {
+          return value && value !== "";
+        },
+        message: "Please enter instruction title.",
+      },
+    ];
+
+    validators[`${i.instructionID}-details`] = [
+      {
+        isValid(value) {
+          return value && value !== "";
+        },
+        message: "Please enter instruction details.",
+      },
+    ];
+  });
+
+  return validators;
 };

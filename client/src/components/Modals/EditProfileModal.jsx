@@ -27,7 +27,6 @@ const EditProfileModal = (props) => {
   const modalStyle = { display: modalDisplay };
   const userData = dataState.users[user._id];
   const validatorBubbleID = "validator-bubble";
-
   const [buttonText, setButtonText] = useState("Save");
   const [editingPhoto, setEditingPhoto] = useState(false);
   const [validationMessage, setValidationMessage] = useState(false);
@@ -114,6 +113,7 @@ const EditProfileModal = (props) => {
           elementID={validationID}
           display={validationDisplay}
           message={validationMessage}
+          setDisplay={setValidationDisplay}
         />
         <ProfileEditor
           stagedData={stagedData}

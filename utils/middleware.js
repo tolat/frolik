@@ -30,6 +30,7 @@ module.exports.sameUserOnly = async (req, res, next) => {
   // Check if the request is authenticated
   if (req.isAuthenticated()) {
     const user = await User.findOne({ username: req.session?.passport?.user });
+    const requestUserID = req.params.id || req.body.userID;
 
     // Send not found if no user exists
     if (!user) {
@@ -38,7 +39,7 @@ module.exports.sameUserOnly = async (req, res, next) => {
 
     // Only move along if the request params id is the same as the
     // id for the session user
-    if (user._id.toString() !== req.params.id) {
+    if (user._id.toString() !== requestUserID) {
       res.status(401).send("Not Authorized");
     } else {
       req.user = user;

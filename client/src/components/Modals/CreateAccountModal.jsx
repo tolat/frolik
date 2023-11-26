@@ -137,6 +137,7 @@ const CreateAccountModal = (props) => {
           elementID={validationID}
           display={validationDisplay}
           message={validationMessage}
+          setDisplay={setValidationDisplay}
         />
         {showConfirmEmail ? (
           <div className={styles.confirmEmailContainer}>

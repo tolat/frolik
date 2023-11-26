@@ -6,28 +6,13 @@ import ratingIcon from "../../images/star.png";
 import groupIcon from "../../images/friends.png";
 import SimpleButton from "./SimpleButton";
 import { Fragment, useState } from "react";
-import travelIcon from "../../images/walk.png";
-import communicateIcon from "../../images/talking.png";
-import purchaseIcon from "../../images/cart.png";
-import captureIcon from "../../images/camera.png";
 import trophyIcon from "../../images/trophy.png";
-import whistleIcon from "../../images/whistle.png";
 import completeIcon from "../../images/complete.png";
 import featuredIcon from "../../images/feature.png";
-import createIcon from "../../images/paint.png";
 import { calcAvgRating } from "../../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { goActions } from "../../store/go-slice";
-import SimpleSelect from "./SimpleSelect";
-
-const instructionIconMap = {
-  communicate: communicateIcon,
-  travel: travelIcon,
-  purchase: purchaseIcon,
-  capture: captureIcon,
-  play: whistleIcon,
-  create: createIcon,
-};
+import InstructionCard from "./InstructionCard";
 
 const ActivityCard = (props) => {
   const categoryColorMap = useSelector(
@@ -203,55 +188,6 @@ const ActivityCard = (props) => {
             </SimpleButton>
           )}
         </div>
-      </div>
-    </div>
-  );
-};
-
-const InstructionCard = (props) => {
-  const globals = useSelector((state) => state.auth.globals);
-  const instructionTypes = globals?.instructionTypes;
-  const [kind, setKind] = useState(props.instruction.kind);
-
-  const onDeleteInstruction = (e) => {
-    e.preventDefault();
-    props.instruction.deleteInstruction(props.instruction.instructionID);
-  };
-
-  return (
-    <div className={styles.iContainer}>
-      <div
-        style={props.creatingActivity ? { paddingTop: "3rem" } : null}
-        className={styles.iIconContainer}
-      >
-        <img
-          src={instructionIconMap[`${kind}`]}
-          className={styles.iIcon}
-          alt={props.instruction.kind}
-        />
-      </div>
-      <div className={styles.iRightContainer}>
-        {props.creatingActivity && (
-          <SimpleSelect
-            id={`${props.instruction.instructionID}-kind`}
-            placeholder="Type"
-            options={instructionTypes}
-            label="Instruction Type:"
-            inputClassName={styles.selectKindInput}
-            setDataChanged={(value) => setKind(value)}
-          />
-        )}
-        <div className={styles.iName}>{props.instruction.title}</div>
-        <div className={styles.iDetails}>{props.instruction.details}</div>
-        {props.creatingActivity && (
-          <SimpleButton
-            noShadow={true}
-            className={styles.deleteInstructionButton}
-            onClick={onDeleteInstruction}
-          >
-            Delete Instruction
-          </SimpleButton>
-        )}
       </div>
     </div>
   );

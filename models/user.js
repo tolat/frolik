@@ -15,6 +15,7 @@ const UserSchema = new Schema(
     friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
     friend_requests: [{ type: Schema.Types.ObjectId, ref: "User" }],
     outings: [{ type: Schema.Types.ObjectId, ref: "Outing" }],
+    activities: [{ type: Schema.Types.ObjectId, ref: "Activity" }],
     status: {
       updated: Date,
       status: String,

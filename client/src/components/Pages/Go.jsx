@@ -13,7 +13,7 @@ import FilterActivitiesModal from "../Modals/FilterActivitiesModal";
 import balloonIcon from "../../images/air-balloon-light.png";
 import downIcon from "../../images/down.png";
 import upIcon from "../../images/up.png";
-import { pageRouteLoader } from "../../utils/utils";
+import { capitalizeFirstLetter, pageRouteLoader } from "../../utils/utils";
 import store from "../../store";
 import { goActions } from "../../store/go-slice";
 import SimpleSearch from "../UI/SimpleSearch";
@@ -217,11 +217,16 @@ const Go = (props) => {
     dispatch(modalActions.showModal());
   };
 
+  const addActivity = (activity) => {
+    dispatchFilter({ type: "add-activity", payload: activity });
+    setSelected(capitalizeFirstLetter(activity.category.toLowerCase()));
+  };
+
   return (
     <Fragment>
       <AddUserModal />
       <EditUsersModal />
-      <CreateActivityModal />
+      <CreateActivityModal addActivity={addActivity} />
       <FilterActivitiesModal
         filter={activityFilter.filter}
         dispatchFilter={dispatchFilter}

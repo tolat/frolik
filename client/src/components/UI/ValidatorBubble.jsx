@@ -25,13 +25,16 @@ const ValidatorBubble = (props) => {
     }
 
     const x = rect?.left - modalRect.left + window.scrollX + 50;
-    const y = rect?.top - modalRect.top + window.scrollY + remToPixels(6.5);
+    const y =
+      rect?.top -
+      modalRect.top +
+      window.scrollY +
+      targetElement?.getBoundingClientRect()?.height + remToPixels(1);
 
     return { x, y };
   }
 
   const handleBlur = () => {
-    console.log("blur validator bubble");
     props.setDisplay("none");
   };
 
@@ -65,7 +68,7 @@ export const runValidators = (
   setDisplay("none");
 
   if (validators) {
-    // Run validators and set message and display if value fails
+    // Run validators, set message and display if value fails
     for (let id in validators) {
       for (let validator of validators[id]) {
         if (!validator.isValid(dataMap[id])) {
@@ -76,6 +79,7 @@ export const runValidators = (
             document.getElementById(bubbleID).scrollIntoView({
               behavior: "smooth",
             });
+            document.getElementById(bubbleID).focus();
           }, 100);
 
           return false;

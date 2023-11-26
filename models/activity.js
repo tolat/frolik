@@ -14,6 +14,7 @@ const ActivitySchema = new Schema(
     participants: Number,
     goal: "String",
     featured: Boolean,
+    created_by: { type: Schema.Types.ObjectId, ref: "User" },
     instructions: [
       {
         kind: String,

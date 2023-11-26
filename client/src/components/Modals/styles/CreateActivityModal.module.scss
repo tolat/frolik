@@ -28,18 +28,6 @@
   margin-bottom: 1rem !important;
 }
 
-.instructionDetails {
-  border: none;
-  outline: none;
-  font-size: 1.3rem;
-  padding: 1rem;
-  background-color: $light_blue;
-  width: 100%;
-  box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
-  resize: none;
-}
-
 .createButton{
     background-color: $blue;
     color: white !important;
@@ -47,4 +35,8 @@
     top: 2rem;
     right: 2rem;
     width: fit-content;
+}
+
+.iconInput{
+    margin-top: 0.5rem;
 }

@@ -12,6 +12,12 @@ const SimpleInput = forwardRef((props, ref) => {
     props.setDataChanged && props.setDataChanged(newValue);
   };
 
+  const onBlur = (e) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+    props.onBlur && props.onBlur(newValue);
+  };
+
   // Set default value on component load and
   // run submit validators if submitting
   useEffect(() => {
@@ -30,6 +36,7 @@ const SimpleInput = forwardRef((props, ref) => {
         </label>
       )}
       <input
+        onBlur={onBlur}
         placeholder={props.placeholder}
         onChange={onChange}
         value={value}

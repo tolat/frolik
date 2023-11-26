@@ -104,10 +104,6 @@ const ProfileEditor = (props) => {
     props.onSubmit(data);
   };
 
-  const onSubmitBlur = () => {
-    props.clearValidators && props.clearValidators();
-  };
-
   const onUploadClick = (e) => {
     e.preventDefault();
     document.getElementById("upload-profile-photo").click();
@@ -270,7 +266,6 @@ const ProfileEditor = (props) => {
         />
         <SimpleButton
           onClick={dataChanged ? handleSave : (e) => e.preventDefault()}
-          onBlur={onSubmitBlur}
           className={dataChanged ? styles.saveButton : styles.unclickableButton}
         >
           {buttonText}

@@ -112,39 +112,14 @@
   font-weight: bold;
 }
 
-.iContainer {
-  display: flex;
-
-  padding: 1rem;
+.spacer {
+  width: 1.5rem;
 }
 
-.iIconContainer {
-  display: flex;
-  align-items: center;
-  height: 100%;
-}
-
-.iIcon {
+.addInstructionButton {
   box-sizing: border-box;
-  height: 100%;
-  padding: 0 1rem 1rem 1rem;
-  height: 4rem;
-}
-
-.iRightContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-}
-
-.iName {
-  font-size: 1.4rem;
-  font-weight: bold;
-}
-
-.iDetails {
-  font-size: 1.2rem;
+  width: calc(100% - 2rem);
+  margin: 0 1rem;
 }
 
 .goalContainer {
@@ -173,24 +148,4 @@
 
 .nameRightContainer {
   display: flex;
-}
-
-.addInstructionButton {
-  box-sizing: border-box;
-  width: calc(100% - 2rem);
-  margin: 0 1rem;
-}
-
-.spacer {
-  width: 1.5rem;
-}
-
-.selectKindInput {
-  text-transform: capitalize;
-}
-
-.deleteInstructionButton{
-  background-color: $red;
-  color: white !important;
-  margin-top: 0.5rem;
 }

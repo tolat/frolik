@@ -1,0 +1,64 @@
+@import "../../../utils/responsive.scss";
+
+.selectKindInput {
+  text-transform: capitalize;
+}
+
+.deleteInstructionButton {
+  background-color: $red;
+  color: white !important;
+  margin-top: 0.5rem;
+}
+
+.instructionDetails {
+  border: none;
+  outline: none;
+  font-size: 1.3rem;
+  padding: 1rem;
+  background-color: $light_blue;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+  resize: none;
+}
+
+.iHeader {
+  margin: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.iContainer {
+  display: flex;
+
+  padding: 1rem;
+}
+
+.iIconContainer {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.iIcon {
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0 1rem 1rem 1rem;
+  height: 4rem;
+}
+
+.iRightContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+.iName {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.iDetails {
+  font-size: 1.2rem;
+}

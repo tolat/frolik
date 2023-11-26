@@ -224,12 +224,12 @@ export const createAccount = (data, resetForm) => {
 export const fetchMatchedUsers = (user, setMatchedUsers) => {
   const requestConfig = { url: `${getServer()}/user/${user._id}/matches` };
 
-  if(store.getState().auth.fetchingMatchedUsers){
-    return
+  if (store.getState().auth.fetchingMatchedUsers) {
+    return;
   }
 
   const handleResponse = (response) => {
-    store.dispatch(authActions.setFetchingMatchedUsers(false))
+    store.dispatch(authActions.setFetchingMatchedUsers(false));
     setMatchedUsers(response.matches);
     for (user of response.matches) {
       fetchProfilePic(user._id);
@@ -237,11 +237,11 @@ export const fetchMatchedUsers = (user, setMatchedUsers) => {
   };
 
   const handleError = (err) => {
-    store.dispatch(authActions.setFetchingMatchedUsers(false))
+    store.dispatch(authActions.setFetchingMatchedUsers(false));
     console.log("ERROR: ", err);
   };
 
-  store.dispatch(authActions.setFetchingMatchedUsers(true))
+  store.dispatch(authActions.setFetchingMatchedUsers(true));
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
@@ -732,6 +732,28 @@ export const resendVerificationEmail = (username, onComplete) => {
     },
     method: "POST",
     body: JSON.stringify({ username }),
+  };
+
+  const handleResponse = (response) => {
+    onComplete(response);
+  };
+
+  const handleError = (err) => {
+    onComplete(err);
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};
+
+export const createActivity = (user, activity, onComplete) => {
+  const requestConfig = {
+    url: `${getServer()}/activity/create`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({ activity, userID: user._id }),
   };
 
   const handleResponse = (response) => {

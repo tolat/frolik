@@ -154,6 +154,16 @@ export const filterReducer = (state, action) => {
       active: action.active,
     };
   }
+
+  if (action.type === "add-activity") {
+    const newActivities = [...state.initialActivities, action.payload];
+    return {
+      ...state,
+      initialActivities: [...newActivities],
+      activities: [...newActivities],
+      filter: initialActivityFilter.filter,
+    };
+  }
 };
 
 export const filtersAreEqual = (f1, f2) => {
@@ -374,3 +384,25 @@ export const genBackgroundStr = (user, categoryColorMap) => {
   return backgroundString;
 };
 
+export const genRandomChars = (length) => {
+  const alphabet = "qwertyuiopasdfghjklzxcvbnm".split("");
+  let string = "";
+  for (let i = 0; i < length; i++) {
+    const randIndex =
+      ((Math.random() * 10000) % alphabet.length).toFixed(0) - 1;
+    string = string.concat(alphabet[randIndex]);
+  }
+
+  return string;
+};
+
+export const capitalizeFirstLetter = (str) => {
+  // Check if the string is not empty
+  if (str && typeof str === "string") {
+    // Capitalize the first letter and concatenate the rest of the string
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  } else {
+    // Handle empty or non-string input
+    return str;
+  }
+};
