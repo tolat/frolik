@@ -2,7 +2,11 @@ import { useDispatch, useSelector } from "react-redux";
 import UserIconCluster from "./UserIconCluster";
 import styles from "./styles/FeedCard.module.scss";
 import { useEffect, useState } from "react";
-import { fetchOutingPhoto, fetchProfilePic } from "../../utils/data-fetch";
+import {
+  fetchOutingPhoto,
+  fetchProfilePic,
+  setUserLike,
+} from "../../utils/data-fetch";
 import { dataActions } from "../../store/data-slice";
 import SimpleButton from "./SimpleButton";
 import heart from "../../images/heart.png";
@@ -11,6 +15,7 @@ import { popupActions } from "../../store/popup-slice";
 import EmptyPopup from "../Popups/EmptyPopup";
 import ActivityCard from "./ActivityCard";
 import FriendCard from "./FriendCard";
+import StatIcon from "./StatIcon";
 
 const FeedCard = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -92,19 +97,33 @@ const FeedCard = (props) => {
 
 const FeedCardFooter = (props) => {
   const globals = useSelector((state) => state.auth.globals);
+  const user = useSelector((state) => state.auth.user);
   const categoryColorMap = globals.categoryColorMap;
+  const outingLikes = props.outing?.likes;
   const activityColor = categoryColorMap[props.outing?.activity?.category];
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(
+    outingLikes?.find((id) => id === user?._id)
+  );
   const dispatch = useDispatch();
   const activityPopupSelector = `${props.outing?._id}-activity-popup`;
   const usersPopupSelector = `${props.outing?._id}-users-popup`;
+
+  // Set liked for this outing
+  useEffect(() => {
+    setLiked(outingLikes?.find((id) => id === user._id));
+  }, [outingLikes, user]);
 
   const onShowActivityPopup = () => {
     dispatch(popupActions.showPopup(activityPopupSelector));
   };
 
   const onLikeClick = () => {
-    setLiked((prevState) => !prevState);
+    setLiked((prevState) => {
+      // update liked with prevestate
+      setUserLike(user, props.outing, !prevState);
+
+      return !prevState;
+    });
   };
 
   const onClusterClick = () => {
@@ -156,11 +175,13 @@ const FeedCardFooter = (props) => {
           </div>
         </div>
 
-        <img
+        <StatIcon
           onClick={onLikeClick}
-          src={liked ? heartFull : heart}
+          icon={liked ? heartFull : heart}
           className={styles.likeIcon}
+          iconStyle={{ width: "100%", height: "100%" }}
           alt="feed-outing-icon"
+          rating={props.outing?.likes?.length || null}
         />
       </div>
     </div>

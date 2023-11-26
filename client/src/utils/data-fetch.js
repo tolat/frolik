@@ -767,3 +767,22 @@ export const createActivity = (user, activity, onComplete) => {
 
   httpFetch(requestConfig, handleResponse, handleError);
 };
+
+export const setUserLike = (user, outing, liked) => {
+  const requestConfig = {
+    url: `${getServer()}/user/${user._id}/set-like`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({ outingID: outing._id, liked }),
+  };
+
+  const handleResponse = (response) => {};
+
+  const handleError = (err) => {
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};

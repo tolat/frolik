@@ -245,7 +245,7 @@ router.post(
 router.get(
   "/:id/verify",
   tryCatch(async (req, res) => {
-    console.log("HERE")
+    console.log("HERE");
     const user = await User.findById(req.params.id);
 
     // If user not found, send unacceptable (406)
@@ -256,7 +256,6 @@ router.get(
       });
       return;
     }
-
 
     user.status = { status: "Ready", updated: Date.now() };
     await user.save();
@@ -1246,5 +1245,26 @@ router.get(
   })
 );
 
+// Update Last Read chat message
+router.post(
+  "/:id/set-like",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    const outing = await Outing.findById(req.body.outingID);
+
+    req.body.liked
+      ? outing.likes.push(user._id)
+      : (outing.likes = outing.likes
+          .map((id) => id.toString())
+          .filter((idString) => idString !== user._id.toString()));
+
+    await outing.save();
+    pushUserUpdate(outing.users);
+
+    res.sendStatus(200);
+  })
+);
 
 module.exports = router;
