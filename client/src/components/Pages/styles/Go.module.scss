@@ -188,7 +188,8 @@
 .infoItem {
   display: flex;
   align-items: center;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
+  font-weight: bold;
   padding: 1rem;
   background-color: $card_grey;
   border-radius: 3px;
@@ -197,10 +198,21 @@
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
+.activeInfoItem {
+  background-color: $blue;
+  color: white;
+  font-weight: bold;
+}
+
 .infoIcon {
   height: 2rem;
   width: 2rem;
   margin-right: 1rem;
+}
+
+.activeInfoIcon {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
 }
 
 .outingCreatedName {

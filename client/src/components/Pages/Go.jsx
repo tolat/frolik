@@ -21,8 +21,11 @@ import WarningPopup from "../Popups/WarningPopup";
 import outingsBarIcon from "../../images/outingsToolbar.png";
 import { popupActions } from "../../store/popup-slice";
 import completeIcon from "../../images/complete.png";
+import completeIconLight from "../../images/complete-light.png";
 import creationIcon from "../../images/sketch.png";
+import creationIconLight from "../../images/sketch-light.png";
 import featuredIcon from "../../images/feature.png";
+import featuredIconLight from "../../images/feature-light.png";
 import {
   filterReducer,
   initialActivityFilter,
@@ -49,8 +52,6 @@ const Go = (props) => {
   const categoryColorMap = globals && globals?.categoryColorMap;
   const [selected, setSelected] = useState(Object.keys(categoryColorMap)[0]);
   const selectedSliderKey = `_${selected}_tab`;
-
-  console.log(user)
 
   const getHighlightStyle = (key) => {
     let keyCategory = Object.keys(categoryColorMap).find((k) =>
@@ -224,6 +225,16 @@ const Go = (props) => {
     setSelected(capitalizeFirstLetter(activity.category.toLowerCase()));
   };
 
+  const toggleButtonFilter = (key) => {
+    let newFilter = { ...activityFilter.filter };
+    newFilter[key] = !activityFilter.filter[key];
+
+    dispatchFilter({
+      type: "apply-filter",
+      filter: newFilter,
+    });
+  };
+
   return (
     <Fragment>
       <AddUserModal />
@@ -340,24 +351,55 @@ const Go = (props) => {
               Create Custom Activity
             </SimpleButton>
             <div className={styles.infoBar}>
-              <div className={styles.infoItem}>
+              <div
+                className={`${styles.infoItem} ${
+                  activityFilter.filter.completed ? styles.activeInfoItem : null
+                }`}
+                onClick={() => toggleButtonFilter("completed")}
+              >
                 <img
-                  src={completeIcon}
+                  src={
+                    activityFilter.filter.completed
+                      ? completeIconLight
+                      : completeIcon
+                  }
                   className={styles.infoIcon}
                   alt="completed-icon"
                 />
                 Completed
               </div>
-              <div className={styles.infoItem}>
+              <div
+                className={`${styles.infoItem} ${
+                  activityFilter.filter.featured ? styles.activeInfoItem : null
+                }`}
+                onClick={() => toggleButtonFilter("featured")}
+              >
                 <img
-                  src={featuredIcon}
+                  src={
+                    activityFilter.filter.featured
+                      ? featuredIconLight
+                      : featuredIcon
+                  }
                   className={styles.infoIcon}
                   alt="featured-icon"
                 />
                 Featured
               </div>
-              <div className={styles.infoItem}>
-                <img src={creationIcon} className={styles.infoIcon} alt="creations-icon" />
+              <div
+                className={`${styles.infoItem} ${
+                  activityFilter.filter.created ? styles.activeInfoItem : null
+                }`}
+                onClick={() => toggleButtonFilter("created")}
+              >
+                <img
+                  src={
+                    activityFilter.filter.created
+                      ? creationIconLight
+                      : creationIcon
+                  }
+                  className={styles.infoIcon}
+                  alt="creations-icon"
+                />
                 My Creations
               </div>
             </div>
@@ -370,9 +412,14 @@ const Go = (props) => {
 
             {!activityFilter.activities[0] ? (
               <div className={styles.loading}>
-                {activityFilter.active
-                  ? "No Activities Matched Filters!"
-                  : "Loading Activities.."}
+                {activityFilter.active ||
+                activityFilter.filter.completed ||
+                activityFilter.filter.featured ||
+                activityFilter.filter.created ? (
+                  <h4>No Activities Match Filters!</h4>
+                ) : (
+                  <h4>Loading Activities..</h4>
+                )}
               </div>
             ) : (
               applyActivitySearch(activityFilter.activities)

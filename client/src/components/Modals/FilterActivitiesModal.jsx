@@ -6,7 +6,6 @@ import SimpleInput from "../UI/SimpleInput";
 import SimpleButton from "../UI/SimpleButton";
 import { useRef } from "react";
 import { hideModal } from "../../store/modal-actions";
-import SimpleCheckbox from "../UI/SimpleCheckbox";
 
 const FilterActivitiesModal = (props) => {
   const modalState = useSelector((state) => state.modal);
@@ -17,11 +16,7 @@ const FilterActivitiesModal = (props) => {
   const updateLocalFilter = () => {
     const filter = {};
     for (let key in filterRefs) {
-      if (["newOnly", "featuredOnly", "completedOnly"].includes(key)) {
-        filter[key] = filterRefs[key].current.checked;
-      }  else {
-        filter[key] = filterRefs[key].current.value;
-      }
+      filter[key] = filterRefs[key].current.value;
     }
     return filter;
   };
@@ -33,9 +28,6 @@ const FilterActivitiesModal = (props) => {
     maxCost: useRef(),
     minCost: useRef(),
     maxTime: useRef(),
-    newOnly: useRef(),
-    completedOnly: useRef(),
-    featuredOnly: useRef(),
   };
 
   // Apply filter changes
@@ -137,27 +129,6 @@ const FilterActivitiesModal = (props) => {
           ref={filterRefs.maxTime}
           defaultVal={props.filter.maxTime}
         />
-        <div className={styles.checkboxContainer}>
-          <h2>Show Only:</h2>
-          <SimpleCheckbox
-            label={"Completed"}
-            name={"completedOnly"}
-            ref={filterRefs.completedOnly}
-            defaultVal={props.filter.completedOnly}
-          />
-          <SimpleCheckbox
-            label={"New"}
-            name={"newOnly"}
-            ref={filterRefs.newOnly}
-            defaultVal={props.filter.newOnly}
-          />
-          <SimpleCheckbox
-            label={"Featured"}
-            name={"featuredOnly"}
-            ref={filterRefs.featuredOnly}
-            defaultVal={props.filter.featuredOnly}
-          />
-        </div>
       </div>
     </ModalPortal>
   );

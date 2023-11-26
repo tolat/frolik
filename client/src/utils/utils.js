@@ -102,41 +102,37 @@ export const initialActivityFilter = {
 };
 
 export const filterReducer = (state, action) => {
-  const applyFilter = (activities, filter) => {
+  const applyFilter = (activities, f) => {
     const filteredActivities = [];
     const completedActivities = store
       .getState()
       .auth.user?.outings?.map((outing) => outing.activity._id);
 
     // Apply category filter
-    for (let activity of activities) {
+    for (let a of activities) {
       if (
         // Category
-        (filter?.category &&
-          filter?.category !== "Any" &&
-          activity?.category !== filter?.category) ||
+        (f?.category && f?.category !== "Any" && a?.category !== f?.category) ||
         // Participant
-        (filter?.minParticipants &&
-          activity.participants < filter?.minParticipants) ||
-        (filter?.maxParticipants &&
-          activity.participants > filter?.maxParticipants) ||
+        (f?.minParticipants && a.participants < f?.minParticipants) ||
+        (f?.maxParticipants && a.participants > f?.maxParticipants) ||
         // Rating
-        (filter?.minRating && calcAvgRating(activity) < filter?.minRating) ||
+        (f?.minRating && calcAvgRating(a) < f?.minRating) ||
         // Cost
-        (filter?.minCost && activity.cost < filter?.minCost) ||
-        (filter?.maxCost && activity.cost > filter?.maxCost) ||
+        (f?.minCost && a.cost < f?.minCost) ||
+        (f?.maxCost && a.cost > f?.maxCost) ||
         // Time
-        (filter?.maxTime && activity.duration > filter?.maxTime) ||
-        // Fetured Only
-        (filter?.featuredOnly && !activity.featured) ||
-        // New Only
-        (filter?.newOnly && completedActivities.includes(activity._id)) ||
+        (f?.maxTime && a.duration > f?.maxTime) ||
+        // Featured Only
+        (f?.featured && !a.featured) ||
         // Completed Only
-        (filter?.completedOnly && !completedActivities.includes(activity._id))
+        (f?.completed && !completedActivities.includes(a._id)) ||
+        // Created Only
+        (f?.created && !a.created_by)
       ) {
         continue;
       } else {
-        filteredActivities.push(activity);
+        filteredActivities.push(a);
       }
     }
 
