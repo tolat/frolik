@@ -69,22 +69,32 @@ const UploadImagesToS3 = async (directoryPath) => {
 };
 
 const seedGlobals = async () => {
-  const globals = new Globals({ categoryColorMap, statusMap, instructionTypes });
+  const globals = new Globals({
+    categoryColorMap,
+    statusMap,
+    instructionTypes,
+  });
   await globals.save();
 };
 
 const seedUsers = async () => {
   // Delete sampledev bucket data and re-seed images
-  // await deleteAllFromS3(process.env.AWS_BUCKET);
-  // const profilePicsPath = `${__dirname}/images`;
-  // const sampleImagesPath = `${__dirname}/images/sampleUserPhotos`;
-  // await UploadImagesToS3(profilePicsPath);
-  // await UploadImagesToS3(sampleImagesPath);
+  if (process.env.SEED_PRODUCTION) {
+    await deleteAllFromS3(process.env.AWS_BUCKET);
+  }
+  //await deleteAllFromS3(process.env.AWS_BUCKET);
+  //const profilePicsPath = `${__dirname}/images`;
+  //const sampleImagesPath = `${__dirname}/images/sampleUserPhotos`;
+  //await UploadImagesToS3(profilePicsPath);
+  //await UploadImagesToS3(sampleImagesPath);
 
   // Create users
   async function createUsers(seeds) {
-    for (user of seeds) {
-      const newUser = new User({ ...user });
+    for (let user of seeds) {
+      const newUser = new User({
+        ...user,
+        last_name: user.last_name.slice(0, 1),
+      });
       await User.register(newUser, "getout1*");
     }
 
@@ -286,23 +296,27 @@ const seedDB = async () => {
   await seedGlobals();
   console.log("done globals..");
 
-  await User.deleteMany({});
-  await seedUsers();
-  console.log("done users..");
+  if (!process.env.SEED_PRODUCTION) {
+    await User.deleteMany({});
+    await seedUsers();
+    console.log("done users..");
+  }
 
   await Activity.deleteMany({});
   await seedActivities();
   console.log("done activities..");
 
-  await Outing.deleteMany({});
-  await seedOutings(userSeeds);
-  await seedOutings(userSeeds2);
-  await seedOutings(userSeeds3);
-  console.log("done outings..");
+  if (!process.env.SEED_PRODUCTION) {
+    await Outing.deleteMany({});
+    await seedOutings(userSeeds);
+    await seedOutings(userSeeds2);
+    await seedOutings(userSeeds3);
+    console.log("done outings..");
 
-  await Chat.deleteMany({});
-  await seedChats();
-  console.log("done chats..");
+    await Chat.deleteMany({});
+    await seedChats();
+    console.log("done chats..");
+  }
 };
 
 const awaitSeed = async () => {
