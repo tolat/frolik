@@ -8,10 +8,12 @@ export const calcAvgRating = (activity) => {
   if (!activity.ratings) {
     return 0;
   }
-  return (
+
+  const ratingString = (
     activity.ratings.reduce((acc, rating) => acc + rating.rating, 0) /
     activity.ratings.length
   ).toFixed(1);
+  return isNaN(ratingString) ? "unrated" : `${ratingString}/5`;
 };
 
 export const pageRouteLoader = async () => {

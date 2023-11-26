@@ -21,7 +21,7 @@ import WarningPopup from "../Popups/WarningPopup";
 import outingsBarIcon from "../../images/outingsToolbar.png";
 import { popupActions } from "../../store/popup-slice";
 import completeIcon from "../../images/complete.png";
-import newIcon from "../../images/new.png";
+import creationIcon from "../../images/sketch.png";
 import featuredIcon from "../../images/feature.png";
 import {
   filterReducer,
@@ -49,6 +49,8 @@ const Go = (props) => {
   const categoryColorMap = globals && globals?.categoryColorMap;
   const [selected, setSelected] = useState(Object.keys(categoryColorMap)[0]);
   const selectedSliderKey = `_${selected}_tab`;
+
+  console.log(user)
 
   const getHighlightStyle = (key) => {
     let keyCategory = Object.keys(categoryColorMap).find((k) =>
@@ -355,8 +357,8 @@ const Go = (props) => {
                 Featured
               </div>
               <div className={styles.infoItem}>
-                <img src={newIcon} className={styles.infoIcon} alt="new-icon" />
-                New
+                <img src={creationIcon} className={styles.infoIcon} alt="creations-icon" />
+                My Creations
               </div>
             </div>
             <SliderNavber

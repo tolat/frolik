@@ -9,6 +9,7 @@ import { Fragment, useState } from "react";
 import trophyIcon from "../../images/trophy.png";
 import completeIcon from "../../images/complete.png";
 import featuredIcon from "../../images/feature.png";
+import creationIcon from "../../images/sketch.png"
 import { calcAvgRating } from "../../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { goActions } from "../../store/go-slice";
@@ -67,6 +68,15 @@ const ActivityCard = (props) => {
                   />
                 </div>
               ) : null}
+              {props.activity.created_by ? (
+                <div className={styles.completedIconContainer}>
+                  <img
+                    src={creationIcon}
+                    className={styles.completedIcon}
+                    alt="creation-icon"
+                  />
+                </div>
+              ) : null}
             </div>
           </div>
           <div>
@@ -116,7 +126,7 @@ const ActivityCard = (props) => {
                     alt="rating"
                     icon={ratingIcon}
                     iconStyle={statIconStyle}
-                    rating={`${calcAvgRating(props.activity)}/5`}
+                    rating={calcAvgRating(props.activity)}
                   />
                 </Fragment>
               )}

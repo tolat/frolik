@@ -16,12 +16,32 @@ router.get(
   "/get-all",
   reqAuthenticated,
   tryCatch(async (req, res) => {
-    const activities = await Activity.find({});
     const user = await User.findOne({ username: req.session.passport.user });
-    const localActivities = activities.filter(
-      (a) => a.location == "Global" || a.location == user.location
-    );
-    res.send({ activities: localActivities });
+
+    if (!user) {
+      res.status(406).send({
+        header: `Could not fetch activities`,
+        message: `You must be logged in the see activities.`,
+      });
+      return;
+    }
+
+    let activities = await Activity.find({
+      $and: [
+        {
+          $or: [{ location: "Global" }, { location: user.location }],
+        },
+        { $nor: [{ created_by: { $exists: true } }, { created_by: user._id }] },
+      ],
+    });
+
+    for (let activity of user.activities) {
+      const foundActivity = await Activity.findById(activity.toString());
+      activities.push(foundActivity);
+    }
+
+
+    res.send({ activities });
   })
 );
 
@@ -34,8 +54,8 @@ router.post(
     const user = await User.findById(req.body.userID);
     const activity = new Activity(req.body.activity);
     activity.created_by = user._id;
-    user.activities.push(activity)
-    await user.save()
+    user.activities.push(activity);
+    await user.save();
     await activity.save();
 
     pushUserUpdate([user]);

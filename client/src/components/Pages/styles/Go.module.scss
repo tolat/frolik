@@ -156,7 +156,7 @@
 
 .activeFiltersButton {
   background-color: $blue;
-  color: white;
+  color: white !important;
 }
 
 @keyframes bump {
@@ -175,21 +175,26 @@
 
 .outingsIcon {
   width: 90%;
-  margin: 1rem 0 1rem 0 ;
+  margin: 1rem 0 1rem 0;
 }
 
 .infoBar {
   display: flex;
   width: 100%;
-  margin-bottom: 1rem;
-  justify-content: center;
+  justify-content: space-between;
+  margin: 0.5rem 0;
 }
 
 .infoItem {
   display: flex;
   align-items: center;
   font-size: 1.3rem;
-  margin-right: 2rem;
+  padding: 1rem;
+  background-color: $card_grey;
+  border-radius: 3px;
+  cursor: pointer;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 .infoIcon {
@@ -198,7 +203,7 @@
   margin-right: 1rem;
 }
 
-.outingCreatedName{
+.outingCreatedName {
   width: 100%;
   text-align: left;
   font-size: 1.8rem;
@@ -206,7 +211,7 @@
   margin: 0 0 1rem 0;
 }
 
-.categoryTabContainer{
+.categoryTabContainer {
   width: 100%;
   min-width: 6rem;
   padding: 1.2rem 0.8rem;
@@ -219,9 +224,8 @@
   display: flex;
 }
 
-.createActivityButton{
+.createActivityButton {
   color: white !important;
   background-color: $blue;
   margin-bottom: 1rem;
 }
-
