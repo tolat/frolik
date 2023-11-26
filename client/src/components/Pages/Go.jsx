@@ -225,6 +225,10 @@ const Go = (props) => {
     setSelected(capitalizeFirstLetter(activity.category.toLowerCase()));
   };
 
+  const removeActivity = (activity) => {
+    dispatchFilter({ type: "remove-activity", payload: activity });
+  };
+
   const toggleButtonFilter = (key) => {
     let newFilter = { ...activityFilter.filter };
     newFilter[key] = !activityFilter.filter[key];
@@ -308,6 +312,7 @@ const Go = (props) => {
           <ActivityCard
             key={Math.random()}
             activity={goState.outing.activity}
+            removeActivity={removeActivity}
             completed={completedActivities.find(
               (id) => id === goState.outing.activity._id
             )}
@@ -429,6 +434,7 @@ const Go = (props) => {
                     key={Math.random()}
                     activity={a}
                     completed={completedActivities.find((id) => id === a._id)}
+                    removeActivity={removeActivity}
                   />
                 ))
             )}

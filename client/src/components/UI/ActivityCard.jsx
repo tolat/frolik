@@ -9,11 +9,14 @@ import { Fragment, useState } from "react";
 import trophyIcon from "../../images/trophy.png";
 import completeIcon from "../../images/complete.png";
 import featuredIcon from "../../images/feature.png";
-import creationIcon from "../../images/sketch.png"
+import creationIcon from "../../images/sketch.png";
 import { calcAvgRating } from "../../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { goActions } from "../../store/go-slice";
 import InstructionCard from "./InstructionCard";
+import WarningPopup from "../Popups/WarningPopup";
+import { popupActions } from "../../store/popup-slice";
+import { deleteActivity } from "../../utils/data-fetch";
 
 const ActivityCard = (props) => {
   const categoryColorMap = useSelector(
@@ -23,6 +26,8 @@ const ActivityCard = (props) => {
   const [instructionsVisible, setInstructionsVisible] = useState(false);
   const dispatch = useDispatch();
   const goState = useSelector((state) => state.go);
+  const user = useSelector((state) => state.auth.user);
+  const [deleteText, setDeleteText] = useState("Delete");
 
   const handleToggleInstructions = (e) => {
     setInstructionsVisible((prev) => !prev);
@@ -36,8 +41,53 @@ const ActivityCard = (props) => {
     dispatch(goActions.removeActivity());
   };
 
+  const handleDeleteActivity = () => {
+    dispatch(
+      popupActions.showPopup(`confirm-delete-activity-${props.activity._id}`)
+    );
+  };
+
+  const confirmDeleteMessage = (
+    <div className={styles.warningContainer}>
+      <div className={styles.warningName}>{props.activity?.name}</div>
+      <div className={styles.warningText}>This action is permanent.</div>
+    </div>
+  );
+
+  const onActivityDelete = () => {
+    const onComplete = () => {
+      setDeleteText("Delete");
+      dispatch(popupActions.hidePopup());
+
+      // Set goActivity to false
+      if (
+        goState.outing.activity &&
+        goState.outing.activity._id === props.activity._id
+      ) {
+        dispatch(goActions.removeActivity());
+      }
+
+      // Remove activity from activities list
+      props.removeActivity(props.activity);
+    };
+
+    setDeleteText("Deleting..");
+    deleteActivity(user, props.activity, onComplete);
+  };
+
   return (
     <div style={props.style} className={styles.outerContainer}>
+      <WarningPopup
+        selector={`confirm-delete-activity-${props.activity._id}`}
+        header={"Confirm Delete Activity:"}
+        message={confirmDeleteMessage}
+        delete={deleteText}
+        deleteClick={onActivityDelete}
+        cancel={"Cancel"}
+        cancelClick={() => {
+          dispatch(popupActions.hidePopup());
+        }}
+      />
       <div
         style={{ backgroundColor: categoryColorMap[props.activity.category] }}
         className={styles.categoryStripe}
@@ -69,13 +119,22 @@ const ActivityCard = (props) => {
                 </div>
               ) : null}
               {props.activity.created_by ? (
-                <div className={styles.completedIconContainer}>
-                  <img
-                    src={creationIcon}
-                    className={styles.completedIcon}
-                    alt="creation-icon"
-                  />
-                </div>
+                <Fragment>
+                  <div className={styles.completedIconContainer}>
+                    <img
+                      src={creationIcon}
+                      className={styles.completedIcon}
+                      alt="creation-icon"
+                    />
+                  </div>
+                  <SimpleButton
+                    noShadow={true}
+                    onClick={handleDeleteActivity}
+                    className={styles.deleteActivityButton}
+                  >
+                    Delete
+                  </SimpleButton>
+                </Fragment>
               ) : null}
             </div>
           </div>

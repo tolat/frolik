@@ -7,9 +7,10 @@ import purchaseIcon from "../../images/cart.png";
 import captureIcon from "../../images/camera.png";
 import whistleIcon from "../../images/whistle.png";
 import createIcon from "../../images/paint.png";
-import SimpleSelect from "./SimpleSelect";
 import SimpleInput from "./SimpleInput";
 import SimpleButton from "./SimpleButton";
+import CustomSelect from "./CustomSelect";
+import { capitalizeFirstLetter } from "../../utils/utils";
 
 const instructionIconMap = {
   communicate: communicateIcon,
@@ -27,7 +28,7 @@ const InstructionCard = (props) => {
   const [title, setTitle] = useState(props.instruction.title);
   const [details, setDetails] = useState(props.instruction.details);
 
-  const handleKindBlur = (value) => {
+  const handleKindChange = (value) => {
     setKind(value);
     props.instruction.setData("kind", value);
   };
@@ -47,6 +48,13 @@ const InstructionCard = (props) => {
     props.instruction.deleteInstruction(props.instruction.instructionID);
   };
 
+  const instructionTypeOptions = instructionTypes.map((name) => {
+    return {
+      selectable: true,
+      name: capitalizeFirstLetter(name.toLowerCase()),
+    };
+  });
+
   return (
     <div className={styles.iContainer}>
       <div
@@ -54,22 +62,22 @@ const InstructionCard = (props) => {
         className={styles.iIconContainer}
       >
         <img
-          src={instructionIconMap[`${kind}`]}
+          src={instructionIconMap[`${kind.toLowerCase()}`]}
           className={styles.iIcon}
           alt={props.instruction.kind}
         />
       </div>
       <div className={styles.iRightContainer}>
         {props.creatingActivity && (
-          <SimpleSelect
+          <CustomSelect
             id={`${props.instruction.instructionID}-kind`}
             placeholder="Type"
-            options={instructionTypes}
+            options={instructionTypeOptions}
             defaultVal={kind}
             label="Instruction Type:"
             inputClassName={styles.selectKindInput}
-            setDataChanged={setKind}
-            onBlur={handleKindBlur}
+            setDataChanged={handleKindChange}
+            
           />
         )}
         <div className={styles.iName}>

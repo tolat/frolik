@@ -151,3 +151,28 @@
 .nameRightContainer {
   display: flex;
 }
+
+.completedIconContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.deleteActivityButton{
+  margin-left: 1rem;
+}
+
+.warningContainer {
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.warningText {
+  font-size: 1.2rem;
+}
+
+.warningName {
+  font-size: 1.8rem;
+  font-weight: bold;
+  padding: 1rem 0;
+}

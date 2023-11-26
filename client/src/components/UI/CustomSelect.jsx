@@ -10,7 +10,7 @@ const CustomSelect = forwardRef((props, ref) => {
   const handleChange = (o) => {
     handleToggleOptions();
     setValue(o.name);
-    props.setDataChanged && props.setDataChanged(o.name)
+    props.setDataChanged && props.setDataChanged(o.name);
   };
 
   const handleToggleOptions = () => {
@@ -41,7 +41,7 @@ const CustomSelect = forwardRef((props, ref) => {
           onClick={handleToggleOptions}
           className={styles.valueContainer}
         >
-          <div ref={ref} className={styles.value}>
+          <div id={props.id} ref={ref} className={styles.value}>
             {value}
           </div>
           <img
@@ -62,27 +62,43 @@ const CustomSelect = forwardRef((props, ref) => {
           style={{ display: optionsDisplay }}
           className={styles.optionsContainer}
         >
-          {props.options && props.options.map((o) => (
-            <div
-              key={Math.random()}
-              onClick={
-                o.selectable
-                  ? () => {
-                      handleChange(o);
-                    }
-                  : null
-              }
-              className={`${styles.optionContainer} ${
-                o.selectable ? null : styles.unselectable
-              }`}
-            >
-              {o.component}
-            </div>
-          ))}
+          {props.options &&
+            props.options.map((o) => (
+              <div
+                key={Math.random()}
+                onClick={
+                  o.selectable
+                    ? () => {
+                        handleChange(o);
+                      }
+                    : null
+                }
+                className={`${styles.optionContainer} ${
+                  o.selectable ? null : styles.unselectable
+                }`}
+              >
+                {o.component || <Option option={o}></Option>}
+              </div>
+            ))}
         </div>
       </div>
     </div>
   );
 });
+
+const Option = (props) => {
+  return (
+    <div
+      className={`${styles.optionComponentContainer} ${
+        props.option.unselectable ? styles.unselectable : null
+      }`}
+    >
+      <div className={styles.name}>{props.option.name}</div>
+      {props.option.details && (
+        <div className={styles.details}>{props.option.details}</div>
+      )}
+    </div>
+  );
+};
 
 export default CustomSelect;

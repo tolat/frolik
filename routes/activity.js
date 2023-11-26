@@ -40,7 +40,6 @@ router.get(
       activities.push(foundActivity);
     }
 
-
     res.send({ activities });
   })
 );
@@ -61,6 +60,34 @@ router.post(
     pushUserUpdate([user]);
 
     res.send({ activity });
+  })
+);
+
+// Delete a custom activity
+router.post(
+  "/delete",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.body.userID);
+    const activity = new Activity(req.body.activity);
+
+    if (!activity.created_by.toString() == user._id.toString()) {
+      res.status(406).send({
+        header: `Could not delete activities`,
+        message: `You can only delete activities you created.`,
+      });
+      return;
+    }
+
+    user.activities = user.activities
+      .map((a) => a.toString())
+      .filter((aid) => aid !== activity._id.toString());
+    await user.save();
+    await Activity.findByIdAndDelete(activity._id.toString());
+
+    pushUserUpdate([user]);
+    res.sendStatus(200);
   })
 );
 

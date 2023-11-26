@@ -768,6 +768,28 @@ export const createActivity = (user, activity, onComplete) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+export const deleteActivity = (user, activity, onComplete = () => {}) => {
+  const requestConfig = {
+    url: `${getServer()}/activity/delete`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({ activity, userID: user._id }),
+  };
+
+  const handleResponse = (response) => {
+    onComplete(response);
+  };
+
+  const handleError = (err) => {
+    onComplete(err);
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};
+
 export const setUserLike = (user, outing, liked) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/set-like`,

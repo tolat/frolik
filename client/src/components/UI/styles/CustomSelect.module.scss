@@ -23,6 +23,10 @@
   width: 100%;
 }
 
+.label {
+  font-size: 1.2rem;
+}
+
 .arrow {
   height: 1.5rem;
   width: 1.5rem;
@@ -37,6 +41,7 @@
   width: 100%;
   background-color: rgb(229, 238, 253);
   box-sizing: border-box;
+  font-size: 1.3rem;
 }
 
 .optionContainer {
@@ -46,7 +51,7 @@
   box-sizing: border-box;
 }
 
-.optionContainer:hover{
+.optionContainer:hover {
   cursor: pointer;
 }
 
@@ -57,4 +62,32 @@
   box-sizing: border-box;
   border: 1px solid #c1c1c1;
   z-index: 1;
+}
+
+.optionComponentContainer {
+  font-size: 1.3rem;
+  background-color: white;
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.optionComponentContainer:hover {
+  cursor: pointer;
+  background-color: $card_grey;
+}
+
+.name {
+  font-weight: bold;
+}
+
+.details {
+  margin-top: 0.2rem;
+  font-size: 1.1rem;
+  font-weight: normal;
+}
+
+.unselectable {
+  color: grey !important;
+  border-top: 1px solid $light_grey;
 }

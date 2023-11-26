@@ -383,7 +383,7 @@ const OutingModal = (props) => {
         <Fragment>
           <WarningPopup
             selector={"confirm-delete-outing"}
-            header={"Confirm delete Outing:"}
+            header={"Confirm Delete Outing:"}
             message={confirmDeleteOutingMessage}
             delete={"Delete"}
             deleteClick={onOutingDelete}

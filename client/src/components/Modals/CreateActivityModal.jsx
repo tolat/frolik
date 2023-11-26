@@ -6,15 +6,15 @@ import SimpleInput from "../UI/SimpleInput";
 import CustomAutocomplete from "../UI/CustomAutocomplete";
 import cityData from "../../utils/cities100000";
 import ActivityCard from "../UI/ActivityCard";
-import SimpleSelect from "../UI/SimpleSelect";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import SimpleButton from "../UI/SimpleButton";
 import ValidatorBubble, { runValidators } from "../UI/ValidatorBubble";
 import { createActivityValidators } from "../../utils/validators";
-import { genRandomChars } from "../../utils/utils";
+import { capitalizeFirstLetter, genRandomChars } from "../../utils/utils";
 import { createActivity } from "../../utils/data-fetch";
 import { hideModal } from "../../store/modal-actions";
 import { goActions } from "../../store/go-slice";
+import CustomSelect from "../UI/CustomSelect";
 
 const CreateActivityModal = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -35,13 +35,13 @@ const CreateActivityModal = (props) => {
   const [validationID, setValidationID] = useState(false);
   const validatorBubbleID = "validator-bubble";
 
-  const nameRef = useRef();
-  const descriptionRef = useRef();
-  const locationRef = useRef();
-  const goalRef = useRef();
-  const durationRef = useRef();
-  const costRef = useRef();
-  const participantsRef = useRef();
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [duration, setDuration] = useState("");
+  const [cost, setCost] = useState("");
+  const [participants, setParticipants] = useState("");
+  const [goal, setGoal] = useState("");
 
   const onAddInstructionClick = (e) => {
     e.preventDefault();
@@ -69,7 +69,7 @@ const CreateActivityModal = (props) => {
     };
 
     const newInstruction = {
-      kind: instructionTypes[0],
+      kind: capitalizeFirstLetter(instructionTypes[0]),
       instructionID: instructionID,
       title: "",
       details: "",
@@ -87,15 +87,15 @@ const CreateActivityModal = (props) => {
     name: (
       <SimpleInput
         id={`create-activity-name`}
-        ref={nameRef}
-        defaultVal={""}
+        defaultVal={name}
         placeholder="Name"
+        setDataChanged={setName}
       />
     ),
     description: (
       <SimpleInput
-        ref={descriptionRef}
-        defaultVal={""}
+        setDataChanged={setDescription}
+        defaultVal={description}
         placeholder="Description"
         id={`create-activity-description`}
       />
@@ -103,21 +103,20 @@ const CreateActivityModal = (props) => {
     location: (
       <CustomAutocomplete
         id={`create-activity-location`}
-        ref={locationRef}
         options={cityData}
         name={"Activity Location"}
         className={styles.locationSelect}
-        defaultVal={""}
+        defaultVal={location}
         placeholder="Location"
-        setDataChanged={(value) => {}}
+        setDataChanged={setLocation}
       />
     ),
     instructions,
     goal: (
       <SimpleInput
         id={`create-activity-goal`}
-        ref={goalRef}
-        defaultVal={""}
+        setDataChanged={setGoal}
+        defaultVal={goal}
         placeholder="Enter goal"
       />
     ),
@@ -126,16 +125,16 @@ const CreateActivityModal = (props) => {
       <SimpleInput
         id={`create-activity-duration`}
         className={styles.iconInput}
-        ref={durationRef}
-        defaultVal={""}
+        setDataChanged={setDuration}
+        defaultVal={duration}
         type="number"
         placeholder="Duration"
       />
     ),
     cost: (
       <SimpleInput
-        ref={costRef}
-        defaultVal={""}
+        setDataChanged={setCost}
+        defaultVal={cost}
         type="number"
         placeholder="Cost"
         id={`create-activity-cost`}
@@ -144,8 +143,8 @@ const CreateActivityModal = (props) => {
     ),
     participants: (
       <SimpleInput
-        ref={participantsRef}
-        defaultVal={""}
+        setDataChanged={setParticipants}
+        defaultVal={participants}
         type="number"
         placeholder="Participants"
         id={`create-activity-participants`}
@@ -169,13 +168,13 @@ const CreateActivityModal = (props) => {
     e.preventDefault();
 
     let newActivity = {
-      name: nameRef.current.value,
-      description: descriptionRef.current.value,
-      location: locationRef.current.value,
-      goal: goalRef.current.value,
-      duration: durationRef.current.value,
-      cost: costRef.current.value,
-      participants: participantsRef.current.value,
+      name,
+      description,
+      location,
+      goal,
+      duration,
+      cost,
+      participants,
       category,
       instructions: [],
     };
@@ -195,17 +194,17 @@ const CreateActivityModal = (props) => {
     for (let i = 0; i < instructions.length; i++) {
       const inst = instructions[i];
       const id = inst.instructionID;
-      const kind = document.querySelector(`#${id}-kind select`).value;
+      const kind = document.querySelector(`#${id}-kind`).textContent;
       const title = document.querySelector(`#${id}-title input`).value;
       const details = document.querySelector(`#${id}-details`).value;
       newActivity.instructions.push({
-        kind,
+        kind: kind.toLowerCase(),
         title,
         number: i,
         details,
       });
 
-      validationIDMap[`${inst.instructionID}-kind`] = kind;
+      validationIDMap[`${inst.instructionID}-kind`] = kind.toLowerCase();
       validationIDMap[`${inst.instructionID}-title`] = title;
       validationIDMap[`${inst.instructionID}-details`] = details;
     }
@@ -213,16 +212,16 @@ const CreateActivityModal = (props) => {
     if (runValidation(validationIDMap, instructions)) {
       const onComplete = async (response) => {
         setCreatebuttonText("+ Create");
-        if (response.activity) {
+        if (!!response.activity) {
           // Reset form
           setInstructions([]);
-          nameRef.current.value = "";
-          descriptionRef.current.value = "";
-          locationRef.current.value = "";
-          goalRef.current.value = "";
-          durationRef.current.value = "";
-          costRef.current.value = "";
-          participantsRef.current.value = "";
+          setName("");
+          setDescription("");
+          setLocation("");
+          setGoal("");
+          setDuration("");
+          setCost("");
+          setParticipants("");
           await hideModal();
         }
 
@@ -234,6 +233,13 @@ const CreateActivityModal = (props) => {
       createActivity(user, newActivity, onComplete);
     }
   };
+
+  const categoryOptions = Object.keys(categoryColorMap).map((key) => {
+    return {
+      selectable: true,
+      name: key,
+    };
+  });
 
   return (
     <ModalPortal>
@@ -250,10 +256,11 @@ const CreateActivityModal = (props) => {
           <SimpleButton onClick={onSubmit} className={styles.createButton}>
             {createButtonText}
           </SimpleButton>
-          <SimpleSelect
+          <CustomSelect
             className={styles.categoryInput}
-            options={Object.keys(categoryColorMap)}
+            options={categoryOptions}
             label="Activity Category:"
+            defaultVal={categoryOptions[0].name}
             setDataChanged={(value) => setCategory(value)}
           />
           <ActivityCard

@@ -162,6 +162,18 @@ export const filterReducer = (state, action) => {
       filter: initialActivityFilter.filter,
     };
   }
+
+  if (action.type === "remove-activity") {
+    let newActivities = [...state.initialActivities].filter(
+      (a) => a._id !== action.payload._id
+    );
+    return {
+      ...state,
+      initialActivities: [...newActivities],
+      activities: [...newActivities],
+      filter: initialActivityFilter.filter,
+    };
+  }
 };
 
 export const filtersAreEqual = (f1, f2) => {
