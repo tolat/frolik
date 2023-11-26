@@ -14,10 +14,9 @@ const EditUsersModal = (props) => {
   const modalStyle = { display: modalDisplay };
 
   const removeUser = (u) => {
-    if (u._id !== user._id) {
-      const elt = document.getElementById(
-        `${u.username}-friendCard-removeUserModal`
-      );
+    const id = u._id || u;
+    if (id !== user._id) {
+      const elt = document.getElementById(`${id}-friendCard-removeUserModal`);
       elt.style.opacity = 0;
       setTimeout(() => {
         elt.style.padding = 0;
@@ -44,10 +43,10 @@ const EditUsersModal = (props) => {
   return (
     <ModalPortal>
       <div style={modalStyle} className={styles.container}>
-      <div className={modalStyles.header}>Remove Outing Members</div>
+        <div className={modalStyles.header}>Remove Outing Members</div>
         {goState.outing.users.map((u) => (
           <FriendCard
-            id={`${u.username}-friendCard-removeUserModal`}
+            id={`${u._id || u}-friendCard-removeUserModal`}
             user={u}
             key={Math.random()}
             buttons={u._id === user._id ? null : <RemoveButton user={u} />}

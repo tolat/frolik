@@ -91,14 +91,6 @@ function Login() {
             required
           />
         </div>
-        <div className={styles.smallButtons}>
-          <button
-            onClick={onForgotPasswordClick}
-            className={styles.forgotButton}
-          >
-            Forgot Password
-          </button>
-        </div>
 
         <SimpleButton
           noShadow={true}
@@ -116,6 +108,14 @@ function Login() {
         >
           Create Profile
         </SimpleButton>
+        <div className={styles.smallButtons}>
+          <button
+            onClick={onForgotPasswordClick}
+            className={styles.forgotButton}
+          >
+            Forgot Password
+          </button>
+        </div>
       </form>
     </div>
   );

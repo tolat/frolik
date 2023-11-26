@@ -790,7 +790,7 @@ export const deleteActivity = (user, activity, onComplete = () => {}) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
-export const setUserLike = (user, outing, liked) => {
+export const setUserLike = (user, outing, liked, onComplete) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/set-like`,
     headers: {
@@ -800,9 +800,12 @@ export const setUserLike = (user, outing, liked) => {
     body: JSON.stringify({ outingID: outing._id, liked }),
   };
 
-  const handleResponse = (response) => {};
+  const handleResponse = (response) => {
+    onComplete(response);
+  };
 
   const handleError = (err) => {
+    onComplete(err);
     console.log(err);
   };
 

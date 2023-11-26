@@ -414,30 +414,31 @@ const Go = (props) => {
               setSelected={handleSetSelectedCategory}
               tabs={sliderTabs}
             />
-
-            {!activityFilter.activities[0] ? (
-              <div className={styles.loading}>
-                {activityFilter.active ||
-                activityFilter.filter.completed ||
-                activityFilter.filter.featured ||
-                activityFilter.filter.created ? (
-                  <h4>No Activities Match Filters!</h4>
-                ) : (
-                  <h4>Loading Activities..</h4>
-                )}
-              </div>
-            ) : (
-              applyActivitySearch(activityFilter.activities)
-                .filter((a) => a.category === selected)
-                .map((a) => (
-                  <ActivityCard
-                    key={Math.random()}
-                    activity={a}
-                    completed={completedActivities.find((id) => id === a._id)}
-                    removeActivity={removeActivity}
-                  />
-                ))
-            )}
+            <div className={styles.activitiesContainer}>
+              {!activityFilter.activities[0] ? (
+                <div className={styles.loading}>
+                  {activityFilter.active ||
+                  activityFilter.filter.completed ||
+                  activityFilter.filter.featured ||
+                  activityFilter.filter.created ? (
+                    <h4>No Activities Match Filters!</h4>
+                  ) : (
+                    <h4>Loading Activities..</h4>
+                  )}
+                </div>
+              ) : (
+                applyActivitySearch(activityFilter.activities)
+                  .filter((a) => a.category === selected)
+                  .map((a) => (
+                    <ActivityCard
+                      key={Math.random()}
+                      activity={a}
+                      completed={completedActivities.find((id) => id === a._id)}
+                      removeActivity={removeActivity}
+                    />
+                  ))
+              )}
+            </div>
           </Fragment>
         ) : null}
       </div>

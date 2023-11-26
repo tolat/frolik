@@ -153,3 +153,8 @@ FIXED
 
 NOTES:
 
+FIX like button on mobile (dimensions are off)
+FIX add users modal where adding afriend makes matches user dissappear
+FIX like updating
+FIX fonts 
+

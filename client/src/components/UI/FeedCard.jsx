@@ -97,16 +97,17 @@ const FeedCard = (props) => {
 
 const FeedCardFooter = (props) => {
   const globals = useSelector((state) => state.auth.globals);
+  let outing = props.outing;
   const user = useSelector((state) => state.auth.user);
   const categoryColorMap = globals.categoryColorMap;
-  const outingLikes = props.outing?.likes;
-  const activityColor = categoryColorMap[props.outing?.activity?.category];
+  const outingLikes = outing?.likes;
+  const activityColor = categoryColorMap[outing?.activity?.category];
   const [liked, setLiked] = useState(
     outingLikes?.find((id) => id === user?._id)
   );
   const dispatch = useDispatch();
-  const activityPopupSelector = `${props.outing?._id}-activity-popup`;
-  const usersPopupSelector = `${props.outing?._id}-users-popup`;
+  const activityPopupSelector = `${outing?._id}-activity-popup`;
+  const usersPopupSelector = `${outing?._id}-users-popup`;
 
   // Set liked for this outing
   useEffect(() => {
@@ -119,9 +120,13 @@ const FeedCardFooter = (props) => {
 
   const onLikeClick = () => {
     setLiked((prevState) => {
+      const onComplete = (response) =>{
+        if(response.outing){
+          outing = response.outing
+        }
+      }
       // update liked with prevestate
-      setUserLike(user, props.outing, !prevState);
-
+      setUserLike(user, outing, !prevState, onComplete);
       return !prevState;
     });
   };
@@ -130,61 +135,61 @@ const FeedCardFooter = (props) => {
     dispatch(popupActions.showPopup(usersPopupSelector));
   };
   return (
-    <div className={styles.topContainer}>
-      <EmptyPopup selector={activityPopupSelector}>
-        <ActivityCard
-          showInstructions={true}
-          activity={props.outing.activity}
-          hideSelect={true}
-        />
-      </EmptyPopup>
-      <EmptyPopup selector={usersPopupSelector}>
-        <div className={styles.friendsPopupContainer}>
-          <h2 className={styles.friendsPopupHeader}>Outing Members</h2>
-          {props.outing.users.map((u) => (
-            <FriendCard key={Math.random()} user={u} />
-          ))}
-        </div>
-      </EmptyPopup>
-      <div
-        style={{ backgroundColor: activityColor }}
-        className={styles.colorStripe}
-      ></div>
-      <div className={styles.topInnerContainer}>
-        <div className={styles.innerContainerLeft}>
-          <UserIconCluster
-            onClick={onClusterClick}
-            users={props.outing.users}
-            sizeInRem={8}
-            borderSizeInRem={0.8}
+    outing && (
+      <div className={styles.topContainer}>
+        <EmptyPopup selector={activityPopupSelector}>
+          <ActivityCard
+            showInstructions={true}
+            activity={outing.activity}
+            hideSelect={true}
           />
-          <div className={styles.outingDetailsContainer}>
-            <div className={styles.outingMembers}>{props.memberNames}</div>
-            <div className={styles.activityName}>
-              {props.outing.activity.name}
-            </div>
-            <div className={styles.buttonsContainer}>
-              <SimpleButton
-                onClick={onShowActivityPopup}
-                className={styles.viewActivityButton}
-                noShadow={true}
-              >
-                View Activity
-              </SimpleButton>
+        </EmptyPopup>
+        <EmptyPopup selector={usersPopupSelector}>
+          <div className={styles.friendsPopupContainer}>
+            <h2 className={styles.friendsPopupHeader}>Outing Members</h2>
+            {outing.users.map((u) => (
+              <FriendCard key={Math.random()} user={u} />
+            ))}
+          </div>
+        </EmptyPopup>
+        <div
+          style={{ backgroundColor: activityColor }}
+          className={styles.colorStripe}
+        ></div>
+        <div className={styles.topInnerContainer}>
+          <div className={styles.innerContainerLeft}>
+            <UserIconCluster
+              onClick={onClusterClick}
+              users={outing.users}
+              sizeInRem={8}
+              borderSizeInRem={0.8}
+            />
+            <div className={styles.outingDetailsContainer}>
+              <div className={styles.outingMembers}>{props.memberNames}</div>
+              <div className={styles.activityName}>{outing.activity.name}</div>
+              <div className={styles.buttonsContainer}>
+                <SimpleButton
+                  onClick={onShowActivityPopup}
+                  className={styles.viewActivityButton}
+                  noShadow={true}
+                >
+                  View Activity
+                </SimpleButton>
+              </div>
             </div>
           </div>
-        </div>
 
-        <StatIcon
-          onClick={onLikeClick}
-          icon={liked ? heartFull : heart}
-          className={styles.likeIcon}
-          iconStyle={{ width: "100%", height: "100%" }}
-          alt="feed-outing-icon"
-          rating={props.outing?.likes?.length || null}
-        />
+          <StatIcon
+            onClick={onLikeClick}
+            icon={liked ? heartFull : heart}
+            className={styles.likeIcon}
+            iconStyle={{ width: "3rem", height: "3rem" }}
+            alt="feed-outing-icon"
+            rating={outing.likes?.length || null}
+          />
+        </div>
       </div>
-    </div>
+    )
   );
 };
 

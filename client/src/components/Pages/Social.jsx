@@ -8,7 +8,7 @@ import SimpleButton from "../UI/SimpleButton";
 import SimpleSearch from "../UI/SimpleSearch";
 
 const Social = (props) => {
-  const [outings, setOutings] = useState(false);
+  const [outings, setOutings] = useState({});
   const [refreshText, setRefreshText] = useState("Refresh");
   const [feedSearch, setFeedSearch] = useState("");
   const user = useSelector((state) => state.auth.user);

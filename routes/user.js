@@ -1263,7 +1263,7 @@ router.post(
     await outing.save();
     pushUserUpdate(outing.users);
 
-    res.sendStatus(200);
+    res.send({ outing });
   })
 );
 

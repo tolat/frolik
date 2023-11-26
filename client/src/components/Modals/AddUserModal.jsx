@@ -30,7 +30,7 @@ const AddUserModal = (props) => {
 
   const addUserToOuting = (u) => {
     const elt = document.getElementById(
-      `${u.username}-friendCard-addUserModal`
+      `${u._id || u}-friendCard-addUserModal`
     );
     elt.style.opacity = 0;
     setTimeout(() => {
@@ -75,7 +75,7 @@ const AddUserModal = (props) => {
           {availableMatches[0] ? (
             availableMatches.map((u) => (
               <FriendCard
-                id={`${u.username}-friendCard-addUserModal`}
+                id={`${u._id || u}-friendCard-addUserModal`}
                 buttonSet={"add"}
                 user={u}
                 key={Math.random()}
@@ -93,6 +93,7 @@ const AddUserModal = (props) => {
             <h2 style={{ width: "100%" }}>Active Friends</h2>
             {availableFriends.map((f) => (
               <FriendCard
+                id={`${f._id || f}-friendCard-addUserModal`}
                 buttonSet={"add"}
                 user={f}
                 key={Math.random()}

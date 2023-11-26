@@ -39,6 +39,7 @@
 .roundButton:hover {
   cursor: default;
   opacity: unset;
+  color: black !important;
 }
 
 .editIcon {
@@ -240,4 +241,8 @@
   color: white !important;
   background-color: $blue;
   margin-bottom: 1rem;
+}
+
+.activitiesContainer{
+  min-height: 48rem;
 }
