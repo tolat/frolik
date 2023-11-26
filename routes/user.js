@@ -1261,7 +1261,7 @@ router.post(
           .filter((idString) => idString !== user._id.toString()));
 
     await outing.save();
-    pushUserUpdate(outing.users);
+    pushUserUpdate([...outing.users, user]);
 
     res.send({ outing });
   })

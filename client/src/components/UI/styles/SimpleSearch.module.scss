@@ -20,11 +20,17 @@
   background-color: $card_grey;
   font-size: 1.3rem;
   height: 100%;
+  border-radius: 0;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
 }
 
-.searchIconContainer{
-    height: 100%;
-    box-sizing: border-box;
+.searchIconContainer {
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 0;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 
 .searchIcon {
@@ -34,4 +40,6 @@
   border: 1px solid $light_grey;
   border-left: none;
   box-sizing: border-box;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
 }

@@ -18,9 +18,9 @@ const Social = (props) => {
   );
 
   const validKeys = applyChatSearch(sortedKeys);
-
   const getOutings = (user) => {
     const onComplete = (response) => {
+      console.log('getting outings')
       setRefreshText("Refresh");
       setOutings(response.outings);
     };
