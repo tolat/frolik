@@ -50,9 +50,11 @@
   color: white;
   padding: 0.7rem 2rem;
   font-weight: bold;
-  margin-top: 15px;
   text-transform: capitalize;
   border-radius: 3px;
+  height: 2rem;
+  border: 1px solid $light_grey;
+  cursor: pointer;
 }
 
 .statusReady {
@@ -79,10 +81,12 @@
   font-size: 1.2rem;
   padding: 0.7rem 2rem;
   font-weight: bold;
-  margin-top: 15px;
   background-color: $card_grey;
   margin-left: 1rem;
   border-radius: 3px;
+  border: 1px solid $button_grey;
+  height: 2rem;
+  cursor: pointer;
 }
 
 .smallIcon {

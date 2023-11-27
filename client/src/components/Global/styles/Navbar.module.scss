@@ -45,81 +45,6 @@
   position: relative;
 }
 
-/* .notificationsHover:hover::after {
-  content: "Notifications";
-  border: 1px solid lightgray;
-  border-radius: 3px;
-  font-weight: bold;
-  background-color: grey;
-  color: white;
-  padding: 0.5rem 1rem;
-  position: absolute;
-  bottom: -2.5rem;
-  z-index: 1;
-}
-.createOutingHover:hover::after {
-  display: flex;
-  text-wrap: nowrap;
-  content: "+ Outing";
-  border: 1px solid lightgray;
-  border-radius: 3px;
-  font-weight: bold;
-  background-color: grey;
-  color: white;
-  padding: 0.5rem 1rem;
-  position: absolute;
-  bottom: -2.5rem;
-  z-index: 1;
-}
-.profileHover:hover::after {
-  content: "Profile";
-  border: 1px solid lightgray;
-  border-radius: 3px;
-  font-weight: bold;
-  background-color: grey;
-  color: white;
-  padding: 0.5rem 1rem;
-  position: absolute;
-  bottom: -2.5rem;
-  z-index: 1;
-}
-.chatsHover:hover::after {
-  content: "Chats";
-  border: 1px solid lightgray;
-  border-radius: 3px;
-  font-weight: bold;
-  background-color: grey;
-  color: white;
-  padding: 0.5rem 1rem;
-  position: absolute;
-  bottom: -2.5rem;
-  z-index: 1;
-}
-.socialHover:hover::after {
-  content: "Social";
-  border: 1px solid lightgray;
-  border-radius: 3px;
-  font-weight: bold;
-  background-color: grey;
-  color: white;
-  padding: 0.5rem 1rem;
-  position: absolute;
-  bottom: -2.5rem;
-  z-index: 1;
-}
-.logoutHover:hover::after {
-  content: "Logout";
-  border: 1px solid lightgray;
-  border-radius: 3px;
-  font-weight: bold;
-  background-color: grey;
-  color: white;
-  padding: 0.5rem 1rem;
-  position: absolute;
-  bottom: -2.5rem;
-  z-index: 1;
-} */
-
 
 .logoButton {
   width: 4rem;
@@ -131,20 +56,8 @@
   font-weight: bold;
   background-color: $button_grey;
   border-radius: 4px;
+  color: $blue !important;
 }
-
-/* .activeLink::after {
-  position: absolute;
-  width: 0.54rem;
-  height: 0.54rem;
-  border-radius: 10rem;
-  background-color: $blue;
-  border: 0.25rem solid $light_grey;
-  content: "";
-  bottom: -0.8rem;
-  left: 50%;
-  transform: translate(-50%, 0%);
-}  */
 
 .goButton {
   display: flex;

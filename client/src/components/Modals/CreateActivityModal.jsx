@@ -234,14 +234,14 @@ const CreateActivityModal = (props) => {
     }
   };
 
-  const categoryOptions = Object.keys(categoryColorMap).map((key) => {
+  const categoryOptions = categoryColorMap && Object.keys(categoryColorMap).map((key) => {
     return {
       selectable: true,
       name: key,
     };
   });
 
-  return (
+  return categoryOptions && (
     <ModalPortal>
       <ValidatorBubble
         id={validatorBubbleID}

@@ -52,7 +52,7 @@ const Utility = (props) => {
 
   const headers = {
     "email-verified": "Email Address Verified!",
-    "send-reset-password-link": "Get Reset Password Link",
+    "send-reset-password-link": "Enter Account Email",
     "reset-password-link-sent": "Reset Link Sent",
     "reset-password": "Reset Password",
     "password-reset-success": "Password Reset Successful!",
@@ -83,7 +83,7 @@ const Utility = (props) => {
         <SimpleInput
           defaultVal={""}
           setDataChanged={setResetUsername}
-          label="Enter Username"
+          label="Enter Email"
           name="enter-username"
         ></SimpleInput>
         <SimpleButton

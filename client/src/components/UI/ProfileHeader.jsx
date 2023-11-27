@@ -53,20 +53,25 @@ const ProfileHeader = (props) => {
             icon={outingsIcon}
             className={styles.outingsIcon}
             iconStyle={iconStyle}
-            rating={props.user.outings?.length}
+            rating={
+              props.user.outings?.filter(
+                (o) => o.completions.length === o.users.length
+              ).length
+            }
           />
         </div>
         <div
           className={styles.userName}
         >{`${props.user.first_name} ${props.user.last_name}`}</div>
-        <div className={styles.tagline}>
-          {props.user.tagline}
-        </div>
+        <div className={styles.tagline}>{props.user.tagline}</div>
         <div className={styles.sideBySide}>
-          <div className={`${styles.statusContainer} ${statusClassName}`}>
+          <div
+            onClick={props.onEditClick}
+            className={`${styles.statusContainer} ${statusClassName}`}
+          >
             Status: {userStatus}
           </div>
-          <div className={styles.locationContainer}>
+          <div onClick={props.onEditClick} className={styles.locationContainer}>
             <img
               style={{ marginRight: "10px" }}
               className={styles.smallIcon}

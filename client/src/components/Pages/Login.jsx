@@ -74,7 +74,7 @@ function Login() {
             type="text"
             id="username"
             name="username"
-            label="Username:"
+            label="Email:"
             ref={usernameRef}
             defaultVal={""}
             required

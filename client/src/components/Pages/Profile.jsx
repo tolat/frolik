@@ -29,14 +29,17 @@ import editIcon from "../../images/edit-light.png";
 const sliderIcons = [
   {
     key: "_photos",
+    name: "Photos",
     url: photos,
   },
   {
     key: "_outings",
+    name: "Outings",
     url: outings,
   },
   {
     key: "_friends",
+    name: "Friends",
     url: friends,
   },
 ];
@@ -144,6 +147,7 @@ const Profile = (props) => {
               alt="edit"
             />
           }
+          onEditClick={handleEditButtonClick}
           user={user}
         />
 
@@ -182,7 +186,7 @@ const Profile = (props) => {
                   : "1fr 1fr 1fr"
               }
             />
-          ) : (
+          ) : user.outings.length > 0 ? null : (
             <h2>Loading Photos..</h2>
           )}
 
@@ -212,14 +216,29 @@ const Profile = (props) => {
             style={{ marginTop: "1rem" }}
             placeholder={"Search Friends"}
           />
-          {toSorted(user.friends, (a, b) => a.first_name - b.first_name).map(
-            (f) => (
-              <FriendCard
-                buttons={<FriendCardButtons user={f} />}
-                key={Math.random()}
-                user={f}
-              />
+          {user.friends[0] ? (
+            toSorted(user.friends, (a, b) => a.first_name - b.first_name).map(
+              (f) => (
+                <FriendCard
+                  buttons={<FriendCardButtons user={f} />}
+                  key={Math.random()}
+                  user={f}
+                />
+              )
             )
+          ) : (
+            <div className={styles.noImagesBlurb}>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                To add friends, go to the
+                <img
+                  onClick={onBalloonIconClick}
+                  className={styles.outingBalloon}
+                  src={balloonIcon}
+                  alt="outing page icon"
+                />{" "}
+                page!
+              </div>
+            </div>
           )}
         </Fragment>
       )}

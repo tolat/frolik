@@ -223,7 +223,7 @@ const ProfileEditor = (props) => {
         <CustomAutocomplete
           options={cityData}
           name={"Location"}
-          label={"Location:"}
+          label={"City:"}
           id={"location"}
           className={styles.locationSelect}
           defaultVal={defaultValues.location}

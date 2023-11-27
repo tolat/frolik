@@ -11,16 +11,20 @@ import ChatModal from "../Modals/ChatModal";
 import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
 import outingsBarIcon from "../../images/outingsToolbar.png";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import ProfileViewerModal from "../Modals/ProfileViewerModal";
 import profileIcon from "../../images/account.png";
+import profileIconBlue from "../../images/account-blue.png";
 import chatIcon from "../../images/chat.png";
+import chatIconBlue from "../../images/chat-blue.png";
 import feedIcon from "../../images/post2.png";
+import feedIconBlue from "../../images/post2-blue.png";
 import { getTotalUnreadMessages } from "../../utils/utils";
 import PhotoPopup from "../Popups/PhotoPopup";
 import logoutIcon from "../../images/logout.png";
 import { fetchLogout } from "../../store/auth-actions";
 import outingIcon from "../../images/air-balloon.png";
+import outingIconBlue from "../../images/air-balloon-blue.png";
 import logo from "../../images/frolik2.png";
 
 const Navbar = (props) => {
@@ -33,14 +37,22 @@ const Navbar = (props) => {
   const currentUrl = location.pathname;
   const warningMessage = useSelector((state) => state.popup.warningMessage);
   const warningHeader = useSelector((state) => state.popup.warningHeader);
-  const makeActive = (navData) =>
-    navData.isActive ? styles.activeLink : "none";
+  const [activePage, setActivePage] = useState(false);
+
   const handleShowNotifications = async () => {
     if (modalState.selector && modalState.selector !== "notifications") {
       await hideModal();
     }
     dispatch(modalActions.setSelector("notifications"));
     dispatch(modalActions.showModal());
+  };
+
+  const makeActive = (navData, page) => {
+    if (navData.isActive) {
+      setActivePage(page);
+    }
+
+    return navData.isActive ? styles.activeLink : "none";
   };
 
   const tooManyOutingsMessage = (
@@ -125,32 +137,48 @@ const Navbar = (props) => {
                 </div>
               ) : null}
             </NavButton>
-            <NavLink className={(navData) => makeActive(navData)} to="/outing">
+            <NavLink
+              className={(navData) => makeActive(navData, "outing")}
+              to="/outing"
+            >
               <NavButton
-                icon={outingIcon}
+                icon={activePage === "outing" ? outingIconBlue : outingIcon}
                 text={"Outing"}
                 className={`${styles.navButton} ${styles.createOutingHover}`}
+                blue={activePage === "outing"}
               />
             </NavLink>
-            <NavLink className={(navData) => makeActive(navData)} to="/profile">
+            <NavLink
+              className={(navData) => makeActive(navData, "profile")}
+              to="/profile"
+            >
               <NavButton
-                icon={profileIcon}
+                icon={activePage === "profile" ? profileIconBlue : profileIcon}
                 text={"Profile"}
                 className={`${styles.navButton} ${styles.profileHover}`}
+                blue={activePage === "profile"}
               />
             </NavLink>
-            <NavLink className={(navData) => makeActive(navData)} to="/social">
+            <NavLink
+              className={(navData) => makeActive(navData, "social")}
+              to="/social"
+            >
               <NavButton
-                icon={feedIcon}
+                icon={activePage === "social" ? feedIconBlue : feedIcon}
                 text={"Social"}
                 className={`${styles.navButton} ${styles.socialHover}`}
+                blue={activePage === "social"}
               />
             </NavLink>
-            <NavLink className={(navData) => makeActive(navData)} to="/chat">
+            <NavLink
+              className={(navData) => makeActive(navData, "chat")}
+              to="/chat"
+            >
               <NavButton
-                icon={chatIcon}
+                icon={activePage === "chat" ? chatIconBlue : chatIcon}
                 text={"Chats"}
                 className={`${styles.navButton} ${styles.chatsHover}`}
+                blue={activePage === "chat"}
               >
                 {unreadChatMessages > 0 ? (
                   <div className={styles.notificationBadge}>

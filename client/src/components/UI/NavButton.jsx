@@ -13,7 +13,13 @@ const NavButton = (props) => {
               src={props.icon}
               alt="button_icon"
             />
-            <div className={styles.iconText}>{props.text}</div>
+            <div
+              className={`${styles.iconText} ${
+                props.blue ? styles.blue : null
+              }`}
+            >
+              {props.text}
+            </div>
           </Fragment>
         ) : (
           <div className={styles.textButton}>{props.text}</div>

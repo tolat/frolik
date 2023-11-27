@@ -20,6 +20,7 @@ const SliderNavber = (props) => {
               className={styles.sliderIcon}
               style={{ backgroundImage: `url('${i.url}')` }}
             ></div>
+            <div className={styles.iconName}>{i.name}</div>
             <div className={styles.sliderHighlight}></div>
           </div>
         ))}
@@ -33,6 +34,7 @@ const SliderNavber = (props) => {
             }`}
           >
             {t.component}
+
             <div
               key={t.key}
               style={props.getHighlightStyle(t.key)}

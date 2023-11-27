@@ -128,6 +128,8 @@ const ProfileViewerModal = (props) => {
                   : "1fr 1fr 1fr"
               }
             />
+          ) : user.outings.length > 0 ? (
+            <h2>No Photos Yet!</h2>
           ) : (
             <h2>Loading Photos..</h2>
           )}
