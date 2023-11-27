@@ -25,6 +25,8 @@ module.exports.populateFriends = async (friends) => {
     for (let outing of friendUser.outings) {
       strippedOutings.push({
         activity: { category: outing.activity.category },
+        completions: outing.completions,
+        users: outing.users,
         photos: outing.photos,
         flakes: outing.flakes,
       });
