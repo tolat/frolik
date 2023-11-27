@@ -55,7 +55,7 @@ const ProfileHeader = (props) => {
             iconStyle={iconStyle}
             rating={
               props.user.outings?.filter(
-                (o) => o.completions.length === o.users.length
+                (o) => o.completions?.length === o.users?.length
               ).length
             }
           />
