@@ -6,6 +6,7 @@ const initialState = {
   inviteOutings: [],
   cachedUsers: [],
   cachedPhotos: {},
+  fetchingFeedOutings: false,
 };
 
 const findOrCreateUser = (state, action) => {
@@ -86,6 +87,9 @@ const dataSlice = createSlice({
     },
     queueCachedPhoto(state, action) {
       state.cachedPhotos[action.payload] = "queued";
+    },
+    setFetchingFeedOutings(state, action) {
+      state.fetchingFeedOutings = action.payload;
     },
   },
 });

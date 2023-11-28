@@ -34,7 +34,7 @@ module.exports.sameUserOnly = async (req, res, next) => {
 
     // Send not found if no user exists
     if (!user) {
-      return res.status(404).send("User not found");
+      return res.status(406).send({ header: "User not found" });
     }
 
     // Only move along if the request params id is the same as the
@@ -59,8 +59,12 @@ module.exports.logIncoming = (req, res, next) => {
 module.exports.tryCatch = (fn) => {
   return (req, res, next) => {
     fn(req, res, next).catch((e) => {
-      console.error("ERROR ON PATH, ", req.path, "\n", e);
-      res.status(500).send("Internal Server Error");
+      console.log("ERROR ON PATH, ", req.path, "\n", e);
+      res.status(500).send({
+        header: "Internal Server Error",
+        message:
+          "Oops! Something went wrong on our end. Refresh the page and try again. ",
+      });
     });
   };
 };

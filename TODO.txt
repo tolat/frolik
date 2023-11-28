@@ -153,8 +153,6 @@ FIXED
 
 NOTES:
 
-FIX like button on mobile (dimensions are off) DONE
-FIX add users modal where adding a friend makes matches user dissappear DONE
 FIX like updating
 FIX fonts 
 

@@ -12,6 +12,9 @@ const Social = (props) => {
   const [refreshText, setRefreshText] = useState("Refresh");
   const [feedSearch, setFeedSearch] = useState("");
   const user = useSelector((state) => state.auth.user);
+  const fetchingFeedOutings = useSelector(
+    (state) => state.data.fetchingFeedOutings
+  );
 
   const sortedKeys = toSorted(Object.keys(outings), (a, b) =>
     sortByDate(outings[b].date_created, outings[a].date_created)
@@ -20,7 +23,6 @@ const Social = (props) => {
   const validKeys = applyChatSearch(sortedKeys);
   const getOutings = (user) => {
     const onComplete = (response) => {
-      console.log('getting outings')
       setRefreshText("Refresh");
       setOutings(response.outings);
     };
@@ -85,6 +87,8 @@ const Social = (props) => {
               <FeedCard key={Math.random()} outing={outings[k]} />
             ))}
           </div>
+        ) : fetchingFeedOutings ? (
+          <h2>Loading Posts..</h2>
         ) : (
           <div className={styles.noOutingsMessage}>
             <h2 className={styles.noOutingsMessageHeader}>

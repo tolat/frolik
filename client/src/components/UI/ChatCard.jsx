@@ -1,6 +1,10 @@
 import styles from "./styles/ChatCard.module.scss";
 import UserIconCluster from "./UserIconCluster";
-import { genMembersString, getUnreadChatMessages, setLastReadMessage } from "../../utils/utils";
+import {
+  genMembersString,
+  getUnreadChatMessages,
+  setLastReadMessage,
+} from "../../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
 import { fetchChat } from "../../utils/data-fetch";
@@ -25,7 +29,7 @@ const ChatCard = (props) => {
       dispatch(modalActions.setActiveChat(props.chat));
       dispatch(modalActions.setSelector("chat-modal"));
       dispatch(modalActions.showModal());
-      setLastReadMessage()
+      setLastReadMessage();
     };
     fetchChat(user._id, props.chat._id, onChatFetched);
   };
@@ -61,6 +65,11 @@ const ChatCard = (props) => {
         <div className={styles.leftSection}>
           <div>
             <div className={styles.name}>{chat.name}</div>
+            {chat.outing && (
+              <div className={styles.outingActivity}>
+                {chat.outing.activity.name}
+              </div>
+            )}
             <div
               className={`${styles.memberNames} ${
                 chat.outing ? null : styles.nonUserMembers

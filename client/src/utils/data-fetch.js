@@ -471,6 +471,7 @@ export const fetchStrippedUser = (userID, onComplete) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Upload a photo to an outing
 export const uploadOutingPhoto = (
   user,
   outing,
@@ -498,6 +499,7 @@ export const uploadOutingPhoto = (
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Delete a photo from an outing
 export const deleteOutingPhoto = (user, outing, key, onComplete) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/outing/${outing._id}/delete-photo`,
@@ -519,6 +521,7 @@ export const deleteOutingPhoto = (user, outing, key, onComplete) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Add a user to an Outing's completion list
 export const addOutingCompletion = (
   user,
   outing,
@@ -545,6 +548,7 @@ export const addOutingCompletion = (
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Send a new friend request to another user
 export const sendFriendRequest = (user, friend, onComplete = () => {}) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/add-friend`,
@@ -566,6 +570,7 @@ export const sendFriendRequest = (user, friend, onComplete = () => {}) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Remove a friend
 export const removeFriend = (user, friend, onComplete = () => {}) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/remove-friend`,
@@ -587,6 +592,7 @@ export const removeFriend = (user, friend, onComplete = () => {}) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Create a new Chat
 export const createChat = (user, withUsers, onComplete) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/chat/create`,
@@ -608,6 +614,7 @@ export const createChat = (user, withUsers, onComplete) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Update this user's last read message for a chat
 export const updateChatLastRead = (user, chat, messageID, onComplete) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/chat/${chat._id}/update-last-read`,
@@ -636,22 +643,31 @@ export const updateChatLastRead = (user, chat, messageID, onComplete) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Fetch the outings for this user's social feed
 export const fetchFeedOutings = (user, onComplete) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/feed-outings`,
   };
 
+  if (store.getState().data.fetchingFeedOutings) {
+    return;
+  }
+
   const handleResponse = (response) => {
+    store.dispatch(dataActions.setFetchingFeedOutings(false));
     onComplete(response);
   };
 
   const handleError = (err) => {
+    store.dispatch(dataActions.setFetchingFeedOutings(false));
     console.log(err);
   };
 
+  store.dispatch(dataActions.setFetchingFeedOutings(true));
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Get a photo from an outing
 export const fetchOutingPhoto = (outing, key, onComplete) => {
   const requestConfig = {
     url: `${getServer()}/data/outing/${outing._id}/photo/${key}`,

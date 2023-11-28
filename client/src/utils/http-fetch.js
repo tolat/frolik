@@ -25,8 +25,16 @@ export default async function httpFetch(
           store.dispatch(popupActions.setWarningHeader(body.header));
           store.dispatch(popupActions.setWarningMessage(body.message));
           store.dispatch(popupActions.showPopup("generic-warning"));
+
           handleError(response);
         });
+      } else if (response.status === 500) {
+        const message =
+          "Oops, something went wrong on our end! Refresh the page and try again.";
+        store.dispatch(popupActions.setWarningHeader("Internal Server Error"));
+        store.dispatch(popupActions.setWarningMessage(message));
+        store.dispatch(popupActions.showPopup("generic-warning"));
+        handleError(response);
       } else {
         handleError(response);
       }
