@@ -16,6 +16,8 @@ const Social = (props) => {
     (state) => state.data.fetchingFeedOutings
   );
 
+  console.log(fetchingFeedOutings)
+
   const sortedKeys = toSorted(Object.keys(outings), (a, b) =>
     sortByDate(outings[b].date_created, outings[a].date_created)
   );
@@ -102,7 +104,7 @@ const Social = (props) => {
           </div>
         )
       ) : (
-        <h2>Loading Feed..</h2>
+        <h2>Loading Posts..</h2>
       )}
     </Fragment>
   );

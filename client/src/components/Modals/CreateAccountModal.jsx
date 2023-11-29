@@ -12,6 +12,7 @@ import SimpleButton from "../UI/SimpleButton";
 import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
 import modalStyles from "./styles/SlideInModal.module.scss";
+import LoaderSpinner from "../UI/LoaderSpinner";
 
 const stagedDataReducer = (state, action) => {
   return action.type === "setAll"
@@ -53,7 +54,11 @@ const CreateAccountModal = (props) => {
   const [resendButtonText, setResendButtonText] = useState(
     "Resend Confirmation Email"
   );
-  const buttonTextOnSubmit = "Creating..";
+  const buttonTextOnSubmit = (
+    <div style={{ display: "flex" }}>
+      Creating &nbsp; <LoaderSpinner width="1.5rem" height="1.5rem" />
+    </div>
+  );
   const validatorBubbleID = "validator-bubble";
   const dispatch = useDispatch();
 

@@ -1,0 +1,122 @@
+@import "../../../utils/responsive.scss";
+
+.photosContainer {
+  display: grid;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 1px;
+  position: relative;
+}
+
+.imageContainer {
+  display: flex;
+  position: relative;
+}
+
+.image {
+  width: 100%;
+  cursor: pointer;
+  border-radius: inherit;
+}
+
+.container_1 {
+  grid-template-columns: 1fr;
+}
+.container_1 > :nth-child(1) {
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+}
+
+.container_2 {
+  grid-template-columns: 1fr 1fr;
+}
+.container_2 > :nth-child(1) {
+  border-top-left-radius: 3px;
+}
+.container_2 > :nth-child(2) {
+  border-top-right-radius: 3px;
+}
+
+.container_3 {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 2fr;
+}
+.container_3 > :nth-child(1) {
+  border-top-left-radius: 3px;
+}
+.container_3 > :nth-child(2) {
+  border-top-right-radius: 3px;
+}
+.container_3 > :nth-child(3) {
+  grid-column: span 2;
+}
+
+.container_4 {
+  grid-template-columns: 1fr 1fr;
+}
+.container_4 > :nth-child(1) {
+  border-top-left-radius: 3px;
+}
+.container_4 > :nth-child(2) {
+  border-top-right-radius: 3px;
+}
+
+.container_5 {
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1.5fr;
+}
+.container_5 > :nth-child(1) {
+  grid-column: span 2;
+  border-top-left-radius: 3px;
+}
+.container_5 > :nth-child(2) {
+  grid-column: span 2;
+}
+.container_5 > :nth-child(3) {
+  grid-column: span 2;
+  border-top-right-radius: 3px;
+}
+.container_5 > :nth-child(4) {
+  grid-column: span 3;
+}
+.container_5 > :nth-child(5) {
+  grid-column: span 3;
+}
+
+.container_6 {
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.container_6 > :nth-child(4) {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+.container_6 > :nth-child(1) {
+  border-top-left-radius: 3px;
+}
+.container_6 > :nth-child(3) {
+  border-top-right-radius: 3px;
+}
+
+.deleteButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 1.5rem;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $red;
+  cursor: pointer;
+}
+
+.deleteButton:active {
+  background-color: rgb(230, 95, 95);
+}
+
+.deleteIcon {
+  width: 45%;
+  height: 45%;
+}

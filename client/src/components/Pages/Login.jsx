@@ -9,6 +9,7 @@ import CreateAccountModal from "../Modals/CreateAccountModal";
 import SimpleButton from "../UI/SimpleButton";
 import { modalActions } from "../../store/modal-slice";
 import { popupActions } from "../../store/popup-slice";
+import LoaderSpinner from "../UI/LoaderSpinner";
 
 const validPreviousPaths = ["/outing", "/profile", "/social", "/chat"];
 
@@ -97,9 +98,13 @@ function Login() {
           className={styles.loginButton}
           type={"submit"}
         >
-          {!isLoggingIn && !authState.isAuthenticated
-            ? "Login"
-            : "Logging in..."}
+          {!isLoggingIn && !authState.isAuthenticated ? (
+            "Login"
+          ) : (
+            <div className={styles.loaderContainer}>
+              Loggin In &nbsp; <LoaderSpinner width="1.5rem" height="1.5rem" />
+            </div>
+          )}
         </SimpleButton>
         <SimpleButton
           noShadow={true}

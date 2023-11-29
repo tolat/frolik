@@ -11,6 +11,7 @@ import ProfileEditor from "./ProfileEditor";
 import { hideModal } from "../../store/modal-actions";
 import ValidatorBubble, { runValidators } from "../UI/ValidatorBubble";
 import { editProfileValidators } from "../../utils/validators";
+import LoaderSpinner from "../UI/LoaderSpinner";
 
 const stagedDataReducer = (state, action) => {
   return action.type === "setAll"
@@ -33,7 +34,11 @@ const EditProfileModal = (props) => {
   const [validationDisplay, setValidationDisplay] = useState("none");
   const [validationID, setValidationID] = useState(false);
   const globals = useSelector((state) => state.auth.globals);
-  const buttonTextOnSubmit = "Saving..";
+  const buttonTextOnSubmit = (
+    <div style={{ display: "flex" }}>
+      Saving &nbsp; <LoaderSpinner width="1.5rem" height="1.5rem" />
+    </div>
+  );
   const [stagedData, dispatchStageData] = useReducer(stagedDataReducer);
 
   // Set memoized default values based on user data

@@ -16,6 +16,7 @@ import EmptyPopup from "../Popups/EmptyPopup";
 import ActivityCard from "./ActivityCard";
 import FriendCard from "./FriendCard";
 import StatIcon from "./StatIcon";
+import SixPhotoGrid from "./SixPhotoGrid";
 
 const FeedCard = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -27,7 +28,6 @@ const FeedCard = (props) => {
       cachedPhotos[p.key] ||
       userData.photos.find((photo) => photo.key === p.key)?.photo
   );
-  const photoGridNumber = outingPhotos?.length > 6 ? 6 : outingPhotos?.length;
   const dispatch = useDispatch();
   const outingUsers = outing?.users;
 
@@ -51,11 +51,6 @@ const FeedCard = (props) => {
     }
   }, [user, outing, dispatch, cachedPhotos, userData]);
 
-  const onImageClick = (img) => {
-    dispatch(popupActions.setPopupImage(img));
-    dispatch(popupActions.showPopup("view-photo"));
-  };
-
   // Get missing profile pictures from server
   useEffect(() => {
     for (let u of outingUsers) {
@@ -63,32 +58,10 @@ const FeedCard = (props) => {
     }
   }, [outingUsers]);
 
-  const photoList = outingPhotos.map((img) => (
-    <div key={Math.random()} className={styles.imageContainer}>
-      <img
-        onClick={(e) => onImageClick(img)}
-        key={Math.random()}
-        className={`${styles.image}`}
-        src={img}
-        alt="feed-pic"
-      />
-    </div>
-  ));
-
   return (
     outing && (
       <div className={styles.container}>
-        <div
-          className={`${styles.photosContainer} ${
-            styles[`container_${photoGridNumber}`]
-          }`}
-        >
-          {outingPhotos[0] && !outingPhotos.find((img) => img === "queued") ? (
-            photoList
-          ) : (
-            <div style={{ padding: "1rem" }}>Loading Photos..</div>
-          )}
-        </div>
+        <SixPhotoGrid photos={outingPhotos} />
         <FeedCardFooter outing={outing} memberNames={memberNames} />
       </div>
     )
@@ -120,11 +93,11 @@ const FeedCardFooter = (props) => {
 
   const onLikeClick = () => {
     setLiked((prevState) => {
-      const onComplete = (response) =>{
-        if(response.outing){
-          outing = response.outing
+      const onComplete = (response) => {
+        if (response.outing) {
+          outing = response.outing;
         }
-      }
+      };
       // update liked with prevestate
       setUserLike(user, outing, !prevState, onComplete);
       return !prevState;

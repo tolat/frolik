@@ -3,7 +3,6 @@ import ModalPortal from "./ModalPortal";
 import styles from "./styles/OutingModal.module.scss";
 import SimpleButton from "../UI/SimpleButton";
 import { Fragment, useState } from "react";
-import PhotoGrid from "../UI/PhotoGrid";
 import photosIcon from "../../images/photos.png";
 import activityIcon from "../../images/activity.png";
 import membersIcon from "../../images/people.png";
@@ -37,6 +36,7 @@ import CropperPopup from "../Popups/CropperPopup";
 import addPhotosButton from "../../images/add-photos-button.png";
 import StarRate from "../UI/StarRate";
 import FeedCard from "../UI/FeedCard";
+import SixPhotoGrid from "../UI/SixPhotoGrid";
 
 const OutingModal = (props) => {
   const modalState = useSelector((state) => state.modal);
@@ -228,7 +228,7 @@ const OutingModal = (props) => {
       fetchPhotos(response.user);
 
       // Reset the cropper
-      resetCropper();
+      resetCropper(index);
     };
 
     // Upload photo and add photo to photos for display
@@ -596,12 +596,11 @@ const OutingModal = (props) => {
                 ) : null}
 
                 <div className={styles.photoGridContainer}>
-                  <PhotoGrid
+                  <SixPhotoGrid
                     deleteableIndexes={deleteableIndexes}
                     showDeleteable={showDeleteable}
                     onDeleteClick={onDeletePhoto}
-                    images={photos}
-                    gridTemplateColumns="1fr 1fr"
+                    photos={photos}
                   />
                 </div>
               </Fragment>

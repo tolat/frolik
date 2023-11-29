@@ -5,6 +5,7 @@ import styles from "./styles/CropperPopup.module.scss";
 import Cropper from "react-easy-crop";
 import { useState } from "react";
 import { getCroppedImageBase64 } from "../../utils/utils";
+import LoaderSpinner from "../UI/LoaderSpinner";
 
 const CropperPopup = (props) => {
   const popupState = useSelector((state) => state.popup);
@@ -14,6 +15,11 @@ const CropperPopup = (props) => {
   const [crop1, setCrop1] = useState(props.defaultCrop || { x: 0, y: 0 });
   const [zoom2, setZoom2] = useState(1);
   const [crop2, setCrop2] = useState({ x: 0, y: 0 });
+  const buttonLoader = (
+    <div className={styles.loaderTextContainer}>
+      Upload &nbsp; <LoaderSpinner width="1.5rem" height="1.5rem" />
+    </div>
+  );
   const [button1Text, setButton1Text] = useState(props.button1Text || "Upload");
   const [button2Text, setButton2Text] = useState("Upload");
   const [cropComplete1, setCropComplete1] = useState();
@@ -26,6 +32,10 @@ const CropperPopup = (props) => {
   const zooms = [zoom1, zoom2];
   const buttonTexts = [button1Text, button2Text];
   const buttonSetters = [setButton1Text, setButton2Text];
+  const [uploading1, setUploading1] = useState(false);
+  const [uploading2, setUploading2] = useState(false);
+  const uploadingStates = [uploading1, uploading2];
+  const uploadingStateSetters = [setUploading1, setUploading2];
 
   const onCrop1Change = (newCrop) => {
     setCrop1(newCrop);
@@ -50,17 +60,21 @@ const CropperPopup = (props) => {
     setCrops[index]({ x: 0, y: 0 });
     setZooms[index](1);
     buttonSetters[index]("Upload");
+    uploadingStateSetters[index](false);
   };
 
   const onUploadImage = async (img) => {
     const index = props.images.indexOf(img);
-    buttonSetters[index](props.button1ActionText || "Uploading..");
+    if (uploadingStates[index]) {
+      return;
+    }
+
+    uploadingStateSetters[index](true);
+    buttonSetters[index](props.button1ActionText || buttonLoader);
     const croppedImage = await getCroppedImageBase64(
       img,
       cropCompletes[index].cap
     );
-
-    resetCropper(index);
 
     props.onUpload(index, croppedImage, resetCropper);
   };

@@ -299,7 +299,6 @@ router.get(
       );
     });
 
-    console.log(allAvailable.map((u) => `${u.first_name} ${u.last_name}`));
     // Replace or delete any invalid matches
     for (match of user.matches) {
       const matchUser = await User.findById(match.user);

@@ -89,7 +89,11 @@ const FriendCard = (props) => {
               icon={outingsIcon}
               style={statContainerStyle}
               iconStyle={statIconStyle}
-              rating={props.user.outings?.length}
+              rating={
+                props.user.outings?.filter(
+                  (o) => o.completions?.length === o.users?.length
+                )?.length
+              }
             />
           </div>
         </div>

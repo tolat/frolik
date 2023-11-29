@@ -3,6 +3,7 @@ import { memo } from "react";
 import { useSelector } from "react-redux";
 import CroppedImage from "./CroppedImage";
 import { genBackgroundStr } from "../../utils/utils";
+import LoaderSpinner from "./LoaderSpinner";
 
 const UserIcon = memo(function UserIcon(props) {
   const categoryColorMap = useSelector(
@@ -54,12 +55,11 @@ const UserIcon = memo(function UserIcon(props) {
           </div>
         ) : null}
         {!photoString || photoString === "queued" ? (
-          true ? null : (
-            <div
-              style={{ height: photoDimension, width: photoDimension }}
-              className={styles.placeholderImage}
-            ></div>
-          )
+          <LoaderSpinner
+            className={styles.loaderSpinner}
+            width={pieDimension}
+            height={pieDimension}
+          />
         ) : (
           <div
             id={iconID}
@@ -67,12 +67,13 @@ const UserIcon = memo(function UserIcon(props) {
             className={`${styles.pieChart} hidden`}
           >
             <CroppedImage
-              onLoad={() =>
-                document.getElementById(iconID).classList.remove("hidden")
-              }
+              onLoad={() => {
+                document.getElementById(iconID)?.classList.remove("hidden");
+              }}
               image={photoString}
               zoom={zoom}
               crop={crop}
+              iconID={iconID}
               showPhotoOnClick={props.showPhotoOnClick}
               style={{
                 height: photoDimension,
