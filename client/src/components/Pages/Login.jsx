@@ -47,7 +47,7 @@ function Login() {
     };
 
     fetchLogin(
-      usernameRef.current.value,
+      usernameRef.current.value.toString().toLowerCase(),
       passwordRef.current.value,
       onComplete
     );
