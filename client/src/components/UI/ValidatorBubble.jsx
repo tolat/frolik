@@ -29,7 +29,8 @@ const ValidatorBubble = (props) => {
       rect?.top -
       modalRect.top +
       window.scrollY +
-      targetElement?.getBoundingClientRect()?.height + remToPixels(1);
+      targetElement?.getBoundingClientRect()?.height +
+      remToPixels(1);
 
     return { x, y };
   }
