@@ -27,7 +27,6 @@ const {
   tryCatch,
   sameUserOnly,
 } = require("../utils/middleware");
-const { urlencoded } = require("body-parser");
 
 const router = express.Router({ mergeParams: true });
 
@@ -271,18 +270,15 @@ router.get(
   tryCatch(async (req, res) => {
     const user = await User.findById(req.params.id);
     await user.populate("outings");
-    const validStatuses = ["Ready", "Searching"];
 
     // Return if user already has 5+ pending outings
-    if (user.outings.filter((o) => o.statu == "Pending").length > 4) {
-      res.sendStatus(200);
+    if (user.outings.filter((o) => o.status == "Pending").length > 4) {
+      res.status(200);
       return;
     }
 
-    // Limit matches to users who have status ready or searching
-    let allAvailable = await User.find({
-      "status.status": { $in: validStatuses },
-    });
+    // Limit matches to users who have status ready
+    let allAvailable = await User.find({ "status.status": "Ready" });
 
     // Populate the available matches user outings
     for (u of allAvailable) {
@@ -303,7 +299,43 @@ router.get(
       );
     });
 
-    // If no full matches set, generate matches set with at most 5 matches
+    console.log(allAvailable.map((u) => `${u.first_name} ${u.last_name}`));
+    // Replace or delete any invalid matches
+    for (match of user.matches) {
+      const matchUser = await User.findById(match.user);
+      await matchUser.populate("outings");
+      if (
+        // Match is 24 hrs old or more
+        Date.now() - new Date(match.updated).getTime() > 86400000 ||
+        // Match status has changed to Busy or Incative
+        matchUser.status.status != "Ready" ||
+        // Match has 5 or more pending outings
+        matchUser.outings.filter((o) => o.status == "Pending").length > 4 ||
+        // Match has become a friend
+        user.friends
+          .map((f) => (f._id ? f._id.toString() : f.toString()))
+          .includes(matchUser._id.toString())
+      ) {
+        const replaceIndex = user.matches.indexOf(match);
+        // If available matches exists, pull form there
+        if (allAvailable.length > 0) {
+          const newIndex = parseInt(
+            (Math.random() * 1000000) % allAvailable.length
+          );
+          user.matches[replaceIndex] = {
+            user: allAvailable[newIndex],
+            updated: Date.now(),
+          };
+          allAvailable.splice(newIndex, 1);
+        }
+        // Else just delete the invalid match
+        else {
+          user.matches.splice(replaceIndex, 1);
+        }
+      }
+    }
+
+    // Make sure user has 5 matches if possible
     if (!user.matches || !user.matches[4]) {
       const neededMatches = 5 - user.matches.length;
       // Pick 5 available users at random
@@ -316,42 +348,8 @@ router.get(
           allAvailable.splice(index, 1);
         }
       }
-    } else {
-      // Replace or delete any invalid matches
-      for (match of user.matches) {
-        const matchUser = await User.findById(match.user);
-        await matchUser.populate("outings");
-        if (
-          // Match is 24 hrs old or more
-          Date.now() - new Date(match.updated).getTime() > 86400000 ||
-          // Match status has changed to Busy or Incative
-          !validStatuses.includes(matchUser.status.status) ||
-          // Match has 5 or more pending outings
-          matchUser.outings.filter((o) => o.status == "Pending").length > 4 ||
-          // Match has become a friend
-          user.friends
-            .map((f) => f._id.toString())
-            .includes(matchUser._id.toString())
-        ) {
-          const replaceIndex = user.matches.indexOf(match);
-          // If available matches exists, pull form there
-          if (allAvailable.length > 0) {
-            const newIndex = parseInt(
-              (Math.random() * 1000000) % allAvailable.length
-            );
-            user.matches[replaceIndex] = {
-              user: allAvailable[newIndex],
-              updated: Date.now(),
-            };
-            allAvailable.splice(newIndex, 1);
-          }
-          // Else just delete the invalid match
-          else {
-            user.matches.splice(replaceIndex, 1);
-          }
-        }
-      }
     }
+
     await user.save();
 
     // Just send matched users back to the server
