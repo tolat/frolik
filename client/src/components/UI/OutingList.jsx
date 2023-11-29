@@ -76,11 +76,17 @@ const OutingList = (props) => {
       {nonPending[0] &&
         toSorted(nonPending, (a, b) =>
           sortByDate(b.date_created, a.date_created)
-        ).map((o) => (
-          <div key={Math.random()} className={styles.outingContainer}>
-            <FeedCard outing={o} />
-          </div>
-        ))}
+        ).map((o) =>
+          o.flakes.find((id) => id === user._id) ? (
+            <div key={Math.random()} className={styles.outingContainer}>
+              <OutingCard outing={o} user={user} />
+            </div>
+          ) : (
+            <div key={Math.random()} className={styles.outingContainer}>
+              <FeedCard outing={o} />
+            </div>
+          )
+        )}
     </div>
   );
 };

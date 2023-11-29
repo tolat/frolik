@@ -15,6 +15,7 @@ import { createActivity } from "../../utils/data-fetch";
 import { hideModal } from "../../store/modal-actions";
 import { goActions } from "../../store/go-slice";
 import CustomSelect from "../UI/CustomSelect";
+import LoaderSpinner from "../UI/LoaderSpinner";
 
 const CreateActivityModal = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -229,50 +230,58 @@ const CreateActivityModal = (props) => {
         props.addActivity(response.activity);
       };
 
-      setCreatebuttonText("Creating..");
+      setCreatebuttonText(
+        <div style={{ display: "flex" }}>
+          Saving &nbsp; <LoaderSpinner width="1.5rem" height="1.5rem" />
+        </div>
+      );
       createActivity(user, newActivity, onComplete);
     }
   };
 
-  const categoryOptions = categoryColorMap && Object.keys(categoryColorMap).map((key) => {
-    return {
-      selectable: true,
-      name: key,
-    };
-  });
+  const categoryOptions =
+    categoryColorMap &&
+    Object.keys(categoryColorMap).map((key) => {
+      return {
+        selectable: true,
+        name: key,
+      };
+    });
 
-  return categoryOptions && (
-    <ModalPortal>
-      <ValidatorBubble
-        id={validatorBubbleID}
-        elementID={validationID}
-        display={validationDisplay}
-        setDisplay={setValidationDisplay}
-        message={validationMessage}
-      />
-      <div style={modalStyle} className={styles.container}>
-        <div className={modalStyles.header}>Create Activity</div>
-        <form id="create-activity-form" className={styles.createForm}>
-          <SimpleButton onClick={onSubmit} className={styles.createButton}>
-            {createButtonText}
-          </SimpleButton>
-          <CustomSelect
-            className={styles.categoryInput}
-            options={categoryOptions}
-            label="Activity Category:"
-            defaultVal={categoryOptions[0].name}
-            setDataChanged={(value) => setCategory(value)}
-          />
-          <ActivityCard
-            showInstructions={true}
-            hideSelect={true}
-            creatingActivity={true}
-            activity={newActivity}
-            onAddInstructionClick={onAddInstructionClick}
-          />
-        </form>
-      </div>
-    </ModalPortal>
+  return (
+    categoryOptions && (
+      <ModalPortal>
+        <ValidatorBubble
+          id={validatorBubbleID}
+          elementID={validationID}
+          display={validationDisplay}
+          setDisplay={setValidationDisplay}
+          message={validationMessage}
+        />
+        <div style={modalStyle} className={styles.container}>
+          <div className={modalStyles.header}>Create Activity</div>
+          <form id="create-activity-form" className={styles.createForm}>
+            <SimpleButton onClick={onSubmit} className={styles.createButton}>
+              {createButtonText}
+            </SimpleButton>
+            <CustomSelect
+              className={styles.categoryInput}
+              options={categoryOptions}
+              label="Activity Category:"
+              defaultVal={categoryOptions[0].name}
+              setDataChanged={(value) => setCategory(value)}
+            />
+            <ActivityCard
+              showInstructions={true}
+              hideSelect={true}
+              creatingActivity={true}
+              activity={newActivity}
+              onAddInstructionClick={onAddInstructionClick}
+            />
+          </form>
+        </div>
+      </ModalPortal>
+    )
   );
 };
 
