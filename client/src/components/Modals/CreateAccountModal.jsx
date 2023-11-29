@@ -52,7 +52,7 @@ const CreateAccountModal = (props) => {
   const [prevUsername, setPrevUsername] = useState(false);
   const [resentEmail, setResentEmail] = useState(false);
   const [resendButtonText, setResendButtonText] = useState(
-    "Resend Confirmation Email"
+    "Resend Verification Email"
   );
   const buttonTextOnSubmit = (
     <div style={{ display: "flex" }}>
@@ -102,7 +102,7 @@ const CreateAccountModal = (props) => {
     createAccount(
       {
         ...data,
-        username: stagedData["create-email"],
+        username: stagedData["create-email"].toLowerCase(),
         password: stagedData["create-password"],
       },
       resetForm

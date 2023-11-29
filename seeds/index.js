@@ -317,7 +317,7 @@ const seedDB = async () => {
     await seedChats();
     console.log("done chats..");
   }
-  
+
   if (process.env.SEED_PRODUCTION) {
     await User.deleteMany({});
     await Outing.deleteMany({});
@@ -326,9 +326,11 @@ const seedDB = async () => {
 };
 
 const awaitSeed = async () => {
-  await seedDB();
-  console.log("DONE");
-  process.exit(0);
+  if (process.env.ALLOW_SEED) {
+    await seedDB();
+    console.log("DONE");
+    process.exit(0);
+  }
 };
 
 awaitSeed();

@@ -52,7 +52,7 @@ const Utility = (props) => {
 
   const headers = {
     "email-verified": "Email Address Verified!",
-    "send-reset-password-link": "Enter Account Email",
+    "send-reset-password-link": "Get Password Reset Link",
     "reset-password-link-sent": "Reset Link Sent",
     "reset-password": "Reset Password",
     "password-reset-success": "Password Reset Successful!",
@@ -62,7 +62,7 @@ const Utility = (props) => {
     "email-verified":
       "Your email address has been verified. You may now login with your username and password.",
     "send-reset-password-link":
-      "A link to reset your password will be sent to your email.",
+      "A password reset link will be sent to your email.",
     "reset-password-link-sent": "Check your email for the password reset link!",
     "reset-password": "Enter a new password below.",
     "password-reset-success": "You may now log in with your new password.",

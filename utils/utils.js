@@ -72,7 +72,7 @@ module.exports.populateUser = async (user) => {
   });
 };
 
-module.exports.sendEmail = async (to, subject, text) => {
+module.exports.sendEmail = async (to, subject, html) => {
   try {
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -86,7 +86,7 @@ module.exports.sendEmail = async (to, subject, text) => {
       from: process.env.SENDMAIL_FROM,
       to,
       subject,
-      text,
+      html: html
     };
 
     const info = await transporter.sendMail(mailOptions);

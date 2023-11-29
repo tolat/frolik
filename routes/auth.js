@@ -10,6 +10,7 @@ const {
   sendEmail,
 } = require("../utils/utils");
 const { tryCatch } = require("../utils/middleware");
+const { createEmail, resetPassword, verifyEmail } = require("../utils/emailTemplates");
 
 const router = express.Router({ mergeParams: true });
 
@@ -86,15 +87,9 @@ router.post(
     sendEmail(
       req.body.username,
       "Reset frolik.ca Password",
-      `
-      You are receiving this because you (or someone else) have requested the reset of the password for your account.
-      Please click on the following link, or paste this into your browser to complete the process:
-      \n
-      ${link}
-      \n
-      If you did not request this, please ignore this email and your password will remain unchanged.
-    `
+      resetPassword(link)
     );
+
     user.reset_token = { expires: Date.now() + 1000 * 60 * 60 * 10 };
     await user.save();
     res.sendStatus(200);
@@ -152,18 +147,11 @@ router.post(
     const link = `${process.env.SERVER}/user/${user._id.toString()}/verify`;
     sendEmail(
       req.body.username,
-      "Confirm frolik.ca Email",
-      `
-    Click the link below to verify your email you (or someone else) 
-    used to set up an account on frolik.ca:
-    \n
-    ${link}
-    \n
-    If you did not request this, please ignore this email.
-  `
+      "Verify frolik.ca Email",
+      verifyEmail(link)
     );
 
-    res.sendStatus(200)
+    res.sendStatus(200);
   })
 );
 

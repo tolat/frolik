@@ -27,6 +27,7 @@ const {
   tryCatch,
   sameUserOnly,
 } = require("../utils/middleware");
+const { verifyEmail } = require("../utils/emailTemplates");
 
 const router = express.Router({ mergeParams: true });
 
@@ -203,15 +204,8 @@ router.post(
       const link = `${process.env.SERVER}/user/${user._id.toString()}/verify`;
       sendEmail(
         userData.username,
-        "Confirm frolik.ca Email",
-        `
-      Click the link below to verify your email you (or someone else) 
-      used to set up an account on frolik.ca:
-      \n
-      ${link}
-      \n
-      If you did not request this, please ignore this email.
-    `
+        "Verify frolik.ca Email",
+        verifyEmail(link)
       );
       user.status = { status: "Pending", updated: Date.now() };
       await user.save();
