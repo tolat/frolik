@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { popupActions } from "../../store/popup-slice";
 
 const SixPhotoGrid = (props) => {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const photoGridNumber = props.photos?.length > 6 ? 6 : props.photos?.length;
 
   const onImageClick = (img) => {
@@ -34,20 +34,15 @@ const SixPhotoGrid = (props) => {
     </div>
   ));
 
-  
-
-
   return (
     <div
       className={`${styles.photosContainer} ${
         styles[`container_${photoGridNumber}`]
       }`}
     >
-      {props.photos[0] && !props.photos.find((img) => img === "queued") ? (
-        photoList
-      ) : (
-        <div style={{ padding: "1rem" }}>Loading Photos..</div>
-      )}
+      {props.photos[0] &&
+        !props.photos.find((img) => img === "queued") &&
+        photoList}
     </div>
   );
 };

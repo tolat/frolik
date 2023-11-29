@@ -17,6 +17,7 @@ import ActivityCard from "./ActivityCard";
 import FriendCard from "./FriendCard";
 import StatIcon from "./StatIcon";
 import SixPhotoGrid from "./SixPhotoGrid";
+import LoaderSpinner from "./LoaderSpinner";
 
 const FeedCard = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -61,7 +62,15 @@ const FeedCard = (props) => {
   return (
     outing && (
       <div className={styles.container}>
-        <SixPhotoGrid photos={outingPhotos} />
+        {outing && outingPhotos[0] && !outingPhotos.find((img) => img === "queued") ? (
+          <SixPhotoGrid photos={outingPhotos} />
+        ) : (
+          <div className={styles.loadingTile}>
+            Loading Photos.. &nbsp;{" "}
+            <LoaderSpinner width="1.5rem" height="1.5rem" />
+          </div>
+        )}
+
         <FeedCardFooter outing={outing} memberNames={memberNames} />
       </div>
     )

@@ -91,3 +91,12 @@
   font-size: 1.6rem;
   font-weight: bold;
 }
+
+.loadingTile{
+  padding: 1rem;
+  background-color: $card_grey;
+  display: flex;
+  border-top-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+ 
+}

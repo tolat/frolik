@@ -71,6 +71,8 @@ const OutingModal = (props) => {
     ?.map((p) => userData?.photos?.find((photo) => photo.key === p.key)?.photo)
     .filter((foundPhoto) => foundPhoto);
 
+    console.log(outing, photos)
+
   const [showDeleteable, setShowDeleteable] = useState(false);
   const deleteableIndexes = outing?.photos
     ?.map((p) => (p.uploader === user._id ? outing?.photos.indexOf(p) : -1))
