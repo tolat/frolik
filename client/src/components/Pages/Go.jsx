@@ -200,7 +200,9 @@ const Go = (props) => {
     };
 
     setCreateButtonText(creatingOutingText);
-    createOuting(goState.outing, user, onComplete);
+    createOuting(goState.outing, user, onComplete, () =>
+      setCreateButtonText("Create Outing")
+    );
   };
 
   const newOutingMessage = (

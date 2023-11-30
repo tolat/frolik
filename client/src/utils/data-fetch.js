@@ -326,8 +326,8 @@ export const fetchChats = (user) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
-// Create a pending outing
-export const createOuting = (outing, user, setOutingData) => {
+// Create a new outing
+export const createOuting = (outing, user, setOutingData, resetButton) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/create-outing`,
     headers: {
@@ -357,6 +357,7 @@ export const createOuting = (outing, user, setOutingData) => {
   };
 
   const handleError = (err) => {
+    resetButton()
     store.dispatch(dataActions.setCreatingOuting(false));
     console.log(err);
   };

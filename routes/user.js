@@ -422,6 +422,21 @@ router.post(
   tryCatch(async (req, res) => {
     let user = await User.findById(req.params.id);
 
+    // Send unacceptable if user has 5 pending outings already
+    await user.populate("outings")
+    const outingIsPending = (outing) =>{
+      return outing.users.find(uid => uid.toString() == user._id.toString()) && 
+      outing.users.length !== outing.completions.length
+    }
+    if(user.outings.filter(o => outingIsPending(o)).length > 4){
+      res.status(406).send({
+        header: "Too Many Pending Outings",
+        message: `You can only have up to 5 pending outings at a time. Either complete, leave, 
+        or delete an outing before creating another one.`
+      })
+      return
+    }
+
     // Add outing status and date created
     let outing = req.body;
     outing.date_created = new Date(Date.now());
