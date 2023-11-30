@@ -63,6 +63,12 @@ function Login() {
     navigate("/send-reset-password-link");
   };
 
+  const onSampleLogin = (e) =>{
+    usernameRef.current.value = 'app.frolik@gmail.com'
+    passwordRef.current.value = 'frolik1*'
+    handleSubmit(e)
+  }
+
   return (
     <div className={styles["login-page"]}>
       <CreateAccountModal />
@@ -117,6 +123,12 @@ function Login() {
             className={styles.forgotButton}
           >
             Forgot Password
+          </button>
+          <button
+            onClick={onSampleLogin}
+            className={styles.forgotButton}
+          >
+            Sample Login
           </button>
         </div>
       </form>
