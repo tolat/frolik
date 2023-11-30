@@ -268,20 +268,22 @@ function alertsSection(unreadAlerts = 0, unreadChats = 0) {
 
   return `<div style="${alertsContainerStyle}">
     ${
-      unreadAlerts > 0 &&
-      `
+      unreadAlerts > 0
+        ? `
         <div style="${alertContainerStyle}">
             <img style="${alertIconStyle}" alt="bell" src="${bellIconLink}" />
             <div style="${badgeStyle}">${unreadAlerts} unread alerts</div>
         </div>`
+        : ""
     }
     ${
-      unreadChats > 0 &&
-      `
+      unreadChats > 0
+        ? `
       <div style="${alertContainerStyle}">
           <img style="${alertIconStyle}" alt="bell" src="${chatIconLink}" />
           <div style="${badgeStyle}">${unreadChats} unread chat messsage(s)</div>
       </div>`
+        : ""
     }
   </div>`;
 }
