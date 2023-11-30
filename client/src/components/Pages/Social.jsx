@@ -109,7 +109,7 @@ const Social = (props) => {
 };
 
 export const socialLoader = async () => {
-  const redirect = await pageRouteLoader();
+  const redirect = await pageRouteLoader('/social');
   if (redirect) {
     return redirect;
   }

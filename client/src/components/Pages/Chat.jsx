@@ -90,7 +90,7 @@ const Chat = memo((props) => {
 export default Chat;
 
 export const chatLoader = async () => {
-  const redirect = await pageRouteLoader();
+  const redirect = await pageRouteLoader('/chat');
   if (redirect) {
     return redirect;
   }

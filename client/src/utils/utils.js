@@ -16,7 +16,7 @@ export const calcAvgRating = (activity) => {
   return isNaN(ratingString) ? "unrated" : `${ratingString}/5`;
 };
 
-export const pageRouteLoader = async () => {
+export const pageRouteLoader = async (url) => {
   // Don't use previous modal
   store.dispatch(modalActions.setUsePrevious(false));
 
@@ -36,6 +36,7 @@ export const pageRouteLoader = async () => {
 
   // Redirect if user is not authenticated
   if (!store.getState().auth.isAuthenticated) {
+    localStorage.setItem("previousUrl", url);
     return redirect("/login");
   } else {
     return false;

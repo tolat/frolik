@@ -38,6 +38,7 @@ import {
 } from "../../utils/data-fetch";
 import SliderNavber from "../UI/SliderNavbar";
 import CreateActivityModal from "../Modals/CreateActivityModal";
+import LoaderSpinner from "../UI/LoaderSpinner";
 
 const Go = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -52,6 +53,12 @@ const Go = (props) => {
   const categoryColorMap = globals && globals?.categoryColorMap;
   const [selected, setSelected] = useState(Object.keys(categoryColorMap)[0]);
   const selectedSliderKey = `_${selected}_tab`;
+  const [createButtonText, setCreateButtonText] = useState("Create Outing");
+  const creatingOutingText = (
+    <div style={{ display: "flex" }}>
+      Creating.. &nbsp; <LoaderSpinner width="1.5rem" height="1.5rem" />
+    </div>
+  );
 
   const getHighlightStyle = (key) => {
     let keyCategory = Object.keys(categoryColorMap).find((k) =>
@@ -183,7 +190,8 @@ const Go = (props) => {
       dispatch(popupActions.showPopup("too-many-outings"));
       return;
     }
-    const onOutingCreate = (outing) => {
+    const onComplete = (outing) => {
+      setCreateButtonText("Create Outing");
       dispatch(modalActions.setActiveOuting(outing));
       dispatch(popupActions.setShowCreateOutingPopup(true));
       dispatch(modalActions.setSelector("outing-modal"));
@@ -191,7 +199,8 @@ const Go = (props) => {
       fetchChat(user._id, outing.chat, () => {});
     };
 
-    createOuting(goState.outing, user, onOutingCreate);
+    setCreateButtonText(creatingOutingText);
+    createOuting(goState.outing, user, onComplete);
   };
 
   const newOutingMessage = (
@@ -297,7 +306,9 @@ const Go = (props) => {
           </Fragment>
         ) : (
           <SimpleButton
-            onClick={handleCreateOuting}
+            onClick={
+              createButtonText === "Create Outing" ? handleCreateOuting : null
+            }
             className={styles.goButton}
           >
             <img
@@ -305,7 +316,7 @@ const Go = (props) => {
               src={balloonIcon}
               alt="balloon-icon"
             />{" "}
-            Create Outing
+            {createButtonText}
           </SimpleButton>
         )}
         {goState.outing.activity.name ? (
@@ -449,7 +460,7 @@ const Go = (props) => {
 export default Go;
 
 export const goLoader = async () => {
-  const redirect = await pageRouteLoader();
+  const redirect = await pageRouteLoader("/outing");
   if (redirect) {
     return redirect;
   }

@@ -337,7 +337,12 @@ export const createOuting = (outing, user, setOutingData) => {
     body: JSON.stringify(outing),
   };
 
+  if (store.getState().data.creatingOuting) {
+    return;
+  }
+
   const handleResponse = (response) => {
+    store.dispatch(dataActions.setCreatingOuting(false));
     response.user.friends = response.populatedFriends;
     // Update user in redux store
     store.dispatch(authActions.setUser(response.user));
@@ -352,9 +357,11 @@ export const createOuting = (outing, user, setOutingData) => {
   };
 
   const handleError = (err) => {
+    store.dispatch(dataActions.setCreatingOuting(false));
     console.log(err);
   };
 
+  store.dispatch(dataActions.setCreatingOuting(true));
   httpFetch(requestConfig, handleResponse, handleError);
 };
 

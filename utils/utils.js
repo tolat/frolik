@@ -86,7 +86,7 @@ module.exports.sendEmail = async (to, subject, html) => {
       from: process.env.SENDMAIL_FROM,
       to,
       subject,
-      html: html
+      html: html,
     };
 
     const info = await transporter.sendMail(mailOptions);
@@ -307,3 +307,33 @@ module.exports.genRanHex = (size) =>
   [...Array(size)]
     .map(() => Math.floor(Math.random() * 16).toString(16))
     .join("");
+
+module.exports.getTotalUnreadMessages = (user) => {
+  const getUnreadChatMessages = (user, chat) => {
+    const lastRead = chat?.last_read;
+    if (!lastRead) {
+      return 0;
+    } else {
+      if (lastRead[user._id] === "initialized") {
+        return chat.messages.length;
+      }
+      const lastReadMessage = chat?.messages.find(
+        (m) => m.id === lastRead[user._id]
+      );
+      const lastReadMessageIndex = chat?.messages.indexOf(lastReadMessage);
+      if (!lastReadMessage) {
+        return 0;
+      } else {
+        return lastReadMessageIndex;
+      }
+    }
+  };
+  
+  return user?.chats
+    ?.filter((c) =>
+      c.outing ? !c.outing.flakes.find((uid) => uid === user._id) : true
+    )
+    .reduce((count, chat) => {
+      return count + getUnreadChatMessages(user, chat);
+    }, 0);
+};

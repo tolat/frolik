@@ -21,13 +21,14 @@ const {
   pushUserUpdate,
   handleFriendRequestAction,
   findNonOutingChat,
+  getTotalUnreadMessages,
 } = require("../utils/utils");
 const {
   reqAuthenticated,
   tryCatch,
   sameUserOnly,
 } = require("../utils/middleware");
-const { verifyEmail } = require("../utils/emailTemplates");
+const { verifyEmail, outingInvite } = require("../utils/emailTemplates");
 
 const router = express.Router({ mergeParams: true });
 
@@ -202,11 +203,7 @@ router.post(
 
       // Send email confirmation linkand set user status as pending
       const link = `${process.env.SERVER}/user/${user._id.toString()}/verify`;
-      sendEmail(
-        userData.username,
-        "Verify frolik.ca Email",
-        verifyEmail(link)
-      );
+      sendEmail(userData.username, "Verify frolik.ca Email", verifyEmail(link));
       user.status = { status: "Pending", updated: Date.now() };
       await user.save();
 
@@ -448,6 +445,9 @@ router.post(
 
     // Save and populate new Outing
     const newOuting = new Outing(outing);
+    const activity = await Activity.findById(
+      outing.activity._id || outing.activity
+    );
 
     // Add a notification for all invited users
     for (u of invited) {
@@ -462,6 +462,21 @@ router.post(
         ? (u.notifications = [newNotification])
         : u.notifications.unshift(newNotification);
       await u.save();
+
+      // Send notification email to user
+      await u.populate({
+        path: "chats",
+        populate: {
+          path: "outing",
+        },
+      });
+      const userUnreadMessages = getTotalUnreadMessages(u);
+      console.log(user.notificiations)
+      sendEmail(
+        u.username,
+        "Outing Invitation",
+        outingInvite(user, outing, u.notifications.length, userUnreadMessages)
+      );
     }
 
     // Create outing chat

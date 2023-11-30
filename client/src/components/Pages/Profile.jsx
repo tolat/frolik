@@ -249,7 +249,7 @@ const Profile = (props) => {
 export default Profile;
 
 export const profileLoader = async () => {
-  const redirect = await pageRouteLoader();
+  const redirect = await pageRouteLoader('/profile');
   if (redirect) {
     return redirect;
   }

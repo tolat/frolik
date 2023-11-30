@@ -26,9 +26,7 @@ function Login() {
     if (authState.isAuthenticated) {
       const prevUrl = localStorage.getItem("previousUrl");
       navigate((validPreviousPaths.includes(prevUrl) && prevUrl) || "/profile");
-    } else {
-      localStorage.setItem("previousUrl", "/login");
-    }
+    } 
   }, [authState.isAuthenticated, navigate]);
 
   const handleSubmit = (e) => {
@@ -47,7 +45,7 @@ function Login() {
     };
 
     fetchLogin(
-      usernameRef.current.value.toString().toLowerCase(),
+      usernameRef.current.value.toLowerCase(),
       passwordRef.current.value,
       onComplete
     );
