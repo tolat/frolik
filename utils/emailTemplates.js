@@ -272,7 +272,7 @@ function alertsSection(unreadAlerts = 0, unreadChats = 0) {
         ? `
         <div style="${alertContainerStyle}">
             <img style="${alertIconStyle}" alt="bell" src="${bellIconLink}" />
-            <div style="${badgeStyle}">${unreadAlerts} unread alerts</div>
+            <div style="${badgeStyle}">${unreadAlerts} unread alert(s)</div>
         </div>`
         : ""
     }
