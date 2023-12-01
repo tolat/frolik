@@ -133,6 +133,7 @@ module.exports.handleOutingInviteAction = async (
   outing,
   status
 ) => {
+  // if user is accepting,
   // Remove the notificaiton
   user.notifications.splice(
     user.notifications
@@ -328,7 +329,7 @@ module.exports.getTotalUnreadMessages = (user) => {
       }
     }
   };
-  
+
   return user?.chats
     ?.filter((c) =>
       c.outing ? !c.outing.flakes.find((uid) => uid === user._id) : true
@@ -336,4 +337,11 @@ module.exports.getTotalUnreadMessages = (user) => {
     .reduce((count, chat) => {
       return count + getUnreadChatMessages(user, chat);
     }, 0);
+};
+
+module.exports.outingIsPending = (user, outing) => {
+  return (
+    outing.users.find((uid) => uid.toString() == user._id.toString()) &&
+    outing.users.length !== outing.completions.length
+  );
 };

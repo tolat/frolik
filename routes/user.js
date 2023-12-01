@@ -22,6 +22,7 @@ const {
   handleFriendRequestAction,
   findNonOutingChat,
   getTotalUnreadMessages,
+  outingIsPending,
 } = require("../utils/utils");
 const {
   reqAuthenticated,
@@ -423,18 +424,14 @@ router.post(
     let user = await User.findById(req.params.id);
 
     // Send unacceptable if user has 5 pending outings already
-    await user.populate("outings")
-    const outingIsPending = (outing) =>{
-      return outing.users.find(uid => uid.toString() == user._id.toString()) && 
-      outing.users.length !== outing.completions.length
-    }
-    if(user.outings.filter(o => outingIsPending(o)).length > 4){
+    await user.populate("outings");
+    if (user.outings.filter((o) => outingIsPending(user, o)).length > 4) {
       res.status(406).send({
         header: "Too Many Pending Outings",
         message: `You can only have up to 5 pending outings at a time. Either complete, leave, 
-        or delete an outing before creating another one.`
-      })
-      return
+        or delete an outing before creating another one.`,
+      });
+      return;
     }
 
     // Add outing status and date created
@@ -486,7 +483,6 @@ router.post(
         },
       });
       const userUnreadMessages = getTotalUnreadMessages(u);
-      console.log(user.notificiations)
       sendEmail(
         u.username,
         "Outing Invitation",
@@ -591,6 +587,17 @@ router.get(
       res.status(406).send({
         header: `Cannot joing Outing`,
         message: "User was not invited to this Outing.",
+      });
+      return;
+    }
+
+    // Send unacceptable if user has 5 pending outings already
+    await user.populate("outings");
+    if (user.outings.filter((o) => outingIsPending(user, o)).length > 4) {
+      res.status(406).send({
+        header: "Too Many Pending Outings",
+        message: `You can only have up to 5 pending outings at a time. Either complete, leave, 
+        or delete an outing before creating another one.`,
       });
       return;
     }
