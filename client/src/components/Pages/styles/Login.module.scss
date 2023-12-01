@@ -6,8 +6,58 @@
   align-items: center;
   justify-content: center;
   flex-grow: 1;
-  margin-top: 20%;
+  width: 90%;
+}
+
+.header{
+  margin: 1rem 0;
+  width: 100%;
+}
+
+.appBlurb{
+  padding: 2rem;
+  width: 100%;
+  font-size: 1.3rem;
   width: 80%;
+  text-align: center;
+  /* background-color: $card_grey;
+  border-radius: 3px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; */
+}
+
+.flavourImage{
+  width: 18rem;
+}
+
+.flavourContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.formContainer {
+  margin: 4rem 0 1.5rem 0 ;
+  width: 100%;
+  padding: 0.8rem;
+  box-sizing: border-box;
+  border-radius: 3px;
+  background: conic-gradient(
+    rgb(248, 157, 157) 0%,
+    rgb(186, 255, 169) 33.33%,
+    rgb(186, 255, 169) 33.33%,
+    rgb(238, 183, 220) 41.66%,
+    rgb(238, 183, 220) 41.66%,
+    rgb(117, 204, 255) 74.99%,
+    rgb(117, 204, 255) 74.99%,
+    rgb(255, 236, 69) 83.32%,
+    rgb(255, 236, 69) 83.32%,
+    rgb(248, 157, 157) 99.99%
+  );
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
 
 .header {
@@ -16,8 +66,8 @@
 }
 
 .logo {
-  height: 4rem;
-  margin-right: 1rem;
+  height: 2.2rem;
+  margin-bottom: -0.2rem;
 }
 
 .container {
@@ -40,9 +90,6 @@
 .login-form {
   background-color: #fff;
   border-radius: 5px;
-  width: 100%;
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   background-color: $card_grey;
   border-radius: 3px;
   padding: 2rem;
@@ -80,7 +127,7 @@ label {
   margin-top: 1rem;
 }
 
-.forgotButton{
+.forgotButton {
   background-color: $card_grey;
   border: none;
   outline: none;
@@ -89,13 +136,13 @@ label {
   margin-top: 0.4rem;
 }
 
-.smallButtons{
+.smallButtons {
   margin-top: 2rem;
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
 
-.loaderContainer{
+.loaderContainer {
   display: flex;
 }
