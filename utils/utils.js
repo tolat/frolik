@@ -10,6 +10,7 @@ const {
   animals,
 } = require("unique-names-generator");
 const outing = require("../models/outing");
+const { genOutingInviteAcceptedEmail } = require("./emailTemplates");
 
 // Populates an array with stripped down version of friends
 module.exports.populateFriends = async (friends) => {
@@ -157,7 +158,7 @@ module.exports.handleOutingInviteAction = async (
   }
 
   // Make a new notification to send to outing creator
-  const outingCreator = await User.findById(outing.created_by);
+  let outingCreator = await User.findById(outing.created_by);
   if (
     outing.users.find((u) =>
       u._id
@@ -205,6 +206,27 @@ module.exports.handleOutingInviteAction = async (
       foundUsr.notifications.push(newOutingJoinedNotification);
       await foundUsr.save();
     }
+
+    // send email notification to outing creator
+    // Send notification email to user
+    await outingCreator.populate({
+      path: "chats",
+      populate: {
+        path: "outing",
+      },
+    });
+    await outing.populate("activity");
+    const outingCreatorUnreadMessages = this.getTotalUnreadMessages(outingCreator);
+    this.sendEmail(
+      outingCreator.username,
+      "Outing Invitation Accepted",
+      genOutingInviteAcceptedEmail(
+        user,
+        outing,
+        outingCreator.notifications.length,
+        outingCreatorUnreadMessages
+      )
+    );
   }
 
   await outing.save();

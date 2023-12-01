@@ -108,7 +108,7 @@ const CreateActivityModal = (props) => {
         name={"Activity Location"}
         className={styles.locationSelect}
         defaultVal={location}
-        placeholder="Location"
+        placeholder="City"
         setDataChanged={setLocation}
       />
     ),
@@ -129,7 +129,7 @@ const CreateActivityModal = (props) => {
         setDataChanged={setDuration}
         defaultVal={duration}
         type="number"
-        placeholder="Duration"
+        placeholder="Min. Time"
       />
     ),
     cost: (
@@ -137,7 +137,7 @@ const CreateActivityModal = (props) => {
         setDataChanged={setCost}
         defaultVal={cost}
         type="number"
-        placeholder="Cost"
+        placeholder="Min. Cost"
         id={`create-activity-cost`}
         className={styles.iconInput}
       />
@@ -147,7 +147,7 @@ const CreateActivityModal = (props) => {
         setDataChanged={setParticipants}
         defaultVal={participants}
         type="number"
-        placeholder="Participants"
+        placeholder="Min. People"
         id={`create-activity-participants`}
         className={styles.iconInput}
       />

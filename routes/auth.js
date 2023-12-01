@@ -10,7 +10,7 @@ const {
   sendEmail,
 } = require("../utils/utils");
 const { tryCatch } = require("../utils/middleware");
-const { createEmail, resetPassword, verifyEmail } = require("../utils/emailTemplates");
+const { createEmail, genResetPasswordEmail: resetPassword, genVerifyAccountEmail: verifyEmail } = require("../utils/emailTemplates");
 
 const router = express.Router({ mergeParams: true });
 

@@ -29,7 +29,7 @@ const {
   tryCatch,
   sameUserOnly,
 } = require("../utils/middleware");
-const { verifyEmail, outingInvite } = require("../utils/emailTemplates");
+const { genVerifyAccountEmail, genOutingInviteEmail } = require("../utils/emailTemplates");
 
 const router = express.Router({ mergeParams: true });
 
@@ -204,7 +204,7 @@ router.post(
 
       // Send email confirmation linkand set user status as pending
       const link = `${process.env.SERVER}/user/${user._id.toString()}/verify`;
-      sendEmail(userData.username, "Verify frolik.ca Email", verifyEmail(link));
+      sendEmail(userData.username, "Verify frolik.ca Email", genVerifyAccountEmail(link));
       user.status = { status: "Pending", updated: Date.now() };
       await user.save();
 
@@ -486,7 +486,7 @@ router.post(
       sendEmail(
         u.username,
         "Outing Invitation",
-        outingInvite(user, outing, u.notifications.length, userUnreadMessages)
+        genOutingInviteEmail(user, outing, u.notifications.length, userUnreadMessages)
       );
     }
 
@@ -1273,7 +1273,7 @@ router.get(
   })
 );
 
-// Update Last Read chat message
+// Set 'Like' value for a user and an outing
 router.post(
   "/:id/set-like",
   reqAuthenticated,
