@@ -143,7 +143,7 @@ const FeedCardFooter = (props) => {
             <UserIconCluster
               onClick={onClusterClick}
               users={outing.users}
-              sizeInRem={8}
+              sizeInRem={8.5}
               borderSizeInRem={0.8}
             />
             <div className={styles.outingDetailsContainer}>

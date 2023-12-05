@@ -49,7 +49,7 @@ const OutingCard = (props) => {
           <div className={styles.rightUpperSection}>
             <UserIconCluster
               users={o.users}
-              sizeInRem={7}
+              sizeInRem={8.5}
               borderSizeInRem={0.8}
             />
           </div>

@@ -58,7 +58,7 @@ const ChatCard = (props) => {
         <div className={styles.iconClusterContainer}>
           <UserIconCluster
             users={chat.outing ? chat.outing.users : chat.users}
-            sizeInRem={7}
+            sizeInRem={8.5}
             borderSizeInRem={0.8}
           />
         </div>

@@ -129,7 +129,7 @@ const ChatModal = (props) => {
           <div className={styles.headerRightContainer}>
             <UserIconCluster
               users={chat.outing ? chat.outing.users : chat.users}
-              sizeInRem={7}
+              sizeInRem={10}
               borderSizeInRem={0.8}
             />
           </div>
