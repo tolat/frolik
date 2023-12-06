@@ -156,3 +156,25 @@ NOTES:
 FIX like updating
 FIX fonts 
 
+
+ADD FEATURES:
+
+- Add daily email for unread notifications and chats
++ option to set email update frequency
+
+- Change/fix validaton to be in each input instead of for the entire form, 
+
+- Make Outings Public or Private
+
+- Make it so custom activities don't need all fields filled
+
+- Add email notification for friend requests request acceptance
+
+- Allow custom outing naming
+
+FOR IOS:
+
+- What is doable
+
+- Weekly Breakdowns / timeline
+

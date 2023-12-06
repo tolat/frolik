@@ -18,7 +18,7 @@
   height: 100%;
 }
 
-.header{
+.header {
   display: flex;
   width: 100%;
   padding: 2rem;
@@ -39,7 +39,8 @@
   width: calc(2 * $central_span_width);
   margin-left: $central_span_width;
   overflow-y: scroll;
-  top: $navbar_height;
+
+  @include responsive("top", 0, $navbar_height, $navbar_height, $navbar_height);
 }
 
 .baffle {

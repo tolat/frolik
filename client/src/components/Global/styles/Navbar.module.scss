@@ -12,6 +12,9 @@
   box-sizing: border-box;
   position: fixed;
   z-index: 3;
+
+  @include responsive("bottom", 0, "", "", "");
+  @include responsive("border-top", 1px solid $light_grey, "", "", "");
 }
 
 .innerContainer {
@@ -21,6 +24,14 @@
   justify-content: center;
   width: $central_span_width;
   position: relative;
+
+  @include responsive(
+    "width",
+    $central_span_width,
+    $central_span_width,
+    $central_span_width,
+    $central_span_width
+  );
 }
 .none {
   width: 100%;
@@ -44,7 +55,6 @@
   height: 3.2rem;
   position: relative;
 }
-
 
 .logoButton {
   width: 4rem;
@@ -100,7 +110,6 @@
   position: relative;
 }
 
-.logo{
+.logo {
   height: 5rem;
- 
 }

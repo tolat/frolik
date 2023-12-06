@@ -10,7 +10,9 @@
   box-sizing: border-box;
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
-  margin-top: $navbar_height;
+
+  @include responsive("margin-top", 0, $navbar_height, $navbar_height, $navbar_height);
+  @include responsive("margin-bottom", $navbar_height, 0, 0, 0);
 }
 
 .outer::-webkit-scrollbar {
