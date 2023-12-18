@@ -8,9 +8,9 @@ const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const session = require("express-session");
-const cors = require("cors"); // Add this line
-const inDevelopment = process.env.NODE_ENV == "development";
+const webpush = require("web-push"); // Add this line for web-push
 const { handleCORS } = require("./utils/middleware");
+const inDevelopment = process.env.NODE_ENV == "development";
 const favicon = require("serve-favicon");
 
 // Set up express
@@ -43,6 +43,13 @@ const io = inDevelopment
 
 module.exports = io;
 
+// Set up VAPID keys (replace 'your-public-key' with your actual VAPID public key)
+webpush.setVapidDetails(
+  `mailto:${process.env.SENDMAIL_FROM}`,
+  process.env.VAPID_PUBLIC_KEY,
+  process.env.VAPID_PRIVATE_KEY
+);
+
 // Chat socket logic
 io.on("connection", (socket) => {
   try {
@@ -56,7 +63,7 @@ io.on("connection", (socket) => {
         chat.messages.unshift(data.message);
         chat.touched = Date.now();
 
-        // Make sure last_read for all users is this message if it is first message
+        // Make sure last_read for all users is this message if it is the first message
         if (chat.messages.length == 1) {
           const chatUsers = chat.outing ? chat.outing.users : chat.users;
           for (let usr of chatUsers) {
@@ -98,7 +105,7 @@ try {
   global.db = mongoose.connection;
   global.db.on("error", console.error.bind(console, "connection error:"));
   global.db.once("open", () => {
-    console.log("Main process connected to database");
+    console.log("Main process connected to the database");
   });
 } catch (e) {
   console.log(e);
