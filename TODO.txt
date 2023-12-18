@@ -172,6 +172,14 @@ ADD FEATURES:
 
 - Allow custom outing naming
 
+- Allow inviting users to outing after creation
+
+- Change outing notifications for outing join to send to all users
+
+- Convert to PWA
+
+- Fix the modal headers to top of screen
+
 FOR IOS:
 
 - What is doable

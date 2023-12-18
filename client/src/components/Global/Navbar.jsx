@@ -97,7 +97,7 @@ const Navbar = (props) => {
   }, [currentUrl]);
 
   return (
-    <div className={styles.header}>
+    <div id='navbar' className={styles.header}>
       <WarningPopup
         selector={"generic-warning"}
         header={warningHeader}

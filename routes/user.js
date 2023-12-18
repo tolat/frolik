@@ -1234,7 +1234,8 @@ router.post(
     if (!chat.last_read) {
       chat.last_read = {};
     }
-    chat.last_read[user._id.toString()] = messageID.toString();
+
+    chat.last_read[user._id.toString()] = messageID?.toString();
     chat.markModified("last_read");
     await chat.save();
 

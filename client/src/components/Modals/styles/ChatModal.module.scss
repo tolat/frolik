@@ -76,6 +76,8 @@
   border-left: 1px solid $light_grey;
   border-right: 1px solid $light_grey;
   border-bottom: 1px solid $light_grey;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 
 .composer {
@@ -125,7 +127,7 @@
 .bubbleContainer {
   display: flex;
   width: 100%;
-  padding: 1rem;
+  padding: 1rem 0;
   flex-direction: row-reverse;
   box-sizing: border-box;
   margin-bottom: 1rem;
@@ -134,7 +136,7 @@
 .bubbleContainerForeign {
   display: flex;
   width: 100%;
-  padding: 1rem;
+  padding: 1rem 0;
   box-sizing: border-box;
   margin-bottom: 1rem;
 }
@@ -146,8 +148,7 @@
   padding: 1rem;
   border-radius: 3px;
   max-width: 80%;
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  
 }
 
 .bubbleUser {
@@ -166,6 +167,7 @@
   position: absolute;
   bottom: -20px;
   right: 1rem;
+  
 }
 
 .bubbleTailForeign {
