@@ -1,7 +1,7 @@
 {
-  "name": "Frolik",
-  "short_name": "Frolik",
-  "start_url": ".",
+  "name": "frolik",
+  "short_name": "frolik",
+  "start_url": "/",
   "theme_color": "#4287f5",
   "background_color": "#ffffff",
   "display": "standalone",
@@ -14,7 +14,8 @@
     {
       "src": "./icon_512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
