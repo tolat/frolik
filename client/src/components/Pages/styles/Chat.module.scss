@@ -6,6 +6,18 @@
   box-sizing: border-box;
 }
 
+.upperContainer{
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: white;
+  width: 100%;
+  padding: 1rem;
+  padding-bottom: 0rem;
+  box-sizing: border-box;
+}
+
 .newChatButton{
   background-color: $blue;
   color: white;
@@ -14,7 +26,7 @@
 }
 
 .chatsContainer{
-  margin-top: 2rem;
+  margin-top: 11rem;
 }
 
 .noChatsMessage{

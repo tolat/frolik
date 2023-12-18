@@ -10,6 +10,7 @@
   box-sizing: border-box;
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
+  overscroll-behavior: none;
 
   @include responsive("margin-top", 0, $navbar_height, $navbar_height, $navbar_height);
   @include responsive("margin-bottom", $navbar_height, 0, 0, 0);
@@ -29,6 +30,7 @@
   box-sizing: border-box;
   width: 100%;
   padding: 1rem;
+  overscroll-behavior: none;
 
 
   @include responsive(
