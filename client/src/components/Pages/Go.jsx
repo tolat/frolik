@@ -284,7 +284,7 @@ const Go = (props) => {
           <UserIconCluster
             users={goUsers}
             sizeInRem={20}
-            borderSizeInRem={1.5}
+            borderSizeInRem={1.4}
             pieShadow={true}
           />
           <button onClick={handleAddUserClick} className={styles.roundButton}>
@@ -292,21 +292,7 @@ const Go = (props) => {
             Add
           </button>
         </div>
-        {!goState.outing.activity.name ? (
-          <Fragment>
-            <div className={styles.selectHeader}>Select Activity</div>
-            <img
-              className={styles.downIcon}
-              src={downIcon}
-              alt="down-arrow"
-            />{" "}
-          </Fragment>
-        ) : !goState.outing.users[1] ? (
-          <Fragment>
-            <img className={styles.upIcon} src={upIcon} alt="up-arrow" />{" "}
-            <div className={styles.addPeopleHeader}>Add People</div>
-          </Fragment>
-        ) : (
+        {goState.outing.users[1] && goState.outing.activity.name && (
           <SimpleButton
             onClick={
               createButtonText === "Create Outing" ? handleCreateOuting : null
@@ -321,31 +307,40 @@ const Go = (props) => {
             {createButtonText}
           </SimpleButton>
         )}
+
         {goState.outing.activity.name ? (
-          <ActivityCard
-            key={Math.random()}
-            activity={goState.outing.activity}
-            removeActivity={removeActivity}
-            completed={completedActivities.find(
-              (id) => id === goState.outing.activity._id
+          <Fragment>
+            {goState.outing.users[1] && goState.outing.activity.name ? null : (
+              <Fragment>
+                <br />
+                <br />
+              </Fragment>
             )}
-          />
-        ) : null}
-        {!goState.outing.activity.name ? (
+
+            <ActivityCard
+              key={Math.random()}
+              activity={goState.outing.activity}
+              removeActivity={removeActivity}
+              completed={completedActivities.find(
+                (id) => id === goState.outing.activity._id
+              )}
+            />
+          </Fragment>
+        ) : (
           <Fragment>
             <div className={styles.sideBySide}>
               <SimpleButton
                 onClick={handleFilterActivitiesClick}
                 className={`${styles.filterButton}
-                ${
-                  filtersAreEqual(
-                    initialActivityFilter.filter,
-                    activityFilter.filter
-                  )
-                    ? null
-                    : styles.activeFiltersButton
-                }
-             `}
+            ${
+              filtersAreEqual(
+                initialActivityFilter.filter,
+                activityFilter.filter
+              )
+                ? null
+                : styles.activeFiltersButton
+            }
+         `}
               >
                 {filtersAreEqual(
                   initialActivityFilter.filter,
@@ -355,19 +350,13 @@ const Go = (props) => {
                   : "Change Filters"}
               </SimpleButton>
               <div className={styles.buttonSpacer}></div>
-              <SimpleSearch
-                defaultVal={""}
-                setValue={setActivitySearch}
-                className={styles.activitySearch}
-                placeholder={"Search Activities.."}
-              />
+              <SimpleButton
+                onClick={onCreateActivityClick}
+                className={styles.createActivityButton}
+              >
+                Custom Activity
+              </SimpleButton>
             </div>
-            <SimpleButton
-              onClick={onCreateActivityClick}
-              className={styles.createActivityButton}
-            >
-              Create Custom Activity
-            </SimpleButton>
             <div className={styles.infoBar}>
               <div
                 className={`${styles.infoItem} ${
@@ -453,7 +442,7 @@ const Go = (props) => {
               )}
             </div>
           </Fragment>
-        ) : null}
+        )}
       </div>
     </Fragment>
   );

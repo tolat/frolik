@@ -50,55 +50,61 @@ const FriendCard = (props) => {
       style={{ ...props.style, boxShadow: props.noShadow ? "none" : null }}
       className={styles.container}
     >
-      <div className={styles.leftContainer} onClick={showProfileViewerModal}>
-        <div className={styles.iconContainer}>
-          <UserIcon
-            backer={true}
-            sizeInRem={sizeInRem}
-            borderSizeInRem={borderSizeInRem}
-            user={props.user}
-            badge={statusBadge}
-            badgeStyle={{
-              right: "0.5rem",
-              bottom: "0.5rem",
-              width: "25%",
-              height: "25%",
-            }}
-            badgeContentStyle={{
-              width: "75%",
-              height: "75%",
-            }}
-          />
-        </div>
+      <div className={styles.upperContainer}>
+        <div className={styles.leftContainer} onClick={showProfileViewerModal}>
+          <div className={styles.iconContainer}>
+            <UserIcon
+              backer={true}
+              sizeInRem={sizeInRem}
+              borderSizeInRem={borderSizeInRem}
+              user={props.user}
+              badge={statusBadge}
+              badgeStyle={{
+                right: "0.5rem",
+                bottom: "0.5rem",
+                width: "25%",
+                height: "25%",
+              }}
+              badgeContentStyle={{
+                width: "75%",
+                height: "75%",
+              }}
+            />
+          </div>
 
-        <div className={styles.detailsContainer} style={detailsContainerStyle}>
-          <div className={styles.userName} style={nameStyle}>
-            {`${props.user.first_name} ${props.user.last_name}`}
-            <div className={styles.location}>{props.user.location}</div>
-          </div>
-          <div className={styles.ratingsContainer}>
-            <StatIcon
-              alt="flake"
-              icon={flakeIcon}
-              style={statContainerStyle}
-              iconStyle={statIconStyle}
-              rating={flakeRating}
-            />
-            <StatIcon
-              alt="outings"
-              icon={outingsIcon}
-              style={statContainerStyle}
-              iconStyle={statIconStyle}
-              rating={
-                props.user.outings?.filter(
-                  (o) => o.completions?.length === o.users?.length
-                )?.length
-              }
-            />
+          <div
+            className={styles.detailsContainer}
+            style={detailsContainerStyle}
+          >
+            <div className={styles.userName} style={nameStyle}>
+              {`${props.user.first_name} ${props.user.last_name}`}
+              <div className={styles.location}>{props.user.location}</div>
+            </div>
+            <div className={styles.ratingsContainer}>
+              <StatIcon
+                alt="flake"
+                icon={flakeIcon}
+                style={statContainerStyle}
+                iconStyle={statIconStyle}
+                rating={flakeRating}
+              />
+              <StatIcon
+                alt="outings"
+                icon={outingsIcon}
+                style={statContainerStyle}
+                iconStyle={statIconStyle}
+                rating={
+                  props.user.outings?.filter(
+                    (o) => o.completions?.length === o.users?.length
+                  )?.length
+                }
+              />
+            </div>
           </div>
         </div>
+        {props.buttons}
       </div>
-      {props.buttons}
+      {props.children}
     </div>
   );
 };

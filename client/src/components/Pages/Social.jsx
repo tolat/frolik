@@ -72,14 +72,19 @@ const Social = (props) => {
 
   return (
     <Fragment>
-      <SimpleButton className={styles.refreshButton} onClick={onRefresh}>
-        {refreshText}
-      </SimpleButton>
-      <SimpleSearch
-        setValue={setFeedSearch}
-        defaultVal={""}
-        placeholder={"Search Posts.."}
-      />
+      <div className={styles.upperContainer}>
+        <div className={styles.upperCentralContainer}>
+          <SimpleButton className={styles.refreshButton} onClick={onRefresh}>
+            {refreshText}
+          </SimpleButton>
+          <SimpleSearch
+            setValue={setFeedSearch}
+            defaultVal={""}
+            placeholder={"Search Posts.."}
+          />
+        </div>
+      </div>
+
       {outings ? (
         Object.keys(outings)[0] ? (
           <div className={styles.container}>
@@ -109,7 +114,7 @@ const Social = (props) => {
 };
 
 export const socialLoader = async () => {
-  const redirect = await pageRouteLoader('/social');
+  const redirect = await pageRouteLoader("/social");
   if (redirect) {
     return redirect;
   }

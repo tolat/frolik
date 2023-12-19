@@ -1,35 +1,50 @@
 @import "../../../utils/responsive.scss";
 
-.container{
+.container {
   width: 100%;
   position: relative;
   box-sizing: border-box;
 }
 
-.upperContainer{
+.upperContainer {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1;
   background-color: white;
   width: 100%;
-  padding: 1rem;
-  padding-bottom: 0rem;
+  display: flex;
+  justify-content: center;
   box-sizing: border-box;
+
+  @include responsive(
+    "margin-top",
+    "",
+    $navbar_height,
+    $navbar_height,
+    $navbar_height
+  );
 }
 
-.newChatButton{
+.upperCentralContainer {
+  width: calc($central_span_width - 2rem);
+  margin: 1rem;
+  margin-bottom: 0;
+  border-bottom: 1px solid $button_grey;
+}
+
+.newChatButton {
   background-color: $blue;
   color: white;
   font-weight: bold;
   margin-bottom: 1rem;
 }
 
-.chatsContainer{
-  margin-top: 11rem;
+.chatsContainer {
+  margin-top: 10rem;
 }
 
-.noChatsMessage{
+.noChatsMessage {
   padding: 2rem;
   width: 100%;
   display: flex;
@@ -39,13 +54,10 @@
   flex-direction: column;
   align-items: center;
 }
-.noChatsMessageText{
+.noChatsMessageText {
   width: 70%;
   font-size: 1.3rem;
 }
-.noChatsMessageHeader{
+.noChatsMessageHeader {
   font-size: 1.8rem;
 }
-
-
-

@@ -9,6 +9,32 @@
   width: 100%;
 }
 
+.pageHeader {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 3rem;
+  font-weight: bold;
+  align-items: center;
+  background-color: $card_grey;
+  border-bottom: $light_grey;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: z;
+}
+
+.statusContainer {
+  font-size: 1.8rem;
+}
+
+.locationContainer {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+  font-weight: normal;
+}
+
 .nonMediaSection {
   position: relative;
   display: flex;
@@ -104,17 +130,17 @@
   cursor: pointer;
 }
 
-.editButton{
+.editButton {
   margin: 2rem 0;
 }
 
-.editIcon{
+.editIcon {
   width: 55%;
   height: 55%;
   cursor: pointer;
 }
 
-.logoutBadge{
+.logoutBadge {
   position: absolute;
   display: flex;
   justify-content: center;
@@ -122,10 +148,9 @@
   cursor: pointer;
   right: 2rem;
   font-weight: bold;
-  
 }
 
-.logoutLogo{
+.logoutLogo {
   width: 1.5rem;
   height: 1.5rem;
   margin-left: 0.5rem;

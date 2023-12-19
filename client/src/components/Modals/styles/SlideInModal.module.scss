@@ -32,6 +32,28 @@
   //background-color: $card_grey;
 }
 
+.modalHeader {
+  display: flex;
+  justify-content: flex-start;
+  position: fixed;
+  top: 0;
+  align-items: center;
+  width: 100%;
+  background-color: white;
+  font-size: 2.2rem;
+  padding: 1.5rem;
+  z-index: 2;
+  font-weight: bold;
+
+  @include responsive(
+    "margin-top",
+    "",
+    $navbar_height,
+    $navbar_height,
+    $navbar_height
+  );
+}
+
 .outerContainer {
   position: fixed;
   box-sizing: border-box;
@@ -51,15 +73,13 @@
   width: calc((100% - $central_span_width) / 2);
   right: 0;
   position: fixed;
-  z-index: 1;
+  z-index: 3;
 }
 
 .backButton {
-  padding: 2rem 0 0 1.5rem;
   width: 3.5rem;
   height: 3.5rem;
-  top: 0;
-  position: absolute;
+  margin-right: 1rem;
 }
 
 .backButton:hover {

@@ -44,7 +44,7 @@ const ProfileHeader = (props) => {
             badge={props.badge}
             sizeInRem={20}
             user={props.user}
-            borderSizeInRem={"1.5"}
+            borderSizeInRem={"1.4"}
             pieShadow={true}
             showPhotoOnClick={true}
           />

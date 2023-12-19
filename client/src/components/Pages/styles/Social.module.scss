@@ -5,6 +5,34 @@
   flex-direction: column;
   width: 100%;
   position: relative;
+  margin-top: 10rem;
+}
+
+.upperContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: white;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+
+  @include responsive(
+    "margin-top",
+    "",
+    $navbar_height,
+    $navbar_height,
+    $navbar_height
+  );
+}
+
+.upperCentralContainer {
+  width: calc($central_span_width - 2rem);
+  margin: 1rem;
+  margin-bottom: 0;
+  border-bottom: 1px solid $button_grey;
 }
 
 .refreshButton {
@@ -13,7 +41,7 @@
   background-color: $blue;
 }
 
-.noOutingsMessage{
+.noOutingsMessage {
   padding: 2rem;
   width: 100%;
   display: flex;
@@ -23,10 +51,10 @@
   flex-direction: column;
   align-items: center;
 }
-.noOutingsMessageText{
+.noOutingsMessageText {
   width: 70%;
   font-size: 1.3rem;
 }
-.noOutingsMessageHeader{
+.noOutingsMessageHeader {
   font-size: 1.8rem;
 }

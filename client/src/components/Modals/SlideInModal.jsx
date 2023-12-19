@@ -42,12 +42,15 @@ const SlideInModal = (props) => {
         className={styles.container}
         id="modal-container"
       >
-        <div onClick={handleBackButtonClick} className={styles.backButton}>
-          <img
-            className={styles.arrowImage}
-            src={backArrow}
-            alt="back-arrow"
-          ></img>
+        <div className={styles.modalHeader}>
+          <div onClick={handleBackButtonClick} className={styles.backButton}>
+            <img
+              className={styles.arrowImage}
+              src={backArrow}
+              alt="back-arrow"
+            ></img>
+          </div>
+          Test Header
         </div>
       </div>
       <div className={styles.baffle} />

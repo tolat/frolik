@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   selector: "none",
+  header: "",
   marginLeft: "50%",
   zIndex: "-1",
   opacity: "1",
