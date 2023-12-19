@@ -18,7 +18,9 @@ const OutingCard = (props) => {
   const handleClick = () => {
     dispatch(modalActions.setActiveOuting(o));
     dispatch(modalActions.setSelector("outing-modal"));
-    dispatch(modalActions.showModal());
+    dispatch(modalActions.showModal({
+      headerStyle: { backgroundColor: "white" },
+    }));
   };
 
   return !categoryColorMap ? null : (

@@ -165,7 +165,9 @@ const Go = (props) => {
       dispatch(popupActions.setShowCreateOutingPopup(true));
       dispatch(modalActions.setSelector("outing-modal"));
       dispatch(
-        modalActions.showModal()
+        modalActions.showModal({
+          headerStyle: { backgroundColor: "white" },
+        })
       );
       fetchChat(user._id, outing.chat, () => {});
     };

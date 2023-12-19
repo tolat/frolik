@@ -40,7 +40,9 @@ const OutingInvite = (props) => {
     dispatch(modalActions.setActiveOuting(outing));
     dispatch(modalActions.setSelector("outing-modal"));
     dispatch(
-      modalActions.showModal()
+      modalActions.showModal({
+        headerStyle: { backgroundColor: "white" },
+      })
     );
   };
 

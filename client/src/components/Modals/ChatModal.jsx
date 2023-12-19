@@ -82,7 +82,9 @@ const ChatModal = (props) => {
     await hideModal(true);
     dispatch(modalActions.setActiveOuting(chat.outing));
     dispatch(modalActions.setSelector("outing-modal"));
-    dispatch(modalActions.showModal());
+    dispatch(modalActions.showModal({
+      headerStyle: { backgroundColor: "white" },
+    }));
   };
 
   return !chat ? (
