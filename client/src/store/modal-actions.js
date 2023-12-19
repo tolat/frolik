@@ -3,16 +3,15 @@ import store from ".";
 
 const modalCleanup = (setUsePrevious) => {
   const dispatch = store.dispatch;
-
   dispatch(modalActions.setZIndex("-1"));
-
   const usePrevious = store.getState().modal.usePrevious;
+  
   if (usePrevious) {
     const previousModal = store.getState().modal.previousModal;
     dispatch(modalActions.setSelector(previousModal.selector));
     dispatch(modalActions.setActiveChat(previousModal.activeChat));
     dispatch(modalActions.setActiveOuting(previousModal.activeOuting));
-
+    dispatch(modalActions.setHeaderStyle(previousModal.headerStyle))
     dispatch(modalActions.showModal());
     dispatch(modalActions.setUsePrevious(false));
   } else {

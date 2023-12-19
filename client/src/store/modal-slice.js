@@ -22,6 +22,7 @@ const modalSlice = createSlice({
           selector: state.selector,
           activeOuting: state.activeOuting,
           activeChat: state.activeChat,
+          headerStyle: state.headerStyle,
         };
       }
       state.selector = action.payload;
@@ -35,7 +36,8 @@ const modalSlice = createSlice({
     showModal(state, action) {
       state.marginLeft = "0%";
       state.zIndex = "1";
-      state.headerStyle = action?.payload?.headerStyle || {};
+      if (action?.payload?.headerStyle)
+        state.headerStyle = action.payload.headerStyle;
     },
     hideModal(state) {
       if (state.marginLeft === "0%") {
@@ -53,6 +55,10 @@ const modalSlice = createSlice({
     },
     setActiveModalUser(state, action) {
       state.activeModalUser = action.payload;
+    },
+    setHeaderStyle(state, action) {
+      console.log("setting header style: ", action.payload);
+      state.headerStyle = action.payload;
     },
   },
 });

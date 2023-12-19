@@ -3,7 +3,6 @@ import styles from "./styles/NotificationsModal.module.scss";
 import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
 import { useDispatch, useSelector } from "react-redux";
-import modalStyles from "../Modals/styles/SlideInModal.module.scss";
 import sampleNotificationIcon from "../../images/active.png";
 import OutingInvite from "./OutingInvite";
 import OutingUpdate from "./OutingUpdate";
@@ -12,6 +11,7 @@ import FriendRequestUpdate from "./FriendRequestUpdate";
 import FriendRemoved from "./FriendRemoved";
 import ChatCreated from "./ChatCreated";
 import { dateSort, toSorted } from "../../utils/utils";
+import ModalHeaderPortal from "../Modals/ModalHeaderPortal";
 
 const NotificationsModal = (props) => {
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ const NotificationsModal = (props) => {
         okClick={onPopupOk}
       />
       <div style={modalStyle} className={styles.container}>
-        <div className={modalStyles.header}>Alerts</div>
+        <ModalHeaderPortal selector={"notifications"}>Alerts</ModalHeaderPortal>
         {user.notifications[0] ? (
           toSorted(user.notifications, (a, b) =>
             dateSort(b.created, a.created)
