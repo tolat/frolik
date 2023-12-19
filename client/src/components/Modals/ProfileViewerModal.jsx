@@ -11,9 +11,9 @@ import {
   sendFriendRequest,
 } from "../../utils/data-fetch";
 import { authActions } from "../../store/auth-slice";
-import modalStyles from "./styles/SlideInModal.module.scss";
 import { useNavigate } from "react-router-dom";
 import { goActions } from "../../store/go-slice";
+import ModalHeaderPortal from "./ModalHeaderPortal";
 
 const getPhotosFromState = (userData) => {
   return !userData
@@ -79,7 +79,9 @@ const ProfileViewerModal = (props) => {
   return (
     <ModalPortal>
       <div style={modalStyle} className={styles.container}>
-        <div className={modalStyles.header}>Viewing Profile</div>
+        <ModalHeaderPortal selector={"profile-viewer-modal"}>
+          Viewing Profile
+        </ModalHeaderPortal>
         <ProfileHeader user={modalUser} />
         {user._id === modalUser._id ? null : !isFriend ? (
           <SimpleButton

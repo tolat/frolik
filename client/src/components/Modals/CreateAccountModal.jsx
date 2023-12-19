@@ -11,8 +11,8 @@ import { createProfileValidators } from "../../utils/validators";
 import SimpleButton from "../UI/SimpleButton";
 import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
-import modalStyles from "./styles/SlideInModal.module.scss";
 import LoaderSpinner from "../UI/LoaderSpinner";
+import ModalHeaderPortal from "./ModalHeaderPortal";
 
 const stagedDataReducer = (state, action) => {
   return action.type === "setAll"
@@ -136,7 +136,7 @@ const CreateAccountModal = (props) => {
         okClick={() => dispatch(popupActions.hidePopup())}
       />
       <div className={styles.container} style={modalStyle}>
-        <div className={modalStyles.header}>Create Profile</div>
+        <ModalHeaderPortal selector={'create-account'}>Create Account</ModalHeaderPortal>
         <ValidatorBubble
           id={validatorBubbleID}
           elementID={validationID}

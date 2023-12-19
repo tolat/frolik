@@ -17,7 +17,8 @@ const OutingInvite = (props) => {
   const inviteOutings = useSelector((state) => state.data.inviteOutings);
   const outing = inviteOutings?.find((o) => o._id === outingID);
   const globals = useSelector((state) => state.auth.globals);
-  const stripeColor = globals && globals?.categoryColorMap[outing?.activity?.category];
+  const stripeColor =
+    globals && globals?.categoryColorMap[outing?.activity?.category];
 
   // Fetch outing from server if is hasn't been fetched
   useEffect(() => {
@@ -38,7 +39,11 @@ const OutingInvite = (props) => {
     await hideModal();
     dispatch(modalActions.setActiveOuting(outing));
     dispatch(modalActions.setSelector("outing-modal"));
-    dispatch(modalActions.showModal());
+    dispatch(
+      modalActions.showModal({
+        headerStyle: { backgroundColor: "transparent" },
+      })
+    );
   };
 
   const handleDismissInvite = () => {

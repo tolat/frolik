@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   selector: "none",
-  header: "",
+  headerStyle: {},
   marginLeft: "50%",
   zIndex: "-1",
   opacity: "1",
@@ -17,7 +17,7 @@ const modalSlice = createSlice({
   initialState: initialState,
   reducers: {
     setSelector(state, action) {
-      if (state.selector !== 'none') {
+      if (state.selector !== "none") {
         state.previousModal = {
           selector: state.selector,
           activeOuting: state.activeOuting,
@@ -32,9 +32,10 @@ const modalSlice = createSlice({
     setZIndex(state, action) {
       state.zIndex = action.payload;
     },
-    showModal(state) {
+    showModal(state, action) {
       state.marginLeft = "0%";
       state.zIndex = "1";
+      state.headerStyle = action?.payload?.headerStyle || {};
     },
     hideModal(state) {
       if (state.marginLeft === "0%") {

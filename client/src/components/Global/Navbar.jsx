@@ -53,7 +53,7 @@ const Navbar = (props) => {
       await hideModal();
     }
     dispatch(modalActions.setSelector("notifications"));
-    dispatch(modalActions.showModal());
+    dispatch(modalActions.showModal({header: 'Alerts'}));
   };
 
   const makeActive = (navData, page) => {

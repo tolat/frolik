@@ -28,7 +28,11 @@ const ChatCard = (props) => {
     const onChatFetched = () => {
       dispatch(modalActions.setActiveChat(props.chat));
       dispatch(modalActions.setSelector("chat-modal"));
-      dispatch(modalActions.showModal());
+      dispatch(
+        modalActions.showModal({
+          headerStyle: { backgroundColor: "transparent" },
+        })
+      );
       setLastReadMessage();
     };
     fetchChat(user._id, props.chat._id, onChatFetched);

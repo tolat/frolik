@@ -52,7 +52,11 @@ const ChatCreated = (props) => {
       if (modalVisible) await hideModal();
       dispatch(modalActions.setActiveChat(chatArg));
       dispatch(modalActions.setSelector("chat-modal"));
-      dispatch(modalActions.showModal());
+      dispatch(
+        modalActions.showModal({
+          headerStyle: { backgroundColor: "transparent" },
+        })
+      );
     };
     !chat ? fetchChat(user._id, notification.chat, showChat) : showChat(chat);
   };

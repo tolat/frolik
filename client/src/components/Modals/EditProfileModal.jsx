@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles/EditProfileModal.module.scss";
-import modalStyles from "./styles/SlideInModal.module.scss";
 import ModalPortal from "./ModalPortal";
 import { useEffect, useMemo, useReducer, useState } from "react";
 import { dataActions } from "../../store/data-slice";
@@ -12,6 +11,7 @@ import { hideModal } from "../../store/modal-actions";
 import ValidatorBubble, { runValidators } from "../UI/ValidatorBubble";
 import { editProfileValidators } from "../../utils/validators";
 import LoaderSpinner from "../UI/LoaderSpinner";
+import ModalHeaderPortal from "./ModalHeaderPortal";
 
 const stagedDataReducer = (state, action) => {
   return action.type === "setAll"
@@ -112,7 +112,7 @@ const EditProfileModal = (props) => {
   return (
     <ModalPortal>
       <div style={modalStyle} className={`${styles.container} noscroll`}>
-        <div className={modalStyles.header}>Edit Profile</div>
+        <ModalHeaderPortal selector={'edit-profile'}>Edit Profile</ModalHeaderPortal>
         <ValidatorBubble
           id={validatorBubbleID}
           elementID={validationID}

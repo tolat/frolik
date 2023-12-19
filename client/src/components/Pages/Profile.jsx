@@ -84,7 +84,11 @@ const Profile = (props) => {
       dispatch(modalActions.setActiveChat(response.chat));
       if (modalIsShowing) await hideModal(true);
       dispatch(modalActions.setSelector("chat-modal"));
-      dispatch(modalActions.showModal());
+      dispatch(
+        modalActions.showModal({
+          headerStyle: { backgroundColor: "transparent" },
+        })
+      );
     };
 
     createChat(user, [withUser], onComplete);
@@ -249,7 +253,7 @@ const Profile = (props) => {
 export default Profile;
 
 export const profileLoader = async () => {
-  const redirect = await pageRouteLoader('/profile');
+  const redirect = await pageRouteLoader("/profile");
   if (redirect) {
     return redirect;
   }

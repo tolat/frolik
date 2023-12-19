@@ -9,22 +9,17 @@
   box-sizing: border-box;
   flex-shrink: 0;
   background-color: white;
-  padding: 0rem 1rem;
+  padding: 7rem 1rem 0 1rem;
 }
 
 .saveButton {
   background-color: $blue;
   color: #fff;
   border: none;
-  padding: 15px 20px;
   cursor: pointer;
-  font-size: 16px;
   transition: background-color 0.3s ease;
-  margin-top: 2rem;
   width: 100%;
   font-size: 1.2rem;
-  justify-self: flex-end;
-  margin-bottom: 5rem;
 }
 
 .statusSelect {

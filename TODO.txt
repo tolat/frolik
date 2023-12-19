@@ -159,10 +159,11 @@ FIX fonts
 
 ADD FEATURES:
 
-- Add daily email for unread notifications and chats
-+ option to set email update frequency
+- Allow using of other people's activities from the feed
 
 - Change/fix validaton to be in each input instead of for the entire form, 
+
+- Allow setting dates for an outing + put in calendar
 
 - Make Outings Public or Private
 
@@ -180,9 +181,12 @@ ADD FEATURES:
 
 - Fix the modal headers to top of screen
 
-FOR IOS:
+UI UPDATES:
 
-- What is doable
+- simplify Outing page
 
-- Weekly Breakdowns / timeline
+- Make mainContainer non-modal content disappear when modal is shows
+
+- Fix modal header in place
+
 

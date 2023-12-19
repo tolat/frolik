@@ -10,6 +10,7 @@
   flex-shrink: 0;
   background-color: white;
   padding: 0rem 1rem;
+  padding-top: 5rem;
 }
 
 .addButton {
@@ -40,9 +41,9 @@
 }
 
 .createChatButton {
-  margin-bottom: 1rem;
   background-color: $blue;
   color: white;
+  width: fit-content;
 }
 
 .unclickableButton {

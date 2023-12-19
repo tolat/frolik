@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import ModalPortal from "./ModalPortal";
 import styles from "./styles/CreateActivityModal.module.scss";
-import modalStyles from "./styles/SlideInModal.module.scss";
 import SimpleInput from "../UI/SimpleInput";
 import CustomAutocomplete from "../UI/CustomAutocomplete";
 import cityData from "../../utils/cities100000";
@@ -16,6 +15,8 @@ import { hideModal } from "../../store/modal-actions";
 import { goActions } from "../../store/go-slice";
 import CustomSelect from "../UI/CustomSelect";
 import LoaderSpinner from "../UI/LoaderSpinner";
+import ModalButtonPortal from "./ModalButtonPortal";
+import ModalHeaderPortal from "./ModalHeaderPortal";
 
 const CreateActivityModal = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -259,11 +260,15 @@ const CreateActivityModal = (props) => {
           message={validationMessage}
         />
         <div style={modalStyle} className={styles.container}>
-          <div className={modalStyles.header}>Create Activity</div>
+        <ModalHeaderPortal selector={'create-activity'}>Custom Activity</ModalHeaderPortal>
+
           <form id="create-activity-form" className={styles.createForm}>
-            <SimpleButton onClick={onSubmit} className={styles.createButton}>
-              {createButtonText}
-            </SimpleButton>
+            <ModalButtonPortal selector={"create-activity"}>
+              <SimpleButton onClick={onSubmit} className={styles.createButton}>
+                {createButtonText}
+              </SimpleButton>
+            </ModalButtonPortal>
+
             <CustomSelect
               className={styles.categoryInput}
               options={categoryOptions}

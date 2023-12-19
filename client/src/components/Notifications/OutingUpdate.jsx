@@ -69,7 +69,11 @@ const OutingUpdate = (props) => {
     await hideModal();
     dispatch(modalActions.setActiveOuting(outing));
     dispatch(modalActions.setSelector("outing-modal"));
-    dispatch(modalActions.showModal());
+    dispatch(
+      modalActions.showModal({
+        headerStyle: { backgroundColor: "transparent" },
+      })
+    );
   };
 
   const handleDismissInvite = () => {

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { popupActions } from "../../store/popup-slice";
 import uploadIcon from "../../images/upload.png";
 import undoIcon from "../../images/undo-arrow.png";
+import ModalButtonPortal from "./ModalButtonPortal";
 
 const ProfileEditor = (props) => {
   const dimension = 19;
@@ -264,12 +265,16 @@ const ProfileEditor = (props) => {
             dispatchStageData({ id: "tagline", value });
           }}
         />
-        <SimpleButton
-          onClick={dataChanged ? handleSave : (e) => e.preventDefault()}
-          className={dataChanged ? styles.saveButton : styles.unclickableButton}
-        >
-          {buttonText}
-        </SimpleButton>
+        <ModalButtonPortal selector={'edit-profile'}>
+          <SimpleButton
+            onClick={dataChanged ? handleSave : (e) => e.preventDefault()}
+            className={
+              dataChanged ? styles.saveButton : styles.unclickableButton
+            }
+          >
+            {buttonText}
+          </SimpleButton>
+        </ModalButtonPortal>
       </form>
     </Fragment>
   );

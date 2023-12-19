@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles/AddUserModal.module.scss";
-import modalStyles from "./styles/SlideInModal.module.scss";
 import ModalPortal from "./ModalPortal";
 import FriendCard from "../UI/FriendCard";
 import { goActions } from "../../store/go-slice";
 import { Fragment, useEffect, useState } from "react";
 import { fetchMatchedUsers } from "../../utils/data-fetch";
+import ModalHeaderPortal from "./ModalHeaderPortal";
 
 const AddUserModal = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -62,7 +62,7 @@ const AddUserModal = (props) => {
   return (
     <ModalPortal>
       <div style={modalStyle} className={styles.container}>
-        <div className={modalStyles.header}>Add Outing Members</div>
+        <ModalHeaderPortal selector={'add-user'}>Add Outing Members</ModalHeaderPortal>
         <div className={styles.dailyMatchesContainer}>
           <h2 className={styles.matchesHeader}>Daily Matches</h2>
           <div className={styles.headerSubtext}>

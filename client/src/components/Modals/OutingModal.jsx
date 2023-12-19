@@ -37,6 +37,7 @@ import addPhotosButton from "../../images/add-photos-button.png";
 import StarRate from "../UI/StarRate";
 import FeedCard from "../UI/FeedCard";
 import SixPhotoGrid from "../UI/SixPhotoGrid";
+import ModalHeaderPortal from "./ModalHeaderPortal";
 
 const OutingModal = (props) => {
   const modalState = useSelector((state) => state.modal);
@@ -87,7 +88,11 @@ const OutingModal = (props) => {
       await hideModal();
       dispatch(modalActions.setActiveChat(outingChat));
       dispatch(modalActions.setSelector("chat-modal"));
-      dispatch(modalActions.showModal());
+      dispatch(
+        modalActions.showModal({
+          headerStyle: { backgroundColor: "transparent" },
+        })
+      );
     };
     fetchChat(user._id, outing?.chat, showChat);
   };
@@ -371,13 +376,20 @@ const OutingModal = (props) => {
     <ModalPortal>
       {outing.date_completed ? (
         <div className={styles.feedCardContainer}>
-          <div
-            style={{ borderLeft: `10px solid ${categoryColor}` }}
-            className={styles.headerInnerContainerFeedCard}
-          >
-            <div className={styles.outingName}>Outing: {outing.name}</div>
-            <div className={styles.outingStatus}>{status}</div>
-          </div>
+          <ModalHeaderPortal selector={"outing-modal"}>
+            <div
+              style={{ borderLeft: `10px solid ${categoryColor}` }}
+              className={styles.headerInnerContainerFeedCard}
+            >
+              <div className={styles.outingName}>Outing: {outing.name}</div>
+              <div className={styles.outingStatus}>{status}</div>
+            </div>
+          </ModalHeaderPortal>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
           <FeedCard outing={outing} />
         </div>
       ) : (
@@ -465,15 +477,18 @@ const OutingModal = (props) => {
             onUpload={onPhotoUpload}
           />
           <div style={modalStyle} className={styles.container}>
-            <div className={styles.header}>
-              <div
-                style={{ borderLeft: `10px solid ${categoryColor}` }}
-                className={styles.headerInnerContainer}
-              >
-                <div className={styles.outingName}>Outing: {outing.name}</div>
-                <div className={styles.outingStatus}>{status}</div>
+            <ModalHeaderPortal selector={"outing-modal"}>
+              <div className={styles.header}>
+                <div
+                  style={{ borderLeft: `10px solid ${categoryColor}` }}
+                  className={styles.headerInnerContainer}
+                >
+                  <div className={styles.outingName}>Outing: {outing.name}</div>
+                  <div className={styles.outingStatus}>{status}</div>
+                </div>
               </div>
-            </div>
+            </ModalHeaderPortal>
+
             <div className={styles.sideBySide}>
               {completed || userFlaked ? null : (
                 <SimpleButton

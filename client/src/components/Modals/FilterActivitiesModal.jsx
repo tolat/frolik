@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
 import styles from "./styles/FilterActivitiesModal.module.scss";
-import modalStyles from "./styles/SlideInModal.module.scss";
 import ModalPortal from "./ModalPortal";
 import SimpleInput from "../UI/SimpleInput";
 import SimpleButton from "../UI/SimpleButton";
 import { useRef } from "react";
 import { hideModal } from "../../store/modal-actions";
+import ModalHeaderPortal from "./ModalHeaderPortal";
 
 const FilterActivitiesModal = (props) => {
   const modalState = useSelector((state) => state.modal);
@@ -55,7 +55,10 @@ const FilterActivitiesModal = (props) => {
   return (
     <ModalPortal>
       <div style={modalStyle} className={`${styles.container} noscroll`}>
-        <div className={modalStyles.header}>Filter Activities</div>
+        <ModalHeaderPortal selector={"filter-activities"}>
+          Set Activity Filter
+        </ModalHeaderPortal>
+
         <div className={styles.sideBySide}>
           <SimpleButton
             onClick={handleApplyFilter}

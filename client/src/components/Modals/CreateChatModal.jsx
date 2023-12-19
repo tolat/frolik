@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import ModalPortal from "./ModalPortal";
 import styles from "./styles/CreateChatModal.module.scss";
-import modalStyles from "./styles/SlideInModal.module.scss";
 import { useEffect, useState } from "react";
 import FriendCard from "../UI/FriendCard";
 import SimpleSearch from "../UI/SimpleSearch";
@@ -10,6 +9,8 @@ import { createChat, fetchChats } from "../../utils/data-fetch";
 import { hideModal } from "../../store/modal-actions";
 import { modalActions } from "../../store/modal-slice";
 import { toSorted } from "../../utils/utils";
+import ModalHeaderPortal from "./ModalHeaderPortal";
+import ModalButtonPortal from "./ModalButtonPortal";
 
 const CreateChatModal = (props) => {
   const modalState = useSelector((state) => state.modal);
@@ -73,16 +74,20 @@ const CreateChatModal = (props) => {
   return (
     <ModalPortal>
       <div style={modalStyle} className={styles.container}>
-        <div className={modalStyles.header}>Create Chat</div>
+        <ModalHeaderPortal selector={"create-chat-modal"}>
+          Create Chat
+        </ModalHeaderPortal>
         <h2 className={styles.header}>New Chat Members:</h2>
-        <SimpleButton
-          onClick={newChatMembers.length === 1 ? null : onCreateChat}
-          className={`${styles.createChatButton} ${
-            newChatMembers.length === 1 ? styles.unclickableButton : null
-          }`}
-        >
-          + Create Chat
-        </SimpleButton>
+        <ModalButtonPortal selector={"create-chat-modal"}>
+          <SimpleButton
+            onClick={newChatMembers.length === 1 ? null : onCreateChat}
+            className={`${styles.createChatButton} ${
+              newChatMembers.length === 1 ? styles.unclickableButton : null
+            }`}
+          >
+            + Create Chat
+          </SimpleButton>
+        </ModalButtonPortal>
         {newChatMembers.map((m) => (
           <FriendCard
             buttonSet={"add"}

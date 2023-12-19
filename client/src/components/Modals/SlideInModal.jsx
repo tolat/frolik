@@ -1,6 +1,5 @@
 import styles from "./styles/SlideInModal.module.scss";
 import { useSelector } from "react-redux/es/hooks/useSelector";
-
 import backArrow from "../../images/left-arrow.png";
 import { hideModal } from "../../store/modal-actions";
 
@@ -19,6 +18,7 @@ const SlideInModal = (props) => {
   const outerContainerWidth = noGutters ? "200%" : null;
   const outerContainerMarginLeft = noGutters ? "100%" : null;
   const containerWidth = noGutters ? "50%" : null;
+  const headerWidth = noGutters ? "100vw" : null;
 
   const handleBackButtonClick = (e) => {
     hideModal();
@@ -42,15 +42,18 @@ const SlideInModal = (props) => {
         className={styles.container}
         id="modal-container"
       >
-        <div className={styles.modalHeader}>
-          <div onClick={handleBackButtonClick} className={styles.backButton}>
-            <img
-              className={styles.arrowImage}
-              src={backArrow}
-              alt="back-arrow"
-            ></img>
+        <div className={styles.modalHeader} style={{...modalState.headerStyle, width: headerWidth}}>
+          <div className={styles.leftContainer}>
+            <div onClick={handleBackButtonClick} className={styles.backButton}>
+              <img
+                className={styles.arrowImage}
+                src={backArrow}
+                alt="back-arrow"
+              ></img>
+            </div>
+            <div id='slide-in-modal-header'></div>
           </div>
-          Test Header
+          <div id='slide-in-modal-button'></div>
         </div>
       </div>
       <div className={styles.baffle} />

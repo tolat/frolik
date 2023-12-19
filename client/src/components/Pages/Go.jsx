@@ -11,12 +11,9 @@ import UserIconCluster from "../UI/UserIconCluster";
 import ActivityCard from "../UI/ActivityCard";
 import FilterActivitiesModal from "../Modals/FilterActivitiesModal";
 import balloonIcon from "../../images/air-balloon-light.png";
-import downIcon from "../../images/down.png";
-import upIcon from "../../images/up.png";
 import { capitalizeFirstLetter, pageRouteLoader } from "../../utils/utils";
 import store from "../../store";
 import { goActions } from "../../store/go-slice";
-import SimpleSearch from "../UI/SimpleSearch";
 import WarningPopup from "../Popups/WarningPopup";
 import outingsBarIcon from "../../images/outingsToolbar.png";
 import { popupActions } from "../../store/popup-slice";
@@ -48,7 +45,6 @@ const Go = (props) => {
   const completedActivities = outings?.map((outing) => outing.activity._id);
   const goState = useSelector((state) => state.go);
   const activeOuting = useSelector((state) => state.modal.activeOuting);
-  const [activitySearch, setActivitySearch] = useState("");
   const globals = useSelector((state) => state.auth.globals);
   const categoryColorMap = globals && globals?.categoryColorMap;
   const [selected, setSelected] = useState(Object.keys(categoryColorMap)[0]);
@@ -137,35 +133,6 @@ const Go = (props) => {
     }
   }, [goState, user, dispatch]);
 
-  function applyActivitySearch(activities) {
-    return activitySearch || activitySearch !== ""
-      ? activities.filter((a) => {
-          return (
-            a?.name
-              .toLowerCase()
-              .trim()
-              .includes(activitySearch.toLowerCase().trim()) ||
-            a?.category
-              .toLowerCase()
-              .trim()
-              .includes(activitySearch.toLowerCase().trim()) ||
-            a?.description
-              .toLowerCase()
-              .trim()
-              .includes(activitySearch.toLowerCase().trim()) ||
-            a?.location
-              .toLowerCase()
-              .trim()
-              .includes(activitySearch.toLowerCase().trim()) ||
-            a?.goal
-              .toLowerCase()
-              .trim()
-              .includes(activitySearch.toLowerCase().trim())
-          );
-        })
-      : activities;
-  }
-
   // Handle Add user button click
   const handleAddUserClick = () => {
     dispatch(modalActions.setSelector("add-user"));
@@ -195,7 +162,11 @@ const Go = (props) => {
       dispatch(modalActions.setActiveOuting(outing));
       dispatch(popupActions.setShowCreateOutingPopup(true));
       dispatch(modalActions.setSelector("outing-modal"));
-      dispatch(modalActions.showModal());
+      dispatch(
+        modalActions.showModal({
+          headerStyle: { backgroundColor: "transparent" },
+        })
+      );
       fetchChat(user._id, outing.chat, () => {});
     };
 
@@ -429,7 +400,7 @@ const Go = (props) => {
                   )}
                 </div>
               ) : (
-                applyActivitySearch(activityFilter.activities)
+                activityFilter.activities
                   .filter((a) => a.category === selected)
                   .map((a) => (
                     <ActivityCard
