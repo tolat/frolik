@@ -30,7 +30,7 @@ const ProfileHeader = (props) => {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} id="profile-header">
       <div className={styles.innerContainer}>
         <div className={styles.profilePicContainer}>
           <StatIcon

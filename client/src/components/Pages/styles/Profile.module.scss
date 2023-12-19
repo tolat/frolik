@@ -5,7 +5,6 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  min-height: 85rem;
   width: 100%;
 }
 
@@ -154,4 +153,13 @@
   width: 1.5rem;
   height: 1.5rem;
   margin-left: 0.5rem;
+}
+
+.fixedSliderNavbar{
+  position: fixed;
+  top: 0;
+  background-color: white;
+  z-index: 2;
+  width: 100vw;
+  max-width: $central_span_width;
 }

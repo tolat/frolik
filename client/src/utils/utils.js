@@ -315,6 +315,31 @@ export function pixelsToRem(pixels) {
   return pixels / rootFontSize;
 }
 
+export function remToPixels(rem) {
+  // Get the root font size from the computed style of the document element
+  const rootFontSize = parseFloat(
+    getComputedStyle(document.documentElement).fontSize
+  );
+
+  return rem * rootFontSize;
+}
+
+export function getElementOffsetTop(element) {
+  // Get the bounding client rect of the element
+  const rect = element.getBoundingClientRect();
+
+  // Return the top offset relative to the document
+  return rect.top + window.scrollY;
+}
+
+export function getElementOffsetToBottom(element) {
+  // Get the bounding client rect of the element
+  const rect = element.getBoundingClientRect();
+
+  // Return the offset to the bottom relative to the document
+  return rect.top + window.scrollY + element.offsetHeight;
+}
+
 export const objectsAreEqual = (obj1, obj2) => {
   console.log(obj1, obj2);
   return JSON.stringify(obj1) === JSON.stringify(obj2);

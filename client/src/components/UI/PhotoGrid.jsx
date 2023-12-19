@@ -19,7 +19,7 @@ const PhotoGrid = memo((props) => {
 
   return (
     <div
-      style={{ gridTemplateColumns: props.gridTemplateColumns }}
+      style={{ gridTemplateColumns: props.gridTemplateColumns, ...props.style }}
       className={styles.container}
     >
       {props.images.map(
