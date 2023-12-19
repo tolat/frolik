@@ -36,6 +36,8 @@ import {
 import SliderNavber from "../UI/SliderNavbar";
 import CreateActivityModal from "../Modals/CreateActivityModal";
 import LoaderSpinner from "../UI/LoaderSpinner";
+import downArrow from "../../images/down-arrow1.png";
+import upArrow from "../../images/up-arrow1.png";
 
 const Go = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -163,9 +165,7 @@ const Go = (props) => {
       dispatch(popupActions.setShowCreateOutingPopup(true));
       dispatch(modalActions.setSelector("outing-modal"));
       dispatch(
-        modalActions.showModal({
-          headerStyle: { backgroundColor: "transparent" },
-        })
+        modalActions.showModal()
       );
       fetchChat(user._id, outing.chat, () => {});
     };
@@ -299,6 +299,11 @@ const Go = (props) => {
           </Fragment>
         ) : (
           <Fragment>
+            <div className={styles.prompt}>
+              <img className={styles.arrowImgDown} alt="arrow" src={downArrow} />
+              Choose Activity & Add Members
+              <img className={styles.arrowImgUp} alt="arrow" src={upArrow} />
+            </div>
             <div className={styles.sideBySide}>
               <SimpleButton
                 onClick={handleFilterActivitiesClick}
@@ -317,15 +322,15 @@ const Go = (props) => {
                   initialActivityFilter.filter,
                   activityFilter.filter
                 )
-                  ? "Filter Activities"
-                  : "Change Filters"}
+                  ? "Filter"
+                  : "Edit Filter"}
               </SimpleButton>
               <div className={styles.buttonSpacer}></div>
               <SimpleButton
                 onClick={onCreateActivityClick}
                 className={styles.createActivityButton}
               >
-                Custom Activity
+                + Custom
               </SimpleButton>
             </div>
             <div className={styles.infoBar}>
