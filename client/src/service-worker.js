@@ -73,7 +73,7 @@ self.addEventListener('push', (event) => {
   console.log('RECEIVED PUSH!!')
   const options = {
     body: event.data.text(),
-    icon: './public/icon_192.png', // Replace with your notification icon path
+    //icon: './public/icon_192.png', // Replace with your notification icon path
     //badge: 'path-to-notification-badge.png', // Replace with your notification badge path
   };
 
