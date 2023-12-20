@@ -83,7 +83,7 @@ const FeedCardFooter = (props) => {
   const user = useSelector((state) => state.auth.user);
   const categoryColorMap = globals.categoryColorMap;
   const outingLikes = outing?.likes;
-  const activityColor = categoryColorMap[outing?.activity?.category];
+  const activityColor = categoryColorMap ? categoryColorMap[outing?.activity?.category] : null;
   const [liked, setLiked] = useState(
     outingLikes?.find((id) => id === user?._id)
   );
