@@ -71,12 +71,14 @@ self.addEventListener("message", (event) => {
 });
 
 self.addEventListener("push", (event) => {
-  console.log(event)
+  const payload = event.data.json(); 
+  const { title, body } = payload;
+
   const options = {
-    body: "test notification",
-    //icon: './public/icon_192.png', // Replace with your notification icon path
+    body: body,
+    icon: './public/icon_192.png', 
     //badge: 'path-to-notification-badge.png', // Replace with your notification badge path
   };
 
-  self.registration.showNotification("Notification Title", options);
+  self.registration.showNotification(title, options);
 });
