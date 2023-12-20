@@ -16,19 +16,13 @@ router.post("/push/subscribe", (req, res) => {
   const subscription = req.body;
 
   const payload = JSON.stringify({
-    title: "Testing",
-    body: "Hope This Works",
+    title: "Subscribed!",
+    body: "You have successfully subscribed to push notifications!",
   });
 
-  webpush
-    .sendNotification(subscription, payload)
-    .then(() => {
-      console.log("NOTIFICATION SENT");
-    })
-    .catch((error) => {
-      console.log("notification not sent: ", error);
-      console.error("Error sending notification:", error);
-    });
+  webpush.sendNotification(subscription, payload).catch((error) => {
+    console.error("Error sending notification:", error);
+  });
 });
 
 module.exports = router;

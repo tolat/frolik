@@ -71,7 +71,7 @@ self.addEventListener("message", (event) => {
 });
 
 self.addEventListener("push", (event) => {
-  console.log("RECEIVED PUSH!!");
+  console.log(event)
   const options = {
     body: "test notification",
     //icon: './public/icon_192.png', // Replace with your notification icon path
