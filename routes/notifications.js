@@ -6,8 +6,8 @@ router.get("/vapid-public-key", (req, res) => {
 });
 
 router.post("/push/subscribe", (req, res) => {
-  const subscription = JSON.parse(req.body);
-  console.log(subscription);
+
+  console.log(req.body);
 });
 
 module.exports = router;
