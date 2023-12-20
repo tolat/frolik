@@ -70,6 +70,7 @@ self.addEventListener('message', (event) => {
 });
 
 self.addEventListener('push', (event) => {
+  console.log('RECEIVED PUSH!!')
   const options = {
     body: event.data.text(),
     icon: './public/icon_192.png', // Replace with your notification icon path
@@ -80,4 +81,3 @@ self.addEventListener('push', (event) => {
     self.registration.showNotification('Notification Title', options)
   );
 });
-// Any other custom service worker logic can go here.
