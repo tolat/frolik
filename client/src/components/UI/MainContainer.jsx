@@ -20,7 +20,7 @@ const MainContainer = (props) => {
       <div id="main-container" className={styles.inner}>
         <div
           id="main-container-children"
-          className={styles.mainContainerChildren}
+          className={`${styles.mainContainerChildren} noscroll`}
         >
           {props.children}
         </div>

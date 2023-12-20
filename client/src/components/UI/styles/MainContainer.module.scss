@@ -54,5 +54,6 @@
   width: $central_span_width;
   display: flex;
   flex-direction: column;
-  height: 100%
+  height: calc(100vh - $navbar_height);
+  overflow-y: scroll;
 }

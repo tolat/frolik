@@ -36,7 +36,6 @@ const modalSlice = createSlice({
     showModal(state, action) {
       setTimeout(() => {
         document.getElementById("main-container-children").style.opacity = 0;
-        document.getElementById("main-container-children").style.height = "70vh";
         document.getElementById("main-container-children").style.overflowY = "clip";
       }, 300);
       state.marginLeft = "0%";
