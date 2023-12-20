@@ -99,23 +99,39 @@ function registerValidSW(swUrl, config) {
 function subscribeToPushNotifications(registration) {
   registration.pushManager.getSubscription().then((subscription) => {
     if (subscription === null) {
-      console.log('subscribing with key: ', process.env.VAPID_PUBLIC_KEY)
-      // User is not subscribed, subscribe now
-      registration.pushManager
-        .subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: process.env.VAPID_PUBLIC_KEY,
+      // Make an HTTP request to fetch the VAPID key from the server
+      fetch("/notifications/vapid-public-key")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to fetch VAPID key");
+          }
+          return response.json();
         })
-        .then((newSubscription) => {
-          console.log(
-            "Push notification subscription successful:",
-            newSubscription
-          );
-          console.log("7");
-          sendSubscriptionToServer(newSubscription);
+        .then((data) => {
+          const vapidKey = data.key;
+          // Now you have the VAPID key, you can use it for push notification subscription
+          console.log("Fetched VAPID key:", vapidKey);
+
+          // User is not subscribed, subscribe now
+          registration.pushManager
+            .subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: vapidKey,
+            })
+            .then((newSubscription) => {
+              console.log(
+                "Push notification subscription successful:",
+                newSubscription
+              );
+              console.log("7");
+              sendSubscriptionToServer(newSubscription);
+            })
+            .catch((error) => {
+              console.error("Error subscribing to push notifications:", error);
+            });
         })
         .catch((error) => {
-          console.error("Error subscribing to push notifications:", error);
+          console.error("Error fetching VAPID key:", error);
         });
     }
   });

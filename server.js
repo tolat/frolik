@@ -150,6 +150,7 @@ app.use("/user", require("./routes/user"));
 app.use("/activity", require("./routes/activity"));
 app.use("/data", require("./routes/data"));
 app.use("/image", require("./routes/image"));
+app.use("/notifications", require("./routes/notifications"))
 
 // All routes go to the client, routing happens on the front end
 app.get("*", (req, res) => {
