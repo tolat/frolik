@@ -99,6 +99,7 @@ function registerValidSW(swUrl, config) {
 function subscribeToPushNotifications(registration) {
   registration.pushManager.getSubscription().then((subscription) => {
     if (subscription === null) {
+      console.log('subscribing with key: ', process.env.VAPID_PUBLIC_KEY)
       // User is not subscribed, subscribe now
       registration.pushManager
         .subscribe({
