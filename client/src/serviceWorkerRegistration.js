@@ -55,16 +55,21 @@ export function register(config) {
 }
 
 function registerValidSW(swUrl, config) {
+  console.log('1')
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
+      console.log('2')
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (installingWorker == null) {
+          console.log('3')
           return;
         }
         installingWorker.onstatechange = () => {
+          console.log('4')
           if (installingWorker.state === "installed") {
+            console.log('5')
             if (navigator.serviceWorker.controller) {
               // Updated precached content has been fetched,
               // execute callback
@@ -95,6 +100,7 @@ function registerValidSW(swUrl, config) {
 
 // Function to subscribe to push notifications
 function subscribeToPushNotifications(registration) {
+  console.log('6')
   registration.pushManager.getSubscription().then((subscription) => {
     if (subscription === null) {
       // User is not subscribed, subscribe now
@@ -108,6 +114,7 @@ function subscribeToPushNotifications(registration) {
             "Push notification subscription successful:",
             newSubscription
           );
+          console.log('7')
           sendSubscriptionToServer(newSubscription);
         })
         .catch((error) => {
@@ -119,6 +126,7 @@ function subscribeToPushNotifications(registration) {
 
 // Function to send the subscription to your server
 function sendSubscriptionToServer(subscription) {
+  console.log('8')
   fetch("/subscribe", {
     method: "POST",
     headers: {
