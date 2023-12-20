@@ -1,18 +1,22 @@
-export const isBadgeSupported = () => "badge" in Notification.prototype;
+const isSupported = () =>
+'Notification' in window &&
+'serviceWorker' in navigator &&
+'PushManager' in window
+
 export const setBadge = (value) => {
-  if (isBadgeSupported()) {
+  if (isSupported()) {
     navigator.setAppBadge(value);
   }
 };
 
 export const clearBadge = () => {
-  if (isBadgeSupported()) {
+  if (isSupported()) {
     navigator.clearAppBadge();
   }
 };
 
 export const incrementBadge = () => {
-  if (isBadgeSupported()) {
+  if (isSupported()) {
     const currentBadge = navigator.getBadge();
     const newBadgeValue = currentBadge ? currentBadge + 1 : 1;
     setBadge(newBadgeValue);

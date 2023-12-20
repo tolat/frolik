@@ -109,9 +109,6 @@ function subscribeToPushNotifications(registration) {
         })
         .then((data) => {
           const vapidKey = data.key;
-          // Now you have the VAPID key, you can use it for push notification subscription
-          console.log("Fetched VAPID key:", vapidKey);
-
           // User is not subscribed, subscribe now
           registration.pushManager
             .subscribe({
