@@ -121,7 +121,7 @@ label {
 }
 
 .loginButton {
-  background-color: #007bff;
+  background-color: $blue;
   color: #fff;
   border: none;
   cursor: pointer;
@@ -143,19 +143,22 @@ label {
 }
 
 .forgotButton {
-  background-color: $card_grey;
   border: none;
   outline: none;
   cursor: pointer;
   font-size: 1.2rem;
   margin-top: 0.4rem;
+
+  @include responsive("background-color", white, $button_grey, $button_grey, $button_grey);
 }
 
 .smallButtons {
-  margin-top: 2rem;
   width: 100%;
   display: flex;
   justify-content: space-between;
+
+  @include responsive("margin-top", 0.5rem, 2rem, 2rem, 2rem);
+
 }
 
 .loaderContainer {

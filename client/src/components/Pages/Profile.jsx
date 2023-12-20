@@ -10,10 +10,7 @@ import OutingList from "../UI/OutingList";
 import { modalActions } from "../../store/modal-slice";
 import EditProfileModal from "../Modals/EditProfileModal";
 import FriendCard from "../UI/FriendCard";
-import {
-  pageRouteLoader,
-  toSorted,
-} from "../../utils/utils";
+import { pageRouteLoader, toSorted } from "../../utils/utils";
 import balloonIcon from "../../images/air-balloon.png";
 import { useNavigate } from "react-router-dom";
 import IconButton from "../UI/IconButton";

@@ -8,6 +8,8 @@ import { useSelector } from "react-redux";
 import store from "./store";
 import { goActions } from "./store/go-slice";
 import { fetchGlobals } from "./utils/data-fetch";
+import { setBadge } from "./utils/badge";
+import { getTotalUnreadMessages } from "./utils/utils";
 
 function App() {
   // Connect socket.io to server for message sending
@@ -16,7 +18,14 @@ function App() {
   // Fetch Globals once on app load
   useEffect(() => {
     fetchGlobals();
-  },[]);
+  }, []);
+
+  // Update unread badge
+  useEffect(() => {
+    const unreadMessages = getTotalUnreadMessages(user) + user.notifications?.length
+    user && setBadge(unreadMessages)
+  }, [user])
+  setBadge(1);
 
   useEffect(() => {
     socket.on("connect", onConnect);

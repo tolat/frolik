@@ -393,6 +393,7 @@ const Go = (props) => {
               selected={selectedSliderKey}
               setSelected={handleSetSelectedCategory}
               tabs={sliderTabs}
+              style={{paddingTop: "0"}}
             />
             <div className={styles.activitiesContainer}>
               {!activityFilter.activities[0] ? (
