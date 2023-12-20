@@ -76,8 +76,8 @@ self.addEventListener("push", (event) => {
 
   const options = {
     body: body,
-    icon: '/public/icon_512.png', 
-    //badge: 'path-to-notification-badge.png', // Replace with your notification badge path
+    //icon: '/public/icon_512.png', 
+    badge: '/public/icon_512.png'
   };
 
   self.registration.showNotification(title, options);

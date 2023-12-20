@@ -23,6 +23,8 @@ router.post("/push/subscribe", (req, res) => {
   webpush.sendNotification(subscription, payload).catch((error) => {
     console.error("Error sending notification:", error);
   });
+
+  res.send({ subscription });
 });
 
 module.exports = router;
