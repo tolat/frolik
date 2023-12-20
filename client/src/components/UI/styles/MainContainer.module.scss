@@ -42,6 +42,10 @@
   );
 }
 
+.mainContainerChildren{
+  width: 100%;
+}
+
 .inner::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }

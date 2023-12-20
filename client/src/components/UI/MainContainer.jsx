@@ -18,7 +18,12 @@ const MainContainer = (props) => {
   return (
     <div className={styles.outer} style={{ marginBottom: marginBottom }}>
       <div id="main-container" className={styles.inner}>
-        {props.children}
+        <div
+          id="main-container-children"
+          className={styles.mainContainerChildren}
+        >
+          {props.children}
+        </div>
         <SlideInModal />
       </div>
     </div>

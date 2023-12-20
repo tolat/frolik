@@ -34,6 +34,9 @@ const modalSlice = createSlice({
       state.zIndex = action.payload;
     },
     showModal(state, action) {
+      setTimeout(() => {
+        document.getElementById("main-container-children").style.opacity = 0;
+      }, 300);
       state.marginLeft = "0%";
       state.zIndex = "1";
       if (action?.payload?.headerStyle)
