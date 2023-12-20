@@ -123,7 +123,6 @@ function subscribeToPushNotifications(registration) {
                 "Push notification subscription successful:",
                 newSubscription
               );
-              console.log("7");
               sendSubscriptionToServer(newSubscription);
             })
             .catch((error) => {
@@ -139,8 +138,7 @@ function subscribeToPushNotifications(registration) {
 
 // Function to send the subscription to your server
 function sendSubscriptionToServer(subscription) {
-  console.log("8");
-  fetch("/subscribe", {
+  fetch("/notifications/push/subscribe", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
