@@ -29,7 +29,7 @@
 }
 
 .flavourImage {
-  width: 18rem;
+  width: 16rem;
 }
 
 .flavourContainer {
@@ -148,6 +148,7 @@ label {
   cursor: pointer;
   font-size: 1.2rem;
   margin-top: 0.4rem;
+  color: black !important;
 
   @include responsive("background-color", white, $button_grey, $button_grey, $button_grey);
 }
