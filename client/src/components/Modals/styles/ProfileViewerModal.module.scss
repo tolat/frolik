@@ -16,6 +16,9 @@
   background-color: $blue;
   margin: 2rem 0 2rem 0;
   color: white;
+  box-shadow: none;
+  border: 1px solid $light_grey;
+  border-radius: 100rem;
 }
 
 .sideBySide {
@@ -29,11 +32,17 @@
 
 .createOutingButton {
   margin-bottom: 1rem;
+  box-shadow: none !important;
+  border: 1px solid $light_grey;
+  border-radius: 100rem;
 }
 
 .removeFriendButton {
   background-color: $button_grey;
   color: black;
+  box-shadow: none !important;
+  border: 1px solid $light_grey;
+  border-radius: 100rem;
 }
 
 .unclickableButton {

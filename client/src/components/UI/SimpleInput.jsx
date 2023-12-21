@@ -36,6 +36,7 @@ const SimpleInput = forwardRef((props, ref) => {
         </label>
       )}
       <input
+        style={props.inputStyle}
         onBlur={onBlur}
         placeholder={props.placeholder}
         onChange={onChange}

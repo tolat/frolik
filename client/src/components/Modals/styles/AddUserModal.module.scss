@@ -25,7 +25,7 @@
 }
 
 .headerSubtext {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   margin-bottom: 2rem;
 }
 
@@ -35,8 +35,11 @@
   border-radius: 5px;
   width: 100%;
   box-sizing: border-box;
+  padding: 2rem;
+  background-color: $button_grey;
 }
 
 .matchesHeader {
   margin-top: 0;
+  font-size: 1.8rem;
 }

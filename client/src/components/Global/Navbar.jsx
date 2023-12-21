@@ -40,6 +40,7 @@ const Navbar = (props) => {
   const [activePage, setActivePage] = useState(false);
   const [masterDisplay, setMasterDisplay] = useState("flex")
 
+  // Hide navbar on login page
   useEffect(() =>{
     if(currentUrl.includes('login')){
       setMasterDisplay("none")

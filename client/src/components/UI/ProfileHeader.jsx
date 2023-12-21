@@ -1,15 +1,13 @@
 import styles from "./styles/ProfileHeader.module.scss";
-import UserIcon from "./UserIcon";
-import flakeIcon from "../../images/snowflake.png";
-import outingsIcon from "../../images/outing2.png";
-import StatIcon from "./StatIcon";
 import locationIcon from "../../images/location-dark.png";
-import { calculateFlakeRating } from "../../utils/utils";
+import FriendCard from "./FriendCard";
+import { Fragment } from "react";
+import { useDispatch } from "react-redux";
+import { modalActions } from "../../store/modal-slice";
 
 const ProfileHeader = (props) => {
-  const iconStyle = { width: "4rem", height: "4rem" };
   const userStatus = props.user?.status?.status;
-  const flakeRating = props.user && calculateFlakeRating(props.user);
+  const dispatch = useDispatch()
 
   let statusClassName = null;
   switch (userStatus) {
@@ -29,58 +27,48 @@ const ProfileHeader = (props) => {
       statusClassName = null;
   }
 
+  const handleClick = (e) =>{
+      dispatch(modalActions.setSelector('edit-profile'))
+      dispatch(modalActions.showModal())
+  }
+
   return (
     <div className={styles.container} id="profile-header">
       <div className={styles.innerContainer}>
-        <div className={styles.profilePicContainer}>
-          <StatIcon
-            alt="flake"
-            icon={flakeIcon}
-            iconStyle={iconStyle}
-            className={styles.flakeIcon}
-            rating={flakeRating}
-          />
-          <UserIcon
-            badge={props.badge}
-            sizeInRem={20}
+        {props.user && (
+          <FriendCard
+            onClick={handleClick}
+            badge={false}
             user={props.user}
-            borderSizeInRem={"1.4"}
-            pieShadow={true}
-            showPhotoOnClick={true}
-          />
-          <StatIcon
-            alt="outings"
-            icon={outingsIcon}
-            className={styles.outingsIcon}
-            iconStyle={iconStyle}
-            rating={
-              props.user.outings?.filter(
-                (o) => o.completions?.length === o.users?.length
-              ).length
+            noShadow={true}
+            style={{ backgroundColor: "white", marginBottom: "0" }}
+            sizeInRem={10}
+            buttons={
+              <Fragment>
+                <div className={styles.sideBySide}>
+                  <div
+                    onClick={props.onEditClick}
+                    className={`${styles.statusContainer} ${statusClassName}`}
+                  >
+                    Status: {userStatus}
+                  </div>
+                  <div
+                    onClick={props.onEditClick}
+                    className={styles.locationContainer}
+                  >
+                    <img
+                      style={{ marginRight: "10px" }}
+                      className={styles.smallIcon}
+                      src={locationIcon}
+                      alt="location-icon"
+                    />
+                    {props.user.location}
+                  </div>
+                </div>
+              </Fragment>
             }
           />
-        </div>
-        <div
-          className={styles.userName}
-        >{`${props.user.first_name} ${props.user.last_name}`}</div>
-        <div className={styles.tagline}>{props.user.tagline}</div>
-        <div className={styles.sideBySide}>
-          <div
-            onClick={props.onEditClick}
-            className={`${styles.statusContainer} ${statusClassName}`}
-          >
-            Status: {userStatus}
-          </div>
-          <div onClick={props.onEditClick} className={styles.locationContainer}>
-            <img
-              style={{ marginRight: "10px" }}
-              className={styles.smallIcon}
-              src={locationIcon}
-              alt="location-icon"
-            />
-            {props.user.location}
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ const SimpleButton = (props) => {
       required={props.required}
       onClick={props.onClick}
       className={`${styles.container} ${props.className}`}
-      style={{ ...props.style, boxShadow: props.noShadow ? "none" : boxShadow }}
+      style={{ ...props.style, /* boxShadow: props.noShadow ? "none" : boxShadow  */}}
     >
       {props.children}
     </button>

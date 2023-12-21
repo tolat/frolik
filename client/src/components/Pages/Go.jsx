@@ -258,7 +258,6 @@ const Go = (props) => {
             users={goUsers}
             sizeInRem={20}
             borderSizeInRem={1.4}
-            pieShadow={true}
           />
           <button onClick={handleAddUserClick} className={styles.roundButton}>
             <img className={styles.editIcon} src={plusIcon} alt="add-people" />

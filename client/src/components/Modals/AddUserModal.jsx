@@ -66,7 +66,7 @@ const AddUserModal = (props) => {
         <div className={styles.dailyMatchesContainer}>
           <h2 className={styles.matchesHeader}>Daily Matches</h2>
           <div className={styles.headerSubtext}>
-            These matches are random and will refresh every 24 hrs.
+            Matches are randomly generated every 24 hrs.
             <div style={{ marginTop: "0.2rem" }}>
               <b>Add at least one daily match to create an outing!</b>
             </div>
@@ -90,7 +90,7 @@ const AddUserModal = (props) => {
         </div>
         {availableFriends[0] ? (
           <Fragment>
-            <h2 style={{ width: "100%" }}>Active Friends</h2>
+            <h2 style={{ width: "100%", fontSize: "1.8rem" }}>Active Friends</h2>
             {availableFriends.map((f) => (
               <FriendCard
                 id={`${f._id || f}-friendCard-addUserModal`}

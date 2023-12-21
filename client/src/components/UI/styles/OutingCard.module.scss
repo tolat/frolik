@@ -7,16 +7,17 @@
 .outerContainer {
   display: flex;
   width: 100%;
-  border: none ;
+  border: none;
   outline: none;
   background-color: transparent;
   border-top-right-radius: 100rem;
   border-bottom-right-radius: 100rem;
-  border-top-left-radius: 6rem ;
-  border-bottom-left-radius: 6rem ;
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-    background-color: transparent
+  border-top-left-radius: 6rem;
+  border-bottom-left-radius: 6rem;
+  /* box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; */
+  background-color: transparent;
+  border: 1px solid $light_grey;
 }
 
 .innerContainer:hover {
@@ -41,7 +42,7 @@
   border-radius: inherit;
 }
 
-.flakedInnerContainer{
+.flakedInnerContainer {
   width: 100%;
   flex-grow: 1;
   box-sizing: border-box;

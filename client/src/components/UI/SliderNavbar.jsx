@@ -6,7 +6,11 @@ const SliderNavber = (props) => {
   };
 
   return (
-    <div style={props.style} className={`${styles.container} ${props.className}`} id={props.id}>
+    <div
+      className={`${styles.container} ${props.className}`}
+      id={props.id}
+      style={props.style}
+    >
       {props.icons &&
         props.icons.map((i) => (
           <div

@@ -58,7 +58,7 @@ const OutingList = (props) => {
       />
       {pending[0] && (
         <div className={styles.pendingContainer}>
-          <h2>Pending Outings</h2>
+          <div className={styles.completedHeader}>Pending Outings</div>
           <div className={styles.headingBlurb}>
             <b>You can have up to 5 pending outings at a time.</b>
             <br />
@@ -73,6 +73,10 @@ const OutingList = (props) => {
           ))}
         </div>
       )}
+      <div className={styles.completedHeader}>Completed Outings</div>
+      <div className={styles.headingBlurb}>
+        <b>Your flaked outings show up in red.</b>
+      </div>
       {nonPending[0] &&
         toSorted(nonPending, (a, b) =>
           sortByDate(b.date_created, a.date_created)

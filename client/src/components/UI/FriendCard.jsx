@@ -51,14 +51,14 @@ const FriendCard = (props) => {
       className={styles.container}
     >
       <div className={styles.upperContainer}>
-        <div className={styles.leftContainer} onClick={showProfileViewerModal}>
+        <div className={styles.leftContainer} onClick={props.onClick || showProfileViewerModal}>
           <div className={styles.iconContainer}>
             <UserIcon
               backer={true}
-              sizeInRem={sizeInRem}
+              sizeInRem={props.sizeInRem || sizeInRem}
               borderSizeInRem={borderSizeInRem}
               user={props.user}
-              badge={statusBadge}
+              badge={props.badge || statusBadge}
               badgeStyle={{
                 right: "0.5rem",
                 bottom: "0.5rem",

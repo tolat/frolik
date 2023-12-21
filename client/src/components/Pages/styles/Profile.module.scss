@@ -41,7 +41,12 @@
   width: 100%;
   justify-self: flex-start;
   align-items: center;
-  margin-top: 1rem;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  max-width: $central_span_width;
+  z-index: 1;
+  background-color: white;
 }
 
 .friendsContainer {

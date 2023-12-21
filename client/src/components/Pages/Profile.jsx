@@ -141,7 +141,7 @@ const Profile = (props) => {
         ok={"OK"}
         okClick={handleHideWarning}
       />
-      <div className={styles.nonMediaSection}>
+      <div className={styles.nonMediaSection} id="non-media-section">
         <ProfileHeader
           badge={
             <img
@@ -154,12 +154,37 @@ const Profile = (props) => {
           onEditClick={handleEditButtonClick}
           user={user}
         />
-
         <SliderNavbar
           id="slider-navbar"
           selected={selectedSliderKey}
           setSelected={setSelectedSliderKey}
           icons={sliderIcons}
+          style={{ paddingTop: "0" }}
+        />
+      </div>
+      <div
+        className={styles.nonMediaSection}
+        style={{ opacity: 0, position: "relative" }}
+        id="non-media-section"
+      >
+        <ProfileHeader
+          badge={
+            <img
+              onClick={handleEditButtonClick}
+              src={editIcon}
+              className={styles.editIcon}
+              alt="edit"
+            />
+          }
+          onEditClick={handleEditButtonClick}
+          user={user}
+        />
+        <SliderNavbar
+          id="slider-navbar"
+          selected={selectedSliderKey}
+          setSelected={setSelectedSliderKey}
+          icons={sliderIcons}
+          style={{ paddingTop: "0" }}
         />
       </div>
 

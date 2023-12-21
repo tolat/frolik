@@ -134,6 +134,8 @@
   margin-top: 1rem;
   height: 100%;
   background-color: $button_grey !important;
+  border-radius: 100rem !important;
+  border: 1px solid $light_grey !important;
 }
 
 .activitySearch {
@@ -184,7 +186,7 @@
 .infoBar {
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: space-evenly;
   margin: 0.5rem 0;
 }
 
@@ -195,10 +197,11 @@
   font-weight: bold;
   padding: 1rem;
   background-color: $card_grey;
-  border-radius: 3px;
+  border-radius: 100rem;
+  border: 1px solid $button_grey;
   cursor: pointer;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
-    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  /* box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px; */
 }
 
 .activeInfoItem {
@@ -241,13 +244,15 @@
 
 .createActivityButton {
   background-color: $button_grey;
+  border-radius: 100rem !important;
+  border: 1px solid $light_grey !important;
 }
 
-.activitiesContainer{
+.activitiesContainer {
   width: 100%;
 }
 
-.prompt{
+.prompt {
   display: flex;
   width: 100%;
   justify-content: center;
@@ -257,13 +262,13 @@
   animation: bump 5s infinite;
 }
 
-.arrowImgUp{
+.arrowImgUp {
   width: 3rem;
   margin-bottom: 2rem;
   margin-left: 2rem;
 }
 
-.arrowImgDown{
+.arrowImgDown {
   width: 3rem;
   margin-top: 2rem;
   margin-right: 2rem;

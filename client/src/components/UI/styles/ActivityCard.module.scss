@@ -5,8 +5,8 @@
   width: 100%;
   margin-bottom: 1rem;
   border-radius: 3px;
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  /*   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; */
 }
 
 .categoryStripe {
@@ -23,6 +23,7 @@
   border-left: none;
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
+  border: 1px solid $light_grey !important;
 }
 
 .upperContainer {
@@ -152,13 +153,13 @@
   display: flex;
 }
 
-.completedIconContainer{
+.completedIconContainer {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.deleteActivityButton{
+.deleteActivityButton {
   margin-left: 1rem;
 }
 
