@@ -11,9 +11,7 @@
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
   overscroll-behavior: none;
-
-  @include responsive("margin-top", 0, $navbar_height, $navbar_height, $navbar_height);
-  @include responsive("margin-bottom", $navbar_height, 0, 0, 0);
+  margin-bottom: $navbar_height;
 }
 
 .outer::-webkit-scrollbar {
@@ -32,7 +30,6 @@
   padding: 1rem;
   overscroll-behavior: none;
 
-
   @include responsive(
     "width",
     $central_span_width,
@@ -42,7 +39,7 @@
   );
 }
 
-.mainContainerChildren{
+.mainContainerChildren {
   width: 100%;
   display: flex;
 }
