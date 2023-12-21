@@ -44,16 +44,9 @@
 
 .mainContainerChildren{
   width: 100%;
+  display: flex;
 }
 
 .inner::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
-}
-
-.children{
-  width: $central_span_width;
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - $navbar_height);
-  overflow-y: scroll;
 }
