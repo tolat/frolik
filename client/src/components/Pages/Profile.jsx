@@ -164,7 +164,7 @@ const Profile = (props) => {
       </div>
       <div
         className={styles.nonMediaSection}
-        style={{ opacity: 0, position: "relative" }}
+        style={{ opacity: 0, position: "relative", marginTop: "-1rem" }}
         id="non-media-section"
       >
         <ProfileHeader
