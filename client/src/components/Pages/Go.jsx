@@ -331,7 +331,7 @@ const Go = (props) => {
                 onClick={onCreateActivityClick}
                 className={styles.createActivityButton}
               >
-                + Custom
+                + Create
               </SimpleButton>
             </div>
             <div className={styles.infoBar}>
@@ -384,7 +384,7 @@ const Go = (props) => {
                   className={styles.infoIcon}
                   alt="creations-icon"
                 />
-                My Creations
+                Creations
               </div>
             </div>
             <SliderNavber

@@ -260,7 +260,7 @@ const CreateActivityModal = (props) => {
           message={validationMessage}
         />
         <div style={modalStyle} className={styles.container}>
-        <ModalHeaderPortal selector={'create-activity'}>Custom Activity</ModalHeaderPortal>
+        <ModalHeaderPortal selector={'create-activity'}>Create Activity</ModalHeaderPortal>
 
           <form id="create-activity-form" className={styles.createForm}>
             <ModalButtonPortal selector={"create-activity"}>

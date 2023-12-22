@@ -102,10 +102,9 @@
 .buttonContainer {
   display: flex;
   position: absolute;
-  bottom: -1px;
+  bottom: 0;
   width: 100%;
   height: 3.7rem;
-  border-bottom: 1px solid $light_grey;
 }
 
 .buttonSpacer {
