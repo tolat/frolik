@@ -130,7 +130,7 @@ label {
   margin-top: 2rem;
   width: 100%;
   font-size: 1.2rem;
-  border-radius: 100rem;
+  border-radius: 3px;
 }
 
 .loginButton:hover {
@@ -141,7 +141,7 @@ label {
   background-color: $button_grey;
   color: rgb(0, 0, 0);
   margin-top: 1rem;
-  border-radius: 100rem;
+  border-radius: 3px;
 }
 
 .forgotButton {

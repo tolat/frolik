@@ -50,14 +50,7 @@
   z-index: 3;
   font-weight: bold;
   box-sizing: border-box;
-
-  @include responsive(
-    "margin-top",
-    "",
-    $navbar_height,
-    $navbar_height,
-    $navbar_height
-  );
+  margin-top: 0
 }
 
 .outerContainer {
@@ -69,8 +62,7 @@
   margin-left: $central_span_width;
   overflow-y: scroll;
   overscroll-behavior: none;
-
-  @include responsive("top", 0, $navbar_height, $navbar_height, $navbar_height);
+  top: 0
 }
 
 .baffle {

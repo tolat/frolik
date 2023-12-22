@@ -18,14 +18,7 @@
   display: flex;
   justify-content: center;
   box-sizing: border-box;
-
-  @include responsive(
-    "margin-top",
-    "",
-    $navbar_height,
-    $navbar_height,
-    $navbar_height
-  );
+  margin-top: 0
 }
 
 .upperCentralContainer {

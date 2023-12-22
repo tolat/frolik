@@ -4,6 +4,7 @@ import SimpleButton from "../UI/SimpleButton";
 import SimpleInput from "../UI/SimpleInput";
 import { useState } from "react";
 import { resetPassword, sendResetLink } from "../../utils/data-fetch";
+import logo from "../../images/frolik2.png";
 
 const Utility = (props) => {
   const navigate = useNavigate();
@@ -143,6 +144,9 @@ const Utility = (props) => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.logoContainer}>
+        <img alt="logo" src={logo} className={styles.logo} />
+      </div>
       <h1>{headers[props.page]}</h1>
       <div className={styles.subText}>{messages[props.page]}</div>
       {elements[props.page]}

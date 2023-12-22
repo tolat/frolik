@@ -42,10 +42,10 @@ const Navbar = (props) => {
 
   // Hide navbar on login page
   useEffect(() =>{
-    if(currentUrl.includes('login') || currentUrl === '/' || currentUrl === ''){
-      setMasterDisplay("none")
-    } else{
+    if(currentUrl === '/profile' || currentUrl === '/outing' || currentUrl === '/social' ||currentUrl === '/chat'){
       setMasterDisplay("flex")
+    } else{
+      setMasterDisplay("none")
     }
   },[currentUrl])
 

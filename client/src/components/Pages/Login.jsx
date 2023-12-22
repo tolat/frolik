@@ -32,7 +32,6 @@ function Login() {
   const authState = useSelector((state) => state.auth);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const navigate = useNavigate();
-  const inputStyle = { borderRadius: "100rem", paddingLeft: "1.8rem" };
 
   // If authenticated, navigate to profile
   useEffect(() => {
@@ -96,7 +95,6 @@ function Login() {
               label="Email:"
               ref={usernameRef}
               defaultVal={""}
-              inputStyle={inputStyle}
               required
             />
           </div>
@@ -108,7 +106,6 @@ function Login() {
               label="Password:"
               ref={passwordRef}
               defaultVal={""}
-              inputStyle={inputStyle}
               required
             />
           </div>

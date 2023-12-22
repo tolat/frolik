@@ -102,12 +102,14 @@ const Profile = (props) => {
           className={styles.friendCardButton}
           iconStyle={friendCardButtonStyle}
           icon={chatIcon}
+          subText={"+ Chat"}
         />
         <IconButton
           onClick={() => onCreateOuting(props.user)}
           className={styles.friendCardButton}
           iconStyle={friendCardButtonStyle}
           icon={getOutIcon}
+          subText={"+ Outing"}
         />
       </div>
     );
