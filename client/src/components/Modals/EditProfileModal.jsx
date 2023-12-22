@@ -12,6 +12,9 @@ import ValidatorBubble, { runValidators } from "../UI/ValidatorBubble";
 import { editProfileValidators } from "../../utils/validators";
 import LoaderSpinner from "../UI/LoaderSpinner";
 import ModalHeaderPortal from "./ModalHeaderPortal";
+import SimpleButton from "../UI/SimpleButton";
+import { fetchLogout } from "../../store/auth-actions";
+import logoutIcon from "../../images/logout.png";
 
 const stagedDataReducer = (state, action) => {
   return action.type === "setAll"
@@ -109,10 +112,18 @@ const EditProfileModal = (props) => {
     uploadProfileData(user._id, fullData, resetForm);
   };
 
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    await hideModal();
+    fetchLogout();
+  };
+
   return (
     <ModalPortal>
       <div style={modalStyle} className={`${styles.container} noscroll`}>
-        <ModalHeaderPortal selector={'edit-profile'}>Edit Profile</ModalHeaderPortal>
+        <ModalHeaderPortal selector={"edit-profile"}>
+          Edit Profile
+        </ModalHeaderPortal>
         <ValidatorBubble
           id={validatorBubbleID}
           elementID={validationID}
@@ -148,6 +159,14 @@ const EditProfileModal = (props) => {
             }}
           />
         </ProfileEditor>
+        <SimpleButton
+          onClick={handleLogout}
+          text={"Logout"}
+          icon={logoutIcon}
+          className={styles.logoutButton}
+        >
+          Logout
+        </SimpleButton>
       </div>
     </ModalPortal>
   );

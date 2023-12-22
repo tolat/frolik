@@ -21,8 +21,6 @@ import feedIcon from "../../images/post2.png";
 import feedIconBlue from "../../images/post2-blue.png";
 import { getTotalUnreadMessages } from "../../utils/utils";
 import PhotoPopup from "../Popups/PhotoPopup";
-import logoutIcon from "../../images/logout.png";
-import { fetchLogout } from "../../store/auth-actions";
 import outingIcon from "../../images/air-balloon.png";
 import outingIconBlue from "../../images/air-balloon-blue.png";
 import logo from "../../images/frolik2.png";
@@ -82,12 +80,6 @@ const Navbar = (props) => {
   // Navigate to profile page if too many outings
   const handleHideWarning = () => {
     dispatch(popupActions.hidePopup());
-  };
-
-  const handleLogout = async (e) => {
-    e.preventDefault();
-    await hideModal();
-    fetchLogout();
   };
 
   // Save current url for use when window refreshes
@@ -197,12 +189,6 @@ const Navbar = (props) => {
                 ) : null}
               </NavButton>
             </NavLink>
-            <NavButton
-              onClick={handleLogout}
-              text={"Logout"}
-              icon={logoutIcon}
-              className={`${styles.navButton} ${styles.logoutHover}`}
-            />
           </div>
         ) : (
           <img alt="logo" src={logo} className={styles.logo} />

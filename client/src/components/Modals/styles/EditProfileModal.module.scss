@@ -55,3 +55,10 @@
   border-top: 1px solid $light_grey;
 }
 
+.logoutButton{
+  background-color: $red;
+  width: calc(100% - 2rem);
+  color: white;
+  margin: 1rem 2rem 4rem 2rem ;
+}
+

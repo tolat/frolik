@@ -34,7 +34,6 @@ const ProfileHeader = (props) => {
                       src={gear}
                       alt="settings"
                     />
-                    <div className={styles.buttonText}>Settings</div>
                   </div>
                 ) : (
                   props.headerButtons
