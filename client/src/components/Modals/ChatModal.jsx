@@ -118,7 +118,7 @@ const ChatModal = (props) => {
                 onClick={handleCreateOuting}
                 className={styles.createOutingButton}
               >
-                + Outing With Chat Members
+                + Outing
               </SimpleButton>
             )}
 
