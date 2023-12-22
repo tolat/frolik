@@ -76,7 +76,7 @@ const OutingList = (props) => {
         </div>
       )}
       <div className={styles.completedHeader}>Completed Outings</div>
-      <div className={styles.headingBlurb}>
+      <div style={{marginBottom: '2rem'}} className={styles.headingBlurb}>
         <b>Your flaked outings show up in red.</b>
       </div>
       {nonPending[0]  &&
