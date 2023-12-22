@@ -162,32 +162,6 @@ const Profile = (props) => {
           style={{ paddingTop: "0" }}
         />
       </div>
-      <div
-        className={styles.nonMediaSection}
-        style={{ opacity: 0, position: "relative", marginTop: "-1rem" }}
-        id="non-media-section"
-      >
-        <ProfileHeader
-          badge={
-            <img
-              onClick={handleEditButtonClick}
-              src={editIcon}
-              className={styles.editIcon}
-              alt="edit"
-            />
-          }
-          onEditClick={handleEditButtonClick}
-          user={user}
-        />
-        <SliderNavbar
-          id="slider-navbar"
-          selected={selectedSliderKey}
-          setSelected={setSelectedSliderKey}
-          icons={sliderIcons}
-          style={{ paddingTop: "0" }}
-        />
-      </div>
-
       {!userPhotos[0] && !user.friends[0] && !user.outings[0] ? (
         <div className={styles.noContentBlurb}>
           <h3>You have no media yet!</h3>
@@ -244,7 +218,7 @@ const Profile = (props) => {
         <Fragment>
           <SimpleSearch
             style={{ marginTop: "1rem" }}
-            placeholder={"Search Friends"}
+            placeholder={"Search Friends.."}
           />
           {user.friends[0] ? (
             toSorted(user.friends, (a, b) => a.first_name - b.first_name).map(

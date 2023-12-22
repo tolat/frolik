@@ -40,15 +40,15 @@ const ChatCard = (props) => {
 
   return !chat ? null : (
     <div className={styles.outerContainer}>
-      {chat.outing ? (
-        <div
-          style={{
-            backgroundColor:
-              globals.categoryColorMap[chat.outing.activity.category],
-          }}
-          className={styles.categoryStripe}
-        ></div>
-      ) : null}
+      <div
+        style={{
+          backgroundColor: chat.outing
+            ? globals.categoryColorMap[chat.outing.activity.category]
+            : "lightgrey",
+          width: chat.outing ? null : "0.5rem",
+        }}
+        className={styles.categoryStripe}
+      ></div>
       <div
         onClick={handleClick}
         style={props.style}
