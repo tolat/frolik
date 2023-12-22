@@ -71,7 +71,7 @@ const OutingUpdate = (props) => {
     dispatch(modalActions.setSelector("outing-modal"));
     dispatch(
       modalActions.showModal({
-        headerStyle: { backgroundColor: "transparent" },
+        headerStyle: { backgroundColor: "white" },
       })
     );
   };

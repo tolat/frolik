@@ -36,7 +36,8 @@
   width: 100%;
   box-sizing: border-box;
   padding: 2rem;
-  background-color: $button_grey;
+  background-color: $card_grey;
+  border: 1px solid $button_grey;
 }
 
 .matchesHeader {

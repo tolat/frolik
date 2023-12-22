@@ -1,0 +1,13 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.subText{
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-top: 0.5rem;
+}

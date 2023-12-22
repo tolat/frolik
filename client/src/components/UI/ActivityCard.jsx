@@ -75,7 +75,7 @@ const ActivityCard = (props) => {
     deleteActivity(user, props.activity, onComplete);
   };
 
-  return (
+  return categoryColorMap && (
     <div style={props.style} className={styles.outerContainer}>
       <WarningPopup
         selector={`confirm-delete-activity-${props.activity._id}`}

@@ -12,6 +12,7 @@ const IconButton = (props) => {
         className={styles.icon}
         alt={`${props.alt}_button`}
       />
+      <div className={styles.subText}>{props.subText}</div>
     </div>
   );
 };

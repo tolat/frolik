@@ -1,12 +1,18 @@
 import styles from "./styles/ProfileViewerModal.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import PhotoGrid from "../UI/PhotoGrid";
-import SimpleButton from "../UI/SimpleButton";
+import photos from "../../images/photogrid.png";
+import outings from "../../images/outing2.png";
+import getOutIcon from "../../images/air-balloon.png";
+import deleteFriend from "../../images/remove-friend.png";
+import addFriend from "../../images/add-friend.png";
+import sentMail from "../../images/sent-mail.png";
 import ProfileHeader from "../UI/ProfileHeader";
 import ModalPortal from "./ModalPortal";
 import {
   fetchPhotos,
+  fetchStrippedUser,
   removeFriend,
   sendFriendRequest,
 } from "../../utils/data-fetch";
@@ -14,6 +20,17 @@ import { authActions } from "../../store/auth-slice";
 import { useNavigate } from "react-router-dom";
 import { goActions } from "../../store/go-slice";
 import ModalHeaderPortal from "./ModalHeaderPortal";
+import SliderNavbar from "../UI/SliderNavbar";
+import OutingList from "../UI/OutingList";
+import IconButton from "../UI/IconButton";
+
+const sliderIcons = [
+  {
+    key: "_photos",
+    name: "Photos",
+    url: photos,
+  },
+];
 
 const getPhotosFromState = (userData) => {
   return !userData
@@ -31,50 +48,13 @@ const ProfileViewerModal = (props) => {
   const dataState = useSelector((state) => state.data);
   const userData = dataState.users[modalUser._id];
   const userPhotos = getPhotosFromState(userData);
-  const isFriend = user.friends.find((f) => f._id === modalUser._id);
-  const navigate = useNavigate();
-  const friendRequested = user.friend_requests.find(
-    (fr) => fr === modalUser._id
-  );
-  const dispatch = useDispatch();
 
   // Get photos for this user
   useEffect(() => {
     if (modalUser) {
-      setTimeout(() => {
-        fetchPhotos(modalUser);
-      }, 300);
+      fetchPhotos(modalUser);
     }
   }, [modalUser]);
-
-  const onAddFriend = () => {
-    const onComplete = (response) => {
-      dispatch(
-        authActions.setUser({
-          ...response.user,
-          friends: user.friends,
-        })
-      );
-    };
-    sendFriendRequest(user, modalUser, onComplete);
-  };
-
-  const onRemoveFriend = () => {
-    const onComplete = (response) => {
-      dispatch(
-        authActions.setUser({
-          ...response.user,
-          friends: response.populatedFriends,
-        })
-      );
-    };
-    removeFriend(user, modalUser, onComplete);
-  };
-
-  const onCreateOuting = () => {
-    dispatch(goActions.addUser(modalUser));
-    navigate("/outing");
-  };
 
   return (
     <ModalPortal>
@@ -82,36 +62,17 @@ const ProfileViewerModal = (props) => {
         <ModalHeaderPortal selector={"profile-viewer-modal"}>
           Viewing Profile
         </ModalHeaderPortal>
-        <ProfileHeader user={modalUser} />
-        {user._id === modalUser._id ? null : !isFriend ? (
-          <SimpleButton
-            onClick={friendRequested ? null : onAddFriend}
-            className={
-              friendRequested ? styles.unclickableButton : styles.addFriend
-            }
-          >
-            {friendRequested ? "Freind Request Sent" : "+ Add Friend"}
-            {friendRequested ? (
-              <div style={{ marginLeft: "1rem" }}>&#10003;</div>
-            ) : null}
-          </SimpleButton>
-        ) : (
-          <div className={styles.sideBySide}>
-            <SimpleButton
-              onClick={onCreateOuting}
-              className={styles.createOutingButton}
-            >
-              Create Outing
-            </SimpleButton>
-            <SimpleButton
-              onClick={onRemoveFriend}
-              className={styles.removeFriendButton}
-            >
-              Remove Friend
-            </SimpleButton>
-          </div>
-        )}
-
+        <ProfileHeader
+          user={modalUser}
+          headerButtons={<ControlButtons user={user} modalUser={modalUser} />}
+        />
+        <SliderNavbar
+          id="slider-navbar"
+          selected={"_photos"}
+          setSelected={() => {}}
+          icons={sliderIcons}
+          style={{ paddingTop: "0" }}
+        />
         <Fragment>
           {user._id === modalUser._id ? (
             <Fragment>
@@ -138,6 +99,88 @@ const ProfileViewerModal = (props) => {
         </Fragment>
       </div>
     </ModalPortal>
+  );
+};
+
+const ControlButtons = (props) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const isFriend = props.user.friends.find(
+    (f) => f._id === props.modalUser._id
+  );
+  const friendRequested = props.user.friend_requests.find(
+    (fr) => fr === props.modalUser._id
+  );
+
+  const onAddFriend = () => {
+    const onComplete = (response) => {
+      dispatch(
+        authActions.setUser({
+          ...response.user,
+          friends: props.user.friends,
+        })
+      );
+    };
+    sendFriendRequest(props.user, props.modalUser, onComplete);
+  };
+
+  const onRemoveFriend = () => {
+    const onComplete = (response) => {
+      dispatch(
+        authActions.setUser({
+          ...response.user,
+          friends: response.populatedFriends,
+        })
+      );
+    };
+    removeFriend(props.user, props.modalUser, onComplete);
+  };
+
+  const onCreateOuting = () => {
+    dispatch(goActions.addUser(props.modalUser));
+    navigate("/outing");
+  };
+
+  const buttonIconStyle = { width: "3.5rem" };
+
+  return (
+    <div className={styles.friendCardButtons}>
+      {isFriend ? (
+        <div className={styles.buttonContainer}>
+          <IconButton
+            onClick={() => onCreateOuting()}
+            className={styles.buttonStyle}
+            iconStyle={buttonIconStyle}
+            icon={getOutIcon}
+            subText={'+ Outing'}
+          />
+          <IconButton
+            onClick={() => onRemoveFriend(props.user)}
+            className={styles.buttonStyle}
+            iconStyle={buttonIconStyle}
+            icon={deleteFriend}
+            subText={'Unfriend'}
+          />{" "}
+        </div>
+      ) : friendRequested ? (
+        <IconButton
+          onClick={() => {}}
+          className={styles.buttonStyle}
+          iconStyle={buttonIconStyle}
+          icon={sentMail}
+          subText={'Requested'}
+        />
+      ) : (
+        <IconButton
+          onClick={() => onAddFriend()}
+          className={styles.buttonStyle}
+          iconStyle={buttonIconStyle}
+          icon={addFriend}
+          subText={'+ Friend'}
+        />
+      )}
+    </div>
   );
 };
 

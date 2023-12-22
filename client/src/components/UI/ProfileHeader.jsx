@@ -1,36 +1,17 @@
 import styles from "./styles/ProfileHeader.module.scss";
-import locationIcon from "../../images/location-dark.png";
 import FriendCard from "./FriendCard";
-import { Fragment } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
+import gear from "../../images/gear.png";
 
 const ProfileHeader = (props) => {
-  const userStatus = props.user?.status?.status;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
 
-  let statusClassName = null;
-  switch (userStatus) {
-    case "Ready":
-      statusClassName = styles.statusReady;
-      break;
-    case "Searching":
-      statusClassName = styles.statusSearching;
-      break;
-    case "Busy":
-      statusClassName = styles.statusBusy;
-      break;
-    case "Inactive":
-      statusClassName = styles.statusInactive;
-      break;
-    default:
-      statusClassName = null;
-  }
-
-  const handleClick = (e) =>{
-      dispatch(modalActions.setSelector('edit-profile'))
-      dispatch(modalActions.showModal())
-  }
+  const handleClick = (e) => {
+    dispatch(modalActions.setSelector("edit-profile"));
+    dispatch(modalActions.showModal());
+  };
 
   return (
     <div className={styles.container} id="profile-header">
@@ -44,28 +25,21 @@ const ProfileHeader = (props) => {
             style={{ backgroundColor: "white", marginBottom: "0" }}
             sizeInRem={10}
             buttons={
-              <Fragment>
-                <div className={styles.sideBySide}>
-                  <div
-                    onClick={props.onEditClick}
-                    className={`${styles.statusContainer} ${statusClassName}`}
-                  >
-                    Status: {userStatus}
-                  </div>
-                  <div
-                    onClick={props.onEditClick}
-                    className={styles.locationContainer}
-                  >
+              <div className={styles.sideBySide}>
+                {props.user._id === user._id ? (
+                  <div className={styles.settingButtonContainer}>
                     <img
-                      style={{ marginRight: "10px" }}
-                      className={styles.smallIcon}
-                      src={locationIcon}
-                      alt="location-icon"
+                      onClick={handleClick}
+                      className={styles.settingsButton}
+                      src={gear}
+                      alt="settings"
                     />
-                    {props.user.location}
+                    <div className={styles.buttonText}>Settings</div>
                   </div>
-                </div>
-              </Fragment>
+                ) : (
+                  props.headerButtons
+                )}
+              </div>
             }
           />
         )}

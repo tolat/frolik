@@ -99,6 +99,7 @@ const FriendCard = (props) => {
                   )?.length
                 }
               />
+              {props.ratingsItems}
             </div>
           </div>
         </div>

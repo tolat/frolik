@@ -7,7 +7,9 @@ import { useState } from "react";
 import FeedCard from "./FeedCard";
 
 const OutingList = (props) => {
-  const user = useSelector((state) => state.auth.user);
+  let user = useSelector((state) => state.auth.user);
+  if (props.user) user = props.user;
+
   const [outingSearch, setOutingSearch] = useState("");
   const nonPending = applyOutingSearch(
     user?.outings.filter(
@@ -64,7 +66,7 @@ const OutingList = (props) => {
             <br />
             <br />
           </div>
-          {toSorted(pending, (a, b) =>
+          {!props.noPending && toSorted(pending, (a, b) =>
             sortByDate(b.date_created, a.date_created)
           ).map((o) => (
             <div key={Math.random()} className={styles.outingContainer}>
@@ -77,7 +79,7 @@ const OutingList = (props) => {
       <div className={styles.headingBlurb}>
         <b>Your flaked outings show up in red.</b>
       </div>
-      {nonPending[0] &&
+      {nonPending[0]  &&
         toSorted(nonPending, (a, b) =>
           sortByDate(b.date_created, a.date_created)
         ).map((o) =>

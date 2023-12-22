@@ -4,7 +4,6 @@
     display: flex;
     /* box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; */
-    border: 1px solid $light_grey;
     box-sizing: border-box;
     margin-bottom: 2rem;
     width: 100%;
@@ -16,6 +15,11 @@
     width: 100%;
     padding: 2rem;
     background-color: $card_grey;
+    border: 1px solid $light_grey;
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+    border-left: none;
+
   }
 
   .outingInviteHeader{
@@ -38,6 +42,8 @@
     height: 100%;
     width: 1rem;
     box-sizing: border-box;
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
   }
 
   .buttonSpacer{

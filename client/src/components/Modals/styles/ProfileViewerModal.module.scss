@@ -58,3 +58,15 @@
   background-color: $button_grey !important;
   opacity: 1 !important;
 }
+
+.buttonContainer{
+  display: flex;
+  width: 9rem;
+  justify-content: space-between;
+
+}
+
+.buttonStyle{
+  display: flex;
+  flex-direction: column;
+}
