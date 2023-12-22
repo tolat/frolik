@@ -26,6 +26,7 @@
   border-bottom-right-radius: 3px;
   border: 1px solid $light_grey !important;
   border-left: none !important;
+  position: relative;
 }
 
 .upperContainer {
@@ -100,6 +101,15 @@
 
 .buttonContainer {
   display: flex;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 3rem;
+}
+
+.buttonSpacer {
+  width: 100%;
+  height: 3rem;
 }
 
 .instructionsContainer {

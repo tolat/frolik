@@ -14,7 +14,7 @@ import undoIcon from "../../images/undo-arrow.png";
 import ModalButtonPortal from "./ModalButtonPortal";
 
 const ProfileEditor = (props) => {
-  const dimension = 19;
+  const dimension = 20;
   const photoDimentionStyle = {
     width: `${dimension}rem`,
     height: `${dimension}rem`,
@@ -40,7 +40,6 @@ const ProfileEditor = (props) => {
     minWidth: `${dimension + 1.5}rem`,
     height: `${dimension + 1.5}rem`,
     background: backgroundString,
-    boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
     margin: "0 2rem",
   };
 

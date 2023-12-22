@@ -223,6 +223,7 @@ const ActivityCard = (props) => {
             <div className={styles.goal}>{props.activity.goal}</div>
           </div>
         </div>
+        <div className={styles.buttonSpacer}></div>
         <div className={styles.buttonContainer}>
           {!props.showInstructions && (
             <SimpleButton
