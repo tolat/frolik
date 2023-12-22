@@ -1,9 +1,8 @@
 import styles from "./styles/ProfileViewerModal.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect } from "react";
 import PhotoGrid from "../UI/PhotoGrid";
 import photos from "../../images/photogrid.png";
-import outings from "../../images/outing2.png";
 import getOutIcon from "../../images/air-balloon.png";
 import deleteFriend from "../../images/remove-friend.png";
 import addFriend from "../../images/add-friend.png";
@@ -12,7 +11,6 @@ import ProfileHeader from "../UI/ProfileHeader";
 import ModalPortal from "./ModalPortal";
 import {
   fetchPhotos,
-  fetchStrippedUser,
   removeFriend,
   sendFriendRequest,
 } from "../../utils/data-fetch";
@@ -21,7 +19,6 @@ import { useNavigate } from "react-router-dom";
 import { goActions } from "../../store/go-slice";
 import ModalHeaderPortal from "./ModalHeaderPortal";
 import SliderNavbar from "../UI/SliderNavbar";
-import OutingList from "../UI/OutingList";
 import IconButton from "../UI/IconButton";
 
 const sliderIcons = [
