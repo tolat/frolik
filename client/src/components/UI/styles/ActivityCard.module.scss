@@ -24,6 +24,7 @@
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
   border: 1px solid $light_grey !important;
+  border-left: none !important;
 }
 
 .upperContainer {
@@ -64,7 +65,7 @@
 
 .select {
   background-color: $blue;
-  width: 7rem;
+  width: 14rem;
   color: white;
   display: flex;
   align-items: center;

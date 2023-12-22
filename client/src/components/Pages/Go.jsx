@@ -353,7 +353,7 @@ const Go = (props) => {
                 Completed
               </div>
               <div
-                className={`${styles.infoItem} ${
+                className={`${styles.infoItem} ${styles.infoItemCenter} ${
                   activityFilter.filter.featured ? styles.activeInfoItem : null
                 }`}
                 onClick={() => toggleButtonFilter("featured")}
