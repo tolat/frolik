@@ -19,6 +19,7 @@ const SlideInModal = (props) => {
   const outerContainerMarginLeft = noGutters ? "100%" : null;
   const containerWidth = noGutters ? "50%" : null;
   const headerWidth = noGutters ? "100vw" : null;
+  const user = useSelector((state) => state.auth.user);
 
   const handleBackButtonClick = (e) => {
     hideModal();
@@ -31,6 +32,7 @@ const SlideInModal = (props) => {
         opacity: modalState.opacity,
         width: outerContainerWidth,
         marginLeft: outerContainerMarginLeft,
+        height: !user ? "100%" : null,
       }}
       className={`${styles.outerContainer} noscroll`}
     >
@@ -42,7 +44,10 @@ const SlideInModal = (props) => {
         className={styles.container}
         id="modal-container"
       >
-        <div className={styles.modalHeader} style={{...modalState.headerStyle, width: headerWidth}}>
+        <div
+          className={styles.modalHeader}
+          style={{ ...modalState.headerStyle, width: headerWidth }}
+        >
           <div className={styles.leftContainer}>
             <div onClick={handleBackButtonClick} className={styles.backButton}>
               <img
@@ -51,9 +56,9 @@ const SlideInModal = (props) => {
                 alt="back-arrow"
               ></img>
             </div>
-            <div id='slide-in-modal-header'></div>
+            <div id="slide-in-modal-header"></div>
           </div>
-          <div id='slide-in-modal-button'></div>
+          <div id="slide-in-modal-button"></div>
         </div>
       </div>
       <div className={styles.baffle} />
