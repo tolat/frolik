@@ -164,7 +164,7 @@ export const createActivityValidators = (instructions) => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter an activity description.",
+        message: "Please enter a description.",
       },
     ],
     "create-activity-category": [
@@ -172,7 +172,7 @@ export const createActivityValidators = (instructions) => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter an activity description.",
+        message: "Please enter a category.",
       },
     ],
     "create-activity-duration": [
@@ -180,7 +180,7 @@ export const createActivityValidators = (instructions) => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter an activity description.",
+        message: "Please enter a duration (hrs).",
       },
     ],
     "create-activity-cost": [
@@ -188,7 +188,7 @@ export const createActivityValidators = (instructions) => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter an activity description.",
+        message: "Please enter a cost.",
       },
     ],
     "create-activity-participants": [
@@ -196,7 +196,7 @@ export const createActivityValidators = (instructions) => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter an activity description.",
+        message: "Please enter a number of participants.",
       },
     ],
     "create-activity-goal": [
@@ -204,7 +204,7 @@ export const createActivityValidators = (instructions) => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter an activity description.",
+        message: "Please enter a decription.",
       },
     ],
   };

@@ -84,31 +84,30 @@ const Social = (props) => {
           />
         </div>
       </div>
-
-      {outings ? (
-        Object.keys(outings)[0] ? (
-          <div className={styles.container}>
-            {validKeys.map((k) => (
+      <div className={styles.container}>
+        {outings ? (
+          Object.keys(outings)[0] ? (
+            validKeys.map((k) => (
               <FeedCard key={Math.random()} outing={outings[k]} />
-            ))}
-          </div>
-        ) : fetchingFeedOutings ? (
-          <h2>Loading Posts..</h2>
-        ) : (
-          <div className={styles.noOutingsMessage}>
-            <h2 className={styles.noOutingsMessageHeader}>
-              Nothing to show yet!
-            </h2>
+            ))
+          ) : fetchingFeedOutings ? (
+            <h2>Loading Posts..</h2>
+          ) : (
+            <div className={styles.noOutingsMessage}>
+              <h2 className={styles.noOutingsMessageHeader}>
+                Nothing to show yet!
+              </h2>
 
-            <div className={styles.noOutingsMessageText}>
-              You'll see outings completed by people in your friends network
-              here.
+              <div className={styles.noOutingsMessageText}>
+                You'll see outings completed by people in your friends network
+                here.
+              </div>
             </div>
-          </div>
-        )
-      ) : (
-        <h2>Loading Posts..</h2>
-      )}
+          )
+        ) : (
+          <h2>Loading Posts..</h2>
+        )}
+      </div>
     </Fragment>
   );
 };

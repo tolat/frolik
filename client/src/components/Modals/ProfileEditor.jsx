@@ -264,7 +264,7 @@ const ProfileEditor = (props) => {
             dispatchStageData({ id: "tagline", value });
           }}
         />
-        <ModalButtonPortal selector={'edit-profile'}>
+        <ModalButtonPortal selector={props.buttonSelector}>
           <SimpleButton
             onClick={dataChanged ? handleSave : (e) => e.preventDefault()}
             className={

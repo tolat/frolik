@@ -51,10 +51,14 @@ const FriendCard = (props) => {
       className={styles.container}
     >
       <div className={styles.upperContainer}>
-        <div className={styles.leftContainer} onClick={props.onClick || showProfileViewerModal}>
+        <div
+          className={styles.leftContainer}
+          onClick={props.onClick || showProfileViewerModal}
+        >
           <div className={styles.iconContainer}>
             <UserIcon
               backer={true}
+              showPhotoOnClick={props.showPhotoOnClick}
               sizeInRem={props.sizeInRem || sizeInRem}
               borderSizeInRem={borderSizeInRem}
               user={props.user}
@@ -71,7 +75,6 @@ const FriendCard = (props) => {
               }}
             />
           </div>
-
           <div
             className={styles.detailsContainer}
             style={detailsContainerStyle}

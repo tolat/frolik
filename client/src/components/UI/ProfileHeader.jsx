@@ -7,10 +7,14 @@ import gear from "../../images/gear.png";
 const ProfileHeader = (props) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const isSameUser = props.user._id === user._id;
+  const modalSelector = useSelector((state) => state.selector);
 
   const handleClick = (e) => {
-    dispatch(modalActions.setSelector("edit-profile"));
-    dispatch(modalActions.showModal());
+    if (isSameUser && modalSelector !== "profile-viewer-modal") {
+      dispatch(modalActions.setSelector("edit-profile"));
+      dispatch(modalActions.showModal());
+    }
   };
 
   return (
@@ -19,6 +23,7 @@ const ProfileHeader = (props) => {
         {props.user && (
           <FriendCard
             onClick={handleClick}
+            showPhotoOnClick={!isSameUser && true}
             badge={false}
             user={props.user}
             noShadow={true}
@@ -26,7 +31,7 @@ const ProfileHeader = (props) => {
             sizeInRem={10}
             buttons={
               <div className={styles.sideBySide}>
-                {props.user._id === user._id ? (
+                {isSameUser ? (
                   <div className={styles.settingButtonContainer}>
                     <img
                       onClick={handleClick}

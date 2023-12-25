@@ -167,6 +167,7 @@ const CreateAccountModal = (props) => {
             buttonText={buttonText}
             setButtonText={setButtonText}
             buttonTextOnSubmit={buttonTextOnSubmit}
+            buttonSelector={'create-account'}
             editingPhoto={editingPhoto}
             setEditingPhoto={setEditingPhoto}
             onSubmit={onSubmit}

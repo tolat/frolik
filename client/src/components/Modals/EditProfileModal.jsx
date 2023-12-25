@@ -137,6 +137,7 @@ const EditProfileModal = (props) => {
           buttonText={buttonText}
           setButtonText={setButtonText}
           buttonTextOnSubmit={buttonTextOnSubmit}
+          buttonSelector={'edit-profile'}
           editingPhoto={editingPhoto}
           setEditingPhoto={setEditingPhoto}
           onSubmit={onSubmit}

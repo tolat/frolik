@@ -7,8 +7,9 @@ import { Fragment } from "react";
 const CroppedImage = (props) => {
   const dispatch = useDispatch();
 
-  const onImageClick = () => {
+  const onImageClick = (e) => {
     if (props.showPhotoOnClick) {
+      e.preventDefault()
       dispatch(popupActions.setPopupImage(props.image));
       dispatch(popupActions.showPopup("view-photo"));
     }
