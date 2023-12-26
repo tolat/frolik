@@ -4,12 +4,24 @@ const ValidatorBubble = (props) => {
   const targetElement = document.getElementById(props.elementID);
   const coordinates = getElementCoordinates(targetElement);
   const display = props.display;
+  const isRightPositioned = props.position === "right";
   const containerStyle = {
     display: display,
     top: coordinates.y || 0,
-    left: coordinates.x || 0,
+    left: targetElement.getBoundingClientRect().left || 0,
+    right: null,
   };
 
+  console.log("offsetLeft: ", targetElement.getBoundingClientRect().left);
+
+  // Position bubble correctly horizontally
+  if (isRightPositioned) {
+    const targetRect = targetElement.getBoundingClientRect();
+    containerStyle.left = null;
+    containerStyle.right =
+      window.innerWidth - (targetRect.left + targetElement.offsetWidth);
+    console.log(containerStyle);
+  }
   function getElementCoordinates(element) {
     const rect = element?.getBoundingClientRect();
     const modalRect = document
@@ -47,7 +59,9 @@ const ValidatorBubble = (props) => {
       style={containerStyle}
       className={styles.container}
     >
-      <div className={styles.arrow}></div>
+      <div
+        className={isRightPositioned ? styles.arrowRight : styles.arrow}
+      ></div>
       <div className={styles.exclamation}>!</div>
       <div className={styles.message}>{props.message}</div>
     </div>
@@ -63,6 +77,7 @@ export const runValidators = (
   setMessage,
   setDisplay,
   setID,
+  setPosition,
   bubbleID
 ) => {
   // Set validator display to none initially
@@ -73,6 +88,8 @@ export const runValidators = (
     for (let id in validators) {
       for (let validator of validators[id]) {
         if (!validator.isValid(dataMap[id])) {
+          // make sure validator is not out of the frame
+          setPosition(validator.position);
           setMessage(validator.message);
           setDisplay("flex");
           setID(id);

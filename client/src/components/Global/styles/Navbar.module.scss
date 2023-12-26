@@ -5,9 +5,7 @@
   background-color: #ffffff;
   justify-content: space-evenly;
   display: flex;
-  background-color: #f8f8f8;
   width: 100%;
-  border-top: 1px solid $light_grey;
   height: $navbar_height;
   box-sizing: border-box;
   position: fixed;
@@ -42,7 +40,7 @@
   justify-content: space-between;
   width: 100%;
   padding: 0 1rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }
 
 .username {

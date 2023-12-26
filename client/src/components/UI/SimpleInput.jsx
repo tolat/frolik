@@ -27,7 +27,6 @@ const SimpleInput = forwardRef((props, ref) => {
   return (
     <div
       style={props.style}
-      id={inputID}
       className={`${styles.container} ${props.className}`}
     >
       {!props.label ? null : (

@@ -78,17 +78,20 @@ const ActivityCard = (props) => {
   return (
     categoryColorMap && (
       <div style={props.style} className={styles.outerContainer}>
-        <WarningPopup
-          selector={`confirm-delete-activity-${props.activity._id}`}
-          header={"Confirm Delete Activity:"}
-          message={confirmDeleteMessage}
-          delete={deleteText}
-          deleteClick={onActivityDelete}
-          cancel={"Cancel"}
-          cancelClick={() => {
-            dispatch(popupActions.hidePopup());
-          }}
-        />
+        {!props.creatingActivity && (
+          <WarningPopup
+            selector={`confirm-delete-activity-${props.activity._id}`}
+            header={"Confirm Delete Activity:"}
+            message={confirmDeleteMessage}
+            delete={deleteText}
+            deleteClick={onActivityDelete}
+            cancel={"Cancel"}
+            cancelClick={() => {
+              dispatch(popupActions.hidePopup());
+            }}
+          />
+        )}
+
         <div
           style={{ backgroundColor: categoryColorMap[props.activity.category] }}
           className={styles.categoryStripe}
@@ -97,7 +100,7 @@ const ActivityCard = (props) => {
           <div className={styles.upperContainer}>
             <div className={styles.name}>
               <div className={styles.innerNameContainer}>
-                {props.activity.name}{" "}
+                {props.activity.name}
                 <div className={styles.location}>{props.activity.location}</div>
               </div>
               <div className={styles.nameRightContainer}>

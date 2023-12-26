@@ -105,7 +105,15 @@ const Utility = (props) => {
         </SimpleButton>
       </div>
     ),
-    "reset-password-link-sent": null,
+    "reset-password-link-sent": (
+      <SimpleButton
+        className={styles.button}
+        noShadow={true}
+        onClick={handleGoToLoginClick}
+      >
+        Back to Login
+      </SimpleButton>
+    ),
     "reset-password": (
       <div className={styles.passwordResetContainer}>
         <SimpleInput

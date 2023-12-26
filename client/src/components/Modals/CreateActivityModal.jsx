@@ -35,6 +35,7 @@ const CreateActivityModal = (props) => {
   const [validationMessage, setValidationMessage] = useState(false);
   const [validationDisplay, setValidationDisplay] = useState("none");
   const [validationID, setValidationID] = useState(false);
+  const [validationPosition, setValidationPosition] = useState(false);
   const validatorBubbleID = "validator-bubble";
 
   const [name, setName] = useState("");
@@ -162,6 +163,7 @@ const CreateActivityModal = (props) => {
       setValidationMessage,
       setValidationDisplay,
       setValidationID,
+      setValidationPosition,
       validatorBubbleID
     );
   };
@@ -257,6 +259,7 @@ const CreateActivityModal = (props) => {
           elementID={validationID}
           display={validationDisplay}
           setDisplay={setValidationDisplay}
+          position={validationPosition}
           message={validationMessage}
         />
         <div style={modalStyle} className={styles.container}>

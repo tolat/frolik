@@ -197,7 +197,9 @@ export const createActivityValidators = (instructions) => {
           return value && value !== "";
         },
         message: "Please enter a number of participants.",
+        position: "right"
       },
+      
     ],
     "create-activity-goal": [
       {

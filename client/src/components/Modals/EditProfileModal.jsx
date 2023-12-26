@@ -36,6 +36,7 @@ const EditProfileModal = (props) => {
   const [validationMessage, setValidationMessage] = useState(false);
   const [validationDisplay, setValidationDisplay] = useState("none");
   const [validationID, setValidationID] = useState(false);
+  const [validationPosition, setValidationPosition] = useState(false);
   const globals = useSelector((state) => state.auth.globals);
   const buttonTextOnSubmit = (
     <div style={{ display: "flex" }}>
@@ -97,6 +98,7 @@ const EditProfileModal = (props) => {
       setValidationMessage,
       setValidationDisplay,
       setValidationID,
+      setValidationPosition,
       validatorBubbleID
     );
   };
@@ -129,6 +131,7 @@ const EditProfileModal = (props) => {
           elementID={validationID}
           display={validationDisplay}
           message={validationMessage}
+          position={validationPosition}
           setDisplay={setValidationDisplay}
         />
         <ProfileEditor
