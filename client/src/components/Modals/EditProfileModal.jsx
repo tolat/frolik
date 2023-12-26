@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles/EditProfileModal.module.scss";
 import ModalPortal from "./ModalPortal";
-import { useEffect, useMemo, useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { dataActions } from "../../store/data-slice";
 import { uploadProfileData } from "../../utils/data-fetch";
 import CustomSelect from "../UI/CustomSelect";
@@ -22,7 +22,7 @@ const stagedDataReducer = (state, action) => {
     : { ...state, [`${action.id}`]: action.value };
 };
 
-const EditProfileModal = (props) => {
+const EditProfileModal = () => {
   const user = useSelector((state) => state.auth.user);
   const modalState = useSelector((state) => state.modal);
   const dataState = useSelector((state) => state.data);
@@ -38,16 +38,17 @@ const EditProfileModal = (props) => {
   const [validationID, setValidationID] = useState(false);
   const [validationPosition, setValidationPosition] = useState(false);
   const globals = useSelector((state) => state.auth.globals);
+  const [stagedData, dispatchStageData] = useReducer(stagedDataReducer);
+  const [defaultValues, setDefaultValues] = useState({});
   const buttonTextOnSubmit = (
     <div style={{ display: "flex" }}>
       Saving &nbsp; <LoaderSpinner width="1.5rem" height="1.5rem" />
     </div>
   );
-  const [stagedData, dispatchStageData] = useReducer(stagedDataReducer);
 
-  // Set memoized default values based on user data
-  const defaultValues = useMemo(() => {
-    return {
+  // Initialize defaultValues as daata is loaded from server
+  useEffect(() => {
+    setDefaultValues({
       location: user.location,
       first_name: user.first_name,
       last_name: user.last_name,
@@ -56,8 +57,8 @@ const EditProfileModal = (props) => {
       profile_picture: userData.profile_picture,
       crop: userData.crop,
       zoom: userData.zoom,
-    };
-  }, [userData, user]);
+    });
+  }, [user, userData]);
 
   // Initialize the staged data reducer state with the default values
   useEffect(() => {
@@ -140,7 +141,7 @@ const EditProfileModal = (props) => {
           buttonText={buttonText}
           setButtonText={setButtonText}
           buttonTextOnSubmit={buttonTextOnSubmit}
-          buttonSelector={'edit-profile'}
+          buttonSelector={"edit-profile"}
           editingPhoto={editingPhoto}
           setEditingPhoto={setEditingPhoto}
           onSubmit={onSubmit}

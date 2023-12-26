@@ -19,6 +19,7 @@ const ValidatorBubble = (props) => {
     containerStyle.right =
       window.innerWidth - (targetRect.left + targetElement.offsetWidth);
   }
+  
   function getElementCoordinates(element) {
     const rect = element?.getBoundingClientRect();
     const modalRect = document

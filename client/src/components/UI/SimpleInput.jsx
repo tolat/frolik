@@ -3,6 +3,7 @@ import styles from "./styles/SimpleInput.module.scss";
 
 const SimpleInput = forwardRef((props, ref) => {
   const [value, setValue] = useState(props.defaultVal);
+  const inputID = props.id || Math.random();
 
   // Execute on changes to the input element
   const onChange = (e) => {
@@ -26,6 +27,7 @@ const SimpleInput = forwardRef((props, ref) => {
   return (
     <div
       style={props.style}
+      id={inputID}
       className={`${styles.container} ${props.className}`}
     >
       {!props.label ? null : (

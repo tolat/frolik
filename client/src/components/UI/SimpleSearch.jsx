@@ -4,6 +4,7 @@ import searchIcon from "../../images/search.png";
 
 const SimpleSearch = forwardRef((props, ref) => {
   const [value, setValue] = useState(props.defaultVal);
+  const inputID = props.id || Math.random();
 
   // Execute on changes to the input element
   const onChange = (e) => {
@@ -21,6 +22,7 @@ const SimpleSearch = forwardRef((props, ref) => {
   return (
     <div
       style={props.style}
+      id={inputID}
       className={`${styles.container} ${props.className}`}
     >
       <input

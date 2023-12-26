@@ -252,7 +252,6 @@ const Go = (props) => {
               src={editIcon}
               alt="edit-friends"
             />
-            Remove
           </button>
           <UserIconCluster
             users={goUsers}
@@ -261,7 +260,6 @@ const Go = (props) => {
           />
           <button onClick={handleAddUserClick} className={styles.roundButton}>
             <img className={styles.editIcon} src={plusIcon} alt="add-people" />
-            Add
           </button>
         </div>
         {goState.outing.users[1] && goState.outing.activity.name && (
@@ -301,7 +299,11 @@ const Go = (props) => {
         ) : (
           <Fragment>
             <div className={styles.prompt}>
-              <img className={styles.arrowImgDown} alt="arrow" src={downArrow} />
+              <img
+                className={styles.arrowImgDown}
+                alt="arrow"
+                src={downArrow}
+              />
               Choose Activity & Add Members
               <img className={styles.arrowImgUp} alt="arrow" src={upArrow} />
             </div>
@@ -392,7 +394,7 @@ const Go = (props) => {
               selected={selectedSliderKey}
               setSelected={handleSetSelectedCategory}
               tabs={sliderTabs}
-              style={{paddingTop: "0"}}
+              style={{ paddingTop: "0" }}
             />
             <div className={styles.activitiesContainer}>
               {!activityFilter.activities[0] ? (

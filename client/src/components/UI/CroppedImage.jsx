@@ -9,7 +9,7 @@ const CroppedImage = (props) => {
 
   const onImageClick = (e) => {
     if (props.showPhotoOnClick) {
-      e.preventDefault()
+      e.preventDefault();
       dispatch(popupActions.setPopupImage(props.image));
       dispatch(popupActions.showPopup("view-photo"));
     }
@@ -43,6 +43,18 @@ const CroppedImage = (props) => {
               },
             }}
           />
+          <div
+            onClick={props.onBadgeClick}
+            className={styles.badgeContainer}
+            style={props.badgeStyle}
+          >
+            <div
+              className={styles.badgeContent}
+              style={props.badgeContentStyle}
+            >
+              {props.badge}
+            </div>
+          </div>
         </Fragment>
       )}
     </div>

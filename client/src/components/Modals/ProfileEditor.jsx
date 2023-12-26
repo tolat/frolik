@@ -9,8 +9,7 @@ import CropperPopup from "../Popups/CropperPopup";
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { popupActions } from "../../store/popup-slice";
-import uploadIcon from "../../images/upload.png";
-import undoIcon from "../../images/undo-arrow.png";
+import uploadIcon from "../../images/upload-light.png";
 import ModalButtonPortal from "./ModalButtonPortal";
 
 const ProfileEditor = (props) => {
@@ -62,21 +61,10 @@ const ProfileEditor = (props) => {
   const handleRevert = (e) => {
     e?.preventDefault();
 
-    // Reset fiel input file list
+    // Reset file input file list
     resetUploadFileList();
 
-    dispatchStageData({
-      id: "profile_picture",
-      value: defaultValues.profile_picture,
-    });
-    dispatchStageData({
-      id: "crop",
-      value: defaultValues.crop,
-    });
-    dispatchStageData({
-      id: "zoom",
-      value: defaultValues.zoom,
-    });
+    dispatchStageData({ type: "setAll", values: defaultValues });
   };
 
   const handleSave = (e) => {
@@ -190,15 +178,6 @@ const ProfileEditor = (props) => {
             style={{ display: "none" }}
           />
           <div className={styles.photoContainer}>
-            <div
-              onClick={handleRevert}
-              className={`${styles.uploadButton} ${
-                !photoChanged ? styles.noClick : null
-              }`}
-            >
-              <img src={undoIcon} className={styles.buttonIcon} alt="revert" />
-              Revert
-            </div>
             <div style={pieStyle} className={styles.pieChart}>
               <CroppedImage
                 id={"profile_picture"}
@@ -207,15 +186,16 @@ const ProfileEditor = (props) => {
                 crop={stagedData.crop}
                 style={photoDimentionStyle}
                 className={styles.userPhoto}
+                badgeStyle={{ display: "flex" }}
+                badge={
+                  <img
+                    src={uploadIcon}
+                    className={styles.editButton}
+                    alt="edit"
+                  />
+                }
+                onBadgeClick={onUploadClick}
               />
-            </div>
-            <div onClick={onUploadClick} className={styles.uploadButton}>
-              <img
-                src={uploadIcon}
-                className={styles.buttonIcon}
-                alt="upload"
-              />
-              Upload
             </div>
           </div>
         </div>
@@ -264,6 +244,14 @@ const ProfileEditor = (props) => {
             dispatchStageData({ id: "tagline", value });
           }}
         />
+        <SimpleButton
+          onClick={photoChanged ? handleRevert : (e) => e.preventDefault()}
+          className={`${styles.revertButton} ${
+            photoChanged ? null : styles.noClick
+          }`}
+        >
+          Revert Photo
+        </SimpleButton>
         <ModalButtonPortal selector={props.buttonSelector}>
           <SimpleButton
             onClick={dataChanged ? handleSave : (e) => e.preventDefault()}

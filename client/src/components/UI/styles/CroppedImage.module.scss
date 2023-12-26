@@ -1,3 +1,5 @@
+@import "../../../utils/responsive.scss";
+
 .container {
   position: relative;
   display: flex;
@@ -5,25 +7,49 @@
   justify-content: center;
   border-radius: 100rem;
 
-  
   :global(.reactEasyCrop_Image) {
     cursor: auto;
     -webkit-border-radius: 100rem;
     -moz-border-radius: 100rem;
     border-radius: 100rem;
     -khtml-border-radius: 100rem;
-    transform: translateZ(0)
-  };
+    transform: translateZ(0);
+  }
 
   :global(.reactEasyCrop_Container) {
     -webkit-border-radius: 100rem;
     -moz-border-radius: 100rem;
     border-radius: 100rem;
     -khtml-border-radius: 100rem;
-    transform: translateZ(0)
+    transform: translateZ(0);
   }
 
   :global(.reactEasyCrop_CropArea) {
     display: none;
   }
+}
+
+.badgeContainer {
+  width: 30%;
+  height: 30%;
+  position: absolute;
+  background-color: rgb(255, 255, 255);
+  bottom: 0rem;
+  right: 0rem;
+  border-radius: 100rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  display: none;
+}
+
+.badgeContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 83%;
+  height: 83%;
+  background-color: $blue;
+  border-radius: 100rem;
 }
