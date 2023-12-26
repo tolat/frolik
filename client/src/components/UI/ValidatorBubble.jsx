@@ -8,19 +8,16 @@ const ValidatorBubble = (props) => {
   const containerStyle = {
     display: display,
     top: coordinates.y || 0,
-    left: targetElement.getBoundingClientRect().left || 0,
+    left: targetElement?.getBoundingClientRect().left || 0,
     right: null,
   };
 
-  console.log("offsetLeft: ", targetElement.getBoundingClientRect().left);
-
   // Position bubble correctly horizontally
   if (isRightPositioned) {
-    const targetRect = targetElement.getBoundingClientRect();
+    const targetRect = targetElement?.getBoundingClientRect();
     containerStyle.left = null;
     containerStyle.right =
       window.innerWidth - (targetRect.left + targetElement.offsetWidth);
-    console.log(containerStyle);
   }
   function getElementCoordinates(element) {
     const rect = element?.getBoundingClientRect();

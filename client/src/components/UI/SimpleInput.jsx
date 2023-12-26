@@ -3,7 +3,6 @@ import styles from "./styles/SimpleInput.module.scss";
 
 const SimpleInput = forwardRef((props, ref) => {
   const [value, setValue] = useState(props.defaultVal);
-  const inputID = props.id || Math.random();
 
   // Execute on changes to the input element
   const onChange = (e) => {
