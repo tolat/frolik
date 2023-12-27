@@ -357,7 +357,7 @@ export const createOuting = (outing, user, setOutingData, resetButton) => {
   };
 
   const handleError = (err) => {
-    resetButton()
+    resetButton();
     store.dispatch(dataActions.setCreatingOuting(false));
     console.log(err);
   };
@@ -822,6 +822,28 @@ export const setUserLike = (user, outing, liked, onComplete) => {
     },
     method: "POST",
     body: JSON.stringify({ outingID: outing._id, liked }),
+  };
+
+  const handleResponse = (response) => {
+    onComplete(response);
+  };
+
+  const handleError = (err) => {
+    onComplete(err);
+    console.log(err);
+  };
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};
+
+export const fetchPushTest = (userID, onComplete = () => {}) => {
+  const requestConfig = {
+    url: `${getServer()}/notifications/push/test`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({ userID }),
   };
 
   const handleResponse = (response) => {

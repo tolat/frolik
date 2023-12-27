@@ -22,9 +22,10 @@ import { popupActions } from "../../store/popup-slice";
 import outingsBarIcon from "../../images/outingsToolbar.png";
 import ProfileHeader from "../UI/ProfileHeader";
 import { goActions } from "../../store/go-slice";
-import { createChat, fetchChats } from "../../utils/data-fetch";
+import { createChat, fetchChats, fetchPushTest } from "../../utils/data-fetch";
 import { hideModal } from "../../store/modal-actions";
 import editIcon from "../../images/edit-light.png";
+import SimpleButton from "../UI/SimpleButton";
 
 const sliderIcons = [
   {
@@ -135,6 +136,13 @@ const Profile = (props) => {
 
   return (
     <div className={styles.container}>
+      <SimpleButton
+        onClick={() => {
+          fetchPushTest(user._id);
+        }}
+      >
+        Test Push
+      </SimpleButton>
       <EditProfileModal />
       <WarningPopup
         selector={"too-many-outings"}
