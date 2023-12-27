@@ -36,6 +36,7 @@ export function register(config) {
     }
     console.log("\n\n1.3\n\n");
     window.addEventListener("load", () => {
+      console.log('\n\n1.31\n\n')
       const swUrl = `./public/service-worker.js`;
 
       if (isLocalhost) {
@@ -57,6 +58,7 @@ export function register(config) {
         registerValidSW(swUrl, config);
       }
     });
+    console.log("\n\nEND\n\n")
   }
 }
 
