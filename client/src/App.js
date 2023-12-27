@@ -19,6 +19,7 @@ function App() {
   // Register service worker if logged in
   useEffect(() => {
     if (user) {
+      console.log("\n\nREGISTERING: ", user, '\n\n')
       serviceWorkerRegistration.register({user});
     }
   }, [user]);

@@ -21,6 +21,12 @@ router.post(
 
     // Save push subscription to user
     const user = await User.findById(req.body.user._id);
+    console.log(
+      "\n\nSUBSCRIBING SERVICE WORKER FOR: ",
+      user.first_name,
+      user.last_name,
+      "\n\n"
+    );
     user.pushSubscription = subscription;
     await user.save();
 
