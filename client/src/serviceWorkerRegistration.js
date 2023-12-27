@@ -21,22 +21,25 @@ const isLocalhost = Boolean(
 );
 
 export function register(config) {
-  console.log("\n\n1\n\n")
+  console.log("\n\n1\n\n", process.env.NODE_ENV, "serviceWorker" in navigator);
 
   if (process.env.NODE_ENV !== "development" && "serviceWorker" in navigator) {
+    console.log("\n\n1.1\n\n");
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
     if (publicUrl.origin !== window.location.origin) {
+      console.log("\n\n1.2\n\n");
       // Our service worker won't work if PUBLIC_URL is on a different origin
       // from what our page is served on. This might happen if a CDN is used to
       // serve assets; see https://github.com/facebook/create-react-app/issues/2374
       return;
     }
-
+    console.log("\n\n1.3\n\n");
     window.addEventListener("load", () => {
       const swUrl = `./public/service-worker.js`;
 
       if (isLocalhost) {
+        console.log("\n\n1.4\n\n");
         // This is running on localhost. Let's check if a service worker still exists or not.
         checkValidServiceWorker(swUrl, config);
 
@@ -49,6 +52,7 @@ export function register(config) {
           );
         });
       } else {
+        console.log("\n\n1.5\n\n");
         // Is not localhost. Just register service worker
         registerValidSW(swUrl, config);
       }
@@ -57,7 +61,7 @@ export function register(config) {
 }
 
 function registerValidSW(swUrl, config) {
-  console.log("\n\n2\n\n")
+  console.log("\n\n2\n\n");
 
   navigator.serviceWorker
     .register(swUrl)
@@ -101,7 +105,7 @@ function registerValidSW(swUrl, config) {
 
 // Function to subscribe to push notifications
 function subscribeToPushNotifications(registration, user) {
-  console.log("\n\n3\n\n")
+  console.log("\n\n3\n\n");
 
   registration.pushManager.getSubscription().then((subscription) => {
     if (subscription === null) {
@@ -141,14 +145,14 @@ function subscribeToPushNotifications(registration, user) {
 
 // Function to send the subscription to the server
 function sendSubscriptionToServer(subscription, user) {
-  console.log("\n\n4\n\n")
+  console.log("\n\n4\n\n");
 
   fetch("/notifications/push/subscribe", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({subscription, user}),
+    body: JSON.stringify({ subscription, user }),
   })
     .then((response) => {
       if (!response.ok) {
