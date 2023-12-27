@@ -59,7 +59,7 @@ function registerValidSW(swUrl, config) {
     .register(swUrl)
     .then((registration) => {
       // Subscribe to push notifications
-      subscribeToPushNotifications(registration);
+      subscribeToPushNotifications(registration, config.user);
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (installingWorker == null) {
@@ -75,7 +75,7 @@ function registerValidSW(swUrl, config) {
               }
 
               // Subscribe to push notifications
-              subscribeToPushNotifications(registration);
+              subscribeToPushNotifications(registration, config.user);
             } else {
               // Content is precached for offline use,
               // execute callback
@@ -84,7 +84,7 @@ function registerValidSW(swUrl, config) {
               }
 
               // Subscribe to push notifications
-              subscribeToPushNotifications(registration);
+              subscribeToPushNotifications(registration, config.user);
             }
           }
         };
@@ -96,7 +96,7 @@ function registerValidSW(swUrl, config) {
 }
 
 // Function to subscribe to push notifications
-function subscribeToPushNotifications(registration) {
+function subscribeToPushNotifications(registration, user) {
   registration.pushManager.getSubscription().then((subscription) => {
     if (subscription === null) {
       // Make an HTTP request to fetch the VAPID key from the server
@@ -120,7 +120,7 @@ function subscribeToPushNotifications(registration) {
                 "Push notification subscription successful:",
                 newSubscription
               );
-              sendSubscriptionToServer(newSubscription);
+              sendSubscriptionToServer(newSubscription, user);
             })
             .catch((error) => {
               console.error("Error subscribing to push notifications:", error);
@@ -133,14 +133,14 @@ function subscribeToPushNotifications(registration) {
   });
 }
 
-// Function to send the subscription to your server
-function sendSubscriptionToServer(subscription) {
+// Function to send the subscription to the server
+function sendSubscriptionToServer(subscription, user) {
   fetch("/notifications/push/subscribe", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(subscription),
+    body: JSON.stringify({subscription, user}),
   })
     .then((response) => {
       if (!response.ok) {

@@ -10,10 +10,18 @@ import { goActions } from "./store/go-slice";
 import { fetchGlobals } from "./utils/data-fetch";
 import { setBadge } from "./utils/badge";
 import { getTotalUnreadMessages } from "./utils/utils";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 function App() {
   // Connect socket.io to server for message sending
   const user = useSelector((state) => state.auth.user);
+
+  // Register service worker if logged in
+  useEffect(() => {
+    if (user) {
+      serviceWorkerRegistration.register({user});
+    }
+  }, [user]);
 
   // Fetch Globals once on app load
   useEffect(() => {
@@ -22,10 +30,10 @@ function App() {
 
   // Update unread badge
   useEffect(() => {
-    const unreadMessages = getTotalUnreadMessages(user) + user.notifications?.length
-    user && setBadge(unreadMessages)
-  }, [user])
-  setBadge(1);
+    const unreadMessages =
+      getTotalUnreadMessages(user) + user.notifications?.length;
+    user && setBadge(unreadMessages);
+  }, [user]);
 
   useEffect(() => {
     socket.on("connect", onConnect);

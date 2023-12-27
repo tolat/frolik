@@ -16,6 +16,7 @@ const UserSchema = new Schema(
     friend_requests: [{ type: Schema.Types.ObjectId, ref: "User" }],
     outings: [{ type: Schema.Types.ObjectId, ref: "Outing" }],
     activities: [{ type: Schema.Types.ObjectId, ref: "Activity" }],
+    pushSubscription: Object,
     status: {
       updated: Date,
       status: String,

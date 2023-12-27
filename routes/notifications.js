@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 const webpush = require("web-push");
+const User = require("../models/user");
+const { tryCatch } = require("../utils/middleware");
 
 webpush.setVapidDetails(
   `mailto:${process.env.SENDMAIL_FROM}`,
@@ -12,19 +14,46 @@ router.get("/vapid-public-key", (req, res) => {
   res.send({ key: process.env.VAPID_PUBLIC_KEY });
 });
 
-router.post("/push/subscribe", (req, res) => {
-  const subscription = req.body;
+router.post(
+  "/push/subscribe",
+  tryCatch(async (req, res) => {
+    const subscription = req.body.subscription;
 
-  const payload = JSON.stringify({
-    title: "Subscribed!",
-    body: "You have successfully subscribed to push notifications!",
-  });
+    // Save push subscription to user
+    const user = await User.findById(req.body.user._id);
+    user.pushSubscription = subscription;
+    await user.save();
 
-  webpush.sendNotification(subscription, payload).catch((error) => {
-    console.error("Error sending notification:", error);
-  });
+    const payload = JSON.stringify({
+      title: "Subscribed!",
+      body: "You have successfully subscribed to push notifications!",
+    });
 
-  res.send({ subscription });
-});
+    webpush.sendNotification(subscription, payload).catch((error) => {
+      console.error("Error sending notification:", error);
+    });
+
+    res.sendStatus(200);
+  })
+);
+
+router.post(
+  "/push/test",
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.body.userID);
+    const subscription = user.pushSubscription;
+
+    const payload = JSON.stringify({
+      title: "Test Notification",
+      body: "Success!",
+    });
+
+    webpush.sendNotification(subscription, payload).catch((error) => {
+      console.error("Error sending notification:", error);
+    });
+
+    res.sendStatus(200);
+  })
+);
 
 module.exports = router;
