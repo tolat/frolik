@@ -35,30 +35,28 @@ export function register(config) {
       return;
     }
     console.log("\n\n1.3\n\n");
-    window.addEventListener("load", () => {
-      console.log('\n\n1.31\n\n')
-      const swUrl = `./public/service-worker.js`;
+    const swUrl = `./public/service-worker.js`;
 
-      if (isLocalhost) {
-        console.log("\n\n1.4\n\n");
-        // This is running on localhost. Let's check if a service worker still exists or not.
-        checkValidServiceWorker(swUrl, config);
+    if (isLocalhost) {
+      console.log("\n\n1.4\n\n");
+      // This is running on localhost. Let's check if a service worker still exists or not.
+      checkValidServiceWorker(swUrl, config);
 
-        // Add some additional logging to localhost, pointing developers to the
-        // service worker/PWA documentation.
-        navigator.serviceWorker.ready.then(() => {
-          console.log(
-            "This web app is being served cache-first by a service " +
-              "worker. To learn more, visit https://cra.link/PWA"
-          );
-        });
-      } else {
-        console.log("\n\n1.5\n\n");
-        // Is not localhost. Just register service worker
-        registerValidSW(swUrl, config);
-      }
-    });
-    console.log("\n\nEND\n\n")
+      // Add some additional logging to localhost, pointing developers to the
+      // service worker/PWA documentation.
+      navigator.serviceWorker.ready.then(() => {
+        console.log(
+          "This web app is being served cache-first by a service " +
+            "worker. To learn more, visit https://cra.link/PWA"
+        );
+      });
+    } else {
+      console.log("\n\n1.5\n\n");
+      // Is not localhost. Just register service worker
+      registerValidSW(swUrl, config);
+    }
+
+    console.log("\n\nEND\n\n");
   }
 }
 
