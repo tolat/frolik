@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { pageRouteLoader, sortByDate, toSorted } from "../../utils/utils";
 import styles from "./styles/Social.module.scss";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import FeedCard from "../UI/FeedCard";
 import { fetchFeedOutings } from "../../utils/data-fetch";
 import SimpleButton from "../UI/SimpleButton";
@@ -71,44 +71,38 @@ const Social = (props) => {
   }
 
   return (
-    <Fragment>
-      <div className={styles.upperContainer}>
-        <div className={styles.upperCentralContainer}>
-          <SimpleButton className={styles.refreshButton} onClick={onRefresh}>
-            {refreshText}
-          </SimpleButton>
-          <SimpleSearch
-            setValue={setFeedSearch}
-            defaultVal={""}
-            placeholder={"Search Posts.."}
-          />
-        </div>
-      </div>
-      <div className={styles.container}>
-        {outings ? (
-          Object.keys(outings)[0] ? (
-            validKeys.map((k) => (
-              <FeedCard key={Math.random()} outing={outings[k]} />
-            ))
-          ) : fetchingFeedOutings ? (
-            <h2>Loading Posts..</h2>
-          ) : (
-            <div className={styles.noOutingsMessage}>
-              <h2 className={styles.noOutingsMessageHeader}>
-                Nothing to show yet!
-              </h2>
-
-              <div className={styles.noOutingsMessageText}>
-                You'll see outings completed by people in your friends network
-                here.
-              </div>
-            </div>
-          )
-        ) : (
+    <div className={styles.container}>
+      <SimpleButton className={styles.refreshButton} onClick={onRefresh}>
+        {refreshText}
+      </SimpleButton>
+      <SimpleSearch
+        setValue={setFeedSearch}
+        defaultVal={""}
+        placeholder={"Search Posts.."}
+      />
+      {outings ? (
+        Object.keys(outings)[0] ? (
+          validKeys.map((k) => (
+            <FeedCard key={Math.random()} outing={outings[k]} />
+          ))
+        ) : fetchingFeedOutings ? (
           <h2>Loading Posts..</h2>
-        )}
-      </div>
-    </Fragment>
+        ) : (
+          <div className={styles.noOutingsMessage}>
+            <h2 className={styles.noOutingsMessageHeader}>
+              Nothing to show yet!
+            </h2>
+
+            <div className={styles.noOutingsMessageText}>
+              You'll see outings completed by people in your friends network
+              here.
+            </div>
+          </div>
+        )
+      ) : (
+        <h2>Loading Posts..</h2>
+      )}
+    </div>
   );
 };
 
