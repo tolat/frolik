@@ -32,7 +32,7 @@ const socket = require("socket.io");
 
 // Add cors to the socket server if in development
 const local = "http://localhost:3000";
-const ioConfig = inDev ? { origin: local, credentials: "include" } : null;
+const ioConfig = inDev ? { origin: local, credentials: "include" } : {};
 const io = socket(server, ioConfig);
 module.exports = io;
 
