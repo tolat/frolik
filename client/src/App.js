@@ -12,16 +12,26 @@ import { setBadge } from "./utils/badge";
 import { getTotalUnreadMessages } from "./utils/utils";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
+const connectSocket = async (socket, user) => {
+  try {
+    await socket.connect();
+    socket.emit("join-room", user._id);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 function App() {
   // Connect socket.io to server for message sending
   const user = useSelector((state) => state.auth.user);
 
-  // Register service worker if logged in ad set app badge
+  // Register service worker if logged in and set app badge
   useEffect(() => {
     if (user) {
-      serviceWorkerRegistration.register({user});
-      const unreadMessages = getTotalUnreadMessages(user) + user.notifications?.length;
-      setBadge(unreadMessages)
+      serviceWorkerRegistration.register({ user });
+      const unreadMessages =
+        getTotalUnreadMessages(user) + user.notifications?.length;
+      setBadge(unreadMessages);
     }
   }, [user]);
 
@@ -30,6 +40,7 @@ function App() {
     fetchGlobals();
   }, []);
 
+  // Handle websocket events
   useEffect(() => {
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
@@ -41,13 +52,7 @@ function App() {
     if (user) {
       //add user to go state
       store.dispatch(goActions.addUser(user));
-
-      try {
-        socket.connect();
-        socket.emit("join-room", user._id);
-      } catch (err) {
-        console.log(err);
-      }
+      connectSocket(socket, user);
     }
 
     return () => {
@@ -59,6 +64,24 @@ function App() {
       socket.disconnect();
     };
   }, [user]);
+
+  // Handle socket reconnection from dead server etc.
+  useEffect(() => {
+    // Set window listener to check if socket is connected
+    const checkSocketConnection = () => {
+      if (!socket.connected) {
+        console.log("trying to reconnect socket..");
+        connectSocket(socket, user);
+      }
+    };
+
+    // Check socket connection every 1.random seconds
+    window.setInterval(checkSocketConnection, 1000 + Math.random() * 1000);
+
+    return () => {
+      window.clearInterval(checkSocketConnection);
+    };
+  });
 
   return <RouterProvider router={router} />;
 }

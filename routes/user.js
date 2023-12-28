@@ -689,7 +689,7 @@ router.get(
     // Send webpush Notification to all outing members
     webpushNotify(outing.users, {
       title: "Outing Left",
-      body: `${user.first_name} ${user.last_name} has left the Outing "${outing.name}"`,
+      body: `${user.first_name} ${user.last_name} has left the Outing: ${outing.name}`,
     });
 
     // Remove all notifications from this outing for the leaving user
@@ -767,7 +767,11 @@ router.get(
 
     // Send webpush Notification to related users
     webpushNotify(
-      [user, ...outing.users, ...outing.invited, ...outing.flakes],
+      [
+        ...outing.users.filter((u) => u._id.toString() !== user._id.toString()),
+        ...outing.invited,
+        ...outing.flakes,
+      ],
       {
         title: "Outing Deleted",
         body: `${user.first_name} ${user.last_name} has deleted the Outing "${outing.name}"`,

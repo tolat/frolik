@@ -1,17 +1,15 @@
 const User = require("../models/user");
 const Chat = require("../models/chat");
-const Outing = require("../models/outing");
 const nodemailer = require("nodemailer");
 const io = require("../server");
-const webpush = require("web-push"); // Add this line for web-push
+const webpush = require("web-push");
 
 const {
   uniqueNamesGenerator,
   adjectives,
   animals,
+  colors,
 } = require("unique-names-generator");
-const outing = require("../models/outing");
-const { genOutingInviteAcceptedEmail } = require("./emailTemplates");
 
 // Populates an array with stripped down version of friends
 module.exports.populateFriends = async (friends) => {
@@ -74,6 +72,7 @@ module.exports.populateUser = async (user) => {
   });
 };
 
+// Send emails to users
 module.exports.sendEmail = async (to, subject, html) => {
   try {
     const transporter = nodemailer.createTransport({
@@ -112,7 +111,7 @@ module.exports.generateUniqueName = () => {
   // Generate random unique name
   let uniqueName = [
     ...uniqueNamesGenerator({
-      dictionaries: [adjectives, animals],
+      dictionaries: [colors, animals],
     }),
   ];
   uniqueName[0] = uniqueName[0].toUpperCase();
@@ -135,7 +134,6 @@ module.exports.handleOutingInviteAction = async (
   outing,
   status
 ) => {
-  // if user is accepting,
   // Remove the notificaiton
   user.notifications.splice(
     user.notifications
@@ -167,7 +165,7 @@ module.exports.handleOutingInviteAction = async (
         : u.toString() == outingCreator._id.toString()
     )
   ) {
-    const newInviteAcceptedNotification = {
+    const newNotification = {
       id: Date.now() + Math.random(),
       type: "outing-invite-update",
       status,
@@ -176,7 +174,7 @@ module.exports.handleOutingInviteAction = async (
       created: new Date(Date.now()),
       active: true,
     };
-    outingCreator.notifications.push(newInviteAcceptedNotification);
+    outingCreator.notifications.push(newNotification);
   }
 
   if (status == "accepted") {
@@ -195,40 +193,36 @@ module.exports.handleOutingInviteAction = async (
     await outing.populate("chat");
     outing.chat.last_read[user._id] = false;
 
-    // Don's send join notification to the outing creator
+    // Notify outing members of outing join
     for (usr of outing.users) {
       const foundUsr = await User.findById(usr);
-      if (
-        foundUsr._id.toString() == user._id.toString() ||
-        foundUsr._id.toString() == outingCreator._id.toString()
-      ) {
+      // Don't send join notification to the joining user
+      if (foundUsr._id.toString() == user._id.toString()) {
         continue;
       }
       foundUsr.notifications.push(newOutingJoinedNotification);
       await foundUsr.save();
-    }
 
-    // send email notification to outing creator
-    // Send notification email to user
-    await outingCreator.populate({
-      path: "chats",
-      populate: {
-        path: "outing",
-      },
+      // Send websocket push update to outing users
+      this.pushUserUpdate(outing.users);
+
+      // Send webpush Notification
+      this.webpushNotify([foundUsr], {
+        title: "Outing Joined",
+        body: `${user.first_name} ${user.last_name} has joined the Outing: ${outing.name}`,
+      });
+    }
+  } else {
+    const createdByUser = await User.findById(outing.created_by);
+
+    // Send websocket push update to outing users
+    this.pushUserUpdate(outing.users);
+
+    // Send webpush Notification
+    this.webpushNotify([createdByUser], {
+      title: "Outing Invite Denied",
+      body: `${user.first_name} ${user.last_name} denied your invite for the Outing: ${outing.name}`,
     });
-    await outing.populate("activity");
-    const outingCreatorUnreadMessages =
-      this.getTotalUnreadMessages(outingCreator);
-    this.sendEmail(
-      outingCreator.username,
-      "Outing Invitation Accepted",
-      genOutingInviteAcceptedEmail(
-        user,
-        outing,
-        outingCreator.notifications.length,
-        outingCreatorUnreadMessages
-      )
-    );
   }
 
   await outing.save();
@@ -255,7 +249,6 @@ module.exports.pushUserUpdate = async (users) => {
 };
 
 module.exports.webpushNotify = async (users, payload) => {
-  console.log("sending notification!!");
   for (let user of users) {
     // Get user form DB
     const userID = user._id ? user._id.toString() : user.toString();
@@ -405,4 +398,84 @@ module.exports.outingIsPending = (user, outing) => {
     outing.users.find((uid) => uid.toString() == user._id.toString()) &&
     outing.users.length !== outing.completions.length
   );
+};
+
+module.exports.socketCors = (inDevelopment) => {
+  return inDevelopment
+    ? {
+        origin: "http://localhost:3000",
+        credentials: "include",
+      }
+    : {};
+};
+
+module.exports.onSocketConnection = (socket) => {
+  try {
+    // Message sent handler
+    socket.on("message-sent", async (data) => {
+      const chat = await Chat.findById(data.chat._id);
+      await chat.populate("outing");
+
+      // Only add message if it has not been added
+      if (!chat.messages.find((m) => m.id == data.message.id)) {
+        chat.messages.unshift(data.message);
+        chat.touched = Date.now();
+
+        // Make sure last_read for all users is this message if it is the first message
+        if (chat.messages.length == 1) {
+          const chatUsers = chat.outing ? chat.outing.users : chat.users;
+          for (let usr of chatUsers) {
+            const usrID = usr._id ? usr._id.toString() : usr.toString();
+            if (!chat.last_read[usrID]) {
+              chat.last_read[usrID] = "initialized";
+              chat.markModified("last_read");
+            }
+          }
+        }
+        await chat.save();
+
+        socket.broadcast
+          .to(chat._id.toString())
+          .emit("new-message", { message: data.message, chat });
+
+        let chatUsers = chat.outing ? chat.outing.users : chat.users;
+        // Send websocket update to client to re-download session user from server
+        this.pushUserUpdate(chatUsers);
+
+        // Send webpush notification to all users other than sending user
+        const sender = await User.findById(
+          data.message.user._id
+            ? data.message.user._id.toString()
+            : data.message.user.toString()
+        );
+        const payload = {
+          title: `${sender.first_name} ${sender.last_name} to ${
+            chat.outing ? chat.outing.name : "Chat"
+          }`,
+          body: data.message.message,
+        };
+
+        this.webpushNotify(
+          // Filter sender out of chat users list for notification sending
+          chatUsers.filter((u) => {
+            if (u._id) {
+              return u._id.toString() !== sender._id.toString();
+            } else {
+              return u.toString() !== sender._id.toString();
+            }
+          }),
+          payload
+        );
+      }
+    });
+
+    // Join connection to a room
+    socket.on("join-room", (room) => {
+      socket.join(room);
+    });
+
+    // Echo message handler
+  } catch (err) {
+    console.log(err);
+  }
 };
