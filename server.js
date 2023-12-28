@@ -19,10 +19,7 @@ app.use(
   "/static",
   express.static(path.join(__dirname, "/client/build/static"))
 );
-app.use(
-  "/public",
-  express.static(path.join(__dirname, "/client/build/"))
-);
+app.use("/public", express.static(path.join(__dirname, "/client/build/")));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json({ limit: "50mb" }));
 app.use(handleCORS);
@@ -78,14 +75,39 @@ io.on("connection", (socket) => {
             }
           }
         }
-
         await chat.save();
+
         socket.broadcast
           .to(chat._id.toString())
           .emit("new-message", { message: data.message, chat });
 
-        // Send push update to chat users
-        pushUserUpdate(chat.outing ? chat.outing.users : chat.users);
+        let chatUsers = chat.outing ? chat.outing.users : chat.users;
+        // Send websocket update to client to re-download session user from server
+        pushUserUpdate(chatUsers);
+
+        // Send webpush notification to all users other than sending user
+        const sender = await User.findById(
+          data.message.user._id
+            ? data.message.user._id.toString()
+            : data.message.user.toString()
+        );
+        const payload = {
+          title: `${sender.first_name} ${sender.last_name} to ${
+            chat.outing ? chat.outing.name : "Chat"
+          }`,
+          body: data.message.message,
+        };
+        webpushNotify(
+          // Filter sender out of chat users list for notification sending
+          chatUsers.filter((u) => {
+            if (u._id) {
+              return u._id.toString() !== sender._id.toString();
+            } else {
+              return u.toString() !== sender._id.toString();
+            }
+          }),
+          payload
+        );
       }
     });
 
@@ -133,7 +155,7 @@ app.use(session(sessionConfig));
 
 // Morgan logger
 const morgan = require("morgan");
-const { pushUserUpdate } = require("./utils/utils");
+const { pushUserUpdate, webpushNotify } = require("./utils/utils");
 const user = require("./models/user");
 app.use(morgan("dev"));
 
@@ -150,7 +172,7 @@ app.use("/user", require("./routes/user"));
 app.use("/activity", require("./routes/activity"));
 app.use("/data", require("./routes/data"));
 app.use("/image", require("./routes/image"));
-app.use("/notifications", require("./routes/notifications"))
+app.use("/notifications", require("./routes/notifications"));
 
 // All routes go to the client, routing happens on the front end
 app.get("*", (req, res) => {

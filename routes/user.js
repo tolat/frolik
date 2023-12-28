@@ -23,13 +23,17 @@ const {
   findNonOutingChat,
   getTotalUnreadMessages,
   outingIsPending,
+  webpushNotify,
 } = require("../utils/utils");
 const {
   reqAuthenticated,
   tryCatch,
   sameUserOnly,
 } = require("../utils/middleware");
-const { genVerifyAccountEmail, genOutingInviteEmail } = require("../utils/emailTemplates");
+const {
+  genVerifyAccountEmail,
+  genOutingInviteEmail,
+} = require("../utils/emailTemplates");
 
 const router = express.Router({ mergeParams: true });
 
@@ -204,7 +208,11 @@ router.post(
 
       // Send email confirmation linkand set user status as pending
       const link = `${process.env.SERVER}/user/${user._id.toString()}/verify`;
-      sendEmail(userData.username, "Verify frolik.ca Email", genVerifyAccountEmail(link));
+      sendEmail(
+        userData.username,
+        "Verify frolik.ca Email",
+        genVerifyAccountEmail(link)
+      );
       user.status = { status: "Pending", updated: Date.now() };
       await user.save();
 
@@ -486,7 +494,12 @@ router.post(
       sendEmail(
         u.username,
         "Outing Invitation",
-        genOutingInviteEmail(user, outing, u.notifications.length, userUnreadMessages)
+        genOutingInviteEmail(
+          user,
+          outing,
+          u.notifications.length,
+          userUnreadMessages
+        )
       );
     }
 
@@ -523,6 +536,12 @@ router.post(
 
     // Push updates to the socket
     pushUserUpdate(newOuting.invited);
+
+    // Send webpush Notification to invited users
+    webpushNotify(newOuting.invited, {
+      title: "Outing Invite",
+      body: `${user.first_name} ${user.last_name} has invited you on an Outing!`,
+    });
 
     // Send updated user and populated friends back
     res.send({ user, populatedFriends, outing: newOuting });
@@ -664,9 +683,14 @@ router.get(
       const foundUsr = await User.findById(usr);
       foundUsr.notifications.push(newNotification);
       await foundUsr.save();
-      pushUserUpdate([]);
     }
-    pushUserUpdate([outing.users]);
+    pushUserUpdate(outing.users);
+
+    // Send webpush Notification to all outing members
+    webpushNotify(outing.users, {
+      title: "Outing Left",
+      body: `${user.first_name} ${user.last_name} has left the Outing "${outing.name}"`,
+    });
 
     // Remove all notifications from this outing for the leaving user
     user.notifications = user.notifications.filter((n) =>
@@ -740,6 +764,15 @@ router.get(
       ...outing.invited,
       ...outing.flakes,
     ]);
+
+    // Send webpush Notification to related users
+    webpushNotify(
+      [user, ...outing.users, ...outing.invited, ...outing.flakes],
+      {
+        title: "Outing Deleted",
+        body: `${user.first_name} ${user.last_name} has deleted the Outing "${outing.name}"`,
+      }
+    );
 
     // Delete outing chat
     await Chat.deleteOne({ _id: outing.chat.toString() });
@@ -1019,13 +1052,18 @@ router.post(
     }
 
     // push an update through socket to users other than the request user
-    pushUserUpdate(
-      outing.users.filter((u) =>
-        u._id
-          ? u._id.toString() != user._id.toString()
-          : u.toString() != user._id.toString()
-      )
+    const otherUsers = outing.users.filter((u) =>
+      u._id
+        ? u._id.toString() != user._id.toString()
+        : u.toString() != user._id.toString()
     );
+    pushUserUpdate(otherUsers);
+
+    // Send a webpush Notification to other users as well
+    webpushNotify(otherUsers, {
+      title: "Outing Marked Complete",
+      body: `${user.first_name} ${user.last_name} marked the Outing "${outing.name}" completed`,
+    });
 
     // remove user from outing invited
     outing.invited = [];
@@ -1067,6 +1105,12 @@ router.post(
     await user.save();
 
     pushUserUpdate([user, friendUser]);
+
+    // Send a webpush Notification to other users as well
+    webpushNotify([friendUser], {
+      title: "Friend Request",
+      body: `${user.first_name} ${user.last_name} is asking to be your friend!`,
+    });
 
     await populateUser(user);
 
@@ -1214,6 +1258,12 @@ router.post(
 
     // Send push update to all involved users
     pushUserUpdate([user, ...withUsers]);
+
+    // Send a webpush Notification to involved users as well
+    webpushNotify([user, ...withUsers], {
+      title: "Chat Created",
+      body: `${user.first_name} ${user.last_name} added you to a chat`,
+    });
 
     const unpopulatedUser = await User.findById(user._id);
     chat.users = [unpopulatedUser, ...withUsers];

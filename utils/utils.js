@@ -3,6 +3,7 @@ const Chat = require("../models/chat");
 const Outing = require("../models/outing");
 const nodemailer = require("nodemailer");
 const io = require("../server");
+const webpush = require("web-push"); // Add this line for web-push
 
 const {
   uniqueNamesGenerator,
@@ -216,7 +217,8 @@ module.exports.handleOutingInviteAction = async (
       },
     });
     await outing.populate("activity");
-    const outingCreatorUnreadMessages = this.getTotalUnreadMessages(outingCreator);
+    const outingCreatorUnreadMessages =
+      this.getTotalUnreadMessages(outingCreator);
     this.sendEmail(
       outingCreator.username,
       "Outing Invitation Accepted",
@@ -245,9 +247,28 @@ module.exports.handleOutingInviteAction = async (
   ]);
 };
 
-module.exports.pushUserUpdate = (users) => {
-  for (user of users) {
-    io.to(user._id ? user._id.toString() : user.toString()).emit("update-user");
+module.exports.pushUserUpdate = async (users) => {
+  for (let user of users) {
+    const usrID = user._id ? user._id.toString() : user.toString();
+    io.to(usrID).emit("update-user");
+  }
+};
+
+module.exports.webpushNotify = async (users, payload) => {
+  console.log("sending notification!!");
+  for (let user of users) {
+    // Get user form DB
+    const userID = user._id ? user._id.toString() : user.toString();
+    user = await User.findById(userID);
+
+    // Send webpush noticication as well if webpushPayload is given
+    if (user.pushSubscription) {
+      webpush
+        .sendNotification(user.pushSubscription, JSON.stringify(payload))
+        .catch((error) => {
+          console.error("Error sending notification:", error);
+        });
+    }
   }
 };
 
@@ -262,6 +283,12 @@ module.exports.handleFriendRequestAction = async (
     (id) => id.toString() != user._id.toString()
   );
 
+  // Make sure we have the requested user
+  const requestedUser = await User.findById(
+    user._id ? user._id.toString() : user.toString()
+  );
+  const requestedName = `${requestedUser.first_name} ${requestedUser.last_name}`;
+
   if (status == "denied") {
     // Notify requesting user of denial
     const requestDeniedNotification = {
@@ -273,6 +300,12 @@ module.exports.handleFriendRequestAction = async (
       active: true,
     };
     requestingUser.notifications.push(requestDeniedNotification);
+
+    // Send a webpush Notification to other users as well
+    this.webpushNotify([requestingUser], {
+      title: "Friend Request Denied",
+      body: `${requestedName} denied your friend request`,
+    });
   } else {
     // Notify requesting user of acceptance
     const requestAcceptedNotification = {
@@ -284,6 +317,12 @@ module.exports.handleFriendRequestAction = async (
       active: true,
     };
     requestingUser.notifications.push(requestAcceptedNotification);
+
+    // Send a webpush Notification to other users as well
+    this.webpushNotify([requestingUser], {
+      title: "Friend Request Accepted",
+      body: `${requestedName} accepted your friend request!`,
+    });
 
     // Add users to eachother's friends list
     requestingUser.friends.push(user);

@@ -5,6 +5,7 @@ import { getServer } from "../utils/env-utils";
 import { dataActions } from "./data-slice";
 import { initializeUserPhotos } from "./data-actions";
 import { fetchChats } from "../utils/data-fetch";
+import { setBadge } from "../utils/badge";
 
 // Send request to log the user in and start a session in the browser
 export const fetchLogin = (username, password, onComplete) => {
@@ -87,6 +88,7 @@ export const fetchLogout = () => {
     window.location = "/login";
     dispatch(authActions.logout());
     setTimeout(() => {
+      setBadge(0)
       dispatch(dataActions.setUserProfilePicture(false));
       dispatch(dataActions.setUserPhotos([]));
       dispatch(authActions.deleteUser());

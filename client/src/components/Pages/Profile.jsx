@@ -136,13 +136,13 @@ const Profile = (props) => {
 
   return (
     <div className={styles.container}>
-      <SimpleButton
+      {/* <SimpleButton
         onClick={() => {
           fetchPushTest(user._id);
         }}
       >
         Test Push
-      </SimpleButton>
+      </SimpleButton> */}
       <EditProfileModal />
       <WarningPopup
         selector={"too-many-outings"}

@@ -16,11 +16,12 @@ function App() {
   // Connect socket.io to server for message sending
   const user = useSelector((state) => state.auth.user);
 
-  // Register service worker if logged in
+  // Register service worker if logged in ad set app badge
   useEffect(() => {
     if (user) {
-      console.log("\n\nREGISTERING: ", user.first_name, user.last_name, '\n\n')
       serviceWorkerRegistration.register({user});
+      const unreadMessages = getTotalUnreadMessages(user) + user.notifications?.length;
+      setBadge(unreadMessages)
     }
   }, [user]);
 
@@ -28,13 +29,6 @@ function App() {
   useEffect(() => {
     fetchGlobals();
   }, []);
-
-  // Update unread badge
-  useEffect(() => {
-    const unreadMessages =
-      getTotalUnreadMessages(user) + user.notifications?.length;
-    user && setBadge(unreadMessages);
-  }, [user]);
 
   useEffect(() => {
     socket.on("connect", onConnect);
