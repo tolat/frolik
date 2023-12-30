@@ -56,13 +56,4 @@ router.post(
   })
 );
 
-router.get(
-  "/notifications-for/:userID",
-  tryCatch(async (req, res) => {
-    const user = await User.findById(req.params.userID)
-
-    const notificationCount = 0
-  })
-);
-
 module.exports = router;

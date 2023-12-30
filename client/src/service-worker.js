@@ -71,14 +71,18 @@ self.addEventListener("message", (event) => {
 });
 
 self.addEventListener("push", (event) => {
-  const payload = event.data.json(); 
+  const payload = event.data.json();
   const { title, body } = payload;
 
   const options = {
     body: body,
-    icon: '/public/icon_192.png', 
-    badge: '/public/icon_512.png'
+    icon: "/public/icon_192.png",
+    badge: "/public/icon_512.png",
   };
 
+  // Show Notification
   self.registration.showNotification(title, options);
+
+  // Set app badge
+  navigator.setAppBadge(payload.notificationCount);
 });

@@ -254,6 +254,8 @@ module.exports.webpushNotify = async (users, payload) => {
     const userID = user._id ? user._id.toString() : user.toString();
     user = await User.findById(userID);
 
+    payload.notificationCount = this.getTotalUnreadMessages(user) + user.notifications?.length
+
     // Send webpush noticication as well if webpushPayload is given
     if (user.pushSubscription) {
       webpush
