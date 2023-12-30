@@ -4,13 +4,14 @@ import { useEffect } from "react";
 import { socket } from "./socket";
 import { onConnect, onDisconnect, onUpdateUser } from "./store/socket-actions";
 import { receiveChatMessage, sendChatMessage } from "./store/chat-actions";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import store from "./store";
 import { goActions } from "./store/go-slice";
 import { fetchGlobals } from "./utils/data-fetch";
 import { setBadge } from "./utils/badge";
 import { getTotalUnreadMessages } from "./utils/utils";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+import { socketActions } from "./store/socket-slice";
 
 const connectSocket = async (socket, user) => {
   try {
@@ -22,6 +23,7 @@ const connectSocket = async (socket, user) => {
 };
 
 function App() {
+  const dispatch = useDispatch()
   // Connect socket.io to server for message sending
   const user = useSelector((state) => state.auth.user);
 
@@ -70,6 +72,7 @@ function App() {
     // Set window listener to check if socket is connected
     const checkSocketConnection = () => {
       if (!socket.connected) {
+        dispatch(socketActions.setReloadFlag(true))
         console.log("trying to reconnect socket..");
         connectSocket(socket, user);
       }
