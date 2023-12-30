@@ -76,10 +76,13 @@ function App() {
     };
 
     // Check socket connection every 1.random seconds
-    window.setInterval(checkSocketConnection, 1000 + Math.random() * 1000);
+    const intervalID = window.setInterval(
+      checkSocketConnection,
+      1000 + Math.random() * 1000
+    );
 
     return () => {
-      window.clearInterval(checkSocketConnection);
+      window.clearInterval(intervalID);
     };
   });
 

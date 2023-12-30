@@ -457,13 +457,11 @@ module.exports.onSocketConnection = (socket) => {
 
         this.webpushNotify(
           // Filter sender out of chat users list for notification sending
-          chatUsers.filter((u) => {
-            if (u._id) {
-              return u._id.toString() !== sender._id.toString();
-            } else {
-              return u.toString() !== sender._id.toString();
-            }
-          }),
+          chatUsers.filter((u) =>
+            u._id
+              ? u._id.toString() !== sender._id.toString()
+              : u.toString() !== sender._id.toString()
+          ),
           payload
         );
       }
