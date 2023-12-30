@@ -11,7 +11,7 @@ import { modalActions } from "../../store/modal-slice";
 const Chat = memo((props) => {
   const chats = useSelector((state) => state.chat.chats);
   const user = useSelector((state) => state.auth.user);
-  const fetchingChats = useSelector(state=> state.chat.fetchingChats)
+  const fetchingChats = useSelector((state) => state.chat.fetchingChats);
   const [chatSearch, setChatSearch] = useState("");
   const dispatch = useDispatch();
   const validChats = applyChatSearch(
@@ -63,7 +63,7 @@ const Chat = memo((props) => {
         defaultVal={""}
         placeholder={"Search Chats.."}
       />
-      {!chats || fetchingChats ? (
+      {!chats || (fetchingChats && !chats[0]) ? (
         <h2 style={{ width: "100%", textAlign: "center" }}>Loading Chats..</h2>
       ) : !chats[0] ? (
         <div className={styles.noChatsMessage}>
