@@ -84,5 +84,6 @@ self.addEventListener("push", (event) => {
   self.registration.showNotification(title, options);
 
   // Set app badge
+  console.log("Setting APP BADGE: ", payload.notificationCount);
   navigator.setAppBadge(payload.notificationCount);
 });

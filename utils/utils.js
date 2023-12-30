@@ -252,9 +252,20 @@ module.exports.webpushNotify = async (users, payload) => {
   for (let user of users) {
     // Get user form DB
     const userID = user._id ? user._id.toString() : user.toString();
-    user = await User.findById(userID);
+    user = await User.findById(userID).populate({
+      path: "chats",
+      populate: {
+        path: "outing",
+      },
+    });
 
-    payload.notificationCount = this.getTotalUnreadMessages(user) + user.notifications?.length
+    payload.notificationCount =
+      this.getTotalUnreadMessages(user) + user.notifications?.length;
+
+    console.log(
+      `sending notificationcount to ${user.first_name}: `,
+      payload.notificationCount
+    );
 
     // Send webpush noticication as well if webpushPayload is given
     if (user.pushSubscription) {
@@ -388,11 +399,11 @@ module.exports.getTotalUnreadMessages = (user) => {
 
   return user?.chats
     ?.filter((c) =>
-      c.outing ? !c.outing.flakes.find((uid) => uid === user._id) : true
+      c.outing
+        ? c.outing.users.find((uid) => uid.toString() === user._id.toString())
+        : true
     )
-    .reduce((count, chat) => {
-      return count + getUnreadChatMessages(user, chat);
-    }, 0);
+    .reduce((count, chat) => (count += getUnreadChatMessages(user, chat)), 0);
 };
 
 module.exports.outingIsPending = (user, outing) => {
