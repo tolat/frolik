@@ -6,7 +6,6 @@ import { socketActions } from "./socket-slice";
 
 export function onConnect() {
   console.log('socket connected')
-  onUpdateUser()
   store.dispatch(socketActions.setConnected(true));
 }
 
