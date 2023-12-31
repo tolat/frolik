@@ -72,7 +72,6 @@ function App() {
     // Set window listener to check if socket is connected
     const checkSocketConnection = () => {
       if (!socket.connected) {
-        dispatch(socketActions.setReloadFlag(true))
         console.log("trying to reconnect socket..");
         connectSocket(socket, user);
       }

@@ -36,16 +36,21 @@ const Navbar = (props) => {
   const warningMessage = useSelector((state) => state.popup.warningMessage);
   const warningHeader = useSelector((state) => state.popup.warningHeader);
   const [activePage, setActivePage] = useState(false);
-  const [masterDisplay, setMasterDisplay] = useState("flex")
+  const [masterDisplay, setMasterDisplay] = useState("flex");
 
   // Hide navbar on login page
-  useEffect(() =>{
-    if(currentUrl === '/profile' || currentUrl === '/outing' || currentUrl === '/social' ||currentUrl === '/chat'){
-      setMasterDisplay("flex")
-    } else{
-      setMasterDisplay("none")
+  useEffect(() => {
+    if (
+      currentUrl === "/profile" ||
+      currentUrl === "/outing" ||
+      currentUrl === "/social" ||
+      currentUrl === "/chat"
+    ) {
+      setMasterDisplay("flex");
+    } else {
+      setMasterDisplay("none");
     }
-  },[currentUrl])
+  }, [currentUrl]);
 
   const handleShowNotifications = async () => {
     if (modalState.selector && modalState.selector !== "notifications") {
@@ -99,7 +104,11 @@ const Navbar = (props) => {
   }, [currentUrl]);
 
   return (
-    <div style={{display: masterDisplay}} id="navbar" className={styles.header}>
+    <div
+      style={{ display: masterDisplay }}
+      id="navbar"
+      className={styles.header}
+    >
       <WarningPopup
         selector={"generic-warning"}
         header={warningHeader}

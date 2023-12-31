@@ -6,10 +6,6 @@ import { socketActions } from "./socket-slice";
 
 export function onConnect() {
   console.log("socket connected");
-  if (store.getState().socket.reloadFlag) {
-    store.dispatch(socketActions.setReloadFlag(false));
-    window.location.reload();
-  }
   store.dispatch(socketActions.setConnected(true));
 }
 
