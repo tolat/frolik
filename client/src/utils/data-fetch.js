@@ -373,7 +373,9 @@ export const fetchOuting = (outingID, user, onComplete) => {
   };
 
   const handleResponse = (response) => {
-    onComplete(response.outing);
+    if (response.outing) {
+      onComplete(response.outing);
+    }
   };
 
   const handleError = (err) => {
