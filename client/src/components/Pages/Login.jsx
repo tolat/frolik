@@ -84,6 +84,7 @@ function Login() {
   return (
     <div className={styles["login-page"]}>
       <CreateAccountModal />
+      <img className={styles.logoTop} src={logo} alt="logo" />
       <div className={styles.formContainer}>
         <form className={styles["login-form"]} onSubmit={handleSubmit}>
           <h1 className={styles.header}>Login</h1>

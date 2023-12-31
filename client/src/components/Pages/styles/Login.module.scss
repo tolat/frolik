@@ -64,18 +64,22 @@
   @include responsive("background", unset, "", "", "");
   @include responsive("box-shadow", unset, "", "", "");
   @include responsive("margin-bottom", 0, "", "", "");
-
 }
-
 
 .header {
   display: flex;
   align-items: center;
+  @include responsive("display", none, flex, flex, flex);
 }
 
 .logo {
   height: 2.2rem;
   margin-bottom: -0.2rem;
+}
+
+.logoTop {
+  height: 6rem;
+  @include responsive("margin-bottom", 0, 3rem, 3rem, 3rem);
 }
 
 .container {
@@ -152,7 +156,13 @@ label {
   margin-top: 0.4rem;
   color: black !important;
 
-  @include responsive("background-color", white, $button_grey, $button_grey, $button_grey);
+  @include responsive(
+    "background-color",
+    white,
+    $button_grey,
+    $button_grey,
+    $button_grey
+  );
 }
 
 .smallButtons {
@@ -161,7 +171,6 @@ label {
   justify-content: space-between;
 
   @include responsive("margin-top", 0.5rem, 2rem, 2rem, 2rem);
-
 }
 
 .loaderContainer {
