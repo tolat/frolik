@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isConnected: false,
   reloadFlag: false,
+  isConnecting: false,
 };
 const socketSlice = createSlice({
   name: "socket",
@@ -13,6 +14,9 @@ const socketSlice = createSlice({
     },
     setReloadFlag(state, action) {
       state.reloadFlag = action.payload;
+    },
+    setIsConnecting(state, action) {
+      state.isConnecting = action.payload;
     },
   },
 });

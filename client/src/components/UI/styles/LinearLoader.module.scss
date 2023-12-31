@@ -1,0 +1,27 @@
+@import "../../../utils/responsive.scss";
+
+.linearLoaderContainer {
+  width: 100%;
+  height: 1rem;
+  position: relative;
+  width: 100vw;
+  max-width: calc($central_span_width - 2rem);
+  //opacity: 0;
+}
+
+.linearLoader {
+  width: 100%;
+  height: 3px;
+  position: absolute;
+  background: $blue;
+  animation: loading 1.3s infinite ease-in-out;
+}
+
+@keyframes loading {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}

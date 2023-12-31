@@ -259,7 +259,15 @@ const Go = (props) => {
             borderSizeInRem={1.4}
           />
           <button onClick={handleAddUserClick} className={styles.roundButton}>
-            <img className={styles.editIcon} src={plusIcon} alt="add-people" />
+            <img
+              className={`${styles.editIcon} ${
+                goState.outing.activity.name && goState.outing.users.length < 2
+                  ? styles["bump"]
+                  : null
+              }`}
+              src={plusIcon}
+              alt="add-people"
+            />
           </button>
         </div>
         {goState.outing.users[1] && goState.outing.activity.name && (

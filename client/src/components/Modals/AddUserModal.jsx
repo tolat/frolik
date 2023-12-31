@@ -61,8 +61,10 @@ const AddUserModal = (props) => {
 
   return (
     <ModalPortal>
-      <div style={modalStyle} className={styles.container}>
-        <ModalHeaderPortal selector={'add-user'}>Add Outing Members</ModalHeaderPortal>
+      <div style={modalStyle} className={`${styles.container} noscroll`}>
+        <ModalHeaderPortal selector={"add-user"}>
+          Add Outing Members
+        </ModalHeaderPortal>
         <div className={styles.dailyMatchesContainer}>
           <h2 className={styles.matchesHeader}>Daily Matches</h2>
           <div className={styles.headerSubtext}>
@@ -90,7 +92,9 @@ const AddUserModal = (props) => {
         </div>
         {availableFriends[0] ? (
           <Fragment>
-            <h2 style={{ width: "100%", fontSize: "1.8rem" }}>Active Friends</h2>
+            <h2 style={{ width: "100%", fontSize: "1.8rem" }}>
+              Active Friends
+            </h2>
             {availableFriends.map((f) => (
               <FriendCard
                 id={`${f._id || f}-friendCard-addUserModal`}

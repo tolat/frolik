@@ -72,6 +72,7 @@ function App() {
     // Set window listener to check if socket is connected
     const checkSocketConnection = () => {
       if (!socket.connected) {
+        dispatch(socketActions.setIsConnecting(true))
         console.log("trying to reconnect socket..");
         connectSocket(socket, user);
       }
@@ -84,6 +85,7 @@ function App() {
     );
 
     return () => {
+      dispatch(socketActions.setIsConnecting(false))
       window.clearInterval(intervalID);
     };
   });

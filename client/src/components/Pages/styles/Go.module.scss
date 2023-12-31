@@ -76,7 +76,7 @@
 .goButton {
   background-color: $green;
   color: white !important;
-  font-size: 1.3rem !important;
+  font-size: 1.4rem !important;
   font-weight: bold;
   box-sizing: border-box;
   width: 16rem !important;
@@ -84,7 +84,8 @@
   display: flex;
   align-items: center;
   margin-bottom: 3rem;
-  margin-top: 1rem;
+  margin-top: 2rem;
+  border-radius: 100rem !important;
 }
 
 .simpleHeader {
@@ -121,6 +122,10 @@
   font-size: 1.6rem;
   font-weight: bold;
   margin-bottom: 2.5rem;
+  animation: bump 5s infinite;
+}
+
+.bump{
   animation: bump 5s infinite;
 }
 
