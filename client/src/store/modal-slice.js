@@ -34,10 +34,9 @@ const modalSlice = createSlice({
       state.zIndex = action.payload;
     },
     showModal(state, action) {
+      document.documentElement.style.overflowY = 'clip'
       setTimeout(() => {
         document.getElementById("main-container-children").style.opacity = 0;
-        document.getElementById("main-container-children").style.overflowY =
-          "clip";
       }, 300);
       state.marginLeft = "0%";
       state.zIndex = "2";

@@ -28,6 +28,7 @@ const modalCleanup = (setUsePrevious) => {
 export const hideModal = (setUsePrevious = false) => {
   document.getElementById("main-container-children").style.opacity = 1;
   document.getElementById("main-container-children").style.overflowY = null;
+  document.documentElement.style.overflowY = null
 
   return new Promise((resolve) => {
     const dispatch = store.dispatch;

@@ -575,7 +575,6 @@ router.get(
     if (!outing) {
       user.outings = user.outings.filter((o) => o._id.toString() !== outingID);
       await user.save();
-      pushUserUpdate([user]);
       res.sendStatus(200);
     } else {
       await outing.populate("users");
