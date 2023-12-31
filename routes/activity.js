@@ -84,7 +84,7 @@ router.post(
       .map((a) => a.toString())
       .filter((aid) => aid !== activity._id.toString());
     await user.save();
-    await Activity.findByIdAndDelete(activity._id.toString());
+    //await Activity.findByIdAndDelete(activity._id.toString());
 
     pushUserUpdate([user]);
     res.sendStatus(200);

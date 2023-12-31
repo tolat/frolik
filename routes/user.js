@@ -553,7 +553,7 @@ router.get(
   "/:id/outing/:outingid",
   reqAuthenticated,
   tryCatch(async (req, res) => {
-    const user = await User.findById(req.params.id);
+    let user = await User.findById(req.params.id);
     const outingID = req.params.outingid;
 
     // send unauthorized if this outing is not related to the user
@@ -571,6 +571,14 @@ router.get(
     }
 
     const outing = await Outing.findById(outingID);
+
+    if(!outing){
+      user.outings = user.outings.filter(o => o._id.toString() !== outingID)
+      await user.save()
+      pushUserUpdate([user])
+      res.sendStatus(200)
+    }
+
     await outing.populate("users");
     await outing.populate("activity");
     await outing.populate("users.outings");
@@ -684,7 +692,7 @@ router.get(
       foundUsr.notifications.push(newNotification);
       await foundUsr.save();
     }
-    pushUserUpdate(outing.users);
+    pushUserUpdate([user, ...outing.users]);
 
     // Send webpush Notification to all outing members
     webpushNotify(outing.users, {
