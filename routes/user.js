@@ -572,22 +572,22 @@ router.get(
 
     const outing = await Outing.findById(outingID);
 
-    if(!outing){
-      user.outings = user.outings.filter(o => o._id.toString() !== outingID)
-      await user.save()
-      pushUserUpdate([user])
-      res.sendStatus(200)
+    if (!outing) {
+      user.outings = user.outings.filter((o) => o._id.toString() !== outingID);
+      await user.save();
+      pushUserUpdate([user]);
+      res.sendStatus(200);
+    } else {
+      await outing.populate("users");
+      await outing.populate("activity");
+      await outing.populate("users.outings");
+      await outing.populate("users.outings.activity");
+      await outing.populate("invited");
+      await outing.populate("invited.outings");
+      await outing.populate("invited.outings.activity");
+
+      res.send({ outing });
     }
-
-    await outing.populate("users");
-    await outing.populate("activity");
-    await outing.populate("users.outings");
-    await outing.populate("users.outings.activity");
-    await outing.populate("invited");
-    await outing.populate("invited.outings");
-    await outing.populate("invited.outings.activity");
-
-    res.send({ outing });
   })
 );
 
