@@ -45,6 +45,7 @@ const SlideInModal = (props) => {
         id="modal-container"
       >
         <div
+          id="modal-header-container"
           className={styles.modalHeader}
           style={{ ...modalState.headerStyle, width: headerWidth }}
         >

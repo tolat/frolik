@@ -37,10 +37,9 @@ function App() {
     }
   }, [user]);
 
-  // Fetch Globals and update user once on app load
+  // Fetch Globals once on app load
   useEffect(() => {
     fetchGlobals();
-    onUpdateUser()
   }, []);
 
   // Handle websocket events
