@@ -29,8 +29,9 @@ const Navbar = (props) => {
   const user = useSelector((state) => state.auth.user);
   const authState = useSelector((state) => state.auth);
   const modalState = useSelector((state) => state.modal);
+  const chats = useSelector(state => state.chat.chats);
   const dispatch = useDispatch();
-  const unreadChatMessages = user && getTotalUnreadMessages(user);
+  const unreadChatMessages = chats && getTotalUnreadMessages(user);
   const location = useLocation();
   const currentUrl = location.pathname;
   const warningMessage = useSelector((state) => state.popup.warningMessage);
