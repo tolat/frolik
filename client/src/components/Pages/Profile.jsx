@@ -25,6 +25,7 @@ import { goActions } from "../../store/go-slice";
 import { createChat, fetchChats } from "../../utils/data-fetch";
 import { hideModal } from "../../store/modal-actions";
 import editIcon from "../../images/edit-light.png";
+import InstallPrompt from "../Popups/InstallPrompt";
 
 const sliderIcons = [
   {
@@ -136,6 +137,7 @@ const Profile = (props) => {
   return (
     <div className={styles.container}>
       <EditProfileModal />
+      <InstallPrompt />
       <WarningPopup
         selector={"too-many-outings"}
         header={"You have too many Pending Outings!"}

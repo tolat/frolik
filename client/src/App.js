@@ -9,7 +9,7 @@ import store from "./store";
 import { goActions } from "./store/go-slice";
 import { fetchGlobals } from "./utils/data-fetch";
 import { setBadge } from "./utils/badge";
-import { getTotalUnreadMessages, showIosInstallModal } from "./utils/utils";
+import { getTotalUnreadMessages } from "./utils/utils";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { socketActions } from "./store/socket-slice";
 
@@ -34,15 +34,6 @@ function App() {
       const unreadMessages =
         getTotalUnreadMessages(user) + user.notifications?.length;
       setBadge(unreadMessages);
-    }
-  }, [user]);
-
-  // Handle showing PWA install prompt
-  useEffect(() => {
-    if (user) {
-      if(showIosInstallModal('iOS-install-prompt')){
-        alert("Install App?")
-      }
     }
   }, [user]);
 
