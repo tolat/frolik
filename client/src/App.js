@@ -9,7 +9,7 @@ import store from "./store";
 import { goActions } from "./store/go-slice";
 import { fetchGlobals } from "./utils/data-fetch";
 import { setBadge } from "./utils/badge";
-import { getTotalUnreadMessages } from "./utils/utils";
+import { getTotalUnreadMessages, showIosInstallModal } from "./utils/utils";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { socketActions } from "./store/socket-slice";
 
@@ -23,17 +23,26 @@ const connectSocket = async (socket, user) => {
 };
 
 function App() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   // Connect socket.io to server for message sending
   const user = useSelector((state) => state.auth.user);
 
-  // Register service worker if logged in and set app badge
+  // Register service worker and set app badge prompt if logged in
   useEffect(() => {
     if (user) {
       serviceWorkerRegistration.register({ user });
       const unreadMessages =
         getTotalUnreadMessages(user) + user.notifications?.length;
       setBadge(unreadMessages);
+    }
+  }, [user]);
+
+  // Handle showing PWA install prompt
+  useEffect(() => {
+    if (user) {
+      if(showIosInstallModal('iOS-install-prompt')){
+        alert("Install App?")
+      }
     }
   }, [user]);
 
@@ -72,7 +81,7 @@ function App() {
     // Set window listener to check if socket is connected
     const checkSocketConnection = () => {
       if (!socket.connected) {
-        dispatch(socketActions.setIsConnecting(true))
+        dispatch(socketActions.setIsConnecting(true));
         console.log("trying to reconnect socket..");
         connectSocket(socket, user);
       }
@@ -85,7 +94,7 @@ function App() {
     );
 
     return () => {
-      dispatch(socketActions.setIsConnecting(false))
+      dispatch(socketActions.setIsConnecting(false));
       window.clearInterval(intervalID);
     };
   });

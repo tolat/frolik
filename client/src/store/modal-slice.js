@@ -34,7 +34,7 @@ const modalSlice = createSlice({
       state.zIndex = action.payload;
     },
     showModal(state, action) {
-      document.documentElement.style.overflowY = 'clip'
+      document.documentElement.style.overflowY = "clip";
       setTimeout(() => {
         document.getElementById("main-container-children").style.opacity = 0;
       }, 300);
@@ -49,7 +49,7 @@ const modalSlice = createSlice({
         } else {
           state.headerStyle = { backgroundColor: "white" };
         }
-      } else if(state.selector !== 'chat-modal') {
+      } else if (state.selector !== "chat-modal") {
         state.headerStyle = { backgroundColor: "white" };
       }
     },

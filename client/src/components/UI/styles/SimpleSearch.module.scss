@@ -14,6 +14,7 @@
 .input {
   outline: none;
   border: 1px solid $light_grey;
+  border-right: none;
   padding: 1rem;
   width: 100%;
   box-sizing: border-box;
@@ -36,7 +37,7 @@
 .searchIcon {
   height: 100%;
   padding: 28%;
-  background-color: $button_grey;
+  background-color: $card_grey;
   border: 1px solid $light_grey;
   border-left: none;
   box-sizing: border-box;
