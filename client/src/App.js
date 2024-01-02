@@ -13,7 +13,7 @@ import { getTotalUnreadMessages } from "./utils/utils";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { socketActions } from "./store/socket-slice";
 import { modalActions } from "./store/modal-slice";
-import PullToRefresh from 'pulltorefreshjs';
+import PullToRefresh from "pulltorefreshjs";
 
 const connectSocket = async (socket, user) => {
   try {
@@ -105,7 +105,7 @@ function App() {
     const standalone =
       navigator.standalone ||
       window.matchMedia("(display-mode: standalone)").matches;
-      
+
     if (!standalone) {
       return; // not standalone; no pull to refresh needed
     }
@@ -116,6 +116,24 @@ function App() {
       },
     });
   });
+
+  // Add check to check localstorage for user update flag
+  useEffect(() => {
+    const checkForUpdateFlag = () => {
+      const updateUser = localStorage.getItem("frolk-user-update");
+      if (updateUser && user) {
+        onUpdateUser();
+        localStorage.setItem('frolik-user-update', null)
+      }
+    };
+
+    // Check socket connection every 1.random seconds
+    const intervalID = window.setInterval(checkForUpdateFlag, 2000);
+
+    return () => {
+      window.clearInterval(intervalID);
+    };
+  }, [user]);
 
   return <RouterProvider router={router} />;
 }

@@ -18,8 +18,10 @@ export function onDisconnect() {
 export function onUpdateUser() {
   console.log("socket user update");
   const user = store.getState().auth.user;
+  if (user) {
+    fetchChats(user);
+    fetchPhotos(user);
+  }
   fetchAuth();
-  fetchChats(user);
-  fetchPhotos(user);
   setLastReadMessage();
 }

@@ -85,4 +85,7 @@ self.addEventListener("push", (event) => {
 
   // Set app badge
   navigator.setAppBadge(payload.notificationCount);
+
+  // set flag in localstorage
+  localStorage.setItem('frolik-user-update', 'true')
 });
