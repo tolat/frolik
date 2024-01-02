@@ -458,7 +458,7 @@ export const showIosInstallModal = (localStorageKey) => {
   // check when modal has been shown last. show once every day.
   const localStorageKeyValue = localStorage.getItem(localStorageKey);
   const iosInstallModalShown = localStorageKeyValue
-    ? Date.now() - parseInt(JSON.parse(localStorageKeyValue)) < 10000
+    ? Date.now() - parseInt(JSON.parse(localStorageKeyValue).time) < 10000
       ? true
       : false
     : false;
@@ -469,7 +469,39 @@ export const showIosInstallModal = (localStorageKey) => {
   if (shouldShowModalResponse) {
     localStorage.setItem(
       localStorageKey,
-      JSON.stringify({ updated: new Date().getTime() })
+      JSON.stringify({ time: new Date().getTime() })
+    );
+  }
+  return shouldShowModalResponse;
+};
+
+export const showAndroidInstallModal = (localStorageKey) => {
+  // detect if the device is on iOS
+  const isIos = () => {
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    return /iphone|ipad|ipod/.test(userAgent);
+  };
+
+  // check if the device is in standalone mode
+  const isInStandaloneMode = () => {
+    return "standalone" in window.navigator && window.navigator.standalone;
+  };
+
+  // check when modal has been shown last. show once every day.
+  const localStorageKeyValue = localStorage.getItem(localStorageKey);
+  const androidInstallModalShown = localStorageKeyValue
+    ? Date.now() - parseInt(JSON.parse(localStorageKeyValue).time) < 86400000
+      ? true
+      : false
+    : false;
+
+  const shouldShowModalResponse =
+    !isIos() && !isInStandaloneMode() && !androidInstallModalShown;
+
+  if (shouldShowModalResponse) {
+    localStorage.setItem(
+      localStorageKey,
+      JSON.stringify({ time: new Date().getTime() })
     );
   }
   return shouldShowModalResponse;

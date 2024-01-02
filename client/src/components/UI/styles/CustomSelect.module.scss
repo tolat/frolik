@@ -8,15 +8,18 @@
   width: 100%;
 }
 
+
 .valueContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  padding: 1.4rem;
+  border-radius: 100rem;
+  font-size: 1.4rem;
 }
 
-.valueContainer:hover {
-  cursor: pointer;
+.valueContainer:active{
+  outline: 1px solid $blue;
 }
 
 .value {
@@ -24,8 +27,9 @@
 }
 
 .label {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: bold;
+  margin-left: 1rem;
 }
 
 .arrow {
@@ -42,7 +46,7 @@
   width: 100%;
   background-color: rgb(229, 238, 253);
   box-sizing: border-box;
-  font-size: 1.3rem;
+  border-radius: 100rem;
 }
 
 .optionContainer {
@@ -58,8 +62,8 @@
 
 .optionsContainer {
   position: absolute;
-  left: 0;
-  width: 100%;
+  left: 2rem;
+  width: calc(100% - 4rem);
   box-sizing: border-box;
   border: 1px solid #c1c1c1;
   z-index: 1;

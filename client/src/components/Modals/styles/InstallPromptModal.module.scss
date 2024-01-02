@@ -1,0 +1,66 @@
+@import "../../../utils/responsive.scss";
+
+.container {
+  margin-top: 6rem;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.container h3 {
+  font-size: 1.6rem;
+  margin-top: 1.5rem;
+}
+
+.headerContainer {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  justify-content: flex-start;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+.subHeader {
+  font-size: 1.3rem;
+  font-weight: normal;
+  color: rgb(63, 63, 63);
+}
+
+.header {
+  font-size: 3rem;
+  display: flex;
+  align-items: end;
+  font-weight: bold;
+}
+
+.logo {
+  height: 4.5rem;
+  padding: 0 0.3rem 0.2rem 0.3rem;
+}
+
+.step {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.safari {
+  height: 3rem;
+  margin: 0 1rem;
+}
+
+.safariContainer {
+  display: flex;
+  align-items: center;
+}
+
+.continueButton {
+  font-size: 1.5rem;
+  font-weight: normal;
+}
+
+.installButton{
+  background-color: $blue;
+  color: white;
+  margin-top: 2rem;
+}

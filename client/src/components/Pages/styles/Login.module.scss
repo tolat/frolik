@@ -79,6 +79,7 @@
 
 .logoTop {
   height: 6rem;
+  margin-top: 1rem;
   @include responsive("margin-bottom", 0, 3rem, 3rem, 3rem);
 }
 
@@ -129,12 +130,9 @@ label {
   color: #fff;
   border: none;
   cursor: pointer;
-  font-size: 16px;
   transition: background-color 0.3s ease;
   margin-top: 2rem;
   width: 100%;
-  font-size: 1.2rem;
-  border-radius: 3px;
 }
 
 .loginButton:hover {
@@ -145,7 +143,6 @@ label {
   background-color: $button_grey;
   color: rgb(0, 0, 0);
   margin-top: 1rem;
-  border-radius: 3px;
 }
 
 .forgotButton {
@@ -159,9 +156,9 @@ label {
   @include responsive(
     "background-color",
     white,
-    $button_grey,
-    $button_grey,
-    $button_grey
+    $card_grey,
+    $card_grey,
+    $card_grey
   );
 }
 

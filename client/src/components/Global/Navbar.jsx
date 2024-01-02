@@ -24,12 +24,13 @@ import PhotoPopup from "../Popups/PhotoPopup";
 import outingIcon from "../../images/air-balloon.png";
 import outingIconBlue from "../../images/air-balloon-blue.png";
 import logo from "../../images/frolik2.png";
+import InstallPromptModal from "../Modals/InstallPromptModal";
 
 const Navbar = (props) => {
   const user = useSelector((state) => state.auth.user);
   const authState = useSelector((state) => state.auth);
   const modalState = useSelector((state) => state.modal);
-  const chats = useSelector(state => state.chat.chats);
+  const chats = useSelector((state) => state.chat.chats);
   const dispatch = useDispatch();
   const unreadChatMessages = chats && getTotalUnreadMessages(user);
   const location = useLocation();
@@ -117,6 +118,7 @@ const Navbar = (props) => {
         ok={"OK"}
         okClick={handleHideWarning}
       />
+      <InstallPromptModal />
       {user && (
         <Fragment>
           <NotificationsModal />

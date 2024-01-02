@@ -12,6 +12,7 @@ import { setBadge } from "./utils/badge";
 import { getTotalUnreadMessages } from "./utils/utils";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { socketActions } from "./store/socket-slice";
+import { modalActions } from "./store/modal-slice";
 
 const connectSocket = async (socket, user) => {
   try {
@@ -88,6 +89,14 @@ function App() {
       dispatch(socketActions.setIsConnecting(false));
       window.clearInterval(intervalID);
     };
+  });
+
+  // Add event listener for pwa install event
+  useEffect(() => {
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      dispatch(modalActions.setInstallPrompted(event));
+    });
   });
 
   return <RouterProvider router={router} />;

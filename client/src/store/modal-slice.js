@@ -11,6 +11,7 @@ const initialState = {
   activeModalUser: false,
   previousModal: false,
   usePrevious: false,
+  installPrompted: false,
 };
 const modalSlice = createSlice({
   name: "modal",
@@ -73,6 +74,9 @@ const modalSlice = createSlice({
     setHeaderStyle(state, action) {
       console.log("setting header style: ", action.payload);
       state.headerStyle = action.payload;
+    },
+    setInstallPrompted(state, action) {
+      state.installPrompted = action.payload;
     },
   },
 });

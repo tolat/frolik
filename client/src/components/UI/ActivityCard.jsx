@@ -132,6 +132,7 @@ const ActivityCard = (props) => {
                       />
                     </div>
                     <SimpleButton
+                      square={true}
                       noShadow={true}
                       onClick={handleDeleteActivity}
                       className={styles.deleteActivityButton}
@@ -238,6 +239,7 @@ const ActivityCard = (props) => {
           <div className={styles.buttonContainer}>
             {!props.showInstructions && (
               <SimpleButton
+                square={true}
                 noShadow={true}
                 style={{ boxShadow: "none" }}
                 onClick={
@@ -255,6 +257,7 @@ const ActivityCard = (props) => {
             {props.hideSelect ? null : goState.outing.activity.name ===
               props.activity.name ? (
               <SimpleButton
+                square={true}
                 noShadow={true}
                 onClick={handleRemove}
                 className={styles.remove}
@@ -263,6 +266,7 @@ const ActivityCard = (props) => {
               </SimpleButton>
             ) : (
               <SimpleButton
+                square={true}
                 noShadow={true}
                 onClick={handleSelect}
                 className={styles.select}

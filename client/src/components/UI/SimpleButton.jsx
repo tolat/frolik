@@ -12,7 +12,7 @@ const SimpleButton = (props) => {
       required={props.required}
       onClick={props.onClick}
       className={`${styles.container} ${props.className}`}
-      style={props.style}
+      style={{ borderRadius: props.square ? "0" : null, ...props.style }}
     >
       {props.children}
     </button>

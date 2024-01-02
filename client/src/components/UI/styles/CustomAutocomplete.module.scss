@@ -13,15 +13,21 @@
   background-color: rgb(229, 238, 253);
   box-sizing: border-box;
   border: none;
-  padding: 1rem;
+  padding: 1.4rem;
   font-size: 1.3rem;
   outline: none;
   border-bottom: 3px solid transparent;
+  border-radius: 100rem;
+}
+
+.input:focus{
+  outline: 1px solid $blue;
 }
 
 .label{
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: bold;
+  margin-left: 1rem;
 }
 
 .optionContainer {
@@ -29,7 +35,7 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding: 0.5rem;
+  padding: 1rem;
 }
 
 .optionContainer:hover {
@@ -40,8 +46,9 @@
 .optionsContainer {
   position: absolute;
   left: 0;
-  margin-top: 5.5rem;
-  width: 100%;
+  margin-top: 7rem;
+  margin-left: 2rem;
+  width: calc(100% - 4rem);
   box-sizing: border-box;
   border: 1px solid #c1c1c1;
   z-index: 1;

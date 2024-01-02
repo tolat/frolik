@@ -1,5 +1,6 @@
 import store from "../store";
 import { popupActions } from "../store/popup-slice";
+import { socketActions } from "../store/socket-slice";
 
 export default async function httpFetch(
   requestConfig,
@@ -7,6 +8,7 @@ export default async function httpFetch(
   handleError
 ) {
   try {
+    store.dispatch(socketActions.setIsConnecting(true));
     const response = await fetch(requestConfig.url, {
       method: requestConfig.method ? requestConfig.method : "GET",
       headers: requestConfig.headers ? requestConfig.headers : {},
@@ -16,6 +18,9 @@ export default async function httpFetch(
         ? requestConfig.credentials
         : "include",
     });
+
+    // Set Loading bar to hidden
+    store.dispatch(socketActions.setIsConnecting(false));
 
     // Handle other status codes (e.g., 401, 500) here
     if (!response.ok) {

@@ -5,6 +5,7 @@
   flex-direction: column;
   width: 100%;
   position: relative;
+  padding-top: 1rem;
 }
 
 .upperContainer {
@@ -26,6 +27,9 @@
   margin-bottom: 1rem;
   color: white;
   background-color: $blue;
+  border-radius: 3px !important;
+  height: 3.5rem;
+  font-size: 1.3rem;
 }
 
 .noOutingsMessage {
