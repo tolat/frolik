@@ -1060,6 +1060,10 @@ router.post(
 
         await foundUser.save();
       }
+
+      // Add outing to activity outings
+      activity.outings.push(outing)
+      await activity.save()
     }
 
     // push an update through socket to users other than the request user
