@@ -455,15 +455,22 @@ export const showIosInstallModal = (localStorageKey) => {
     return "standalone" in window.navigator && window.navigator.standalone;
   };
 
-  // show the modal only once
+  // check when modal has been shown last. show once every day.
   const localStorageKeyValue = localStorage.getItem(localStorageKey);
   const iosInstallModalShown = localStorageKeyValue
-    ? JSON.parse(localStorageKeyValue)
+    ? Date.now() - parseInt(JSON.parse(localStorageKeyValue)) < 10000
+      ? true
+      : false
     : false;
+
   const shouldShowModalResponse =
     isIos() && !isInStandaloneMode() && !iosInstallModalShown;
+
   if (shouldShowModalResponse) {
-    localStorage.setItem(localStorageKey, "true");
+    localStorage.setItem(
+      localStorageKey,
+      JSON.stringify({ updated: new Date().getTime() })
+    );
   }
   return shouldShowModalResponse;
 };

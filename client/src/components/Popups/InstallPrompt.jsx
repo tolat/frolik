@@ -7,6 +7,7 @@ import { showIosInstallModal } from "../../utils/utils";
 import logo from "../../images/frolik2.png";
 import install1 from "../../images/ios-install1.png";
 import install2 from "../../images/ios-install2.png";
+import safari from "../../images/safari.png";
 
 const InstallPrompt = (props) => {
   const dispatch = useDispatch();
@@ -32,21 +33,25 @@ const InstallPrompt = (props) => {
   const installHeader = (
     <div className={styles.headerContainer}>
       <div className={styles.header}>
-        Install <img className={styles.logo} src={logo} alt="logo" /> on your
-        device!
+        Get <img className={styles.logo} src={logo} alt="logo" /> notifications!
       </div>
       <div className={styles.subHeader}>
-        Installing on your device will allow you to receive notifications{" "}
-        {"(iOS > 16.4)"}.
+        Install on your device to receive notifications {"(iOS > 16.4)"}.
       </div>
     </div>
   );
 
   const installMessage = (
     <div className={styles.messageContainer}>
-      <h3>1. Tap the share icon on your browser toolbar</h3>
+      <h3>
+        <div className={styles.safariContainer}>
+          1. <img className={styles.safari} src={safari} alt="step1" />
+          Use Safari to go to www.frolik.ca
+        </div>
+      </h3>
+      <h3>2. Tap the share icon on your browser toolbar</h3>
       <img className={styles.step} src={install1} alt="step1" />
-      <h3>2. Tap 'Add to Home Screen'</h3>
+      <h3>3. Tap 'Add to Home Screen'</h3>
       <img className={styles.step} src={install2} alt="step2" />
     </div>
   );

@@ -5,9 +5,9 @@
 }
 
 .subHeader {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: normal;
-  color: grey;
+  color: rgb(63, 63, 63);
 }
 
 .header {
@@ -24,4 +24,14 @@
 .step {
   width: 100%;
   border-radius: 5px;
+}
+
+.safari{
+    height: 3rem;
+    margin: 0 1rem;
+}
+
+.safariContainer{
+    display: flex;
+    align-items: center;
 }
