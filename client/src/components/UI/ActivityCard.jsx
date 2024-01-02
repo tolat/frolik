@@ -17,6 +17,7 @@ import InstructionCard from "./InstructionCard";
 import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
 import { deleteActivity } from "../../utils/data-fetch";
+import { useLocation } from "react-router-dom";
 
 const ActivityCard = (props) => {
   const categoryColorMap = useSelector(
@@ -28,6 +29,8 @@ const ActivityCard = (props) => {
   const goState = useSelector((state) => state.go);
   const user = useSelector((state) => state.auth.user);
   const [deleteText, setDeleteText] = useState("Delete");
+  const location = useLocation();
+  const currentUrl = location.pathname;
 
   const handleToggleInstructions = (e) => {
     setInstructionsVisible((prev) => !prev);
@@ -131,14 +134,16 @@ const ActivityCard = (props) => {
                         alt="creation-icon"
                       />
                     </div>
-                    <SimpleButton
-                      square={true}
-                      noShadow={true}
-                      onClick={handleDeleteActivity}
-                      className={styles.deleteActivityButton}
-                    >
-                      Delete
-                    </SimpleButton>
+                    {currentUrl === "/outing" && (
+                      <SimpleButton
+                        square={true}
+                        noShadow={true}
+                        onClick={handleDeleteActivity}
+                        className={styles.deleteActivityButton}
+                      >
+                        Delete
+                      </SimpleButton>
+                    )}
                   </Fragment>
                 ) : null}
               </div>
