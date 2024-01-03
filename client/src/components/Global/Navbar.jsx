@@ -105,12 +105,21 @@ const Navbar = (props) => {
     };
   }, [currentUrl]);
 
+  // Click button on page load and user updates
+  useEffect(() => {
+    if (user) {
+      document.getElementById("subscription-prompt-button").click();
+      console.log('clicking subscription prompter button')
+    }
+  }, [user]);
+
   return (
     <div
       style={{ display: masterDisplay }}
       id="navbar"
       className={styles.header}
     >
+      <button style={{ display: "none" }} id="subscription-prompt-buttom" />
       <WarningPopup
         selector={"generic-warning"}
         header={warningHeader}
