@@ -15,6 +15,7 @@ import ModalHeaderPortal from "./ModalHeaderPortal";
 import SimpleButton from "../UI/SimpleButton";
 import { fetchLogout } from "../../store/auth-actions";
 import logoutIcon from "../../images/logout.png";
+import { modalActions } from "../../store/modal-slice";
 
 const stagedDataReducer = (state, action) => {
   return action.type === "setAll"
@@ -121,6 +122,12 @@ const EditProfileModal = () => {
     fetchLogout();
   };
 
+  const handleInstall = async () => {
+    await hideModal(true);
+    dispatch(modalActions.setSelector("install-prompt"));
+    dispatch(modalActions.showModal());
+  };
+
   return (
     <ModalPortal>
       <div style={modalStyle} className={`${styles.container} noscroll`}>
@@ -164,6 +171,13 @@ const EditProfileModal = () => {
             }}
           />
         </ProfileEditor>
+        <SimpleButton
+          onClick={handleInstall}
+          text={"Install Frolik App"}
+          className={styles.installButton}
+        >
+          Install Frolik App
+        </SimpleButton>
         <SimpleButton
           onClick={handleLogout}
           text={"Logout"}

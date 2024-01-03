@@ -133,6 +133,26 @@ const Profile = (props) => {
     dispatch(popupActions.hidePopup());
   };
 
+  const [friendSearch, setFriendSearch] = useState("");
+
+  function applyFriendSearch(friends) {
+    return friendSearch || friendSearch !== ""
+      ? user &&
+          user.friends?.filter((f) => {
+            return (
+              f.first_name
+                ?.toLowerCase()
+                .trim()
+                .includes(friendSearch.toLowerCase().trim()) ||
+              f.last_name
+                ?.toLowerCase()
+                .trim()
+                .includes(friendSearch.toLowerCase().trim())
+            );
+          })
+      : user.friends;
+  }
+
   return (
     <div className={styles.container}>
       <EditProfileModal />
@@ -221,17 +241,24 @@ const Profile = (props) => {
           <SimpleSearch
             style={{ marginTop: "1rem" }}
             placeholder={"Search Friends.."}
+            setValue={setFriendSearch}
           />
           {user.friends[0] ? (
-            toSorted(user.friends, (a, b) => a.first_name - b.first_name).map(
-              (f) => (
-                <FriendCard
-                  buttons={<FriendCardButtons user={f} />}
-                  key={Math.random()}
-                  user={f}
-                />
-              )
-            )
+            toSorted(applyFriendSearch(user.friends), (a, b) => {
+              if (a.first_name < b.first_name) {
+                return -1;
+              }
+              if (a.first_name > b.first_name) {
+                return 1;
+              }
+              return 0;
+            }).map((f) => (
+              <FriendCard
+                buttons={<FriendCardButtons user={f} />}
+                key={Math.random()}
+                user={f}
+              />
+            ))
           ) : (
             <div className={styles.noImagesBlurb}>
               <div style={{ display: "flex", alignItems: "center" }}>

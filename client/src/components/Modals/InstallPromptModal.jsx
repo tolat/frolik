@@ -13,6 +13,7 @@ import { modalActions } from "../../store/modal-slice";
 import ModalPortal from "./ModalPortal";
 import ModalHeaderPortal from "./ModalHeaderPortal";
 import SimpleButton from "../UI/SimpleButton";
+import { hideModal } from "../../store/modal-actions";
 
 const InstallPromptModal = (props) => {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ const InstallPromptModal = (props) => {
 
   const onInstallClick = () => {
     installEvent && installEvent.prompt();
-    dispatch(modalActions.hideModal());
+    hideModal(true)
   };
 
   const header = (
@@ -56,7 +57,7 @@ const InstallPromptModal = (props) => {
       </div>
       <div className={styles.subHeader}>
         Installing Frolik will allow you to receive notifications and use Frolik
-        like a regular mobile app.{" "}
+        like a regular mobile app. {`(iOS > 16.4)`}
       </div>
     </div>
   );

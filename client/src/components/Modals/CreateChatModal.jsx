@@ -71,6 +71,26 @@ const CreateChatModal = (props) => {
     );
   };
 
+  const [friendSearch, setFriendSearch] = useState("");
+
+  function applyFriendSearch(friends) {
+    return friendSearch || friendSearch !== ""
+      ? user &&
+          user.friends?.filter((f) => {
+            return (
+              f.first_name
+                ?.toLowerCase()
+                .trim()
+                .includes(friendSearch.toLowerCase().trim()) ||
+              f.last_name
+                ?.toLowerCase()
+                .trim()
+                .includes(friendSearch.toLowerCase().trim())
+            );
+          })
+      : user.friends;
+  }
+
   return (
     <ModalPortal>
       <div style={modalStyle} className={styles.container}>
@@ -97,8 +117,19 @@ const CreateChatModal = (props) => {
           />
         ))}
         <h2 className={styles.header}>Add Friends:</h2>
-        <SimpleSearch placeholder={"Search Friends.."} />
-        {toSorted(user.friends, (a, b) => a.first_name - b.first_name)
+        <SimpleSearch
+          placeholder={"Search Friends.."}
+          setValue={setFriendSearch}
+        />
+        {toSorted(applyFriendSearch(user.friends), (a, b) => {
+          if (a.first_name < b.first_name) {
+            return -1;
+          }
+          if (a.first_name > b.first_name) {
+            return 1;
+          }
+          return 0;
+        })
           .filter((f) => !newChatMembers.find((m) => m._id === f._id))
           .map((f) => (
             <FriendCard

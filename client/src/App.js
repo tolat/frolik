@@ -13,7 +13,6 @@ import { getTotalUnreadMessages } from "./utils/utils";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { socketActions } from "./store/socket-slice";
 import { modalActions } from "./store/modal-slice";
-import PullToRefresh from "pulltorefreshjs";
 
 const connectSocket = async (socket, user) => {
   try {
@@ -99,23 +98,6 @@ function App() {
       dispatch(modalActions.setInstallPrompted(event));
     });
   });
-
-  // Add event litener to enable pulldownrefresh
- /*  useEffect(() => {
-    const standalone =
-      navigator.standalone ||
-      window.matchMedia("(display-mode: standalone)").matches;
-
-    if (!standalone) {
-      return; // not standalone; no pull to refresh needed
-    }
-
-    PullToRefresh.init({
-      onRefresh() {
-        window.location.reload();
-      },
-    });
-  }); */
 
   return <RouterProvider router={router} />;
 }
