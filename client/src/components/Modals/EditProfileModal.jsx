@@ -128,6 +128,12 @@ const EditProfileModal = () => {
     dispatch(modalActions.showModal());
   };
 
+  // check if the device is in standalone mode
+  const isInStandaloneMode = () => {
+    return "standalone" in window.navigator && window.navigator.standalone;
+  };
+  const inStandaloneMode = isInStandaloneMode();
+
   return (
     <ModalPortal>
       <div style={modalStyle} className={`${styles.container} noscroll`}>
@@ -172,6 +178,7 @@ const EditProfileModal = () => {
           />
         </ProfileEditor>
         <SimpleButton
+          style={{ display: inStandaloneMode ? "none" : null }}
           onClick={handleInstall}
           text={"Install Frolik App"}
           className={styles.installButton}

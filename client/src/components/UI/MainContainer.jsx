@@ -13,6 +13,7 @@ const MainContainer = (props) => {
 
   // Add listeners to implement pull to refresh
   useEffect(() => {
+    console.log('adding touch listeners')
     const onTouchStart = (e) => { console.log('touchstart'); setTouchStart(e.touches[0].clientY)};
     const onTouchEnd = (e) => {
       console.log(window.scrollY, touchStart, e.changedTouches[0].clientY)
@@ -34,7 +35,7 @@ const MainContainer = (props) => {
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchend", onTouchEnd);
     };
-  });
+  },[touchStart]);
 
   useEffect(() => {
     if (currentUrl.includes("login")) {
