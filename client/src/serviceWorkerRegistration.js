@@ -1,6 +1,8 @@
 // This optional code is used to register a service worker.
 // register() is not called by default.
 
+import { onUpdateUser } from "./store/socket-actions";
+
 // This lets the app load faster on subsequent visits in production, and gives
 // it offline capabilities. However, it also means that developers (and users)
 // will only see deployed updates on subsequent visits to a page, after all the
@@ -86,6 +88,26 @@ function registerValidSW(swUrl, config) {
           }
         };
       };
+
+      // add interval to check user updates cache
+      const checkForUpdateFlag = () => {
+        registration.active.postMessage({
+          action: "user-update-check",
+        });
+      };
+
+      // Check socket connection every 1.random seconds
+      window.setInterval(checkForUpdateFlag, 2000);
+
+      // Handle messages from the service worker
+      navigator.serviceWorker.addEventListener("message", (event) => {
+        if (event.data.action === "frolik-user-update-response") {
+          const dataFromServiceWorker = event.data;
+          if(dataFromServiceWorker.data.update){
+            onUpdateUser()
+          }
+        }
+      });
     })
     .catch((error) => {
       console.error("Error during service worker registration:", error);

@@ -68,9 +68,43 @@ self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting();
   }
+
+  if (event.data.action === "user-update-check") {
+    caches.match("/frolik-user-update").then((response) => {
+      if (response) {
+        // Respond to the client with the cached data
+        response.json().then((data) => {
+          event.source.postMessage({
+            action: "frolik-user-update-response",
+            data,
+          });
+        });
+
+        // set update to false in cache
+        caches.open("user-update-cache").then((cache) => {
+          return cache.put(
+            "/frolik-user-update",
+            new Response(JSON.stringify({ update: false }))
+          );
+        });
+
+        // Else send back update: false
+      } else {
+        self.clients.matchAll().then((clients) => {
+          clients.forEach((client) => {
+            client.postMessage({
+              action: "frolik-user-update-response",
+              data: JSON.stringify({ update: false }),
+            });
+          });
+        });
+      }
+    });
+  }
 });
 
 self.addEventListener("push", (event) => {
+  console.log("PUSH: ", event);
   const payload = event.data.json();
   const { title, body } = payload;
 
@@ -86,6 +120,13 @@ self.addEventListener("push", (event) => {
   // Set app badge
   navigator.setAppBadge(payload.notificationCount);
 
-  // set flag in localstorage
-  localStorage.setItem('frolik-user-update', 'true')
+  // Set update flag in cache
+  event.waitUntil(
+    caches.open("user-update-cache").then((cache) => {
+      return cache.put(
+        "/frolik-user-update",
+        new Response(JSON.stringify({ update: true }))
+      );
+    })
+  );
 });

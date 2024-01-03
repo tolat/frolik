@@ -117,24 +117,6 @@ function App() {
     });
   });
 
-  // Add check to check localstorage for user update flag
-  useEffect(() => {
-    const checkForUpdateFlag = () => {
-      const updateUser = localStorage.getItem("frolik-user-update");
-      if (updateUser && user) {
-        onUpdateUser();
-        localStorage.setItem('frolik-user-update', null)
-      }
-    };
-
-    // Check socket connection every 1.random seconds
-    const intervalID = window.setInterval(checkForUpdateFlag, 2000);
-
-    return () => {
-      window.clearInterval(intervalID);
-    };
-  }, [user]);
-
   return <RouterProvider router={router} />;
 }
 
