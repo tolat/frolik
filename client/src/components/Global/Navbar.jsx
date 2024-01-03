@@ -109,7 +109,7 @@ const Navbar = (props) => {
   useEffect(() => {
     if (user) {
       document.getElementById("subscription-prompt-button").click();
-      console.log('clicking subscription prompter button')
+      console.log("clicking subscription prompter button");
     }
   }, [user]);
 
@@ -119,7 +119,10 @@ const Navbar = (props) => {
       id="navbar"
       className={styles.header}
     >
-      <button style={{ display: "none" }} id="subscription-prompt-buttom" />
+      <button
+        className={styles.subPromptButton}
+        id="subscription-prompt-button"
+      />
       <WarningPopup
         selector={"generic-warning"}
         header={warningHeader}

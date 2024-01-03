@@ -32,6 +32,7 @@ const MainContainer = (props) => {
     window.addEventListener("touchend", onTouchEnd);
 
     return () => {
+      console.log('removing touch listeners')
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchend", onTouchEnd);
     };
