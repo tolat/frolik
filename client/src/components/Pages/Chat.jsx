@@ -7,6 +7,7 @@ import SimpleButton from "../UI/SimpleButton";
 import { memo, useState } from "react";
 import CreateChatModal from "../Modals/CreateChatModal";
 import { modalActions } from "../../store/modal-slice";
+import { onUpdateUser } from "../../store/socket-actions";
 
 const Chat = memo((props) => {
   const chats = useSelector((state) => state.chat.chats);
@@ -93,6 +94,8 @@ export const chatLoader = async () => {
   if (redirect) {
     return redirect;
   }
+
+  onUpdateUser()
 
   return null;
 };
