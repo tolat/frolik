@@ -101,7 +101,7 @@ function App() {
   });
 
   // Add event litener to enable pulldownrefresh
-  useEffect(() => {
+ /*  useEffect(() => {
     const standalone =
       navigator.standalone ||
       window.matchMedia("(display-mode: standalone)").matches;
@@ -115,7 +115,7 @@ function App() {
         window.location.reload();
       },
     });
-  });
+  }); */
 
   return <RouterProvider router={router} />;
 }
