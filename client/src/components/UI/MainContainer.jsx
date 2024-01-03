@@ -13,13 +13,15 @@ const MainContainer = (props) => {
 
   // Add listeners to implement pull to refresh
   useEffect(() => {
-    const onTouchStart = (e) => setTouchStart(e.touches[0].clientY);
+    const onTouchStart = (e) => { console.log('touchstart'); setTouchStart(e.touches[0].clientY)};
     const onTouchEnd = (e) => {
+      console.log(window.scrollY, touchStart, e.changedTouches[0].clientY)
       if (
         window.scrollY === 0 &&
         touchStart &&
-        e.changedTouches[0].clientY - touchStart > 500
+        e.changedTouches[0].clientY - touchStart > 200
       ) {
+        
         navigator.vibrate(100)
         onUpdateUser();
       }
