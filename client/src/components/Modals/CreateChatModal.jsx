@@ -8,7 +8,7 @@ import SimpleButton from "../UI/SimpleButton";
 import { createChat, fetchChats } from "../../utils/data-fetch";
 import { hideModal } from "../../store/modal-actions";
 import { modalActions } from "../../store/modal-slice";
-import { toSorted } from "../../utils/utils";
+import { alphabetSort, toSorted } from "../../utils/utils";
 import ModalHeaderPortal from "./ModalHeaderPortal";
 import ModalButtonPortal from "./ModalButtonPortal";
 
@@ -121,15 +121,7 @@ const CreateChatModal = (props) => {
           placeholder={"Search Friends.."}
           setValue={setFriendSearch}
         />
-        {toSorted(applyFriendSearch(user.friends), (a, b) => {
-          if (a.first_name < b.first_name) {
-            return -1;
-          }
-          if (a.first_name > b.first_name) {
-            return 1;
-          }
-          return 0;
-        })
+        {toSorted(applyFriendSearch(user.friends), alphabetSort)
           .filter((f) => !newChatMembers.find((m) => m._id === f._id))
           .map((f) => (
             <FriendCard

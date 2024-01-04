@@ -6,6 +6,8 @@ import { goActions } from "../../store/go-slice";
 import { Fragment, useEffect, useState } from "react";
 import { fetchMatchedUsers } from "../../utils/data-fetch";
 import ModalHeaderPortal from "./ModalHeaderPortal";
+import { alphabetSort, toSorted } from "../../utils/utils";
+import SimpleSearch from "../UI/SimpleSearch";
 
 const AddUserModal = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -59,6 +61,25 @@ const AddUserModal = (props) => {
     );
   };
 
+  const [friendSearch, setFriendSearch] = useState("");
+
+  function applyFriendSearch(friends) {
+    return friendSearch || friendSearch !== ""
+      ? friends.filter((f) => {
+          return (
+            f.first_name
+              ?.toLowerCase()
+              .trim()
+              .includes(friendSearch.toLowerCase().trim()) ||
+            f.last_name
+              ?.toLowerCase()
+              .trim()
+              .includes(friendSearch.toLowerCase().trim())
+          );
+        })
+      : friends;
+  }
+
   return (
     <ModalPortal>
       <div style={modalStyle} className={`${styles.container} noscroll`}>
@@ -95,15 +116,21 @@ const AddUserModal = (props) => {
             <h2 style={{ width: "100%", fontSize: "1.8rem" }}>
               Active Friends
             </h2>
-            {availableFriends.map((f) => (
-              <FriendCard
-                id={`${f._id || f}-friendCard-addUserModal`}
-                buttonSet={"add"}
-                user={f}
-                key={Math.random()}
-                buttons={<AddButton user={f} />}
-              />
-            ))}
+            <SimpleSearch
+              placeholder={"Search Friends.."}
+              setValue={setFriendSearch}
+            />
+            {toSorted(applyFriendSearch(availableFriends), alphabetSort).map(
+              (f) => (
+                <FriendCard
+                  id={`${f._id || f}-friendCard-addUserModal`}
+                  buttonSet={"add"}
+                  user={f}
+                  key={Math.random()}
+                  buttons={<AddButton user={f} />}
+                />
+              )
+            )}
           </Fragment>
         ) : (
           <h2 style={{ marginTop: "3rem" }}>No Friends Available!</h2>

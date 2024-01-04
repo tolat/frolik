@@ -18,6 +18,7 @@ import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
 import { deleteActivity } from "../../utils/data-fetch";
 import { useLocation } from "react-router-dom";
+import SixPhotoGrid from "./SixPhotoGrid";
 
 const ActivityCard = (props) => {
   const categoryColorMap = useSelector(
@@ -31,6 +32,8 @@ const ActivityCard = (props) => {
   const [deleteText, setDeleteText] = useState("Delete");
   const location = useLocation();
   const currentUrl = location.pathname;
+
+  console.log(props.activity);
 
   const handleToggleInstructions = (e) => {
     setInstructionsVisible((prev) => !prev);
@@ -100,6 +103,12 @@ const ActivityCard = (props) => {
           className={styles.categoryStripe}
         ></div>
         <div className={styles.innerContainer}>
+          {props.activity?.photos && (
+            <SixPhotoGrid
+              noRoundedCornerLeft={true}
+              photos={props.activity.photos}
+            />
+          )}
           <div className={styles.upperContainer}>
             <div className={styles.name}>
               <div className={styles.innerNameContainer}>

@@ -17,7 +17,7 @@ const SixPhotoGrid = (props) => {
       <img
         onClick={(e) => onImageClick(img)}
         key={Math.random()}
-        className={`${styles.image}`}
+        className={`${styles.image} ${props.noRoundedCornerLeft ? styles.noRoundedCornerLeft : null}`}
         src={img}
         alt="feed-pic"
       />
@@ -38,7 +38,7 @@ const SixPhotoGrid = (props) => {
     <div
       className={`${styles.photosContainer} ${
         styles[`container_${photoGridNumber}`]
-      }`}
+      } `}
     >
       {props.photos[0] &&
         !props.photos.find((img) => img === "queued") &&

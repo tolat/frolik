@@ -278,7 +278,9 @@ router.get(
     }
 
     // Limit matches to users who have status ready
-    let allAvailable = await User.find({ "status.status": "Ready" });
+    let allAvailable = await User.find({
+      $and: [{ "status.status": "Ready" }, { location: user.location }],
+    });
 
     // Populate the available matches user outings
     for (u of allAvailable) {
@@ -392,7 +394,7 @@ router.get(
   })
 );
 
-// Get chat and populate it for use in the client
+// Get populated chats for a user
 router.get(
   "/:id/chats/",
   reqAuthenticated,
@@ -430,6 +432,7 @@ router.post(
   reqAuthenticated,
   tryCatch(async (req, res) => {
     let user = await User.findById(req.params.id);
+    let outing = req.body;
 
     // Send unacceptable if user has 5 pending outings already
     await user.populate("outings");
@@ -442,8 +445,23 @@ router.post(
       return;
     }
 
+    // Send unacceptable if outing does not have any new users
+    if (
+      !outing.users.find(
+        (u) =>
+          !user.friends.find((f) => {
+            return f.toString() === u._id.toString();
+          }) && u._id.toString() !== user._id.toString()
+      )
+    ) {
+      res.status(406).send({
+        header: "No daily matches added",
+        message: `You need to add at least one Daily Match to the outing!`,
+      });
+      return;
+    }
+
     // Add outing status and date created
-    let outing = req.body;
     outing.date_created = new Date(Date.now());
     outing.name = generateUniqueName();
     outing.created_by = user;
@@ -1062,8 +1080,8 @@ router.post(
       }
 
       // Add outing to activity outings
-      activity.outings.push(outing)
-      await activity.save()
+      activity.outings.push(outing);
+      await activity.save();
     }
 
     // push an update through socket to users other than the request user

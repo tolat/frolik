@@ -171,8 +171,11 @@ const seedOutings = async (seeds) => {
       let user2 =
         filteredUsers[parseInt((Math.random() * 1000) % filteredUsers.length)];
 
-      outing.activity =
+      let outingActivity =
         activities[parseInt((Math.random() * 1000) % activities.length)];
+      outing.activity = outingActivity;
+      outingActivity.outings.push(outing);
+      await outingActivity.save();
 
       outing.date_created = new Date();
       outing.date_completed = outing.date_created;

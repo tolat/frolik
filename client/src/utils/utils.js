@@ -506,3 +506,13 @@ export const showAndroidInstallModal = (localStorageKey) => {
   }
   return shouldShowModalResponse;
 };
+
+export const alphabetSort = (a, b) => {
+  if (a.first_name < b.first_name) {
+    return -1;
+  }
+  if (a.first_name > b.first_name) {
+    return 1;
+  }
+  return 0;
+};
