@@ -17,7 +17,7 @@ import InstructionCard from "./InstructionCard";
 import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
 import { deleteActivity } from "../../utils/data-fetch";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SixPhotoGrid from "./SixPhotoGrid";
 
 const ActivityCard = (props) => {
@@ -31,9 +31,8 @@ const ActivityCard = (props) => {
   const user = useSelector((state) => state.auth.user);
   const [deleteText, setDeleteText] = useState("Delete");
   const location = useLocation();
+  const navigate = useNavigate();
   const currentUrl = location.pathname;
-
-  console.log(props.activity);
 
   const handleToggleInstructions = (e) => {
     setInstructionsVisible((prev) => !prev);
@@ -79,6 +78,13 @@ const ActivityCard = (props) => {
 
     setDeleteText("Deleting..");
     deleteActivity(user, props.activity, onComplete);
+  };
+
+  const handleUseActivity = () => {
+    dispatch(goActions.reset([user]));
+    dispatch(goActions.setActivity(props.activity));
+    setTimeout(() => dispatch(popupActions.hidePopup()), 1500);
+    navigate("/outing");
   };
 
   return (
@@ -251,13 +257,17 @@ const ActivityCard = (props) => {
           </div>
           <div className={styles.buttonSpacer}></div>
           <div className={styles.buttonContainer}>
-            {!props.showInstructions && (
+            {(!props.showInstructions || currentUrl === "/social") && (
               <SimpleButton
                 square={true}
                 noShadow={true}
                 style={{ boxShadow: "none" }}
                 onClick={
-                  props.showInstructions ? null : handleToggleInstructions
+                  props.showInstructions
+                    ? currentUrl === "/social"
+                      ? handleUseActivity
+                      : null
+                    : handleToggleInstructions
                 }
               >
                 {!props.showInstructions
@@ -265,6 +275,7 @@ const ActivityCard = (props) => {
                     ? "Show Instructions"
                     : "Hide Instructions"
                   : null}
+                {currentUrl === "/social" && "Use Activity"}
               </SimpleButton>
             )}
 

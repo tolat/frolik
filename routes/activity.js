@@ -17,7 +17,9 @@ router.get(
   "/get-all",
   reqAuthenticated,
   tryCatch(async (req, res) => {
-    const user = await User.findOne({ username: req.session.passport.user });
+    const user = await User.findOne({
+      username: req.session.passport.user,
+    }).populate("activities");
 
     if (!user) {
       res.status(406).send({
@@ -27,14 +29,16 @@ router.get(
       return;
     }
 
+    // Get non-user created activities
     let activities = await Activity.find({
-      $and: [
-        {
-          $or: [{ location: "Global" }, { location: user.location }],
-        },
-        { $nor: [{ created_by: { $exists: true } }, { created_by: user._id }] },
-      ],
+      $or: [{ location: "Global" }, { location: user.location }],
     });
+
+    // Get user created activities
+    for (let activity of user.activities) {
+      if (!activities.find((a) => a._id.toString() === activity._id.toString()))
+        activities.push(activity);
+    }
 
     let activitiesWithPhotos = [];
     for (let activity of activities) {
@@ -77,7 +81,7 @@ router.post(
   tryCatch(async (req, res) => {
     const user = await User.findById(req.body.userID);
     const activity = new Activity(req.body.activity);
-    activity.created_by = user._id;
+    activity.created_by = user._id.toString();
     user.activities.push(activity);
     await user.save();
     await activity.save();

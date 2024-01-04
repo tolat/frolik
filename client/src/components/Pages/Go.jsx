@@ -255,7 +255,7 @@ const Go = (props) => {
           </button>
           <UserIconCluster
             users={goUsers}
-            sizeInRem={20}
+            sizeInRem={18}
             borderSizeInRem={1.4}
           />
           <button onClick={handleAddUserClick} className={styles.roundButton}>
