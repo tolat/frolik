@@ -29,9 +29,13 @@ router.get(
       return;
     }
 
-    // Get non-user created activities
     let activities = await Activity.find({
-      $or: [{ location: "Global" }, { location: user.location }],
+      $and: [
+        {
+          $or: [{ location: "Global" }, { location: user.location }],
+        },
+        { $nor: [{ created_by: { $exists: true } }, { created_by: user }] },
+      ],
     });
 
     // Get user created activities
@@ -41,6 +45,7 @@ router.get(
     }
 
     let activitiesWithPhotos = [];
+    const numPhotos = 1;
     for (let activity of activities) {
       // set up for finding up to 6 random user photos for the activity
       let photos = [];
@@ -65,7 +70,8 @@ router.get(
       }
 
       let newActivity = JSON.parse(JSON.stringify(activity));
-      newActivity.photos = photos.length > 2 ? photos.slice(0, 2) : photos;
+      newActivity.photos =
+        photos.length > numPhotos ? photos.slice(0, numPhotos) : photos;
       activitiesWithPhotos.push(newActivity);
     }
 
@@ -81,7 +87,7 @@ router.post(
   tryCatch(async (req, res) => {
     const user = await User.findById(req.body.userID);
     const activity = new Activity(req.body.activity);
-    activity.created_by = user._id.toString();
+    activity.created_by = user;
     user.activities.push(activity);
     await user.save();
     await activity.save();
