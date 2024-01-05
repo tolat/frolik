@@ -7,7 +7,7 @@
   border-radius: 3px;
   /*   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; */
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .categoryStripe {
@@ -29,12 +29,13 @@
 }
 
 .upperContainer {
-  padding: 1.2rem;
   border: none;
-  border-right: 1px solid $light_grey !important;
-  border-top: 1px solid $light_grey !important;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  padding-top: 100%;
 }
 
 .name {
@@ -57,7 +58,7 @@
 
 .location {
   font-size: 1.1rem;
-  color: grey;
+  color: black;
   width: 100%;
 }
 
@@ -109,6 +110,7 @@
   width: 100%;
   height: 3.7rem;
   border-bottom: 1px solid $light_grey !important;
+  border-bottom-right-radius: 4px;
 }
 
 .buttonSpacer {
@@ -123,6 +125,7 @@
   overflow-y: hidden;
   box-sizing: border-box;
   width: 100%;
+  border-right: 1px solid $light_grey !important;
 }
 
 .iHeader {
@@ -192,4 +195,22 @@
   font-size: 1.8rem;
   font-weight: bold;
   padding: 1rem 0;
+}
+
+.photoContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.nonPhotoContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  filter: invert(1);
+  padding: 1rem;
+  box-sizing: border-box;
+  background-image: linear-gradient(to top, rgba(101, 101, 101, 0), rgb(222, 222, 222) 95%);
 }

@@ -206,7 +206,7 @@ const Go = (props) => {
 
   const addActivity = (activity) => {
     dispatchFilter({ type: "add-activity", payload: activity });
-    setSelected(capitalizeFirstLetter(activity.category.toLowerCase()));
+    setSelected(capitalizeFirstLetter(activity?.category.toLowerCase()));
   };
 
   const removeActivity = (activity) => {
@@ -261,7 +261,7 @@ const Go = (props) => {
           <button onClick={handleAddUserClick} className={styles.roundButton}>
             <img
               className={`${styles.editIcon} ${
-                goState.outing.activity.name && goState.outing.users.length < 2
+                goState.outing.activity?.name && goState.outing.users.length < 2
                   ? styles["bump"]
                   : null
               }`}
@@ -270,7 +270,7 @@ const Go = (props) => {
             />
           </button>
         </div>
-        {goState.outing.users[1] && goState.outing.activity.name && (
+        {goState.outing.users[1] && goState.outing.activity?.name && (
           <SimpleButton
             onClick={
               createButtonText === "Create Outing" ? handleCreateOuting : null
@@ -286,9 +286,9 @@ const Go = (props) => {
           </SimpleButton>
         )}
 
-        {goState.outing.activity.name ? (
+        {goState.outing.activity?.name ? (
           <Fragment>
-            {goState.outing.users[1] && goState.outing.activity.name ? null : (
+            {goState.outing.users[1] && goState.outing.activity?.name ? null : (
               <Fragment>
                 <br />
                 <br />

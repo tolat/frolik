@@ -32,7 +32,16 @@ const ActivityCard = (props) => {
   const [deleteText, setDeleteText] = useState("Delete");
   const location = useLocation();
   const navigate = useNavigate();
+  const noPhotoContainerStyle = {
+    filter: "none",
+    backgroundImage: "none",
+    position: "relative",
+  };
+  const noPhotoUpperStyle = { paddingTop: 0 };
+  const hasPhotos = props.activity?.photos && props.activity.photos[0];
   const currentUrl = location.pathname;
+
+  console.log(hasPhotos);
 
   const handleToggleInstructions = (e) => {
     setInstructionsVisible((prev) => !prev);
@@ -109,111 +118,123 @@ const ActivityCard = (props) => {
           className={styles.categoryStripe}
         ></div>
         <div className={styles.innerContainer}>
-          {props.activity?.photos && (
-            <SixPhotoGrid
-              noRoundedCornerLeft={true}
-              photos={props.activity.photos}
-            />
-          )}
-          <div className={styles.upperContainer}>
-            <div className={styles.name}>
-              <div className={styles.innerNameContainer}>
-                {props.activity.name}
-                <div className={styles.location}>{props.activity.location}</div>
-              </div>
-              <div className={styles.nameRightContainer}>
-                {props.completed ? (
-                  <div className={styles.completedIconContainer}>
-                    <img
-                      src={completeIcon}
-                      className={styles.completedIcon}
-                      alt="completed-icon"
-                    />
+          <div
+            className={styles.upperContainer}
+            style={hasPhotos ? null : noPhotoUpperStyle}
+          >
+            <div className={styles.photoContainer}>
+              {props.activity?.photos && (
+                <SixPhotoGrid
+                  noRoundedCornerLeft={true}
+                  photos={props.activity.photos}
+                />
+              )}
+            </div>
+            <div
+              className={styles.nonPhotoContainer}
+              style={hasPhotos ? null : noPhotoContainerStyle}
+            >
+              <div className={styles.name}>
+                <div className={styles.innerNameContainer}>
+                  {props.activity.name}
+                  <div className={styles.location}>
+                    {props.activity.location}
                   </div>
-                ) : null}
-                {props.activity.featured ? (
-                  <div className={styles.completedIconContainer}>
-                    <img
-                      src={featuredIcon}
-                      className={styles.completedIcon}
-                      alt="completed-icon"
-                    />
-                  </div>
-                ) : null}
-                {props.activity.created_by ? (
-                  <Fragment>
+                </div>
+                <div className={styles.nameRightContainer}>
+                  {props.completed ? (
                     <div className={styles.completedIconContainer}>
                       <img
-                        src={creationIcon}
+                        src={completeIcon}
                         className={styles.completedIcon}
-                        alt="creation-icon"
+                        alt="completed-icon"
                       />
                     </div>
-                    {currentUrl === "/outing" && (
-                      <SimpleButton
-                        square={true}
-                        noShadow={true}
-                        onClick={handleDeleteActivity}
-                        className={styles.deleteActivityButton}
-                      >
-                        Delete
-                      </SimpleButton>
-                    )}
-                  </Fragment>
-                ) : null}
+                  ) : null}
+                  {props.activity.featured ? (
+                    <div className={styles.completedIconContainer}>
+                      <img
+                        src={featuredIcon}
+                        className={styles.completedIcon}
+                        alt="completed-icon"
+                      />
+                    </div>
+                  ) : null}
+                  {props.activity.created_by ? (
+                    <Fragment>
+                      <div className={styles.completedIconContainer}>
+                        <img
+                          src={creationIcon}
+                          className={styles.completedIcon}
+                          alt="creation-icon"
+                        />
+                      </div>
+                      {currentUrl === "/outing" && (
+                        <SimpleButton
+                          square={true}
+                          noShadow={true}
+                          onClick={handleDeleteActivity}
+                          className={styles.deleteActivityButton}
+                        >
+                          Delete
+                        </SimpleButton>
+                      )}
+                    </Fragment>
+                  ) : null}
+                </div>
               </div>
-            </div>
-            <div>
-              <div className={styles.description}>
-                {props.activity.description}
-              </div>
-              <div
-                style={props.creatingActivity ? { padding: 0 } : null}
-                className={styles.specsContainer}
-              >
-                <StatIcon
-                  alt="time"
-                  icon={timeIcon}
-                  iconStyle={statIconStyle}
-                  rating={
-                    props.creatingActivity
-                      ? props.activity.duration
-                      : `${props.activity.duration} hrs`
-                  }
-                />
-                <div className={styles.spacer} />
-                <StatIcon
-                  alt="cost"
-                  icon={costIcon}
-                  iconStyle={statIconStyle}
-                  rating={
-                    props.creatingActivity
-                      ? props.activity.cost
-                      : `$${props.activity.cost}`
-                  }
-                />
-                <div className={styles.spacer} />
-                <StatIcon
-                  alt="group"
-                  icon={groupIcon}
-                  iconStyle={statIconStyle}
-                  rating={
-                    props.creatingActivity
-                      ? props.activity.participants
-                      : `${props.activity.participants} +`
-                  }
-                />
-                {!props.creatingActivity && (
-                  <Fragment>
-                    <div className={styles.spacer} />
-                    <StatIcon
-                      alt="rating"
-                      icon={ratingIcon}
-                      iconStyle={statIconStyle}
-                      rating={calcAvgRating(props.activity)}
-                    />
-                  </Fragment>
-                )}
+              <div>
+                <div className={styles.description}>
+                  {props.activity.description}
+                </div>
+                <div
+                  style={props.creatingActivity ? { padding: 0 } : null}
+                  className={styles.specsContainer}
+                >
+                  <StatIcon
+                    alt="time"
+                    icon={timeIcon}
+                    iconStyle={statIconStyle}
+                    rating={
+                      props.creatingActivity
+                        ? props.activity.duration
+                        : `${props.activity.duration} hrs`
+                    }
+                  />
+                  <div className={styles.spacer} />
+                  <StatIcon
+                    alt="cost"
+                    icon={costIcon}
+                    iconStyle={statIconStyle}
+                    rating={
+                      props.creatingActivity
+                        ? props.activity.cost
+                        : `$${props.activity.cost}`
+                    }
+                  />
+                  <div className={styles.spacer} />
+                  <StatIcon
+                    alt="group"
+                    icon={groupIcon}
+                    iconStyle={statIconStyle}
+                    rating={
+                      props.creatingActivity
+                        ? props.activity.participants
+                        : `${props.activity.participants} +`
+                    }
+                  />
+                  {!props.creatingActivity && (
+                    <Fragment>
+                      <div className={styles.spacer} />
+                      <StatIcon
+                        alt="rating"
+                        icon={ratingIcon}
+                        iconStyle={statIconStyle}
+                        rating={calcAvgRating(props.activity)}
+                      />
+                    </Fragment>
+                  )}
+                </div>
               </div>
             </div>
           </div>
