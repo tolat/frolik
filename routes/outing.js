@@ -620,6 +620,17 @@ router.post(
     else {
       for (u of outing.users) {
         const foundUser = await User.findById(u);
+
+        // Don't notify users who have already marked outing complete
+        if (
+          outing.completions.find((comp) => {
+            return comp._id
+              ? comp._id.toString() === foundUser._id.toString()
+              : comp.toString() === foundUser._id.toString();
+          })
+        )
+          continue;
+
         if (foundUser._id.toString() !== user._id.toString()) {
           const newNotification = {
             id: Date.now() + Math.random(),
