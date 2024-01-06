@@ -99,11 +99,15 @@ const OutingUpdate = (props) => {
               noShadow={true}
               key={Math.random()}
               user={nUser}
+              style={{marginBottom: 0}}
             />
           ) : (
             <h5>Loading User..</h5>
           )}
         </div>
+        {props.footer && (
+          <div className={styles.outingInviteFooter}>{props.footer}</div>
+        )}
 
         <Fragment>
           <div className={styles.outingInviteActivity}>

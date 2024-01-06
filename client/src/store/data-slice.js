@@ -7,7 +7,9 @@ const initialState = {
   cachedUsers: [],
   cachedPhotos: {},
   fetchingFeedOutings: false,
-  creatingOuting: false
+  fetchOutings: [],
+  fetchUsers: [],
+  creatingOuting: false,
 };
 
 const findOrCreateUser = (state, action) => {
@@ -94,6 +96,24 @@ const dataSlice = createSlice({
     },
     setCreatingOuting(state, action) {
       state.creatingOuting = action.payload;
+    },
+    addToFetchOutings(state, action) {
+      if (!state.fetchOutings.includes(action.payload)) {
+        state.fetchOutings.push(action.payload);
+      }
+    },
+    removeFromFetchOutings(state, action) {
+      state.fetchOutings = state.fetchOutings.filter(
+        (id) => id !== action.payload
+      );
+    },
+    addToFetchUsers(state, action) {
+      if (!state.fetchUsers.includes(action.payload)) {
+        state.fetchUsers.push(action.payload);
+      }
+    },
+    removeFromFetchUsers(state, action) {
+      state.fetchUsers = state.fetchUsers.filter((id) => id !== action.payload);
     },
   },
 });

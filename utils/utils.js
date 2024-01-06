@@ -156,26 +156,8 @@ module.exports.handleOutingInviteAction = async (
     user.outings.push(outing);
   }
 
-  // Make a new notification to send to outing creator
+  // Get outing creator from the db
   let outingCreator = await User.findById(outing.created_by);
-  if (
-    outing.users.find((u) =>
-      u._id
-        ? u._id.toString() == outingCreator._id.toString()
-        : u.toString() == outingCreator._id.toString()
-    )
-  ) {
-    const newNotification = {
-      id: Date.now() + Math.random(),
-      type: "outing-invite-update",
-      status,
-      userID: user._id.toString(),
-      outing: outing._id.toString(),
-      created: new Date(Date.now()),
-      active: true,
-    };
-    outingCreator.notifications.push(newNotification);
-  }
 
   if (status == "accepted") {
     // Make a new notification to notify other members the outing was joined
@@ -196,7 +178,7 @@ module.exports.handleOutingInviteAction = async (
     // Notify outing members of outing join
     for (usr of outing.users) {
       const foundUsr = await User.findById(usr);
-      // Don't send join notification to the joining user
+      // Don't send join notification to the joining 
       if (foundUsr._id.toString() == user._id.toString()) {
         continue;
       }

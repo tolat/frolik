@@ -329,7 +329,7 @@ export const fetchChats = (user) => {
 // Create a new outing
 export const createOuting = (outing, user, setOutingData, resetButton) => {
   const requestConfig = {
-    url: `${getServer()}/user/${user._id}/create-outing`,
+    url: `${getServer()}/outing/${user._id}/create-outing`,
     headers: {
       "Content-Type": "application/json",
     },
@@ -369,26 +369,34 @@ export const createOuting = (outing, user, setOutingData, resetButton) => {
 // Get one outing
 export const fetchOuting = (outingID, user, onComplete) => {
   const requestConfig = {
-    url: `${getServer()}/user/${user._id}/outing/${outingID}`,
+    url: `${getServer()}/outing/${user._id}/${outingID}`,
   };
 
+  // Don;t fetch outing if it is already being fetched
+  if (store.getState().data.fetchOutings?.includes(outingID)) {
+    return;
+  }
+
   const handleResponse = (response) => {
+    store.dispatch(dataActions.removeFromFetchOutings(outingID));
     if (response.outing) {
       onComplete(response.outing);
     }
   };
 
   const handleError = (err) => {
+    store.dispatch(dataActions.removeFromFetchOutings(outingID));
     console.log(err);
   };
 
+  store.dispatch(dataActions.addToFetchOutings(outingID));
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
 // Joing an Outing
 export const joinOuting = (user, outing, onComplete) => {
   const requestConfig = {
-    url: `${getServer()}/user/${user._id}/outing/${outing._id}/join`,
+    url: `${getServer()}/outing/${user._id}/${outing._id}/join`,
   };
 
   const handleResponse = (response) => {
@@ -406,7 +414,7 @@ export const joinOuting = (user, outing, onComplete) => {
 // leave an Outing
 export const leaveOuting = (user, outing, onComplete) => {
   const requestConfig = {
-    url: `${getServer()}/user/${user._id}/outing/${outing._id}/leave`,
+    url: `${getServer()}/outing/${user._id}/${outing._id}/leave`,
   };
 
   const handleResponse = (response) => {
@@ -424,7 +432,7 @@ export const leaveOuting = (user, outing, onComplete) => {
 // Delete an Outing
 export const deleteOuting = (user, outing, onComplete) => {
   const requestConfig = {
-    url: `${getServer()}/user/${user._id}/outing/${outing._id}/delete`,
+    url: `${getServer()}/outing/${user._id}/${outing._id}/delete`,
   };
 
   const handleResponse = (response) => {
@@ -470,14 +478,22 @@ export const fetchStrippedUser = (userID, onComplete) => {
     url: `${getServer()}/user/stripped-user/${userID}`,
   };
 
+  // Do not feth user if already being fetched
+  if (store.getState().data.fetchUsers?.includes(userID)) {
+    return;
+  }
+
   const handleResponse = (response) => {
+    store.dispatch(dataActions.removeFromFetchUsers(userID));
     onComplete(response.user);
   };
 
   const handleError = (err) => {
+    store.dispatch(dataActions.removeFromFetchUsers(userID));
     console.log(err);
   };
 
+  store.dispatch(dataActions.addToFetchUsers(userID));
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
@@ -489,7 +505,7 @@ export const uploadOutingPhoto = (
   onComplete = () => {}
 ) => {
   const requestConfig = {
-    url: `${getServer()}/user/${user._id}/outing/${outing._id}/upload-photo`,
+    url: `${getServer()}/outing/${user._id}/${outing._id}/upload-photo`,
     headers: {
       "Content-Type": "application/json",
     },
@@ -512,7 +528,7 @@ export const uploadOutingPhoto = (
 // Delete a photo from an outing
 export const deleteOutingPhoto = (user, outing, key, onComplete) => {
   const requestConfig = {
-    url: `${getServer()}/user/${user._id}/outing/${outing._id}/delete-photo`,
+    url: `${getServer()}/outing/${user._id}/${outing._id}/delete-photo`,
     headers: {
       "Content-Type": "application/json",
     },
@@ -539,7 +555,7 @@ export const addOutingCompletion = (
   onComplete = () => {}
 ) => {
   const requestConfig = {
-    url: `${getServer()}/user/${user._id}/outing/${outing._id}/add-completion`,
+    url: `${getServer()}/outing/${user._id}/${outing._id}/add-completion`,
     headers: {
       "Content-Type": "application/json",
     },
@@ -680,7 +696,7 @@ export const fetchFeedOutings = (user, onComplete) => {
 // Get a photo from an outing
 export const fetchOutingPhoto = (outing, key, onComplete) => {
   const requestConfig = {
-    url: `${getServer()}/data/outing/${outing._id}/photo/${key}`,
+    url: `${getServer()}/outing/${outing._id}/photo/${key}`,
   };
 
   // Don't fetch cached photos more than once

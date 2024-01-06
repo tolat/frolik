@@ -10,7 +10,11 @@ const {
   sendEmail,
 } = require("../utils/utils");
 const { tryCatch } = require("../utils/middleware");
-const { createEmail, genResetPasswordEmail: resetPassword, genVerifyAccountEmail: verifyEmail } = require("../utils/emailTemplates");
+const {
+  createEmail,
+  genResetPasswordEmail: resetPassword,
+  genVerifyAccountEmail: verifyEmail,
+} = require("../utils/emailTemplates");
 
 const router = express.Router({ mergeParams: true });
 
@@ -71,7 +75,8 @@ router.get("/logout", (req, res) => {
 router.post(
   "/send-reset-link",
   tryCatch(async (req, res) => {
-    const user = await User.findOne({ username: req.body.username });
+    const username = req.body.username.toLowerCase();
+    const user = await User.findOne({ username: username });
 
     // If user status is pending, don't allow login
     if (!user) {
@@ -85,7 +90,7 @@ router.post(
     // Send email with reset link
     const link = `${process.env.SERVER}/reset-password/${user._id.toString()}`;
     sendEmail(
-      req.body.username,
+      username,
       "Reset frolik.ca Password",
       resetPassword(link)
     );
@@ -145,11 +150,7 @@ router.post(
 
     // Send email confirmation link
     const link = `${process.env.SERVER}/user/${user._id.toString()}/verify`;
-    sendEmail(
-      req.body.username,
-      "Verify frolik.ca Email",
-      verifyEmail(link)
-    );
+    sendEmail(req.body.username, "Verify frolik.ca Email", verifyEmail(link));
 
     res.sendStatus(200);
   })

@@ -6,7 +6,7 @@ const initialState = {
   globals: false,
   updatingGlobals: false,
   fetchingAuth: false,
-  fetchingMatchedUsers: false
+  fetchingMatchedUsers: false,
 };
 const authSlice = createSlice({
   name: "auth",
@@ -15,32 +15,32 @@ const authSlice = createSlice({
     login(state, action) {
       state.isAuthenticated = true;
       state.user = action.payload.user;
-      state.user.friends = action.payload.populatedFriends
+      state.user.friends = action.payload.populatedFriends;
     },
     logout(state) {
       state.isAuthenticated = false;
     },
-    deleteUser(state){
-      state.user = false
+    deleteUser(state) {
+      state.user = false;
     },
-    setUser(state, action){
-      state.user = action.payload
+    setUser(state, action) {
+      state.user = action.payload;
     },
-    setUserFriends(state, action){
-      state.user.friends = action.payload
+    setUserFriends(state, action) {
+      state.user.friends = action.payload;
     },
-    setGlobals(state, action){
-      state.globals = action.payload
-    }, 
-    setUpdatingGlobals(state,action){
-      state.updatingGlobals = action.payload
+    setGlobals(state, action) {
+      state.globals = action.payload;
     },
-    setFetchingAuth(state,action) {
-      state.fetchingAuth = action.payload
+    setUpdatingGlobals(state, action) {
+      state.updatingGlobals = action.payload;
     },
-    setFetchingMatchedUsers(state,action){
-      state.fetchingMatchedUsers = action.payload
-    }
+    setFetchingAuth(state, action) {
+      state.fetchingAuth = action.payload;
+    },
+    setFetchingMatchedUsers(state, action) {
+      state.fetchingMatchedUsers = action.payload;
+    },
   },
 });
 

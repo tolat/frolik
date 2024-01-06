@@ -41,8 +41,6 @@ const ActivityCard = (props) => {
   const hasPhotos = props.activity?.photos && props.activity.photos[0];
   const currentUrl = location.pathname;
 
-  console.log(hasPhotos);
-
   const handleToggleInstructions = (e) => {
     setInstructionsVisible((prev) => !prev);
   };
@@ -171,10 +169,10 @@ const ActivityCard = (props) => {
                       </div>
                       {currentUrl === "/outing" && (
                         <SimpleButton
-                          square={true}
                           noShadow={true}
                           onClick={handleDeleteActivity}
                           className={styles.deleteActivityButton}
+                          style={hasPhotos && { filter: "invert(1)" }}
                         >
                           Delete
                         </SimpleButton>

@@ -94,6 +94,17 @@ const NotificationsModal = (props) => {
                     showOuting={true}
                   />
                 );
+              case "outing-marked-complete":
+                return (
+                  <OutingUpdate
+                    header={`Your Outing was marked complete by:`}
+                    footer={
+                      "Your turn to Mark the outing complete when you are done uploading photos!"
+                    }
+                    key={Math.random()}
+                    notification={n}
+                  />
+                );
               case "friend-request":
                 return <FriendRequest key={Math.random()} notification={n} />;
               case "friend-request-update":
