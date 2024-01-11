@@ -418,7 +418,7 @@ const Go = (props) => {
                 </div>
               ) : (
                 activityFilter.activities
-                  .filter((a) => a.category === selected)
+                  .filter((a) => a?.category === selected)
                   .map((a) => (
                     <ActivityCard
                       key={Math.random()}

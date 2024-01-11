@@ -299,7 +299,7 @@ const ActivityCard = (props) => {
               </SimpleButton>
             )}
 
-            {props.hideSelect ? null : goState.outing.activity.name ===
+            {props.hideSelect ? null : goState.outing.activity?.name ===
               props.activity.name ? (
               <SimpleButton
                 square={true}
