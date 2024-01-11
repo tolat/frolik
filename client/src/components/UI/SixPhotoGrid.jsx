@@ -13,11 +13,17 @@ const SixPhotoGrid = (props) => {
   };
 
   const photoList = props.photos.map((img) => (
-    <div key={Math.random()} className={styles.imageContainer}>
+    <div
+      onClick={props.onClick}
+      key={Math.random()}
+      className={styles.imageContainer}
+    >
       <img
-        onClick={(e) => onImageClick(img)}
+        onClick={props.onClick ? null : (e) => onImageClick(img)}
         key={Math.random()}
-        className={`${styles.image} ${props.noRoundedCornerLeft ? styles.noRoundedCornerLeft : null}`}
+        className={`${styles.image} ${
+          props.noRoundedCornerLeft ? styles.noRoundedCornerLeft : null
+        }`}
         src={img}
         alt="feed-pic"
       />

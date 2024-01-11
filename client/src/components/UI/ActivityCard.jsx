@@ -125,6 +125,7 @@ const ActivityCard = (props) => {
                 <SixPhotoGrid
                   noRoundedCornerLeft={true}
                   photos={props.activity.photos}
+                  onClick={handleToggleInstructions}
                 />
               )}
             </div>

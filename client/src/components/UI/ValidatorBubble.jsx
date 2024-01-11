@@ -8,18 +8,18 @@ const ValidatorBubble = (props) => {
   const containerStyle = {
     display: display,
     top: coordinates.y || 0,
-    left: targetElement?.getBoundingClientRect().left || 0,
+    left: coordinates.x || 0,
     right: null,
   };
 
   // Position bubble correctly horizontally
   if (isRightPositioned) {
-    const targetRect = targetElement?.getBoundingClientRect();
+    const modalElt = document.getElementById("modal-container");
     containerStyle.left = null;
     containerStyle.right =
-      window.innerWidth - (targetRect.left + targetElement.offsetWidth);
+      modalElt?.offsetWidth - coordinates.x - targetElement.offsetWidth;
   }
-  
+
   function getElementCoordinates(element) {
     const rect = element?.getBoundingClientRect();
     const modalRect = document
@@ -34,7 +34,7 @@ const ValidatorBubble = (props) => {
       return rem * baseFontSize;
     }
 
-    const x = rect?.left - modalRect.left + window.scrollX + 50;
+    const x = rect?.left - modalRect.left + window.scrollX;
     const y =
       rect?.top -
       modalRect.top +
