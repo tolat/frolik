@@ -635,7 +635,7 @@ router.post(
           const newNotification = {
             id: Date.now() + Math.random(),
             type: "outing-marked-complete",
-            userID: foundUser._id.toString(),
+            userID: user._id.toString(),
             outing: outing._id.toString(),
             created: new Date(Date.now()),
             active: true,
