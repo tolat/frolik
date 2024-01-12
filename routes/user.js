@@ -744,15 +744,17 @@ router.get(
     await user.populate("friends.outings.users.outings.activity");
 
     let outings = {};
+    const sampleUser = await User.findOne({ username: "app.frolik@gmail.com" });
     for (let usr of user.friends) {
       // Don't show other users the sample user content
-      if (
-        usr.username == "app.frolik@gmail.com" &&
-        user.username !== "app.frolik@gmail.com"
-      )
-        continue;
       for (let outing of usr.outings) {
-        if (outing.date_completed && !outings[outing._id.toString()]) {
+        if (
+          outing.date_completed &&
+          !outings[outing._id.toString()] &&
+          !outing.users.find(
+            (u) => u._id.toString() == sampleUser._id.toString()
+          )
+        ) {
           outings[outing._id.toString()] = outing;
         }
       }
