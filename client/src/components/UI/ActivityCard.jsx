@@ -253,7 +253,7 @@ const ActivityCard = (props) => {
           <div
             style={{
               maxHeight:
-                instructionsVisible || props.showInstructions ? "80rem" : "0",
+                instructionsVisible || props.showInstructions ? "200rem" : "0",
             }}
             className={styles.instructionsContainer}
           >
