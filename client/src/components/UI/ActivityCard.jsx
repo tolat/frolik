@@ -128,6 +128,19 @@ const ActivityCard = (props) => {
                   onClick={handleToggleInstructions}
                 />
               )}
+              {hasPhotos && currentUrl === "/outing" ? (
+                <Buttons
+                  {...props}
+                  hasPhotos={hasPhotos}
+                  currentUrl={currentUrl}
+                  handleUseActivity={handleUseActivity}
+                  handleToggleInstructions={handleToggleInstructions}
+                  instructionsVisible={instructionsVisible}
+                  goState={goState}
+                  handleRemove={handleRemove}
+                  handleSelect={handleSelect}
+                />
+              ) : null}
             </div>
             <div
               className={styles.nonPhotoContainer}
@@ -275,54 +288,94 @@ const ActivityCard = (props) => {
               <div className={styles.goal}>{props.activity.goal}</div>
             </div>
           </div>
-          <div className={styles.buttonSpacer}></div>
-          <div className={styles.buttonContainer}>
-            {(!props.showInstructions || currentUrl === "/social") && (
-              <SimpleButton
-                square={true}
-                noShadow={true}
-                style={{ boxShadow: "none" }}
-                onClick={
-                  props.showInstructions
-                    ? currentUrl === "/social"
-                      ? handleUseActivity
-                      : null
-                    : handleToggleInstructions
-                }
-              >
-                {!props.showInstructions
-                  ? !instructionsVisible
-                    ? "Show Instructions"
-                    : "Hide Instructions"
-                  : null}
-                {currentUrl === "/social" && "Use Activity"}
-              </SimpleButton>
-            )}
-
-            {props.hideSelect ? null : goState.outing.activity?.name ===
-              props.activity.name ? (
-              <SimpleButton
-                square={true}
-                noShadow={true}
-                onClick={handleRemove}
-                className={styles.remove}
-              >
-                Remove
-              </SimpleButton>
-            ) : (
-              <SimpleButton
-                square={true}
-                noShadow={true}
-                onClick={handleSelect}
-                className={styles.select}
-              >
-                Select
-              </SimpleButton>
-            )}
-          </div>
+          {hasPhotos && currentUrl === "/outing" ? null : (
+            <Fragment>
+              <div className={styles.buttonSpacer} />
+              <Buttons
+                {...props}
+                currentUrl={currentUrl}
+                handleUseActivity={handleUseActivity}
+                handleToggleInstructions={handleToggleInstructions}
+                instructionsVisible={instructionsVisible}
+                goState={goState}
+                handleRemove={handleRemove}
+                handleSelect={handleSelect}
+              />
+            </Fragment>
+          )}
         </div>
       </div>
     )
+  );
+};
+
+const Buttons = (props) => {
+  return (
+    <div
+      className={`${styles.buttonContainer} ${
+        props.hasPhotos ? styles.buttonGradient : null
+      }`}
+    >
+      {(!props.showInstructions || props.currentUrl === "/social") && (
+        <SimpleButton
+          square={true}
+          noShadow={true}
+          style={{
+            boxShadow: "none",
+            justifyContent: props.hasPhotos ? "left" : null,
+            backgroundColor: props.hasPhotos ? "transparent" : null,
+            color: props.hasPhotos ? "white" : null,
+          }}
+          onClick={
+            props.showInstructions
+              ? props.currentUrl === "/social"
+                ? props.handleUseActivity
+                : null
+              : props.handleToggleInstructions
+          }
+        >
+          {!props.showInstructions
+            ? !props.instructionsVisible
+              ? "Show Instructions"
+              : "Hide Instructions"
+            : null}
+          {props.currentUrl === "/social" && "Use Activity"}
+        </SimpleButton>
+      )}
+
+      {props.hideSelect ? null : props.goState.outing.activity?.name ===
+        props.activity.name ? (
+        <SimpleButton
+          square={true}
+          noShadow={true}
+          onClick={props.handleRemove}
+          className={styles.remove}
+          style={{
+            boxShadow: "none",
+            justifyContent: props.hasPhotos ? "right" : null,
+            backgroundColor: props.hasPhotos ? "transparent" : null,
+            color: props.hasPhotos ? "white" : null,
+          }}
+        >
+          Remove
+        </SimpleButton>
+      ) : (
+        <SimpleButton
+          square={true}
+          noShadow={true}
+          onClick={props.handleSelect}
+          className={styles.select}
+          style={{
+            boxShadow: "none",
+            justifyContent: props.hasPhotos ? "right" : null,
+            backgroundColor: props.hasPhotos ? "transparent" : null,
+            color: props.hasPhotos ? "white" : null,
+          }}
+        >
+          Select
+        </SimpleButton>
+      )}
+    </div>
   );
 };
 
