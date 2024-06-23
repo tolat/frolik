@@ -56,7 +56,7 @@ router.get(
         const randIndex = Math.floor(Math.random() * remainingOutings.length);
         const outing = await Outing.findById(remainingOutings[randIndex]);
         // Add up to 6 photos from this outing
-        for (let i = 0; i < outing.photos.length && i < 6; i++) {
+        for (let i = 0; i < outing?.photos.length && i < 6; i++) {
           // Download image signed url from s3
           const url = await getSignedURLFromS3(
             process.env.AWS_BUCKET,

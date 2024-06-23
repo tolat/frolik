@@ -752,7 +752,7 @@ router.get(
           outing.date_completed &&
           !outings[outing._id.toString()] &&
           !outing.users.find(
-            (u) => u._id.toString() == sampleUser._id.toString()
+            (u) => u._id.toString() == sampleUser?._id.toString()
           )
         ) {
           outings[outing._id.toString()] = outing;
