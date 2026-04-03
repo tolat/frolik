@@ -77,7 +77,7 @@ const dataSlice = createSlice({
       if (newZoom) user.zoom = newZoom;
     },
     clearAllUserData(state) {
-      state.users = initialState;
+      state.users = {};
     },
     addInviteOuting(state, action) {
       state.inviteOutings.push(action.payload);

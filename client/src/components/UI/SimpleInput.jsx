@@ -1,9 +1,10 @@
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useEffect, useId, useState } from "react";
 import styles from "./styles/SimpleInput.module.scss";
 
 const SimpleInput = forwardRef((props, ref) => {
   const [value, setValue] = useState(props.defaultVal);
-  const inputID = props.id || Math.random();
+  const generatedId = useId();
+  const inputID = props.id || generatedId;
 
   // Execute on changes to the input element
   const onChange = (e) => {

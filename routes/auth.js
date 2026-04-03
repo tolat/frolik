@@ -1,25 +1,36 @@
 const passport = require("passport");
 const User = require("../models/user");
-const Outing = require("../models/outing");
-const Activity = require("../models/activity");
 const express = require("express");
-const {
-  populateUser,
-  populateFriends,
-  genRanHex,
-  sendEmail,
-} = require("../utils/utils");
+const rateLimit = require("express-rate-limit");
+const { populateUser, populateFriends, sendEmail } = require("../utils/utils");
 const { tryCatch } = require("../utils/middleware");
 const {
-  createEmail,
   genResetPasswordEmail: resetPassword,
   genVerifyAccountEmail: verifyEmail,
 } = require("../utils/emailTemplates");
 
 const router = express.Router({ mergeParams: true });
 
+// Rate limiters for sensitive auth endpoints
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20,
+  message: { header: "Too Many Attempts", message: "Too many login attempts. Please try again in 15 minutes." },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const resetLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 5,
+  message: { header: "Too Many Attempts", message: "Too many password reset requests. Please try again in an hour." },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 router.post(
   "/login",
+  loginLimiter,
   passport.authenticate("local"),
   tryCatch(async (req, res) => {
     const user = await User.findOne({ username: req.body.username });
@@ -74,6 +85,7 @@ router.get("/logout", (req, res) => {
 
 router.post(
   "/send-reset-link",
+  resetLimiter,
   tryCatch(async (req, res) => {
     const username = req.body.username.toLowerCase();
     const user = await User.findOne({ username: username });
@@ -115,11 +127,19 @@ router.post(
       return;
     }
 
-    // Create new user with new password but same _id
-    let newUser = new User(JSON.parse(JSON.stringify(user)));
-    newUser._id = user._id.toString();
-    await User.deleteOne({ _id: user._id.toString() });
-    await User.register(newUser, req.body.password);
+    // Check that the reset token exists and hasn't expired
+    if (!user.reset_token || user.reset_token.expires < Date.now()) {
+      res.status(406).send({
+        header: "Link Expired",
+        message: "This password reset link has expired. Please request a new one.",
+      });
+      return;
+    }
+
+    // Safely update password using passport-local-mongoose's setPassword()
+    await user.setPassword(req.body.password);
+    user.reset_token = undefined;
+    await user.save();
 
     res.sendStatus(200);
   })
@@ -139,8 +159,8 @@ router.post(
       return;
     }
 
-    // If user not found, send unacceptable (406)
-    if (!user.status.status === "Pending") {
+    // If user is already verified, don't resend
+    if (user.status.status !== "Pending") {
       res.status(406).send({
         header: `Could not send email`,
         message: `User ${req.body.username} has already been verified.`,

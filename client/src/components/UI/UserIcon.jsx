@@ -1,5 +1,5 @@
 import styles from "./styles/UserIcon.module.scss";
-import { memo } from "react";
+import { memo, useId } from "react";
 import { useSelector } from "react-redux";
 import CroppedImage from "./CroppedImage";
 import { genBackgroundStr } from "../../utils/utils";
@@ -13,9 +13,9 @@ const UserIcon = memo(function UserIcon(props) {
   const photoDimension = `${props.sizeInRem - 2 * props.borderSizeInRem}rem`;
   const pieDimension = `${props.sizeInRem - props.borderSizeInRem}rem`;
   const backerDimension = `${props.sizeInRem}rem`;
-  const dataState = useSelector((state) => state.data);
-  const master = dataState.masterPhotoDimension;
-  const userData = dataState.users[props.user?._id];
+  // Select only the specific user's data to avoid re-renders from unrelated photo loads
+  const master = useSelector((state) => state.data.masterPhotoDimension);
+  const userData = useSelector((state) => state.data.users[props.user?._id]);
   const scalingFactor =
     (parseFloat(props.sizeInRem) - 2 * parseFloat(props.borderSizeInRem)) /
     master;
@@ -24,7 +24,9 @@ const UserIcon = memo(function UserIcon(props) {
   crop.x *= scalingFactor;
   crop.y *= scalingFactor;
   const photoString = userData?.profile_picture;
-  const iconID = `usericon-${Math.random()}`;
+  // useId() gives a stable ID across renders, preventing stale-closure bugs
+  // where the onLoad callback looked up an ID that no longer matched the div
+  const iconID = useId();
 
   const pieStyle = {
     width: pieDimension,

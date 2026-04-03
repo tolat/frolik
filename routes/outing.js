@@ -239,7 +239,7 @@ router.get(
     // If user is not in the invited list, they cannot join. send 406
     if (!outing.invited.find((u) => u._id.toString() == user._id.toString())) {
       res.status(406).send({
-        header: `Cannot joing Outing`,
+        header: `Cannot join Outing`,
         message: "User was not invited to this Outing.",
       });
       return;

@@ -23,9 +23,9 @@ const PhotoGrid = memo((props) => {
       className={styles.container}
     >
       {props.images.map(
-        (m) =>
+        (m, index) =>
           m && (
-            <div key={Math.random()} className={styles.imageContainer}>
+            <div key={index} className={styles.imageContainer}>
               <ImageLoadingTile id={m} />
               <img
                 onClick={() => onImageClick(m)}

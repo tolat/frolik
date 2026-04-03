@@ -11,7 +11,7 @@ import ChatModal from "../Modals/ChatModal";
 import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
 import outingsBarIcon from "../../images/outingsToolbar.png";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import ProfileViewerModal from "../Modals/ProfileViewerModal";
 import profileIcon from "../../images/account.png";
 import profileIconBlue from "../../images/account-blue.png";
@@ -37,6 +37,7 @@ const Navbar = (props) => {
   const currentUrl = location.pathname;
   const warningMessage = useSelector((state) => state.popup.warningMessage);
   const warningHeader = useSelector((state) => state.popup.warningHeader);
+  const subPromptRef = useRef(null);
   const [activePage, setActivePage] = useState(false);
   const [masterDisplay, setMasterDisplay] = useState("flex");
 
@@ -105,11 +106,10 @@ const Navbar = (props) => {
     };
   }, [currentUrl]);
 
-  // Click button on page load and user updates
+  // Trigger subscription prompt when user logs in or changes
   useEffect(() => {
     if (user) {
-      document.getElementById("subscription-prompt-button").click();
-      console.log("clicking subscription prompter button");
+      subPromptRef.current?.click();
     }
   }, [user]);
 
@@ -120,8 +120,8 @@ const Navbar = (props) => {
       className={styles.header}
     >
       <button
+        ref={subPromptRef}
         className={styles.subPromptButton}
-        id="subscription-prompt-button"
       />
       <WarningPopup
         selector={"generic-warning"}

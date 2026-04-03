@@ -3,7 +3,7 @@ import OutingCard from "./OutingCard";
 import styles from "./styles/OutingList.module.scss";
 import { outingIsCompleted, sortByDate, toSorted } from "../../utils/utils";
 import SimpleSearch from "./SimpleSearch";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import FeedCard from "./FeedCard";
 
 const OutingList = (props) => {
@@ -11,44 +11,41 @@ const OutingList = (props) => {
   if (props.user) user = props.user;
 
   const [outingSearch, setOutingSearch] = useState("");
-  const nonPending = applyOutingSearch(
-    user?.outings.filter(
-      (o) => outingIsCompleted(o) || o.flakes.find((id) => id === user._id)
-    )
-  );
-  const pending = applyOutingSearch(
-    user?.outings.filter(
-      (o) => !outingIsCompleted(o) && !o.flakes.find((id) => id === user._id)
-    )
-  );
 
-  function applyOutingSearch(outings) {
-    return outingSearch || outingSearch !== ""
-      ? outings.filter((o) => {
-          return (
-            o.name
-              .toLowerCase()
-              .trim()
-              .includes(outingSearch.toLowerCase().trim()) ||
-            o.users.find(
-              (u) =>
-                u.first_name
-                  ?.toLowerCase()
-                  .trim()
-                  .includes(outingSearch.toLowerCase().trim()) ||
-                u.last_name
-                  ?.toLowerCase()
-                  .trim()
-                  .includes(outingSearch.toLowerCase().trim())
-            ) ||
-            o.activity?.name
-              .toLowerCase()
-              .trim()
-              .includes(outingSearch.toLowerCase().trim())
-          );
-        })
-      : outings;
-  }
+  const searchTerm = outingSearch.toLowerCase().trim();
+
+  // Memoize filtered + sorted lists so they aren't recomputed on every render
+  const { pending, nonPending } = useMemo(() => {
+    const filterBySearch = (outings) => {
+      if (!searchTerm) return outings;
+      return outings.filter((o) =>
+        o.name.toLowerCase().trim().includes(searchTerm) ||
+        o.activity?.name.toLowerCase().trim().includes(searchTerm) ||
+        o.users.find(
+          (u) =>
+            u.first_name?.toLowerCase().trim().includes(searchTerm) ||
+            u.last_name?.toLowerCase().trim().includes(searchTerm)
+        )
+      );
+    };
+
+    const allOutings = user?.outings ?? [];
+    const pendingRaw = allOutings.filter(
+      (o) => !outingIsCompleted(o) && !o.flakes.find((id) => id === user._id)
+    );
+    const nonPendingRaw = allOutings.filter(
+      (o) => outingIsCompleted(o) || o.flakes.find((id) => id === user._id)
+    );
+
+    return {
+      pending: toSorted(filterBySearch(pendingRaw), (a, b) =>
+        sortByDate(b.date_created, a.date_created)
+      ),
+      nonPending: toSorted(filterBySearch(nonPendingRaw), (a, b) =>
+        sortByDate(b.date_created, a.date_created)
+      ),
+    };
+  }, [user, searchTerm]);
 
   return (
     <div className={styles.container}>
@@ -66,29 +63,26 @@ const OutingList = (props) => {
             <br />
             <br />
           </div>
-          {!props.noPending && toSorted(pending, (a, b) =>
-            sortByDate(b.date_created, a.date_created)
-          ).map((o) => (
-            <div key={Math.random()} className={styles.outingContainer}>
-              <OutingCard outing={o} user={user} />
-            </div>
-          ))}
+          {!props.noPending &&
+            pending.map((o) => (
+              <div key={o._id} className={styles.outingContainer}>
+                <OutingCard outing={o} user={user} />
+              </div>
+            ))}
         </div>
       )}
       <div className={styles.completedHeader}>Completed Outings</div>
-      <div style={{marginBottom: '2rem'}} className={styles.headingBlurb}>
+      <div style={{ marginBottom: "2rem" }} className={styles.headingBlurb}>
         <b>Your flaked outings show up in red.</b>
       </div>
-      {nonPending[0]  &&
-        toSorted(nonPending, (a, b) =>
-          sortByDate(b.date_created, a.date_created)
-        ).map((o) =>
+      {nonPending[0] &&
+        nonPending.map((o) =>
           o.flakes.find((id) => id === user._id) ? (
-            <div key={Math.random()} className={styles.outingContainer}>
+            <div key={o._id} className={styles.outingContainer}>
               <OutingCard outing={o} user={user} />
             </div>
           ) : (
-            <div key={Math.random()} className={styles.outingContainer}>
+            <div key={o._id} className={styles.outingContainer}>
               <FeedCard outing={o} />
             </div>
           )

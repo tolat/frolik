@@ -62,24 +62,26 @@ function App() {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
       socket.off("message-sent", sendChatMessage);
-      socket.off("message-received", receiveChatMessage);
+      socket.off("new-message", receiveChatMessage);
       socket.off("update-user", onUpdateUser);
       socket.disconnect();
     };
   }, [user]);
 
   // Handle socket reconnection from dead server etc.
+  // Only run the reconnect interval while a user is logged in.
   useEffect(() => {
+    if (!user) return;
+
     // Set window listener to check if socket is connected
     const checkSocketConnection = () => {
       if (!socket.connected) {
         dispatch(socketActions.setIsConnecting(true));
-        console.log("trying to reconnect socket..");
         connectSocket(socket, user);
       }
     };
 
-    // Check socket connection every 1.random seconds
+    // Check socket connection every ~1-2 seconds
     const intervalID = window.setInterval(
       checkSocketConnection,
       1000 + Math.random() * 1000
@@ -89,15 +91,19 @@ function App() {
       dispatch(socketActions.setIsConnecting(false));
       window.clearInterval(intervalID);
     };
-  });
+  }, [user, dispatch]);
 
   // Add event listener for pwa install event
   useEffect(() => {
-    window.addEventListener("beforeinstallprompt", (event) => {
+    const handleInstallPrompt = (event) => {
       event.preventDefault();
       dispatch(modalActions.setInstallPrompted(event));
-    });
-  });
+    };
+    window.addEventListener("beforeinstallprompt", handleInstallPrompt);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleInstallPrompt);
+    };
+  }, [dispatch]);
 
   return <RouterProvider router={router} />;
 }

@@ -35,10 +35,7 @@ const modalSlice = createSlice({
       state.zIndex = action.payload;
     },
     showModal(state, action) {
-      document.documentElement.style.overflowY = "clip";
-      setTimeout(() => {
-        document.getElementById("main-container-children").style.opacity = 0;
-      }, 300);
+      // DOM side-effects (overflow, opacity) are handled reactively in MainContainer
       state.marginLeft = "0%";
       state.zIndex = "2";
       if (action?.payload?.headerStyle) {
@@ -72,7 +69,6 @@ const modalSlice = createSlice({
       state.activeModalUser = action.payload;
     },
     setHeaderStyle(state, action) {
-      console.log("setting header style: ", action.payload);
       state.headerStyle = action.payload;
     },
     setInstallPrompted(state, action) {

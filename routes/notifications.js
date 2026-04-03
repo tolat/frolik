@@ -4,11 +4,7 @@ const webpush = require("web-push");
 const User = require("../models/user");
 const { tryCatch } = require("../utils/middleware");
 
-webpush.setVapidDetails(
-  `mailto:${process.env.SENDMAIL_FROM}`,
-  process.env.VAPID_PUBLIC_KEY,
-  process.env.VAPID_PRIVATE_KEY
-);
+// VAPID keys are initialized once in server.js at startup
 
 router.get("/vapid-public-key", (req, res) => {
   res.send({ key: process.env.VAPID_PUBLIC_KEY });
@@ -29,8 +25,14 @@ router.post(
       body: "You have successfully subscribed to push notifications!",
     });
 
-    webpush.sendNotification(subscription, payload).catch((error) => {
-      console.error("Error sending notification:", error);
+    webpush.sendNotification(subscription, payload).catch(async (error) => {
+      if (error.statusCode === 410 || error.statusCode === 404) {
+        // Subscription already invalid — clear it so we stop hitting a dead endpoint
+        user.pushSubscription = undefined;
+        await user.save();
+      } else {
+        console.error("Error sending subscribe confirmation:", error.message);
+      }
     });
 
     res.sendStatus(200);
@@ -48,8 +50,13 @@ router.post(
       body: "Success!",
     });
 
-    webpush.sendNotification(subscription, payload).catch((error) => {
-      console.error("Error sending notification:", error);
+    webpush.sendNotification(subscription, payload).catch(async (error) => {
+      if (error.statusCode === 410 || error.statusCode === 404) {
+        user.pushSubscription = undefined;
+        await user.save();
+      } else {
+        console.error("Error sending test notification:", error.message);
+      }
     });
 
     res.sendStatus(200);

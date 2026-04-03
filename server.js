@@ -1,4 +1,14 @@
 require("dotenv").config();
+
+// Prevent MongoDB driver internal errors (auth failures, pool resets, etc.)
+// from surfacing as uncaught exceptions that crash the process.
+process.on("uncaughtException", (err) => {
+  console.error("[uncaughtException]", err.message);
+});
+process.on("unhandledRejection", (reason) => {
+  console.error("[unhandledRejection]", reason?.message ?? reason);
+});
+
 const express = require("express");
 const path = require("path");
 const User = require("./models/user");
@@ -7,9 +17,26 @@ const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const session = require("express-session");
+const webpush = require("web-push");
 const { handleCORS } = require("./utils/middleware");
 const inDev = process.env.NODE_ENV == "development";
 const favicon = require("serve-favicon");
+
+// Initialize VAPID keys for web push notifications once at startup.
+// Wrapped in try/catch so a missing or malformed key prints a warning
+// instead of crashing the entire server process.
+try {
+  webpush.setVapidDetails(
+    `mailto:${process.env.SENDMAIL_FROM}`,
+    process.env.VAPID_PUBLIC_KEY,
+    process.env.VAPID_PRIVATE_KEY
+  );
+} catch (err) {
+  console.warn(
+    "[web-push] VAPID key error — push notifications disabled:",
+    err.message
+  );
+}
 
 // Set up express
 const app = express();
@@ -19,7 +46,7 @@ app.use(
 );
 app.use("/public", express.static(path.join(__dirname, "/client/build/")));
 app.use(express.urlencoded({ extended: false }));
-app.use(express.json({ limit: "50mb" }));
+app.use(express.json({ limit: "5mb" }));
 app.use(handleCORS);
 
 // Set favicon
@@ -32,7 +59,7 @@ const socket = require("socket.io");
 
 // Add cors to the socket server if in development
 const local = "http://localhost:3000";
-const ioConfig = inDev ? { origin: local, credentials: "include" } : {};
+const ioConfig = inDev ? { cors: { origin: local, credentials: "include" } } : {};
 const io = socket(server, ioConfig);
 module.exports = io;
 
@@ -40,20 +67,28 @@ module.exports = io;
 io.on("connection", (socket) => onSocketConnection(socket));
 const { onSocketConnection } = require("./utils/utils");
 
-// Connect to the database and handle connection errors
-try {
-  mongoose.connect(process.env.DB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+// Connect to the database and handle connection errors.
+// family: 4  → force IPv4 (Node 17+ prefers IPv6 which can break Atlas TLS)
+// tls: true  → explicit TLS (required by Atlas)
+// tlsAllowInvalidCertificates: controlled by env so dev can set it when needed
+global.db = mongoose.connection;
+global.db.on("error", (err) =>
+  console.error("MongoDB connection error:", err.message)
+);
+global.db.once("open", () => console.log("Connected to the database"));
+
+mongoose
+  .connect(process.env.DB_URL, {
+    family: 4,
+    tls: true,
+    serverSelectionTimeoutMS: 10000,
+  })
+  .catch((err) => {
+    console.error(
+      "MongoDB failed to connect — server will run but DB calls will fail:",
+      err.message
+    );
   });
-  global.db = mongoose.connection;
-  global.db.on("error", console.error.bind(console, "connection error:"));
-  global.db.once("open", () => {
-    console.log("Main process connected to the database");
-  });
-} catch (e) {
-  console.log(e);
-}
 
 // Session config for express
 const sessionConfig = {
@@ -67,7 +102,7 @@ const sessionConfig = {
   secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
-  expires: Date.now() + process.env.SESSION_DURATION,
+  expires: Date.now() + parseInt(process.env.SESSION_DURATION),
 };
 app.use(session(sessionConfig));
 

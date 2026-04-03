@@ -12,41 +12,36 @@ const {
 } = require("unique-names-generator");
 
 // Populates an array with stripped down version of friends
+// Uses Promise.all for parallel DB queries instead of sequential loop (N+1 fix)
 module.exports.populateFriends = async (friends) => {
-  let populatedFriends = [];
-  for (friend of friends) {
-    const friendUser = await User.findById(friend._id || friend);
-    await friendUser.populate({
-      path: "outings",
-      populate: { path: "activity" },
-    });
+  return Promise.all(
+    friends.map(async (friend) => {
+      const friendUser = await User.findById(friend._id || friend);
+      await friendUser.populate({
+        path: "outings",
+        populate: { path: "activity" },
+      });
 
-    let strippedOutings = [];
-    for (let outing of friendUser.outings) {
-      strippedOutings.push({
+      const strippedOutings = friendUser.outings.map((outing) => ({
         activity: outing.activity,
         completions: outing.completions,
         users: outing.users,
         photos: outing.photos,
         flakes: outing.flakes,
-      });
-    }
+      }));
 
-    const friendData = {
-      _id: friendUser._id,
-      first_name: friendUser.first_name,
-      last_name: friendUser.last_name,
-      outings: strippedOutings,
-      status: friendUser.status,
-      location: friendUser.location,
-      tagline: friendUser.tagline,
-      profile_picture: friendUser.profile_picture,
-    };
-
-    populatedFriends.push(friendData);
-  }
-
-  return populatedFriends;
+      return {
+        _id: friendUser._id,
+        first_name: friendUser.first_name,
+        last_name: friendUser.last_name,
+        outings: strippedOutings,
+        status: friendUser.status,
+        location: friendUser.location,
+        tagline: friendUser.tagline,
+        profile_picture: friendUser.profile_picture,
+      };
+    })
+  );
 };
 
 // Generic user population
@@ -72,25 +67,30 @@ module.exports.populateUser = async (user) => {
   });
 };
 
-// Send emails to users
-module.exports.sendEmail = async (to, subject, html) => {
-  try {
-    const transporter = nodemailer.createTransport({
+// Reuse a single transporter instance rather than recreating it on every send
+let _transporter = null;
+const getTransporter = () => {
+  if (!_transporter) {
+    _transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
         user: process.env.SENDMAIL_FROM,
         pass: process.env.SENDMAIL_FROM_PASSWORD,
       },
     });
+  }
+  return _transporter;
+};
 
-    const mailOptions = {
+// Send emails to users
+module.exports.sendEmail = async (to, subject, html) => {
+  try {
+    const info = await getTransporter().sendMail({
       from: process.env.SENDMAIL_FROM,
       to,
       subject,
-      html: html,
-    };
-
-    const info = await transporter.sendMail(mailOptions);
+      html,
+    });
     console.log("Email sent:", info.response);
   } catch (error) {
     console.error("Error sending email:", error);
@@ -98,13 +98,7 @@ module.exports.sendEmail = async (to, subject, html) => {
 };
 
 module.exports.getPhotosFromOutings = (user) => {
-  let photoKeys = [];
-  for (let outing of user.outings) {
-    for (photoKey of outing.photos.map((p) => p.key)) {
-      photoKeys.push(photoKey);
-    }
-  }
-  return photoKeys;
+  return user.outings.flatMap((outing) => outing.photos.map((p) => p.key));
 };
 
 module.exports.generateUniqueName = () => {
@@ -223,41 +217,46 @@ module.exports.handleOutingInviteAction = async (
   ]);
 };
 
-module.exports.pushUserUpdate = async (users) => {
-  for (let user of users) {
+module.exports.pushUserUpdate = (users) => {
+  for (const user of users) {
     const usrID = user._id ? user._id.toString() : user.toString();
     io.to(usrID).emit("update-user");
   }
 };
 
 module.exports.webpushNotify = async (users, payload) => {
-  for (let user of users) {
-    // Get user form DB
-    const userID = user._id ? user._id.toString() : user.toString();
-    user = await User.findById(userID).populate({
-      path: "chats",
-      populate: {
-        path: "outing",
-      },
-    });
+  // Fetch all users from DB in parallel, then send notifications concurrently
+  await Promise.all(
+    users.map(async (user) => {
+      const userID = user._id ? user._id.toString() : user.toString();
+      const freshUser = await User.findById(userID).populate({
+        path: "chats",
+        populate: { path: "outing" },
+      });
 
-    payload.notificationCount =
-      this.getTotalUnreadMessages(user) + user.notifications?.length;
+      if (!freshUser?.pushSubscription) return;
 
-    console.log(
-      `sending notificationcount to ${user.first_name}: `,
-      payload.notificationCount
-    );
+      const userPayload = {
+        ...payload,
+        notificationCount:
+          this.getTotalUnreadMessages(freshUser) +
+          (freshUser.notifications?.length ?? 0),
+      };
 
-    // Send webpush noticication as well if webpushPayload is given
-    if (user.pushSubscription) {
       webpush
-        .sendNotification(user.pushSubscription, JSON.stringify(payload))
-        .catch((error) => {
-          console.error("Error sending notification:", error);
+        .sendNotification(freshUser.pushSubscription, JSON.stringify(userPayload))
+        .catch(async (error) => {
+          // 410 Gone / 404 Not Found = subscription is expired or user unsubscribed.
+          // Remove it from the DB so we don't keep hitting a dead endpoint.
+          if (error.statusCode === 410 || error.statusCode === 404) {
+            freshUser.pushSubscription = undefined;
+            await freshUser.save();
+          } else {
+            console.error("Error sending push notification:", error.message);
+          }
         });
-    }
-  }
+    })
+  );
 };
 
 module.exports.handleFriendRequestAction = async (

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import styles from "./styles/ChatCard.module.scss";
 import UserIconCluster from "./UserIconCluster";
 import {
@@ -9,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
 import { fetchChat } from "../../utils/data-fetch";
 
-const ChatCard = (props) => {
+const ChatCard = memo((props) => {
   const user = useSelector((state) => state.auth.user);
   const chat = props.chat;
   const globals = useSelector((state) => state.auth.globals);
@@ -90,6 +91,6 @@ const ChatCard = (props) => {
       </div>
     </div>
   );
-};
+});
 
 export default ChatCard;

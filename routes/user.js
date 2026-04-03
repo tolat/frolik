@@ -245,7 +245,6 @@ router.post(
 router.get(
   "/:id/verify",
   tryCatch(async (req, res) => {
-    console.log("HERE");
     const user = await User.findById(req.params.id);
 
     // If user not found, send unacceptable (406)
@@ -514,7 +513,7 @@ router.post(
     const friendUser = await User.findById(req.body.friendID);
 
     // send back 406 if user has already requested this friend
-    if (user.friend_requests.find((id) => id.toString() == req.body.freindID)) {
+    if (user.friend_requests.find((id) => id.toString() == req.body.friendID)) {
       res.status(406).send({
         header: `Friend request already sent`,
         message: `You have already asked ${friendUser.first_name} ${friendUser.last_name} to be your friend.`,
@@ -560,7 +559,7 @@ router.post(
     const friendUser = await User.findById(req.body.friendID);
 
     // send back 406 if user does not have this friend
-    if (user.friends.find((id) => id.toString() == req.body.freindID)) {
+    if (user.friends.find((id) => id.toString() == req.body.friendID)) {
       res.status(406).send({
         header: `Could not remove friend`,
         message: `You are not friends with ${friendUser.first_name} ${friendUser.last_name}`,

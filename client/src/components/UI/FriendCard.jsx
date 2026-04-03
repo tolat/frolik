@@ -1,3 +1,4 @@
+import { memo } from "react";
 import StatIcon from "./StatIcon";
 import styles from "./styles/FriendCard.module.scss";
 import UserIcon from "./UserIcon";
@@ -9,7 +10,7 @@ import { hideModal } from "../../store/modal-actions";
 import { calculateFlakeRating } from "../../utils/utils";
 import { popupActions } from "../../store/popup-slice";
 
-const FriendCard = (props) => {
+const FriendCard = memo((props) => {
   const statIconStyle = { width: "2rem", height: "2rem" };
   const statContainerStyle = { marginLeft: "1rem" };
   const sizeInRem = props.small ? "5" : "8.5";
@@ -111,6 +112,6 @@ const FriendCard = (props) => {
       {props.children}
     </div>
   );
-};
+});
 
 export default FriendCard;

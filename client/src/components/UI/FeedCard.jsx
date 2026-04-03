@@ -130,7 +130,7 @@ const FeedCardFooter = (props) => {
           <div className={styles.friendsPopupContainer}>
             <h2 className={styles.friendsPopupHeader}>Outing Members</h2>
             {outing.users.map((u) => (
-              <FriendCard key={Math.random()} user={u} />
+              <FriendCard key={u._id} user={u} />
             ))}
           </div>
         </EmptyPopup>

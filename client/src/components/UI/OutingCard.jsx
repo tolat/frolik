@@ -1,10 +1,11 @@
+import { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles/OutingCard.module.scss";
 import UserIconCluster from "./UserIconCluster";
 import { modalActions } from "../../store/modal-slice";
 import { outingIsCompleted } from "../../utils/utils";
 
-const OutingCard = (props) => {
+const OutingCard = memo((props) => {
   const user = useSelector((state) => state.auth.user);
   const categoryColorMap = useSelector(
     (state) => state.auth.globals.categoryColorMap
@@ -59,6 +60,6 @@ const OutingCard = (props) => {
       </div>
     </div>
   );
-};
+});
 
 export default OutingCard;

@@ -260,10 +260,10 @@ const ActivityCard = (props) => {
             {props.activity.instructions && props.activity.instructions[0] && (
               <Fragment>
                 <div className={styles.iHeader}>Instructions:</div>
-                {props.activity.instructions.map((i) => (
+                {props.activity.instructions.map((i, idx) => (
                   <InstructionCard
                     creatingActivity={props.creatingActivity}
-                    key={Math.random()}
+                    key={`${i.type ?? ""}${idx}`}
                     instruction={i}
                   />
                 ))}
