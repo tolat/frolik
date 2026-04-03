@@ -1,9 +1,20 @@
 @import "../../../utils/responsive.scss";
 
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
 .container {
   width: 100%;
-  padding-top: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 100%;
+  min-height: 8rem;
+  background: linear-gradient(
+    90deg,
+    #e8e8e8 25%,
+    #f4f4f4 50%,
+    #e8e8e8 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
 }

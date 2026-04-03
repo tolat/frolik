@@ -11,12 +11,30 @@
 .imageContainer {
   display: flex;
   position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer sits as an absolute overlay until the real image loads */
+.loadingOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .image {
   width: 100%;
   cursor: pointer;
   border-radius: inherit;
+  transition: opacity 0.25s ease;
+}
+
+/* Image is invisible while loading, fades in once the browser fires onLoad */
+.imageLoading {
+  opacity: 0;
+}
+
+.imageLoaded {
+  opacity: 1;
 }
 
 .container_1 {

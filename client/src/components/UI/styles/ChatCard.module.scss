@@ -9,6 +9,41 @@
   border-radius: 3px;
 }
 
+/* Clips overflow so the card slides left to reveal the delete zone */
+.swipeClip {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+/* Red delete zone sits at the right edge, revealed by the swipe */
+.deleteZone {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  background-color: $red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 0;
+}
+
+.deleteZone:active {
+  background-color: rgb(210, 60, 60);
+}
+
+.deleteZoneText {
+  color: white;
+  font-size: 1.3rem;
+  font-weight: bold;
+  user-select: none;
+}
+
 .container {
   width: 100%;
   display: flex;
@@ -21,6 +56,9 @@
   border-bottom-right-radius: 3px;
   border: 1px solid $light_grey;
   border-left: 0;
+  z-index: 1;
+  will-change: transform;
+  touch-action: pan-y; /* allow vertical scroll, intercept horizontal */
 }
 
 .rightContainer {

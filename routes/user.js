@@ -702,6 +702,53 @@ router.post(
   })
 );
 
+// Delete a non-outing chat for the requesting user.
+// Removes the chat from their chats array; if no users remain, deletes the document.
+router.post(
+  "/:id/chat/:chatid/delete",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    const chat = await Chat.findById(req.params.chatid);
+
+    if (!chat) {
+      return res.status(404).send({ header: "Chat not found", message: "" });
+    }
+
+    // Outing chats are owned by the outing — delete the outing to remove the chat
+    if (chat.outing) {
+      return res.status(406).send({
+        header: "Cannot delete Outing chat",
+        message: "Outing chats can only be removed by deleting the Outing itself.",
+      });
+    }
+
+    // Verify the requesting user is actually in the chat
+    if (!chat.users.find((u) => u.toString() === user._id.toString())) {
+      return res.status(401).send("Not authorized");
+    }
+
+    // Remove chat from user's chats list
+    user.chats = user.chats.filter((c) => c.toString() !== chat._id.toString());
+    await user.save();
+
+    // Remove user from the chat's member list
+    chat.users = chat.users.filter((u) => u.toString() !== user._id.toString());
+
+    if (chat.users.length === 0) {
+      // No one left in the chat — delete the document entirely
+      await Chat.deleteOne({ _id: chat._id });
+    } else {
+      await chat.save();
+      // Notify remaining members so their UI refreshes
+      pushUserUpdate(chat.users);
+    }
+
+    res.sendStatus(200);
+  })
+);
+
 // Update Last Read chat message
 router.post(
   "/:id/chat/:chatid/update-last-read",

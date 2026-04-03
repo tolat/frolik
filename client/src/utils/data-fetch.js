@@ -640,6 +640,20 @@ export const createChat = (user, withUsers, onComplete) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Delete a non-outing chat for the current user
+export const deleteChat = (user, chatID, onComplete = () => {}) => {
+  const requestConfig = {
+    url: `${getServer()}/user/${user._id}/chat/${chatID}/delete`,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  };
+
+  const handleResponse = () => onComplete();
+  const handleError = (err) => console.log("deleteChat error:", err);
+
+  httpFetch(requestConfig, handleResponse, handleError);
+};
+
 // Update this user's last read message for a chat
 export const updateChatLastRead = (user, chat, messageID, onComplete) => {
   const requestConfig = {

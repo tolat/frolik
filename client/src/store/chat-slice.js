@@ -31,6 +31,9 @@ const chatSlice = createSlice({
     setFetchingChats(state, action) {
       state.fetchingChats = action.payload;
     },
+    removeChat(state, action) {
+      state.chats = state.chats.filter((c) => c._id !== action.payload);
+    },
     setUpdatingLastRead(state, action) {
       state.updatingLastRead = action.payload;
     },
