@@ -93,7 +93,12 @@ module.exports.sendEmail = async (to, subject, html) => {
     });
     console.log("Email sent:", info.response);
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("Error sending email:", error.message);
+    // If the credentials were rejected, clear the cached transporter so the
+    // next send attempt picks up any updated .env values without a restart.
+    if (error.code === "EAUTH") {
+      _transporter = null;
+    }
   }
 };
 
