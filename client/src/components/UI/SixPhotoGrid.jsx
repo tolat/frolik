@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import styles from "./styles/SixPhotoGrid.module.scss";
 import closeIcon from "../../images/close.png";
 import { useDispatch } from "react-redux";
@@ -11,9 +11,15 @@ const SixPhotoGrid = (props) => {
   const photoGridNumber = props.photos?.length > 6 ? 6 : props.photos?.length;
   const hasQueued = props.photos?.find((img) => img === "queued");
 
+  const firstLoadFired = useRef(false);
+
   const handleLoad = useCallback((src) => {
     setLoadedSet((prev) => new Set([...prev, src]));
-  }, []);
+    if (!firstLoadFired.current) {
+      firstLoadFired.current = true;
+      props.onFirstLoad?.();
+    }
+  }, [props.onFirstLoad]);
 
   const onImageClick = (img) => {
     dispatch(popupActions.setPopupImage(img));

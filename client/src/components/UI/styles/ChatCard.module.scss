@@ -58,7 +58,10 @@
   border-left: 0;
   z-index: 1;
   will-change: transform;
-  touch-action: pan-y; /* allow vertical scroll, intercept horizontal */
+  /* Let the browser handle vertical scroll natively — only horizontal
+     pointer events reach our JS handlers. This is what keeps page scroll
+     working while still allowing the horizontal swipe gesture. */
+  touch-action: pan-y;
 }
 
 .rightContainer {

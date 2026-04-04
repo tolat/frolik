@@ -5,7 +5,7 @@ import costIcon from "../../images/bill.png";
 import ratingIcon from "../../images/star.png";
 import groupIcon from "../../images/friends.png";
 import SimpleButton from "./SimpleButton";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useCallback } from "react";
 import trophyIcon from "../../images/trophy.png";
 import completeIcon from "../../images/complete.png";
 import featuredIcon from "../../images/feature.png";
@@ -40,6 +40,11 @@ const ActivityCard = (props) => {
   const noPhotoUpperStyle = { paddingTop: 0 };
   const hasPhotos = props.activity?.photos && props.activity.photos[0];
   const currentUrl = location.pathname;
+
+  // Hide the button bar until at least the first photo has loaded so it
+  // doesn't flash on top of the shimmer tile before the image is ready.
+  const [photoLoaded, setPhotoLoaded] = useState(!hasPhotos);
+  const handleFirstPhotoLoad = useCallback(() => setPhotoLoaded(true), []);
 
   const handleToggleInstructions = (e) => {
     setInstructionsVisible((prev) => !prev);
@@ -126,9 +131,10 @@ const ActivityCard = (props) => {
                   noRoundedCornerLeft={true}
                   photos={props.activity.photos}
                   onClick={handleToggleInstructions}
+                  onFirstLoad={handleFirstPhotoLoad}
                 />
               )}
-              {hasPhotos && currentUrl === "/outing" ? (
+              {hasPhotos && currentUrl === "/outing" && photoLoaded ? (
                 <Buttons
                   {...props}
                   hasPhotos={hasPhotos}
@@ -291,16 +297,18 @@ const ActivityCard = (props) => {
           {hasPhotos && currentUrl === "/outing" ? null : (
             <Fragment>
               <div className={styles.buttonSpacer} />
-              <Buttons
-                {...props}
-                currentUrl={currentUrl}
-                handleUseActivity={handleUseActivity}
-                handleToggleInstructions={handleToggleInstructions}
-                instructionsVisible={instructionsVisible}
-                goState={goState}
-                handleRemove={handleRemove}
-                handleSelect={handleSelect}
-              />
+              {photoLoaded && (
+                <Buttons
+                  {...props}
+                  currentUrl={currentUrl}
+                  handleUseActivity={handleUseActivity}
+                  handleToggleInstructions={handleToggleInstructions}
+                  instructionsVisible={instructionsVisible}
+                  goState={goState}
+                  handleRemove={handleRemove}
+                  handleSelect={handleSelect}
+                />
+              )}
             </Fragment>
           )}
         </div>

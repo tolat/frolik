@@ -25,10 +25,11 @@ const ChatCard = memo((props) => {
   const swipeEnabled = !chat?.outing;
   const [translateX, setTranslateX] = useState(0);
   const [snapping, setSnapping] = useState(false);
+
+  // Refs track gesture without triggering re-renders
   const pointerStartX = useRef(null);
   const startOffset = useRef(0);
   const totalMovePx = useRef(0);
-  const isDragging = useRef(false);
 
   const memberNames = !chat
     ? ""
@@ -58,57 +59,70 @@ const ChatCard = memo((props) => {
     });
   }, [user, chat._id, dispatch]);
 
-  // --- Pointer event handlers for swipe gesture ---
+  // --- Pointer event handlers ---
+  // touch-action: pan-y on the container handles vertical scroll natively so
+  // the browser never blocks on these handlers for vertical movement.
 
   const onPointerDown = useCallback(
     (e) => {
       if (!swipeEnabled) return;
-      isDragging.current = true;
       pointerStartX.current = e.clientX;
       startOffset.current = translateX;
       totalMovePx.current = 0;
       setSnapping(false);
-      e.currentTarget.setPointerCapture(e.pointerId);
     },
     [swipeEnabled, translateX]
   );
 
   const onPointerMove = useCallback((e) => {
-    if (!isDragging.current || pointerStartX.current === null) return;
-    const delta = e.clientX - pointerStartX.current;
-    totalMovePx.current = Math.abs(delta);
+    if (pointerStartX.current === null) return;
+    const deltaX = e.clientX - pointerStartX.current;
+    const absDeltaX = Math.abs(deltaX);
+    if (absDeltaX < 4) return; // ignore tiny jitter
+
+    // Capture the pointer on the first meaningful horizontal move so the
+    // drag stays tracked even if the finger drifts off the element
+    if (!e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    }
+
+    totalMovePx.current = absDeltaX;
     const newX = Math.max(
       -DELETE_ZONE_WIDTH,
-      Math.min(0, startOffset.current + delta)
+      Math.min(0, startOffset.current + deltaX)
     );
     setTranslateX(newX);
   }, []);
 
   const onPointerUp = useCallback(
     (e) => {
-      if (!isDragging.current) return;
-      isDragging.current = false;
+      if (pointerStartX.current === null) return;
+      const moved = totalMovePx.current;
+      pointerStartX.current = null;
+      totalMovePx.current = 0;
 
-      // Treat as a tap — open the chat
-      if (totalMovePx.current < 5) {
-        setSnapping(true);
-        setTranslateX(0);
+      if (moved < 5) {
+        // Tap — open the chat
         openChat();
         return;
       }
 
       // Snap open or closed
       setSnapping(true);
-      if (translateX < -SNAP_THRESHOLD) {
-        setTranslateX(-DELETE_ZONE_WIDTH);
-      } else {
-        setTranslateX(0);
-      }
+      setTranslateX(translateX < -SNAP_THRESHOLD ? -DELETE_ZONE_WIDTH : 0);
     },
     [translateX, openChat]
   );
 
-  // For outing chats (no swipe), use a plain click
+  // Browser cancelled our pointer (e.g. took over for scroll) — reset
+  const onPointerCancel = useCallback(() => {
+    pointerStartX.current = null;
+    totalMovePx.current = 0;
+    setSnapping(true);
+    setTranslateX(0);
+  }, []);
+
+  // For outing chats (no swipe), use a plain click handler
   const handleOutingClick = useCallback(() => {
     openChat();
   }, [openChat]);
@@ -126,7 +140,7 @@ const ChatCard = memo((props) => {
       ></div>
 
       <div className={styles.swipeClip}>
-        {/* Delete zone revealed behind the card on left-swipe */}
+        {/* Red delete zone revealed behind the card on left-swipe */}
         {swipeEnabled && (
           <div className={styles.deleteZone} onClick={handleDelete}>
             <span className={styles.deleteZoneText}>Delete</span>
@@ -137,6 +151,7 @@ const ChatCard = memo((props) => {
           onPointerDown={swipeEnabled ? onPointerDown : undefined}
           onPointerMove={swipeEnabled ? onPointerMove : undefined}
           onPointerUp={swipeEnabled ? onPointerUp : undefined}
+          onPointerCancel={swipeEnabled ? onPointerCancel : undefined}
           onClick={swipeEnabled ? undefined : handleOutingClick}
           style={{
             transform: `translateX(${translateX}px)`,
