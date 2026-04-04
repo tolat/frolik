@@ -1,0 +1,15 @@
+.wrapper {
+  width: 100%;
+  position: relative;
+}
+
+/* Spinner container that grows downward as the user pulls */
+.indicator {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  /* height is driven by inline style */
+}

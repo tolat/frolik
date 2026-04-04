@@ -26,14 +26,31 @@
   margin-bottom: 0;
 }
 
+/* Row that holds the search input + the "+" button side-by-side */
+.searchRow {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* Compact square "+" button that sits flush to the right of the search bar */
 .newChatButton {
+  min-width: 3.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
   background-color: $blue;
   color: white;
-  font-weight: bold;
-  margin-bottom: 1rem;
+  font-size: 2.2rem;
+  font-weight: 300;
+  line-height: 1;
+  padding: 0;
+  margin-left: 0.5rem;
   border-radius: 3px !important;
-  height: 3.5rem;
-  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .noChatsMessage {

@@ -1,15 +1,14 @@
 import { useSelector } from "react-redux";
 import { pageRouteLoader, sortByDate, toSorted } from "../../utils/utils";
 import styles from "./styles/Social.module.scss";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import FeedCard from "../UI/FeedCard";
 import { fetchFeedOutings } from "../../utils/data-fetch";
-import SimpleButton from "../UI/SimpleButton";
 import SimpleSearch from "../UI/SimpleSearch";
+import PullToRefresh from "../UI/PullToRefresh";
 
 const Social = (props) => {
   const [outings, setOutings] = useState({});
-  const [refreshText, setRefreshText] = useState("Refresh");
   const [feedSearch, setFeedSearch] = useState("");
   const user = useSelector((state) => state.auth.user);
   const fetchingFeedOutings = useSelector(
@@ -21,22 +20,26 @@ const Social = (props) => {
   );
 
   const validKeys = applyChatSearch(sortedKeys);
-  const getOutings = (user) => {
-    const onComplete = (response) => {
-      setRefreshText("Refresh");
-      setOutings(response.outings);
-    };
-    setRefreshText("Loading..");
-    fetchFeedOutings(user, onComplete);
-  };
+
+  const getOutings = useCallback(
+    (u) =>
+      new Promise((resolve) => {
+        fetchFeedOutings(u, (response) => {
+          setOutings(response.outings);
+          resolve();
+        });
+      }),
+    []
+  );
 
   useEffect(() => {
     getOutings(user);
   }, [user]);
 
-  const onRefresh = () => {
-    getOutings(user);
-  };
+  const handleRefresh = useCallback(
+    () => getOutings(user),
+    [user, getOutings]
+  );
 
   function applyChatSearch(rawKeys) {
     return feedSearch || feedSearch !== ""
@@ -71,38 +74,37 @@ const Social = (props) => {
   }
 
   return (
-    <div className={styles.container}>
-      <SimpleButton className={styles.refreshButton} onClick={onRefresh}>
-        {refreshText}
-      </SimpleButton>
-      <SimpleSearch
-        setValue={setFeedSearch}
-        defaultVal={""}
-        placeholder={"Search Posts.."}
-      />
-      {outings ? (
-        Object.keys(outings)[0] ? (
-          validKeys.map((k) => (
-            <FeedCard key={Math.random()} outing={outings[k]} />
-          ))
-        ) : fetchingFeedOutings ? (
-          <h2>Loading Posts..</h2>
-        ) : (
-          <div className={styles.noOutingsMessage}>
-            <h2 className={styles.noOutingsMessageHeader}>
-              Nothing to show yet!
-            </h2>
+    <PullToRefresh onRefresh={handleRefresh}>
+      <div className={styles.container}>
+        <SimpleSearch
+          setValue={setFeedSearch}
+          defaultVal={""}
+          placeholder={"Search Posts.."}
+        />
+        {outings ? (
+          Object.keys(outings)[0] ? (
+            validKeys.map((k) => (
+              <FeedCard key={Math.random()} outing={outings[k]} />
+            ))
+          ) : fetchingFeedOutings ? (
+            <h2>Loading Posts..</h2>
+          ) : (
+            <div className={styles.noOutingsMessage}>
+              <h2 className={styles.noOutingsMessageHeader}>
+                Nothing to show yet!
+              </h2>
 
-            <div className={styles.noOutingsMessageText}>
-              You'll see outings completed by people in your friends network
-              here.
+              <div className={styles.noOutingsMessageText}>
+                You'll see outings completed by people in your friends network
+                here.
+              </div>
             </div>
-          </div>
-        )
-      ) : (
-        <h2>Loading Posts..</h2>
-      )}
-    </div>
+          )
+        ) : (
+          <h2>Loading Posts..</h2>
+        )}
+      </div>
+    </PullToRefresh>
   );
 };
 

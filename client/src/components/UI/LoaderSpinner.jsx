@@ -4,7 +4,11 @@ const LoaderSpinner = (props) => {
   return (
     <div id={props.id} className={`${styles.container} ${props.className}`}>
       <span
-        style={{ width: props.width, height: props.height }}
+        style={{
+          width: props.width,
+          height: props.height,
+          borderTopColor: props.color || "#fff",
+        }}
         className={styles.loader}
       ></span>
     </div>
