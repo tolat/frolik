@@ -50,13 +50,10 @@ a:link {
 }
 
 #popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 4;
-  width: 100vw;
-  height: 100vh;
-  display: none;
+  /* Portal target only — individual popup components control their own
+     position, size, z-index, and display. pointer-events: none ensures
+     this container never intercepts clicks when no popup is active. */
+  pointer-events: none;
 }
 
 .hidden{

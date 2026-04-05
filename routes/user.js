@@ -559,7 +559,7 @@ router.post(
     const friendUser = await User.findById(req.body.friendID);
 
     // send back 406 if user does not have this friend
-    if (user.friends.find((id) => id.toString() == req.body.friendID)) {
+    if (!user.friends.find((id) => id.toString() == req.body.friendID)) {
       res.status(406).send({
         header: `Could not remove friend`,
         message: `You are not friends with ${friendUser.first_name} ${friendUser.last_name}`,

@@ -347,13 +347,14 @@ router.get(
   tryCatch(async (req, res) => {
     const user = await User.findById(req.params.id);
     const outing = await Outing.findById(req.params.outingid);
-    await outing.populate("users");
 
-    // If outing does not exists send 404
+    // If outing does not exist send 404 (must check before populate)
     if (!user || !outing) {
-      res.status(404).send("User was not invited to this outing");
+      res.status(404).send("User or outing not found");
       return;
     }
+
+    await outing.populate("users");
 
     // If user is not in the members list, they cannot delete.
     if (!outing.users.find((u) => u._id.toString() == user._id.toString())) {
@@ -364,12 +365,11 @@ router.get(
       return;
     }
 
-    // They also cannot delete if there are more than 1 members
+    // They also cannot delete if there are still other members
     if (outing.users.length > 1) {
       res.status(406).send({
         header: `Cannot delete Outing`,
-        message:
-          "You can only delete an Outing if there are 2 or more members.",
+        message: "You can only delete an Outing when you are the only remaining member.",
       });
       return;
     }

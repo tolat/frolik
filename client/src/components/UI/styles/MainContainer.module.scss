@@ -10,7 +10,6 @@
   box-sizing: border-box;
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
-  overscroll-behavior: none;
   margin-bottom: $navbar_height;
 }
 
@@ -29,7 +28,6 @@
   width: 100%;
   padding: 1rem;
   padding-top: 0;
-  overscroll-behavior: none;
 
   @include responsive(
     "width",

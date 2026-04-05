@@ -11,7 +11,7 @@ import { modalActions } from "../../store/modal-slice";
 import { fetchChat, deleteChat } from "../../utils/data-fetch";
 import { chatActions } from "../../store/chat-slice";
 
-const DELETE_ZONE_WIDTH = 80; // px revealed on left-swipe
+const DELETE_ZONE_WIDTH = 80;
 const SNAP_THRESHOLD = DELETE_ZONE_WIDTH / 2;
 
 const ChatCard = memo((props) => {
@@ -21,15 +21,15 @@ const ChatCard = memo((props) => {
   const dispatch = useDispatch();
   const unreadChatMessages = user && getUnreadChatMessages(user, chat);
 
-  // Swipe state — only enabled for non-outing chats
+  // Swipe is only active on non-outing chats
   const swipeEnabled = !chat?.outing;
   const [translateX, setTranslateX] = useState(0);
   const [snapping, setSnapping] = useState(false);
 
-  // Refs track gesture without triggering re-renders
-  const pointerStartX = useRef(null);
+  // Gesture state tracked in refs (no re-renders during drag)
+  const touchStartX = useRef(null);
   const startOffset = useRef(0);
-  const totalMovePx = useRef(0);
+  const didSwipe = useRef(false); // blocks the synthetic click after a swipe
 
   const memberNames = !chat
     ? ""
@@ -59,71 +59,48 @@ const ChatCard = memo((props) => {
     });
   }, [user, chat._id, dispatch]);
 
-  // --- Pointer event handlers ---
-  // touch-action: pan-y on the container handles vertical scroll natively so
-  // the browser never blocks on these handlers for vertical movement.
+  // --- Touch handlers (mobile swipe) ---
+  // Using onTouch* keeps these completely separate from mouse events so
+  // desktop scroll (wheel, scrollbar drag) is never interrupted.
 
-  const onPointerDown = useCallback(
+  const onTouchStart = useCallback(
     (e) => {
       if (!swipeEnabled) return;
-      pointerStartX.current = e.clientX;
+      touchStartX.current = e.touches[0].clientX;
       startOffset.current = translateX;
-      totalMovePx.current = 0;
+      didSwipe.current = false;
       setSnapping(false);
     },
     [swipeEnabled, translateX]
   );
 
-  const onPointerMove = useCallback((e) => {
-    if (pointerStartX.current === null) return;
-    const deltaX = e.clientX - pointerStartX.current;
-    const absDeltaX = Math.abs(deltaX);
-    if (absDeltaX < 4) return; // ignore tiny jitter
-
-    // Capture the pointer on the first meaningful horizontal move so the
-    // drag stays tracked even if the finger drifts off the element
-    if (!e.currentTarget.hasPointerCapture(e.pointerId)) {
-      e.currentTarget.setPointerCapture(e.pointerId);
-    }
-
-    totalMovePx.current = absDeltaX;
-    const newX = Math.max(
-      -DELETE_ZONE_WIDTH,
-      Math.min(0, startOffset.current + deltaX)
-    );
+  const onTouchMove = useCallback((e) => {
+    if (touchStartX.current === null) return;
+    const deltaX = e.touches[0].clientX - touchStartX.current;
+    // Mark as a swipe once there's meaningful horizontal movement so the
+    // follow-up synthetic click event gets suppressed.
+    if (Math.abs(deltaX) > 8) didSwipe.current = true;
+    const newX = Math.max(-DELETE_ZONE_WIDTH, Math.min(0, startOffset.current + deltaX));
     setTranslateX(newX);
   }, []);
 
-  const onPointerUp = useCallback(
-    (e) => {
-      if (pointerStartX.current === null) return;
-      const moved = totalMovePx.current;
-      pointerStartX.current = null;
-      totalMovePx.current = 0;
+  const onTouchEnd = useCallback(() => {
+    if (touchStartX.current === null) return;
+    touchStartX.current = null;
 
-      if (moved < 5) {
-        // Tap — open the chat
-        openChat();
-        return;
-      }
+    if (!didSwipe.current) return; // let the synthetic click handle the tap
 
-      // Snap open or closed
-      setSnapping(true);
-      setTranslateX(translateX < -SNAP_THRESHOLD ? -DELETE_ZONE_WIDTH : 0);
-    },
-    [translateX, openChat]
-  );
-
-  // Browser cancelled our pointer (e.g. took over for scroll) — reset
-  const onPointerCancel = useCallback(() => {
-    pointerStartX.current = null;
-    totalMovePx.current = 0;
     setSnapping(true);
-    setTranslateX(0);
-  }, []);
+    setTranslateX(translateX < -SNAP_THRESHOLD ? -DELETE_ZONE_WIDTH : 0);
+  }, [translateX]);
 
-  // For outing chats (no swipe), use a plain click handler
-  const handleOutingClick = useCallback(() => {
+  // --- Click handler (works on both desktop and mobile) ---
+  // Suppressed after a swipe so the card doesn't open when the user swipes.
+  const handleClick = useCallback(() => {
+    if (didSwipe.current) {
+      didSwipe.current = false;
+      return;
+    }
     openChat();
   }, [openChat]);
 
@@ -140,7 +117,6 @@ const ChatCard = memo((props) => {
       ></div>
 
       <div className={styles.swipeClip}>
-        {/* Red delete zone revealed behind the card on left-swipe */}
         {swipeEnabled && (
           <div className={styles.deleteZone} onClick={handleDelete}>
             <span className={styles.deleteZoneText}>Delete</span>
@@ -148,13 +124,12 @@ const ChatCard = memo((props) => {
         )}
 
         <div
-          onPointerDown={swipeEnabled ? onPointerDown : undefined}
-          onPointerMove={swipeEnabled ? onPointerMove : undefined}
-          onPointerUp={swipeEnabled ? onPointerUp : undefined}
-          onPointerCancel={swipeEnabled ? onPointerCancel : undefined}
-          onClick={swipeEnabled ? undefined : handleOutingClick}
+          onTouchStart={swipeEnabled ? onTouchStart : undefined}
+          onTouchMove={swipeEnabled ? onTouchMove : undefined}
+          onTouchEnd={swipeEnabled ? onTouchEnd : undefined}
+          onClick={handleClick}
           style={{
-            transform: `translateX(${translateX}px)`,
+            transform: translateX !== 0 ? `translateX(${translateX}px)` : undefined,
             transition: snapping ? "transform 0.2s ease" : "none",
             ...props.style,
           }}

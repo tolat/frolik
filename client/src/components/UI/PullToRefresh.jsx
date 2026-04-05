@@ -86,12 +86,15 @@ const PullToRefresh = ({ onRefresh, children }) => {
         )}
       </div>
 
-      {/* Page content shifts down to make room for the indicator */}
+      {/* Page content shifts down to make room for the indicator.
+          Only apply the transform when actually pulling — a translateY(0)
+          still creates a stacking context that can interfere with scroll. */}
       <div
-        style={{
-          transform: `translateY(${pullHeight}px)`,
-          transition,
-        }}
+        style={
+          pullHeight > 0
+            ? { transform: `translateY(${pullHeight}px)`, transition }
+            : undefined
+        }
       >
         {children}
       </div>

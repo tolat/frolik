@@ -12,6 +12,9 @@ const SixPhotoGrid = (props) => {
   const hasQueued = props.photos?.find((img) => img === "queued");
 
   const firstLoadFired = useRef(false);
+  // Tracks images already processed via the ref callback (for cached images).
+  // Using a ref avoids re-render loops — the ref is mutated, not state.
+  const completeChecked = useRef(new Set());
 
   const handleLoad = useCallback((src) => {
     setLoadedSet((prev) => new Set([...prev, src]));
@@ -26,8 +29,24 @@ const SixPhotoGrid = (props) => {
     dispatch(popupActions.showPopup("view-photo"));
   };
 
-  // Show a shimmer tile while photos are still being fetched from the server
-  if (!props.photos?.[0] || hasQueued) {
+  // photos prop not yet provided — still loading from server
+  if (props.photos == null) {
+    return (
+      <div className={`${styles.photosContainer} ${styles.container_1}`}>
+        <div className={styles.imageContainer}>
+          <ImageLoadingTile />
+        </div>
+      </div>
+    );
+  }
+
+  // photos provided but empty — nothing to render
+  if (props.photos.length === 0) {
+    return null;
+  }
+
+  // An upload is in progress — show shimmer while the queued item resolves
+  if (hasQueued) {
     return (
       <div className={`${styles.photosContainer} ${styles.container_1}`}>
         <div className={styles.imageContainer}>
@@ -52,6 +71,12 @@ const SixPhotoGrid = (props) => {
           </div>
         )}
         <img
+          ref={(el) => {
+            if (el?.complete && !completeChecked.current.has(img)) {
+              completeChecked.current.add(img);
+              handleLoad(img);
+            }
+          }}
           onLoad={() => handleLoad(img)}
           onClick={props.onClick ? null : () => onImageClick(img)}
           className={`${styles.image} ${

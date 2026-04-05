@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ModalPortal from "./ModalPortal";
 import styles from "./styles/OutingModal.module.scss";
 import SimpleButton from "../UI/SimpleButton";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useRef } from "react";
 import photosIcon from "../../images/photos.png";
 import activityIcon from "../../images/activity.png";
 import membersIcon from "../../images/people.png";
@@ -78,6 +78,7 @@ const OutingModal = (props) => {
     ?.map((p) => (p.uploader === user._id ? outing?.photos.indexOf(p) : -1))
     .filter((i) => i >= 0);
   const [deleteKey, setDeleteKey] = useState(false);
+  const uploadInputRef = useRef(null);
   const [deletePhotoButtonText, setDeletePhotoButtonText] = useState("Delete");
   const [activityRating, setActivityRating] = useState(5);
   const [ratingTouched, setRatingTouched] = useState(false);
@@ -189,7 +190,7 @@ const OutingModal = (props) => {
       dispatch(popupActions.showPopup("maximum-2-photos"));
       resetUploads();
     } else {
-      document.getElementById("upload-outing-photos").click();
+      uploadInputRef.current?.click();
     }
   };
 
@@ -580,15 +581,14 @@ const OutingModal = (props) => {
                     style={{ marginBottom: "2rem" }}
                     className={styles.uploadPhotosContainer}
                   >
-                    <form
-                      className={styles.uploadInput}
-                      id="upload-outing-photos-form"
-                    >
+                    <form id="upload-outing-photos-form">
                       <input
+                        ref={uploadInputRef}
                         onChange={onPhotosSelected}
                         type="file"
                         multiple
                         id="upload-outing-photos"
+                        style={{ display: "none" }}
                       />
                     </form>
 

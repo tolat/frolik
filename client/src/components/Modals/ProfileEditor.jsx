@@ -6,7 +6,7 @@ import CroppedImage from "../UI/CroppedImage";
 import CustomAutocomplete from "../UI/CustomAutocomplete";
 import cityData from "../../utils/cities100000";
 import CropperPopup from "../Popups/CropperPopup";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { popupActions } from "../../store/popup-slice";
 import uploadIcon from "../../images/upload-light.png";
@@ -27,6 +27,7 @@ const ProfileEditor = (props) => {
   const dataChanged = props.dataChanged;
   const dispatch = useDispatch();
   const [upload, setUpload] = useState(null);
+  const uploadInputRef = useRef(null);
   const globals = useSelector((state) => state.auth.globals);
   const user = useSelector((state) => state.auth.user);
   const categoryColorMap = globals?.categoryColorMap;
@@ -94,7 +95,7 @@ const ProfileEditor = (props) => {
 
   const onUploadClick = (e) => {
     e.preventDefault();
-    document.getElementById("upload-profile-photo").click();
+    uploadInputRef.current?.click();
   };
 
   const onPhotoSelected = async () => {
@@ -162,11 +163,13 @@ const ProfileEditor = (props) => {
         defaultZoom={stagedData.zoom}
         cropShape="round"
       />
-      <form className={styles.uploadInput} id="upload-profile-photo-form">
+      <form id="upload-profile-photo-form">
         <input
+          ref={uploadInputRef}
           onChange={onPhotoSelected}
           type="file"
           id="upload-profile-photo"
+          style={{ display: "none" }}
         />
       </form>
       <form className={`${styles.container} noscroll`}>
