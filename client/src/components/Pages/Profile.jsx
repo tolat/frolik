@@ -140,20 +140,33 @@ const Profile = (props) => {
   };
 
   const [friendSearch, setFriendSearch] = useState("");
-  // Friends list sort: "name" (A–Z), "outings" (most completed first),
-  // "flake" (best rating first) — same numbers the friend cards show
-  const [friendSort, setFriendSort] = useState("name");
+  // Friends list sort: { key: "name" | "outings" | "flake", dir: "asc" |
+  // "desc" } or null (off → A–Z by name). Tapping a pill cycles it
+  // off → ascending → descending → off. Values match the friend cards.
+  const [friendSort, setFriendSort] = useState(null);
+  const cycleSort = (key) =>
+    setFriendSort((prev) =>
+      prev?.key !== key
+        ? { key, dir: "asc" }
+        : prev.dir === "asc"
+        ? { key, dir: "desc" }
+        : null
+    );
   const completedCount = (f) => (f.outings || []).filter(outingIsCompleted).length;
   const byName = (a, b) =>
     `${a.first_name} ${a.last_name}`.localeCompare(`${b.first_name} ${b.last_name}`);
-  const friendComparator =
-    friendSort === "outings"
-      ? (a, b) => completedCount(b) - completedCount(a) || byName(a, b)
-      : friendSort === "flake"
-      ? (a, b) =>
-          Number(calculateFlakeRating(b)) - Number(calculateFlakeRating(a)) ||
-          byName(a, b)
-      : byName;
+  const sortValue = {
+    name: null,
+    outings: completedCount,
+    flake: (f) => Number(calculateFlakeRating(f)),
+  };
+  const friendComparator = (a, b) => {
+    if (!friendSort) return byName(a, b);
+    const sign = friendSort.dir === "desc" ? -1 : 1;
+    const get = sortValue[friendSort.key];
+    const primary = get ? get(a) - get(b) : byName(a, b);
+    return sign * primary || byName(a, b);
+  };
 
   function applyFriendSearch(friends) {
     return friendSearch || friendSearch !== ""
@@ -274,13 +287,25 @@ const Profile = (props) => {
                 <button
                   key={key}
                   type="button"
-                  aria-pressed={friendSort === key}
-                  className={`${styles.sortPill} ${
-                    friendSort === key ? styles.sortPillActive : ""
+                  aria-pressed={friendSort?.key === key}
+                  aria-label={`Sort by ${label}${
+                    friendSort?.key === key
+                      ? friendSort.dir === "asc"
+                        ? ", ascending"
+                        : ", descending"
+                      : ""
                   }`}
-                  onClick={() => setFriendSort(key)}
+                  className={`${styles.sortPill} ${
+                    friendSort?.key === key ? styles.sortPillActive : ""
+                  }`}
+                  onClick={() => cycleSort(key)}
                 >
                   {label}
+                  {friendSort?.key === key ? (
+                    <span className={styles.sortArrow} aria-hidden="true">
+                      {friendSort.dir === "asc" ? "↑" : "↓"}
+                    </span>
+                  ) : null}
                 </button>
               ))}
             </div>
