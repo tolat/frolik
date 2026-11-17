@@ -23,8 +23,23 @@ import { chatActions } from "../../store/chat-slice";
 
 const store_user = (fallback) => store.getState().auth.user || fallback;
 
-const DELETE_ZONE_WIDTH = 96;
+const DELETE_ZONE_WIDTH = 96; // how far a short swipe opens the action
 const SNAP_THRESHOLD = DELETE_ZONE_WIDTH / 2;
+const ARM_DISTANCE = 150; // drag past this (with resistance) = do the action
+const RESISTANCE = 0.45; // rubber-band factor beyond the open position
+
+// Elastic drag: 1:1 up to the open position, then resists
+const elastic = (raw, limit) =>
+  Math.abs(raw) <= limit
+    ? raw
+    : Math.sign(raw) * (limit + (Math.abs(raw) - limit) * RESISTANCE);
+
+const TRANSITIONS = {
+  none: "none",
+  snap: "transform 0.25s cubic-bezier(0.22, 1, 0.36, 1)",
+  bounce: "transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1)", // springy return
+  off: "transform 0.22s ease-in",
+};
 const AXIS_LOCK_PX = 8; // movement needed before deciding swipe vs scroll
 
 const ChatCard = memo((props) => {
@@ -47,7 +62,9 @@ const ChatCard = memo((props) => {
   const maxRight = canMarkRead ? DELETE_ZONE_WIDTH : 0;
   const axis = useRef(null); // "x" | "y" | null — locked per gesture
   const [translateX, setTranslateX] = useState(0);
-  const [snapping, setSnapping] = useState(false);
+  // How the card animates when let go: snap open/closed, bounce back, slide off
+  const [snapMode, setSnapMode] = useState("none");
+  const [armed, setArmed] = useState(null); // "left" | "right" | null
 
   // Gesture state tracked in refs (no re-renders during drag)
   const touchStartX = useRef(null);
@@ -128,7 +145,7 @@ const ChatCard = memo((props) => {
       axis.current = null;
       startOffset.current = translateX;
       didSwipe.current = false;
-      setSnapping(false);
+      setSnapMode("none");
     },
     [swipeEnabled, translateX]
   );
@@ -147,10 +164,22 @@ const ChatCard = memo((props) => {
     if (axis.current === "y") return;
     // Mark as a swipe so the follow-up click event gets suppressed.
     didSwipe.current = true;
-    const newX = Math.max(
-      -DELETE_ZONE_WIDTH,
-      Math.min(maxRightRef.current, startOffset.current + deltaX)
-    );
+    const raw = startOffset.current + deltaX;
+    let newX;
+    if (raw >= 0) {
+      // Right = mark read; without anything unread just a tiny elastic tug
+      newX = maxRightRef.current
+        ? elastic(raw, DELETE_ZONE_WIDTH)
+        : Math.min(raw * 0.12, 14);
+    } else {
+      newX = elastic(raw, DELETE_ZONE_WIDTH);
+    }
+    const nowArmed =
+      newX <= -ARM_DISTANCE ? "left" : newX >= ARM_DISTANCE && maxRightRef.current ? "right" : null;
+    setArmed((prev) => {
+      if (nowArmed && nowArmed !== prev) navigator.vibrate?.(8); // tiny haptic on Android
+      return nowArmed;
+    });
     setTranslateX(newX);
   }, []);
 
@@ -163,16 +192,34 @@ const ChatCard = memo((props) => {
       }
 
       if (!didSwipe.current) return; // let the click handler handle the tap
+      setArmed(null);
 
-      setSnapping(true);
-      if (translateX > SNAP_THRESHOLD) {
-        markRead(); // full swipe right = mark read, then slide back
+      // Right: a long swipe marks read; a peek just bounces back
+      if (translateX > 0) {
+        if (translateX >= ARM_DISTANCE && canMarkRead) markRead();
+        setSnapMode("bounce");
         setTranslateX(0);
         return;
       }
-      setTranslateX(translateX < -SNAP_THRESHOLD ? -DELETE_ZONE_WIDTH : 0);
+
+      // Left: a long swipe does the action straight away (slide off first)
+      if (translateX <= -ARM_DISTANCE) {
+        setSnapMode("off");
+        setTranslateX(-(rootRef.current?.offsetWidth || 400));
+        setTimeout(handleSwipeAction, 200);
+        return;
+      }
+
+      // Short swipe left: open to reveal the button (tap it to act)
+      if (translateX < -SNAP_THRESHOLD) {
+        setSnapMode(translateX < -DELETE_ZONE_WIDTH ? "bounce" : "snap");
+        setTranslateX(-DELETE_ZONE_WIDTH);
+        return;
+      }
+      setSnapMode("snap");
+      setTranslateX(0);
     },
-    [translateX, markRead]
+    [translateX, markRead, canMarkRead, handleSwipeAction]
   );
 
   // --- Click handler ---
@@ -183,7 +230,7 @@ const ChatCard = memo((props) => {
       return;
     }
     if (translateX !== 0) {
-      setSnapping(true);
+      setSnapMode("snap");
       setTranslateX(0);
       return;
     }
@@ -205,7 +252,7 @@ const ChatCard = memo((props) => {
       <div className={styles.swipeClip}>
         {canMarkRead && (
           <div
-            className={styles.readZone}
+            className={`${styles.readZone} ${armed === "right" ? styles.zoneArmed : ""}`}
             style={{ opacity: translateX > 0 ? 1 : 0 }}
             aria-hidden="true"
           >
@@ -216,7 +263,8 @@ const ChatCard = memo((props) => {
           <div
             className={`${styles.deleteZone} ${
               swipeAction === "Delete" ? "" : styles.archiveZone
-            }`}
+            } ${armed === "left" ? styles.zoneArmed : ""}`}
+            style={{ opacity: translateX < 0 ? 1 : 0 }}
             onClick={handleSwipeAction}
           >
             <span className={styles.deleteZoneText}>{swipeAction}</span>
@@ -231,7 +279,7 @@ const ChatCard = memo((props) => {
           onClick={handleClick}
           style={{
             transform: translateX !== 0 ? `translateX(${translateX}px)` : undefined,
-            transition: snapping ? "transform 0.2s ease" : "none",
+            transition: TRANSITIONS[snapMode],
             ...props.style,
           }}
           className={styles.container}

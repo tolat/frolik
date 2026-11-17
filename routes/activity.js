@@ -89,15 +89,21 @@ router.post(
     const { _id, ratings, outings, lobby, featured, created_by, ...fields } =
       req.body.activity || {};
     const activity = new Activity(fields);
-    activity.created_by = user;
-    activity.location = user.location;
-    user.activities.push(activity);
-    await user.save();
+    // Store ids, not documents: the user and activity referenced each other,
+    // which made the response circular (every create returned a 500)
+    activity.created_by = user._id;
+    // The city picked in the form, falling back to the user's own city
+    activity.location =
+      typeof fields.location === "string" && fields.location.trim()
+        ? fields.location.slice(0, 200)
+        : user.location;
     await activity.save();
+    user.activities.push(activity._id);
+    await user.save();
 
     pushUserUpdate([user]);
 
-    res.send({ activity });
+    res.send({ activity: activity.toObject() });
   })
 );
 

@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import BrandLoader from "../UI/BrandLoader";
 import styles from "./styles/OutingUpdate.module.scss";
 import { Fragment, useEffect } from "react";
 import { dataActions } from "../../store/data-slice";
@@ -103,7 +104,7 @@ const OutingUpdate = (props) => {
               style={{marginBottom: 0}}
             />
           ) : (
-            <h5>Loading User..</h5>
+            <BrandLoader inline size={2.4} />
           )}
         </div>
         {props.footer && (
@@ -112,7 +113,7 @@ const OutingUpdate = (props) => {
 
         <Fragment>
           <div className={styles.outingInviteActivity}>
-            Outing: {outing ? <b>{outing.name}</b> : "Loading.."}
+            Outing: {outing ? <b>{outing.name}</b> : "…"}
           </div>
           <div>{toAppDate(n.created)}</div>
           <div className={styles.outingInviteButtons}>

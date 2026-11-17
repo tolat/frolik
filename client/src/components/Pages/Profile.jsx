@@ -1,4 +1,5 @@
 import styles from "./styles/Profile.module.scss";
+import BrandLoader from "../UI/BrandLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { Fragment, useState } from "react";
 import SliderNavbar from "../UI/SliderNavbar";
@@ -213,7 +214,7 @@ const Profile = (props) => {
               }
             />
           ) : user.outings.length > 0 ? null : (
-            <h2>Loading Photos..</h2>
+            <BrandLoader />
           )}
 
           {!userPhotos[0] ? (

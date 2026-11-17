@@ -247,3 +247,54 @@
   background-color: $surface;
   border-radius: 0;
 }
+
+// ── Buttons on cards without a photo: plain text on the card background ────
+.plainButtons {
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0.6rem;
+  box-sizing: border-box;
+}
+
+.plainButtons button {
+  width: auto;
+  flex: 0 0 auto;
+  padding: 0.8rem 1rem;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: $radius_sm !important;
+  font-size: 1.35rem;
+  font-weight: 600;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.plainButtons button:hover {
+  background-color: rgba(20, 24, 40, 0.05) !important;
+}
+
+// Show / Hide Instructions: left, grey (still clearly tappable)
+.plainButtons .instructionsToggle {
+  justify-content: flex-start;
+  color: $text_muted;
+}
+
+// Use Activity (activity popup on Social) and Select: blue actions
+.plainButtons .useActivity,
+.plainButtons .select {
+  color: $blue_dark;
+}
+
+.plainButtons .useActivity {
+  justify-content: flex-start;
+}
+
+.plainButtons .remove {
+  color: $red;
+}
+
+// Right-hand action stays on the right even when it's the only button
+.plainButtons .select,
+.plainButtons .remove {
+  margin-left: auto;
+  justify-content: flex-end;
+}

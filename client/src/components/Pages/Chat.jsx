@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import SkeletonCards from "../UI/SkeletonCards";
 import styles from "./styles/Chat.module.scss";
 import { dateSort, pageRouteLoader, toSorted } from "../../utils/utils";
 import ChatCard from "../UI/ChatCard";
@@ -111,7 +112,7 @@ const Chat = memo((props) => {
           </SimpleButton>
         </div>
         {!chats || (fetchingChats && !chats[0]) ? (
-          <h2 style={{ width: "100%", textAlign: "Left" }}>Loading Chats..</h2>
+          <SkeletonCards variant="chat" count={4} />
         ) : !chats[0] ? (
           <div className={styles.noChatsMessage}>
             <h2 className={styles.noChatsMessageHeader}>Nothing to show yet!</h2>

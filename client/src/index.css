@@ -1,8 +1,16 @@
-html,
-body {
+/* Only <html> scrolls. <body> used to be a second full-height scroll
+   container, which iOS installed apps could scroll by about the status-bar
+   height — moving the fixed nav bar and leaving the page "stuck". */
+html {
   height: 100%;
   width: 100%;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100%;
+  width: 100%;
 }
 
 :root {
@@ -30,7 +38,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
-  overflow-x: hidden;
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
   overscroll-behavior: none;

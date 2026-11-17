@@ -58,6 +58,9 @@ const ActivityCard = (props) => {
 
   const handleSelect = () => {
     dispatch(goActions.setActivity(props.activity));
+    // The list collapses to the chosen card: bring the user back to the top
+    // (checklist + Create button) so no stale scroll offset is left behind
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleRemove = () => {
@@ -330,13 +333,18 @@ const Buttons = (props) => {
   return (
     <div
       className={`${styles.buttonContainer} ${
-        props.hasPhotos ? styles.buttonGradient : null
+        props.hasPhotos ? styles.buttonGradient : styles.plainButtons
       }`}
     >
       {(!props.showInstructions || props.currentUrl === "/social") && (
         <SimpleButton
           square={true}
           noShadow={true}
+          className={
+            props.showInstructions && props.currentUrl === "/social"
+              ? styles.useActivity
+              : styles.instructionsToggle
+          }
           style={{
             boxShadow: "none",
             justifyContent: props.hasPhotos ? "left" : null,

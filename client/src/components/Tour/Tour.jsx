@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { scrollToElement } from "../../utils/scrollTo";
 import { createPortal } from "react-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -97,7 +98,7 @@ const Tour = () => {
       const el = document.querySelector(step.target);
       if (el && el.getBoundingClientRect().height > 0) {
         targetRef.current = el;
-        el.scrollIntoView({ block: "center", behavior: "auto" });
+        scrollToElement(el, { block: "center", behavior: "auto" });
         requestAnimationFrame(() => {
           if (cancelled) return;
           setRect(measure(el, step.fitChildren));

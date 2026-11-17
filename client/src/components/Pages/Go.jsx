@@ -1,4 +1,6 @@
 import styles from "./styles/Go.module.scss";
+import { scrollToElement } from "../../utils/scrollTo";
+import SkeletonCards from "../UI/SkeletonCards";
 import { useDispatch, useSelector } from "react-redux";
 import SimpleButton from "../UI/SimpleButton";
 import { Fragment, useEffect, useReducer, useRef, useState } from "react";
@@ -188,7 +190,7 @@ const Go = (props) => {
   const handlePickActivityClick = () => {
     const el = activitiesRef.current;
     if (!el) return;
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToElement(el, { block: "start", offset: 12 });
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
     const cards = [...el.children].slice(0, 6);
     // Let the scroll get under way before the cards bounce
@@ -501,7 +503,7 @@ const Go = (props) => {
                   activityFilter.filter.created ? (
                     <h4>No Activities Match Filters!</h4>
                   ) : (
-                    <h4>Loading Activities..</h4>
+                    <SkeletonCards variant="activity" count={2} />
                   )}
                 </div>
               ) : (

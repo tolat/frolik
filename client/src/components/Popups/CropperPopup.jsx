@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import BrandLoader from "../UI/BrandLoader";
 import SimpleButton from "../UI/SimpleButton";
 import Popup from "./Popup";
 import styles from "./styles/CropperPopup.module.scss";
@@ -84,7 +85,7 @@ const CropperPopup = (props) => {
       <div className={styles.outerContainer}>
         <div className={styles.cropperSpacer}>
           {" "}
-          {props.images[0] ? null : "Loading.."}
+          {props.images[0] ? null : <BrandLoader size={3.6} />}
         </div>
         {props.images &&
           props.images.map((img) => (

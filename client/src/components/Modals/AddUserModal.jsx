@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import SkeletonCards from "../UI/SkeletonCards";
 import styles from "./styles/AddUserModal.module.scss";
 import ModalPortal from "./ModalPortal";
 import FriendCard from "../UI/FriendCard";
@@ -120,7 +121,7 @@ const AddUserModal = (props) => {
               />
             ))
           ) : fetchingMatchedUsers ? (
-            <h2>Loading Matches..</h2>
+            <SkeletonCards variant="person" count={3} />
           ) : (
             <h2>No Available Matches!</h2>
           )}

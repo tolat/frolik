@@ -205,3 +205,43 @@
   background-color: $green;
   transition: opacity 0.15s ease;
 }
+
+// ── Elastic swipe: zones span the card so an over-drag never shows a gap ────
+.deleteZone,
+.readZone {
+  left: 0;
+  right: 0;
+  width: auto;
+  transition: background-color 0.15s ease, opacity 0.1s ease;
+}
+
+.deleteZone {
+  justify-content: flex-end;
+  padding-right: 2.2rem;
+}
+
+.readZone {
+  justify-content: flex-start;
+  padding-left: 2.2rem;
+}
+
+.deleteZoneText {
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+// Dragged far enough: letting go will do the action
+.zoneArmed .deleteZoneText {
+  transform: scale(1.15);
+}
+
+.deleteZone.zoneArmed {
+  background-color: #d94f4c;
+}
+
+.archiveZone.zoneArmed {
+  background-color: #5f6d8a;
+}
+
+.readZone.zoneArmed {
+  background-color: #2a9a66;
+}

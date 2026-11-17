@@ -1,4 +1,5 @@
 import styles from "./styles/ValidatorBubble.module.scss";
+import { scrollToElement } from "../../utils/scrollTo";
 
 const ValidatorBubble = (props) => {
   const targetElement = document.getElementById(props.elementID);
@@ -91,9 +92,7 @@ export const runValidators = (
           setDisplay("flex");
           setID(id);
           setTimeout(() => {
-            document.getElementById(bubbleID).scrollIntoView({
-              behavior: "smooth",
-            });
+            scrollToElement(document.getElementById(bubbleID), { block: "center" });
             document.getElementById(bubbleID).focus();
           }, 100);
 

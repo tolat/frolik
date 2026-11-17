@@ -134,3 +134,10 @@
 .loadingSize {
   min-height: 38rem;
 }
+
+// Photo area placeholder while the photo URLs are still being fetched
+.loadingTile {
+  height: 26rem;
+  padding: 0;
+  border-radius: 0;
+}

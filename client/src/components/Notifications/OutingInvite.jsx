@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import BrandLoader from "../UI/BrandLoader";
 import styles from "./styles/OutingInvite.module.scss";
 import { Fragment, useEffect } from "react";
 import { dataActions } from "../../store/data-slice";
@@ -90,7 +91,7 @@ const OutingInvite = (props) => {
             </div>
           </Fragment>
         ) : (
-          "Loading.."
+          <BrandLoader inline size={2.4} />
         )}
       </div>
     </div>

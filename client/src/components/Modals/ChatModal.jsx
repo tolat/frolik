@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import BrandLoader from "../UI/BrandLoader";
 import { genMembersString, getUnreadChatMessages } from "../../utils/utils";
 import UserIconCluster from "../UI/UserIconCluster";
 import ModalPortal from "./ModalPortal";
@@ -85,7 +86,7 @@ const ChatModal = (props) => {
 
   return !chat ? (
     modalState.selector === "chat-modal" ? (
-      <h1>Loading Chat..</h1>
+      <BrandLoader />
     ) : null
   ) : (
     <ModalPortal>

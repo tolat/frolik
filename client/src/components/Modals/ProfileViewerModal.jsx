@@ -1,4 +1,5 @@
 import { popupActions } from "../../store/popup-slice";
+import BrandLoader from "../UI/BrandLoader";
 import styles from "./styles/ProfileViewerModal.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { Fragment, useEffect } from "react";
@@ -92,7 +93,7 @@ const ProfileViewerModal = (props) => {
           ) : user.outings.length > 0 ? (
             <h2>No Photos Yet!</h2>
           ) : (
-            <h2>Loading Photos..</h2>
+            <BrandLoader />
           )}
         </Fragment>
       </div>

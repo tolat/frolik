@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import SkeletonCards from "../UI/SkeletonCards";
 import { pageRouteLoader, sortByDate, toSorted } from "../../utils/utils";
 import styles from "./styles/Social.module.scss";
 import { Fragment, useCallback, useEffect, useState } from "react";
@@ -96,7 +97,7 @@ const Social = (props) => {
               <ListSentinel ref={sentinelRef} hasMore={hasMore} />
             </Fragment>
           ) : fetchingFeedOutings ? (
-            <h2>Loading Posts..</h2>
+            <SkeletonCards variant="feed" count={2} />
           ) : (
             <div className={styles.noOutingsMessage}>
               <h2 className={styles.noOutingsMessageHeader}>
@@ -110,7 +111,7 @@ const Social = (props) => {
             </div>
           )
         ) : (
-          <h2>Loading Posts..</h2>
+          <SkeletonCards variant="feed" count={2} />
         )}
       </div>
     </Fragment>
