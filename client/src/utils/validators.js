@@ -1,4 +1,4 @@
-import cityData from "../utils/cities100000";
+import { isConfirmedLocation } from "./location";
 
 const isNotEmpty = (value) => {
   return value && value !== "";
@@ -40,11 +40,9 @@ export const createProfileValidators = (defaultImage) => {
       },
       {
         isValid(value) {
-          return cityData.find(
-            (city) => `${city.name}, ${city.country}` === value
-          );
+          return isConfirmedLocation(value);
         },
-        message: "Please choose a city from the dropdown menu only",
+        message: "Please choose a city from the list, or use your current location",
       },
     ],
     first_name: [
@@ -100,11 +98,9 @@ export const editProfileValidators = () => {
       },
       {
         isValid(value) {
-          return cityData.find(
-            (city) => `${city.name}, ${city.country}` === value
-          );
+          return isConfirmedLocation(value);
         },
-        message: "Please choose a city from the dropdown menu only",
+        message: "Please choose a city from the list, or use your current location",
       },
     ],
     first_name: [
@@ -152,11 +148,9 @@ export const createActivityValidators = (instructions) => {
       },
       {
         isValid(value) {
-          return cityData.find(
-            (city) => `${city.name}, ${city.country}` === value
-          );
+          return isConfirmedLocation(value);
         },
-        message: "Please choose a city from the dropdown menu only.",
+        message: "Please choose a city from the list, or use your current location",
       },
     ],
     "create-activity-description": [

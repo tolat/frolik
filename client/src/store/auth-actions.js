@@ -86,6 +86,9 @@ export const fetchLogout = async () => {
 
   // Stop this device receiving the account's notifications
   await removePushFromServer();
+  try {
+    sessionStorage.removeItem("returnTo"); // next login starts on Outing
+  } catch {}
 
   const requestConfig = { url: `${getServer()}/auth/logout` };
 

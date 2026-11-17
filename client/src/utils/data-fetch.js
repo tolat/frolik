@@ -1,3 +1,4 @@
+import { getLocationGeo } from "./location";
 import httpFetch from "./http-fetch";
 import { getServer } from "./env-utils";
 import { dataActions } from "../store/data-slice";
@@ -139,6 +140,7 @@ export const uploadProfileData = (userID, data, resetForm) => {
     first_name: data.first_name,
     last_name: data.last_name,
     location: data.location,
+    location_geo: getLocationGeo(data.location),
     tagline: data.tagline,
     status: { status: data.status, updated: Date.now() },
     profile_picture: {
@@ -186,6 +188,7 @@ export const createAccount = (data, resetForm) => {
       first_name: data.first_name,
       last_name: data.last_name,
       location: data.location,
+      location_geo: getLocationGeo(data.location),
       tagline: data.tagline,
       profile_picture: {
         zoom: data.zoom,

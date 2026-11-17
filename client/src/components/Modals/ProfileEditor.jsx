@@ -3,8 +3,7 @@ import SimpleInput from "../UI/SimpleInput";
 import styles from "./styles/ProfileEditor.module.scss";
 import { arrayBufferToBase64, genBackgroundStr } from "../../utils/utils";
 import CroppedImage from "../UI/CroppedImage";
-import CustomAutocomplete from "../UI/CustomAutocomplete";
-import cityData from "../../utils/cities100000";
+import LocationAutocomplete from "../UI/LocationAutocomplete";
 import CropperPopup from "../Popups/CropperPopup";
 import { Fragment, useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -203,17 +202,18 @@ const ProfileEditor = (props) => {
           </div>
         </div>
         {props.children}
-        <CustomAutocomplete
-          options={cityData}
+        <LocationAutocomplete
           name={"Location"}
           label={"City:"}
           id={"location"}
           className={styles.locationSelect}
           defaultVal={defaultValues.location}
+          locked={props.locationLocked}
           setDataChanged={(value) => {
             dispatchStageData({ id: "location", value });
           }}
         />
+        {props.locationExtra}
         <div className={styles.sideBySide}>
           <SimpleInput
             type="text"

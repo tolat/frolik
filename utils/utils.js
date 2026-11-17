@@ -114,6 +114,15 @@ module.exports.decodeDataURL = (dataURL) => {
   return Buffer.from(comma >= 0 ? str.slice(comma + 1) : str, "base64");
 };
 
+// {lat, lng} from the client → GeoJSON point, or null if invalid
+module.exports.toGeoPoint = (geo) => {
+  const lat = Number(geo?.lat);
+  const lng = Number(geo?.lng);
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+  if (Math.abs(lat) > 90 || Math.abs(lng) > 180) return null;
+  return { type: "Point", coordinates: [lng, lat] };
+};
+
 module.exports.getPhotosFromOutings = (user) => {
   return user.outings.flatMap((outing) => outing.photos.map((p) => p.key));
 };

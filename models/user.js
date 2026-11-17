@@ -9,6 +9,11 @@ const UserSchema = new Schema(
     username: String,
     tagline: String,
     location: String,
+    // Geocoded point for the location label (GeoJSON: [lng, lat])
+    location_geo: {
+      type: { type: String, enum: ["Point"] },
+      coordinates: { type: [Number], default: undefined },
+    },
     reset_token: { expires: Date, hash: String },
     notifications: [Object],
     chats: [{ type: Schema.Types.ObjectId, ref: "Chat" }],
@@ -21,6 +26,8 @@ const UserSchema = new Schema(
     pushSubscription: Object, // legacy single-device subscription
     // One entry per device/browser that enabled notifications
     pushSubscriptions: [Object],
+    // Keep location synced to the device's current city on app open
+    auto_location: { type: Boolean, default: false },
     // Set once the user has finished (or skipped) the in-app tour
     tour_seen: { type: Boolean, default: false },
     status: {
@@ -43,6 +50,7 @@ const UserSchema = new Schema(
 );
 
 UserSchema.plugin(passportLocalMongoose);
+UserSchema.index({ location_geo: "2dsphere" }, { sparse: true });
 
 UserSchema.virtual("fullname").get(function () {
   return `${this.first_name} ${this.last_name}`;

@@ -2,8 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ModalPortal from "./ModalPortal";
 import styles from "./styles/CreateActivityModal.module.scss";
 import SimpleInput from "../UI/SimpleInput";
-import CustomAutocomplete from "../UI/CustomAutocomplete";
-import cityData from "../../utils/cities100000";
+import LocationAutocomplete from "../UI/LocationAutocomplete";
 import ActivityCard from "../UI/ActivityCard";
 import { useState } from "react";
 import SimpleButton from "../UI/SimpleButton";
@@ -104,9 +103,8 @@ const CreateActivityModal = (props) => {
       />
     ),
     location: (
-      <CustomAutocomplete
+      <LocationAutocomplete
         id={`create-activity-location`}
-        options={cityData}
         name={"Activity Location"}
         className={styles.locationSelect}
         defaultVal={location}

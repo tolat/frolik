@@ -1,0 +1,71 @@
+@import "../../../utils/responsive.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.label {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: $text_muted;
+  margin: 1rem 0 0.6rem 1rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.button {
+  --tone: #{$green};
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  padding: 1.2rem;
+  border-radius: 100rem;
+  border: 2px solid var(--tone);
+  background-color: $surface;
+  color: var(--tone);
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+.ready {
+  --tone: #{$green};
+}
+
+.busy {
+  --tone: #{$red};
+}
+
+.dot {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 100rem;
+  background-color: var(--tone);
+  transition: background-color 0.2s ease;
+}
+
+.selected {
+  background-color: var(--tone);
+  color: white;
+  box-shadow: 0 6px 16px rgba(20, 24, 40, 0.15);
+}
+
+.selected .dot {
+  background-color: white;
+}
+
+.hint {
+  margin: 0.7rem 0 0 1rem;
+  font-size: 1.2rem;
+  color: $text_muted;
+}

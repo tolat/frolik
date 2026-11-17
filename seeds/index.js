@@ -129,6 +129,12 @@ const seedUsers = async () => {
   await createUsers(userSeeds);
   await createUsers(userSeeds2);
   await createUsers(userSeeds3);
+
+  // Geocode the seed city so Daily Matches can use distance
+  await User.updateMany(
+    { location: "Vancouver, CA" },
+    { $set: { location_geo: { type: "Point", coordinates: [-123.1207, 49.2827] } } }
+  );
 };
 
 const seedActivities = async () => {

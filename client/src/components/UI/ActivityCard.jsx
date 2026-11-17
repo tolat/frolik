@@ -5,7 +5,7 @@ import costIcon from "../../images/bill.png";
 import ratingIcon from "../../images/star.png";
 import groupIcon from "../../images/friends.png";
 import SimpleButton from "./SimpleButton";
-import { Fragment, useState, useCallback } from "react";
+import { Fragment, useState, useCallback, useEffect } from "react";
 import trophyIcon from "../../images/trophy.png";
 import completeIcon from "../../images/complete.png";
 import featuredIcon from "../../images/feature.png";
@@ -44,6 +44,12 @@ const ActivityCard = (props) => {
   // Hide the button bar until at least the first photo has loaded so it
   // doesn't flash on top of the shimmer tile before the image is ready.
   const [photoLoaded, setPhotoLoaded] = useState(!hasPhotos);
+  // Whole-card loading tile until the photo is in (8s safety net)
+  useEffect(() => {
+    if (photoLoaded) return;
+    const t = setTimeout(() => setPhotoLoaded(true), 8000);
+    return () => clearTimeout(t);
+  }, [photoLoaded]);
   const handleFirstPhotoLoad = useCallback(() => setPhotoLoaded(true), []);
 
   const handleToggleInstructions = (e) => {
@@ -101,7 +107,10 @@ const ActivityCard = (props) => {
 
   return (
     categoryColorMap && (
-      <div style={props.style} className={`${styles.outerContainer} fade-in`}>
+      <div
+        style={props.style}
+        className={`${styles.outerContainer} ${photoLoaded ? "tile-ready" : "tile-loading"}`}
+      >
         {!props.creatingActivity && (
           <WarningPopup
             selector={`confirm-delete-activity-${props.activity._id}`}

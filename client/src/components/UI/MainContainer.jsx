@@ -2,7 +2,6 @@ import { useLocation } from "react-router-dom";
 import SlideInModal from "../Modals/SlideInModal";
 import styles from "./styles/MainContainer.module.scss";
 import { useEffect, useRef, useState } from "react";
-import LinearLoader from "./LinearLoader";
 import { useSelector } from "react-redux";
 
 const MainContainer = (props) => {
@@ -54,7 +53,6 @@ const MainContainer = (props) => {
   return (
     <div className={styles.outer} style={{ marginBottom: marginBottom }}>
       <div id="main-container" className={styles.inner}>
-        <LinearLoader />
         <div
           ref={childrenRef}
           key={currentUrl}

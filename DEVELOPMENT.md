@@ -16,3 +16,4 @@ npm run client    # React dev server on :3000
 - With no Gmail credentials, emails fail quietly. Verification and password-reset
   links are printed to the server console in development.
 - Seed users: any `seeds/user.js` email (e.g. `torin@gmail.com`), password `getout1*`.
+- `DEV_IMAGE_DELAY_MS=1500` in `.env` (development only) delays local images, to test loading placeholders.

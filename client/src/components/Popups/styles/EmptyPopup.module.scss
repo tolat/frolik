@@ -32,6 +32,9 @@
 
 .contentContainer {
   width: $central_span_width;
-  border-radius: 3px;
+  max-width: calc(100vw - 2.4rem);
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  border-radius: $radius_lg;
   position: relative;
 }

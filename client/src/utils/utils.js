@@ -36,7 +36,12 @@ export const pageRouteLoader = async (url) => {
 
   // Redirect if user is not authenticated
   if (!store.getState().auth.isAuthenticated) {
-    localStorage.setItem("previousUrl", url);
+    // Remember the page for this tab only, so a refresh returns here once the
+    // session is restored (sessionStorage is cleared when the app is closed,
+    // so a fresh launch still starts on the Outing page).
+    try {
+      sessionStorage.setItem("returnTo", url);
+    } catch {}
     return redirect("/login");
   } else {
     return false;

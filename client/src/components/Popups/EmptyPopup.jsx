@@ -14,7 +14,8 @@ const EmptyPopup = (props) => {
   const noGutters = pixelsToRem(window.innerWidth) < 40;
   const popupStyle = { display: popupDisplay, opacity: opacity };
   const containerStyle = {
-    width: noGutters ? "100%" : null,
+    // Keep a small side gutter on phones (was full-bleed)
+    width: noGutters ? "calc(100% - 2.4rem)" : null,
     height: noGutters ? "fit-content" : null,
   };
 

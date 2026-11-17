@@ -4,8 +4,8 @@ import ModalPortal from "./ModalPortal";
 import { useEffect, useReducer, useState } from "react";
 import { dataActions } from "../../store/data-slice";
 import { uploadProfileData } from "../../utils/data-fetch";
-import CustomSelect from "../UI/CustomSelect";
-import balloonIcon from "../../images/air-balloon.png";
+import StatusButtons from "../UI/StatusButtons";
+import AutoLocationToggle from "../UI/AutoLocationToggle";
 import ProfileEditor from "./ProfileEditor";
 import { hideModal } from "../../store/modal-actions";
 import ValidatorBubble, { runValidators } from "../UI/ValidatorBubble";
@@ -17,6 +17,7 @@ import { fetchLogout } from "../../store/auth-actions";
 import logoutIcon from "../../images/logout.png";
 import { modalActions } from "../../store/modal-slice";
 import { startTour } from "../Tour/Tour";
+import { confirmLocation, geoFromPoint } from "../../utils/location";
 import PushPrompt from "../Notifications/PushPrompt";
 
 const stagedDataReducer = (state, action) => {
@@ -51,6 +52,8 @@ const EditProfileModal = () => {
 
   // Initialize defaultValues as daata is loaded from server
   useEffect(() => {
+    // Saving without changing the city is valid (keeps its coordinates)
+    confirmLocation(user.location, geoFromPoint(user.location_geo));
     setDefaultValues({
       location: user.location,
       first_name: user.first_name,
@@ -78,22 +81,6 @@ const EditProfileModal = () => {
           : stagedData[key] !== defaultValues[key];
       });
 
-  const statusOptions =
-    globals &&
-    Object.keys(globals.statusMap).map((key) => {
-      const selectable = key === "Ready" || key === "Busy";
-      return {
-        selectable,
-        name: key,
-        component: (
-          <StatusOption
-            unselectable={!selectable}
-            name={key}
-            details={globals?.statusMap[key]}
-          />
-        ),
-      };
-    });
 
   const runValidation = () => {
     return runValidators(
@@ -164,16 +151,15 @@ const EditProfileModal = () => {
           defaultValues={defaultValues}
           dataChanged={dataChanged}
           runValidation={runValidation}
+          locationLocked={!!user.auto_location}
+          locationExtra={<AutoLocationToggle />}
           clearValidators={() => setValidationDisplay("none")}
           resetForm={resetForm}
         >
-          <CustomSelect
-            options={statusOptions}
-            name={"Status"}
+          <StatusButtons
             id={"status"}
             label={"Status:"}
             defaultVal={defaultValues.status}
-            className={styles.statusSelect}
             setDataChanged={(value) => {
               dispatchStageData({ id: "status", value });
             }}
@@ -210,27 +196,5 @@ const EditProfileModal = () => {
   );
 };
 
-const StatusOption = (props) => {
-  const details =
-    props.name !== "Searching" ? (
-      props.details
-    ) : (
-      <div>
-        Your status is set to Searching when you are on the{" "}
-        <img style={{ height: "2rem" }} src={balloonIcon} alt={"balloonIcon"} />{" "}
-        page.
-      </div>
-    );
-  return (
-    <div
-      className={`${styles.statusOptionContainer} ${
-        props.unselectable ? styles.unselectable : null
-      }`}
-    >
-      <div className={styles.statusName}>{props.name}</div>
-      <div className={styles.statusDetails}>{details}</div>
-    </div>
-  );
-};
 
 export default EditProfileModal;

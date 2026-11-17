@@ -13,6 +13,8 @@ import { getTotalUnreadMessages } from "./utils/utils";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { socketActions } from "./store/socket-slice";
 import { modalActions } from "./store/modal-slice";
+import { authActions } from "./store/auth-slice";
+import { autoUpdateLocation } from "./utils/location";
 
 const connectSocket = async (socket, user) => {
   try {
@@ -43,6 +45,29 @@ function App() {
   useEffect(() => {
     if (userID) serviceWorkerRegistration.register({ user: store.getState().auth.user });
   }, [userID]);
+
+  // "Keep my location up to date": refresh the city on open and whenever the
+  // app comes back to the foreground (throttled + silent; see location.js)
+  const autoLocation = !!user?.auto_location;
+  useEffect(() => {
+    if (!userID || !autoLocation) return;
+    const run = () => {
+      const current = store.getState().auth.user;
+      autoUpdateLocation(current)
+        .then((updated) => {
+          if (updated) {
+            store.dispatch(
+              authActions.setUser({ ...store.getState().auth.user, ...updated })
+            );
+          }
+        })
+        .catch((err) => console.log("Auto location skipped:", err.message));
+    };
+    run();
+    const onVisible = () => document.visibilityState === "visible" && run();
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+  }, [userID, autoLocation]);
 
   // Fetch Globals once on app load
   useEffect(() => {
@@ -78,7 +103,7 @@ function App() {
   // Handle socket reconnection from dead server etc.
   // Only run the reconnect interval while a user is logged in.
   useEffect(() => {
-    if (!user) return;
+    if (!userID) return;
 
     // Set window listener to check if socket is connected
     const checkSocketConnection = () => {

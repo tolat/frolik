@@ -25,6 +25,7 @@ const {
   outingIsPending,
   webpushNotify,
   decodeDataURL,
+  toGeoPoint,
 } = require("../utils/utils");
 const {
   reqAuthenticated,
@@ -149,10 +150,15 @@ router.post(
     // Only allow known, user-editable fields. Previously every key in the
     // request body was copied onto the user document, so a client could
     // overwrite friends, username, password hash/salt, matches, etc.
+    const previousLocation = user.location;
     const EDITABLE = ["first_name", "last_name", "location", "tagline"];
     for (const key of EDITABLE) {
       if (typeof profileData?.[key] === "string") user[key] = profileData[key].slice(0, 200);
     }
+    // Geocoded coordinates for the location (from the location search)
+    const geo = toGeoPoint(profileData?.location_geo);
+    if (geo) user.location_geo = geo;
+    else if (user.location !== previousLocation) user.location_geo = undefined;
     const ALLOWED_STATUSES = ["Ready", "Busy", "Inactive"];
     if (ALLOWED_STATUSES.includes(profileData?.status?.status)) {
       user.status = { status: profileData.status.status, updated: Date.now() };
@@ -225,6 +231,7 @@ router.post(
       first_name: String(body.first_name || "").slice(0, 100),
       last_name: String(body.last_name || "").slice(0, 100),
       location: String(body.location || "").slice(0, 200),
+      ...(toGeoPoint(body.location_geo) ? { location_geo: toGeoPoint(body.location_geo) } : {}),
       tagline: String(body.tagline || "").slice(0, 200),
       profile_picture: {
         key: username,
@@ -320,11 +327,23 @@ router.get(
       return res.send({ matches });
     }
 
-    // Candidates: Ready users in the same location who aren't friends, aren't
-    // the user, and don't have 5+ pending outings themselves
+    // Candidates: Ready users nearby (same city label, or within 50 km when
+    // locations are geocoded) who aren't friends, aren't the user, and don't
+    // have 5+ pending outings themselves
+    const MATCH_RADIUS_KM = 50;
+    const nearby = [{ location: user.location }];
+    if (user.location_geo?.coordinates?.length === 2) {
+      nearby.push({
+        location_geo: {
+          $geoWithin: {
+            $centerSphere: [user.location_geo.coordinates, MATCH_RADIUS_KM / 6378.1],
+          },
+        },
+      });
+    }
     let allAvailable = await User.find({
       "status.status": "Ready",
-      location: user.location,
+      $or: nearby,
       _id: { $ne: user._id, $nin: user.friends },
     }).populate("outings");
     allAvailable = allAvailable.filter((u) => pendingCount(u) < 5);
@@ -841,6 +860,41 @@ router.get(
     }
 
     res.send({ outings });
+  })
+);
+
+// Update just the location (and/or the "keep my location up to date"
+// setting) without a full profile save. Used by the Settings switch and the
+// automatic update on app open.
+router.post(
+  "/:id/location",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const user = req.user;
+    const { location, location_geo, auto_location } = req.body;
+
+    if (typeof auto_location === "boolean") user.auto_location = auto_location;
+
+    if (location !== undefined) {
+      const geo = toGeoPoint(location_geo);
+      if (typeof location !== "string" || !location.trim() || !geo) {
+        return res.status(406).send({
+          header: "Invalid location",
+          message: "Couldn't update your location.",
+        });
+      }
+      user.location = location.slice(0, 200);
+      user.location_geo = geo;
+    }
+
+    await user.save();
+    pushUserUpdate(user.friends);
+    res.send({
+      location: user.location,
+      location_geo: user.location_geo,
+      auto_location: user.auto_location,
+    });
   })
 );
 

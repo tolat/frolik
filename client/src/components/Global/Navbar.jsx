@@ -78,21 +78,6 @@ const Navbar = (props) => {
     dispatch(popupActions.hidePopup());
   };
 
-  // Save current url for use when window refreshes
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      // Save current url to localstorage
-      localStorage.setItem("previousUrl", currentUrl);
-    };
-
-    // Add event listener for beforeunload
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    // Clean up the event listener on component unmount
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [currentUrl]);
 
   // Notification taps (relayed by the service worker) navigate in-app
   useEffect(() => {

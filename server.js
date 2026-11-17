@@ -141,9 +141,12 @@ io.on("connection", (socket) => onSocketConnection(socket));
 const { useLocalStorage, LOCAL_STORAGE_DIR } = require("./utils/S3");
 if (useLocalStorage) {
   const { reqAuthenticated } = require("./utils/middleware");
+  // Dev-only: DEV_IMAGE_DELAY_MS slows image responses to test loading states
+  const imageDelay = inDev ? parseInt(process.env.DEV_IMAGE_DELAY_MS) || 0 : 0;
   app.use(
     "/local-images",
     reqAuthenticated,
+    (req, res, next) => (imageDelay ? setTimeout(next, imageDelay) : next()),
     express.static(LOCAL_STORAGE_DIR, {
       setHeaders: (res) => res.setHeader("Content-Type", "image/jpeg"),
     })
@@ -159,6 +162,7 @@ app.use("/data", require("./routes/data"));
 app.use("/image", require("./routes/image"));
 app.use("/notifications", require("./routes/notifications"));
 app.use("/outing", require("./routes/outing"));
+app.use("/geo", require("./routes/geo"));
 
 // The service worker must be served from the root so its scope covers every
 // page (from /public/ it only controlled /public/*). no-cache so updates ship.

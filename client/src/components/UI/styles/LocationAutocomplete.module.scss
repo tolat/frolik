@@ -1,0 +1,159 @@
+@import "../../../utils/responsive.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.label {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: $text_muted;
+  margin: 1rem 0 0.6rem 1rem;
+}
+
+.inputRow {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1.4rem 4rem 1.4rem 1.4rem;
+  font-size: 1.4rem;
+  border: 1.5px solid $light_grey;
+  border-radius: $radius_md;
+  background-color: $surface;
+  outline: none;
+  transition: border-color $dur ease, box-shadow $dur ease;
+}
+
+.input:focus {
+  border-color: $blue;
+  box-shadow: 0 0 0 4px rgba(91, 141, 239, 0.18);
+}
+
+.inputSpinner {
+  position: absolute;
+  right: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+}
+
+.options {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 0;
+  right: 0;
+  z-index: 5;
+  margin: 0;
+  padding: 0.4rem;
+  list-style: none;
+  max-height: 24rem;
+  overflow-y: auto;
+  background-color: $surface;
+  border-radius: $radius_md;
+  box-shadow: $shadow_lg;
+  animation: options-in 0.15s ease-out both;
+}
+
+@keyframes options-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  padding: 0.9rem 1.2rem;
+  border-radius: $radius_sm;
+  cursor: pointer;
+}
+
+.optionActive {
+  background-color: $light_blue;
+}
+
+.optionLabel {
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: $text;
+}
+
+.optionDetail {
+  font-size: 1.2rem;
+  color: $text_muted;
+}
+
+.empty {
+  padding: 1rem 1.2rem;
+  font-size: 1.3rem;
+  color: $text_muted;
+}
+
+.currentButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  align-self: flex-start;
+  margin: 0.8rem 0 0 0.4rem;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 100rem;
+  background-color: transparent;
+  color: $blue_dark;
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.currentButton:hover {
+  background-color: $light_blue;
+}
+
+.currentButton:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.currentIcon {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.error {
+  margin: 0.4rem 0 0 1rem;
+  font-size: 1.2rem;
+  color: $red;
+}
+
+// "Keep my location up to date" is on: field shows the detected city only
+.locked .input {
+  background-color: $card_grey;
+  color: $text_muted;
+  cursor: default;
+}
+
+.locked .input:focus {
+  border-color: $light_grey;
+  box-shadow: none;
+}
+
+.autoPill {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.3rem 0.8rem;
+  border-radius: 100rem;
+  background-color: $light_blue;
+  color: $blue_dark;
+  font-size: 1.1rem;
+  font-weight: 700;
+}

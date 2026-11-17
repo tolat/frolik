@@ -119,3 +119,18 @@
     transform-origin: center;
   }
 }
+
+// No grey outline around the card or its white footer
+.container {
+  border: none;
+}
+
+.topInnerContainer {
+  border: none;
+  border-radius: 0;
+}
+
+// Reserve roughly a card's height while the loading tile is showing
+.loadingSize {
+  min-height: 38rem;
+}

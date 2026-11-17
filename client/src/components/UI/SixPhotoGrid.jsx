@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import styles from "./styles/SixPhotoGrid.module.scss";
 import closeIcon from "../../images/close.png";
 import { useDispatch } from "react-redux";
@@ -18,6 +18,21 @@ const SixPhotoGrid = (props) => {
     (img) => img && img !== "queued" && !failedSet.has(img)
   );
   const photoGridNumber = Math.min(visiblePhotos.length, 6);
+
+  // Tell the parent once every shown photo has loaded (or failed and been
+  // dropped), so it can reveal the whole card at once
+  const allLoadedFired = useRef(false);
+  const shown = visiblePhotos.slice(0, 6);
+  const allSettled =
+    props.photos != null &&
+    !props.photos.some((img) => img === "queued") &&
+    shown.every((img) => loadedSet.has(img));
+  useEffect(() => {
+    if (allSettled && !allLoadedFired.current) {
+      allLoadedFired.current = true;
+      props.onAllLoaded?.();
+    }
+  });
   const hasQueued = props.photos?.find((img) => img === "queued");
 
   const firstLoadFired = useRef(false);

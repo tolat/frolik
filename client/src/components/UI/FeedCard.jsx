@@ -31,6 +31,13 @@ const FeedCard = (props) => {
   );
   const dispatch = useDispatch();
   const outingUsers = outing?.users;
+  // Whole-card loading tile until the photos are in (8s safety net)
+  const [ready, setReady] = useState(!outing?.photos?.length);
+  useEffect(() => {
+    if (ready) return;
+    const t = setTimeout(() => setReady(true), 8000);
+    return () => clearTimeout(t);
+  }, [ready]);
 
   let memberNames = outingUsers
     .map((u) => `${u.first_name}, `)
@@ -61,9 +68,13 @@ const FeedCard = (props) => {
 
   return (
     outing && (
-      <div className={`${styles.container} fade-in`}>
+      <div
+        className={`${styles.container} ${
+          ready ? "tile-ready" : `tile-loading ${styles.loadingSize}`
+        }`}
+      >
         {outing && outingPhotos[0] && !outingPhotos.find((img) => img === "queued") ? (
-          <SixPhotoGrid photos={outingPhotos} />
+          <SixPhotoGrid photos={outingPhotos} onAllLoaded={() => setReady(true)} />
         ) : (
           <div className={styles.loadingTile}>
             Loading Photos.. &nbsp;{" "}
