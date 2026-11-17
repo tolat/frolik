@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import ModalPortal from "../Modals/ModalPortal";
 import styles from "./styles/NotificationsModal.module.scss";
 import WarningPopup from "../Popups/WarningPopup";
@@ -12,12 +13,14 @@ import FriendRemoved from "./FriendRemoved";
 import ChatCreated from "./ChatCreated";
 import { dateSort, toSorted } from "../../utils/utils";
 import ModalHeaderPortal from "../Modals/ModalHeaderPortal";
+import PushPrompt from "./PushPrompt";
 
 const NotificationsModal = (props) => {
   const dispatch = useDispatch();
   const modalState = useSelector((state) => state.modal);
+  // Rendered as the /alerts page (asPage) or, legacy, inside the slide-in modal
   const modalDisplay =
-    modalState.selector === "notifications" ? "flex" : "none";
+    props.asPage || modalState.selector === "notifications" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
   const user = useSelector((state) => state.auth.user);
 
@@ -33,8 +36,10 @@ const NotificationsModal = (props) => {
     </div>
   );
 
+  const Wrapper = props.asPage ? Fragment : ModalPortal;
+
   return (
-    <ModalPortal>
+    <Wrapper>
       <WarningPopup
         selector={"confirm-join-outing"}
         header={"Don't be a flake!"}
@@ -42,8 +47,14 @@ const NotificationsModal = (props) => {
         ok={"OK"}
         okClick={onPopupOk}
       />
-      <div style={modalStyle} className={styles.container}>
-        <ModalHeaderPortal selector={"notifications"}>Alerts</ModalHeaderPortal>
+      <div
+        style={modalStyle}
+        className={`${styles.container} ${props.asPage ? styles.pageContainer : ""}`}
+      >
+        {!props.asPage && (
+          <ModalHeaderPortal selector={"notifications"}>Alerts</ModalHeaderPortal>
+        )}
+        {props.asPage && <PushPrompt />}
         {user.notifications[0] ? (
           toSorted(user.notifications, (a, b) =>
             dateSort(b.created, a.created)
@@ -53,7 +64,7 @@ const NotificationsModal = (props) => {
                 return (
                   <OutingInvite
                     header={"You have been invited to an outing!"}
-                    key={Math.random()}
+                    key={n.id}
                     notification={n}
                   />
                 );
@@ -65,7 +76,7 @@ const NotificationsModal = (props) => {
                         ? `Your Outing invite was denied by:`
                         : `Your Outing invite was accepted by: `
                     }
-                    key={Math.random()}
+                    key={n.id}
                     notification={n}
                   />
                 );
@@ -73,7 +84,7 @@ const NotificationsModal = (props) => {
                 return (
                   <OutingUpdate
                     header={"Your Outing was left by:"}
-                    key={Math.random()}
+                    key={n.id}
                     notification={n}
                   />
                 );
@@ -81,7 +92,7 @@ const NotificationsModal = (props) => {
                 return (
                   <OutingUpdate
                     header={"Your Outing was joined by:"}
-                    key={Math.random()}
+                    key={n.id}
                     notification={n}
                   />
                 );
@@ -89,7 +100,7 @@ const NotificationsModal = (props) => {
                 return (
                   <OutingInvite
                     header={"Your Outing was completed!"}
-                    key={Math.random()}
+                    key={n.id}
                     notification={n}
                     showOuting={true}
                   />
@@ -101,20 +112,20 @@ const NotificationsModal = (props) => {
                     footer={
                       "Your turn to Mark the outing complete when you are done uploading photos!"
                     }
-                    key={Math.random()}
+                    key={n.id}
                     notification={n}
                   />
                 );
               case "friend-request":
-                return <FriendRequest key={Math.random()} notification={n} />;
+                return <FriendRequest key={n.id} notification={n} />;
               case "friend-request-update":
                 return (
-                  <FriendRequestUpdate key={Math.random()} notification={n} />
+                  <FriendRequestUpdate key={n.id} notification={n} />
                 );
               case "friend-removed":
-                return <FriendRemoved key={Math.random()} notification={n} />;
+                return <FriendRemoved key={n.id} notification={n} />;
               case "chat-created":
-                return <ChatCreated key={Math.random()} notification={n} />;
+                return <ChatCreated key={n.id} notification={n} />;
 
               default:
                 return null;
@@ -134,7 +145,7 @@ const NotificationsModal = (props) => {
           </div>
         )}
       </div>
-    </ModalPortal>
+    </Wrapper>
   );
 };
 

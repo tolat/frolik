@@ -160,6 +160,13 @@ app.use("/image", require("./routes/image"));
 app.use("/notifications", require("./routes/notifications"));
 app.use("/outing", require("./routes/outing"));
 
+// The service worker must be served from the root so its scope covers every
+// page (from /public/ it only controlled /public/*). no-cache so updates ship.
+app.get("/service-worker.js", (req, res) => {
+  res.set("Cache-Control", "no-cache");
+  res.sendFile(path.join(__dirname, "client/build/service-worker.js"));
+});
+
 // All routes go to the client, routing happens on the front end
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client/build/index.html"));

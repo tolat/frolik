@@ -3,13 +3,27 @@
   position: relative;
 }
 
-/* Spinner container that grows downward as the user pulls */
+/* Spinner bubble that fades/scales in above the content as it is pulled */
 .indicator {
-  width: 100%;
-  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 4rem;
+  height: 4rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: transparent;
-  /* height is driven by inline style */
+  border-radius: 100rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 10px rgba(20, 24, 40, 0.12);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform, opacity;
+}
+
+/* No will-change here: it would make position: fixed children inside the
+   page position relative to this element. */
+.content {
+  position: relative;
 }

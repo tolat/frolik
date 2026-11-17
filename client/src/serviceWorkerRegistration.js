@@ -2,6 +2,7 @@
 // register() is not called by default.
 
 import { onUpdateUser } from "./store/socket-actions";
+import { syncPush } from "./utils/push";
 
 // This lets the app load faster on subsequent visits in production, and gives
 // it offline capabilities. However, it also means that developers (and users)
@@ -32,7 +33,8 @@ export function register(config) {
       // serve assets; see https://github.com/facebook/create-react-app/issues/2374
       return;
     }
-    const swUrl = `./public/service-worker.js`;
+    const swUrl = `/service-worker.js`;
+    retireOldServiceWorker();
 
     if (isLocalhost) {
       // This is running on localhost. Let's check if a service worker still exists or not.
@@ -58,7 +60,7 @@ function registerValidSW(swUrl, config) {
     .register(swUrl)
     .then((registration) => {
       // Subscribe to push notifications
-      subscribeToPushNotifications(registration, config.user);
+      syncPush();
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (installingWorker == null) {
@@ -74,7 +76,7 @@ function registerValidSW(swUrl, config) {
               }
 
               // Subscribe to push notifications
-              subscribeToPushNotifications(registration, config.user);
+              syncPush();
             } else {
               // Content is precached for offline use,
               // execute callback
@@ -83,7 +85,7 @@ function registerValidSW(swUrl, config) {
               }
 
               // Subscribe to push notifications
-              subscribeToPushNotifications(registration, config.user);
+              syncPush();
             }
           }
         };
@@ -103,6 +105,13 @@ function registerValidSW(swUrl, config) {
 
       // Handle messages from the service worker
       navigator.serviceWorker.addEventListener("message", (event) => {
+        // Notification tapped while the app was open: go to its page
+        if (event.data?.action === "navigate" && event.data.url) {
+          window.dispatchEvent(
+            new CustomEvent("frolik:navigate", { detail: event.data.url })
+          );
+          return;
+        }
         if (event.data.action === "frolik-user-update-response") {
           const dataFromServiceWorker = event.data;
           if(dataFromServiceWorker.data.update){
@@ -116,61 +125,33 @@ function registerValidSW(swUrl, config) {
     });
 }
 
-// Function to subscribe to push notifications
-function subscribeToPushNotifications(registration, user) {
-  registration.pushManager.getSubscription().then((subscription) => {
-    if (subscription === null) {
-      // Make an HTTP request to fetch the VAPID key from the server
-      fetch("/notifications/vapid-public-key")
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Failed to fetch VAPID key");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          const vapidKey = data.key;
-          // User is not subscribed, subscribe now
-          registration.pushManager
-            .subscribe({
-              userVisibleOnly: true,
-              applicationServerKey: vapidKey,
-            })
-            .then((newSubscription) => {
-              console.log(
-                "Push notification subscription successful:",
-                newSubscription
-              );
-              sendSubscriptionToServer(newSubscription, user);
-            })
-            .catch((error) => {
-              console.error("Error subscribing to push notifications:", error);
-            });
-        })
-        .catch((error) => {
-          console.error("Error fetching VAPID key:", error);
-        });
-    }
-  });
-}
-
-// Function to send the subscription to the server
-function sendSubscriptionToServer(subscription, user) {
-  fetch("/notifications/push/subscribe", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ subscription, user }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to send subscription to server");
-      }
-    })
-    .catch((error) => {
-      console.error("Error sending subscription to server:", error);
-    });
+// Older builds registered the worker under /public/ (wrong scope). Remove it
+// and its push subscription so users don't get every notification twice.
+function retireOldServiceWorker() {
+  navigator.serviceWorker
+    .getRegistrations()
+    .then((registrations) =>
+      Promise.all(
+        registrations
+          .filter((r) => new URL(r.scope).pathname.startsWith("/public/"))
+          .map(async (r) => {
+            try {
+              const sub = await r.pushManager.getSubscription();
+              if (sub) {
+                await fetch("/notifications/push/unsubscribe", {
+                  method: "POST",
+                  credentials: "include",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ endpoint: sub.endpoint }),
+                });
+                await sub.unsubscribe();
+              }
+            } catch {}
+            return r.unregister();
+          })
+      )
+    )
+    .catch(() => {});
 }
 
 function checkValidServiceWorker(swUrl, config) {

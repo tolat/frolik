@@ -2,10 +2,20 @@ import Cropper from "react-easy-crop";
 import styles from "./styles/CroppedImage.module.scss";
 import { useDispatch } from "react-redux";
 import { popupActions } from "../../store/popup-slice";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 
 const CroppedImage = (props) => {
   const dispatch = useDispatch();
+  // Pressed state via pointer events: iOS Safari doesn't reliably apply :active
+  const [badgePressed, setBadgePressed] = useState(false);
+  const badgeClickable = !!props.onBadgeClick;
+  const onBadgeClick = (e) => {
+    e.currentTarget.animate?.(
+      [{ transform: "scale(0.86)" }, { transform: "scale(1.08)" }, { transform: "scale(1)" }],
+      { duration: 260, easing: "ease-out" }
+    );
+    props.onBadgeClick?.(e);
+  };
 
   const onImageClick = (e) => {
     if (props.showPhotoOnClick) {
@@ -44,8 +54,16 @@ const CroppedImage = (props) => {
             }}
           />
           <div
-            onClick={props.onBadgeClick}
-            className={styles.badgeContainer}
+            onClick={badgeClickable ? onBadgeClick : undefined}
+            onPointerDown={badgeClickable ? () => setBadgePressed(true) : undefined}
+            onPointerUp={badgeClickable ? () => setBadgePressed(false) : undefined}
+            onPointerLeave={badgeClickable ? () => setBadgePressed(false) : undefined}
+            onPointerCancel={badgeClickable ? () => setBadgePressed(false) : undefined}
+            role={badgeClickable ? "button" : undefined}
+            aria-label={badgeClickable ? "Change photo" : undefined}
+            className={`${styles.badgeContainer} ${
+              badgeClickable ? styles.badgeClickable : ""
+            } ${badgePressed ? styles.badgePressed : ""}`}
             style={props.badgeStyle}
           >
             <div

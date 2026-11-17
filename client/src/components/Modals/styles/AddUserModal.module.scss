@@ -77,3 +77,20 @@
   line-height: 1.45;
   margin-bottom: 1.6rem;
 }
+
+.addButton {
+  border-radius: 100rem;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  cursor: pointer;
+}
+
+.addButton:active {
+  transform: scale(0.9);
+}
+
+// Brief confirmation before the card collapses
+.addButtonDone {
+  color: $green;
+  font-size: 2.6rem;
+  transform: scale(1.1);
+}

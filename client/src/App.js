@@ -32,7 +32,7 @@ function App() {
   useEffect(() => {
     if (user) {
       const unreadMessages =
-        getTotalUnreadMessages(user) + user.notifications?.length;
+        (getTotalUnreadMessages(user) || 0) + (user.notifications?.length || 0);
       setBadge(unreadMessages);
     }
   }, [user]);

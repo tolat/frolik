@@ -68,3 +68,9 @@
   color: black;
   margin: 1rem 2rem 2rem 2rem ;
 }
+.tourButton {
+  background-color: $light_blue;
+  color: $blue_dark;
+  width: calc(100% - 2rem);
+  margin: 1rem 2rem 0 2rem;
+}

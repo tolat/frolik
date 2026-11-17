@@ -5,6 +5,8 @@ import { outingIsCompleted, sortByDate, toSorted } from "../../utils/utils";
 import SimpleSearch from "./SimpleSearch";
 import { useMemo, useState } from "react";
 import FeedCard from "./FeedCard";
+import useIncrementalList from "../../utils/useIncrementalList";
+import ListSentinel from "./ListSentinel";
 
 const OutingList = (props) => {
   let user = useSelector((state) => state.auth.user);
@@ -47,6 +49,13 @@ const OutingList = (props) => {
     };
   }, [user, searchTerm]);
 
+  // Completed outings (photo-heavy) render 5 at a time as the user scrolls
+  const {
+    visible: visibleCompleted,
+    hasMore,
+    sentinelRef,
+  } = useIncrementalList(nonPending, 5, searchTerm);
+
   return (
     <div className={styles.container}>
       <SimpleSearch
@@ -76,7 +85,7 @@ const OutingList = (props) => {
         <b>Your flaked outings show up in red.</b>
       </div>
       {nonPending[0] &&
-        nonPending.map((o) =>
+        visibleCompleted.map((o) =>
           o.flakes.find((id) => id === user._id) ? (
             <div key={o._id} className={styles.outingContainer}>
               <OutingCard outing={o} user={user} />
@@ -87,6 +96,7 @@ const OutingList = (props) => {
             </div>
           )
         )}
+      <ListSentinel ref={sentinelRef} hasMore={hasMore} />
     </div>
   );
 };

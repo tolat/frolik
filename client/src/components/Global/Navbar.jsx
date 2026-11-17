@@ -1,17 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useLocation } from "react-router-dom"; // Import Link from react-router-dom
+import { NavLink, useLocation, useNavigate } from "react-router-dom"; // Import Link from react-router-dom
 import styles from "./styles/Navbar.module.scss";
 import NavButton from "../UI/NavButton";
 import bell from "../../images/bell6.png";
-import { hideModal } from "../../store/modal-actions";
-import NotificationsModal from "../Notifications/NotificationsModal";
-import { modalActions } from "../../store/modal-slice";
+import bellBlue from "../../images/bell6-blue.png";
 import OutingModal from "../Modals/OutingModal";
 import ChatModal from "../Modals/ChatModal";
 import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
 import outingsBarIcon from "../../images/outingsToolbar.png";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import ProfileViewerModal from "../Modals/ProfileViewerModal";
 import profileIcon from "../../images/account.png";
 import profileIconBlue from "../../images/account-blue.png";
@@ -25,19 +23,19 @@ import outingIcon from "../../images/air-balloon.png";
 import outingIconBlue from "../../images/air-balloon-blue.png";
 import logo from "../../images/frolik2.png";
 import InstallPromptModal from "../Modals/InstallPromptModal";
+import Tour from "../Tour/Tour";
 
 const Navbar = (props) => {
   const user = useSelector((state) => state.auth.user);
   const authState = useSelector((state) => state.auth);
-  const modalState = useSelector((state) => state.modal);
   const chats = useSelector((state) => state.chat.chats);
   const dispatch = useDispatch();
   const unreadChatMessages = chats && getTotalUnreadMessages(user);
   const location = useLocation();
+  const navigate = useNavigate();
   const currentUrl = location.pathname;
   const warningMessage = useSelector((state) => state.popup.warningMessage);
   const warningHeader = useSelector((state) => state.popup.warningHeader);
-  const subPromptRef = useRef(null);
   // Derive the active tab from the URL (was set via setState during render)
   const activePage = currentUrl.split("/")[1] || false;
   const [masterDisplay, setMasterDisplay] = useState("flex");
@@ -46,6 +44,7 @@ const Navbar = (props) => {
   useEffect(() => {
     if (
       currentUrl === "/profile" ||
+      currentUrl === "/alerts" ||
       currentUrl === "/outing" ||
       currentUrl === "/social" ||
       currentUrl === "/chat"
@@ -56,13 +55,6 @@ const Navbar = (props) => {
     }
   }, [currentUrl]);
 
-  const handleShowNotifications = async () => {
-    if (modalState.selector && modalState.selector !== "notifications") {
-      await hideModal();
-    }
-    dispatch(modalActions.setSelector("notifications"));
-    dispatch(modalActions.showModal());
-  };
 
   const makeActive = (navData) =>
     navData.isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink;
@@ -102,12 +94,12 @@ const Navbar = (props) => {
     };
   }, [currentUrl]);
 
-  // Trigger subscription prompt when user logs in or changes
+  // Notification taps (relayed by the service worker) navigate in-app
   useEffect(() => {
-    if (user) {
-      subPromptRef.current?.click();
-    }
-  }, [user]);
+    const go = (e) => e.detail && navigate(e.detail);
+    window.addEventListener("frolik:navigate", go);
+    return () => window.removeEventListener("frolik:navigate", go);
+  }, [navigate]);
 
   return (
     <div
@@ -115,10 +107,6 @@ const Navbar = (props) => {
       id="navbar"
       className={styles.header}
     >
-      <button
-        ref={subPromptRef}
-        className={styles.subPromptButton}
-      />
       <WarningPopup
         selector={"generic-warning"}
         header={warningHeader}
@@ -129,11 +117,11 @@ const Navbar = (props) => {
       <InstallPromptModal />
       {user && (
         <Fragment>
-          <NotificationsModal />
           <ChatModal />
           <OutingModal />
           <ProfileViewerModal />
           <PhotoPopup />
+          <Tour />
           <WarningPopup
             selector={"too-many-outings"}
             header={"You have too many Pending Outings!"}
@@ -147,28 +135,22 @@ const Navbar = (props) => {
       <div className={styles.innerContainer}>
         {authState.isAuthenticated ? (
           <div className={styles.navItems}>
-            <NavButton
-              onClick={handleShowNotifications}
-              icon={bell}
-              text={"Alerts"}
-              className={`${styles.navButton} ${styles.notificationsHover}`}
-            >
-              {user && user.notifications.length > 0 ? (
-                <div className={styles.notificationBadge}>
-                  {user && user.notifications.length}
-                </div>
-              ) : null}
-            </NavButton>
             <NavLink
-              className={(navData) => makeActive(navData, "outing")}
-              to="/outing"
+              className={(navData) => makeActive(navData)}
+              to="/alerts"
             >
               <NavButton
-                icon={activePage === "outing" ? outingIconBlue : outingIcon}
-                text={"Outing"}
-                className={`${styles.navButton} ${styles.createOutingHover}`}
-                blue={activePage === "outing"}
-              />
+                icon={activePage === "alerts" ? bellBlue : bell}
+                text={"Alerts"}
+                className={`${styles.navButton} ${styles.notificationsHover}`}
+                blue={activePage === "alerts"}
+              >
+                {user && user.notifications.length > 0 ? (
+                  <div className={styles.notificationBadge}>
+                    {user && user.notifications.length}
+                  </div>
+                ) : null}
+              </NavButton>
             </NavLink>
             <NavLink
               className={(navData) => makeActive(navData, "profile")}
@@ -179,6 +161,17 @@ const Navbar = (props) => {
                 text={"Profile"}
                 className={`${styles.navButton} ${styles.profileHover}`}
                 blue={activePage === "profile"}
+              />
+            </NavLink>
+            <NavLink
+              className={(navData) => makeActive(navData, "outing")}
+              to="/outing"
+            >
+              <NavButton
+                icon={activePage === "outing" ? outingIconBlue : outingIcon}
+                text={"Outing"}
+                className={`${styles.navButton} ${styles.createOutingHover}`}
+                blue={activePage === "outing"}
               />
             </NavLink>
             <NavLink

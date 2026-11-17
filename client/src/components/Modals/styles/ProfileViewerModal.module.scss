@@ -70,3 +70,7 @@
   display: flex;
   flex-direction: column;
 }
+// "+ Friend" before you've completed an Outing together
+.lockedButton {
+  opacity: 0.4;
+}

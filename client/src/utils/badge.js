@@ -4,24 +4,17 @@ const isSupported = () =>
 'PushManager' in window
 
 export const setBadge = (value) => {
-  if (isSupported()) {
-    navigator.setAppBadge(value);
-  }
+  if (!isSupported() || !navigator.setAppBadge) return;
+  const n = Number(value) || 0;
+  (n > 0 ? navigator.setAppBadge(n) : navigator.clearAppBadge()).catch(() => {});
 };
 
 export const clearBadge = () => {
-  if (isSupported()) {
-    navigator.clearAppBadge();
+  if (isSupported() && navigator.clearAppBadge) {
+    navigator.clearAppBadge().catch(() => {});
   }
 };
 
-export const incrementBadge = () => {
-  if (isSupported()) {
-    const currentBadge = navigator.getBadge();
-    const newBadgeValue = currentBadge ? currentBadge + 1 : 1;
-    setBadge(newBadgeValue);
-  }
-};
 
 export const resetBadge = () => {
   setBadge(0);

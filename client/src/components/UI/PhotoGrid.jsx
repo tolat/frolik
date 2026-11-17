@@ -3,9 +3,15 @@ import { useDispatch } from "react-redux";
 import { popupActions } from "../../store/popup-slice";
 import { memo } from "react";
 import ImageLoadingTile from "./ImageLoadingTile";
+import useIncrementalList from "../../utils/useIncrementalList";
+import ListSentinel from "./ListSentinel";
 
 const PhotoGrid = memo((props) => {
   const dispatch = useDispatch();
+  const { visible, hasMore, sentinelRef } = useIncrementalList(
+    props.images,
+    props.pageSize || 15
+  );
 
   const onImageClick = (img) => {
     dispatch(popupActions.setPopupImage(img));
@@ -18,11 +24,12 @@ const PhotoGrid = memo((props) => {
   };
 
   return (
+    <>
     <div
       style={{ gridTemplateColumns: props.gridTemplateColumns, ...props.style }}
       className={styles.container}
     >
-      {props.images.map(
+      {visible.map(
         (m, index) =>
           m && (
             <div key={index} className={styles.imageContainer}>
@@ -38,6 +45,8 @@ const PhotoGrid = memo((props) => {
           )
       )}
     </div>
+    <ListSentinel ref={sentinelRef} hasMore={hasMore} />
+    </>
   );
 });
 

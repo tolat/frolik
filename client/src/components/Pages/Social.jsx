@@ -1,11 +1,13 @@
 import { useSelector } from "react-redux";
 import { pageRouteLoader, sortByDate, toSorted } from "../../utils/utils";
 import styles from "./styles/Social.module.scss";
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import FeedCard from "../UI/FeedCard";
 import { fetchFeedOutings } from "../../utils/data-fetch";
 import SimpleSearch from "../UI/SimpleSearch";
 import PullToRefresh from "../UI/PullToRefresh";
+import useIncrementalList from "../../utils/useIncrementalList";
+import ListSentinel from "../UI/ListSentinel";
 
 const Social = (props) => {
   const [outings, setOutings] = useState({});
@@ -20,6 +22,12 @@ const Social = (props) => {
   );
 
   const validKeys = applyChatSearch(sortedKeys);
+  // Render the feed 5 posts at a time as the user scrolls
+  const { visible: visibleKeys, hasMore, sentinelRef } = useIncrementalList(
+    validKeys,
+    5,
+    feedSearch
+  );
 
   const getOutings = useCallback(
     (u) =>
@@ -83,9 +91,12 @@ const Social = (props) => {
         />
         {outings ? (
           Object.keys(outings)[0] ? (
-            validKeys.map((k) => (
-              <FeedCard key={Math.random()} outing={outings[k]} />
-            ))
+            <Fragment>
+              {visibleKeys.map((k) => (
+                <FeedCard key={k} outing={outings[k]} />
+              ))}
+              <ListSentinel ref={sentinelRef} hasMore={hasMore} />
+            </Fragment>
           ) : fetchingFeedOutings ? (
             <h2>Loading Posts..</h2>
           ) : (

@@ -1,3 +1,4 @@
+import { popupActions } from "../../store/popup-slice";
 import styles from "./styles/ProfileViewerModal.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { Fragment, useEffect } from "react";
@@ -109,6 +110,23 @@ const ControlButtons = (props) => {
   const friendRequested = props.user.friend_requests.find(
     (fr) => fr === props.modalUser._id
   );
+  // Friends can only be added after completing an Outing together (flakers
+  // are removed from outing.users, so they don't count). Server enforces too.
+  const hasCompletedOutingTogether = props.user.outings?.some(
+    (o) =>
+      o?.date_completed &&
+      o.users?.some((u) => (u._id || u) === props.modalUser._id)
+  );
+
+  const onLockedAddFriend = () => {
+    dispatch(popupActions.setWarningHeader("Complete an Outing first"));
+    dispatch(
+      popupActions.setWarningMessage(
+        `You can add ${props.modalUser.first_name} as a friend once you've completed an Outing together.`
+      )
+    );
+    dispatch(popupActions.showPopup("generic-warning"));
+  };
 
   const onAddFriend = () => {
     const onComplete = (response) => {
@@ -168,10 +186,18 @@ const ControlButtons = (props) => {
           icon={sentMail}
           subText={'Requested'}
         />
-      ) : (
+      ) : hasCompletedOutingTogether ? (
         <IconButton
           onClick={() => onAddFriend()}
           className={styles.buttonStyle}
+          iconStyle={buttonIconStyle}
+          icon={addFriend}
+          subText={'+ Friend'}
+        />
+      ) : (
+        <IconButton
+          onClick={onLockedAddFriend}
+          className={`${styles.buttonStyle} ${styles.lockedButton}`}
           iconStyle={buttonIconStyle}
           icon={addFriend}
           subText={'+ Friend'}

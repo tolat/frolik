@@ -10,7 +10,9 @@
   position: fixed;
   z-index: 3;
   bottom: 0;
-  padding: 0 1rem calc(0.8rem + env(safe-area-inset-bottom, 0px)) 1rem;
+  // Sit above the iPhone home indicator (needs viewport-fit=cover in index.html
+  // for env() to report it), with a minimum gap on other devices.
+  padding: 0 1rem max(1.2rem, calc(env(safe-area-inset-bottom, 0px) + 0.4rem)) 1rem;
   pointer-events: none;
 }
 
@@ -25,9 +27,11 @@
   box-sizing: border-box;
   height: 6.6rem;
   border-radius: 2.4rem;
-  background: rgba(255, 255, 255, 0.82);
-  -webkit-backdrop-filter: saturate(180%) blur(18px);
-  backdrop-filter: saturate(180%) blur(18px);
+  background: rgba(255, 255, 255, 0.96);
+  @media (hover: hover) and (pointer: fine) {
+    -webkit-backdrop-filter: saturate(180%) blur(18px);
+    backdrop-filter: saturate(180%) blur(18px);
+  }
   border: 1px solid rgba(255, 255, 255, 0.7);
   box-shadow: 0 10px 30px rgba(20, 24, 40, 0.12), 0 1px 3px rgba(20, 24, 40, 0.06);
 }
@@ -148,10 +152,4 @@
 
 .logo {
   height: 4rem;
-}
-
-.subPromptButton {
-  opacity: 0;
-  position: fixed;
-  z-index: -2;
 }

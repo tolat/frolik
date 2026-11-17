@@ -4,9 +4,9 @@ import styles from "./styles/FriendCard.module.scss";
 import UserIcon from "./UserIcon";
 import flakeIcon from "../../images/snowflake.png";
 import outingsIcon from "../../images/outing2.png";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
-import { hideModal } from "../../store/modal-actions";
+import { swapModal } from "../../store/modal-actions";
 import { calculateFlakeRating } from "../../utils/utils";
 import { popupActions } from "../../store/popup-slice";
 
@@ -17,7 +17,6 @@ const FriendCard = memo((props) => {
   const borderSizeInRem = props.small ? "0.5" : "0.8";
   const nameStyle = { fontSize: props.small ? "1.8rem" : null };
   const dispatch = useDispatch();
-  const modalState = useSelector((state) => state.modal);
   const flakeRating = props.user && calculateFlakeRating(props.user);
   const detailsContainerStyle = props.small
     ? {
@@ -28,14 +27,14 @@ const FriendCard = memo((props) => {
       }
     : null;
 
-  const showProfileViewerModal = async () => {
-    if (modalState.selector !== "none") {
-      await hideModal(true);
-    }
+  // Opens in place over any open panel, so Back returns straight to it
+  const showProfileViewerModal = () => {
     dispatch(popupActions.hidePopup());
-    dispatch(modalActions.setActiveModalUser(props.user));
-    dispatch(modalActions.setSelector("profile-viewer-modal"));
-    dispatch(modalActions.showModal());
+    swapModal(() => {
+      dispatch(modalActions.setActiveModalUser(props.user));
+      dispatch(modalActions.setSelector("profile-viewer-modal"));
+      dispatch(modalActions.showModal());
+    });
   };
 
   const statusBadge =
@@ -49,7 +48,7 @@ const FriendCard = memo((props) => {
     <div
       id={props.id}
       style={{ ...props.style, boxShadow: props.noShadow ? "none" : null }}
-      className={styles.container}
+      className={`${styles.container} fade-in`}
     >
       <div className={styles.upperContainer}>
         <div
@@ -84,7 +83,7 @@ const FriendCard = memo((props) => {
               {`${props.user.first_name} ${props.user.last_name}`}
               <div className={styles.location}>{props.user.location}</div>
             </div>
-            <div className={styles.ratingsContainer}>
+            <div className={styles.ratingsContainer} data-tour="stats">
               <StatIcon
                 alt="flake"
                 icon={flakeIcon}

@@ -1,3 +1,4 @@
+import { removePushFromServer } from "../utils/push";
 import httpFetch from "../utils/http-fetch";
 import { authActions } from "./auth-slice";
 import store from ".";
@@ -80,8 +81,11 @@ export const fetchAuth = () => {
   });
 };
 
-export const fetchLogout = () => {
+export const fetchLogout = async () => {
   const dispatch = store.dispatch;
+
+  // Stop this device receiving the account's notifications
+  await removePushFromServer();
 
   const requestConfig = { url: `${getServer()}/auth/logout` };
 

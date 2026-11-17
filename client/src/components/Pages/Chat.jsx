@@ -4,7 +4,10 @@ import { dateSort, pageRouteLoader, toSorted } from "../../utils/utils";
 import ChatCard from "../UI/ChatCard";
 import SimpleSearch from "../UI/SimpleSearch";
 import SimpleButton from "../UI/SimpleButton";
-import { memo, useCallback, useState } from "react";
+import { Fragment, memo, useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { fetchChat } from "../../utils/data-fetch";
+import { setLastReadMessage } from "../../utils/utils";
 import CreateChatModal from "../Modals/CreateChatModal";
 import { modalActions } from "../../store/modal-slice";
 import { onUpdateUser } from "../../store/socket-actions";
@@ -16,11 +19,39 @@ const Chat = memo((props) => {
   const fetchingChats = useSelector((state) => state.chat.fetchingChats);
   const [chatSearch, setChatSearch] = useState("");
   const dispatch = useDispatch();
+  const [showArchived, setShowArchived] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const openChatID = searchParams.get("open");
+
+  // /chat?open=<id> (from a notification tap) opens that chat directly
+  useEffect(() => {
+    if (!openChatID || !user?._id || !chats?.length) return;
+    const chat = chats.find((c) => c._id === openChatID);
+    setSearchParams({}, { replace: true });
+    if (!chat) return;
+    fetchChat(user._id, chat._id, () => {
+      dispatch(modalActions.setActiveChat(chat));
+      dispatch(modalActions.setSelector("chat-modal"));
+      dispatch(modalActions.showModal());
+      setLastReadMessage();
+    });
+  }, [openChatID, user?._id, chats, dispatch, setSearchParams]);
+  const archivedIDs = new Set(user?.archived_chats || []);
   const validChats = applyChatSearch(
     chats?.filter((c) =>
       c.outing ? !c.outing.flakes.find((uid) => uid === user._id) : true
     )
   );
+
+  // Archived Outing chats live in their own collapsible section
+  const archivedChats = validChats.filter(
+    (c) => c.outing && archivedIDs.has(c._id)
+  );
+  const activeChats = validChats.filter(
+    (c) => !(c.outing && archivedIDs.has(c._id))
+  );
+  const sortChats = (list) =>
+    toSorted(list, (a, b) => dateSort(b.touched, a.touched));
 
   const onCreateChat = () => {
     dispatch(modalActions.setSelector("create-chat-modal"));
@@ -75,7 +106,11 @@ const Chat = memo((props) => {
             defaultVal={""}
             placeholder={"Search Chats.."}
           />
-          <SimpleButton onClick={onCreateChat} className={styles.newChatButton}>
+          <SimpleButton
+            onClick={onCreateChat}
+            className={styles.newChatButton}
+            data-tour="new-chat"
+          >
             +
           </SimpleButton>
         </div>
@@ -91,11 +126,44 @@ const Chat = memo((props) => {
           </div>
         ) : (
           <div className={styles.chatsContainer}>
-            {toSorted(validChats, (a, b) => dateSort(b.touched, a.touched)).map(
-              (c) => (
-                <ChatCard key={c._id} chat={c} />
-              )
+            {archivedChats.length > 0 && (
+              <Fragment>
+                <button
+                  type="button"
+                  className={`${styles.archivedToggle} ${
+                    showArchived ? styles.archivedToggleOpen : ""
+                  }`}
+                  onClick={() => setShowArchived((v) => !v)}
+                  aria-expanded={showArchived}
+                >
+                  <svg viewBox="0 0 24 24" className={styles.archivedIcon} aria-hidden="true">
+                    <path
+                      d="M3.5 7.5h17v-2a1 1 0 0 0-1-1h-15a1 1 0 0 0-1 1zM5 7.5v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-11M9.5 11.5h5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.7"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  Archived
+                  <span className={styles.archivedCount}>{archivedChats.length}</span>
+                  <svg viewBox="0 0 24 24" className={styles.archivedChevron} aria-hidden="true">
+                    <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                {showArchived && (
+                  <div className={styles.archivedList}>
+                    {sortChats(archivedChats).map((c) => (
+                      <ChatCard key={c._id} chat={c} archived />
+                    ))}
+                  </div>
+                )}
+              </Fragment>
             )}
+            {sortChats(activeChats).map((c) => (
+              <ChatCard key={c._id} chat={c} />
+            ))}
           </div>
         )}
       </div>

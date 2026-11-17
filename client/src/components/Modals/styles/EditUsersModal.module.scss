@@ -22,3 +22,17 @@
     margin-right: 1rem;
     width: 4rem;
   }
+
+.removeButton {
+  border-radius: 100rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, color 0.2s ease;
+}
+
+.removeButton:active {
+  transform: scale(0.9);
+}
+
+.removeButton:hover {
+  color: $red;
+}

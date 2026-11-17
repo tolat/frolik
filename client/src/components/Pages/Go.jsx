@@ -310,7 +310,7 @@ const Go = (props) => {
             />
           </button>
         </div>
-        <div className={styles.requirements}>
+        <div className={styles.requirements} data-tour="outing-requirements">
           <button
             type="button"
             onClick={handlePickActivityClick}
@@ -372,7 +372,7 @@ const Go = (props) => {
           </Fragment>
         ) : (
           <Fragment>
-            <div className={styles.sideBySide}>
+            <div className={styles.sideBySide} data-tour="activity-tools">
               <SimpleButton
                 onClick={handleFilterActivitiesClick}
                 className={`${styles.filterButton}
@@ -461,7 +461,11 @@ const Go = (props) => {
               tabs={sliderTabs}
               style={{ paddingTop: "0" }}
             />
-            <div ref={activitiesRef} className={styles.activitiesContainer}>
+            <div
+              ref={activitiesRef}
+              className={styles.activitiesContainer}
+              data-tour="activities"
+            >
               {!activityFilter.activities[0] ? (
                 <div className={styles.loading}>
                   {activityFilter.active ||

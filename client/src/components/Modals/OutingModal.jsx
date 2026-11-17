@@ -553,7 +553,7 @@ const OutingModal = (props) => {
               Activity
             </h2>
             <ActivityCard
-              key={Math.random()}
+              key={outing.activity?._id}
               activity={outing.activity}
               completed={activityIsCompletedType}
               hideSelect={true}
@@ -632,7 +632,7 @@ const OutingModal = (props) => {
               Members
             </h2>
             {outing.users.map((u) => (
-              <FriendCard user={u} key={Math.random()} />
+              <FriendCard user={u} key={u._id || u} />
             ))}
             {outing.invited[0] ? (
               <Fragment>
@@ -646,7 +646,7 @@ const OutingModal = (props) => {
                   Invited
                 </h2>
                 {outing.invited.map((u) => (
-                  <FriendCard user={u} key={Math.random()} />
+                  <FriendCard user={u} key={u._id || u} />
                 ))}
               </Fragment>
             ) : null}

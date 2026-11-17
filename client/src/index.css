@@ -40,6 +40,19 @@ body::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
 
+/* <html> is the actual scroller. Its scrollbar appeared/disappeared as pages
+   changed height (and when modals lock scrolling), shifting everything ~7px. */
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* Stop the native bounce from fighting pull-to-refresh */
+  overscroll-behavior-y: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
 .noscroll {
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
@@ -122,20 +135,28 @@ img {
   background: rgba(91, 141, 239, 0.25);
 }
 
-/* Page content eases in on navigation */
+/* Brief fade between pages (opacity only: a transform here would break
+   position: fixed elements inside the page while it runs) */
 @keyframes frolik-page-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
   }
   to {
     opacity: 1;
-    transform: none;
   }
 }
 
-.page-enter {
-  animation: frolik-page-in 0.35s var(--ease-out) both;
+/* fill-mode "backwards" (not "both") so the animation doesn't pin opacity: 1
+   afterwards — inline opacity changes (hiding the page behind a modal, the
+   add-member card fade-out) must still work. */
+.page-enter,
+.fade-in,
+#modal-container > :not(#modal-header-container),
+#slide-in-modal-header > *,
+#slide-in-modal-button > * {
+  /* Slide-in panels (outing, chat, profile…) are display:none until opened,
+     so this fade replays every time one opens. */
+  animation: frolik-page-in 0.18s ease-out backwards;
 }
 
 @keyframes frolik-pop-in {
@@ -149,11 +170,23 @@ img {
   }
 }
 
+/* Reduce motion: stop movement animations. Iteration count must be capped
+   too, otherwise infinite animations flicker at 0.01ms per loop. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  /* Page/card fades are opacity-only (no movement), so they stay on */
+  .page-enter,
+  .fade-in,
+  #modal-container > :not(#modal-header-container),
+  #slide-in-modal-header > *,
+  #slide-in-modal-button > * {
+    animation-duration: 0.18s !important;
   }
 }

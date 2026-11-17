@@ -53,3 +53,31 @@
   background-color: $blue;
   border-radius: 100rem;
 }
+
+// Clickable badge (e.g. "change profile photo")
+.badgeClickable {
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 8px rgba(20, 24, 40, 0.18);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.badgeClickable * {
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .badgeClickable:hover {
+    transform: scale(1.06);
+    box-shadow: 0 4px 12px rgba(20, 24, 40, 0.24);
+  }
+}
+
+.badgePressed,
+.badgeClickable:active {
+  transform: scale(0.88);
+}
+
+.badgePressed .badgeContent {
+  filter: brightness(0.88);
+}

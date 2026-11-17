@@ -507,6 +507,24 @@ router.post(
     const user = await User.findById(req.params.id);
     const friendUser = await User.findById(req.body.friendID);
 
+    if (!friendUser || friendUser._id.toString() === user._id.toString()) {
+      return res.status(406).send({ header: "User not found", message: "" });
+    }
+
+    // You can only add someone after completing an Outing with them. Flaking
+    // removes a user from outing.users, so being in a completed outing's
+    // users means they saw it through.
+    const sharedCompletedOuting = await Outing.exists({
+      users: { $all: [user._id, friendUser._id] },
+      date_completed: { $exists: true, $ne: null },
+    });
+    if (!sharedCompletedOuting) {
+      return res.status(406).send({
+        header: "Complete an Outing first",
+        message: `You can add ${friendUser.first_name} as a friend once you've completed an Outing together.`,
+      });
+    }
+
     // send back 406 if user has already requested this friend
     if (user.friend_requests.find((id) => id.toString() == req.body.friendID)) {
       res.status(406).send({
@@ -686,9 +704,10 @@ router.post(
     pushUserUpdate([user, ...withUsers]);
 
     // Send a webpush Notification to involved users as well
-    webpushNotify([user, ...withUsers], {
+    webpushNotify(withUsers, {
       title: "Chat Created",
       body: `${user.first_name} ${user.last_name} added you to a chat`,
+      url: `/chat?open=${chat._id.toString()}`,
     });
 
     const unpopulatedUser = await User.findById(user._id);
@@ -741,6 +760,28 @@ router.post(
     }
 
     res.sendStatus(200);
+  })
+);
+
+// Archive / unarchive an Outing chat for the requesting user
+router.post(
+  "/:id/chat/:chatid/archive",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const user = req.user;
+    const chatID = req.params.chatid;
+
+    if (!user.chats.some((c) => c.toString() === chatID)) {
+      return res.status(401).send("Not authorized");
+    }
+
+    const update = req.body.archived
+      ? { $addToSet: { archived_chats: chatID } }
+      : { $pull: { archived_chats: chatID } };
+    const updated = await User.findByIdAndUpdate(user._id, update, { new: true });
+
+    res.send({ archived_chats: updated.archived_chats });
   })
 );
 
@@ -803,22 +844,37 @@ router.get(
   })
 );
 
-// Set 'Like' value for a user and an outing
+// Mark the in-app tour as seen so it doesn't auto-start on the next login
+router.post(
+  "/:id/tour-seen",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    req.user.tour_seen = true;
+    await req.user.save();
+    res.sendStatus(200);
+  })
+);
+
+// Set 'Like' value for a user and an outing (idempotent: liking twice
+// can't add duplicate likes, unliking when not liked is a no-op)
 router.post(
   "/:id/set-like",
   reqAuthenticated,
   sameUserOnly,
   tryCatch(async (req, res) => {
-    const user = await User.findById(req.params.id);
-    const outing = await Outing.findById(req.body.outingID);
+    const user = req.user;
+    const update = req.body.liked
+      ? { $addToSet: { likes: user._id } }
+      : { $pull: { likes: user._id } };
+    const outing = await Outing.findByIdAndUpdate(req.body.outingID, update, {
+      new: true,
+    });
 
-    req.body.liked
-      ? outing.likes.push(user._id)
-      : (outing.likes = outing.likes
-          .map((id) => id.toString())
-          .filter((idString) => idString !== user._id.toString()));
+    if (!outing) {
+      return res.status(404).send({ header: "Outing not found", message: "" });
+    }
 
-    await outing.save();
     pushUserUpdate([...outing.users, user]);
 
     res.send({ outing });

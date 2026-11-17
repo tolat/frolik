@@ -50,3 +50,36 @@ export const hideModalFast = () => {
     dispatch(modalActions.setOpacity("1"));
   }, 300);
 };
+
+const scrollModalToTop = () => {
+  const outer = document.getElementById("modal-container")?.parentElement;
+  if (outer) outer.scrollTop = 0;
+};
+
+// Open a panel on top of the currently open one *in place* (no slide out and
+// back in). `open` dispatches the new selector/state. The Back button then
+// returns straight to the panel underneath (see modalBack).
+export const swapModal = (open) => {
+  const state = store.getState().modal;
+  const isOpen = state.marginLeft === "0%" && state.selector !== "none";
+  if (isOpen) store.dispatch(modalActions.setUsePrevious(true));
+  open();
+  if (isOpen) scrollModalToTop();
+};
+
+// Back button: go back to the panel this one was opened from, in place;
+// otherwise close the panel as usual.
+export const modalBack = () => {
+  const state = store.getState().modal;
+  const prev = state.previousModal;
+  if (state.usePrevious && prev?.selector && prev.selector !== "none") {
+    const dispatch = store.dispatch;
+    dispatch(modalActions.setActiveChat(prev.activeChat));
+    dispatch(modalActions.setActiveOuting(prev.activeOuting));
+    dispatch(modalActions.setSelector(prev.selector));
+    dispatch(modalActions.setUsePrevious(false));
+    scrollModalToTop();
+    return Promise.resolve();
+  }
+  return hideModal();
+};

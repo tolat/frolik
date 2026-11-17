@@ -8,7 +8,16 @@ import ImageLoadingTile from "./ImageLoadingTile";
 const SixPhotoGrid = (props) => {
   const dispatch = useDispatch();
   const [loadedSet, setLoadedSet] = useState(new Set());
-  const photoGridNumber = props.photos?.length > 6 ? 6 : props.photos?.length;
+  // Photos whose image failed to load are dropped from the grid entirely
+  // (previously the browser showed the alt text + a broken-image icon)
+  const [failedSet, setFailedSet] = useState(new Set());
+  const handleError = useCallback((src) => {
+    setFailedSet((prev) => new Set([...prev, src]));
+  }, []);
+  const visiblePhotos = (props.photos || []).filter(
+    (img) => img && img !== "queued" && !failedSet.has(img)
+  );
+  const photoGridNumber = Math.min(visiblePhotos.length, 6);
   const hasQueued = props.photos?.find((img) => img === "queued");
 
   const firstLoadFired = useRef(false);
@@ -56,7 +65,28 @@ const SixPhotoGrid = (props) => {
     );
   }
 
-  const photoList = props.photos.slice(0, 6).map((img) => {
+  // Every photo failed to load — show a simple placeholder instead
+  if (visiblePhotos.length === 0) {
+    return (
+      <div className={`${styles.photosContainer} ${styles.container_1}`}>
+        <div className={`${styles.imageContainer} ${styles.noPhoto}`}>
+          <svg viewBox="0 0 24 24" className={styles.noPhotoIcon} aria-hidden="true">
+            <path
+              d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.6l1.2-1.8A1.5 1.5 0 0 1 10.55 3.5h2.9a1.5 1.5 0 0 1 1.25.7L15.9 6h1.6A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinejoin="round"
+            />
+            <circle cx="12" cy="12.5" r="3.2" fill="none" stroke="currentColor" strokeWidth="1.6" />
+          </svg>
+          <span>No photos</span>
+        </div>
+      </div>
+    );
+  }
+
+  const photoList = visiblePhotos.slice(0, 6).map((img) => {
     const loaded = loadedSet.has(img);
     return (
       <div
@@ -78,12 +108,15 @@ const SixPhotoGrid = (props) => {
             }
           }}
           onLoad={() => handleLoad(img)}
+          onError={() => handleError(img)}
           onClick={props.onClick ? null : () => onImageClick(img)}
           className={`${styles.image} ${
             props.noRoundedCornerLeft ? styles.noRoundedCornerLeft : null
           } ${loaded ? styles.imageLoaded : styles.imageLoading}`}
           src={img}
-          alt="feed-pic"
+          loading="lazy"
+          decoding="async"
+          alt=""
         />
         {props.showDeleteable &&
         props.deleteableIndexes?.find(

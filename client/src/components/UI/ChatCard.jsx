@@ -1,3 +1,4 @@
+import store from "../../store";
 import { memo, useState, useRef, useCallback } from "react";
 import styles from "./styles/ChatCard.module.scss";
 import UserIconCluster from "./UserIconCluster";
@@ -8,11 +9,16 @@ import {
 } from "../../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
-import { fetchChat, deleteChat } from "../../utils/data-fetch";
+import { fetchChat, deleteChat, archiveChat } from "../../utils/data-fetch";
+import { authActions } from "../../store/auth-slice";
+import { collapseOut } from "../../utils/animations";
 import { chatActions } from "../../store/chat-slice";
 
-const DELETE_ZONE_WIDTH = 80;
+const store_user = (fallback) => store.getState().auth.user || fallback;
+
+const DELETE_ZONE_WIDTH = 96;
 const SNAP_THRESHOLD = DELETE_ZONE_WIDTH / 2;
+const AXIS_LOCK_PX = 8; // movement needed before deciding swipe vs scroll
 
 const ChatCard = memo((props) => {
   const user = useSelector((state) => state.auth.user);
@@ -21,13 +27,21 @@ const ChatCard = memo((props) => {
   const dispatch = useDispatch();
   const unreadChatMessages = user && getUnreadChatMessages(user, chat);
 
-  // Swipe is only active on non-outing chats
-  const swipeEnabled = !chat?.outing;
+  // Swipe reveals Delete on regular chats, Archive/Unarchive on Outing chats
+  const swipeEnabled = !!chat;
+  const swipeAction = chat?.outing
+    ? props.archived
+      ? "Unarchive"
+      : "Archive"
+    : "Delete";
+  const rootRef = useRef(null);
+  const axis = useRef(null); // "x" | "y" | null — locked per gesture
   const [translateX, setTranslateX] = useState(0);
   const [snapping, setSnapping] = useState(false);
 
   // Gesture state tracked in refs (no re-renders during drag)
   const touchStartX = useRef(null);
+  const touchStartY = useRef(null);
   const startOffset = useRef(0);
   const didSwipe = useRef(false); // blocks the synthetic click after a swipe
 
@@ -53,20 +67,43 @@ const ChatCard = memo((props) => {
     fetchChat(user._id, props.chat._id, onChatFetched);
   }, [dispatch, props.chat, user._id]);
 
-  const handleDelete = useCallback(() => {
-    deleteChat(user, chat._id, () => {
-      dispatch(chatActions.removeChat(chat._id));
-    });
-  }, [user, chat._id, dispatch]);
+  // Smoothly collapse the card, then run `done` (which removes/moves it)
+  const collapseThen = useCallback(
+    (done) => collapseOut(rootRef.current, done, { duration: 300 }),
+    []
+  );
 
-  // --- Touch handlers (mobile swipe) ---
-  // Using onTouch* keeps these completely separate from mouse events so
-  // desktop scroll (wheel, scrollbar drag) is never interrupted.
+  const handleSwipeAction = useCallback(() => {
+    if (swipeAction === "Delete") {
+      deleteChat(user, chat._id, () =>
+        collapseThen(() => dispatch(chatActions.removeChat(chat._id)))
+      );
+      return;
+    }
+    const archive = swipeAction === "Archive";
+    archiveChat(user, chat._id, archive, (response) =>
+      collapseThen(() =>
+        dispatch(
+          authActions.setUser({
+            ...store_user(user),
+            archived_chats: response.archived_chats,
+          })
+        )
+      )
+    );
+  }, [swipeAction, user, chat._id, dispatch, collapseThen]);
 
-  const onTouchStart = useCallback(
+  // --- Swipe handlers (pointer events: touch AND mouse drag on desktop) ---
+  // `touch-action: pan-y` on the card (CSS) keeps vertical scrolling native
+  // on touch screens; a vertical scroll fires pointercancel, ending the drag.
+
+  const onPointerDown = useCallback(
     (e) => {
       if (!swipeEnabled) return;
-      touchStartX.current = e.touches[0].clientX;
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      touchStartX.current = e.clientX;
+      touchStartY.current = e.clientY;
+      axis.current = null;
       startOffset.current = translateX;
       didSwipe.current = false;
       setSnapping(false);
@@ -74,38 +111,57 @@ const ChatCard = memo((props) => {
     [swipeEnabled, translateX]
   );
 
-  const onTouchMove = useCallback((e) => {
+  const onPointerMove = useCallback((e) => {
     if (touchStartX.current === null) return;
-    const deltaX = e.touches[0].clientX - touchStartX.current;
-    // Mark as a swipe once there's meaningful horizontal movement so the
-    // follow-up synthetic click event gets suppressed.
-    if (Math.abs(deltaX) > 8) didSwipe.current = true;
+    const deltaX = e.clientX - touchStartX.current;
+    const deltaY = e.clientY - touchStartY.current;
+    // Lock to one axis per gesture so vertical scrolling never drags the card
+    if (!axis.current) {
+      if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < AXIS_LOCK_PX) return;
+      axis.current = Math.abs(deltaX) > Math.abs(deltaY) ? "x" : "y";
+      // Keep receiving moves even if the pointer leaves the card
+      if (axis.current === "x") e.currentTarget.setPointerCapture?.(e.pointerId);
+    }
+    if (axis.current === "y") return;
+    // Mark as a swipe so the follow-up click event gets suppressed.
+    didSwipe.current = true;
     const newX = Math.max(-DELETE_ZONE_WIDTH, Math.min(0, startOffset.current + deltaX));
     setTranslateX(newX);
   }, []);
 
-  const onTouchEnd = useCallback(() => {
-    if (touchStartX.current === null) return;
-    touchStartX.current = null;
+  const onPointerEnd = useCallback(
+    (e) => {
+      if (touchStartX.current === null) return;
+      touchStartX.current = null;
+      if (e.currentTarget.hasPointerCapture?.(e.pointerId)) {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      }
 
-    if (!didSwipe.current) return; // let the synthetic click handle the tap
+      if (!didSwipe.current) return; // let the click handler handle the tap
 
-    setSnapping(true);
-    setTranslateX(translateX < -SNAP_THRESHOLD ? -DELETE_ZONE_WIDTH : 0);
-  }, [translateX]);
+      setSnapping(true);
+      setTranslateX(translateX < -SNAP_THRESHOLD ? -DELETE_ZONE_WIDTH : 0);
+    },
+    [translateX]
+  );
 
-  // --- Click handler (works on both desktop and mobile) ---
-  // Suppressed after a swipe so the card doesn't open when the user swipes.
+  // --- Click handler ---
+  // Suppressed after a swipe; if the action is showing, a click closes it.
   const handleClick = useCallback(() => {
     if (didSwipe.current) {
       didSwipe.current = false;
       return;
     }
+    if (translateX !== 0) {
+      setSnapping(true);
+      setTranslateX(0);
+      return;
+    }
     openChat();
-  }, [openChat]);
+  }, [openChat, translateX]);
 
   return !chat ? null : (
-    <div className={styles.outerContainer}>
+    <div ref={rootRef} className={`${styles.outerContainer} fade-in`}>
       <div
         style={{
           backgroundColor: chat.outing
@@ -118,15 +174,21 @@ const ChatCard = memo((props) => {
 
       <div className={styles.swipeClip}>
         {swipeEnabled && (
-          <div className={styles.deleteZone} onClick={handleDelete}>
-            <span className={styles.deleteZoneText}>Delete</span>
+          <div
+            className={`${styles.deleteZone} ${
+              swipeAction === "Delete" ? "" : styles.archiveZone
+            }`}
+            onClick={handleSwipeAction}
+          >
+            <span className={styles.deleteZoneText}>{swipeAction}</span>
           </div>
         )}
 
         <div
-          onTouchStart={swipeEnabled ? onTouchStart : undefined}
-          onTouchMove={swipeEnabled ? onTouchMove : undefined}
-          onTouchEnd={swipeEnabled ? onTouchEnd : undefined}
+          onPointerDown={swipeEnabled ? onPointerDown : undefined}
+          onPointerMove={swipeEnabled ? onPointerMove : undefined}
+          onPointerUp={swipeEnabled ? onPointerEnd : undefined}
+          onPointerCancel={swipeEnabled ? onPointerEnd : undefined}
           onClick={handleClick}
           style={{
             transform: translateX !== 0 ? `translateX(${translateX}px)` : undefined,

@@ -8,6 +8,7 @@ const SimpleButton = (props) => {
       onChange={props.onChange}
       value={props.value}
       id={props.id}
+      data-tour={props["data-tour"]}
       name={props.name}
       required={props.required}
       onClick={props.onClick}

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import UserIconCluster from "./UserIconCluster";
 import styles from "./styles/FeedCard.module.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   fetchOutingPhoto,
   fetchProfilePic,
@@ -61,7 +61,7 @@ const FeedCard = (props) => {
 
   return (
     outing && (
-      <div className={styles.container}>
+      <div className={`${styles.container} fade-in`}>
         {outing && outingPhotos[0] && !outingPhotos.find((img) => img === "queued") ? (
           <SixPhotoGrid photos={outingPhotos} />
         ) : (
@@ -82,34 +82,52 @@ const FeedCardFooter = (props) => {
   let outing = props.outing;
   const user = useSelector((state) => state.auth.user);
   const categoryColorMap = globals.categoryColorMap;
-  const outingLikes = outing?.likes;
   const activityColor = categoryColorMap ? categoryColorMap[outing?.activity?.category] : null;
-  const [liked, setLiked] = useState(
-    outingLikes?.find((id) => id === user?._id)
-  );
+  // Local copy of the like list so the heart + count update instantly
+  const [likes, setLikes] = useState(outing?.likes || []);
+  const liked = likes.some((id) => id === user?._id);
+  const heartRef = useRef(null);
+  const propLikesKey = (outing?.likes || []).join(",");
   const dispatch = useDispatch();
   const activityPopupSelector = `${outing?._id}-activity-popup`;
   const usersPopupSelector = `${outing?._id}-users-popup`;
 
-  // Set liked for this outing
+  // Re-sync when fresh outing data arrives from the server
   useEffect(() => {
-    setLiked(outingLikes?.find((id) => id === user._id));
-  }, [outingLikes, user]);
+    setLikes(propLikesKey ? propLikesKey.split(",") : []);
+  }, [propLikesKey]);
 
   const onShowActivityPopup = () => {
     dispatch(popupActions.showPopup(activityPopupSelector));
   };
 
   const onLikeClick = () => {
-    setLiked((prevState) => {
-      const onComplete = (response) => {
-        if (response.outing) {
-          outing = response.outing;
-        }
-      };
-      // update liked with prevestate
-      setUserLike(user, outing, !prevState, onComplete);
-      return !prevState;
+    const nextLiked = !liked;
+    const previous = likes;
+
+    // Optimistic update (the request used to be fired from inside a state
+    // updater, which React may run twice, and the count never refreshed)
+    setLikes(
+      nextLiked ? [...likes, user._id] : likes.filter((id) => id !== user._id)
+    );
+
+    // Pop the heart for feedback
+    heartRef.current?.querySelector("img")?.animate?.(
+      [
+        { transform: "scale(1)" },
+        { transform: `scale(${nextLiked ? 1.45 : 0.8})`, offset: 0.35 },
+        { transform: `scale(${nextLiked ? 0.92 : 1.05})`, offset: 0.7 },
+        { transform: "scale(1)" },
+      ],
+      { duration: 420, easing: "ease-out" }
+    );
+
+    setUserLike(user, outing, nextLiked, (response) => {
+      if (response?.outing) {
+        setLikes(response.outing.likes || []);
+      } else {
+        setLikes(previous); // request failed — roll back
+      }
     });
   };
 
@@ -161,14 +179,16 @@ const FeedCardFooter = (props) => {
             </div>
           </div>
 
-          <StatIcon
-            onClick={onLikeClick}
-            icon={liked ? heartFull : heart}
-            className={styles.likeIcon}
-            iconStyle={{ width: "3rem", height: "3rem" }}
-            alt="feed-outing-icon"
-            rating={outing.likes?.length || null}
-          />
+          <div ref={heartRef} className={styles.likeWrapper}>
+            <StatIcon
+              onClick={onLikeClick}
+              icon={liked ? heartFull : heart}
+              className={styles.likeIcon}
+              iconStyle={{ width: "3rem", height: "3rem" }}
+              alt="like"
+              rating={likes.length || null}
+            />
+          </div>
         </div>
       </div>
     )

@@ -255,7 +255,7 @@ const Profile = (props) => {
             }).map((f) => (
               <FriendCard
                 buttons={<FriendCardButtons user={f} />}
-                key={Math.random()}
+                key={f._id}
                 user={f}
               />
             ))

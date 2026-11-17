@@ -5,6 +5,7 @@ import FriendCard from "../UI/FriendCard";
 import { goActions } from "../../store/go-slice";
 import { Fragment, useEffect, useState } from "react";
 import { fetchMatchedUsers } from "../../utils/data-fetch";
+import { collapseOut } from "../../utils/animations";
 import ModalHeaderPortal from "./ModalHeaderPortal";
 import { alphabetSort, toSorted } from "../../utils/utils";
 import SimpleSearch from "../UI/SimpleSearch";
@@ -30,19 +31,20 @@ const AddUserModal = (props) => {
     (u) => !goState.outing.users.some((ou) => ou._id === u._id)
   );
 
-  const addUserToOuting = (u) => {
+  // Confirm with a check mark, then fade + collapse the card to its real
+  // height (the old max-height trick left a pause, then snapped padding and
+  // margin, which made the list jump).
+  const addUserToOuting = (u, buttonEl) => {
     const elt = document.getElementById(
       `${u._id || u}-friendCard-addUserModal`
     );
-    elt.style.opacity = 0;
-    setTimeout(() => {
-      elt.style.padding = 0;
-      elt.style.maxHeight = 0;
-    }, 150);
-    setTimeout(() => {
-      elt.style.display = "none";
-      dispatch(goActions.addUser(u));
-    }, 300);
+    if (!elt || elt.dataset.collapsing) return;
+    const add = () => dispatch(goActions.addUser(u));
+    if (buttonEl) {
+      buttonEl.textContent = "✓";
+      buttonEl.classList.add(styles.addButtonDone);
+    }
+    collapseOut(elt, add, { delay: 160 }); // let the check mark register first
   };
 
   // Get matched users
@@ -53,7 +55,7 @@ const AddUserModal = (props) => {
   const AddButton = (props) => {
     return (
       <div
-        onClick={() => addUserToOuting(props.user)}
+        onClick={(e) => addUserToOuting(props.user, e.currentTarget)}
         className={styles.addButton}
       >
         +

@@ -25,7 +25,7 @@ const OutingCard = memo((props) => {
   };
 
   return !categoryColorMap ? null : (
-    <div style={props.style} className={styles.outerContainer}>
+    <div style={props.style} className={`${styles.outerContainer} fade-in`}>
       <div
         style={{ backgroundColor: categoryColorMap[o.activity?.category] }}
         className={styles.categoryStripe}

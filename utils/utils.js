@@ -241,8 +241,18 @@ module.exports.pushUserUpdate = (users) => {
   }
 };
 
+// All push subscriptions for a user (every device), de-duplicated
+const userSubscriptions = (u) => {
+  const subs = [...(u.pushSubscriptions || [])];
+  if (u.pushSubscription?.endpoint) subs.push(u.pushSubscription);
+  const seen = new Set();
+  return subs.filter((s) => s?.endpoint && !seen.has(s.endpoint) && seen.add(s.endpoint));
+};
+module.exports.userSubscriptions = userSubscriptions;
+
+// payload: { title, body, url?, tag? } — url is where tapping the
+// notification takes the user (defaults to Alerts)
 module.exports.webpushNotify = async (users, payload) => {
-  // Fetch all users from DB in parallel, then send notifications concurrently
   await Promise.all(
     users.map(async (user) => {
       const userID = user._id ? user._id.toString() : user.toString();
@@ -250,28 +260,41 @@ module.exports.webpushNotify = async (users, payload) => {
         path: "chats",
         populate: { path: "outing" },
       });
+      if (!freshUser) return;
 
-      if (!freshUser?.pushSubscription) return;
+      const subs = userSubscriptions(freshUser);
+      if (!subs.length) return;
 
-      const userPayload = {
+      const body = JSON.stringify({
+        url: "/alerts",
         ...payload,
         notificationCount:
-          this.getTotalUnreadMessages(freshUser) +
+          (this.getTotalUnreadMessages(freshUser) || 0) +
           (freshUser.notifications?.length ?? 0),
-      };
+      });
 
-      webpush
-        .sendNotification(freshUser.pushSubscription, JSON.stringify(userPayload))
-        .catch(async (error) => {
-          // 410 Gone / 404 Not Found = subscription is expired or user unsubscribed.
-          // Remove it from the DB so we don't keep hitting a dead endpoint.
-          if (error.statusCode === 410 || error.statusCode === 404) {
-            freshUser.pushSubscription = undefined;
-            await freshUser.save();
-          } else {
-            console.error("Error sending push notification:", error.message);
-          }
-        });
+      // Send to every device; 404/410 = expired or unsubscribed, so prune it
+      const dead = [];
+      await Promise.all(
+        subs.map((sub) =>
+          webpush
+            .sendNotification(sub, body, { TTL: 60 * 60 * 24 })
+            .catch((error) => {
+              if (error.statusCode === 410 || error.statusCode === 404) {
+                dead.push(sub.endpoint);
+              } else {
+                console.error("Error sending push notification:", error.message);
+              }
+            })
+        )
+      );
+      if (dead.length) {
+        const update = { $pull: { pushSubscriptions: { endpoint: { $in: dead } } } };
+        if (dead.includes(freshUser.pushSubscription?.endpoint)) {
+          update.$unset = { pushSubscription: "" };
+        }
+        await User.updateOne({ _id: freshUser._id }, update);
+      }
     })
   );
 };
@@ -472,6 +495,13 @@ module.exports.onSocketConnection = async (socket) => {
         .emit("new-message", { message: { ...data.message, ...message }, chat });
 
       const chatUsers = chatMemberIDs(chat);
+
+      // A new message brings an archived chat back into everyone's main list
+      await User.updateMany(
+        { _id: { $in: chatUsers }, archived_chats: chat._id },
+        { $pull: { archived_chats: chat._id } }
+      );
+
       // Send websocket update to client to re-download session user from server
       this.pushUserUpdate(chatUsers);
 
@@ -483,6 +513,8 @@ module.exports.onSocketConnection = async (socket) => {
             chat.outing ? chat.outing.name : "Chat"
           }`,
           body: text,
+          url: `/chat?open=${chat._id.toString()}`,
+          tag: `chat-${chat._id.toString()}`,
         }
       );
     } catch (err) {

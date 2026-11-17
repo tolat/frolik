@@ -16,6 +16,8 @@ import SimpleButton from "../UI/SimpleButton";
 import { fetchLogout } from "../../store/auth-actions";
 import logoutIcon from "../../images/logout.png";
 import { modalActions } from "../../store/modal-slice";
+import { startTour } from "../Tour/Tour";
+import PushPrompt from "../Notifications/PushPrompt";
 
 const stagedDataReducer = (state, action) => {
   return action.type === "setAll"
@@ -177,6 +179,16 @@ const EditProfileModal = () => {
             }}
           />
         </ProfileEditor>
+        <PushPrompt compact />
+        <SimpleButton
+          onClick={async () => {
+            await hideModal();
+            startTour();
+          }}
+          className={styles.tourButton}
+        >
+          Take the app tour
+        </SimpleButton>
         <SimpleButton
           style={{ display: inStandaloneMode ? "none" : null }}
           onClick={handleInstall}

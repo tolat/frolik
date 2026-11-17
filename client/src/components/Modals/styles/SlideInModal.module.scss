@@ -59,9 +59,11 @@
   top: 0;
   align-items: center;
   width: $central_span_width;
-  background-color: rgba(244, 246, 250, 0.86);
-  -webkit-backdrop-filter: saturate(180%) blur(16px);
-  backdrop-filter: saturate(180%) blur(16px);
+  background-color: rgba(244, 246, 250, 0.97);
+  @media (hover: hover) and (pointer: fine) {
+    -webkit-backdrop-filter: saturate(180%) blur(16px);
+    backdrop-filter: saturate(180%) blur(16px);
+  }
   border-bottom: 1px solid rgba(20, 24, 40, 0.06);
   font-size: 1.9rem;
   padding: 1.2rem 1.5rem;

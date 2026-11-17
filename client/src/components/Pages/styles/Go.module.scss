@@ -352,14 +352,17 @@
 .goButton {
   box-shadow: 0 8px 22px rgba(91, 141, 239, 0.38);
   margin-top: 1rem;
-  animation: frolik-pop-in 0.35s $ease_spring both;
+  animation: pop-in 0.35s $ease_spring both;
 }
 
+// Top section sits directly on the page background (no white tile)
 .usersContainer {
-  @include card;
-  border-radius: $radius_lg;
-  padding: 1.6rem 1rem;
-  box-shadow: $shadow_md;
+  background-color: transparent;
+  padding: 1rem 1rem 0.4rem;
+}
+
+.usersContainer .roundButton {
+  background-color: transparent;
 }
 
 .selectedActivity {
@@ -374,4 +377,16 @@
 
 .requirement:hover {
   cursor: pointer;
+}
+
+// Local copy: global keyframes can't be referenced from a CSS module
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }

@@ -101,7 +101,7 @@ const ActivityCard = (props) => {
 
   return (
     categoryColorMap && (
-      <div style={props.style} className={styles.outerContainer}>
+      <div style={props.style} className={`${styles.outerContainer} fade-in`}>
         {!props.creatingActivity && (
           <WarningPopup
             selector={`confirm-delete-activity-${props.activity._id}`}

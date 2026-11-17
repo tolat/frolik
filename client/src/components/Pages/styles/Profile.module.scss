@@ -161,8 +161,10 @@
   position: fixed;
   top: 0;
   background-color: rgba(244, 246, 250, 0.9);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
+  @media (hover: hover) and (pointer: fine) {
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
   z-index: 2;
   width: 100vw;
   max-width: $central_span_width;

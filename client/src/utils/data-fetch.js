@@ -678,6 +678,21 @@ export const deleteChat = (user, chatID, onComplete = () => {}) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Archive / unarchive an Outing chat for this user
+export const archiveChat = (user, chatID, archived, onComplete = () => {}) => {
+  const requestConfig = {
+    url: `${getServer()}/user/${user._id}/chat/${chatID}/archive`,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ archived }),
+  };
+  httpFetch(
+    requestConfig,
+    (response) => onComplete(response),
+    (err) => console.log("archiveChat error:", err)
+  );
+};
+
 // Update this user's last read message for a chat
 export const updateChatLastRead = (user, chat, messageID, onComplete) => {
   const requestConfig = {
@@ -890,4 +905,15 @@ export const setUserLike = (user, outing, liked, onComplete) => {
   };
 
   httpFetch(requestConfig, handleResponse, handleError);
+};
+
+// Mark the in-app tour as seen for this user
+export const markTourSeen = (user) => {
+  const requestConfig = {
+    url: `${getServer()}/user/${user._id}/tour-seen`,
+    headers: { "Content-Type": "application/json" },
+    method: "POST",
+    body: JSON.stringify({ userID: user._id }),
+  };
+  httpFetch(requestConfig, () => {}, (err) => console.log(err));
 };

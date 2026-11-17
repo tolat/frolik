@@ -76,6 +76,15 @@ const router = createBrowserRouter([
         },
       },
       {
+        path: "/alerts",
+        lazy: async () => {
+          const { default: Component, alertsLoader: loader } = await import(
+            "./components/Pages/Alerts"
+          );
+          return { Component, loader };
+        },
+      },
+      {
         path: "/social",
         lazy: async () => {
           const { default: Component, socialLoader: loader } = await import(

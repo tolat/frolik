@@ -71,3 +71,63 @@
 .noChatsMessageHeader {
   font-size: 1.8rem;
 }
+
+// ── Archived Outing chats ───────────────────────────────────────────────────
+.archivedToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  margin: 0 0 1.2rem;
+  padding: 1rem 1.4rem;
+  border: none;
+  border-radius: $radius_md;
+  background-color: $surface;
+  box-shadow: $shadow_sm;
+  color: $text;
+  font-size: 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+
+.archivedIcon {
+  width: 2rem;
+  height: 2rem;
+  color: $text_muted;
+}
+
+.archivedCount {
+  margin-left: 0.2rem;
+  padding: 0.1rem 0.8rem;
+  border-radius: 100rem;
+  background-color: $button_grey;
+  color: $text_muted;
+  font-size: 1.2rem;
+}
+
+.archivedChevron {
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-left: auto;
+  color: $text_muted;
+  transition: transform 0.25s $ease_out;
+}
+
+.archivedToggleOpen .archivedChevron {
+  transform: rotate(90deg);
+}
+
+.archivedList {
+  padding: 0 0 0.4rem 1rem;
+  margin-bottom: 1.2rem;
+  border-left: 2px solid $light_grey;
+  animation: archived-open 0.22s ease-out both;
+}
+
+@keyframes archived-open {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}

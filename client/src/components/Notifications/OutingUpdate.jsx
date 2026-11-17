@@ -98,7 +98,7 @@ const OutingUpdate = (props) => {
             <FriendCard
               small={true}
               noShadow={true}
-              key={Math.random()}
+              key={nUser._id}
               user={nUser}
               style={{marginBottom: 0}}
             />

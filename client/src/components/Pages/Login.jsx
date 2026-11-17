@@ -17,7 +17,7 @@ import music from "../../images/_music.png";
 import tabletennis from "../../images/_tabletennis.png";
 import logo from "../../images/frolik2.png";
 
-const validPreviousPaths = ["/outing", "/profile", "/social", "/chat"];
+const validPreviousPaths = ["/outing", "/profile", "/social", "/chat", "/alerts"];
 
 const flavourImages = [biking, hiking, playingball, music, tabletennis];
 
@@ -33,11 +33,11 @@ function Login() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const navigate = useNavigate();
 
-  // If authenticated, navigate to profile
+  // If authenticated, go back to where they were, or the Outing page (home)
   useEffect(() => {
     if (authState.isAuthenticated) {
       const prevUrl = localStorage.getItem("previousUrl");
-      navigate((validPreviousPaths.includes(prevUrl) && prevUrl) || "/profile");
+      navigate((validPreviousPaths.includes(prevUrl) && prevUrl) || "/outing");
     }
   }, [authState.isAuthenticated, navigate]);
 

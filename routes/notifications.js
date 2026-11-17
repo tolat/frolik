@@ -3,41 +3,87 @@ const router = express.Router({ mergeParams: true });
 const webpush = require("web-push");
 const User = require("../models/user");
 const { tryCatch, reqAuthenticated } = require("../utils/middleware");
+const { userSubscriptions } = require("../utils/utils");
 
 // VAPID keys are initialized once in server.js at startup
+
+const MAX_DEVICES = 5;
+
+const sessionUser = (req) => User.findOne({ username: req.session.passport.user });
+
+const cleanSubscription = (sub) =>
+  sub?.endpoint && sub?.keys?.p256dh && sub?.keys?.auth
+    ? { endpoint: String(sub.endpoint), keys: { p256dh: String(sub.keys.p256dh), auth: String(sub.keys.auth) } }
+    : null;
 
 router.get("/vapid-public-key", (req, res) => {
   res.send({ key: process.env.VAPID_PUBLIC_KEY });
 });
 
+// Register this device's push subscription for the logged-in user. The client
+// calls this on every app load once permission is granted, so it is
+// idempotent; it also moves a shared device's subscription to whoever is
+// logged in now.
 router.post(
   "/push/subscribe",
   reqAuthenticated,
   tryCatch(async (req, res) => {
-    const subscription = req.body.subscription;
+    const subscription = cleanSubscription(req.body.subscription);
+    const user = await sessionUser(req);
+    if (!user || !subscription) return res.sendStatus(406);
 
-    // Save push subscription to the logged-in user (previously any client
-    // could attach its subscription to any user id and receive their pushes)
-    const user = await User.findOne({ username: req.session.passport.user });
-    if (!user || !subscription?.endpoint) return res.sendStatus(406);
-    user.pushSubscription = subscription;
+    // A device belongs to one account at a time
+    await User.updateMany(
+      { _id: { $ne: user._id }, "pushSubscriptions.endpoint": subscription.endpoint },
+      { $pull: { pushSubscriptions: { endpoint: subscription.endpoint } } }
+    );
+    await User.updateMany(
+      { _id: { $ne: user._id }, "pushSubscription.endpoint": subscription.endpoint },
+      { $unset: { pushSubscription: "" } }
+    );
+
+    const existing = userSubscriptions(user);
+    const isNew = !existing.some((s) => s.endpoint === subscription.endpoint);
+    user.pushSubscriptions = [
+      ...existing.filter((s) => s.endpoint !== subscription.endpoint),
+      subscription,
+    ].slice(-MAX_DEVICES);
+    user.pushSubscription = undefined;
     await user.save();
 
-    const payload = JSON.stringify({
-      title: "Subscribed!",
-      body: "You have successfully subscribed to push notifications!",
-    });
+    // Confirm only the first time this device is registered
+    if (isNew) {
+      webpush
+        .sendNotification(
+          subscription,
+          JSON.stringify({
+            title: "Notifications are on 🎈",
+            body: "We'll let you know about invites, messages and friend requests.",
+            url: "/alerts",
+          })
+        )
+        .catch((error) => console.error("Error sending subscribe confirmation:", error.message));
+    }
 
-    webpush.sendNotification(subscription, payload).catch(async (error) => {
-      if (error.statusCode === 410 || error.statusCode === 404) {
-        // Subscription already invalid — clear it so we stop hitting a dead endpoint
-        user.pushSubscription = undefined;
-        await user.save();
-      } else {
-        console.error("Error sending subscribe confirmation:", error.message);
-      }
-    });
+    res.sendStatus(200);
+  })
+);
 
+// Remove this device (called on logout so the device stops receiving pushes)
+router.post(
+  "/push/unsubscribe",
+  reqAuthenticated,
+  tryCatch(async (req, res) => {
+    const endpoint = req.body.endpoint && String(req.body.endpoint);
+    const user = await sessionUser(req);
+    if (!user || !endpoint) return res.sendStatus(406);
+    await User.updateOne(
+      { _id: user._id },
+      { $pull: { pushSubscriptions: { endpoint } } }
+    );
+    if (user.pushSubscription?.endpoint === endpoint) {
+      await User.updateOne({ _id: user._id }, { $unset: { pushSubscription: "" } });
+    }
     res.sendStatus(200);
   })
 );
@@ -46,24 +92,10 @@ router.post(
   "/push/test",
   reqAuthenticated,
   tryCatch(async (req, res) => {
-    const user = await User.findOne({ username: req.session.passport.user });
-    const subscription = user?.pushSubscription;
-    if (!subscription) return res.sendStatus(406);
-
-    const payload = JSON.stringify({
-      title: "Test Notification",
-      body: "Success!",
-    });
-
-    webpush.sendNotification(subscription, payload).catch(async (error) => {
-      if (error.statusCode === 410 || error.statusCode === 404) {
-        user.pushSubscription = undefined;
-        await user.save();
-      } else {
-        console.error("Error sending test notification:", error.message);
-      }
-    });
-
+    const user = await sessionUser(req);
+    const { webpushNotify } = require("../utils/utils");
+    if (!user || !userSubscriptions(user).length) return res.sendStatus(406);
+    await webpushNotify([user], { title: "Test Notification", body: "Success!" });
     res.sendStatus(200);
   })
 );

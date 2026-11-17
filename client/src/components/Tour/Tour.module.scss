@@ -1,0 +1,131 @@
+@import "../../utils/responsive.scss";
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+}
+
+// A rounded hole whose huge shadow dims the rest of the screen
+.spotlight {
+  position: fixed;
+  border-radius: 1.6rem;
+  box-shadow: 0 0 0 200vmax rgba(15, 18, 30, 0.68);
+  transition: top 0.32s $ease_out, left 0.32s $ease_out, width 0.32s $ease_out,
+    height 0.32s $ease_out;
+  pointer-events: none;
+}
+
+.noTarget {
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+}
+
+.card {
+  position: fixed;
+  width: min(34rem, calc(100vw - 2.4rem));
+  box-sizing: border-box;
+  padding: 1.8rem 1.8rem 1.4rem;
+  background-color: $surface;
+  border-radius: $radius_lg;
+  box-shadow: $shadow_lg;
+  opacity: 0;
+  transform: translateY(6px) scale(0.98);
+  transition: opacity 0.2s ease, transform 0.25s $ease_out;
+}
+
+.cardVisible {
+  opacity: 1;
+  transform: none;
+}
+
+.cardCentered {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, calc(-50% + 6px)) scale(0.98);
+}
+
+.cardCentered.cardVisible {
+  transform: translate(-50%, -50%);
+}
+
+.progress {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.progressDot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 100rem;
+  background-color: $light_grey;
+  transition: width 0.25s $ease_out, background-color 0.25s ease;
+}
+
+.progressDone {
+  background-color: rgba(91, 141, 239, 0.45);
+}
+
+.progressActive {
+  width: 2rem;
+  background-color: $blue;
+}
+
+.title {
+  font-size: 1.9rem;
+  font-weight: 700;
+  margin: 0 0 0.6rem;
+  color: $text;
+}
+
+.body {
+  font-size: 1.45rem;
+  line-height: 1.5;
+  color: $text_muted;
+  margin: 0 0 1.8rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.navButtons {
+  display: flex;
+  gap: 0.8rem;
+  margin-left: auto;
+}
+
+.skip,
+.back,
+.next {
+  border: none;
+  border-radius: 100rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.skip {
+  background: transparent;
+  color: $text_muted;
+  padding: 0.8rem 0.2rem;
+}
+
+.back {
+  background-color: $button_grey;
+  color: $text;
+  padding: 0.9rem 1.6rem;
+}
+
+.next {
+  background-color: $blue;
+  color: white;
+  padding: 0.9rem 1.8rem;
+  box-shadow: 0 4px 12px rgba(91, 141, 239, 0.35);
+}

@@ -11,7 +11,7 @@ import { socket } from "../../socket";
 import { goActions } from "../../store/go-slice";
 import { useNavigate } from "react-router-dom";
 import { modalActions } from "../../store/modal-slice";
-import { hideModal } from "../../store/modal-actions";
+import { swapModal } from "../../store/modal-actions";
 // Sender-name colours for other people's messages
 const nameColours = ["#9b5de5", "#e05a6a", "#d68a00", "#2f9e66", "#1f8fbf"];
 
@@ -73,11 +73,12 @@ const ChatModal = (props) => {
     navigate("/outing");
   };
 
-  const handleShowOuting = async () => {
-    await hideModal(true);
-    dispatch(modalActions.setActiveOuting(chat.outing));
-    dispatch(modalActions.setSelector("outing-modal"));
-    dispatch(modalActions.showModal());
+  const handleShowOuting = () => {
+    swapModal(() => {
+      dispatch(modalActions.setActiveOuting(chat.outing));
+      dispatch(modalActions.setSelector("outing-modal"));
+      dispatch(modalActions.showModal());
+    });
   };
 
   const members = chat ? (chat.outing ? chat.outing.users : chat.users) : [];

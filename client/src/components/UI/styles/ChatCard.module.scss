@@ -24,7 +24,7 @@
   right: 0;
   top: 0;
   bottom: 0;
-  width: 80px;
+  width: 96px;
   background-color: $red;
   display: flex;
   align-items: center;
@@ -159,4 +159,21 @@
 
 .notificationBadge {
   box-shadow: 0 0 0 2px $surface;
+}
+
+/* Outing chats: Archive / Unarchive instead of Delete */
+.archiveZone {
+  background-color: #7b8aa8;
+}
+
+.archiveZone:active {
+  background-color: #66748f;
+}
+
+// Swipe/drag: vertical panning stays native on touch, text isn't selected
+// while dragging with a mouse
+.container {
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
 }

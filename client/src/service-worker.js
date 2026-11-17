@@ -35,6 +35,11 @@ registerRoute(
 
     if (url.pathname.startsWith("/_")) {
       return false;
+    }
+    // Server routes opened as pages (e.g. the email verification link
+    // /user/:id/verify) must reach the server, not the cached app shell
+    if (url.pathname.startsWith("/user/") || url.pathname.startsWith("/auth/")) {
+      return false;
     } // If this looks like a URL for a resource, because it contains // a file extension, skip.
 
     if (url.pathname.match(fileExtensionRegexp)) {
@@ -104,29 +109,72 @@ self.addEventListener("message", (event) => {
 });
 
 self.addEventListener("push", (event) => {
-  console.log("PUSH: ", event);
-  const payload = event.data.json();
-  const { title, body } = payload;
+  let payload = {};
+  try {
+    payload = event.data ? event.data.json() : {};
+  } catch {
+    payload = { body: event.data ? event.data.text() : "" };
+  }
 
+  const title = payload.title || "frolik";
   const options = {
-    body: body,
+    body: payload.body || "",
     icon: "/public/icon_192.png",
-    badge: "/public/icon_512.png",
+    badge: "/public/icon_192.png",
+    data: { url: payload.url || "/alerts" },
   };
+  // Collapse repeat notifications (e.g. many messages in one chat) into one
+  if (payload.tag) {
+    options.tag = payload.tag;
+    options.renotify = true;
+  }
 
-  // Show Notification
-  self.registration.showNotification(title, options);
+  const tasks = [
+    // Must be inside waitUntil, or the browser can kill the worker before the
+    // notification shows (and iOS revokes subscriptions that push silently)
+    self.registration.showNotification(title, options),
+    caches
+      .open("user-update-cache")
+      .then((cache) =>
+        cache.put(
+          "/frolik-user-update",
+          new Response(JSON.stringify({ update: true }))
+        )
+      ),
+  ];
+  if (typeof payload.notificationCount === "number" && self.navigator.setAppBadge) {
+    tasks.push(
+      (payload.notificationCount > 0
+        ? self.navigator.setAppBadge(payload.notificationCount)
+        : self.navigator.clearAppBadge()
+      ).catch(() => {})
+    );
+  }
 
-  // Set app badge
-  navigator.setAppBadge(payload.notificationCount);
+  event.waitUntil(Promise.all(tasks));
+});
 
-  // Set update flag in cache
+// Tapping a notification opens the relevant page — reusing an open app window
+// if there is one
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const url = event.notification.data?.url || "/alerts";
+
   event.waitUntil(
-    caches.open("user-update-cache").then((cache) => {
-      return cache.put(
-        "/frolik-user-update",
-        new Response(JSON.stringify({ update: true }))
+    (async () => {
+      const windows = await self.clients.matchAll({
+        type: "window",
+        includeUncontrolled: true,
+      });
+      const appWindow = windows.find(
+        (c) => new URL(c.url).origin === self.location.origin
       );
-    })
+      if (appWindow) {
+        await appWindow.focus();
+        appWindow.postMessage({ action: "navigate", url });
+        return;
+      }
+      await self.clients.openWindow(url);
+    })()
   );
 });

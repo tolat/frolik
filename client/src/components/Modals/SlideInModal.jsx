@@ -1,7 +1,7 @@
 import styles from "./styles/SlideInModal.module.scss";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import backArrow from "../../images/left-arrow.png";
-import { hideModal } from "../../store/modal-actions";
+import { modalBack } from "../../store/modal-actions";
 
 function pixelsToRem(pixels) {
   // Get the root font size from the computed style of the document element
@@ -22,7 +22,7 @@ const SlideInModal = (props) => {
   const user = useSelector((state) => state.auth.user);
 
   const handleBackButtonClick = (e) => {
-    hideModal();
+    modalBack();
   };
 
   return (

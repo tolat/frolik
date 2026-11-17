@@ -4,6 +4,7 @@ import ModalPortal from "./ModalPortal";
 import FriendCard from "../UI/FriendCard";
 import { goActions } from "../../store/go-slice";
 import ModalHeaderPortal from "./ModalHeaderPortal";
+import { collapseOut } from "../../utils/animations";
 
 const EditUsersModal = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -17,15 +18,9 @@ const EditUsersModal = (props) => {
     const id = u._id || u;
     if (id !== user._id) {
       const elt = document.getElementById(`${id}-friendCard-removeUserModal`);
-      elt.style.opacity = 0;
-      setTimeout(() => {
-        elt.style.padding = 0;
-        elt.style.maxHeight = 0;
-      }, 150);
-      setTimeout(() => {
-        elt.style.display = "none";
-        dispatch(goActions.removeUser(u));
-      }, 300);
+      if (!elt || elt.dataset.collapsing) return;
+      // Same smooth fade + collapse as adding someone
+      collapseOut(elt, () => dispatch(goActions.removeUser(u)));
     }
   };
 
@@ -50,7 +45,7 @@ const EditUsersModal = (props) => {
           <FriendCard
             id={`${u._id || u}-friendCard-removeUserModal`}
             user={u}
-            key={Math.random()}
+            key={u._id || u}
             buttons={u._id === user._id ? null : <RemoveButton user={u} />}
           />
         ))}
