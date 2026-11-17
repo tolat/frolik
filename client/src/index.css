@@ -237,7 +237,7 @@ img {
      backdrop still just fades */
   [data-drawer-sheet] {
     transition-property: transform !important;
-    transition-duration: 0.32s !important;
+    transition-duration: 0.24s !important;
   }
 
   /* The loading shine is a slow, subtle cue — keep it running */

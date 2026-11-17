@@ -6,7 +6,7 @@ import { popupActions } from "../../store/popup-slice";
 import { useScrollLock } from "../../utils/scrollLock";
 import styles from "./styles/ActivityDrawer.module.scss";
 
-const CLOSE_MS = 360; // a little longer than the 0.32s slide-down
+const CLOSE_MS = 280; // a little longer than the 0.24s slide-down
 
 // The activity opened from the Social / Profile feed or a chat message: a
 // full-width drawer that slides up from the bottom of the screen, at most 80%

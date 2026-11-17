@@ -499,5 +499,11 @@
   height: auto;
   padding: 0.6rem 0.4rem 0.8rem;
   background: $surface !important;
-  box-shadow: 0 -6px 16px rgba(20, 24, 40, 0.06);
+  border-top: 1px solid $light_grey;
 }
+
+// Drawer: room at the top of the photo for the floating drag handle
+.drawer .nonPhotoContainer {
+  padding-top: 2.4rem;
+}
+

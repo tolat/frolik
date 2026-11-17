@@ -14,7 +14,7 @@
   background-color: rgba(15, 18, 30, 0.42);
   touch-action: none;
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.19s ease;
 }
 
 .open .backdrop {
@@ -39,7 +39,7 @@
   padding-bottom: env(safe-area-inset-bottom, 0px);
   overflow: hidden;
   transform: translateY(100%);
-  transition: transform 0.32s $ease_out;
+  transition: transform 0.24s $ease_out;
 }
 
 .open .sheet {
@@ -49,14 +49,19 @@
 // Closing (tap outside / drag down): a smooth slide back down that builds up
 // speed, rather than the snappy opening curve that read as "just vanished"
 .root:not(.open) .sheet {
-  transition: transform 0.32s cubic-bezier(0.4, 0, 0.7, 1);
+  transition: transform 0.24s cubic-bezier(0.4, 0, 0.7, 1);
 }
 
+// The handle floats over the top of the photo (no white strip above it)
 .handleArea {
-  flex-shrink: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
   display: flex;
   justify-content: center;
-  padding: 0.9rem 0 0.7rem;
+  padding: 0.9rem 0 1.4rem;
   cursor: grab;
   touch-action: none;
 }
@@ -65,7 +70,8 @@
   width: 4rem;
   height: 0.5rem;
   border-radius: 100rem;
-  background: #d5d9e2;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 }
 
 // Everything under the handle scrolls when the card is taller than the cap
