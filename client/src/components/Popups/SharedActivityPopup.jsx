@@ -47,20 +47,32 @@ const SharedActivityPopup = () => {
 
   // Drag the handle down to dismiss
   const drag = useRef(null);
+  // While dragging, the sheet follows the finger 1:1 — `data-dragging`
+  // switches its slide transition off (an inline "transition: none" lost to the
+  // Reduce Motion !important rule, so every move animated and the sheet
+  // shook and trailed the finger) — and moves at most once per frame.
   const onHandleDown = (e) => {
-    drag.current = { y: e.clientY, dy: 0 };
+    drag.current = { y: e.clientY, dy: 0, raf: 0 };
     e.currentTarget.setPointerCapture?.(e.pointerId);
-    if (sheetRef.current) sheetRef.current.style.transition = "none";
+    sheetRef.current?.setAttribute("data-dragging", "true");
   };
   const onHandleMove = (e) => {
-    if (!drag.current || !sheetRef.current) return;
-    drag.current.dy = Math.max(0, e.clientY - drag.current.y);
-    sheetRef.current.style.transform = `translateY(${drag.current.dy}px)`;
+    const d = drag.current;
+    if (!d || !sheetRef.current) return;
+    d.dy = Math.max(0, e.clientY - d.y);
+    if (d.raf) return;
+    d.raf = requestAnimationFrame(() => {
+      d.raf = 0;
+      if (sheetRef.current)
+        sheetRef.current.style.transform = `translate3d(0, ${d.dy}px, 0)`;
+    });
   };
   const onHandleUp = () => {
     if (!drag.current || !sheetRef.current) return;
-    const { dy } = drag.current;
+    const { dy, raf } = drag.current;
+    if (raf) cancelAnimationFrame(raf);
     drag.current = null;
+    sheetRef.current.removeAttribute("data-dragging");
     sheetRef.current.style.transition = "";
     if (dy > 80) {
       // Carry on down from where it was let go

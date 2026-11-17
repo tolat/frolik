@@ -497,7 +497,9 @@
   bottom: 0;
   z-index: 2;
   height: auto;
-  padding: 0.6rem 0.4rem 0.8rem;
+  // Extra room underneath so the buttons clear the iPhone's rounded screen
+  // corners and home indicator
+  padding: 0.6rem 0.4rem calc(1.6rem + env(safe-area-inset-bottom, 0px));
   background: $surface !important;
   border-top: 1px solid $light_grey;
 }

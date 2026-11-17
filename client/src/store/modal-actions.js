@@ -1,3 +1,4 @@
+import { setPageScrollLocked } from "../utils/pageScroll";
 import { modalActions } from "./modal-slice";
 import store from ".";
 
@@ -28,7 +29,7 @@ const modalCleanup = (setUsePrevious) => {
 export const hideModal = (setUsePrevious = false) => {
   document.getElementById("main-container-children").style.opacity = 1;
   document.getElementById("main-container-children").style.overflowY = null;
-  document.body.style.overflowY = null;
+  setPageScrollLocked(false);
 
   return new Promise((resolve) => {
     const dispatch = store.dispatch;

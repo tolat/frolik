@@ -29,14 +29,14 @@
   bottom: 0;
   margin: 0 auto;
   max-width: 48rem;
-  max-height: 80vh; // fallback
-  max-height: 80dvh;
+  max-height: 85vh; // fallback
+  max-height: 85dvh;
   display: flex;
   flex-direction: column;
   background: $surface;
   border-radius: 2.4rem 2.4rem 0 0;
   box-shadow: 0 -10px 40px rgba(20, 24, 40, 0.2);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  // (bottom safe area is inside the pinned button bar — see ActivityCard)
   overflow: hidden;
   transform: translateY(100%);
   transition: transform 0.24s $ease_out;
@@ -81,4 +81,19 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
+}
+
+// Following the finger: no transition at all (beats the Reduce Motion rule)
+.sheet[data-dragging] {
+  transition: none !important;
+}
+
+// No visible scrollbar (desktop); it still scrolls by wheel/trackpad/touch
+.scrollArea {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollArea::-webkit-scrollbar {
+  display: none;
 }

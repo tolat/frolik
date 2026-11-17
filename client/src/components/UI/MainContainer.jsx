@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import PullToRefresh from "./PullToRefresh";
 import { refreshPage } from "../../utils/pageRefresh";
 import { onUpdateUser } from "../../store/socket-actions";
+import { scrollPageTo, setPageScrollLocked } from "../../utils/pageScroll";
 
 const MainContainer = (props) => {
   const location = useLocation();
@@ -26,11 +27,10 @@ const MainContainer = (props) => {
   const modalMarginLeft = useSelector((state) => state.modal.marginLeft);
   const prevMarginLeft = useRef(modalMarginLeft);
 
-  // Every page opens at the top. The page scrolls inside <body> (see
-  // index.css), which neither the router nor the browser resets on navigation.
+  // Every page opens at the top (the router doesn't reset the scroll).
   // Layout effect: reset before the new page paints, so there's no jump.
   useLayoutEffect(() => {
-    document.body.scrollTop = 0;
+    scrollPageTo(0);
   }, [currentUrl]);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const MainContainer = (props) => {
       modalMarginLeft !== "0%" && prevMarginLeft.current === "0%";
 
     if (justOpened) {
-      document.body.style.overflowY = "clip";
+      setPageScrollLocked(true);
       // Delay matches the modal slide-in animation duration
       const timer = setTimeout(() => {
         el.style.opacity = "0";
@@ -61,7 +61,7 @@ const MainContainer = (props) => {
     }
 
     if (justClosed) {
-      document.body.style.overflowY = null;
+      setPageScrollLocked(false);
       el.style.opacity = "1";
     }
 

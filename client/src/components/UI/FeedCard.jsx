@@ -184,7 +184,7 @@ const FeedCardFooter = (props) => {
                   className={styles.viewActivityButton}
                   noShadow={true}
                 >
-                  {openingActivity ? "Opening…" : "View Activity"}
+                  View Activity
                 </SimpleButton>
               </div>
             </div>

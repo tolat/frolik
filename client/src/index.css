@@ -1,20 +1,12 @@
-/* Only <body> scrolls; <html> (the viewport) never does. When the document
-   itself scrolled, iOS moved the fixed nav bar with the page (by up to the
-   whole scroll distance), and when both scrolled it shifted by the status-bar
-   height. Use utils/pageScroll.js instead of window.scroll*. */
-html {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-}
-
+/* Plain document scrolling — no height/overflow on <html> or <body>.
+   History (iOS Safari): html{height:100%;overflow:auto} made the fixed nav
+   drift with the page; html+body both scrolling shifted it by the status-bar
+   height; and making <body> the scroller left slide-in panel content and the
+   Chat page unpainted. The default document scroller avoids all three.
+   Use utils/pageScroll.js to read/set the page scroll. */
 body {
-  height: 100%;
+  min-height: 100%;
   width: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  /* contain the absolutely-positioned .app so it scrolls inside body */
-  position: relative;
 }
 
 :root {
@@ -81,6 +73,7 @@ code {
 .app {
   position: absolute;
   width: 100%;
+  overflow-x: clip; /* no sideways page scroll (clip: not a scroll container) */
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -228,7 +221,7 @@ img {
 
   /* The activity drawer rolls up even with Reduce Motion (requested); its
      backdrop still just fades */
-  [data-drawer-sheet] {
+  [data-drawer-sheet]:not([data-dragging]) {
     transition-property: transform !important;
     transition-duration: 0.24s !important;
   }
@@ -302,6 +295,6 @@ img {
 }
 
 /* Page behind an open popup (photo viewer etc.) doesn't scroll */
-html.scroll-locked body {
+html.scroll-locked {
   overflow: hidden !important;
 }

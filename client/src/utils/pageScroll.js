@@ -1,8 +1,15 @@
-// The page scrolls inside <body>, not the document (see index.css), so
-// window.scrollY / window.scrollTo don't apply. Use these instead.
-export const pageScroller = () => document.body;
+// The page scrolls the document itself (see index.css). Read and set it here
+// rather than poking window/document directly, so the scroller can change in
+// one place.
+export const pageScroller = () =>
+  document.scrollingElement || document.documentElement;
 
-export const pageScrollTop = () => document.body.scrollTop;
+export const pageScrollTop = () => window.scrollY || pageScroller().scrollTop;
 
 export const scrollPageTo = (top, behavior = "auto") =>
-  document.body.scrollTo({ top, behavior });
+  window.scrollTo({ top, behavior });
+
+// Stop/allow page scrolling while a slide-in panel covers it
+export const setPageScrollLocked = (locked) => {
+  document.documentElement.style.overflowY = locked ? "clip" : "";
+};

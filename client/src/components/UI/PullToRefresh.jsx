@@ -1,3 +1,4 @@
+import { pageScrollTop } from "../../utils/pageScroll";
 import { useEffect, useRef, useState } from "react";
 import balloon from "../../images/air-balloon-blue.png";
 import styles from "./styles/PullToRefresh.module.scss";
@@ -62,7 +63,7 @@ const PullToRefresh = ({ onRefresh, children, disabled }) => {
       state.pull = h;
     };
 
-    const atTop = () => document.body.scrollTop <= 0;
+    const atTop = () => pageScrollTop() <= 0;
 
     const onStart = (e) => {
       if (state.busy || disabledRef.current || !atTop()) return;
