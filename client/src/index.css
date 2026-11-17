@@ -205,21 +205,14 @@ img {
     animation-duration: 0.18s !important;
   }
 
-  /* Slide-in panels can't slide, so they cross-fade instead of cutting:
-     closing fades out in place, *then* jumps off-screen; opening jumps in and
-     fades up. (Must finish inside the 300ms cleanup in modal-actions.js.) */
-  #modal-container {
-    transition-property: opacity, margin !important;
-    transition-duration: 0.2s, 0s !important;
-    transition-timing-function: ease !important;
-  }
-  #modal-container[data-open="false"] {
-    opacity: 0;
-    transition-delay: 0s, 0.2s !important;
-  }
-  #modal-container[data-open="true"] {
-    opacity: 1;
-    transition-delay: 0s, 0s !important;
+  /* Slide-in panels can't slide. Opening: their content fades up (rule
+     above). Closing: the page underneath fades back in.
+     NOT an opacity transition on #modal-container itself — on iOS Safari that
+     left the panel content unpainted (only the fixed header and the nav bar
+     showed, for seconds) because the content sits on its own layer. */
+  #main-container-children {
+    transition-property: opacity !important;
+    transition-duration: 0.2s !important;
   }
 
   /* Popups (portalled into #popup) fade in and out instead of cutting; the

@@ -13,7 +13,7 @@
   width: $central_span_width;
   transition: margin 0.3s $ease_out; // must stay <= the 300ms JS cleanup timer
   background-color: $app_bg;
-  will-change: margin;
+  // (no will-change: its separate layer went unpainted on iOS Safari)
   box-sizing: border-box;
   position: absolute;
   min-height: 100%;
