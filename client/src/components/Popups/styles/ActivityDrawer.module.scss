@@ -5,19 +5,20 @@
   inset: 0;
   z-index: 12; // above the floating nav bar
   pointer-events: auto;
-  opacity: 0;
-  transition: opacity 0.25s ease;
 }
 
-.open {
-  opacity: 1;
-}
-
+// Only the backdrop fades; the sheet (photo and all) rolls up from below
 .backdrop {
   position: absolute;
   inset: 0;
   background-color: rgba(15, 18, 30, 0.42);
   touch-action: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.open .backdrop {
+  opacity: 1;
 }
 
 // Full-width sheet anchored to the bottom (centred column on wide screens)
@@ -28,7 +29,8 @@
   bottom: 0;
   margin: 0 auto;
   max-width: 48rem;
-  max-height: calc(100dvh - env(safe-area-inset-top, 0px) - 2.4rem);
+  max-height: 80vh; // fallback
+  max-height: 80dvh;
   display: flex;
   flex-direction: column;
   background: $surface;
@@ -42,6 +44,12 @@
 
 .open .sheet {
   transform: none;
+}
+
+// Closing (tap outside / drag down): a smooth slide back down that builds up
+// speed, rather than the snappy opening curve that read as "just vanished"
+.root:not(.open) .sheet {
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.7, 1);
 }
 
 .handleArea {
@@ -58,4 +66,13 @@
   height: 0.5rem;
   border-radius: 100rem;
   background: #d5d9e2;
+}
+
+// Everything under the handle scrolls when the card is taller than the cap
+.scrollArea {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }

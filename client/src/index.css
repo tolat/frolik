@@ -233,6 +233,13 @@ img {
     animation-duration: 0.18s !important;
   }
 
+  /* The activity drawer rolls up even with Reduce Motion (requested); its
+     backdrop still just fades */
+  [data-drawer-sheet] {
+    transition-property: transform !important;
+    transition-duration: 0.32s !important;
+  }
+
   /* The loading shine is a slow, subtle cue — keep it running */
   .tile-loading::after,
   .shine-loading {

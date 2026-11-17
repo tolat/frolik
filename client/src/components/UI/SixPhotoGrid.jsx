@@ -129,7 +129,7 @@ const SixPhotoGrid = (props) => {
             props.noRoundedCornerLeft ? styles.noRoundedCornerLeft : null
           } ${loaded ? styles.imageLoaded : styles.imageLoading}`}
           src={img}
-          loading="lazy"
+          loading={props.eager ? "eager" : "lazy"}
           decoding="async"
           alt=""
         />

@@ -6,12 +6,12 @@ import { popupActions } from "../../store/popup-slice";
 import { useScrollLock } from "../../utils/scrollLock";
 import styles from "./styles/ActivityDrawer.module.scss";
 
-const CLOSE_MS = 280;
+const CLOSE_MS = 360; // a little longer than the 0.32s slide-down
 
 // The activity opened from the Social / Profile feed or a chat message: a
-// full-width drawer that slides up from the bottom of the screen. The whole
-// card always fits; only the instructions scroll. Tap outside, or drag the
-// handle down, to close.
+// full-width drawer that slides up from the bottom of the screen, at most 80%
+// of the screen tall; its content scrolls when longer. Tap outside, or drag
+// the handle down, to close.
 const SharedActivityPopup = () => {
   const dispatch = useDispatch();
   const activity = useSelector((state) => state.popup.sharedActivity);
@@ -19,6 +19,7 @@ const SharedActivityPopup = () => {
     (state) => state.popup.selector === "shared-activity"
   );
   useScrollLock(isOpen);
+  const sheetRef = useRef(null);
 
   // Stay mounted while sliding out; add the "open" class one frame after
   // mounting so the slide-in runs
@@ -26,6 +27,11 @@ const SharedActivityPopup = () => {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (isOpen) {
+      // Clear any inline position left by a drag-to-close
+      if (sheetRef.current) {
+        sheetRef.current.style.transform = "";
+        sheetRef.current.style.transition = "";
+      }
       setShown(true);
       const raf = requestAnimationFrame(() =>
         requestAnimationFrame(() => setOpen(true))
@@ -40,7 +46,6 @@ const SharedActivityPopup = () => {
   const close = () => dispatch(popupActions.hidePopup());
 
   // Drag the handle down to dismiss
-  const sheetRef = useRef(null);
   const drag = useRef(null);
   const onHandleDown = (e) => {
     drag.current = { y: e.clientY, dy: 0 };
@@ -57,18 +62,28 @@ const SharedActivityPopup = () => {
     const { dy } = drag.current;
     drag.current = null;
     sheetRef.current.style.transition = "";
-    sheetRef.current.style.transform = "";
-    if (dy > 80) close();
+    if (dy > 80) {
+      // Carry on down from where it was let go
+      sheetRef.current.style.transform = "translateY(100%)";
+      close();
+    } else {
+      sheetRef.current.style.transform = ""; // spring back up
+    }
   };
 
   if (!shown && !isOpen) return null;
 
   return createPortal(
-    <div className={`${styles.root} ${open ? styles.open : ""}`}>
+    // data-instant: skip the Reduce Motion popup fade — the sheet rolls up
+    <div
+      className={`${styles.root} ${open ? styles.open : ""}`}
+      data-instant="true"
+    >
       <div className={styles.backdrop} onClick={close} />
       <div
         ref={sheetRef}
         className={styles.sheet}
+        data-drawer-sheet="true"
         role="dialog"
         aria-modal="true"
         aria-label={activity?.name || "Activity"}
@@ -82,17 +97,18 @@ const SharedActivityPopup = () => {
         >
           <div className={styles.handle} />
         </div>
-        {activity ? (
-          <ActivityCard
-            key={activity._id}
-            showInstructions={true}
-            activity={activity}
-            hideSelect={true}
-            socialActions={true}
-            fitHeight={true}
-            drawer={true}
-          />
-        ) : null}
+        <div className={styles.scrollArea}>
+          {activity ? (
+            <ActivityCard
+              key={activity._id}
+              showInstructions={true}
+              activity={activity}
+              hideSelect={true}
+              socialActions={true}
+              drawer={true}
+            />
+          ) : null}
+        </div>
       </div>
     </div>,
     document.getElementById("popup")

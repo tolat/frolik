@@ -215,3 +215,8 @@
 .readZone:active {
   background-color: #2a9a66;
 }
+
+// "Last Active …" under the chat name: secondary, muted grey
+.lastActive {
+  color: $text_muted;
+}

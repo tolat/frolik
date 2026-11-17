@@ -256,6 +256,9 @@ const ActivityCard = (props) => {
               {props.activity?.photos && (
                 <SixPhotoGrid
                   noRoundedCornerLeft={true}
+                  // The drawer starts off-screen: lazy loading held the
+                  // photo back until it had slid up
+                  eager={!!props.drawer}
                   photos={props.activity.photos}
                   onClick={handleToggleInstructions}
                   onFirstLoad={handleFirstPhotoLoad}
