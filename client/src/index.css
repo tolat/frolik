@@ -219,6 +219,8 @@ img {
 
 .tile-loading {
   position: relative;
+  /* flat while loading, exactly like the list placeholders */
+  box-shadow: none !important;
 }
 
 .tile-loading > * {
@@ -247,6 +249,8 @@ img {
   background-size: 220% 100%;
   background-repeat: no-repeat;
   animation: skeleton-shine 1.5s ease-in-out infinite;
+  /* set from the wall clock (shineSync) so all tiles sweep together */
+  animation-delay: var(--shine-delay, 0ms);
 }
 
 .tile-loading::after {

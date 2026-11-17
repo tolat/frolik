@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import { shineSync } from "../../utils/shine";
 import UserIconCluster from "./UserIconCluster";
 import styles from "./styles/FeedCard.module.scss";
 import { useEffect, useRef, useState } from "react";
@@ -71,6 +72,7 @@ const FeedCard = (props) => {
         className={`${styles.container} ${
           ready ? "tile-ready" : `tile-loading ${styles.loadingSize}`
         }`}
+        style={ready ? undefined : shineSync()}
       >
         {outing && outingPhotos[0] && !outingPhotos.find((img) => img === "queued") ? (
           <SixPhotoGrid photos={outingPhotos} onAllLoaded={() => setReady(true)} />

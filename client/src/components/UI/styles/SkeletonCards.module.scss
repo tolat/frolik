@@ -4,67 +4,28 @@
   width: 100%;
 }
 
-.card {
+.tile {
   width: 100%;
-  margin-bottom: 1.2rem;
   border-radius: $radius_lg;
-  background-color: $surface;
-  box-shadow: $shadow_sm;
-  overflow: hidden;
-  box-sizing: border-box;
 }
 
-.chat,
+// Heights match the real cards (and their loading tiles) on a phone
+.feed {
+  height: 65rem; // the common feed card height (6-photo grid)
+  margin-bottom: 1.6rem;
+}
+
+.activity {
+  height: 34.9rem;
+  margin-bottom: 1.4rem;
+}
+
+.chat {
+  height: 10.5rem;
+  margin-bottom: 1.2rem;
+}
+
 .person {
-  padding: 1.4rem;
-}
-
-.feed .row {
-  padding: 1.4rem;
-}
-
-.media {
-  width: 100%;
-  height: 26rem;
-}
-
-.activityMedia {
-  width: 100%;
-  height: 34rem;
-}
-
-.row {
-  display: flex;
-  align-items: center;
-  gap: 1.4rem;
-}
-
-.avatar {
-  width: 6.4rem;
-  height: 6.4rem;
-  border-radius: 100rem;
-  flex-shrink: 0;
-}
-
-.person .avatar {
-  width: 5.6rem;
-  height: 5.6rem;
-}
-
-.lines {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-}
-
-.line {
-  height: 1.2rem;
-  width: 55%;
-  border-radius: 100rem;
-}
-
-.lineWide {
-  width: 80%;
-  height: 1.5rem;
+  height: 11.1rem;
+  margin-bottom: 1rem;
 }

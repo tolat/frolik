@@ -132,7 +132,7 @@
 
 // Reserve roughly a card's height while the loading tile is showing
 .loadingSize {
-  min-height: 38rem;
+  min-height: 55rem; // same as the feed list placeholder
 }
 
 // Photo area placeholder while the photo URLs are still being fetched

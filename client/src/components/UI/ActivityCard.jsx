@@ -1,4 +1,5 @@
 import StatIcon from "./StatIcon";
+import { shineSync } from "../../utils/shine";
 import styles from "./styles/ActivityCard.module.scss";
 import timeIcon from "../../images/clock.png";
 import costIcon from "../../images/bill.png";
@@ -111,7 +112,7 @@ const ActivityCard = (props) => {
   return (
     categoryColorMap && (
       <div
-        style={props.style}
+        style={photoLoaded ? props.style : { ...props.style, ...shineSync() }}
         className={`${styles.outerContainer} ${photoLoaded ? "tile-ready" : "tile-loading"}`}
       >
         {!props.creatingActivity && (
