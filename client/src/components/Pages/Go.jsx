@@ -332,52 +332,73 @@ const Go = (props) => {
             />
           </button>
         </div>
-        <div className={styles.requirements} data-tour="outing-requirements">
-          <button
-            type="button"
-            onClick={handlePickActivityClick}
-            className={`${styles.requirement} ${
-              hasActivity ? styles.requirementMet : styles.requirementAction
-            }`}
-          >
-            <span className={styles.requirementDot}>{hasActivity ? "✓" : "1"}</span>
-            {hasActivity ? "Activity picked" : "Pick an activity"}
-          </button>
-          <button
-            type="button"
-            onClick={handleAddUserClick}
-            className={`${styles.requirement} ${
-              matchesMet ? styles.requirementMet : styles.requirementAction
-            }`}
-          >
-            <span className={styles.requirementDot}>{matchesMet ? "✓" : "2"}</span>
-            {!hasDailyMatch
-              ? "Add a Daily Match"
-              : matchesNeeded > 0
-              ? `Add ${matchesNeeded} more Daily Match${matchesNeeded > 1 ? "es" : ""}`
-              : `${addedMatches.length} Daily Match${addedMatches.length > 1 ? "es" : ""} added`}
-          </button>
+        {/* Checklist until the outing is ready, then just the Create button.
+            One wrapper keeps the tour's spotlight target either way. */}
+        <div className={styles.readyArea} data-tour="outing-requirements">
+          {hasMembers && hasActivity && matchesMet ? (
+            <SimpleButton
+              onClick={
+                createButtonText === "Create Outing" ? handleCreateOuting : null
+              }
+              className={styles.goCta}
+            >
+              <span className={styles.goCtaIcon}>
+                <img src={balloonIcon} alt="" />
+              </span>
+              <span className={styles.goCtaText}>
+                <span className={styles.goCtaTitle}>{createButtonText}</span>
+                <span className={styles.goCtaSub}>
+                  You + {goState.outing.users.length - 1} ·{" "}
+                  {goState.outing.activity?.name}
+                </span>
+              </span>
+              <svg viewBox="0 0 24 24" className={styles.goCtaArrow} aria-hidden="true">
+                <path
+                  d="M5 12h14M13 6l6 6-6 6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </SimpleButton>
+          ) : (
+            <>
+              <div className={styles.requirements}>
+              <button
+                type="button"
+                onClick={handlePickActivityClick}
+                className={`${styles.requirement} ${
+                  hasActivity ? styles.requirementMet : styles.requirementAction
+                }`}
+              >
+                <span className={styles.requirementDot}>{hasActivity ? "✓" : "1"}</span>
+                {hasActivity ? "Activity picked" : "Pick an activity"}
+              </button>
+              <button
+                type="button"
+                onClick={handleAddUserClick}
+                className={`${styles.requirement} ${
+                  matchesMet ? styles.requirementMet : styles.requirementAction
+                }`}
+              >
+                <span className={styles.requirementDot}>{matchesMet ? "✓" : "2"}</span>
+                {!hasDailyMatch
+                  ? "Add a Daily Match"
+                  : matchesNeeded > 0
+                  ? `Add ${matchesNeeded} more Daily Match${matchesNeeded > 1 ? "es" : ""}`
+                  : `${addedMatches.length} Daily Match${addedMatches.length > 1 ? "es" : ""} added`}
+              </button>
+              </div>
+              {hasDailyMatch && matchesNeeded > 0 && (
+                <div className={styles.requirementNote}>
+                  You can invite one friend for each Daily Match.
+                </div>
+              )}
+            </>
+          )}
         </div>
-        {hasDailyMatch && matchesNeeded > 0 && (
-          <div className={styles.requirementNote}>
-            You can invite one friend for each Daily Match.
-          </div>
-        )}
-        {hasMembers && hasActivity && matchesMet && (
-          <SimpleButton
-            onClick={
-              createButtonText === "Create Outing" ? handleCreateOuting : null
-            }
-            className={styles.goButton}
-          >
-            <img
-              className={styles.balloonIcon}
-              src={balloonIcon}
-              alt="balloon-icon"
-            />{" "}
-            {createButtonText}
-          </SimpleButton>
-        )}
 
         {goState.outing.activity?.name ? (
           <Fragment>

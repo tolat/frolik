@@ -185,7 +185,11 @@ img {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    /* 0s, not 0.01ms: any non-zero duration turns *every* style change on
+       every element (transition-property defaults to "all") into a
+       transition — including visibility, which left loaded cards' contents
+       hidden whenever the browser wasn't painting frames */
+    transition-duration: 0s !important;
   }
 
   /* Page/card fades are opacity-only (no movement), so they stay on */

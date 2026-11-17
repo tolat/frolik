@@ -298,3 +298,13 @@
   margin-left: auto;
   justify-content: flex-end;
 }
+
+// No-photo cards: room below the text buttons (spacer grows by the same
+// amount the buttons are lifted, so they never overlap the content)
+.plainButtons {
+  bottom: 1rem;
+}
+
+.innerContainer:has(> .plainButtons) > .buttonSpacer {
+  height: calc(3.7rem + 1rem);
+}

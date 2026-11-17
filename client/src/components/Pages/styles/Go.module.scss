@@ -397,3 +397,86 @@
   color: $text_muted;
   text-align: center;
 }
+
+// ── Ready to go: the checklist gives way to one prominent button ───────────
+.readyArea {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.goCta {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-start !important;
+  gap: 1.2rem;
+  width: 100% !important;
+  max-width: 36rem;
+  margin: 1.4rem 0 0.6rem;
+  padding: 1.1rem 1.6rem 1.1rem 1.1rem !important;
+  border: none;
+  border-radius: 2.2rem !important;
+  background: linear-gradient(135deg, #6a9bf5 0%, #4a7ee8 55%, #3f6fd8 100%);
+  color: white !important;
+  text-align: left;
+  box-shadow: 0 10px 26px rgba(63, 111, 216, 0.38), 0 2px 6px rgba(63, 111, 216, 0.25);
+  animation: pop-in 0.35s $ease_spring both;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.goCta:hover {
+  box-shadow: 0 12px 30px rgba(63, 111, 216, 0.45), 0 2px 6px rgba(63, 111, 216, 0.25);
+}
+
+.goCta:active {
+  transform: scale(0.98);
+}
+
+.goCtaIcon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  border-radius: 100rem;
+  background-color: rgba(255, 255, 255, 0.2);
+
+  img {
+    width: 2.2rem;
+    height: 2.2rem;
+    object-fit: contain;
+  }
+}
+
+.goCtaText {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.goCtaTitle {
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.goCtaSub {
+  margin-top: 0.2rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  opacity: 0.85;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.goCtaArrow {
+  flex-shrink: 0;
+  width: 2.2rem;
+  height: 2.2rem;
+  opacity: 0.9;
+}
