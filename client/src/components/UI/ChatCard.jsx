@@ -9,7 +9,14 @@ import {
 } from "../../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
-import { fetchChat, deleteChat, archiveChat } from "../../utils/data-fetch";
+import {
+  fetchChat,
+  deleteChat,
+  archiveChat,
+  fetchChats,
+  updateChatLastRead,
+} from "../../utils/data-fetch";
+import { fetchAuth } from "../../store/auth-actions";
 import { authActions } from "../../store/auth-slice";
 import { collapseOut } from "../../utils/animations";
 import { chatActions } from "../../store/chat-slice";
@@ -35,6 +42,9 @@ const ChatCard = memo((props) => {
       : "Archive"
     : "Delete";
   const rootRef = useRef(null);
+  // Swipe right (only when there's something unread) marks the chat read
+  const canMarkRead = unreadChatMessages > 0;
+  const maxRight = canMarkRead ? DELETE_ZONE_WIDTH : 0;
   const axis = useRef(null); // "x" | "y" | null — locked per gesture
   const [translateX, setTranslateX] = useState(0);
   const [snapping, setSnapping] = useState(false);
@@ -93,6 +103,18 @@ const ChatCard = memo((props) => {
     );
   }, [swipeAction, user, chat._id, dispatch, collapseThen]);
 
+  const maxRightRef = useRef(maxRight);
+  maxRightRef.current = maxRight;
+
+  const markRead = useCallback(() => {
+    const latest = chat?.messages?.[0];
+    if (!latest) return;
+    updateChatLastRead(user, chat, latest.id, () => {
+      fetchChats(user);
+      fetchAuth(); // refresh the Chats badge in the nav bar
+    });
+  }, [user, chat]);
+
   // --- Swipe handlers (pointer events: touch AND mouse drag on desktop) ---
   // `touch-action: pan-y` on the card (CSS) keeps vertical scrolling native
   // on touch screens; a vertical scroll fires pointercancel, ending the drag.
@@ -125,7 +147,10 @@ const ChatCard = memo((props) => {
     if (axis.current === "y") return;
     // Mark as a swipe so the follow-up click event gets suppressed.
     didSwipe.current = true;
-    const newX = Math.max(-DELETE_ZONE_WIDTH, Math.min(0, startOffset.current + deltaX));
+    const newX = Math.max(
+      -DELETE_ZONE_WIDTH,
+      Math.min(maxRightRef.current, startOffset.current + deltaX)
+    );
     setTranslateX(newX);
   }, []);
 
@@ -140,9 +165,14 @@ const ChatCard = memo((props) => {
       if (!didSwipe.current) return; // let the click handler handle the tap
 
       setSnapping(true);
+      if (translateX > SNAP_THRESHOLD) {
+        markRead(); // full swipe right = mark read, then slide back
+        setTranslateX(0);
+        return;
+      }
       setTranslateX(translateX < -SNAP_THRESHOLD ? -DELETE_ZONE_WIDTH : 0);
     },
-    [translateX]
+    [translateX, markRead]
   );
 
   // --- Click handler ---
@@ -173,6 +203,15 @@ const ChatCard = memo((props) => {
       ></div>
 
       <div className={styles.swipeClip}>
+        {canMarkRead && (
+          <div
+            className={styles.readZone}
+            style={{ opacity: translateX > 0 ? 1 : 0 }}
+            aria-hidden="true"
+          >
+            <span className={styles.deleteZoneText}>✓ Read</span>
+          </div>
+        )}
         {swipeEnabled && (
           <div
             className={`${styles.deleteZone} ${

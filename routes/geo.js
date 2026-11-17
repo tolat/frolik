@@ -70,17 +70,19 @@ const searchPlaces = async (q) => {
     });
 };
 
-const reversePlace = async (lat, lng) => {
+// Reverse geocoding: ask two free OpenStreetMap-based services at once and use
+// whichever answers first (Nominatim alone can be slow, or throttle requests
+// from shared hosting IPs — which made the first lookup fail in production).
+const reverseNominatim = async (lat, lng) => {
   const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=10&addressdetails=1&accept-language=en&lat=${lat}&lon=${lng}`;
   const res = await fetch(url, {
     headers: { "User-Agent": USER_AGENT },
-    signal: AbortSignal.timeout(PROVIDER_TIMEOUT_MS), // providers can be slow
+    signal: AbortSignal.timeout(PROVIDER_TIMEOUT_MS),
   });
-  if (!res.ok) throw new Error(`reverse provider ${res.status}`);
-  const data = await res.json();
-  const a = data.address || {};
+  if (!res.ok) throw new Error(`nominatim ${res.status}`);
+  const a = (await res.json()).address || {};
   const name = a.city || a.town || a.village || a.municipality || a.county;
-  if (!name || !a.country_code) return null;
+  if (!name || !a.country_code) throw new Error("nominatim: no city");
   return toPlace({
     name,
     countryCode: a.country_code,
@@ -89,6 +91,49 @@ const reversePlace = async (lat, lng) => {
     lat,
     lng,
   });
+};
+
+const reversePhoton = async (lat, lng) => {
+  const url = `https://photon.komoot.io/reverse?lat=${lat}&lon=${lng}&lang=en&limit=1`;
+  const res = await fetch(url, {
+    headers: { "User-Agent": USER_AGENT },
+    signal: AbortSignal.timeout(PROVIDER_TIMEOUT_MS),
+  });
+  if (!res.ok) throw new Error(`photon ${res.status}`);
+  const p = (await res.json()).features?.[0]?.properties || {};
+  const isPlace = ["city", "town", "village", "locality"].includes(p.type);
+  const name = p.city || (isPlace ? p.name : null) || p.county || p.district;
+  if (!name || !p.countrycode) throw new Error("photon: no city");
+  return toPlace({
+    name,
+    countryCode: p.countrycode,
+    region: p.state,
+    country: p.country,
+    lat,
+    lng,
+  });
+};
+
+// Both run in parallel; Photon's "city" is preferred (London rather than
+// "City of Westminster", Tokyo rather than a ward), Nominatim is the fallback.
+const reversePlace = async (lat, lng) => {
+  const nominatim = reverseNominatim(lat, lng).then(
+    (place) => ({ place }),
+    (error) => ({ error })
+  );
+  try {
+    return await reversePhoton(lat, lng);
+  } catch (photonError) {
+    const { place, error } = await nominatim;
+    if (place) return place;
+    console.error(
+      "[geo reverse] all providers failed:",
+      photonError.message,
+      ";",
+      error.message
+    );
+    return null;
+  }
 };
 
 router.get(

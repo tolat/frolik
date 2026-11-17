@@ -189,6 +189,13 @@ img {
   #slide-in-modal-button > * {
     animation-duration: 0.18s !important;
   }
+
+  /* The loading shine is a slow, subtle cue — keep it running */
+  .tile-loading::after,
+  .shine-loading {
+    animation-duration: 1.5s !important;
+    animation-iteration-count: infinite !important;
+  }
 }
 
 /* ── Whole-card loading placeholder ────────────────────────────────────────
@@ -211,17 +218,44 @@ img {
   visibility: hidden;
 }
 
+/* Grey tile with a soft light band sweeping across it */
+@keyframes skeleton-shine {
+  from {
+    background-position: 160% 0;
+  }
+  to {
+    background-position: -60% 0;
+  }
+}
+
+.tile-loading::after,
+.shine-loading {
+  background-color: #e6e9f0;
+  background-image: linear-gradient(
+    105deg,
+    rgba(255, 255, 255, 0) 35%,
+    rgba(255, 255, 255, 0.85) 50%,
+    rgba(255, 255, 255, 0) 65%
+  );
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  animation: skeleton-shine 1.5s ease-in-out infinite;
+}
+
 .tile-loading::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: linear-gradient(90deg, #e9ecf2 0%, #f4f6fa 45%, #e9ecf2 90%);
-  background-size: 200% 100%;
-  animation: skeleton-shimmer 1.4s ease-in-out infinite;
   pointer-events: none;
 }
 
 .tile-ready > * {
   animation: frolik-page-in 0.25s ease-out backwards;
+}
+
+/* Page behind an open popup (photo viewer etc.) doesn't scroll */
+html.scroll-locked,
+html.scroll-locked body {
+  overflow: hidden !important;
 }

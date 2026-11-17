@@ -3,12 +3,23 @@ import SlideInModal from "../Modals/SlideInModal";
 import styles from "./styles/MainContainer.module.scss";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import PullToRefresh from "./PullToRefresh";
+import { refreshPage } from "../../utils/pageRefresh";
+import { onUpdateUser } from "../../store/socket-actions";
 
 const MainContainer = (props) => {
   const location = useLocation();
   const currentUrl = location.pathname;
   const [marginBottom, setMarginBottom] = useState("");
   const childrenRef = useRef(null);
+  const loggedIn = useSelector((state) => !!state.auth.user);
+
+  // Pull down on any page to refresh it: reloads the account, chats and
+  // photos, plus whatever the page itself registers (usePageRefresh)
+  const handleRefresh = () => {
+    onUpdateUser();
+    return refreshPage();
+  };
 
   // Track modal open/close to apply overflow and opacity side-effects
   // (moved here from modal-slice reducer, which must stay pure)
@@ -53,14 +64,16 @@ const MainContainer = (props) => {
   return (
     <div className={styles.outer} style={{ marginBottom: marginBottom }}>
       <div id="main-container" className={styles.inner}>
-        <div
-          ref={childrenRef}
-          key={currentUrl}
-          id="main-container-children"
-          className={`${styles.mainContainerChildren} noscroll page-enter`}
-        >
-          {props.children}
-        </div>
+        <PullToRefresh onRefresh={handleRefresh} disabled={!loggedIn}>
+          <div
+            ref={childrenRef}
+            key={currentUrl}
+            id="main-container-children"
+            className={`${styles.mainContainerChildren} noscroll page-enter`}
+          >
+            {props.children}
+          </div>
+        </PullToRefresh>
         <SlideInModal />
       </div>
     </div>

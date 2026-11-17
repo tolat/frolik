@@ -30,37 +30,59 @@ export const searchPlaces = async (q, signal) => {
 
 // Ask the browser for the device position (needs the user's permission),
 // then look up the city on the server.
-export const currentPlace = () =>
-  new Promise((resolve, reject) => {
-    if (!navigator.geolocation) {
-      reject(new Error("Location isn't available on this device."));
-      return;
+//
+// The first request right after granting permission often fails on iOS
+// (position unavailable / timeout), so it is retried once; the server
+// lookup is also retried once on a network error.
+const getPosition = (options) =>
+  new Promise((resolve, reject) =>
+    navigator.geolocation.getCurrentPosition(resolve, reject, options)
+  );
+
+const positionError = (err) =>
+  new Error(
+    err?.code === 1
+      ? "Location permission was denied. Search for your city instead."
+      : "Couldn't get your location. Search for your city instead."
+  );
+
+const reverseLookup = async (lat, lng) => {
+  const url = `${getServer()}/geo/reverse?lat=${lat}&lng=${lng}`;
+  let res;
+  try {
+    res = await fetch(url);
+  } catch {
+    res = await fetch(url); // one retry on a network blip
+  }
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.place) throw new Error(body.header || "Couldn't find your city.");
+  return body.place;
+};
+
+export const currentPlace = async () => {
+  if (!navigator.geolocation) {
+    throw new Error("Location isn't available on this device.");
+  }
+  let position;
+  try {
+    position = await getPosition({
+      enableHighAccuracy: false,
+      timeout: 10000,
+      maximumAge: 10 * 60 * 1000,
+    });
+  } catch (err) {
+    if (err?.code === 1) throw positionError(err); // denied: don't retry
+    try {
+      position = await getPosition({ enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+    } catch (retryErr) {
+      throw positionError(retryErr);
     }
-    navigator.geolocation.getCurrentPosition(
-      async ({ coords }) => {
-        try {
-          // Round to ~1 km on the device: only the city is needed
-          const lat = Math.round(coords.latitude * 100) / 100;
-          const lng = Math.round(coords.longitude * 100) / 100;
-          const res = await fetch(`${getServer()}/geo/reverse?lat=${lat}&lng=${lng}`);
-          const body = await res.json();
-          if (!res.ok || !body.place) throw new Error(body.header || "Couldn't find your city.");
-          resolve(body.place);
-        } catch (err) {
-          reject(err);
-        }
-      },
-      (err) =>
-        reject(
-          new Error(
-            err.code === err.PERMISSION_DENIED
-              ? "Location permission was denied. Search for your city instead."
-              : "Couldn't get your location. Search for your city instead."
-          )
-        ),
-      { enableHighAccuracy: false, timeout: 10000, maximumAge: 10 * 60 * 1000 }
-    );
-  });
+  }
+  // Round to ~1 km on the device: only the city is needed
+  const lat = Math.round(position.coords.latitude * 100) / 100;
+  const lng = Math.round(position.coords.longitude * 100) / 100;
+  return reverseLookup(lat, lng);
+};
 
 // Save location and/or the auto-location setting for the logged-in user.
 // Returns { location, location_geo, auto_location } from the server.

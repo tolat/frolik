@@ -2,6 +2,7 @@ import styles from "./styles/Go.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import SimpleButton from "../UI/SimpleButton";
 import { Fragment, useEffect, useReducer, useRef, useState } from "react";
+import { usePageRefresh } from "../../utils/pageRefresh";
 import AddUserModal from "../Modals/AddUserModal";
 import { modalActions } from "../../store/modal-slice";
 import editIcon from "../../images/edit.png";
@@ -123,6 +124,19 @@ const Go = (props) => {
 
     fetchActivityData();
   }, []);
+
+  // Pull-to-refresh: reload the activity list, keeping the current filter
+  const activityFilterRef = useRef(activityFilter);
+  activityFilterRef.current = activityFilter;
+  usePageRefresh(async () => {
+    await fetchActivities((activities) =>
+      dispatchFilter({ type: "set-initial", activities })
+    );
+    dispatchFilter({
+      type: "apply-filter",
+      filter: activityFilterRef.current.filter,
+    });
+  });
 
   // Make sure user in users list is updated to the auth user
   useEffect(() => {

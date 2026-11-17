@@ -52,3 +52,15 @@
     height: 3rem;
   }
   
+// Gestures on the backdrop don't scroll the page behind
+.blackout {
+  touch-action: none;
+  overscroll-behavior: contain;
+}
+
+// iOS can still scroll the page through an overflow:hidden <html>; block
+// scroll gestures on the whole viewer (tap anywhere outside still closes it)
+.container {
+  touch-action: none;
+  overscroll-behavior: contain;
+}

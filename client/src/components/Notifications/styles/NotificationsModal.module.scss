@@ -62,3 +62,27 @@
   padding: 1.2rem 0 0;
   justify-content: flex-start;
 }
+
+// Empty state, as a soft card
+.nothingContainer {
+  padding: 3.2rem 2rem;
+  background-color: $surface;
+  border: none;
+  border-radius: $radius_lg;
+  box-shadow: $shadow_sm;
+  gap: 1.2rem;
+}
+
+.nothingIcon {
+  margin-right: 0;
+  opacity: 0.45;
+}
+
+.nothingRightContainer {
+  color: $text_muted;
+}
+
+.nothingRightHeader {
+  color: $text;
+  font-weight: 700;
+}

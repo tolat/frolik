@@ -5,7 +5,7 @@ import { Fragment, useCallback, useEffect, useState } from "react";
 import FeedCard from "../UI/FeedCard";
 import { fetchFeedOutings } from "../../utils/data-fetch";
 import SimpleSearch from "../UI/SimpleSearch";
-import PullToRefresh from "../UI/PullToRefresh";
+import { usePageRefresh } from "../../utils/pageRefresh";
 import useIncrementalList from "../../utils/useIncrementalList";
 import ListSentinel from "../UI/ListSentinel";
 
@@ -44,10 +44,8 @@ const Social = (props) => {
     getOutings(user);
   }, [user]);
 
-  const handleRefresh = useCallback(
-    () => getOutings(user),
-    [user, getOutings]
-  );
+  // Pull-to-refresh (app-wide) reloads the feed
+  usePageRefresh(() => getOutings(user));
 
   function applyChatSearch(rawKeys) {
     return feedSearch || feedSearch !== ""
@@ -82,7 +80,7 @@ const Social = (props) => {
   }
 
   return (
-    <PullToRefresh onRefresh={handleRefresh}>
+    <Fragment>
       <div className={styles.container}>
         <SimpleSearch
           setValue={setFeedSearch}
@@ -115,7 +113,7 @@ const Social = (props) => {
           <h2>Loading Posts..</h2>
         )}
       </div>
-    </PullToRefresh>
+    </Fragment>
   );
 };
 

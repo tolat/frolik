@@ -1,7 +1,7 @@
 import styles from "./styles/ImageLoadingTile.module.scss";
 
 const ImageLoadingTile = (props) => {
-  return <div id={props.id} className={styles.container}></div>;
+  return <div id={props.id} className={`${styles.container} shine-loading`}></div>;
 };
 
 export default ImageLoadingTile;

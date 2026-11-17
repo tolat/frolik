@@ -4,14 +4,13 @@ import { dateSort, pageRouteLoader, toSorted } from "../../utils/utils";
 import ChatCard from "../UI/ChatCard";
 import SimpleSearch from "../UI/SimpleSearch";
 import SimpleButton from "../UI/SimpleButton";
-import { Fragment, memo, useCallback, useEffect, useState } from "react";
+import { Fragment, memo, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { fetchChat } from "../../utils/data-fetch";
-import { setLastReadMessage } from "../../utils/utils";
+import { setLastReadMessage, getUnreadChatMessages } from "../../utils/utils";
 import CreateChatModal from "../Modals/CreateChatModal";
 import { modalActions } from "../../store/modal-slice";
 import { onUpdateUser } from "../../store/socket-actions";
-import PullToRefresh from "../UI/PullToRefresh";
 
 const Chat = memo((props) => {
   const chats = useSelector((state) => state.chat.chats);
@@ -20,6 +19,7 @@ const Chat = memo((props) => {
   const [chatSearch, setChatSearch] = useState("");
   const dispatch = useDispatch();
   const [showArchived, setShowArchived] = useState(false);
+  const [unreadOnly, setUnreadOnly] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const openChatID = searchParams.get("open");
 
@@ -43,11 +43,16 @@ const Chat = memo((props) => {
     )
   );
 
+  // "Unread" filter
+  const isUnread = (c) => user && getUnreadChatMessages(user, c) > 0;
+  const unreadCount = validChats.filter(isUnread).length;
+  const filteredChats = unreadOnly ? validChats.filter(isUnread) : validChats;
+
   // Archived Outing chats live in their own collapsible section
-  const archivedChats = validChats.filter(
+  const archivedChats = filteredChats.filter(
     (c) => c.outing && archivedIDs.has(c._id)
   );
-  const activeChats = validChats.filter(
+  const activeChats = filteredChats.filter(
     (c) => !(c.outing && archivedIDs.has(c._id))
   );
   const sortChats = (list) =>
@@ -58,15 +63,6 @@ const Chat = memo((props) => {
     dispatch(modalActions.showModal());
   };
 
-  const handleRefresh = useCallback(
-    () =>
-      new Promise((resolve) => {
-        onUpdateUser();
-        // onUpdateUser is fire-and-forget; give it a moment before closing the indicator
-        setTimeout(resolve, 700);
-      }),
-    []
-  );
 
   function applyChatSearch(rawChats) {
     return chatSearch || chatSearch !== ""
@@ -96,7 +92,7 @@ const Chat = memo((props) => {
   }
 
   return (
-    <PullToRefresh onRefresh={handleRefresh}>
+    <Fragment>
       <div className={styles.container}>
         <CreateChatModal />
         <div className={styles.searchRow}>
@@ -126,6 +122,32 @@ const Chat = memo((props) => {
           </div>
         ) : (
           <div className={styles.chatsContainer}>
+            <div className={styles.filterRow} role="tablist" aria-label="Filter chats">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={!unreadOnly}
+                className={`${styles.filterPill} ${!unreadOnly ? styles.filterPillActive : ""}`}
+                onClick={() => setUnreadOnly(false)}
+              >
+                All
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={unreadOnly}
+                className={`${styles.filterPill} ${unreadOnly ? styles.filterPillActive : ""}`}
+                onClick={() => setUnreadOnly(true)}
+              >
+                Unread
+                {unreadCount > 0 && (
+                  <span className={styles.filterCount}>{unreadCount}</span>
+                )}
+              </button>
+            </div>
+            {unreadOnly && !activeChats.length && !archivedChats.length && (
+              <div className={styles.filterEmpty}>You're all caught up — no unread chats.</div>
+            )}
             {archivedChats.length > 0 && (
               <Fragment>
                 <button
@@ -167,7 +189,7 @@ const Chat = memo((props) => {
           </div>
         )}
       </div>
-    </PullToRefresh>
+    </Fragment>
   );
 });
 

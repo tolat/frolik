@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import LoaderSpinner from "./LoaderSpinner";
+import balloon from "../../images/air-balloon-blue.png";
 import styles from "./styles/PullToRefresh.module.scss";
 
 const MAX_PULL = 120; // px — the pull eases toward this, never past it
@@ -20,7 +20,9 @@ const rubber = (d) => MAX_PULL * (1 - Math.exp(-d / MAX_PULL));
  * frame) instead of through React state, so the page doesn't re-render on
  * every touchmove — that re-rendering is what made the old version jerky.
  */
-const PullToRefresh = ({ onRefresh, children }) => {
+const RING_C = 2 * Math.PI * 15; // circumference of the progress ring (r=15)
+
+const PullToRefresh = ({ onRefresh, children, disabled }) => {
   const contentRef = useRef(null);
   const indicatorRef = useRef(null);
   const wrapperRef = useRef(null);
@@ -28,6 +30,9 @@ const PullToRefresh = ({ onRefresh, children }) => {
   const s = useRef({ startY: null, pulling: false, pull: 0, latest: 0, raf: 0, busy: false });
   const onRefreshRef = useRef(onRefresh);
   onRefreshRef.current = onRefresh;
+  const disabledRef = useRef(disabled);
+  disabledRef.current = disabled;
+  const arcRef = useRef(null);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -45,7 +50,12 @@ const PullToRefresh = ({ onRefresh, children }) => {
       content.style.transform = h > 0 ? `translate3d(0, ${h}px, 0)` : "";
       // Fully visible while refreshing; otherwise grows with the pull
       const progress = state.busy && h > 0 ? 1 : Math.min(h / TRIGGER, 1);
-      indicator.style.opacity = String(progress);
+      indicator.style.opacity = String(Math.min(1, progress * 1.4));
+      // The ring draws itself in as you pull; full ring = release to refresh
+      if (arcRef.current && !state.busy) {
+        arcRef.current.style.strokeDashoffset = String(RING_C * (1 - progress * 0.82));
+      }
+      indicator.classList.toggle(styles.ready, progress >= 1 && !state.busy);
       indicator.style.transform = `translate3d(-50%, ${h / 2 - 20}px, 0) scale(${
         0.6 + 0.4 * progress
       })`;
@@ -56,7 +66,7 @@ const PullToRefresh = ({ onRefresh, children }) => {
       (document.scrollingElement || document.documentElement).scrollTop <= 0;
 
     const onStart = (e) => {
-      if (state.busy || !atTop()) return;
+      if (state.busy || disabledRef.current || !atTop()) return;
       state.startY = e.touches[0].clientY;
       state.startX = e.touches[0].clientX;
       state.pulling = false;
@@ -98,6 +108,8 @@ const PullToRefresh = ({ onRefresh, children }) => {
       if (state.latest >= TRIGGER) {
         state.busy = true;
         setRefreshing(true);
+        indicator.classList.add(styles.spinning);
+        if (arcRef.current) arcRef.current.style.strokeDashoffset = String(RING_C * 0.7);
         apply(HOLD, true);
         try {
           await Promise.race([
@@ -107,6 +119,7 @@ const PullToRefresh = ({ onRefresh, children }) => {
         } catch {}
         setRefreshing(false);
         state.busy = false;
+        indicator.classList.remove(styles.spinning);
       }
       apply(0, true);
     };
@@ -137,7 +150,19 @@ const PullToRefresh = ({ onRefresh, children }) => {
   return (
     <div ref={wrapperRef} className={styles.wrapper}>
       <div ref={indicatorRef} className={styles.indicator} aria-hidden={!refreshing}>
-        <LoaderSpinner width="2.4rem" height="2.4rem" color="#5b8def" />
+        <svg className={styles.ring} viewBox="0 0 36 36" aria-hidden="true">
+          <circle className={styles.track} cx="18" cy="18" r="15" />
+          <circle
+            ref={arcRef}
+            className={styles.arc}
+            cx="18"
+            cy="18"
+            r="15"
+            strokeDasharray={RING_C}
+            strokeDashoffset={RING_C}
+          />
+        </svg>
+        <img src={balloon} alt="" className={styles.balloon} />
       </div>
       <div ref={contentRef} className={styles.content}>
         {children}

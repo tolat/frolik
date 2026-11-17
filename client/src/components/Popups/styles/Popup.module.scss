@@ -64,3 +64,9 @@
     transform: none;
   }
 }
+
+// Gestures on the backdrop don't scroll the page behind
+.blackout {
+  touch-action: none;
+  overscroll-behavior: contain;
+}

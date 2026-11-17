@@ -55,6 +55,19 @@ export function register(config) {
   }
 }
 
+// When the new service worker takes over, reload once to load the new build
+// (only when an older worker was already in control — the very first install
+// also fires controllerchange, and that needs no reload)
+let reloadingForUpdate = false;
+if (typeof navigator !== "undefined" && "serviceWorker" in navigator) {
+  const hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (reloadingForUpdate || !hadController) return;
+    reloadingForUpdate = true;
+    window.location.reload();
+  });
+}
+
 function registerValidSW(swUrl, config) {
   navigator.serviceWorker
     .register(swUrl)
@@ -74,6 +87,11 @@ function registerValidSW(swUrl, config) {
               if (config && config.onUpdate) {
                 config.onUpdate(registration);
               }
+
+              // A new version was deployed: switch to it now instead of
+              // waiting until every app window is closed (installed PWAs
+              // could otherwise keep showing an old build for days)
+              installingWorker.postMessage({ type: "SKIP_WAITING" });
 
               // Subscribe to push notifications
               syncPush();

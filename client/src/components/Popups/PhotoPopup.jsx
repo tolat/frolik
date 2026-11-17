@@ -5,6 +5,7 @@ import { popupActions } from "../../store/popup-slice";
 import { useEffect } from "react";
 import { useState } from "react";
 import { pixelsToRem } from "../../utils/utils";
+import { useScrollLock } from "../../utils/scrollLock";
 
 const PhotoPopup = (props) => {
   const popupState = useSelector((state) => state.popup);
@@ -21,6 +22,7 @@ const PhotoPopup = (props) => {
   };
 
   const dispatch = useDispatch();
+  useScrollLock(showPopup);
 
   // Change opacity
   useEffect(() => {

@@ -50,3 +50,74 @@
     width: 3rem;
     height: 1rem;
   }
+
+// ── Card style aligned with the rest of the app ─────────────────────────────
+.outingInviteContainer {
+  margin-bottom: 1.2rem;
+  border-radius: $radius_lg;
+  overflow: hidden;
+  background-color: $surface;
+  box-shadow: $shadow_sm;
+}
+
+.colorStripe {
+  width: 0.6rem;
+  height: auto;
+  flex-shrink: 0;
+  border-radius: 0;
+}
+
+.outingInviteInnerContainer {
+  gap: 0.4rem;
+  padding: 1.4rem 1.6rem;
+  background-color: $surface;
+  border: none;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+
+.outingInviteHeader {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $text;
+}
+
+.outingInviteActivity {
+  font-size: 1.35rem;
+  color: $text_muted;
+}
+
+// timestamp
+.outingInviteInnerContainer > div:not([class]) {
+  font-size: 1.15rem;
+  color: $text_muted;
+}
+
+.outingInviteInnerContainer [class*="FriendCard_container"] {
+  background-color: $card_grey;
+  box-shadow: none;
+  border: none;
+  margin: 0.4rem 0 !important;
+}
+
+.outingInviteButtons {
+  gap: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.outingInviteButtons button {
+  padding: 1rem;
+  font-size: 1.3rem;
+  background-color: $button_grey;
+  color: $text;
+}
+
+// primary action (e.g. View Outing) when there are two buttons
+.outingInviteButtons button:first-child:not(:last-child) {
+  background-color: $blue;
+  color: white;
+}
+
+.buttonSpacer {
+  display: none;
+}

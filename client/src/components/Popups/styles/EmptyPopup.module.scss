@@ -38,3 +38,9 @@
   border-radius: $radius_lg;
   position: relative;
 }
+
+// Gestures on the backdrop don't scroll the page behind
+.blackout {
+  touch-action: none;
+  overscroll-behavior: contain;
+}

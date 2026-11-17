@@ -2,10 +2,12 @@ import { createPortal } from "react-dom";
 import styles from "./styles/Popup.module.scss";
 import { useEffect, useState } from "react";
 import { pixelsToRem } from "../../utils/utils";
+import { useScrollLock } from "../../utils/scrollLock";
 
 const Popup = (props) => {
   const [opacity, setOpacity] = useState(0);
   const showPopup = props.showPopup;
+  useScrollLock(!!showPopup);
   const noGutters = pixelsToRem(window.innerWidth) < 40;
   const containerStyle = {
     width: noGutters ? "100vw" : null,
