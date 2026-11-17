@@ -464,3 +464,10 @@
   height: 0.8rem;
   width: 100%;
 }
+
+// Drawer card is white throughout, like the app's other cards
+.drawer,
+.drawer .innerContainer,
+.drawer .instructionsContainer {
+  background-color: $surface !important;
+}

@@ -48,7 +48,10 @@ const ActivityCard = (props) => {
 
   // Hide the button bar until at least the first photo has loaded so it
   // doesn't flash on top of the shimmer tile before the image is ready.
-  const [photoLoaded, setPhotoLoaded] = useState(!hasPhotos);
+  // (In the drawer the text and instructions show at once; only the photo
+  // area shimmers while it loads — the whole-card grey tile made the
+  // instructions look grey until the photo arrived.)
+  const [photoLoaded, setPhotoLoaded] = useState(!hasPhotos || !!props.drawer);
   // Whole-card loading tile until the photo is in (8s safety net)
   useEffect(() => {
     if (photoLoaded) return;
