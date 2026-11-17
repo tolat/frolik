@@ -11,14 +11,14 @@ import useIncrementalList from "../../utils/useIncrementalList";
 import ListSentinel from "../UI/ListSentinel";
 
 const Social = (props) => {
-  const [outings, setOutings] = useState({});
+  // null = not loaded yet (skeleton tiles). "Nothing to show yet" only once
+  // the server has actually answered with no outings.
+  const [outings, setOutings] = useState(null);
+  const [loadFailed, setLoadFailed] = useState(false);
   const [feedSearch, setFeedSearch] = useState("");
   const user = useSelector((state) => state.auth.user);
-  const fetchingFeedOutings = useSelector(
-    (state) => state.data.fetchingFeedOutings
-  );
 
-  const sortedKeys = toSorted(Object.keys(outings), (a, b) =>
+  const sortedKeys = toSorted(Object.keys(outings || {}), (a, b) =>
     sortByDate(outings[b].date_created, outings[a].date_created)
   );
 
@@ -33,10 +33,18 @@ const Social = (props) => {
   const getOutings = useCallback(
     (u) =>
       new Promise((resolve) => {
-        fetchFeedOutings(u, (response) => {
-          setOutings(response.outings);
-          resolve();
-        });
+        fetchFeedOutings(
+          u,
+          (response) => {
+            setOutings(response.outings || {});
+            setLoadFailed(false);
+            resolve();
+          },
+          () => {
+            setLoadFailed(true);
+            resolve();
+          }
+        );
       }),
     []
   );
@@ -88,7 +96,16 @@ const Social = (props) => {
           defaultVal={""}
           placeholder={"Search Posts.."}
         />
-        {outings ? (
+        {!outings && loadFailed ? (
+          <div className={styles.noOutingsMessage}>
+            <h2 className={styles.noOutingsMessageHeader}>
+              Couldn't load the feed
+            </h2>
+            <div className={styles.noOutingsMessageText}>
+              Pull down to try again.
+            </div>
+          </div>
+        ) : outings ? (
           Object.keys(outings)[0] ? (
             <Fragment>
               {visibleKeys.map((k) => (
@@ -96,8 +113,6 @@ const Social = (props) => {
               ))}
               <ListSentinel ref={sentinelRef} hasMore={hasMore} />
             </Fragment>
-          ) : fetchingFeedOutings ? (
-            <SkeletonCards variant="feed" count={2} />
           ) : (
             <div className={styles.noOutingsMessage}>
               <h2 className={styles.noOutingsMessageHeader}>

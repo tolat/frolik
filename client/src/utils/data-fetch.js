@@ -726,7 +726,7 @@ export const updateChatLastRead = (user, chat, messageID, onComplete) => {
 };
 
 // Fetch the outings for this user's social feed
-export const fetchFeedOutings = (user, onComplete) => {
+export const fetchFeedOutings = (user, onComplete, onError = () => {}) => {
   const requestConfig = {
     url: `${getServer()}/user/${user._id}/feed-outings`,
   };
@@ -743,6 +743,7 @@ export const fetchFeedOutings = (user, onComplete) => {
   const handleError = (err) => {
     store.dispatch(dataActions.setFetchingFeedOutings(false));
     console.log(err);
+    onError(err);
   };
 
   store.dispatch(dataActions.setFetchingFeedOutings(true));

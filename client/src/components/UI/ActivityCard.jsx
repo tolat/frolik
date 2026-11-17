@@ -222,7 +222,9 @@ const ActivityCard = (props) => {
         style={photoLoaded ? props.style : { ...props.style, ...shineSync() }}
         className={`${styles.outerContainer} ${
           photoLoaded ? "tile-ready" : "tile-loading"
-        } ${props.fitHeight ? styles.fitHeight : ""}`}
+        } ${props.fitHeight ? styles.fitHeight : ""} ${
+          props.drawer ? styles.drawer : ""
+        }`}
       >
         {!props.creatingActivity && (
           <WarningPopup
@@ -318,6 +320,16 @@ const ActivityCard = (props) => {
               </div>
             </div>
           </div>
+          {/* Drawer: the category colour divides the photo from the
+              instructions, as thick as the feed cards' bar */}
+          {props.drawer ? (
+            <div
+              className={styles.dividerStripe}
+              style={{
+                backgroundColor: categoryColorMap[props.activity.category],
+              }}
+            />
+          ) : null}
           <div
             style={{
               maxHeight:

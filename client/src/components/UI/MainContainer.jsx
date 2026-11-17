@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import SlideInModal from "../Modals/SlideInModal";
 import styles from "./styles/MainContainer.module.scss";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import PullToRefresh from "./PullToRefresh";
 import { refreshPage } from "../../utils/pageRefresh";
@@ -25,6 +25,13 @@ const MainContainer = (props) => {
   // (moved here from modal-slice reducer, which must stay pure)
   const modalMarginLeft = useSelector((state) => state.modal.marginLeft);
   const prevMarginLeft = useRef(modalMarginLeft);
+
+  // Every page opens at the top. The page scrolls inside <body> (see
+  // index.css), which neither the router nor the browser resets on navigation.
+  // Layout effect: reset before the new page paints, so there's no jump.
+  useLayoutEffect(() => {
+    document.body.scrollTop = 0;
+  }, [currentUrl]);
 
   useEffect(() => {
     if (currentUrl.includes("login")) {

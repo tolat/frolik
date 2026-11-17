@@ -446,3 +446,21 @@
     overscroll-behavior: contain;
   }
 }
+
+// Inside the bottom drawer: edge to edge, no side stripe (the colour bar sits
+// between the photo and the instructions instead)
+.drawer {
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+
+  .categoryStripe {
+    display: none;
+  }
+}
+
+.dividerStripe {
+  flex-shrink: 0;
+  height: 0.8rem;
+  width: 100%;
+}
