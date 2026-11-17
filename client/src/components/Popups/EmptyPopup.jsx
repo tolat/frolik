@@ -33,7 +33,10 @@ const EmptyPopup = (props) => {
   };
 
   return createPortal(
-    <div style={popupStyle} className={styles.container}>
+    <div
+      style={popupStyle}
+      className={`${styles.container} ${props.aboveNav ? styles.aboveNav : ""}`}
+    >
       <div onClick={handleClosePopup} className={styles.blackout}></div>
       <div style={containerStyle} className={styles.contentContainer}>
         {props.children}

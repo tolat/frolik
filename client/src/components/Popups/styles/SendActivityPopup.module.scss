@@ -1,0 +1,106 @@
+@import "../../../utils/responsive.scss";
+
+.container {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 2rem 1.6rem 1.6rem;
+  background: $surface;
+  border-radius: $radius_lg;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.subheader {
+  margin-top: 0.2rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: $text_muted;
+}
+
+.search {
+  margin-top: 1.2rem;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem 1.2rem;
+  border: 1.5px solid $light_grey;
+  border-radius: 1.2rem;
+  font: inherit;
+  font-size: 1.4rem;
+  outline: none;
+
+  &:focus {
+    border-color: $blue;
+    box-shadow: 0 0 0 4px rgba(91, 141, 239, 0.18);
+  }
+}
+
+.list {
+  margin-top: 1.2rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.friend {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  width: 100%;
+  padding: 0.6rem 0.4rem;
+  border: none;
+  border-radius: 1.4rem;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: $button_grey;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
+}
+
+.friendText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.friendName {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.friendCity {
+  font-size: 1.2rem;
+  color: $text_muted;
+}
+
+.sendLabel {
+  flex-shrink: 0;
+  padding: 0.6rem 1.4rem;
+  border-radius: 100rem;
+  background: linear-gradient(135deg, #6a9bf5 0%, #4a7ee8 55%, #3f6fd8 100%);
+  color: white;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.empty {
+  padding: 1.6rem 0.4rem;
+  font-size: 1.4rem;
+  color: $text_muted;
+  line-height: 1.4;
+}

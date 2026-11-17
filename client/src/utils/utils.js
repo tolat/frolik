@@ -3,6 +3,8 @@ import store from "../store";
 import { hideModal } from "../store/modal-actions";
 import { modalActions } from "../store/modal-slice";
 import { fetchChats, updateChatLastRead } from "./data-fetch";
+import { chatActions } from "../store/chat-slice";
+import { fetchAuth } from "../store/auth-actions";
 
 export const calcAvgRating = (activity) => {
   if (!activity.ratings) {
@@ -98,9 +100,10 @@ export const initialActivityFilter = {
     maxCost: "",
     minCost: "",
     maxTime: "",
-    newOnly: false,
-    completedOnly: false,
-    featuredOnly: false,
+    // "Show only" toggles (combined: all checked ones must match)
+    completed: false,
+    featured: false,
+    created: false,
   },
   activities: [],
   initialActivities: [],
@@ -263,29 +266,34 @@ export const dateSort = (a, b) => {
 export const getTotalUnreadMessages = (user) => {
   return user?.chats
     ?.filter((c) =>
-      c.outing ? !c.outing.flakes.find((uid) => uid === user._id) : true
+      c.outing ? !c.outing.flakes?.find((uid) => uid === user._id) : true
     )
     .reduce((count, chat) => {
       return count + getUnreadChatMessages(user, chat);
     }, 0);
 };
 
+// Messages from *other people* newer than the user's last-read one (your own
+// messages never count as unread — a chat you started used to show a badge)
 export const getUnreadChatMessages = (user, chat) => {
   const lastRead = chat?.last_read;
+  const fromOthers = (msgs) =>
+    msgs.filter((m) => String(m.user?._id || m.user) !== String(user._id)).length;
   if (!lastRead) {
     return 0;
   } else {
     if (lastRead[user._id] === "initialized") {
-      return chat.messages.length;
+      return fromOthers(chat.messages || []);
     }
+    // Ids can be numbers (just sent) or strings (from the server)
     const lastReadMessage = chat?.messages.find(
-      (m) => m.id === lastRead[user._id]
+      (m) => String(m.id) === String(lastRead[user._id])
     );
     const lastReadMessageIndex = chat?.messages.indexOf(lastReadMessage);
     if (!lastReadMessage) {
       return 0;
     } else {
-      return lastReadMessageIndex;
+      return fromOthers(chat.messages.slice(0, lastReadMessageIndex));
     }
   }
 };
@@ -309,9 +317,17 @@ export const setLastReadMessage = (message) => {
     }
     const onComplete = () => {
       fetchChats(user);
+      fetchAuth(); // the account's copy of the chats feeds other counters
     };
 
     if (lastMessage) {
+      store.dispatch(
+        chatActions.setLastRead({
+          chatID: lastChat._id,
+          userID: user._id,
+          messageID: lastMessage.id,
+        })
+      );
       updateChatLastRead(user, lastChat, lastMessage.id, onComplete);
     }
   }
@@ -340,7 +356,7 @@ export function getElementOffsetTop(element) {
   const rect = element.getBoundingClientRect();
 
   // Return the top offset relative to the document
-  return rect.top + window.scrollY;
+  return rect.top + document.body.scrollTop;
 }
 
 export function getElementOffsetToBottom(element) {
@@ -348,7 +364,7 @@ export function getElementOffsetToBottom(element) {
   const rect = element.getBoundingClientRect();
 
   // Return the offset to the bottom relative to the document
-  return rect.top + window.scrollY + element.offsetHeight;
+  return rect.top + document.body.scrollTop + element.offsetHeight;
 }
 
 export const objectsAreEqual = (obj1, obj2) => {

@@ -1,3 +1,5 @@
+import { pageScrollTop, scrollPageTo } from "./pageScroll";
+
 // Scroll an element into view by scrolling only its nearest scroll container
 // (or the page). Used instead of element.scrollIntoView(), which on iOS can
 // also shift the whole viewport — in installed apps that moved the fixed nav
@@ -26,6 +28,6 @@ export const scrollToElement = (
   if (parent) {
     parent.scrollTo({ top: Math.max(0, parent.scrollTop + delta), behavior });
   } else {
-    window.scrollTo({ top: Math.max(0, window.scrollY + delta), behavior });
+    scrollPageTo(Math.max(0, pageScrollTop() + delta), behavior);
   }
 };

@@ -130,10 +130,24 @@ router.post(
     // Add outing status and date created
     // Build the outing from validated fields only (not the raw request body)
     const invited = inviteeUsers;
+
+    // Optional name from the creator (max 20 chars), else a random one
+    const OUTING_NAME_MAX = 20;
+    const requestedName =
+      typeof outing.name === "string"
+        ? outing.name.replace(/[\u0000-\u001f\u007f]/g, "").trim()
+        : "";
+    if (requestedName.length > OUTING_NAME_MAX) {
+      res.status(406).send({
+        header: "Could not create outing",
+        message: `Outing names can be at most ${OUTING_NAME_MAX} characters.`,
+      });
+      return;
+    }
     const newOuting = new Outing({
       activity: activity._id,
       date_created: new Date(),
-      name: generateUniqueName(),
+      name: requestedName || generateUniqueName(),
       created_by: user._id,
       users: [user._id],
       invited: invited.map((u) => u._id),
@@ -265,6 +279,53 @@ router.get(
 );
 
 // Join an Outing
+// Rename an outing (any member). Keeps the outing chat's name in step.
+router.post(
+  "/:id/:outingid/rename",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const OUTING_NAME_MAX = 20;
+    const user = req.user;
+    const name =
+      typeof req.body.name === "string"
+        ? req.body.name.replace(/[\u0000-\u001f\u007f]/g, "").trim()
+        : "";
+    if (!name || name.length > OUTING_NAME_MAX) {
+      res.status(406).send({
+        header: "Could not rename outing",
+        message: `Outing names must be 1-${OUTING_NAME_MAX} characters.`,
+      });
+      return;
+    }
+
+    const outing = await Outing.findById(req.params.outingid);
+    if (!outing) return res.status(404).send("Outing not found");
+    if (!outing.users.some((u) => u.toString() === user._id.toString())) {
+      res.status(406).send({
+        header: "Could not rename outing",
+        message: "Only members of the Outing can rename it.",
+      });
+      return;
+    }
+
+    outing.name = name;
+    await outing.save();
+    if (outing.chat) await Chat.findByIdAndUpdate(outing.chat, { name });
+
+    pushUserUpdate([...outing.users, ...outing.invited]);
+
+    await outing.populate("users");
+    await outing.populate("activity");
+    await outing.populate("users.outings");
+    await outing.populate("users.outings.activity");
+    await outing.populate("invited");
+    await outing.populate("invited.outings");
+    await outing.populate("invited.outings.activity");
+    res.send({ outing });
+  })
+);
+
 router.get(
   "/:id/:outingid/join",
   reqAuthenticated,

@@ -10,7 +10,7 @@ import inviteIcon from "../../images/invite.png";
 import FriendCard from "../UI/FriendCard";
 import ActivityCard from "../UI/ActivityCard";
 import { modalActions } from "../../store/modal-slice";
-import { hideModal } from "../../store/modal-actions";
+import { hideModal, swapModal } from "../../store/modal-actions";
 import {
   addOutingCompletion,
   deleteOuting,
@@ -25,6 +25,7 @@ import {
 import { authActions } from "../../store/auth-slice";
 import { popupActions } from "../../store/popup-slice";
 import WarningPopup from "../Popups/WarningPopup";
+import OutingTitleEditor from "../UI/OutingTitleEditor";
 import flakeIcon from "../../images/snowflake.png";
 import {
   arrayBufferToBase64,
@@ -54,6 +55,19 @@ const OutingModal = (props) => {
     globals && globals?.categoryColorMap[outing?.activity?.category];
   const completed = outing && outingIsCompleted(outing);
   const status = completed ? "Completed" : "Pending";
+  // Header subheading: what the outing is waiting on, in plain words
+  const statusLabel = completed
+    ? "Completed"
+    : (outing?.users?.length || 0) < 2
+    ? "Waiting for members"
+    : !outing?.photos?.[0]
+    ? "Waiting for photos"
+    : outing?.completions?.find((id) => id === user?._id)
+    ? "Waiting for others to finish"
+    : "Ready to finish";
+  const statusTone = completed || statusLabel === "Ready to finish"
+    ? styles.statusReady
+    : styles.statusWaiting;
   const isLastCompletion = user && outing && userIsLastCompletion(user, outing);
   const userHasCompleted = outing?.completions?.find((id) => user._id === id);
   const chatsState = useSelector((state) => state.chat.chats);
@@ -85,15 +99,18 @@ const OutingModal = (props) => {
 
   // Handle the chat modal being shown
   const onShowChatModal = () => {
-    const showChat = async () => {
-      await hideModal();
-      dispatch(modalActions.setActiveChat(outingChat));
-      dispatch(modalActions.setSelector("chat-modal"));
-      dispatch(
-        modalActions.showModal({
-          headerStyle: { backgroundColor: "transparent" },
-        })
-      );
+    // Swap to the chat in place (closing the outing first flashed the page
+    // underneath, e.g. Profile). Back returns to this outing.
+    const showChat = () => {
+      swapModal(() => {
+        dispatch(modalActions.setActiveChat(outingChat));
+        dispatch(modalActions.setSelector("chat-modal"));
+        dispatch(
+          modalActions.showModal({
+            headerStyle: { backgroundColor: "transparent" },
+          })
+        );
+      });
     };
     fetchChat(user._id, outing?.chat, showChat);
   };
@@ -312,6 +329,25 @@ const OutingModal = (props) => {
     </div>
   );
 
+  const pendingInvites = outing?.invited?.length || 0;
+  const howToCompleteMessage = (
+    <div className={styles.howToComplete}>
+      <p>An Outing needs at least 2 members before it can be completed.</p>
+      <ol>
+        <li>
+          {pendingInvites
+            ? `Wait for your ${
+                pendingInvites === 1 ? "invite" : `${pendingInvites} invites`
+              } to be accepted, or invite someone else.`
+            : "Invite a friend or a Daily Match to join."}
+        </li>
+        <li>Go on the Outing together.</li>
+        <li>Upload at least one photo from it.</li>
+        <li>Every member taps Mark Completed.</li>
+      </ol>
+    </div>
+  );
+
   const completionCountMessage = (
     <div className={styles.completionMessage}>
       {outing?.completions?.length} / {outing?.users?.length} Members have
@@ -356,6 +392,12 @@ const OutingModal = (props) => {
   );
 
   const onMarkCompletedClick = () => {
+    // Not enough members yet: explain how completing works instead of
+    // leaving the button dead
+    if (!outing?.users?.[1]) {
+      dispatch(popupActions.showPopup("outing-needs-members"));
+      return;
+    }
     // Block completion if no photos uploaded
     if (!outing?.photos[0]) {
       dispatch(popupActions.showPopup("no-photos"));
@@ -382,8 +424,10 @@ const OutingModal = (props) => {
               style={{ borderLeft: `10px solid ${categoryColor}` }}
               className={styles.headerInnerContainerFeedCard}
             >
-              <div className={styles.outingName}>Outing: {outing.name}</div>
-              <div className={styles.outingStatus}>{status}</div>
+              <div className={styles.outingName}>{outing.name}</div>
+              <div className={`${styles.outingStatus} ${statusTone}`}>
+                {statusLabel}
+              </div>
             </div>
           </ModalHeaderPortal>
           <br />
@@ -427,6 +471,13 @@ const OutingModal = (props) => {
             cancelClick={() => {
               dispatch(popupActions.hidePopup());
             }}
+          />
+          <WarningPopup
+            selector={"outing-needs-members"}
+            header={"How to complete an Outing"}
+            message={howToCompleteMessage}
+            ok={"Got it"}
+            okClick={() => dispatch(popupActions.hidePopup())}
           />
           <WarningPopup
             selector={"maximum-2-photos"}
@@ -484,8 +535,15 @@ const OutingModal = (props) => {
                   style={{ borderLeft: `10px solid ${categoryColor}` }}
                   className={styles.headerInnerContainer}
                 >
-                  <div className={styles.outingName}>Outing: {outing.name}</div>
-                  <div className={styles.outingStatus}>{status}</div>
+                  <OutingTitleEditor
+                    outing={outing}
+                    canEdit={outing.users?.some(
+                      (u) => (u._id || u) === user._id
+                    )}
+                  />
+                  <div className={`${styles.outingStatus} ${statusTone}`}>
+                    {statusLabel}
+                  </div>
                 </div>
               </div>
             </ModalHeaderPortal>
@@ -496,14 +554,12 @@ const OutingModal = (props) => {
                   onClick={
                     joining
                       ? showConfirmOutingJoin
-                      : outing.users[1] && !userHasCompleted
+                      : !userHasCompleted
                       ? onMarkCompletedClick
                       : null
                   }
                   className={`${styles.completedButton} ${
-                    (outing.users[1] || joining) && !userHasCompleted
-                      ? null
-                      : styles.unclickableButton
+                    userHasCompleted ? styles.unclickableButton : ""
                   }`}
                 >
                   {joining
@@ -511,18 +567,6 @@ const OutingModal = (props) => {
                     : userHasCompleted
                     ? `Marked Completed!`
                     : "Mark Completed"}
-                </SimpleButton>
-              )}
-
-              {!joining && !completed && !userFlaked ? (
-                <div className={styles.buttonSpacer}></div>
-              ) : null}
-              {joining || userFlaked ? null : (
-                <SimpleButton
-                  onClick={onShowChatModal}
-                  className={`${styles.chatButton} ${styles.ctaButton}`}
-                >
-                  Chat
                 </SimpleButton>
               )}
             </div>
@@ -630,6 +674,19 @@ const OutingModal = (props) => {
                 alt={"members"}
               />{" "}
               Members
+              {joining || userFlaked ? null : (
+                <button
+                  type="button"
+                  onClick={onShowChatModal}
+                  className={styles.chatCircle}
+                  aria-label="Open outing chat"
+                  title="Chat"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.2 3.6c-.5.4-1.3.1-1.3-.6V16A2.5 2.5 0 0 1 4 13.5z" />
+                  </svg>
+                </button>
+              )}
             </h2>
             {outing.users.map((u) => (
               <FriendCard user={u} key={u._id || u} />

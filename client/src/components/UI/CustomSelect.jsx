@@ -25,9 +25,11 @@ const CustomSelect = forwardRef((props, ref) => {
 
   return (
     <div className={`${styles.container} ${props.className}`}>
-      <label className={styles.label} htmlFor={props.id || Math.random()}>
-        {props.label}
-      </label>
+      {props.label ? (
+        <label className={styles.label} htmlFor={props.id}>
+          {props.label}
+        </label>
+      ) : null}
       <div
         tabIndex={"0"}
         onBlur={() => {

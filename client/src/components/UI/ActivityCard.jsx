@@ -8,8 +8,11 @@ import groupIcon from "../../images/friends.png";
 import SimpleButton from "./SimpleButton";
 import { Fragment, useState, useCallback, useEffect } from "react";
 import trophyIcon from "../../images/trophy.png";
+import balloonLightIcon from "../../images/air-balloon-light.png";
+import balloonBlueIcon from "../../images/air-balloon-blue.png";
 import completeIcon from "../../images/complete.png";
 import featuredIcon from "../../images/feature.png";
+import { scrollPageTo } from "../../utils/pageScroll";
 import creationIcon from "../../images/sketch.png";
 import { calcAvgRating } from "../../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +20,7 @@ import { goActions } from "../../store/go-slice";
 import InstructionCard from "./InstructionCard";
 import WarningPopup from "../Popups/WarningPopup";
 import { popupActions } from "../../store/popup-slice";
+import { hideModal } from "../../store/modal-actions";
 import { deleteActivity } from "../../utils/data-fetch";
 import { useLocation, useNavigate } from "react-router-dom";
 import SixPhotoGrid from "./SixPhotoGrid";
@@ -61,7 +65,7 @@ const ActivityCard = (props) => {
     dispatch(goActions.setActivity(props.activity));
     // The list collapses to the chosen card: bring the user back to the top
     // (checklist + Create button) so no stale scroll offset is left behind
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    scrollPageTo(0, "smooth");
   };
 
   const handleRemove = () => {
@@ -102,18 +106,123 @@ const ActivityCard = (props) => {
     deleteActivity(user, props.activity, onComplete);
   };
 
+  // Send to a friend: swap this popup for the friend picker
+  const handleSend = () => {
+    dispatch(popupActions.setSendActivity(props.activity));
+    dispatch(popupActions.showPopup("send-activity"));
+  };
+
+  const modalOpen = useSelector((state) => state.modal.marginLeft === "0%");
   const handleUseActivity = () => {
+    // Opened from a chat panel: close it so the outing page shows
+    if (modalOpen) hideModal();
     dispatch(goActions.reset([user]));
     dispatch(goActions.setActivity(props.activity));
     setTimeout(() => dispatch(popupActions.hidePopup()), 1500);
     navigate("/outing");
   };
 
+  // Photo cards: the stats sit in the title row, inside the dark fade at the
+  // top of the photo, where they stay legible (names are capped at 20 chars)
+  const statsOnTop = hasPhotos && !props.creatingActivity;
+  const statIcons = (
+    <Fragment>
+      <StatIcon
+        alt="time"
+        icon={timeIcon}
+        iconStyle={statIconStyle}
+        rating={
+          props.creatingActivity
+            ? props.activity.duration
+            : `${props.activity.duration} hrs`
+        }
+      />
+      <div className={styles.spacer} />
+      <StatIcon
+        alt="cost"
+        icon={costIcon}
+        iconStyle={statIconStyle}
+        rating={
+          props.creatingActivity
+            ? props.activity.cost
+            : `$${props.activity.cost}`
+        }
+      />
+      <div className={styles.spacer} />
+      <StatIcon
+        alt="group"
+        icon={groupIcon}
+        iconStyle={statIconStyle}
+        rating={
+          props.creatingActivity
+            ? props.activity.participants
+            : `${props.activity.participants} +`
+        }
+      />
+      {!props.creatingActivity && (
+        <Fragment>
+          <div className={styles.spacer} />
+          <StatIcon
+            alt="rating"
+            icon={ratingIcon}
+            iconStyle={statIconStyle}
+            rating={calcAvgRating(props.activity)}
+          />
+        </Fragment>
+      )}
+    </Fragment>
+  );
+  const badges = (
+    <Fragment>
+      {props.completed ? (
+        <div className={styles.completedIconContainer}>
+          <img
+            src={completeIcon}
+            className={styles.completedIcon}
+            alt="completed-icon"
+          />
+        </div>
+      ) : null}
+      {props.activity.featured ? (
+        <div className={styles.completedIconContainer}>
+          <img
+            src={featuredIcon}
+            className={styles.completedIcon}
+            alt="completed-icon"
+          />
+        </div>
+      ) : null}
+      {props.activity.created_by ? (
+        <Fragment>
+          <div className={styles.completedIconContainer}>
+            <img
+              src={creationIcon}
+              className={styles.completedIcon}
+              alt="creation-icon"
+            />
+          </div>
+          {currentUrl === "/outing" && (
+            <SimpleButton
+              noShadow={true}
+              onClick={handleDeleteActivity}
+              className={styles.deleteActivityButton}
+              style={hasPhotos && { filter: "invert(1)" }}
+            >
+              Delete
+            </SimpleButton>
+          )}
+        </Fragment>
+      ) : null}
+    </Fragment>
+  );
+
   return (
     categoryColorMap && (
       <div
         style={photoLoaded ? props.style : { ...props.style, ...shineSync() }}
-        className={`${styles.outerContainer} ${photoLoaded ? "tile-ready" : "tile-loading"}`}
+        className={`${styles.outerContainer} ${
+          photoLoaded ? "tile-ready" : "tile-loading"
+        } ${props.fitHeight ? styles.fitHeight : ""}`}
       >
         {!props.creatingActivity && (
           <WarningPopup
@@ -150,6 +259,7 @@ const ActivityCard = (props) => {
               {hasPhotos && currentUrl === "/outing" && photoLoaded ? (
                 <Buttons
                   {...props}
+                  handleSend={handleSend}
                   hasPhotos={hasPhotos}
                   currentUrl={currentUrl}
                   handleUseActivity={handleUseActivity}
@@ -165,107 +275,46 @@ const ActivityCard = (props) => {
               className={styles.nonPhotoContainer}
               style={hasPhotos ? null : noPhotoContainerStyle}
             >
-              <div className={styles.name}>
+              {/* Create Activity: category dropdown sits at the top of the card */}
+              {props.creatingActivity && props.topSlot ? (
+                <div className={styles.topSlot}>{props.topSlot}</div>
+              ) : null}
+              <div
+                className={`${styles.name} ${
+                  statsOnTop ? styles.nameWithStats : ""
+                }`}
+              >
                 <div className={styles.innerNameContainer}>
-                  {props.activity.name}
+                  <div className={styles.nameText}>{props.activity.name}</div>
                   <div className={styles.location}>
                     {props.activity.location}
+                    {statsOnTop ? (
+                      <span className={styles.inlineBadges}>{badges}</span>
+                    ) : null}
                   </div>
                 </div>
-                <div className={styles.nameRightContainer}>
-                  {props.completed ? (
-                    <div className={styles.completedIconContainer}>
-                      <img
-                        src={completeIcon}
-                        className={styles.completedIcon}
-                        alt="completed-icon"
-                      />
-                    </div>
-                  ) : null}
-                  {props.activity.featured ? (
-                    <div className={styles.completedIconContainer}>
-                      <img
-                        src={featuredIcon}
-                        className={styles.completedIcon}
-                        alt="completed-icon"
-                      />
-                    </div>
-                  ) : null}
-                  {props.activity.created_by ? (
-                    <Fragment>
-                      <div className={styles.completedIconContainer}>
-                        <img
-                          src={creationIcon}
-                          className={styles.completedIcon}
-                          alt="creation-icon"
-                        />
-                      </div>
-                      {currentUrl === "/outing" && (
-                        <SimpleButton
-                          noShadow={true}
-                          onClick={handleDeleteActivity}
-                          className={styles.deleteActivityButton}
-                          style={hasPhotos && { filter: "invert(1)" }}
-                        >
-                          Delete
-                        </SimpleButton>
-                      )}
-                    </Fragment>
-                  ) : null}
-                </div>
+                {statsOnTop ? (
+                  <div className={styles.topStats}>{statIcons}</div>
+                ) : (
+                  <div className={styles.nameRightContainer}>{badges}</div>
+                )}
               </div>
               <div>
-                <div className={styles.description}>
+                <div
+                  className={`${styles.description} ${
+                    statsOnTop ? styles.descriptionOnPhoto : ""
+                  }`}
+                >
                   {props.activity.description}
                 </div>
-                <div
-                  style={props.creatingActivity ? { padding: 0 } : null}
-                  className={styles.specsContainer}
-                >
-                  <StatIcon
-                    alt="time"
-                    icon={timeIcon}
-                    iconStyle={statIconStyle}
-                    rating={
-                      props.creatingActivity
-                        ? props.activity.duration
-                        : `${props.activity.duration} hrs`
-                    }
-                  />
-                  <div className={styles.spacer} />
-                  <StatIcon
-                    alt="cost"
-                    icon={costIcon}
-                    iconStyle={statIconStyle}
-                    rating={
-                      props.creatingActivity
-                        ? props.activity.cost
-                        : `$${props.activity.cost}`
-                    }
-                  />
-                  <div className={styles.spacer} />
-                  <StatIcon
-                    alt="group"
-                    icon={groupIcon}
-                    iconStyle={statIconStyle}
-                    rating={
-                      props.creatingActivity
-                        ? props.activity.participants
-                        : `${props.activity.participants} +`
-                    }
-                  />
-                  {!props.creatingActivity && (
-                    <Fragment>
-                      <div className={styles.spacer} />
-                      <StatIcon
-                        alt="rating"
-                        icon={ratingIcon}
-                        iconStyle={statIconStyle}
-                        rating={calcAvgRating(props.activity)}
-                      />
-                    </Fragment>
-                  )}
-                </div>
+                {statsOnTop ? null : (
+                  <div
+                    style={props.creatingActivity ? { padding: 0 } : null}
+                    className={styles.specsContainer}
+                  >
+                    {statIcons}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -307,12 +356,14 @@ const ActivityCard = (props) => {
               <div className={styles.goal}>{props.activity.goal}</div>
             </div>
           </div>
-          {hasPhotos && currentUrl === "/outing" ? null : (
+          {/* No bottom button bar while creating (it was an empty gap under Goal) */}
+          {(hasPhotos && currentUrl === "/outing") || props.creatingActivity ? null : (
             <Fragment>
               <div className={styles.buttonSpacer} />
               {photoLoaded && (
                 <Buttons
                   {...props}
+                  handleSend={handleSend}
                   currentUrl={currentUrl}
                   handleUseActivity={handleUseActivity}
                   handleToggleInstructions={handleToggleInstructions}
@@ -331,21 +382,22 @@ const ActivityCard = (props) => {
 };
 
 const Buttons = (props) => {
+  // Social feed / chat popups: "Create Outing" + "Send" instead of the
+  // instructions toggle and Select
+  const social =
+    props.showInstructions &&
+    (props.socialActions || props.currentUrl === "/social");
   return (
     <div
       className={`${styles.buttonContainer} ${
         props.hasPhotos ? styles.buttonGradient : styles.plainButtons
       }`}
     >
-      {(!props.showInstructions || props.currentUrl === "/social") && (
+      {(!props.showInstructions || social) && (
         <SimpleButton
           square={true}
           noShadow={true}
-          className={
-            props.showInstructions && props.currentUrl === "/social"
-              ? styles.useActivity
-              : styles.instructionsToggle
-          }
+          className={social ? styles.useActivity : styles.instructionsToggle}
           style={{
             boxShadow: "none",
             justifyContent: props.hasPhotos ? "left" : null,
@@ -354,7 +406,7 @@ const Buttons = (props) => {
           }}
           onClick={
             props.showInstructions
-              ? props.currentUrl === "/social"
+              ? social
                 ? props.handleUseActivity
                 : null
               : props.handleToggleInstructions
@@ -365,9 +417,34 @@ const Buttons = (props) => {
               ? "Show Instructions"
               : "Hide Instructions"
             : null}
-          {props.currentUrl === "/social" && "Use Activity"}
+          {social ? (
+            <span className={styles.createOutingLabel}>
+              <img
+                src={props.hasPhotos ? balloonLightIcon : balloonBlueIcon}
+                alt=""
+              />
+              Create Outing
+            </span>
+          ) : null}
         </SimpleButton>
       )}
+
+      {social ? (
+        <SimpleButton
+          square={true}
+          noShadow={true}
+          onClick={props.handleSend}
+          className={styles.sendActivity}
+          style={{
+            boxShadow: "none",
+            justifyContent: props.hasPhotos ? "right" : null,
+            backgroundColor: props.hasPhotos ? "transparent" : null,
+            color: props.hasPhotos ? "white" : null,
+          }}
+        >
+          Send to a friend
+        </SimpleButton>
+      ) : null}
 
       {props.hideSelect ? null : props.goState.outing.activity?.name ===
         props.activity.name ? (

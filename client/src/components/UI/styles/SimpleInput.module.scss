@@ -32,3 +32,26 @@
     margin-top: 1rem;
   }
   
+.field {
+  position: relative;
+  width: 100%;
+}
+
+// Unit label inside the field ("$", "hrs", "★", "people")
+.unit {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: $text_muted;
+  pointer-events: none;
+}
+
+.prefix {
+  left: 1.4rem;
+}
+
+.suffix {
+  right: 1.4rem;
+}

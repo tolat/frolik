@@ -62,8 +62,7 @@ const PullToRefresh = ({ onRefresh, children, disabled }) => {
       state.pull = h;
     };
 
-    const atTop = () =>
-      (document.scrollingElement || document.documentElement).scrollTop <= 0;
+    const atTop = () => document.body.scrollTop <= 0;
 
     const onStart = (e) => {
       if (state.busy || disabledRef.current || !atTop()) return;

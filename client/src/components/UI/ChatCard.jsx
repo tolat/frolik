@@ -142,7 +142,12 @@ const ChatCard = memo((props) => {
       if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < AXIS_LOCK_PX) return;
       axis.current = Math.abs(deltaX) > Math.abs(deltaY) ? "x" : "y";
       // Keep receiving moves even if the pointer leaves the card
-      if (axis.current === "x") e.currentTarget.setPointerCapture?.(e.pointerId);
+      // (throws if the pointer already ended, e.g. a fast flick; harmless)
+      if (axis.current === "x") {
+        try {
+          e.currentTarget.setPointerCapture?.(e.pointerId);
+        } catch {}
+      }
     }
     if (axis.current === "y") return;
     // Mark as a swipe so the follow-up click event gets suppressed.

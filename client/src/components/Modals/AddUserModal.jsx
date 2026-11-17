@@ -53,12 +53,13 @@ const AddUserModal = (props) => {
     fetchMatchedUsers(user, setMatchedUsers);
   }, [user, setMatchedUsers]);
 
-  // One friend per Daily Match: how many more friends can be added
+  // One friend per Daily Match. The first friend can be added straight away
+  // (before any match); Create Outing still needs a match for every friend.
   const friendIDSet = new Set((user.friends || []).map((f) => f._id || f));
   const membersAdded = goState.outing.users.filter((u) => u._id !== user._id);
   const friendsAdded = membersAdded.filter((u) => friendIDSet.has(u._id)).length;
   const matchesAdded = membersAdded.length - friendsAdded;
-  const friendSlots = Math.max(0, matchesAdded - friendsAdded);
+  const friendSlots = Math.max(0, Math.max(1, matchesAdded) - friendsAdded);
 
   const AddButton = (props) => {
     const locked = props.locked;
@@ -133,8 +134,10 @@ const AddUserModal = (props) => {
             </h2>
             <div className={styles.friendSlots}>
               {friendSlots > 0
-                ? `You can add ${friendSlots} more friend${friendSlots > 1 ? "s" : ""} — one per Daily Match.`
-                : "Add a Daily Match to invite a friend — one friend per match."}
+                ? matchesAdded === 0
+                  ? "You can add a friend now — you'll also need a Daily Match for each friend."
+                  : `You can add ${friendSlots} more friend${friendSlots > 1 ? "s" : ""} — one per Daily Match.`
+                : "Add another Daily Match to invite another friend — one friend per match."}
             </div>
             <SimpleSearch
               placeholder={"Search Friends.."}

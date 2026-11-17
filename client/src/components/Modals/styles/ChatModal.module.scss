@@ -228,3 +228,62 @@
   width: 2rem;
   height: 2rem;
 }
+
+// ── Shared activity card in a message ───────────────────────────────────────
+.activityShare {
+  display: flex;
+  align-items: stretch;
+  width: 78%;
+  max-width: 28rem;
+  padding: 0;
+  border: none;
+  border-radius: 1.6rem;
+  overflow: hidden; // clips the stripe at the corners, like activity cards
+  background: $surface;
+  box-shadow: $shadow_md;
+  font: inherit;
+  text-align: left;
+  color: $text;
+  cursor: pointer;
+  transition: transform 0.15s $ease_out;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.activityShareStripe {
+  flex-shrink: 0;
+  width: 0.6rem;
+  background-color: $blue;
+}
+
+.activityShareBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  padding: 1.1rem 1.4rem 1.2rem;
+}
+
+.activityShareLabel {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $text_muted;
+}
+
+.activityShareName {
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.activityShareCity {
+  font-size: 1.2rem;
+  color: $text_muted;
+}
+

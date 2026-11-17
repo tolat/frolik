@@ -43,6 +43,7 @@ const SlideInModal = (props) => {
         }}
         className={styles.container}
         id="modal-container"
+        data-open={modalState.marginLeft === "0%" ? "true" : "false"}
       >
         <div
           id="modal-header-container"

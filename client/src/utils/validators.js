@@ -1,3 +1,8 @@
+import {
+  ACTIVITY_NAME_MAX,
+  ACTIVITY_DESCRIPTION_MAX,
+  INSTRUCTION_TITLE_MAX,
+} from "./limits";
 import { isConfirmedLocation } from "./location";
 
 const isNotEmpty = (value) => {
@@ -138,6 +143,12 @@ export const createActivityValidators = (instructions) => {
         },
         message: "Please enter an activity name",
       },
+      {
+        isValid(value) {
+          return String(value || "").trim().length <= ACTIVITY_NAME_MAX;
+        },
+        message: `Activity names can be at most ${ACTIVITY_NAME_MAX} characters`,
+      },
     ],
     "create-activity-location": [
       {
@@ -159,6 +170,12 @@ export const createActivityValidators = (instructions) => {
           return value && value !== "";
         },
         message: "Please enter a description.",
+      },
+      {
+        isValid(value) {
+          return String(value || "").trim().length <= ACTIVITY_DESCRIPTION_MAX;
+        },
+        message: `Descriptions can be at most ${ACTIVITY_DESCRIPTION_MAX} characters`,
       },
     ],
     "create-activity-category": [
@@ -221,6 +238,12 @@ export const createActivityValidators = (instructions) => {
           return value && value !== "";
         },
         message: "Please enter instruction title.",
+      },
+      {
+        isValid(value) {
+          return String(value || "").trim().length <= INSTRUCTION_TITLE_MAX;
+        },
+        message: `Instruction titles can be at most ${INSTRUCTION_TITLE_MAX} characters`,
       },
     ];
 

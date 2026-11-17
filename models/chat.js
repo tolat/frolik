@@ -13,6 +13,10 @@ const ChatSchema = new Schema(
         message: String,
         sent: Date,
         user: { type: Schema.Types.ObjectId, ref: "User" },
+        // Shared activity: a small snapshot ({_id, name, category, location})
+        // so the chat can draw the card without a lookup; the full activity
+        // is fetched (GET /activity/:id) when it is opened.
+        activity: Object,
       },
     ],
     touched: Date,

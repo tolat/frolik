@@ -44,3 +44,20 @@
   touch-action: none;
   overscroll-behavior: contain;
 }
+
+// Popups that must sit fully between the top of the screen and the floating
+// nav bar (e.g. the activity popup): centred in that space and capped to it
+.aboveNav {
+  height: 100dvh;
+  box-sizing: border-box;
+  padding-bottom: calc(#{$navbar_height} + env(safe-area-inset-bottom, 0px));
+
+  .contentContainer {
+    max-height: calc(
+      100dvh - #{$navbar_height} - env(safe-area-inset-bottom, 0px) - 2.4rem
+    );
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+}

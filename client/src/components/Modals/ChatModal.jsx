@@ -6,7 +6,9 @@ import ModalPortal from "./ModalPortal";
 import styles from "./styles/ChatModal.module.scss";
 import ModalHeaderPortal from "./ModalHeaderPortal";
 import ModalButtonPortal from "./ModalButtonPortal";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { popupActions } from "../../store/popup-slice";
+import { fetchActivityDetails } from "../../utils/data-fetch";
 import { sendChatMessage } from "../../store/chat-actions";
 import { socket } from "../../socket";
 import { goActions } from "../../store/go-slice";
@@ -137,6 +139,7 @@ const ChatModal = (props) => {
                 id={m.id}
                 user={m.user}
                 message={m.message}
+                activity={m.activity}
                 sent={m.sent}
                 firstInGroup={!sameAsOlder}
                 lastInGroup={!sameAsNewer}
@@ -211,13 +214,18 @@ const MessageBubble = (props) => {
           {messageUser.first_name}
         </div>
       )}
-      <div
-        className={`${styles.bubble} ${
-          props.lastInGroup ? styles.bubbleTail : ""
-        }`}
-      >
-        {props.message}
-      </div>
+      {props.activity?._id ? (
+        <ActivityShareBubble activity={props.activity} foreign={foreign} />
+      ) : null}
+      {props.message ? (
+        <div
+          className={`${styles.bubble} ${
+            props.lastInGroup ? styles.bubbleTail : ""
+          }`}
+        >
+          {props.message}
+        </div>
+      ) : null}
       {props.lastInGroup && (
         <div className={styles.sent}>
           {sentDate.toDateString().slice(4, 10)} ·{" "}
@@ -225,6 +233,50 @@ const MessageBubble = (props) => {
         </div>
       )}
     </div>
+  );
+};
+
+// A shared activity in the chat: tap to open the same activity popup as the
+// social feed (Create Outing / Send to a friend)
+const ActivityShareBubble = ({ activity, foreign }) => {
+  const dispatch = useDispatch();
+  const colour = useSelector(
+    (state) => state.auth.globals?.categoryColorMap?.[activity.category]
+  );
+  const [loading, setLoading] = useState(false);
+  const open = () => {
+    if (loading) return;
+    setLoading(true);
+    fetchActivityDetails(activity._id, (full) => {
+      setLoading(false);
+      if (!full) return;
+      dispatch(popupActions.setSharedActivity(full));
+      dispatch(popupActions.showPopup("shared-activity"));
+    });
+  };
+  return (
+    <button
+      type="button"
+      onClick={open}
+      className={`${styles.activityShare} ${
+        foreign ? styles.activityShareForeign : ""
+      }`}
+    >
+      {/* Straight category stripe, like the activity cards */}
+      <span
+        className={styles.activityShareStripe}
+        style={{ backgroundColor: colour || undefined }}
+      />
+      <span className={styles.activityShareBody}>
+        <span className={styles.activityShareLabel}>
+          {loading ? "Opening…" : "Activity"}
+        </span>
+        <span className={styles.activityShareName}>{activity.name}</span>
+        {activity.location ? (
+          <span className={styles.activityShareCity}>{activity.location}</span>
+        ) : null}
+      </span>
+    </button>
   );
 };
 

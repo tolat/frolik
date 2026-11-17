@@ -24,13 +24,20 @@ import outingIconBlue from "../../images/air-balloon-blue.png";
 import logo from "../../images/frolik2.png";
 import InstallPromptModal from "../Modals/InstallPromptModal";
 import Tour from "../Tour/Tour";
+import SendActivityPopup from "../Popups/SendActivityPopup";
+import SharedActivityPopup from "../Popups/SharedActivityPopup";
 
 const Navbar = (props) => {
   const user = useSelector((state) => state.auth.user);
   const authState = useSelector((state) => state.auth);
   const chats = useSelector((state) => state.chat.chats);
   const dispatch = useDispatch();
-  const unreadChatMessages = chats && getTotalUnreadMessages(user);
+  // Count from the chat list (refreshed whenever a chat is read), not the
+  // account's own copy of the chats, which only updated on a full reload
+  const unreadChatMessages =
+    user && chats?.length
+      ? getTotalUnreadMessages({ ...user, chats })
+      : getTotalUnreadMessages(user);
   const location = useLocation();
   const navigate = useNavigate();
   const currentUrl = location.pathname;
@@ -106,6 +113,8 @@ const Navbar = (props) => {
           <OutingModal />
           <ProfileViewerModal />
           <PhotoPopup />
+          <SendActivityPopup />
+          <SharedActivityPopup />
           <Tour />
           <WarningPopup
             selector={"too-many-outings"}

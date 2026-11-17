@@ -844,14 +844,14 @@ export const resendVerificationEmail = (username, onComplete) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
-export const createActivity = (user, activity, onComplete) => {
+export const createActivity = (user, activity, onComplete, photoString) => {
   const requestConfig = {
     url: `${getServer()}/activity/create`,
     headers: {
       "Content-Type": "application/json",
     },
     method: "POST",
-    body: JSON.stringify({ activity, userID: user._id }),
+    body: JSON.stringify({ activity, userID: user._id, photoString }),
   };
 
   const handleResponse = (response) => {
@@ -919,4 +919,29 @@ export const markTourSeen = (user) => {
     body: JSON.stringify({ userID: user._id }),
   };
   httpFetch(requestConfig, () => {}, (err) => console.log(err));
+};
+
+// Rename an outing (members only). onDone(outing) on success, onDone(null) on
+// failure (a 406 shows its own warning popup).
+export const renameOuting = (user, outingID, name, onDone = () => {}) => {
+  const requestConfig = {
+    url: `${getServer()}/outing/${user._id}/${outingID}/rename`,
+    headers: { "Content-Type": "application/json" },
+    method: "POST",
+    body: JSON.stringify({ name }),
+  };
+  httpFetch(
+    requestConfig,
+    (response) => onDone(response?.outing || null),
+    () => onDone(null)
+  );
+};
+
+// Full activity (with photos) by id, e.g. one shared in a chat
+export const fetchActivityDetails = (activityID, onDone = () => {}) => {
+  httpFetch(
+    { url: `${getServer()}/activity/${activityID}/details` },
+    (response) => onDone(response?.activity || null),
+    () => onDone(null)
+  );
 };

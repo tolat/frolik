@@ -31,9 +31,38 @@ export const searchPlaces = async (q, signal) => {
 // Ask the browser for the device position (needs the user's permission),
 // then look up the city on the server.
 //
-// The first request right after granting permission often fails on iOS
-// (position unavailable / timeout), so it is retried once; the server
-// lookup is also retried once on a network error.
+// On iOS the first position request after the app opens (or right after
+// granting permission) usually fails at once with "position unavailable"
+// while location services warm up; the second tap worked. So instead of a
+// one-shot request we *watch* for the first fix and ignore those transient
+// errors until a fix arrives or the time runs out. Only a denial stops early.
+const getFirstFix = (timeoutMs = 20000) =>
+  new Promise((resolve, reject) => {
+    let lastError = null;
+    let done = false;
+    let watchID = null;
+    const finish = (fn, value) => {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      if (watchID !== null) navigator.geolocation.clearWatch(watchID);
+      fn(value);
+    };
+    const timer = setTimeout(
+      () => finish(reject, lastError || { code: 3 }),
+      timeoutMs
+    );
+    watchID = navigator.geolocation.watchPosition(
+      (position) => finish(resolve, position),
+      (err) => {
+        lastError = err;
+        if (err?.code === 1) finish(reject, err); // denied
+      },
+      { enableHighAccuracy: false, maximumAge: 10 * 60 * 1000, timeout: timeoutMs }
+    );
+    if (done) navigator.geolocation.clearWatch(watchID);
+  });
+
 const getPosition = (options) =>
   new Promise((resolve, reject) =>
     navigator.geolocation.getCurrentPosition(resolve, reject, options)
@@ -46,17 +75,25 @@ const positionError = (err) =>
       : "Couldn't get your location. Search for your city instead."
   );
 
+// One retry on a network blip *or* a server error (the geocoding providers
+// can time out on a cold first request); a 406 (no city here) is final.
 const reverseLookup = async (lat, lng) => {
   const url = `${getServer()}/geo/reverse?lat=${lat}&lng=${lng}`;
-  let res;
+  const attempt = async () => {
+    const res = await fetch(url);
+    const body = await res.json().catch(() => ({}));
+    if (res.ok && body.place) return body.place;
+    const err = new Error(body.header || "Couldn't find your city.");
+    err.final = res.status === 406;
+    throw err;
+  };
   try {
-    res = await fetch(url);
-  } catch {
-    res = await fetch(url); // one retry on a network blip
+    return await attempt();
+  } catch (err) {
+    if (err.final) throw err;
+    await new Promise((r) => setTimeout(r, 600));
+    return attempt();
   }
-  const body = await res.json().catch(() => ({}));
-  if (!res.ok || !body.place) throw new Error(body.header || "Couldn't find your city.");
-  return body.place;
 };
 
 export const currentPlace = async () => {
@@ -65,11 +102,7 @@ export const currentPlace = async () => {
   }
   let position;
   try {
-    position = await getPosition({
-      enableHighAccuracy: false,
-      timeout: 10000,
-      maximumAge: 10 * 60 * 1000,
-    });
+    position = await getFirstFix(20000);
   } catch (err) {
     if (err?.code === 1) throw positionError(err); // denied: don't retry
     try {

@@ -36,6 +36,14 @@ const chatSlice = createSlice({
     removeChat(state, action) {
       state.chats = state.chats.filter((c) => c._id !== action.payload);
     },
+    // Mark a chat read locally right away (the server is updated in the
+    // background), so unread badges clear the moment the chat is opened
+    setLastRead(state, action) {
+      const { chatID, userID, messageID } = action.payload;
+      const chat = state.chats.find((c) => c._id === chatID);
+      if (!chat) return;
+      chat.last_read = { ...(chat.last_read || {}), [userID]: String(messageID) };
+    },
     setUpdatingLastRead(state, action) {
       state.updatingLastRead = action.payload;
     },

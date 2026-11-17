@@ -7,6 +7,10 @@ const initialState = {
   popupImage: false,
   warningMessage: "",
   warningHeader: "",
+  // Activity being sent to a friend ("send-activity" popup)
+  sendActivity: null,
+  // Activity opened from a chat message ("shared-activity" popup)
+  sharedActivity: null,
 };
 const popupSlice = createSlice({
   name: "popup",
@@ -30,6 +34,12 @@ const popupSlice = createSlice({
     },
     setWarningHeader(state, action) {
       state.warningHeader = action.payload;
+    },
+    setSendActivity(state, action) {
+      state.sendActivity = action.payload;
+    },
+    setSharedActivity(state, action) {
+      state.sharedActivity = action.payload;
     },
   },
 });

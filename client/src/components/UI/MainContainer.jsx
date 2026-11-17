@@ -44,7 +44,7 @@ const MainContainer = (props) => {
       modalMarginLeft !== "0%" && prevMarginLeft.current === "0%";
 
     if (justOpened) {
-      document.documentElement.style.overflowY = "clip";
+      document.body.style.overflowY = "clip";
       // Delay matches the modal slide-in animation duration
       const timer = setTimeout(() => {
         el.style.opacity = "0";
@@ -54,7 +54,7 @@ const MainContainer = (props) => {
     }
 
     if (justClosed) {
-      document.documentElement.style.overflowY = null;
+      document.body.style.overflowY = null;
       el.style.opacity = "1";
     }
 

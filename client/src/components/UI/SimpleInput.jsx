@@ -36,20 +36,42 @@ const SimpleInput = forwardRef((props, ref) => {
           {props.label}
         </label>
       )}
-      <input
-        style={props.inputStyle}
-        onBlur={onBlur}
-        placeholder={props.placeholder}
-        onChange={onChange}
-        value={value}
-        ref={ref || null}
-        className={styles.input}
-        onClick={props.onClick}
-        id={props.id}
-        name={props.name}
-        required={props.required}
-        type={props.type}
-      ></input>
+      {/* Optional unit shown inside the field, e.g. "$" before or "hrs" after */}
+      <div className={styles.field}>
+        {props.prefix ? (
+          <span className={`${styles.unit} ${styles.prefix}`} aria-hidden="true">
+            {props.prefix}
+          </span>
+        ) : null}
+        <input
+          style={{
+            ...(props.prefix ? { paddingLeft: "2.8rem" } : null),
+            ...(props.suffix ? { paddingRight: `${1.8 + 0.75 * String(props.suffix).length}rem` } : null),
+            ...props.inputStyle,
+          }}
+          onBlur={onBlur}
+          placeholder={props.placeholder}
+          onChange={onChange}
+          value={value}
+          ref={ref || null}
+          className={styles.input}
+          onClick={props.onClick}
+          id={props.id}
+          name={props.name}
+          required={props.required}
+          type={props.type}
+          min={props.min}
+          max={props.max}
+          step={props.step}
+          maxLength={props.maxLength}
+          inputMode={props.inputMode}
+        ></input>
+        {props.suffix ? (
+          <span className={`${styles.unit} ${styles.suffix}`} aria-hidden="true">
+            {props.suffix}
+          </span>
+        ) : null}
+      </div>
     </div>
   );
 });

@@ -27,6 +27,8 @@ const ActivitySchema = new Schema(
       { user: { type: Schema.Types.ObjectId, ref: "User" }, rating: Number },
     ],
     media: Object,
+    // Storage key of the creator's cover photo (custom activities)
+    cover_photo: String,
   },
   { minimize: false }
 );

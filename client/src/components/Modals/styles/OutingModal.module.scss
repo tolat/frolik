@@ -20,6 +20,8 @@
   display: flex;
   flex-direction: column;
   padding-left: 2rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .sideBySide {
@@ -33,11 +35,36 @@
   height: 1rem;
 }
 
-.chatButton {
-  //background-color: $blue;
-  //color: white;
-  //font-weight: bold;
-  width: 100%;
+// Round chat button at the right of the Members heading
+.chatCircle {
+  margin-left: auto;
+  flex-shrink: 0;
+  width: 4.4rem;
+  height: 4.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 100rem;
+  background: linear-gradient(135deg, #6a9bf5 0%, #4a7ee8 55%, #3f6fd8 100%);
+  box-shadow: 0 6px 16px rgba(63, 111, 216, 0.32);
+  cursor: pointer;
+  transition: transform 0.15s $ease_out, box-shadow 0.15s ease;
+
+  svg {
+    width: 2.1rem;
+    height: 2.1rem;
+    fill: white;
+  }
+
+  &:hover {
+    box-shadow: 0 8px 20px rgba(63, 111, 216, 0.42);
+  }
+
+  &:active {
+    transform: scale(0.92);
+  }
 }
 
 .completedButton {
@@ -49,8 +76,8 @@
 
 .leaveButton {
   margin-top: 3rem;
-  background-color: $red;
-  color: white;
+  background-color: $red !important;
+  color: white !important; // SimpleButton's own text colour was winning
   font-weight: bold;
 }
 
@@ -61,7 +88,17 @@
 
 .outingStatus {
   font-size: 1.4rem;
+  font-weight: 600;
   color: grey;
+}
+
+// "Waiting for members / photos / others" vs "Ready to finish" / "Completed"
+.statusWaiting {
+  color: #c27c0e;
+}
+
+.statusReady {
+  color: $green;
 }
 
 .outingsIcon {
@@ -247,4 +284,24 @@
   background: $button_grey !important;
   color: $text_muted !important;
   box-shadow: none !important;
+}
+
+// "How to complete an Outing" popup
+.howToComplete {
+  text-align: left;
+  font-size: 1.4rem;
+  line-height: 1.45;
+
+  p {
+    margin: 0 0 1rem;
+  }
+
+  ol {
+    margin: 0;
+    padding-left: 2rem;
+  }
+
+  li + li {
+    margin-top: 0.5rem;
+  }
 }

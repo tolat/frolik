@@ -7,6 +7,7 @@ import {
   fetchOutingPhoto,
   fetchProfilePic,
   setUserLike,
+  fetchActivityDetails,
 } from "../../utils/data-fetch";
 import { dataActions } from "../../store/data-slice";
 import SimpleButton from "./SimpleButton";
@@ -14,7 +15,6 @@ import heart from "../../images/heart.png";
 import heartFull from "../../images/heart2.png";
 import { popupActions } from "../../store/popup-slice";
 import EmptyPopup from "../Popups/EmptyPopup";
-import ActivityCard from "./ActivityCard";
 import FriendCard from "./FriendCard";
 import StatIcon from "./StatIcon";
 import SixPhotoGrid from "./SixPhotoGrid";
@@ -98,7 +98,6 @@ const FeedCardFooter = (props) => {
   const heartRef = useRef(null);
   const propLikesKey = (outing?.likes || []).join(",");
   const dispatch = useDispatch();
-  const activityPopupSelector = `${outing?._id}-activity-popup`;
   const usersPopupSelector = `${outing?._id}-users-popup`;
 
   // Re-sync when fresh outing data arrives from the server
@@ -106,8 +105,18 @@ const FeedCardFooter = (props) => {
     setLikes(propLikesKey ? propLikesKey.split(",") : []);
   }, [propLikesKey]);
 
+  // Open the full activity (with its photo, when it has one) in the shared
+  // activity popup — the same one chat messages open
+  const [openingActivity, setOpeningActivity] = useState(false);
   const onShowActivityPopup = () => {
-    dispatch(popupActions.showPopup(activityPopupSelector));
+    const activityID = outing?.activity?._id;
+    if (!activityID || openingActivity) return;
+    setOpeningActivity(true);
+    fetchActivityDetails(activityID, (full) => {
+      setOpeningActivity(false);
+      dispatch(popupActions.setSharedActivity(full || outing.activity));
+      dispatch(popupActions.showPopup("shared-activity"));
+    });
   };
 
   const onLikeClick = () => {
@@ -146,13 +155,6 @@ const FeedCardFooter = (props) => {
   return (
     outing && (
       <div className={styles.topContainer}>
-        <EmptyPopup selector={activityPopupSelector}>
-          <ActivityCard
-            showInstructions={true}
-            activity={outing.activity}
-            hideSelect={true}
-          />
-        </EmptyPopup>
         <EmptyPopup selector={usersPopupSelector}>
           <div className={styles.friendsPopupContainer}>
             <h2 className={styles.friendsPopupHeader}>Outing Members</h2>
@@ -182,7 +184,7 @@ const FeedCardFooter = (props) => {
                   className={styles.viewActivityButton}
                   noShadow={true}
                 >
-                  View Activity
+                  {openingActivity ? "Opening…" : "View Activity"}
                 </SimpleButton>
               </div>
             </div>

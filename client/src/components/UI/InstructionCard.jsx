@@ -8,11 +8,9 @@ import captureIcon from "../../images/camera.png";
 import whistleIcon from "../../images/whistle.png";
 import createIcon from "../../images/paint.png";
 import SimpleInput from "./SimpleInput";
-import SimpleButton from "./SimpleButton";
-import CustomSelect from "./CustomSelect";
-import { capitalizeFirstLetter } from "../../utils/utils";
+import { INSTRUCTION_TITLE_MAX } from "../../utils/limits";
 
-const instructionIconMap = {
+export const instructionIconMap = {
   communicate: communicateIcon,
   travel: travelIcon,
   purchase: purchaseIcon,
@@ -23,13 +21,18 @@ const instructionIconMap = {
 
 const InstructionCard = (props) => {
   const globals = useSelector((state) => state.auth.globals);
-  const instructionTypes = globals?.instructionTypes;
+  // The kinds are now just icons: pick one, then write any short title
+  const iconKinds = (globals?.instructionTypes || Object.keys(instructionIconMap))
+    .map((k) => k.toLowerCase())
+    .filter((k) => instructionIconMap[k]);
+  const [pickerOpen, setPickerOpen] = useState(false);
   const [kind, setKind] = useState(props.instruction.kind);
   const [title, setTitle] = useState(props.instruction.title);
   const [details, setDetails] = useState(props.instruction.details);
 
   const handleKindChange = (value) => {
     setKind(value);
+    setPickerOpen(false);
     props.instruction.setData("kind", value);
   };
 
@@ -48,76 +51,95 @@ const InstructionCard = (props) => {
     props.instruction.deleteInstruction(props.instruction.instructionID);
   };
 
-  const instructionTypeOptions = instructionTypes.map((name) => {
-    return {
-      selectable: true,
-      name: capitalizeFirstLetter(name.toLowerCase()),
-    };
-  });
+  const iconSrc = instructionIconMap[`${kind || ""}`.toLowerCase()];
+
+  if (props.creatingActivity) {
+    return (
+      <div className={styles.editContainer}>
+        <div className={styles.editTopRow}>
+          {/* Icon picker, left of the title */}
+          <div
+            className={styles.iconPicker}
+            onBlur={(e) => {
+              if (!e.currentTarget.contains(e.relatedTarget)) setPickerOpen(false);
+            }}
+          >
+            <button
+              type="button"
+              id={`${props.instruction.instructionID}-kind`}
+              data-kind={kind}
+              className={styles.iconPickerButton}
+              aria-label="Choose an icon"
+              aria-expanded={pickerOpen}
+              onClick={() => setPickerOpen((o) => !o)}
+            >
+              <img src={iconSrc} alt="" />
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 10l5 5 5-5" />
+              </svg>
+            </button>
+            {pickerOpen ? (
+              <div className={styles.iconMenu} role="listbox">
+                {iconKinds.map((k) => (
+                  <button
+                    key={k}
+                    type="button"
+                    role="option"
+                    aria-selected={k === `${kind}`.toLowerCase()}
+                    aria-label={k}
+                    title={k}
+                    className={`${styles.iconOption} ${
+                      k === `${kind}`.toLowerCase() ? styles.iconOptionOn : ""
+                    }`}
+                    onClick={() => handleKindChange(k)}
+                  >
+                    <img src={instructionIconMap[k]} alt="" />
+                  </button>
+                ))}
+              </div>
+            ) : null}
+          </div>
+          <SimpleInput
+            defaultVal={title}
+            id={`${props.instruction.instructionID}-title`}
+            className={styles.titleInput}
+            placeholder="Instruction title"
+            maxLength={INSTRUCTION_TITLE_MAX}
+            suffix={
+              title ? `${title.length}/${INSTRUCTION_TITLE_MAX}` : null
+            }
+            setDataChanged={setTitle}
+            onBlur={handleTitleBlur}
+          />
+        </div>
+        <textarea
+          id={`${props.instruction.instructionID}-details`}
+          rows={3}
+          className={styles.instructionDetails}
+          defaultValue={details}
+          placeholder="Instruction details"
+          onChange={(e) => setDetails(e.target.value)}
+          onBlur={(e) => handleDetailsBlur(e.target.value)}
+        />
+        <button
+          type="button"
+          className={styles.deleteInstructionButton}
+          onClick={onDeleteInstruction}
+        >
+          Remove instruction
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.iContainer}>
-      <div
-        style={props.creatingActivity ? { paddingTop: "3rem" } : null}
-        className={styles.iIconContainer}
-      >
-        <img
-          src={instructionIconMap[`${kind.toLowerCase()}`]}
-          className={styles.iIcon}
-          alt={props.instruction.kind}
-        />
+      <div className={styles.iIconContainer}>
+        <img src={iconSrc} className={styles.iIcon} alt={props.instruction.kind} />
       </div>
       <div className={styles.iRightContainer}>
-        {props.creatingActivity && (
-          <CustomSelect
-            id={`${props.instruction.instructionID}-kind`}
-            placeholder="Type"
-            options={instructionTypeOptions}
-            defaultVal={kind}
-            label="Instruction Type:"
-            inputClassName={styles.selectKindInput}
-            setDataChanged={handleKindChange}
-            
-          />
-        )}
-        <div className={styles.iName}>
-          {props.creatingActivity ? (
-            <SimpleInput
-              defaultVal={title}
-              id={`${props.instruction.instructionID}-title`}
-              style={{ margin: "1rem 0" }}
-              placeholder="Instruction Title"
-              setDataChanged={setTitle}
-              onBlur={handleTitleBlur}
-            />
-          ) : (
-            props.instruction.title
-          )}
-        </div>
-        <div className={styles.iDetails}>
-          {props.creatingActivity ? (
-            <textarea
-              id={`${props.instruction.instructionID}-details`}
-              rows={3}
-              className={styles.instructionDetails}
-              defaultValue={details}
-              placeholder="Instruction Details"
-              onChange={(e) => setDetails(e.target.value)}
-              onBlur={(e) => handleDetailsBlur(e.target.value)}
-            />
-          ) : (
-            props.instruction.details
-          )}
-        </div>
-        {props.creatingActivity && (
-          <SimpleButton
-            noShadow={true}
-            className={styles.deleteInstructionButton}
-            onClick={onDeleteInstruction}
-          >
-            Delete Instruction
-          </SimpleButton>
-        )}
+        <div className={styles.iName}>{props.instruction.title}</div>
+        <div className={styles.iDetails}>{props.instruction.details}</div>
       </div>
     </div>
   );

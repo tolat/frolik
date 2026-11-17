@@ -4,18 +4,22 @@ import styles from "./styles/CreateActivityModal.module.scss";
 import SimpleInput from "../UI/SimpleInput";
 import LocationAutocomplete from "../UI/LocationAutocomplete";
 import ActivityCard from "../UI/ActivityCard";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { fileToResizedDataURL } from "../../utils/imageResize";
 import SimpleButton from "../UI/SimpleButton";
 import ValidatorBubble, { runValidators } from "../UI/ValidatorBubble";
 import { createActivityValidators } from "../../utils/validators";
-import { capitalizeFirstLetter, genRandomChars } from "../../utils/utils";
+import { genRandomChars } from "../../utils/utils";
 import { createActivity } from "../../utils/data-fetch";
 import { hideModal } from "../../store/modal-actions";
 import { goActions } from "../../store/go-slice";
 import CustomSelect from "../UI/CustomSelect";
 import LoaderSpinner from "../UI/LoaderSpinner";
-import ModalButtonPortal from "./ModalButtonPortal";
 import ModalHeaderPortal from "./ModalHeaderPortal";
+import {
+  ACTIVITY_NAME_MAX,
+  ACTIVITY_DESCRIPTION_MAX,
+} from "../../utils/limits";
 
 const CreateActivityModal = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -28,7 +32,7 @@ const CreateActivityModal = (props) => {
   const [category, setCategory] = useState("Adventure");
   const [instructions, setInstructions] = useState([]);
   const instructionTypes = globals?.instructionTypes;
-  const [createButtonText, setCreatebuttonText] = useState("+ Create");
+  const [createButtonText, setCreatebuttonText] = useState("Create Activity");
   const dispatch = useDispatch();
 
   const [validationMessage, setValidationMessage] = useState(false);
@@ -44,6 +48,22 @@ const CreateActivityModal = (props) => {
   const [cost, setCost] = useState("");
   const [participants, setParticipants] = useState("");
   const [goal, setGoal] = useState("");
+
+  // Optional cover photo, already shrunk to a JPEG data URL
+  const [cover, setCover] = useState(null);
+  const [coverError, setCoverError] = useState("");
+  const coverInputRef = useRef(null);
+  const onCoverPicked = async (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // let the same file be picked again
+    if (!file) return;
+    try {
+      setCoverError("");
+      setCover(await fileToResizedDataURL(file));
+    } catch {
+      setCoverError("That file couldn't be read as an image.");
+    }
+  };
 
   const onAddInstructionClick = (e) => {
     e.preventDefault();
@@ -71,7 +91,7 @@ const CreateActivityModal = (props) => {
     };
 
     const newInstruction = {
-      kind: capitalizeFirstLetter(instructionTypes[0]),
+      kind: (instructionTypes?.[0] || "communicate").toLowerCase(),
       instructionID: instructionID,
       title: "",
       details: "",
@@ -90,7 +110,9 @@ const CreateActivityModal = (props) => {
       <SimpleInput
         id={`create-activity-name`}
         defaultVal={name}
-        placeholder="Name"
+        placeholder={`Name (max ${ACTIVITY_NAME_MAX} characters)`}
+        maxLength={ACTIVITY_NAME_MAX}
+        suffix={name ? `${name.length}/${ACTIVITY_NAME_MAX}` : null}
         setDataChanged={setName}
       />
     ),
@@ -98,7 +120,13 @@ const CreateActivityModal = (props) => {
       <SimpleInput
         setDataChanged={setDescription}
         defaultVal={description}
-        placeholder="Description"
+        placeholder={`Description (max ${ACTIVITY_DESCRIPTION_MAX} characters)`}
+        maxLength={ACTIVITY_DESCRIPTION_MAX}
+        suffix={
+          description
+            ? `${description.length}/${ACTIVITY_DESCRIPTION_MAX}`
+            : null
+        }
         id={`create-activity-description`}
       />
     ),
@@ -196,7 +224,7 @@ const CreateActivityModal = (props) => {
     for (let i = 0; i < instructions.length; i++) {
       const inst = instructions[i];
       const id = inst.instructionID;
-      const kind = document.querySelector(`#${id}-kind`).textContent;
+      const kind = inst.kind || "communicate"; // icon key, from the picker
       const title = document.querySelector(`#${id}-title input`).value;
       const details = document.querySelector(`#${id}-details`).value;
       newActivity.instructions.push({
@@ -213,7 +241,7 @@ const CreateActivityModal = (props) => {
 
     if (runValidation(validationIDMap, instructions)) {
       const onComplete = async (response) => {
-        setCreatebuttonText("+ Create");
+        setCreatebuttonText("Create Activity");
         if (!!response.activity) {
           // Reset form
           setInstructions([]);
@@ -221,6 +249,7 @@ const CreateActivityModal = (props) => {
           setDescription("");
           setLocation("");
           setGoal("");
+          setCover(null);
           setDuration("");
           setCost("");
           setParticipants("");
@@ -236,7 +265,7 @@ const CreateActivityModal = (props) => {
           Saving &nbsp; <LoaderSpinner width="1.5rem" height="1.5rem" />
         </div>
       );
-      createActivity(user, newActivity, onComplete);
+      createActivity(user, newActivity, onComplete, cover || undefined);
     }
   };
 
@@ -264,26 +293,66 @@ const CreateActivityModal = (props) => {
         <ModalHeaderPortal selector={'create-activity'}>Create Activity</ModalHeaderPortal>
 
           <form id="create-activity-form" className={styles.createForm}>
-            <ModalButtonPortal selector={"create-activity"}>
-              <SimpleButton onClick={onSubmit} className={styles.createButton}>
-                {createButtonText}
-              </SimpleButton>
-            </ModalButtonPortal>
-
-            <CustomSelect
-              className={styles.categoryInput}
-              options={categoryOptions}
-              label="Activity Category:"
-              defaultVal={categoryOptions[0].name}
-              setDataChanged={(value) => setCategory(value)}
-            />
             <ActivityCard
               showInstructions={true}
               hideSelect={true}
               creatingActivity={true}
               activity={newActivity}
               onAddInstructionClick={onAddInstructionClick}
+              topSlot={
+                <>
+                  <CustomSelect
+                    className={styles.categoryInput}
+                    options={categoryOptions}
+                    defaultVal={categoryOptions[0].name}
+                    setDataChanged={(value) => setCategory(value)}
+                  />
+                  <input
+                    ref={coverInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={onCoverPicked}
+                    style={{ display: "none" }}
+                  />
+                  {cover ? (
+                    <div className={styles.coverPreview}>
+                      <img src={cover} alt="Activity cover" />
+                      <div className={styles.coverActions}>
+                        <button
+                          type="button"
+                          onClick={() => coverInputRef.current?.click()}
+                        >
+                          Change
+                        </button>
+                        <button type="button" onClick={() => setCover(null)}>
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      className={styles.coverPicker}
+                      onClick={() => coverInputRef.current?.click()}
+                    >
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="3" y="5" width="18" height="14" rx="3" />
+                        <circle cx="9" cy="10" r="1.8" />
+                        <path d="M21 16l-5-5-8 8" />
+                      </svg>
+                      Add a cover photo
+                      <span>optional</span>
+                    </button>
+                  )}
+                  {coverError ? (
+                    <div className={styles.coverError}>{coverError}</div>
+                  ) : null}
+                </>
+              }
             />
+            <SimpleButton onClick={onSubmit} className={styles.createButton}>
+              {createButtonText}
+            </SimpleButton>
           </form>
         </div>
       </ModalPortal>

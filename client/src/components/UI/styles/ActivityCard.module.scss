@@ -232,12 +232,6 @@
   transition: transform $dur $ease_out;
 }
 
-@media (hover: hover) {
-  .outerContainer:hover {
-    transform: translateY(-2px);
-  }
-}
-
 .categoryStripe {
   width: 0.6rem;
   border-radius: 0;
@@ -278,7 +272,7 @@
   color: $text_muted;
 }
 
-// Use Activity (activity popup on Social) and Select: blue actions
+// Create Outing (activity popup on Social) and Select: blue actions
 .plainButtons .useActivity,
 .plainButtons .select {
   color: $blue_dark;
@@ -292,9 +286,15 @@
   color: $red;
 }
 
+// Send to a friend (social/chat popups): blue, on the right
+.plainButtons .sendActivity {
+  color: $blue_dark;
+}
+
 // Right-hand action stays on the right even when it's the only button
 .plainButtons .select,
-.plainButtons .remove {
+.plainButtons .remove,
+.plainButtons .sendActivity {
   margin-left: auto;
   justify-content: flex-end;
 }
@@ -307,4 +307,142 @@
 
 .innerContainer:has(> .plainButtons) > .buttonSpacer {
   height: calc(3.7rem + 1rem);
+}
+
+// Create Activity: the category dropdown above the Name field
+.topSlot {
+  width: 100%;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 2; // its option list opens over the fields below
+}
+
+// ── Photo cards: stats in the title row (inside the top fade) ───────────────
+.nameWithStats {
+  align-items: flex-start;
+  gap: 1rem;
+
+  .innerNameContainer {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.nameText {
+  width: 100%;
+  overflow-wrap: anywhere;
+  line-height: 1.2;
+}
+
+.topStats {
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+  padding-top: 0.2rem;
+
+  .spacer {
+    width: 1rem;
+  }
+
+  img {
+    width: 1.7rem !important;
+    height: 1.7rem !important;
+    margin-bottom: 0.2rem;
+  }
+
+  // StatIcon value under each icon
+  div > div {
+    font-size: 1.1rem;
+  }
+}
+
+// Completed / featured / creation badges after the city on photo cards
+.nameWithStats .location {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 0.4rem;
+}
+
+.inlineBadges {
+  display: inline-flex;
+  align-items: center;
+
+  .completedIcon {
+    height: 1.6rem;
+    margin-left: 0.7rem;
+  }
+
+  .deleteActivityButton {
+    margin-left: 0.8rem;
+    padding: 0.2rem 0.9rem;
+    font-size: 1.1rem;
+    height: auto;
+  }
+}
+
+// The photo fills the square card top whatever its shape (custom covers are
+// often landscape, which left a blank band under the image)
+.photoContainer {
+  height: 100%;
+  overflow: hidden;
+}
+
+.photoContainer > div:first-child {
+  height: 100%;
+}
+
+.photoContainer img {
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+// Photo cards: bolder description so it reads over the image fade
+.descriptionOnPhoto {
+  font-weight: 700;
+}
+
+// Photo cards: keep "Send to a friend" on the right of the bottom bar
+.buttonGradient .sendActivity {
+  margin-left: auto;
+}
+
+// "Create Outing" (social feed / chat activity popups), with the balloon
+.createOutingLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+
+  img {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+}
+
+// In a height-capped popup: photo, title and buttons keep their size and only
+// the instructions section shrinks and scrolls, so the whole card stays visible
+.fitHeight {
+  min-height: 0;
+  margin-bottom: 0;
+  flex: 0 1 auto;
+
+  .innerContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .upperContainer,
+  .buttonSpacer {
+    flex-shrink: 0;
+  }
+
+  .instructionsContainer {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+  }
 }

@@ -392,10 +392,15 @@ module.exports.findNonOutingChat = (user, withUsers) => {
     return true;
   };
 
+  // Same members in any order (a chat the friend started lists them first)
+  const wanted = [user._id, ...withUsers.map((wu) => wu._id)]
+    .map((id) => id.toString())
+    .sort();
   const foundChat = user.chats.find(
     (c) =>
       c.users &&
-      arraysAreEqual(c.users, [user._id, ...withUsers.map((wu) => wu._id)])
+      !c.outing &&
+      arraysAreEqual(c.users.map((id) => (id._id || id).toString()).sort(), wanted)
   );
 
   return foundChat;
@@ -467,8 +472,24 @@ module.exports.onSocketConnection = async (socket) => {
   socket.on("message-sent", async (data) => {
     try {
       const text = String(data?.message?.message ?? "").trim();
-      if (!data?.chat?._id || !data?.message?.id || !text || text.length > 2000)
-        return;
+      const sharedActivityID = data?.message?.activity?._id || data?.message?.activity;
+      if (!data?.chat?._id || !data?.message?.id || text.length > 2000) return;
+      if (!text && !sharedActivityID) return;
+
+      // A shared activity is stored as a snapshot built from the database,
+      // never from what the client sent
+      let activity = undefined;
+      if (sharedActivityID) {
+        const Activity = require("../models/activity");
+        const a = await Activity.findById(String(sharedActivityID)).catch(() => null);
+        if (!a) return;
+        activity = {
+          _id: a._id.toString(),
+          name: a.name,
+          category: a.category,
+          location: a.location,
+        };
+      }
 
       const chat = await Chat.findById(data.chat._id);
       if (!chat) return;
@@ -481,6 +502,7 @@ module.exports.onSocketConnection = async (socket) => {
         message: text,
         sent: new Date(),
         user: sessionUserID,
+        ...(activity ? { activity } : {}),
       };
 
       // Only add message if it has not been added
@@ -495,6 +517,8 @@ module.exports.onSocketConnection = async (socket) => {
         for (const usrID of chatMemberIDs(chat)) {
           if (!chat.last_read[usrID]) chat.last_read[usrID] = "initialized";
         }
+        // The sender has obviously read their own first message
+        chat.last_read[sessionUserID] = message.id;
         chat.markModified("last_read");
       }
       await chat.save();
@@ -521,7 +545,7 @@ module.exports.onSocketConnection = async (socket) => {
           title: `${sessionUser.first_name} ${sessionUser.last_name} to ${
             chat.outing ? chat.outing.name : "Chat"
           }`,
-          body: text,
+          body: text || `Shared an activity: ${activity?.name}`,
           url: `/chat?open=${chat._id.toString()}`,
           tag: `chat-${chat._id.toString()}`,
         }

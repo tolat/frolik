@@ -1,0 +1,85 @@
+@import "../../../utils/responsive.scss";
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+  margin: 0;
+}
+
+// Wraps to a second line rather than cutting off a 20-character name
+.name {
+  font-size: 1.8rem;
+  font-weight: bold;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.iconButton {
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 100rem;
+  background: $button_grey;
+  color: $text_muted;
+  cursor: pointer;
+
+  svg {
+    width: 1.6rem;
+    height: 1.6rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+}
+
+.save {
+  background: $blue;
+  color: white;
+}
+
+.field {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  height: 3.6rem;
+  padding: 0 4.6rem 0 1.2rem;
+  border: 1.5px solid $blue;
+  border-radius: 1.2rem;
+  background: $surface;
+  font: inherit;
+  font-size: 1.6rem;
+  font-weight: 700;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(91, 141, 239, 0.18);
+}
+
+.counter {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: $text_muted;
+  pointer-events: none;
+}

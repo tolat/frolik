@@ -20,8 +20,8 @@ const tourSteps = [
   {
     route: "/outing",
     target: '[data-tour="activity-tools"]',
-    title: "Create your own",
-    body: "Filter to find completed, featured or your own activities — or tap + Create to make a custom activity anyone in your city can use.",
+    title: "Filter or create",
+    body: "Filter by cost, time, rating or group size, or show only completed, featured or community creations. Tap the blue + beside the categories to make a custom activity anyone in your city can use.",
   },
   {
     route: "/profile",

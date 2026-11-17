@@ -1,9 +1,9 @@
 import styles from "./styles/UserIcon.module.scss";
-import { memo, useId } from "react";
+import { memo, useId, useState } from "react";
 import { useSelector } from "react-redux";
 import CroppedImage from "./CroppedImage";
 import { genBackgroundStr } from "../../utils/utils";
-import LoaderSpinner from "./LoaderSpinner";
+import { shineSync } from "../../utils/shine";
 
 const UserIcon = memo(function UserIcon(props) {
   const categoryColorMap = useSelector(
@@ -27,6 +27,10 @@ const UserIcon = memo(function UserIcon(props) {
   // useId() gives a stable ID across renders, preventing stale-closure bugs
   // where the onLoad callback looked up an ID that no longer matched the div
   const iconID = useId();
+  // Round shimmer until the photo has actually painted (reset if it changes)
+  const [loadedPhoto, setLoadedPhoto] = useState(null);
+  const photoReady =
+    photoString && photoString !== "queued" && loadedPhoto === photoString;
 
   const pieStyle = {
     width: pieDimension,
@@ -56,22 +60,20 @@ const UserIcon = memo(function UserIcon(props) {
             </div>
           </div>
         ) : null}
-        {!photoString || photoString === "queued" ? (
-          <LoaderSpinner
-            className={styles.loaderSpinner}
-            width={pieDimension}
-            height={pieDimension}
+        {photoReady ? null : (
+          <div
+            className={`${styles.shimmer} shine-loading`}
+            style={{ width: pieDimension, height: pieDimension, ...shineSync() }}
           />
-        ) : (
+        )}
+        {!photoString || photoString === "queued" ? null : (
           <div
             id={iconID}
             style={pieStyle}
-            className={`${styles.pieChart} hidden`}
+            className={`${styles.pieChart} ${photoReady ? "" : styles.pending}`}
           >
             <CroppedImage
-              onLoad={() => {
-                document.getElementById(iconID)?.classList.remove("hidden");
-              }}
+              onLoad={() => setLoadedPhoto(photoString)}
               image={photoString}
               zoom={zoom}
               crop={crop}

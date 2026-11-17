@@ -3,6 +3,7 @@ import { scrollToElement } from "../../utils/scrollTo";
 import SkeletonCards from "../UI/SkeletonCards";
 import { useDispatch, useSelector } from "react-redux";
 import SimpleButton from "../UI/SimpleButton";
+import { OUTING_NAME_MAX } from "../../utils/limits";
 import { Fragment, useEffect, useReducer, useRef, useState } from "react";
 import { usePageRefresh } from "../../utils/pageRefresh";
 import AddUserModal from "../Modals/AddUserModal";
@@ -20,21 +21,15 @@ import { goActions } from "../../store/go-slice";
 import WarningPopup from "../Popups/WarningPopup";
 import outingsBarIcon from "../../images/outingsToolbar.png";
 import { popupActions } from "../../store/popup-slice";
-import completeIcon from "../../images/complete.png";
-import completeIconLight from "../../images/complete-light.png";
-import creationIcon from "../../images/sketch.png";
-import creationIconLight from "../../images/sketch-light.png";
-import featuredIcon from "../../images/feature.png";
-import featuredIconLight from "../../images/feature-light.png";
 import {
   filterReducer,
   initialActivityFilter,
-  filtersAreEqual,
 } from "../../utils/utils";
 import {
   createOuting,
   fetchActivities,
   fetchChat,
+  renameOuting,
 } from "../../utils/data-fetch";
 import SliderNavber from "../UI/SliderNavbar";
 import CreateActivityModal from "../Modals/CreateActivityModal";
@@ -162,6 +157,13 @@ const Go = (props) => {
   };
 
   // Handle filter activities button click
+  // How many filters differ from the defaults (shown on the Filter button)
+  const activeFilterCount = Object.keys(initialActivityFilter.filter).filter(
+    (k) =>
+      k !== "category" &&
+      (activityFilter.filter?.[k] ?? "") !== initialActivityFilter.filter[k]
+  ).length;
+
   const handleFilterActivitiesClick = () => {
     dispatch(modalActions.setSelector("filter-activities"));
     dispatch(modalActions.showModal());
@@ -240,9 +242,32 @@ const Go = (props) => {
     );
   };
 
+  // The new-outing popup lets you rename the outing straight away
+  const [newOutingName, setNewOutingName] = useState("");
+  const [savingName, setSavingName] = useState(false);
+  useEffect(() => {
+    setNewOutingName(activeOuting?.name || "");
+  }, [activeOuting?._id]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const newOutingMessage = (
     <div className={styles.outingPopup}>
-      <div className={styles.outingCreatedName}>{activeOuting?.name}</div>
+      <div className={styles.outingNameField}>
+        <input
+          className={styles.outingNameInput}
+          value={newOutingName}
+          maxLength={OUTING_NAME_MAX}
+          onChange={(e) => setNewOutingName(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && onPopupOk()}
+          aria-label="Outing name"
+        />
+        <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.outingNamePencil}>
+          <path d="M4 20h4l10.5-10.5a2.1 2.1 0 0 0-4-4L4 16v4z" />
+          <path d="M13.5 6.5l4 4" />
+        </svg>
+      </div>
+      <div className={styles.outingNameHint}>
+        Tap the name to change it ({newOutingName.length}/{OUTING_NAME_MAX})
+      </div>
       An invite has been sent to the other users. You can view this outing any
       time on the Profile page under the following tab:
       <img
@@ -258,7 +283,19 @@ const Go = (props) => {
   );
 
   const onPopupOk = () => {
-    dispatch(popupActions.hidePopup());
+    const name = newOutingName.trim();
+    if (!activeOuting?._id || !name || name === activeOuting.name) {
+      setNewOutingName(activeOuting?.name || "");
+      dispatch(popupActions.hidePopup());
+      return;
+    }
+    if (savingName) return;
+    setSavingName(true);
+    renameOuting(user, activeOuting._id, name, (updated) => {
+      setSavingName(false);
+      if (updated) dispatch(modalActions.setActiveOuting(updated));
+      dispatch(popupActions.hidePopup());
+    });
   };
 
   const onCreateActivityClick = () => {
@@ -275,15 +312,7 @@ const Go = (props) => {
     dispatchFilter({ type: "remove-activity", payload: activity });
   };
 
-  const toggleButtonFilter = (key) => {
-    let newFilter = { ...activityFilter.filter };
-    newFilter[key] = !activityFilter.filter[key];
 
-    dispatchFilter({
-      type: "apply-filter",
-      filter: newFilter,
-    });
-  };
 
   return (
     <Fragment>
@@ -299,7 +328,7 @@ const Go = (props) => {
         selector={"outing-created"}
         header={"Your new outing is called:"}
         message={newOutingMessage}
-        ok={"OK"}
+        ok={savingName ? "Saving…" : "OK"}
         okClick={onPopupOk}
       />
       <div className={styles.container}>
@@ -312,8 +341,9 @@ const Go = (props) => {
             <img
               className={styles.editIcon}
               src={editIcon}
-              alt="edit-friends"
+              alt=""
             />
+            <span className={styles.roundButtonLabel}>Edit Members</span>
           </button>
           <UserIconCluster
             users={goUsers}
@@ -328,8 +358,9 @@ const Go = (props) => {
                   : null
               }`}
               src={plusIcon}
-              alt="add-people"
+              alt=""
             />
+            <span className={styles.roundButtonLabel}>Add Members</span>
           </button>
         </div>
         {/* Checklist until the outing is ready, then just the Create button.
@@ -391,9 +422,9 @@ const Go = (props) => {
                   : `${addedMatches.length} Daily Match${addedMatches.length > 1 ? "es" : ""} added`}
               </button>
               </div>
-              {hasDailyMatch && matchesNeeded > 0 && (
+              {matchesNeeded > 0 && (
                 <div className={styles.requirementNote}>
-                  You can invite one friend for each Daily Match.
+                  Every Outing needs a Daily Match for each friend you invite.
                 </div>
               )}
             </>
@@ -422,95 +453,47 @@ const Go = (props) => {
           </Fragment>
         ) : (
           <Fragment>
-            <div className={styles.sideBySide} data-tour="activity-tools">
-              <SimpleButton
-                onClick={handleFilterActivitiesClick}
-                className={`${styles.filterButton}
-            ${
-              filtersAreEqual(
-                initialActivityFilter.filter,
-                activityFilter.filter
-              )
-                ? null
-                : styles.activeFiltersButton
-            }
-         `}
+            <SimpleButton
+              onClick={handleFilterActivitiesClick}
+              className={`${styles.filterButton} ${
+                activeFilterCount ? styles.activeFiltersButton : ""
+              }`}
+              data-tour="activity-tools"
+            >
+              <svg
+                className={styles.filterIcon}
+                viewBox="0 0 24 24"
+                aria-hidden="true"
               >
-                {filtersAreEqual(
-                  initialActivityFilter.filter,
-                  activityFilter.filter
-                )
-                  ? "Filter"
-                  : "Edit Filter"}
-              </SimpleButton>
-              <div className={styles.buttonSpacer}></div>
-              <SimpleButton
+                <path d="M4 6h16M7 12h10M10 18h4" />
+              </svg>
+              Filter
+              {activeFilterCount ? (
+                <span className={styles.filterCount}>{activeFilterCount}</span>
+              ) : null}
+            </SimpleButton>
+            <div className={styles.categoryRow}>
+              <SliderNavber
+                className={styles.categorySlider}
+                getHighlightStyle={getHighlightStyle}
+                selected={selectedSliderKey}
+                setSelected={handleSetSelectedCategory}
+                tabs={sliderTabs}
+                style={{ paddingTop: "0" }}
+              />
+              <button
+                type="button"
                 onClick={onCreateActivityClick}
-                className={styles.createActivityButton}
+                className={styles.createActivityPlus}
+                aria-label="Create a custom activity"
+                title="Create activity"
+                data-tour="create-activity"
               >
-                + Create
-              </SimpleButton>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </button>
             </div>
-            <div className={styles.infoBar}>
-              <div
-                className={`${styles.infoItem} ${
-                  activityFilter.filter.completed ? styles.activeInfoItem : null
-                }`}
-                onClick={() => toggleButtonFilter("completed")}
-              >
-                <img
-                  src={
-                    activityFilter.filter.completed
-                      ? completeIconLight
-                      : completeIcon
-                  }
-                  className={styles.infoIcon}
-                  alt="completed-icon"
-                />
-                Completed
-              </div>
-              <div
-                className={`${styles.infoItem} ${styles.infoItemCenter} ${
-                  activityFilter.filter.featured ? styles.activeInfoItem : null
-                }`}
-                onClick={() => toggleButtonFilter("featured")}
-              >
-                <img
-                  src={
-                    activityFilter.filter.featured
-                      ? featuredIconLight
-                      : featuredIcon
-                  }
-                  className={styles.infoIcon}
-                  alt="featured-icon"
-                />
-                Featured
-              </div>
-              <div
-                className={`${styles.infoItem} ${
-                  activityFilter.filter.created ? styles.activeInfoItem : null
-                }`}
-                onClick={() => toggleButtonFilter("created")}
-              >
-                <img
-                  src={
-                    activityFilter.filter.created
-                      ? creationIconLight
-                      : creationIcon
-                  }
-                  className={styles.infoIcon}
-                  alt="creations-icon"
-                />
-                Creations
-              </div>
-            </div>
-            <SliderNavber
-              getHighlightStyle={getHighlightStyle}
-              selected={selectedSliderKey}
-              setSelected={handleSetSelectedCategory}
-              tabs={sliderTabs}
-              style={{ paddingTop: "0" }}
-            />
             <div
               ref={activitiesRef}
               className={styles.activitiesContainer}

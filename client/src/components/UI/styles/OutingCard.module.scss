@@ -96,8 +96,11 @@
   flex-direction: column;
 }
 
+// Outing name under the activity title: bold but muted
 .name {
   font-size: 1.2rem;
+  font-weight: 700;
+  color: $text_muted;
 }
 
 .activity {

@@ -3,66 +3,97 @@
 .container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
   overflow-x: hidden;
   box-sizing: border-box;
   flex-shrink: 0;
   background-color: $app_bg;
-  padding: 0rem 2rem;
+  padding: 0 2rem 3rem;
   padding-top: 6rem;
+}
+
+.sectionLabel {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $text_muted;
+  margin: 2rem 0.4rem 1rem;
+}
+
+// Multi-select "Show only" chips
+.chips {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.chip {
+  flex: 1 1 0;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 0.4rem;
+  white-space: nowrap;
+  border-radius: 100rem;
+  border: 1px solid $button_grey;
+  background: $surface;
+  color: inherit;
+  font: inherit;
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: $shadow_sm;
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s $ease_out;
+
+  img {
+    width: 1.6rem;
+    height: 1.6rem;
+    flex-shrink: 0;
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.chipOn {
+  background: $blue;
+  border-color: $blue;
+  color: white;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .sideBySide {
   display: flex;
-  margin-top: 1rem;
   width: 100%;
 }
 
 .spacer {
-  width: 2rem;
-  height: 1rem;
+  width: 1.2rem;
+  flex-shrink: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2.4rem;
 }
 
 .applyButton {
-  background-color: $blue;
-  color: white;
-  margin-bottom: 2rem;
-  margin-right: 0.5rem;
+  background: linear-gradient(135deg, #6a9bf5 0%, #4a7ee8 55%, #3f6fd8 100%) !important;
+  color: white !important;
+  font-weight: 700;
+  border: none;
+  box-shadow: 0 8px 20px rgba(63, 111, 216, 0.32);
 }
 
 .clearButton {
-  margin-bottom: 2rem;
-  margin-left: 0.5rem;
-}
-
-.inactiveButton {
-  background-color: #f6f6f6;
-  color: grey;
-}
-
-.inactiveButton:hover {
-  cursor: none;
-  opacity: 1;
-}
-
-.checkboxContainer {
-  display: flex;
-  width: 100%;
-  justify-content: space-evenly;
-  margin-top: 1rem;
-  align-items: center;
-}
-
-.select {
-  font-size: 1.2rem;
-}
-
-.categoryOption {
-  background-color: white;
-  padding: 1rem;
-}
-
-.categoryOption:hover {
-  background-color: $card_grey;
+  font-weight: 600;
 }

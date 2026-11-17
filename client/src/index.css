@@ -1,16 +1,20 @@
-/* Only <html> scrolls. <body> used to be a second full-height scroll
-   container, which iOS installed apps could scroll by about the status-bar
-   height — moving the fixed nav bar and leaving the page "stuck". */
+/* Only <body> scrolls; <html> (the viewport) never does. When the document
+   itself scrolled, iOS moved the fixed nav bar with the page (by up to the
+   whole scroll distance), and when both scrolled it shifted by the status-bar
+   height. Use utils/pageScroll.js instead of window.scroll*. */
 html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
   height: 100%;
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-}
-
-body {
-  min-height: 100%;
-  width: 100%;
+  /* contain the absolutely-positioned .app so it scrolls inside body */
+  position: relative;
 }
 
 :root {
@@ -47,8 +51,8 @@ body::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
 
-/* <html> is the actual scroller. Its scrollbar appeared/disappeared as pages
-   changed height (and when modals lock scrolling), shifting everything ~7px. */
+/* Hide the scrollbar: it appeared/disappeared as pages changed height (and
+   when modals lock scrolling), shifting everything ~7px. */
 html {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -201,6 +205,34 @@ img {
     animation-duration: 0.18s !important;
   }
 
+  /* Slide-in panels can't slide, so they cross-fade instead of cutting:
+     closing fades out in place, *then* jumps off-screen; opening jumps in and
+     fades up. (Must finish inside the 300ms cleanup in modal-actions.js.) */
+  #modal-container {
+    transition-property: opacity, margin !important;
+    transition-duration: 0.2s, 0s !important;
+    transition-timing-function: ease !important;
+  }
+  #modal-container[data-open="false"] {
+    opacity: 0;
+    transition-delay: 0s, 0.2s !important;
+  }
+  #modal-container[data-open="true"] {
+    opacity: 1;
+    transition-delay: 0s, 0s !important;
+  }
+
+  /* Popups (portalled into #popup) fade in and out instead of cutting; the
+     pop/scale is dropped, the opacity fade is kept */
+  #popup > :not([data-instant]) {
+    transition-property: opacity !important;
+    transition-duration: 0.18s !important;
+  }
+  #popup > :not([data-instant]) > * {
+    animation-name: frolik-page-in !important;
+    animation-duration: 0.18s !important;
+  }
+
   /* The loading shine is a slow, subtle cue — keep it running */
   .tile-loading::after,
   .shine-loading {
@@ -270,7 +302,6 @@ img {
 }
 
 /* Page behind an open popup (photo viewer etc.) doesn't scroll */
-html.scroll-locked,
 html.scroll-locked body {
   overflow: hidden !important;
 }
