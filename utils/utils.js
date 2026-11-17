@@ -443,6 +443,7 @@ module.exports.getTotalUnreadMessages = (user) => {
 
 module.exports.outingIsPending = (user, outing) => {
   return (
+    !outing.date_completed &&
     outing.users.find((uid) => uid.toString() == user._id.toString()) &&
     outing.users.length !== outing.completions.length
   );

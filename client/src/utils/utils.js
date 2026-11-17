@@ -234,11 +234,13 @@ export function getCroppedImageBase64(imageBase64, crop) {
   });
 }
 
-export const outingIsCompleted = (outing) => {
-  return (
-    outing?.users[1] && outing?.users?.length === outing?.completions?.length
-  );
-};
+// Finished on the server (date_completed) — which includes outings that
+// completed after the stale-outing job removed everyone who hadn't marked
+// them, often leaving a single member — or all of 2+ members have completed.
+export const outingIsCompleted = (outing) =>
+  !!outing?.date_completed ||
+  (!!outing?.users?.[1] &&
+    outing?.users?.length === outing?.completions?.length);
 
 export const userIsLastCompletion = (user, outing) => {
   return (
@@ -247,14 +249,16 @@ export const userIsLastCompletion = (user, outing) => {
   );
 };
 
+// Flake rating out of 5 — HIGHER IS BETTER: 5.0 means never flaked, and it
+// drops with the share of outings the user flaked on (left, or was removed
+// for not marking completed). No outings yet = 5.0.
 export const calculateFlakeRating = (user) => {
-  const outingCount = user.outings.length;
-  const flakeCount = user.outings.filter((o) =>
-    o.flakes.find((id) => id === user._id)
+  const outings = user?.outings || [];
+  if (!outings.length) return "5.0";
+  const flakeCount = outings.filter((o) =>
+    o.flakes?.some((id) => (id?._id || id) === user._id)
   ).length;
-
-  const rating = ((flakeCount / outingCount) * 5).toFixed(1);
-  return isNaN(rating) ? 0.0 : rating;
+  return (5 - (flakeCount / outings.length) * 5).toFixed(1);
 };
 
 export const dateSort = (a, b) => {

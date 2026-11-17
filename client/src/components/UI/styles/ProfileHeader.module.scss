@@ -90,7 +90,7 @@
 }
 
 .flakeIcon:hover::after {
-  content: "Your Flake Rating indicates how many outings you have abandoned.";
+  content: "Flake rating out of 5: higher is better. It drops when you abandon an outing.";
   border: 1px solid lightgray;
   border-radius: 3px;
   font-weight: bold;

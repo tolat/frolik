@@ -28,7 +28,7 @@ const tourSteps = [
     target: '#profile-header [data-tour="stats"]',
     fitChildren: true,
     title: "Your stats",
-    body: "❄️ is your flake rating: how often you've left Outings after joining, from 0 to 5. Lower is better, so stick with your plans! 🎈 counts the Outings you've completed.",
+    body: "❄️ is your flake rating out of 5. Higher is better: 5.0 means you've never bailed on an Outing, and it drops each time you leave one or don't mark it completed. 🎈 counts the Outings you've completed.",
   },
   {
     route: "/profile",

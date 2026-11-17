@@ -169,3 +169,38 @@
   width: 100vw;
   max-width: $central_span_width;
 }
+
+// Friends list sort (Name / Outings / Flake rating)
+.sortRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  width: 100%;
+  margin: 0.8rem 0 0.4rem;
+}
+
+.sortLabel {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: $text_muted;
+  margin-right: 0.2rem;
+}
+
+.sortPill {
+  padding: 0.55rem 1.2rem;
+  border: 1px solid $light_grey;
+  border-radius: 100rem;
+  background: $surface;
+  color: $text;
+  font: inherit;
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sortPillActive {
+  background: $blue;
+  border-color: $blue;
+  color: white;
+}

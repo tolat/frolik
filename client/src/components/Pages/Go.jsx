@@ -15,7 +15,11 @@ import UserIconCluster from "../UI/UserIconCluster";
 import ActivityCard from "../UI/ActivityCard";
 import FilterActivitiesModal from "../Modals/FilterActivitiesModal";
 import balloonIcon from "../../images/air-balloon-light.png";
-import { capitalizeFirstLetter, pageRouteLoader } from "../../utils/utils";
+import {
+  capitalizeFirstLetter,
+  outingIsCompleted,
+  pageRouteLoader,
+} from "../../utils/utils";
 import store from "../../store";
 import { goActions } from "../../store/go-slice";
 import WarningPopup from "../Popups/WarningPopup";
@@ -217,7 +221,7 @@ const Go = (props) => {
     const pendingOutings = user.outings.filter(
       (o) =>
         o.users?.some((u) => (u._id || u) === user._id) &&
-        o.users.length !== o.completions?.length
+        !outingIsCompleted(o)
     );
     if (pendingOutings.length > 4) {
       dispatch(popupActions.showPopup("too-many-outings"));

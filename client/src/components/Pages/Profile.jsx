@@ -11,7 +11,12 @@ import OutingList from "../UI/OutingList";
 import { modalActions } from "../../store/modal-slice";
 import EditProfileModal from "../Modals/EditProfileModal";
 import FriendCard from "../UI/FriendCard";
-import { pageRouteLoader, toSorted } from "../../utils/utils";
+import {
+  calculateFlakeRating,
+  outingIsCompleted,
+  pageRouteLoader,
+  toSorted,
+} from "../../utils/utils";
 import balloonIcon from "../../images/air-balloon.png";
 import { useNavigate } from "react-router-dom";
 import IconButton from "../UI/IconButton";
@@ -135,6 +140,20 @@ const Profile = (props) => {
   };
 
   const [friendSearch, setFriendSearch] = useState("");
+  // Friends list sort: "name" (A–Z), "outings" (most completed first),
+  // "flake" (best rating first) — same numbers the friend cards show
+  const [friendSort, setFriendSort] = useState("name");
+  const completedCount = (f) => (f.outings || []).filter(outingIsCompleted).length;
+  const byName = (a, b) =>
+    `${a.first_name} ${a.last_name}`.localeCompare(`${b.first_name} ${b.last_name}`);
+  const friendComparator =
+    friendSort === "outings"
+      ? (a, b) => completedCount(b) - completedCount(a) || byName(a, b)
+      : friendSort === "flake"
+      ? (a, b) =>
+          Number(calculateFlakeRating(b)) - Number(calculateFlakeRating(a)) ||
+          byName(a, b)
+      : byName;
 
   function applyFriendSearch(friends) {
     return friendSearch || friendSearch !== ""
@@ -245,15 +264,29 @@ const Profile = (props) => {
             setValue={setFriendSearch}
           />
           {user.friends[0] ? (
-            toSorted(applyFriendSearch(user.friends), (a, b) => {
-              if (a.first_name < b.first_name) {
-                return -1;
-              }
-              if (a.first_name > b.first_name) {
-                return 1;
-              }
-              return 0;
-            }).map((f) => (
+            <div className={styles.sortRow} role="group" aria-label="Sort friends">
+              <span className={styles.sortLabel}>Sort:</span>
+              {[
+                ["name", "Name"],
+                ["outings", "Outings"],
+                ["flake", "Flake rating"],
+              ].map(([key, label]) => (
+                <button
+                  key={key}
+                  type="button"
+                  aria-pressed={friendSort === key}
+                  className={`${styles.sortPill} ${
+                    friendSort === key ? styles.sortPillActive : ""
+                  }`}
+                  onClick={() => setFriendSort(key)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          ) : null}
+          {user.friends[0] ? (
+            toSorted(applyFriendSearch(user.friends), friendComparator).map((f) => (
               <FriendCard
                 buttons={<FriendCardButtons user={f} />}
                 key={f._id}

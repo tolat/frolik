@@ -7,7 +7,7 @@ import outingsIcon from "../../images/outing2.png";
 import { useDispatch } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
 import { swapModal } from "../../store/modal-actions";
-import { calculateFlakeRating } from "../../utils/utils";
+import { calculateFlakeRating, outingIsCompleted } from "../../utils/utils";
 import { popupActions } from "../../store/popup-slice";
 
 const FriendCard = memo((props) => {
@@ -98,7 +98,7 @@ const FriendCard = memo((props) => {
                 iconStyle={statIconStyle}
                 rating={
                   props.user.outings?.filter(
-                    (o) => o.completions?.length === o.users?.length
+                    (o) => outingIsCompleted(o)
                   )?.length
                 }
               />
