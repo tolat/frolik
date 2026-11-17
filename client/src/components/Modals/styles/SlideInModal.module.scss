@@ -9,19 +9,34 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  background-color: white;
+  background-color: $app_bg;
   width: $central_span_width;
-  transition: margin 0.23s ease-in-out;
-  background-color: rgb(255, 255, 255);
+  transition: margin 0.3s $ease_out; // must stay <= the 300ms JS cleanup timer
+  background-color: $app_bg;
+  will-change: margin;
   box-sizing: border-box;
   position: absolute;
-  height: 100%;
+  min-height: 100%;
   overscroll-behavior: none;
+  // room for the floating tab bar
+  padding-bottom: calc($navbar_height + env(safe-area-inset-bottom, 0px));
 }
 
 .leftContainer{
   display: flex;
   align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+:global(#slide-in-modal-header) {
+  min-width: 0;
+  flex: 1;
+}
+
+:global(#slide-in-modal-button) {
+  flex-shrink: 0;
+  margin-left: 1rem;
 }
 
 .header {
@@ -44,11 +59,15 @@
   top: 0;
   align-items: center;
   width: $central_span_width;
-  background-color: white;
-  font-size: 2rem;
-  padding: 1.5rem;
+  background-color: rgba(244, 246, 250, 0.86);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  backdrop-filter: saturate(180%) blur(16px);
+  border-bottom: 1px solid rgba(20, 24, 40, 0.06);
+  font-size: 1.9rem;
+  padding: 1.2rem 1.5rem;
   z-index: 3;
-  font-weight: bold;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   box-sizing: border-box;
   margin-top: 0
 }
@@ -57,7 +76,7 @@
   position: fixed;
   box-sizing: border-box;
   display: flex;
-  height: calc(100% - $navbar_height);
+  height: 100%;
   width: calc(2 * $central_span_width);
   margin-left: $central_span_width;
   overflow-y: scroll;
@@ -66,7 +85,7 @@
 }
 
 .baffle {
-  background-color: rgb(255, 255, 255);
+  background-color: $app_bg;
   height: 100%;
   width: calc((100% - $central_span_width) / 2);
   right: 0;
@@ -75,19 +94,27 @@
 }
 
 .backButton {
-  width: 3.5rem;
-  height: 3.5rem;
-  margin-right: 1.5rem;
+  width: 3.8rem;
+  height: 3.8rem;
+  margin-right: 1.2rem;
+  flex-shrink: 0;
+  padding: 0.9rem;
+  box-sizing: border-box;
+  border-radius: 100rem;
+  background-color: $surface;
+  box-shadow: $shadow_sm;
+  @include pressable;
 }
 
 .backButton:hover {
   cursor: pointer;
-  opacity: 0.5;
+  background-color: $button_grey;
 }
 
 .arrowImage {
   width: 100%;
   height: 100%;
+  object-fit: contain;
 }
 
 .headerButton{

@@ -29,7 +29,7 @@ const ProfileHeader = (props) => {
               badge={false}
               user={props.user}
               noShadow={true}
-              style={{ backgroundColor: "white", marginBottom: "0" }}
+              style={{ backgroundColor: "transparent", border: "none", marginBottom: "0" }}
               sizeInRem={10}
               buttons={
                 <div className={styles.sideBySide}>

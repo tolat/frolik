@@ -2,16 +2,54 @@ $breakpoint_s: 750px;
 $breakpoint_m: 1100px;
 $breakpoint_l: 1800px;
 $central_span_width: 40rem;
-$navbar_height: 9rem;
-$blue: #6e9fed;
-$light_blue: rgb(229, 238, 253);
-$green: rgb(107, 189, 132);
-$card_grey: rgb(250, 250, 250);
-$button_grey: #f0f0f0;
-$red: rgb(239, 122, 122);
-$light_grey: rgb(223, 223, 223);
+$navbar_height: 8.4rem;
+
+// ── Design tokens ────────────────────────────────────────────────────────────
+// Palette (kept close to the original hues so existing PNG icons still match)
+$blue: #5b8def;
+$blue_dark: #3f6fd8;
+$light_blue: #eaf1fe;
+$green: #34b77a;
+$card_grey: #f7f8fb;
+$button_grey: #eef0f5;
+$red: #ef6461;
+$light_grey: #e5e8ef;
 $zoom: 0.65;
-$orange: rgb(255, 207, 94);
+$orange: #ffbf47;
+$text: #1b1d24;
+$text_muted: #6b7182;
+$surface: #ffffff;
+$app_bg: #f4f6fa;
+
+// Shape + depth
+$radius_sm: 1rem;
+$radius_md: 1.6rem;
+$radius_lg: 2.2rem;
+$shadow_sm: 0 1px 2px rgba(20, 24, 40, 0.06), 0 1px 3px rgba(20, 24, 40, 0.04);
+$shadow_md: 0 4px 14px rgba(20, 24, 40, 0.08), 0 1px 3px rgba(20, 24, 40, 0.05);
+$shadow_lg: 0 12px 40px rgba(20, 24, 40, 0.16);
+
+// Motion
+$ease_out: cubic-bezier(0.22, 1, 0.36, 1);
+$ease_spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+$dur_fast: 0.15s;
+$dur: 0.28s;
+
+@mixin card {
+  background-color: $surface;
+  border-radius: $radius_md;
+  box-shadow: $shadow_sm;
+  border: 1px solid rgba(20, 24, 40, 0.04);
+}
+
+@mixin pressable {
+  transition: transform $dur_fast $ease_out, box-shadow $dur $ease_out,
+    opacity $dur_fast ease, background-color $dur ease;
+  -webkit-tap-highlight-color: transparent;
+  &:active {
+    transform: scale(0.97);
+  }
+}
 
 @mixin mbl_styles {
   @media (max-width: $breakpoint_s) {

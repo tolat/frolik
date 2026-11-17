@@ -45,3 +45,20 @@
   margin-bottom: 1rem;
   //opacity: 0;
 }
+
+// ── Softer tab indicator ────────────────────────────────────────────────────
+.sliderIconContainer {
+  transition: opacity 0.25s ease;
+}
+
+.sliderHighlight {
+  height: 3px;
+  border-radius: 3px;
+  background-color: #1b1d24;
+  transition: background-color 0.25s ease;
+}
+
+.iconName {
+  font-size: 1.15rem;
+  font-weight: 600;
+}

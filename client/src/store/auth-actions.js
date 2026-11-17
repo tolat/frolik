@@ -38,7 +38,7 @@ export const fetchAuth = () => {
     const dispatch = store.dispatch;
 
     // return if already fetching auth
-    if (store.getState().auth.fetchingAuth) return;
+    if (store.getState().auth.fetchingAuth) return resolve();
 
     const requestConfig = { url: `${getServer()}/auth/check` };
 
@@ -57,7 +57,8 @@ export const fetchAuth = () => {
     };
 
     const handleError = (err) => {
-      reject()
+      // Resolve (not reject) so route loaders don't crash to the error page
+      resolve();
       store.dispatch(authActions.setFetchingAuth(false));
       dispatch(authActions.logout());
 

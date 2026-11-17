@@ -48,7 +48,8 @@ const OutingUpdate = (props) => {
       };
       fetchStrippedUser(nUserID, onComplete);
     }
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nUserID, !!nUser]);
 
   // Fetch outing from server if is hasn't been fetched
   useEffect(() => {

@@ -1,7 +1,7 @@
 import styles from "./styles/Go.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import SimpleButton from "../UI/SimpleButton";
-import { Fragment, useEffect, useReducer, useState } from "react";
+import { Fragment, useEffect, useReducer, useRef, useState } from "react";
 import AddUserModal from "../Modals/AddUserModal";
 import { modalActions } from "../../store/modal-slice";
 import editIcon from "../../images/edit.png";
@@ -36,8 +36,6 @@ import {
 import SliderNavber from "../UI/SliderNavbar";
 import CreateActivityModal from "../Modals/CreateActivityModal";
 import LoaderSpinner from "../UI/LoaderSpinner";
-import downArrow from "../../images/down-arrow1.png";
-import upArrow from "../../images/up-arrow1.png";
 
 const Go = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -49,7 +47,13 @@ const Go = (props) => {
   const activeOuting = useSelector((state) => state.modal.activeOuting);
   const globals = useSelector((state) => state.auth.globals);
   const categoryColorMap = globals && globals?.categoryColorMap;
-  const [selected, setSelected] = useState(Object.keys(categoryColorMap)[0]);
+  const [selected, setSelected] = useState(
+    categoryColorMap ? Object.keys(categoryColorMap)[0] : undefined
+  );
+  useEffect(() => {
+    if (!selected && categoryColorMap)
+      setSelected(Object.keys(categoryColorMap)[0]);
+  }, [selected, categoryColorMap]);
   const selectedSliderKey = `_${selected}_tab`;
   const [createButtonText, setCreateButtonText] = useState("Create Outing");
   const creatingOutingText = (
@@ -123,15 +127,9 @@ const Go = (props) => {
   // Make sure user in users list is updated to the auth user
   useEffect(() => {
     const goUser = goState.outing.users.find((u) => u._id === user._id);
-    if (goUser.outings.length !== user.outings.length) {
-      let newUsers = [];
-      for (let u of goState.outing.users) {
-        if (u._id !== user._id) {
-          newUsers.push(u);
-        }
-        newUsers.unshift(user);
-      }
-      dispatch(goActions.setUsers(newUsers));
+    if (!goUser || goUser.outings?.length !== user.outings.length) {
+      const others = goState.outing.users.filter((u) => u._id !== user._id);
+      dispatch(goActions.setUsers([user, ...others]));
     }
   }, [goState, user, dispatch]);
 
@@ -153,9 +151,51 @@ const Go = (props) => {
     dispatch(modalActions.showModal());
   };
 
+  // Every outing needs at least one Daily Match (a non-friend). Friends and
+  // matches are the only people the Add Members modal offers, so any
+  // non-friend member other than the user is a match. The server enforces
+  // this against the user's actual match list.
+  const friendIDs = new Set((user.friends || []).map((f) => f._id || f));
+  const addedMatches = goState.outing.users.filter(
+    (u) => u._id !== user._id && !friendIDs.has(u._id)
+  );
+  const hasDailyMatch = addedMatches.length > 0;
+  const hasMembers = !!goState.outing.users[1];
+  const hasActivity = !!goState.outing.activity?.name;
+
+  // "Pick an activity" chip: scroll to the activity cards and bounce them
+  const activitiesRef = useRef(null);
+  const handlePickActivityClick = () => {
+    const el = activitiesRef.current;
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    const cards = [...el.children].slice(0, 6);
+    // Let the scroll get under way before the cards bounce
+    setTimeout(() => {
+      cards.forEach((card, i) =>
+        card.animate?.(
+          [
+            { transform: "translateY(0)" },
+            { transform: "translateY(-14px)", offset: 0.3 },
+            { transform: "translateY(0)", offset: 0.55 },
+            { transform: "translateY(-5px)", offset: 0.75 },
+            { transform: "translateY(0)" },
+          ],
+          { duration: 650, delay: i * 70, easing: "ease-out" }
+        )
+      );
+    }, 250);
+  };
+
   // Create Pending outing for all added users
   const handleCreateOuting = () => {
-    if (user.outings.filter((o) => o.status === "Pending").length > 4) {
+    const pendingOutings = user.outings.filter(
+      (o) =>
+        o.users?.some((u) => (u._id || u) === user._id) &&
+        o.users.length !== o.completions?.length
+    );
+    if (pendingOutings.length > 4) {
       dispatch(popupActions.showPopup("too-many-outings"));
       return;
     }
@@ -270,7 +310,31 @@ const Go = (props) => {
             />
           </button>
         </div>
-        {goState.outing.users[1] && goState.outing.activity?.name && (
+        <div className={styles.requirements}>
+          <button
+            type="button"
+            onClick={handlePickActivityClick}
+            className={`${styles.requirement} ${
+              hasActivity ? styles.requirementMet : styles.requirementAction
+            }`}
+          >
+            <span className={styles.requirementDot}>{hasActivity ? "✓" : "1"}</span>
+            {hasActivity ? "Activity picked" : "Pick an activity"}
+          </button>
+          <button
+            type="button"
+            onClick={handleAddUserClick}
+            className={`${styles.requirement} ${
+              hasDailyMatch ? styles.requirementMet : styles.requirementAction
+            }`}
+          >
+            <span className={styles.requirementDot}>{hasDailyMatch ? "✓" : "2"}</span>
+            {hasDailyMatch
+              ? `${addedMatches.length} Daily Match${addedMatches.length > 1 ? "es" : ""} added`
+              : "Add a Daily Match"}
+          </button>
+        </div>
+        {hasMembers && hasActivity && hasDailyMatch && (
           <SimpleButton
             onClick={
               createButtonText === "Create Outing" ? handleCreateOuting : null
@@ -295,26 +359,19 @@ const Go = (props) => {
               </Fragment>
             )}
 
-            <ActivityCard
-              key={Math.random()}
-              activity={goState.outing.activity}
-              removeActivity={removeActivity}
-              completed={completedActivities.find(
-                (id) => id === goState.outing.activity._id
-              )}
-            />
+            <div ref={activitiesRef} className={styles.selectedActivity}>
+              <ActivityCard
+                key={goState.outing.activity?._id || "selected-activity"}
+                activity={goState.outing.activity}
+                removeActivity={removeActivity}
+                completed={completedActivities.find(
+                  (id) => id === goState.outing.activity._id
+                )}
+              />
+            </div>
           </Fragment>
         ) : (
           <Fragment>
-            <div className={styles.prompt}>
-              <img
-                className={styles.arrowImgDown}
-                alt="arrow"
-                src={downArrow}
-              />
-              Choose Activity & Add Members
-              <img className={styles.arrowImgUp} alt="arrow" src={upArrow} />
-            </div>
             <div className={styles.sideBySide}>
               <SimpleButton
                 onClick={handleFilterActivitiesClick}
@@ -404,7 +461,7 @@ const Go = (props) => {
               tabs={sliderTabs}
               style={{ paddingTop: "0" }}
             />
-            <div className={styles.activitiesContainer}>
+            <div ref={activitiesRef} className={styles.activitiesContainer}>
               {!activityFilter.activities[0] ? (
                 <div className={styles.loading}>
                   {activityFilter.active ||
@@ -421,7 +478,7 @@ const Go = (props) => {
                   .filter((a) => a?.category === selected)
                   .map((a) => (
                     <ActivityCard
-                      key={Math.random()}
+                      key={a._id}
                       activity={a}
                       completed={completedActivities.find((id) => id === a._id)}
                       removeActivity={removeActivity}

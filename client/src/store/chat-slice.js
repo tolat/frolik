@@ -24,7 +24,9 @@ const chatSlice = createSlice({
     updateChat(state, action) {
       const oldChat = state.chats.find((c) => c._id === action.payload._id);
       const chatIndex = state.chats.indexOf(oldChat);
-      if (!oldChat || oldChat.touched !== action.payload.touched) {
+      if (chatIndex === -1) {
+        state.chats.unshift(action.payload);
+      } else if (oldChat.touched !== action.payload.touched) {
         state.chats.splice(chatIndex, 1, action.payload);
       }
     },

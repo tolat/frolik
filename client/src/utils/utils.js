@@ -286,16 +286,22 @@ export const getUnreadChatMessages = (user, chat) => {
 };
 
 export const setLastReadMessage = (message) => {
-  if (message && store.getState().chat.updatingLastRead === message._id) {
+  const state = store.getState();
+  if (message && state.chat.updatingLastRead === message.id) {
     return;
   }
-  const lastChat = store
-    .getState()
-    .chat.chats.find((c) => c._id === store.getState().modal.activeChat._id);
+  const activeChatID = state.modal.activeChat?._id;
+  const lastChat =
+    activeChatID && state.chat.chats.find((c) => c._id === activeChatID);
   // Set last read message if chat modal is being closed
   if (lastChat) {
     const lastMessage = message ? message : lastChat.messages[0];
-    const user = store.getState().auth.user;
+    const user = state.auth.user;
+    // Skip if already marked read — otherwise the server's update-user push
+    // re-triggers this and creates an endless request loop
+    if (lastMessage && lastChat.last_read?.[user._id] === lastMessage.id) {
+      return;
+    }
     const onComplete = () => {
       fetchChats(user);
     };

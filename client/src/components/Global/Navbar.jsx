@@ -38,7 +38,8 @@ const Navbar = (props) => {
   const warningMessage = useSelector((state) => state.popup.warningMessage);
   const warningHeader = useSelector((state) => state.popup.warningHeader);
   const subPromptRef = useRef(null);
-  const [activePage, setActivePage] = useState(false);
+  // Derive the active tab from the URL (was set via setState during render)
+  const activePage = currentUrl.split("/")[1] || false;
   const [masterDisplay, setMasterDisplay] = useState("flex");
 
   // Hide navbar on login page
@@ -63,13 +64,8 @@ const Navbar = (props) => {
     dispatch(modalActions.showModal());
   };
 
-  const makeActive = (navData, page) => {
-    if (navData.isActive) {
-      setActivePage(page);
-    }
-
-    return navData.isActive ? styles.activeLink : "none";
-  };
+  const makeActive = (navData) =>
+    navData.isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink;
 
   const tooManyOutingsMessage = (
     <div style={{ display: "flex", flexDirection: "column" }}>

@@ -3,22 +3,17 @@ import { genMembersString, getUnreadChatMessages } from "../../utils/utils";
 import UserIconCluster from "../UI/UserIconCluster";
 import ModalPortal from "./ModalPortal";
 import styles from "./styles/ChatModal.module.scss";
-import sendIcon from "../../images/send.png";
+import ModalHeaderPortal from "./ModalHeaderPortal";
+import ModalButtonPortal from "./ModalButtonPortal";
 import { useEffect, useRef } from "react";
 import { sendChatMessage } from "../../store/chat-actions";
 import { socket } from "../../socket";
-import SimpleButton from "../UI/SimpleButton";
 import { goActions } from "../../store/go-slice";
 import { useNavigate } from "react-router-dom";
 import { modalActions } from "../../store/modal-slice";
 import { hideModal } from "../../store/modal-actions";
-const bubbleColours = [
-  "rgb(247, 226, 250)",
-  "rgb(252, 225, 225)",
-  "rgb(252, 238, 188)",
-  "rgb(227, 251, 220)",
-  "rgb(217, 248, 254)",
-];
+// Sender-name colours for other people's messages
+const nameColours = ["#9b5de5", "#e05a6a", "#d68a00", "#2f9e66", "#1f8fbf"];
 
 const ChatModal = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -82,10 +77,10 @@ const ChatModal = (props) => {
     await hideModal(true);
     dispatch(modalActions.setActiveOuting(chat.outing));
     dispatch(modalActions.setSelector("outing-modal"));
-    dispatch(modalActions.showModal({
-      headerStyle: { backgroundColor: "white" },
-    }));
+    dispatch(modalActions.showModal());
   };
+
+  const members = chat ? (chat.outing ? chat.outing.users : chat.users) : [];
 
   return !chat ? (
     modalState.selector === "chat-modal" ? (
@@ -93,73 +88,96 @@ const ChatModal = (props) => {
     ) : null
   ) : (
     <ModalPortal>
-      <div style={modalStyle} className={`${styles.container} noscroll`}>
-        <div className={styles.header}>
-          <div className={styles.headerLeftContainer}>
-            <div>
-              <div className={styles.chatName}>{chat.name}</div>
-              <div
-                className={`${styles.chatMembers} ${
-                  chat.outing ? null : styles.nonUserMembers
-                }`}
-              >
-                {membersString}
-              </div>
-            </div>
-            {chat.outing ? (
-              <SimpleButton
-                onClick={handleShowOuting}
-                className={styles.createOutingButton}
-              >
-                View Outing
-              </SimpleButton>
-            ) : (
-              <SimpleButton
-                onClick={handleCreateOuting}
-                className={styles.createOutingButton}
-              >
-                + Outing
-              </SimpleButton>
-            )}
-
-            <div className={styles.lastActive}>
-              Last Active {new Date(chat.touched).toDateString().slice(4, 15)} -{" "}
-              {new Date(chat.touched).toTimeString().slice(0, 5)}
-            </div>
-          </div>
-
-          <div className={styles.headerRightContainer}>
+      {/* Chat identity lives in the fixed modal header bar */}
+      <ModalHeaderPortal selector={"chat-modal"}>
+        <div className={styles.headerIdentity}>
+          <div className={styles.headerAvatars}>
             <UserIconCluster
-              users={chat.outing ? chat.outing.users : chat.users}
-              sizeInRem={10}
-              borderSizeInRem={0.8}
+              users={members}
+              sizeInRem={4.2}
+              borderSizeInRem={0.35}
             />
+          </div>
+          <div className={styles.headerText}>
+            <div className={styles.chatName}>
+              {chat.outing ? chat.name : membersString}
+            </div>
+            <div className={styles.chatMembers}>
+              {chat.outing
+                ? membersString
+                : `Active ${new Date(chat.touched).toDateString().slice(4, 10)}`}
+            </div>
           </div>
         </div>
+      </ModalHeaderPortal>
+      <ModalButtonPortal selector={"chat-modal"}>
+        <button
+          type="button"
+          onClick={chat.outing ? handleShowOuting : handleCreateOuting}
+          className={styles.headerAction}
+        >
+          {chat.outing ? "Outing" : "+ Outing"}
+        </button>
+      </ModalButtonPortal>
+
+      <div style={modalStyle} className={`${styles.container} noscroll`}>
         <div id="chat-container" className={`${styles.chatContainer} noscroll`}>
-          {messages.map((m) => (
-            <MessageBubble
-              lastReadID={lastReadMessage}
-              key={Math.random()}
-              user={m.user}
-              message={m.message}
-              sent={m.sent}
-              chatMembers={chat.outing ? chat.outing.users : chat.users}
-            />
-          ))}
+          {messages.map((m, i) => {
+            // messages are newest-first; render order is reversed by CSS
+            const older = messages[i + 1];
+            const newer = messages[i - 1];
+            const sameAsOlder = older && older.user === m.user;
+            const sameAsNewer = newer && newer.user === m.user;
+            return (
+              <MessageBubble
+                lastReadID={lastReadMessage}
+                key={m.id || i}
+                id={m.id}
+                user={m.user}
+                message={m.message}
+                sent={m.sent}
+                firstInGroup={!sameAsOlder}
+                lastInGroup={!sameAsNewer}
+                chatMembers={members}
+              />
+            );
+          })}
         </div>
         <div className={styles.composeContainer}>
           <textarea
             id="composer-textarea"
+            rows={1}
+            placeholder="Message…"
             onChange={(e) => {
               e.target.style.height = "";
               e.target.style.height = e.target.scrollHeight + "px";
             }}
+            onKeyDown={(e) => {
+              // Enter sends, Shift+Enter adds a new line
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSendMessage();
+              }
+            }}
             className={`${styles.composer} noscroll`}
             ref={composerRef}
           />
-          <button onClick={handleSendMessage} className={styles.sendButton}>
-            <img className={styles.sendIcon} src={sendIcon} alt="send-icon" />
+          <button
+            type="button"
+            onClick={handleSendMessage}
+            className={styles.sendButton}
+            aria-label="Send message"
+          >
+            <svg viewBox="0 0 24 24" className={styles.sendIcon} aria-hidden="true">
+              <path
+                d="M12 19V5M12 5l-6 6M12 5l6 6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </button>
         </div>
       </div>
@@ -173,41 +191,37 @@ const MessageBubble = (props) => {
   const messageUser = usersData[props.user];
   const foreign = props.user !== user._id;
   const sentDate = new Date(props.sent);
-  const isLastRead = props.message.id === props.lastReadID;
+  const isLastRead = props.id === props.lastReadID;
   const colourIndex =
     props.chatMembers &&
-    props.chatMembers.map((u) => u._id).indexOf(props.user) % 5;
-  const bubbleColour = bubbleColours[colourIndex];
-  const tailStyle = {
-    borderRight: `15px solid ${bubbleColour}`,
-    borderTop: `15px solid ${bubbleColour}`,
-  };
-  const foreignTailStyle = {
-    borderLeft: `15px solid ${bubbleColour}`,
-    borderTop: `15px solid ${bubbleColour}`,
-  };
+    props.chatMembers.map((u) => u._id || u).indexOf(props.user) % 5;
+  const nameColour = nameColours[colourIndex] || nameColours[0];
 
   return (
     <div
-      className={`${
-        foreign ? styles.bubbleContainerForeign : styles.bubbleContainer
+      className={`${styles.bubbleRow} ${foreign ? styles.foreign : styles.own} ${
+        props.lastInGroup ? styles.groupEnd : ""
       }`}
     >
-      <div style={{ backgroundColor: bubbleColour }} className={styles.bubble}>
-        <div
-          className={styles.bubbleUser}
-        >{`${messageUser.first_name} ${messageUser.last_name}`}</div>
-        <div className={styles.bubbleMessage}>{props.message}</div>
-        <div
-          style={foreign ? foreignTailStyle : tailStyle}
-          className={foreign ? styles.bubbleTailForeign : styles.bubbleTail}
-        ></div>
+      {isLastRead && <div className={styles.lastReadIndicator}>New</div>}
+      {foreign && props.firstInGroup && messageUser && (
+        <div className={styles.bubbleUser} style={{ color: nameColour }}>
+          {messageUser.first_name}
+        </div>
+      )}
+      <div
+        className={`${styles.bubble} ${
+          props.lastInGroup ? styles.bubbleTail : ""
+        }`}
+      >
+        {props.message}
+      </div>
+      {props.lastInGroup && (
         <div className={styles.sent}>
-          {sentDate.toDateString().slice(4, 15)} -{" "}
+          {sentDate.toDateString().slice(4, 10)} ·{" "}
           {sentDate.toTimeString().slice(0, 5)}
         </div>
-      </div>
-      {isLastRead && <div className={styles.lastReadIndicator}> New Below</div>}
+      )}
     </div>
   );
 };

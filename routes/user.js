@@ -24,6 +24,7 @@ const {
   getTotalUnreadMessages,
   outingIsPending,
   webpushNotify,
+  decodeDataURL,
 } = require("../utils/utils");
 const {
   reqAuthenticated,
@@ -94,8 +95,10 @@ router.post(
     // Getting user from the sameUserOnly middleware
     const user = req.user;
 
+    // The storage key is always decided server-side so a client can't
+    // overwrite another user's image by sending their key.
     user.profile_picture = {
-      key: req.body.key,
+      key: user.profile_picture?.key || user.username,
       crop: req.body.crop,
       zoom: req.body.zoom,
     };
@@ -112,14 +115,14 @@ router.post(
     // Only upload new image if it has been sent
     if (req.body.photoString) {
       // Resize/compress image before upload
-      const imageBuffer = Buffer.from(req.body.photoString.slice(23), "base64");
+      const imageBuffer = decodeDataURL(req.body.photoString);
       const reducedImageBuffer = await sharp(imageBuffer)
         .jpeg({ quality: 50 })
         .withMetadata()
         .toBuffer();
 
       // Upload image to S3
-      uploadToS3(process.env.AWS_BUCKET, req.body.key, reducedImageBuffer)
+      uploadToS3(process.env.AWS_BUCKET, user.profile_picture.key, reducedImageBuffer)
         .then((response) => {
           res.sendStatus(200);
         })
@@ -143,10 +146,24 @@ router.post(
     const profileData = req.body.profileData;
     const photoString = req.body.photoString;
 
-    // Set user profile data
-    for (let key in profileData) {
-      if (profileData[key] || profileData[key] == "")
-        user[key] = profileData[key];
+    // Only allow known, user-editable fields. Previously every key in the
+    // request body was copied onto the user document, so a client could
+    // overwrite friends, username, password hash/salt, matches, etc.
+    const EDITABLE = ["first_name", "last_name", "location", "tagline"];
+    for (const key of EDITABLE) {
+      if (typeof profileData?.[key] === "string") user[key] = profileData[key].slice(0, 200);
+    }
+    const ALLOWED_STATUSES = ["Ready", "Busy", "Inactive"];
+    if (ALLOWED_STATUSES.includes(profileData?.status?.status)) {
+      user.status = { status: profileData.status.status, updated: Date.now() };
+    }
+    if (profileData?.profile_picture) {
+      user.profile_picture = {
+        key: user.profile_picture?.key || profileData.profile_picture.key,
+        crop: profileData.profile_picture.crop,
+        zoom: profileData.profile_picture.zoom,
+      };
+      user.markModified("profile_picture");
     }
 
     // Save & Populate user
@@ -161,9 +178,9 @@ router.post(
 
     // Only upload image if it is not the same as the current
     // (will be a base64 string for new uploads)
-    if (photoString.includes("base64")) {
+    if (typeof photoString === "string" && photoString.includes("base64")) {
       // Resize/compress image before upload
-      const imageBuffer = Buffer.from(photoString.slice(23), "base64");
+      const imageBuffer = decodeDataURL(photoString);
       const reducedImageBuffer = await sharp(imageBuffer)
         .jpeg({ quality: 50 })
         .withMetadata()
@@ -172,7 +189,7 @@ router.post(
       // Upload image to S3
       uploadToS3(
         process.env.AWS_BUCKET,
-        profileData.profile_picture.key,
+        user.profile_picture.key,
         reducedImageBuffer
       )
         .then(() => {
@@ -192,8 +209,29 @@ router.post(
 router.post(
   "/create",
   tryCatch(async (req, res) => {
-    let userData = { ...req.body.user };
-    userData.username = userData.username.toLowerCase();
+    const body = req.body.user || {};
+    const username = String(body.username || "").trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username) || !body.password) {
+      res.status(406).send({
+        header: "Invalid account details",
+        message: "A valid email address and password are required.",
+      });
+      return;
+    }
+    // Whitelist fields — the raw body used to be passed straight to new User(),
+    // letting a sign-up request set status, friends, matches, etc.
+    const userData = {
+      username,
+      first_name: String(body.first_name || "").slice(0, 100),
+      last_name: String(body.last_name || "").slice(0, 100),
+      location: String(body.location || "").slice(0, 200),
+      tagline: String(body.tagline || "").slice(0, 200),
+      profile_picture: {
+        key: username,
+        crop: body.profile_picture?.crop,
+        zoom: body.profile_picture?.zoom,
+      },
+    };
 
     // Send back error code if user already exists
     if (await User.findOne({ username: userData.username })) {
@@ -205,20 +243,18 @@ router.post(
     } else {
       // Else create new user and upload photo
       const user = new User(userData);
-      await User.register(user, userData.password);
+      await User.register(user, String(body.password));
 
       // Send email confirmation linkand set user status as pending
       const link = `${process.env.SERVER}/user/${user._id.toString()}/verify`;
-      sendEmail(
-        userData.username,
-        "Verify frolik.ca Email",
-        genVerifyAccountEmail(link)
-      );
+      sendEmail(userData.username, "Verify frolik.ca Email", genVerifyAccountEmail(link));
+      if (process.env.NODE_ENV == "development")
+        console.log("[dev] verification link:", link);
       user.status = { status: "Pending", updated: Date.now() };
       await user.save();
 
       // Convert to buffer and adjust quality before uploading
-      const imageBuffer = Buffer.from(req.body.photoString.slice(23), "base64");
+      const imageBuffer = decodeDataURL(req.body.photoString);
       const reducedImageBuffer = await sharp(imageBuffer)
         .jpeg({ quality: 30 })
         .withMetadata()
@@ -267,95 +303,54 @@ router.get(
 router.get(
   "/:id/matches",
   reqAuthenticated,
+  sameUserOnly,
   tryCatch(async (req, res) => {
-    const user = await User.findById(req.params.id);
+    const user = req.user;
     await user.populate("outings");
+    const MATCH_TTL = 24 * 60 * 60 * 1000;
+    const MAX_MATCHES = 5;
+    const userID = user._id.toString();
+    const friendIDs = user.friends.map((f) => (f._id || f).toString());
+    const pendingCount = (u) =>
+      u.outings.filter((o) => o && outingIsPending(u, o)).length;
 
-    // Return if user already has 5+ pending outings
-    if (user.outings.filter((o) => o.status == "Pending").length > 4) {
-      res.status(200);
-      return;
+    // Users with 5+ pending outings can't create more, so no new matches
+    if (pendingCount(user) >= 5) {
+      const matches = await populateFriends(user.matches.map((m) => m.user));
+      return res.send({ matches });
     }
 
-    // Limit matches to users who have status ready
+    // Candidates: Ready users in the same location who aren't friends, aren't
+    // the user, and don't have 5+ pending outings themselves
     let allAvailable = await User.find({
-      $and: [{ "status.status": "Ready" }, { location: user.location }],
-    });
+      "status.status": "Ready",
+      location: user.location,
+      _id: { $ne: user._id, $nin: user.friends },
+    }).populate("outings");
+    allAvailable = allAvailable.filter((u) => pendingCount(u) < 5);
+    const availableByID = new Map(allAvailable.map((u) => [u._id.toString(), u]));
 
-    // Populate the available matches user outings
-    for (u of allAvailable) {
-      await u.populate("outings");
+    // Keep only matches that are still valid (< 24h old, still available)
+    const kept = user.matches.filter(
+      (m) =>
+        m.user &&
+        Date.now() - new Date(m.updated).getTime() < MATCH_TTL &&
+        !friendIDs.includes(m.user.toString()) &&
+        availableByID.has(m.user.toString())
+    );
+    const keptIDs = new Set(kept.map((m) => m.user.toString()));
+
+    // Top up to MAX_MATCHES with random available users
+    const pool = allAvailable.filter((u) => !keptIDs.has(u._id.toString()));
+    while (kept.length < MAX_MATCHES && pool.length > 0) {
+      const [picked] = pool.splice(Math.floor(Math.random() * pool.length), 1);
+      kept.push({ user: picked._id, updated: Date.now() });
     }
 
-    // Filter out invalid matches
-    allAvailable = allAvailable.filter((u) => {
-      return (
-        // No friends matches
-        !user.friends.map((f) => f._id.toString()).includes(u._id.toString()) &&
-        // Don't match same user
-        u._id.toString() !== user._id.toString() &&
-        // No users with 5 or more pending outings
-        u.outings.filter((o) => o.status == "Pending").length < 5 &&
-        // No users that are alredy in the user's matches
-        !user.matches.find((m) => m.user.toString() == u._id.toString())
-      );
-    });
-
-    // Replace or delete any invalid matches
-    for (match of user.matches) {
-      const matchUser = await User.findById(match.user);
-      await matchUser.populate("outings");
-      if (
-        // Match is 24 hrs old or more
-        Date.now() - new Date(match.updated).getTime() > 86400000 ||
-        // Match status has changed to Busy or Incative
-        matchUser.status.status != "Ready" ||
-        // Match has 5 or more pending outings
-        matchUser.outings.filter((o) => o.status == "Pending").length > 4 ||
-        // Match has become a friend
-        user.friends
-          .map((f) => (f._id ? f._id.toString() : f.toString()))
-          .includes(matchUser._id.toString())
-      ) {
-        const replaceIndex = user.matches.indexOf(match);
-        // If available matches exists, pull form there
-        if (allAvailable.length > 0) {
-          const newIndex = parseInt(
-            (Math.random() * 1000000) % allAvailable.length
-          );
-          user.matches[replaceIndex] = {
-            user: allAvailable[newIndex],
-            updated: Date.now(),
-          };
-          allAvailable.splice(newIndex, 1);
-        }
-        // Else just delete the invalid match
-        else {
-          user.matches.splice(replaceIndex, 1);
-        }
-      }
-    }
-
-    // Make sure user has 5 matches if possible
-    if (!user.matches || !user.matches[4]) {
-      const neededMatches = 5 - user.matches.length;
-      // Pick 5 available users at random
-      for (let i = 0; i < neededMatches; i++) {
-        if (allAvailable.length > 0) {
-          const index = parseInt(
-            (Math.random() * 1000000) % allAvailable.length
-          );
-          user.matches.push({ user: allAvailable[index], updated: Date.now() });
-          allAvailable.splice(index, 1);
-        }
-      }
-    }
-
+    user.matches = kept;
     await user.save();
 
-    // Just send matched users back to the server
     const matches = await populateFriends(user.matches.map((m) => m.user));
-
     res.send({ matches });
   })
 );
@@ -632,7 +627,7 @@ router.post(
     }
 
     // send back 406 if user does not have this friend
-    for (usr of withUsers) {
+    for (const usr of withUsers) {
       if (!user.friends.find((id) => id.toString() == usr._id.toString())) {
         res.status(406).send({
           header: `Could not add friend to chat`,
@@ -659,7 +654,7 @@ router.post(
       last_read: {},
     });
     let lastRead = {};
-    for (usr of chat.users) {
+    for (const usr of chat.users) {
       lastRead[usr._id.toString()] = "initialized";
     }
 
@@ -681,7 +676,7 @@ router.post(
     await user.save();
 
     // Save withUsers
-    for (usr of withUsers) {
+    for (const usr of withUsers) {
       usr.chats.push(chat);
       usr.notifications.push(newNotification);
       await usr.save();
@@ -766,8 +761,6 @@ router.post(
     chat.last_read[user._id.toString()] = messageID?.toString();
     chat.markModified("last_read");
     await chat.save();
-
-    pushUserUpdate([user]);
 
     res.sendStatus(200);
   })

@@ -12,15 +12,17 @@ const sharp = require("sharp");
 
 const { userSeeds, userSeeds2, userSeeds3 } = require("./user");
 const { activitySeeds } = require("./activity");
-const { uploadToS3, deleteFromS3, deleteAllFromS3 } = require("../utils/S3");
+const {
+  uploadToS3,
+  deleteFromS3,
+  deleteAllFromS3,
+  useLocalStorage,
+} = require("../utils/S3");
 const { generateUniqueName } = require("../utils/utils");
 const { categoryColorMap, statusMap, instructionTypes } = require("./globals");
 
 // Connect to the database and handle connection errors
-mongoose.connect(dbUrl, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(dbUrl);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -57,7 +59,7 @@ const UploadImagesToS3 = async (directoryPath) => {
     await uploadToS3(process.env.AWS_BUCKET, simpleKey, reducedImageBuffer);
   };
 
-  for (key of files) {
+  for (const key of files) {
     const imagePath = `${directoryPath}/${key}`;
     // Skip hidden files like .DS_Store and directories
     if (key[0] == "." || !key.includes(".")) {
@@ -82,6 +84,11 @@ const seedUsers = async () => {
   if (process.env.SEED_PRODUCTION) {
     await deleteAllFromS3(process.env.AWS_BUCKET);
   }
+  // With local storage, copy the seed images into ./local-storage
+  if (useLocalStorage) {
+    await UploadImagesToS3(`${__dirname}/images`);
+    await UploadImagesToS3(`${__dirname}/images/sampleUserPhotos`);
+  }
   //await deleteAllFromS3(process.env.AWS_BUCKET);
   //const profilePicsPath = `${__dirname}/images`;
   //const sampleImagesPath = `${__dirname}/images/sampleUserPhotos`;
@@ -100,8 +107,8 @@ const seedUsers = async () => {
 
     const seedUsernames = seeds.map((u) => u.username);
     const users = await User.find({ username: { $in: seedUsernames } });
-    for (user of users) {
-      for (friend of users) {
+    for (const user of users) {
+      for (const friend of users) {
         if (user != friend) {
           user.friends.push(friend);
         }
@@ -125,11 +132,11 @@ const seedUsers = async () => {
 };
 
 const seedActivities = async () => {
-  for (activity of activitySeeds) {
+  for (const activity of activitySeeds) {
     const newActivity = new Activity({ ...activity });
     const seedUsers = await User.find({});
 
-    for (u of seedUsers) {
+    for (const u of seedUsers) {
       newActivity.ratings.push({
         user: u,
         rating: parseInt((Math.random() * 10) % 5),
@@ -162,7 +169,7 @@ const seedOutings = async (seeds) => {
     "beachglass",
   ];
 
-  for (user of users) {
+  for (const user of users) {
     for (let i = 0; i < 2; i++) {
       const outing = new Outing({});
 
@@ -240,7 +247,7 @@ const seedOutings = async (seeds) => {
 const seedChats = async () => {
   const allOutings = await Outing.find({});
 
-  for (outing of allOutings) {
+  for (const outing of allOutings) {
     await outing.populate("users");
     await outing.populate("activity");
 
@@ -277,7 +284,7 @@ const seedChats = async () => {
     }
 
     // Add chat to chats list for all outing users
-    for (user of outing.users) {
+    for (const user of outing.users) {
       chat.last_read[user._id.toString()] = chat.messages[0].id;
       if (!user.chats) {
         user.chats = [];

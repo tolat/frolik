@@ -31,12 +31,18 @@ function App() {
   // Register service worker and set app badge prompt if logged in
   useEffect(() => {
     if (user) {
-      serviceWorkerRegistration.register({ user });
       const unreadMessages =
         getTotalUnreadMessages(user) + user.notifications?.length;
       setBadge(unreadMessages);
     }
   }, [user]);
+
+  // Register the service worker once per logged-in user (it used to
+  // re-register — adding intervals and listeners — on every user update)
+  const userID = user?._id;
+  useEffect(() => {
+    if (userID) serviceWorkerRegistration.register({ user: store.getState().auth.user });
+  }, [userID]);
 
   // Fetch Globals once on app load
   useEffect(() => {
@@ -52,10 +58,11 @@ function App() {
     socket.on("update-user", onUpdateUser);
 
     // Connect once user is authenticated
-    if (user) {
+    const currentUser = store.getState().auth.user;
+    if (currentUser) {
       //add user to go state
-      store.dispatch(goActions.addUser(user));
-      connectSocket(socket, user);
+      store.dispatch(goActions.addUser(currentUser));
+      connectSocket(socket, currentUser);
     }
 
     return () => {
@@ -66,7 +73,7 @@ function App() {
       socket.off("update-user", onUpdateUser);
       socket.disconnect();
     };
-  }, [user]);
+  }, [userID]);
 
   // Handle socket reconnection from dead server etc.
   // Only run the reconnect interval while a user is logged in.
@@ -77,7 +84,7 @@ function App() {
     const checkSocketConnection = () => {
       if (!socket.connected) {
         dispatch(socketActions.setIsConnecting(true));
-        connectSocket(socket, user);
+        connectSocket(socket, store.getState().auth.user);
       }
     };
 
@@ -91,7 +98,7 @@ function App() {
       dispatch(socketActions.setIsConnecting(false));
       window.clearInterval(intervalID);
     };
-  }, [user, dispatch]);
+  }, [userID, dispatch]);
 
   // Add event listener for pwa install event
   useEffect(() => {

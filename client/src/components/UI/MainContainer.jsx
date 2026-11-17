@@ -57,8 +57,9 @@ const MainContainer = (props) => {
         <LinearLoader />
         <div
           ref={childrenRef}
+          key={currentUrl}
           id="main-container-children"
-          className={`${styles.mainContainerChildren} noscroll`}
+          className={`${styles.mainContainerChildren} noscroll page-enter`}
         >
           {props.children}
         </div>

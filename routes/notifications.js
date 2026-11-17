@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 const webpush = require("web-push");
 const User = require("../models/user");
-const { tryCatch } = require("../utils/middleware");
+const { tryCatch, reqAuthenticated } = require("../utils/middleware");
 
 // VAPID keys are initialized once in server.js at startup
 
@@ -12,11 +12,14 @@ router.get("/vapid-public-key", (req, res) => {
 
 router.post(
   "/push/subscribe",
+  reqAuthenticated,
   tryCatch(async (req, res) => {
     const subscription = req.body.subscription;
 
-    // Save push subscription to user
-    const user = await User.findById(req.body.user._id);
+    // Save push subscription to the logged-in user (previously any client
+    // could attach its subscription to any user id and receive their pushes)
+    const user = await User.findOne({ username: req.session.passport.user });
+    if (!user || !subscription?.endpoint) return res.sendStatus(406);
     user.pushSubscription = subscription;
     await user.save();
 
@@ -41,9 +44,11 @@ router.post(
 
 router.post(
   "/push/test",
+  reqAuthenticated,
   tryCatch(async (req, res) => {
-    const user = await User.findById(req.body.userID);
-    const subscription = user.pushSubscription;
+    const user = await User.findOne({ username: req.session.passport.user });
+    const subscription = user?.pushSubscription;
+    if (!subscription) return res.sendStatus(406);
 
     const payload = JSON.stringify({
       title: "Test Notification",

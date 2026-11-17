@@ -23,6 +23,7 @@ const {
   getTotalUnreadMessages,
   outingIsPending,
   webpushNotify,
+  decodeDataURL,
 } = require("../utils/utils");
 const {
   reqAuthenticated,
@@ -40,9 +41,21 @@ const router = express.Router({ mergeParams: true });
 router.post(
   "/:id/create-outing",
   reqAuthenticated,
+  sameUserOnly,
   tryCatch(async (req, res) => {
-    let user = await User.findById(req.params.id);
+    let user = req.user;
     let outing = req.body;
+    const userID = user._id.toString();
+
+    // Normalize + de-duplicate the requested member ids
+    const requestedIDs = [
+      ...new Set(
+        (Array.isArray(outing.users) ? outing.users : [])
+          .map((u) => (u?._id || u)?.toString())
+          .filter(Boolean)
+      ),
+    ];
+    const inviteeIDs = requestedIDs.filter((id) => id !== userID);
 
     // Send unacceptable if user has 5 pending outings already
     await user.populate("outings");
@@ -55,50 +68,63 @@ router.post(
       return;
     }
 
-    // Send unacceptable if outing does not have any new users
-    if (
-      !outing.users.find(
-        (u) =>
-          !user.friends.find((f) => {
-            return f.toString() === u._id.toString();
-          }) && u._id.toString() !== user._id.toString()
-      )
-    ) {
+    // Every outing must include at least one of the user's current Daily
+    // Matches (a non-friend). Previously any non-friend id was accepted, so
+    // the rule could be bypassed by inviting an arbitrary user.
+    const friendIDs = new Set(user.friends.map((f) => f.toString()));
+    const matchIDs = new Set(
+      (user.matches || []).map((m) => m.user?.toString()).filter(Boolean)
+    );
+    const hasDailyMatch = inviteeIDs.some(
+      (id) => matchIDs.has(id) && !friendIDs.has(id)
+    );
+    if (!hasDailyMatch) {
       res.status(406).send({
-        header: "No daily matches added",
-        message: `You need to add at least one Daily Match to the outing!`,
+        header: "Add a Daily Match",
+        message: `Every Outing needs at least one of today's Daily Matches — someone new! Add a match from the Daily Matches list and try again.`,
       });
       return;
     }
 
-    // Add outing status and date created
-    outing.date_created = new Date(Date.now());
-    outing.name = generateUniqueName();
-    outing.created_by = user;
-    let invited = [];
-    let users = [];
-
-    // Move all users other than request user to the outing 'invited' list
-    for (let i = 0; i < outing.users.length; i++) {
-      const usr = await User.findById(outing.users[i]);
-      if (usr._id.toString() != user._id.toString()) {
-        invited.push(usr);
-      } else {
-        users.push(usr);
-      }
+    // Invitees may only be friends or daily matches
+    const strangers = inviteeIDs.filter(
+      (id) => !friendIDs.has(id) && !matchIDs.has(id)
+    );
+    if (strangers.length) {
+      res.status(406).send({
+        header: "Can't invite that user",
+        message: "You can only invite friends and your Daily Matches.",
+      });
+      return;
     }
 
-    outing.users = users;
-    outing.invited = invited;
-
-    // Save and populate new Outing
-    const newOuting = new Outing(outing);
     const activity = await Activity.findById(
-      outing.activity._id || outing.activity
+      outing.activity?._id || outing.activity
     );
+    if (!activity) {
+      res.status(406).send({
+        header: "Activity not found",
+        message: "Pick an activity for your Outing and try again.",
+      });
+      return;
+    }
+    const inviteeUsers = (await User.find({ _id: { $in: inviteeIDs } }));
+
+    // Add outing status and date created
+    // Build the outing from validated fields only (not the raw request body)
+    const invited = inviteeUsers;
+    const newOuting = new Outing({
+      activity: activity._id,
+      date_created: new Date(),
+      name: generateUniqueName(),
+      created_by: user._id,
+      users: [user._id],
+      invited: invited.map((u) => u._id),
+    });
+    outing = newOuting;
 
     // Add a notification for all invited users
-    for (u of invited) {
+    for (const u of invited) {
       const newNotification = {
         id: Date.now() + Math.random(),
         type: "outing-invite",
@@ -180,8 +206,9 @@ router.post(
 router.get(
   "/:id/:outingid",
   reqAuthenticated,
+  sameUserOnly,
   tryCatch(async (req, res) => {
-    let user = await User.findById(req.params.id);
+    let user = req.user;
     const outingID = req.params.outingid;
 
     // send unauthorized if this outing is not related to the user
@@ -201,7 +228,9 @@ router.get(
     const outing = await Outing.findById(outingID);
 
     if (!outing) {
+      // Clean up dangling references to a deleted outing
       user.outings = user.outings.filter((o) => o._id.toString() !== outingID);
+      user.notifications = user.notifications.filter((n) => n.outing != outingID);
       await user.save();
       res.sendStatus(200);
     } else {
@@ -224,11 +253,13 @@ router.get(
   reqAuthenticated,
   sameUserOnly,
   tryCatch(async (req, res) => {
-    const user = await User.findById(req.params.id);
+    const user = req.user;
     const outing = await Outing.findById(req.params.outingid);
-    const notification = user.notifications.find(
-      (n) => n.outing == outing._id.toString() && n.type == "outing-invite"
-    );
+    const notification =
+      outing &&
+      user.notifications.find(
+        (n) => n.outing == outing._id.toString() && n.type == "outing-invite"
+      );
 
     // If outing does not exists send 404
     if (!user || !outing || !notification) {
@@ -268,15 +299,15 @@ router.get(
   reqAuthenticated,
   sameUserOnly,
   tryCatch(async (req, res) => {
-    const user = await User.findById(req.params.id);
+    const user = req.user;
     const outing = await Outing.findById(req.params.outingid);
-    await outing.populate("users");
 
     // If outing does not exists send 404
     if (!user || !outing) {
       res.status(404).send("User was not invited to this outing");
       return;
     }
+    await outing.populate("users");
 
     // If user is not in the members list, they cannot leave.
     if (!outing.users.find((u) => u._id.toString() == user._id.toString())) {
@@ -314,7 +345,7 @@ router.get(
     };
 
     // Send notification to all outing users
-    for (usr of outing.users) {
+    for (const usr of outing.users) {
       const foundUsr = await User.findById(usr);
       foundUsr.notifications.push(newNotification);
       await foundUsr.save();
@@ -345,7 +376,7 @@ router.get(
   reqAuthenticated,
   sameUserOnly,
   tryCatch(async (req, res) => {
-    const user = await User.findById(req.params.id);
+    const user = req.user;
     const outing = await Outing.findById(req.params.outingid);
 
     // If outing does not exist send 404 (must check before populate)
@@ -375,7 +406,7 @@ router.get(
     }
 
     // Clear any invites left for invited users or notifications for the deleting user
-    for (u of outing.invited.concat([user._id]).concat(outing.flakes)) {
+    for (const u of outing.invited.concat([user._id]).concat(outing.flakes)) {
       const usr = await User.findById(u);
       const n = usr.notifications.find(
         (n) => n.outing == outing._id.toString()
@@ -413,8 +444,29 @@ router.get(
       }
     );
 
-    // Delete outing chat
-    await Chat.deleteOne({ _id: outing.chat.toString() });
+    // Delete outing chat and remove it from members' chat lists
+    if (outing.chat) {
+      await Chat.deleteOne({ _id: outing.chat });
+      await User.updateMany(
+        { chats: outing.chat },
+        { $pull: { chats: outing.chat } }
+      );
+    }
+    await User.updateMany(
+      { outings: outing._id },
+      { $pull: { outings: outing._id } }
+    );
+    await Activity.updateOne(
+      { _id: outing.activity },
+      { $pull: { outings: outing._id } }
+    );
+
+    // Remove outing photos from storage
+    for (const p of outing.photos || []) {
+      deleteFromS3(process.env.AWS_BUCKET, p.key).catch((e) =>
+        console.error("Error deleting outing photo:", e.message)
+      );
+    }
 
     // delete outing
     await Outing.deleteOne({ _id: outing._id.toString() });
@@ -432,8 +484,9 @@ router.post(
   sameUserOnly,
   tryCatch(async (req, res) => {
     const outing = await Outing.findById(req.params.outingid);
-    let user = await User.findById(req.params.id);
+    let user = req.user;
     const photoString = req.body.photoString;
+    if (!outing) return res.status(404).send("Outing not found");
 
     if (!photoString) {
       res.status(406).send({
@@ -478,7 +531,7 @@ router.post(
     await populateUser(user);
 
     // Resize/compress image before upload
-    const imageBuffer = Buffer.from(photoString.slice(23), "base64");
+    const imageBuffer = decodeDataURL(photoString);
     const reducedImageBuffer = await sharp(imageBuffer)
       .jpeg({ quality: 30 })
       .withMetadata()
@@ -504,8 +557,9 @@ router.post(
   sameUserOnly,
   tryCatch(async (req, res) => {
     const outing = await Outing.findById(req.params.outingid);
-    let user = await User.findById(req.params.id);
+    let user = req.user;
     const photoKey = req.body.key;
+    if (!outing) return res.status(404).send("Outing not found");
 
     if (!photoKey) {
       res.status(406).send({
@@ -564,10 +618,24 @@ router.post(
   reqAuthenticated,
   sameUserOnly,
   tryCatch(async (req, res) => {
-    const user = await User.findById(req.params.id);
+    const user = req.user;
     const outing = await Outing.findById(req.params.outingid);
-    const rating = req.body.rating;
+    if (!outing) {
+      res.status(404).send("Outing not found");
+      return;
+    }
+    const rating = Math.max(0, Math.min(5, Number(req.body.rating) || 0));
     const activity = await Activity.findById(outing.activity);
+
+    // Don't allow completing twice (used to duplicate completions/ratings and
+    // could mark the outing finished before everyone had completed it)
+    if (outing.completions.some((c) => c.toString() == user._id.toString())) {
+      res.status(406).send({
+        header: `Already completed`,
+        message: "You've already marked this Outing complete.",
+      });
+      return;
+    }
 
     // Don't allow if user us not in outing members
     if (!outing.users.find((uid) => uid.toString() == user._id.toString())) {
@@ -579,16 +647,21 @@ router.post(
     }
     outing.completions.push(user);
 
-    // Add rating to activity ratings
-    activity.ratings.push({ user, rating });
-    await activity.save();
+    // Add rating to activity ratings (replace any earlier rating by this user)
+    if (activity) {
+      activity.ratings = activity.ratings.filter(
+        (r) => r.user?.toString() !== user._id.toString()
+      );
+      activity.ratings.push({ user: user._id, rating });
+      await activity.save();
+    }
 
     // If this is final completion, set date_completed and notify all members
     if (outing.completions.length == outing.users.length) {
       outing.date_completed = new Date(Date.now());
 
       // Notify all members
-      for (u of outing.users) {
+      for (const u of outing.users) {
         const foundUser = await User.findById(u);
         const newNotification = {
           id: Date.now() + Math.random(),
@@ -602,7 +675,7 @@ router.post(
       }
 
       // Remove all invited
-      for (u of outing.invited) {
+      for (const u of outing.invited) {
         // Clear all notifications to do with outing
         const foundUser = await User.findById(u);
         foundUser.notifications = foundUser.notifications.filter((n) =>
@@ -613,12 +686,14 @@ router.post(
       }
 
       // Add outing to activity outings
-      activity.outings.push(outing);
-      await activity.save();
+      if (activity) {
+        activity.outings.push(outing);
+        await activity.save();
+      }
     }
     // Else just notify all other members the outing has been marked completed
     else {
-      for (u of outing.users) {
+      for (const u of outing.users) {
         const foundUser = await User.findById(u);
 
         // Don't notify users who have already marked outing complete
@@ -673,11 +748,10 @@ router.get(
   "/:outingid/photo/:key",
   reqAuthenticated,
   tryCatch(async (req, res) => {
-    const user = await User.findById(req.params.id);
     const outing = await Outing.findById(req.params.outingid);
 
     // Return unacceptable if photo is not in outing
-    if (!outing.photos.find((p) => p.key == req.params.key)) {
+    if (!outing || !outing.photos.find((p) => p.key == req.params.key)) {
       res.status(406).send({
         message: `photo with key ${
           req.params.key

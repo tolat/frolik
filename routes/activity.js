@@ -49,7 +49,7 @@ router.get(
     for (let activity of activities) {
       // set up for finding up to 6 random user photos for the activity
       let photos = [];
-      let remainingOutings = activity.outings;
+      let remainingOutings = [...(activity.outings || [])];
 
       // Loop until we run out of outings or we fill up with photos
       while (photos.length < 6 && remainingOutings && remainingOutings[0]) {
@@ -85,9 +85,12 @@ router.post(
   reqAuthenticated,
   sameUserOnly,
   tryCatch(async (req, res) => {
-    const user = await User.findById(req.body.userID);
-    const activity = new Activity(req.body.activity);
+    const user = req.user;
+    const { _id, ratings, outings, lobby, featured, created_by, ...fields } =
+      req.body.activity || {};
+    const activity = new Activity(fields);
     activity.created_by = user;
+    activity.location = user.location;
     user.activities.push(activity);
     await user.save();
     await activity.save();
@@ -104,10 +107,13 @@ router.post(
   reqAuthenticated,
   sameUserOnly,
   tryCatch(async (req, res) => {
-    const user = await User.findById(req.body.userID);
-    const activity = new Activity(req.body.activity);
+    const user = req.user;
+    const activity = await Activity.findById(
+      req.body.activity?._id || req.body.activity
+    );
 
-    if (!activity.created_by.toString() == user._id.toString()) {
+    // Previously `!a == b` (always false) let anyone delete any activity
+    if (!activity || activity.created_by?.toString() !== user._id.toString()) {
       res.status(406).send({
         header: `Could not delete activities`,
         message: `You can only delete activities you created.`,

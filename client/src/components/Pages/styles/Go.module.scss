@@ -287,3 +287,91 @@
   margin-top: 2rem;
   margin-right: 2rem;
 }
+
+
+// ── Outing requirements (activity + at least one Daily Match) ──────────────
+.requirements {
+  display: flex;
+  gap: 0.8rem;
+  width: 100%;
+  justify-content: center;
+  margin: 1.4rem 0 0.4rem;
+  flex-wrap: wrap;
+}
+
+.requirement {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 1.3rem 0.7rem 0.7rem;
+  border-radius: 100rem;
+  background-color: $surface;
+  border: 1.5px solid $light_grey;
+  color: $text_muted;
+  font-size: 1.3rem;
+  font-weight: 600;
+  transition: background-color $dur ease, border-color $dur ease, color $dur ease;
+}
+
+.requirementAction {
+  border-color: $orange;
+  color: $text;
+  cursor: pointer;
+  @include pressable;
+}
+
+.requirementMet {
+  background-color: rgba(52, 183, 122, 0.1);
+  border-color: rgba(52, 183, 122, 0.35);
+  color: darken($green, 8%);
+}
+
+.requirementDot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 100rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  background-color: $button_grey;
+  color: $text_muted;
+}
+
+.requirementAction .requirementDot {
+  background-color: $orange;
+  color: white;
+}
+
+.requirementMet .requirementDot {
+  background-color: $green;
+  color: white;
+}
+
+.goButton {
+  box-shadow: 0 8px 22px rgba(91, 141, 239, 0.38);
+  margin-top: 1rem;
+  animation: frolik-pop-in 0.35s $ease_spring both;
+}
+
+.usersContainer {
+  @include card;
+  border-radius: $radius_lg;
+  padding: 1.6rem 1rem;
+  box-shadow: $shadow_md;
+}
+
+.selectedActivity {
+  width: 100%;
+}
+
+// Leave room for the requirement chips when scrolled into view
+.activitiesContainer,
+.selectedActivity {
+  scroll-margin-top: 1.2rem;
+}
+
+.requirement:hover {
+  cursor: pointer;
+}

@@ -11,21 +11,23 @@
     padding: 1.4rem;
     box-sizing: border-box;
     font-size: 1.4rem;
-    border: none;
-    border-bottom: 3px solid transparent;
+    border: 1.5px solid $light_grey;
     outline: none;
-    transition: border 0.2s ease-in-out;
-    background-color: rgb(229, 238, 253);
-    border-radius: 100rem;
+    transition: border-color $dur ease, box-shadow $dur ease, background-color $dur ease;
+    background-color: $surface;
+    border-radius: $radius_md;
   }
-  
+
   .input:focus{
-    outline: 1px solid $blue;
+    border-color: $blue;
+    box-shadow: 0 0 0 4px rgba(91, 141, 239, 0.18);
   }
 
   .label{
     font-size: 1.3rem;
-    font-weight: bold;
+    font-weight: 600;
+    color: $text_muted;
+    margin-bottom: 0.6rem;
     padding-left: 1rem;
     margin-top: 1rem;
   }

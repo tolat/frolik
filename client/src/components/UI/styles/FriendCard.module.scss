@@ -81,3 +81,12 @@
   height: 100%;
   border-radius: 100rem;
 }
+
+// ── Modern card treatment ───────────────────────────────────────────────────
+.container {
+  @include card;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  transition: opacity $dur ease, max-height $dur $ease_out, padding $dur $ease_out,
+    box-shadow $dur $ease_out;
+}

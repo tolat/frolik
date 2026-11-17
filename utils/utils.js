@@ -14,9 +14,12 @@ const {
 // Populates an array with stripped down version of friends
 // Uses Promise.all for parallel DB queries instead of sequential loop (N+1 fix)
 module.exports.populateFriends = async (friends) => {
-  return Promise.all(
-    friends.map(async (friend) => {
+  const populated = await Promise.all(
+    (friends || []).map(async (friend) => {
+      if (!friend) return null;
       const friendUser = await User.findById(friend._id || friend);
+      // Skip users that have been deleted instead of crashing the request
+      if (!friendUser) return null;
       await friendUser.populate({
         path: "outings",
         populate: { path: "activity" },
@@ -42,6 +45,7 @@ module.exports.populateFriends = async (friends) => {
       };
     })
   );
+  return populated.filter(Boolean);
 };
 
 // Generic user population
@@ -100,6 +104,14 @@ module.exports.sendEmail = async (to, subject, html) => {
       _transporter = null;
     }
   }
+};
+
+// Decode a base64 data URL (any image type) into a Buffer. Previously callers
+// did photoString.slice(23), which only works for "data:image/jpeg;base64,".
+module.exports.decodeDataURL = (dataURL) => {
+  const str = String(dataURL || "");
+  const comma = str.indexOf(",");
+  return Buffer.from(comma >= 0 ? str.slice(comma + 1) : str, "base64");
 };
 
 module.exports.getPhotosFromOutings = (user) => {
@@ -175,7 +187,7 @@ module.exports.handleOutingInviteAction = async (
     outing.chat.last_read[user._id] = false;
 
     // Notify outing members of outing join
-    for (usr of outing.users) {
+    for (const usr of outing.users) {
       const foundUsr = await User.findById(usr);
       // Don't send join notification to the joining 
       if (foundUsr._id.toString() == user._id.toString()) {
@@ -399,80 +411,94 @@ module.exports.outingIsPending = (user, outing) => {
   );
 };
 
-module.exports.socketCors = (inDevelopment) => {
-  return inDevelopment
-    ? {
-        origin: "http://localhost:3000",
-        credentials: "include",
-      }
-    : {};
-};
 
-module.exports.onSocketConnection = (socket) => {
-  try {
-    // Message sent handler
-    socket.on("message-sent", async (data) => {
+const idOf = (u) => (u?._id ? u._id.toString() : u?.toString());
+const chatMemberIDs = (chat) =>
+  (chat.outing ? chat.outing.users : chat.users).map(idOf);
+
+module.exports.onSocketConnection = async (socket) => {
+  // socket.request.user is set by the shared express session + passport
+  // (see server.js). Unauthenticated sockets are dropped.
+  const sessionUser = socket.request.user;
+  if (!sessionUser) {
+    socket.disconnect(true);
+    return;
+  }
+  const sessionUserID = sessionUser._id.toString();
+
+  // Auto-join the user's own room and all of their chat rooms so messages are
+  // still received after a reconnect.
+  socket.join(sessionUserID);
+  for (const chatID of sessionUser.chats || []) socket.join(chatID.toString());
+
+  // Message sent handler
+  socket.on("message-sent", async (data) => {
+    try {
+      const text = String(data?.message?.message ?? "").trim();
+      if (!data?.chat?._id || !data?.message?.id || !text || text.length > 2000)
+        return;
+
       const chat = await Chat.findById(data.chat._id);
+      if (!chat) return;
       await chat.populate("outing");
 
+      // Only chat members may post, and only as themselves
+      if (!chatMemberIDs(chat).includes(sessionUserID)) return;
+      const message = {
+        id: String(data.message.id),
+        message: text,
+        sent: new Date(),
+        user: sessionUserID,
+      };
+
       // Only add message if it has not been added
-      if (!chat.messages.find((m) => m.id == data.message.id)) {
-        chat.messages.unshift(data.message);
-        chat.touched = Date.now();
+      if (chat.messages.find((m) => m.id == message.id)) return;
 
-        // Make sure last_read for all users is this message if it is the first message
-        if (chat.messages.length == 1) {
-          const chatUsers = chat.outing ? chat.outing.users : chat.users;
-          for (let usr of chatUsers) {
-            const usrID = usr._id ? usr._id.toString() : usr.toString();
-            if (!chat.last_read[usrID]) {
-              chat.last_read[usrID] = "initialized";
-              chat.markModified("last_read");
-            }
-          }
+      chat.messages.unshift(message);
+      chat.touched = Date.now();
+
+      // Make sure last_read for all users is set if it is the first message
+      if (chat.messages.length == 1) {
+        if (!chat.last_read) chat.last_read = {};
+        for (const usrID of chatMemberIDs(chat)) {
+          if (!chat.last_read[usrID]) chat.last_read[usrID] = "initialized";
         }
-        await chat.save();
+        chat.markModified("last_read");
+      }
+      await chat.save();
 
-        socket.broadcast
-          .to(chat._id.toString())
-          .emit("new-message", { message: data.message, chat });
+      socket.broadcast
+        .to(chat._id.toString())
+        .emit("new-message", { message: { ...data.message, ...message }, chat });
 
-        let chatUsers = chat.outing ? chat.outing.users : chat.users;
-        // Send websocket update to client to re-download session user from server
-        this.pushUserUpdate(chatUsers);
+      const chatUsers = chatMemberIDs(chat);
+      // Send websocket update to client to re-download session user from server
+      this.pushUserUpdate(chatUsers);
 
-        // Send webpush notification to all users other than sending user
-        const sender = await User.findById(
-          data.message.user._id
-            ? data.message.user._id.toString()
-            : data.message.user.toString()
-        );
-        const payload = {
-          title: `${sender.first_name} ${sender.last_name} to ${
+      // Send webpush notification to all users other than sending user
+      this.webpushNotify(
+        chatUsers.filter((id) => id !== sessionUserID),
+        {
+          title: `${sessionUser.first_name} ${sessionUser.last_name} to ${
             chat.outing ? chat.outing.name : "Chat"
           }`,
-          body: data.message.message,
-        };
+          body: text,
+        }
+      );
+    } catch (err) {
+      console.error("[socket message-sent]", err.message);
+    }
+  });
 
-        this.webpushNotify(
-          // Filter sender out of chat users list for notification sending
-          chatUsers.filter((u) =>
-            u._id
-              ? u._id.toString() !== sender._id.toString()
-              : u.toString() !== sender._id.toString()
-          ),
-          payload
-        );
-      }
-    });
-
-    // Join connection to a room
-    socket.on("join-room", (room) => {
-      socket.join(room);
-    });
-
-    // Echo message handler
-  } catch (err) {
-    console.log(err);
-  }
+  // Join a room — only the user's own room or a chat they belong to
+  socket.on("join-room", async (room) => {
+    try {
+      room = String(room);
+      if (room === sessionUserID) return socket.join(room);
+      const chat = await Chat.findById(room).populate("outing");
+      if (chat && chatMemberIDs(chat).includes(sessionUserID)) socket.join(room);
+    } catch (err) {
+      // invalid ObjectId etc. — ignore
+    }
+  });
 };

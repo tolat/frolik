@@ -8,7 +8,7 @@
   overflow-x: hidden;
   box-sizing: border-box;
   flex-shrink: 0;
-  background-color: white;
+  background-color: $app_bg;
   padding: 0rem 2rem;
   padding-top: 7rem;
 }
@@ -43,4 +43,37 @@
 .matchesHeader {
   margin-top: 0;
   font-size: 1.8rem;
+}
+
+// ── Daily Matches highlight ─────────────────────────────────────────────────
+.dailyMatchesContainer {
+  border-radius: $radius_lg;
+  padding: 1.8rem 1.4rem 0.8rem;
+  background: linear-gradient(160deg, #fff7e6 0%, $surface 70%);
+  border: 1.5px solid rgba(255, 191, 71, 0.45);
+  box-shadow: $shadow_sm;
+  margin-bottom: 1.6rem;
+}
+
+.matchesHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.requiredBadge {
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.35rem 0.8rem;
+  border-radius: 100rem;
+  background-color: $orange;
+  color: white;
+}
+
+.headerSubtext {
+  color: $text_muted;
+  line-height: 1.45;
+  margin-bottom: 1.6rem;
 }

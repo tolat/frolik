@@ -9,7 +9,7 @@ const UserSchema = new Schema(
     username: String,
     tagline: String,
     location: String,
-    reset_token: { expires: Date },
+    reset_token: { expires: Date, hash: String },
     notifications: [Object],
     chats: [{ type: Schema.Types.ObjectId, ref: "Chat" }],
     friends: [{ type: Schema.Types.ObjectId, ref: "User" }],

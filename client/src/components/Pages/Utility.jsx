@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styles from "./styles/Utility.module.scss";
 import SimpleButton from "../UI/SimpleButton";
 import SimpleInput from "../UI/SimpleInput";
@@ -14,6 +14,8 @@ const Utility = (props) => {
   const [resetButtonText, setResetButtonText] = useState("Reset Password");
   const [sendLinkButtonText, setSendLinkButtonText] = useState("Send Link");
   const { userID } = useParams();
+  const [searchParams] = useSearchParams();
+  const resetToken = searchParams.get("token");
   const passwordsEqual =
     password &&
     password !== "" &&
@@ -48,7 +50,7 @@ const Utility = (props) => {
       setResetButtonText("Reset Password");
     };
     setResetButtonText("Resetting..");
-    resetPassword(userID, password, onComplete);
+    resetPassword(userID, resetToken, password, onComplete);
   };
 
   const headers = {

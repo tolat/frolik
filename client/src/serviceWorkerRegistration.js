@@ -91,12 +91,14 @@ function registerValidSW(swUrl, config) {
 
       // add interval to check user updates cache
       const checkForUpdateFlag = () => {
-        registration.active.postMessage({
+        registration.active?.postMessage({
           action: "user-update-check",
         });
       };
 
-      // Check socket connection every 1.random seconds
+      // Only start the poller / listener once per page load
+      if (window.__frolikSWPolling) return;
+      window.__frolikSWPolling = true;
       window.setInterval(checkForUpdateFlag, 2000);
 
       // Handle messages from the service worker

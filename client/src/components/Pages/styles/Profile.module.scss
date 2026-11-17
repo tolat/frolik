@@ -43,7 +43,7 @@
   align-items: center;
   width: calc(100vw - 2rem);
   max-width: calc($central_span_width - 2rem);
-  background-color: white;
+  background-color: $app_bg;
 }
 
 .friendsContainer {
@@ -160,7 +160,9 @@
 .fixedSliderNavbar {
   position: fixed;
   top: 0;
-  background-color: white;
+  background-color: rgba(244, 246, 250, 0.9);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
   z-index: 2;
   width: 100vw;
   max-width: $central_span_width;

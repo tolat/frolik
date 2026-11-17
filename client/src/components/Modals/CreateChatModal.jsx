@@ -26,7 +26,8 @@ const CreateChatModal = (props) => {
     if (user) {
       setNewChatMembers([user]);
     }
-  }, [user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?._id]);
 
   const onAddMember = (m) => {
     setNewChatMembers((prevState) => [...prevState, m]);

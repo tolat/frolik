@@ -1,7 +1,11 @@
+@import "../../../utils/responsive.scss";
+
 .container {
   width: 100%;
-  font-weight: bold;
-  font-size: 1.3rem;
+  font-weight: 600;
+  font-size: 1.4rem;
+  letter-spacing: -0.01em;
+  @include pressable;
   display: flex;
   padding: 1.4rem;
   box-sizing: border-box;
@@ -15,6 +19,7 @@
 
 .container:hover {
   cursor: pointer;
+  filter: brightness(1.03);
 }
 
 .greyButton {

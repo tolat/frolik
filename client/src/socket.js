@@ -3,4 +3,5 @@ import { getServer } from "./utils/env-utils";
 
 export const socket = io(getServer(), {
   autoConnect: false,
+  withCredentials: true,
 });

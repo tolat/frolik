@@ -122,3 +122,41 @@
   color: grey;
   margin-bottom: 0.6rem;
 }
+
+// ── Modern card treatment ───────────────────────────────────────────────────
+.outerContainer {
+  border-radius: $radius_lg;
+  overflow: hidden;
+  box-shadow: $shadow_sm;
+  background-color: $surface;
+  transition: box-shadow $dur $ease_out;
+}
+
+.outerContainer:hover {
+  box-shadow: $shadow_md;
+}
+
+.swipeClip {
+  border-radius: 0;
+}
+
+.categoryStripe {
+  width: 0.6rem;
+  padding-bottom: 0;
+  border-radius: 0;
+}
+
+.container {
+  background-color: $surface;
+  border: none;
+  border-radius: 0;
+  transition: background-color $dur ease, transform $dur $ease_out;
+}
+
+.container:hover {
+  background-color: $card_grey;
+}
+
+.notificationBadge {
+  box-shadow: 0 0 0 2px $surface;
+}

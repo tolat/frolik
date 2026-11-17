@@ -20,6 +20,8 @@ export const fetchActivities = async (setData) => {
 
     const handleError = (err) => {
       console.log(err);
+      setData([]);
+      resolve();
     };
 
     httpFetch(requestConfig, handleResponse, handleError);
@@ -74,7 +76,7 @@ export const fetchPhotos = async (user) => {
     // Check if photo has already been downloaded or queued
     if (
       !userData ||
-      !userData.photos.find((p) => p.key === photoKey && p.photo)
+      !userData.photos.find((p) => p.key === photoKey)
     ) {
       // Mark photo as queued for donwload in redux store
       store.dispatch(
@@ -109,7 +111,7 @@ export const fetchPhotos = async (user) => {
 // Get the app globals
 export const fetchGlobals = async () => {
   // Don;t fetch if globals are already being fetched
-  if (store.getState().auth.fetchingGlobals) {
+  if (store.getState().auth.updatingGlobals) {
     return;
   }
   const requestConfig = {
@@ -279,11 +281,22 @@ export const fetchChat = (userID, chatID, onComplete = () => {}) => {
 };
 
 // Get all chats for a user
+// If an update arrives while chats are being fetched, refetch once the
+// in-flight request finishes. (Dropping it let a stale response overwrite
+// messages that had just arrived.)
+let chatsRefetchQueued = false;
+const runQueuedChatsRefetch = (user) => {
+  if (chatsRefetchQueued) {
+    chatsRefetchQueued = false;
+    fetchChats(user);
+  }
+};
+
 export const fetchChats = (user) => {
   const dispatch = store.dispatch;
 
-  // Don;t fetch if chats are already being fetched
   if (store.getState().chat.fetchingChats) {
+    chatsRefetchQueued = true;
     return;
   }
 
@@ -315,10 +328,12 @@ export const fetchChats = (user) => {
 
     // Set chats in data store
     dispatch(chatActions.setChats({ chats: response.chats }));
+    runQueuedChatsRefetch(user);
   };
 
   const handleError = (err) => {
     dispatch(chatActions.setFetchingChats(false));
+    runQueuedChatsRefetch(user);
     console.log(err);
   };
 
@@ -367,13 +382,19 @@ export const createOuting = (outing, user, setOutingData, resetButton) => {
 };
 
 // Get one outing
+// Outings that came back missing/forbidden — never re-request them (prevents
+// a re-render → re-fetch loop for notifications about deleted outings)
+const unavailableOutings = new Set();
 export const fetchOuting = (outingID, user, onComplete) => {
   const requestConfig = {
     url: `${getServer()}/outing/${user._id}/${outingID}`,
   };
 
   // Don;t fetch outing if it is already being fetched
-  if (store.getState().data.fetchOutings?.includes(outingID)) {
+  if (
+    unavailableOutings.has(outingID) ||
+    store.getState().data.fetchOutings?.includes(outingID)
+  ) {
     return;
   }
 
@@ -381,10 +402,13 @@ export const fetchOuting = (outingID, user, onComplete) => {
     store.dispatch(dataActions.removeFromFetchOutings(outingID));
     if (response.outing) {
       onComplete(response.outing);
+    } else {
+      unavailableOutings.add(outingID);
     }
   };
 
   const handleError = (err) => {
+    unavailableOutings.add(outingID);
     store.dispatch(dataActions.removeFromFetchOutings(outingID));
     console.log(err);
   };
@@ -758,14 +782,14 @@ export const sendResetLink = (username, onComplete) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
-export const resetPassword = (userID, password, onComplete) => {
+export const resetPassword = (userID, token, password, onComplete) => {
   const requestConfig = {
     url: `${getServer()}/auth/reset-password`,
     headers: {
       "Content-Type": "application/json",
     },
     method: "POST",
-    body: JSON.stringify({ userID, password }),
+    body: JSON.stringify({ userID, token, password }),
   };
 
   const handleResponse = (response) => {

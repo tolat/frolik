@@ -1,208 +1,228 @@
 @import "../../../utils/responsive.scss";
 
+// ── Layout ──────────────────────────────────────────────────────────────────
 .container {
   width: 100%;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  flex-grow: 1;
-  max-height: 100%;
-  overflow-y: scroll;
-}
-
-.chatContainer {
-  flex-grow: 1;
-  box-sizing: border-box;
-  background-color: $card_grey;
-  overflow-y: scroll;
-  border: 1px solid $light_grey;
+  // Fixed to the visible screen (minus the tab bar, which the modal container
+  // already pads for) so new messages scroll the list instead of pushing the
+  // composer down.
+  height: calc(100vh - #{$navbar_height});
+  height: calc(100dvh - #{$navbar_height} - env(safe-area-inset-bottom, 0px));
+  overflow: hidden;
+  background-color: $app_bg;
+  // clear the fixed modal header bar
+  padding-top: 6.4rem;
 }
 
 .iconBacker {
   background-color: $button_grey;
 }
 
-.header {
+// ── Header (rendered into the modal header bar) ─────────────────────────────
+.headerIdentity {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background-color: white;
-  box-sizing: border-box;
-  border-left: 1px solid $light_grey;
-  border-right: 1px solid $light_grey;
+  gap: 1rem;
+  min-width: 0;
 }
 
-.headerRightContainer {
+.headerAvatars {
   display: flex;
-  padding: 1rem;
-  box-sizing: border-box;
-  background-color: inherit;
+  flex-shrink: 0;
 }
 
-.headerLeftContainer {
+.headerText {
   display: flex;
   flex-direction: column;
-  margin-left: 7rem;
-  height: 100%;
-  flex-direction: column;
-  height: 100%;
-  justify-content: space-between;
-}
-
-.lastActive {
-  font-size: 1rem;
-  color: grey;
-  margin-bottom: 1rem;
+  min-width: 0;
 }
 
 .chatName {
   font-size: 1.6rem;
-  font-weight: bold;
-  margin-top: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .chatMembers {
-  font-size: 1.3rem;
-  color: rgb(90, 90, 90);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: $text_muted;
+  letter-spacing: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.composeContainer {
-  background-color: $button_grey;
-  padding: 1rem;
-  box-sizing: border-box;
+.headerAction {
+  border: none;
+  border-radius: 100rem;
+  padding: 0.8rem 1.4rem;
+  background-color: $light_blue;
+  color: $blue_dark;
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.headerAction:hover {
+  background-color: darken($light_blue, 4%);
+}
+
+// ── Messages ────────────────────────────────────────────────────────────────
+.chatContainer {
+  flex: 1 1 auto;
+  min-height: 0; // lets the list shrink and scroll inside the fixed-height panel
   display: flex;
-  padding-bottom: 2rem;
-  border-left: 1px solid $light_grey;
-  border-right: 1px solid $light_grey;
-  border-bottom: none;
-  
+  flex-direction: column-reverse;
+  box-sizing: border-box;
+  overflow-y: scroll;
+  padding: 1.2rem 1.4rem 0.8rem;
+}
+
+.bubbleRow {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0.3rem;
+  animation: bubble-in 0.28s $ease_out both;
+}
+
+.groupEnd {
+  margin-bottom: 1.4rem;
+}
+
+.own {
+  align-items: flex-end;
+}
+
+.foreign {
+  align-items: flex-start;
+}
+
+@keyframes bubble-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+}
+
+.bubble {
+  max-width: 78%;
+  padding: 0.9rem 1.4rem;
+  font-size: 1.45rem;
+  line-height: 1.4;
+  border-radius: 2rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  box-sizing: border-box;
+}
+
+.own .bubble {
+  background: linear-gradient(135deg, #6a9bf5 0%, $blue_dark 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(63, 111, 216, 0.25);
+}
+
+.foreign .bubble {
+  background-color: $surface;
+  color: $text;
+  box-shadow: $shadow_sm;
+}
+
+// The last bubble of a run gets a tucked corner instead of a drawn tail
+.own .bubbleTail {
+  border-bottom-right-radius: 0.6rem;
+}
+
+.foreign .bubbleTail {
+  border-bottom-left-radius: 0.6rem;
+}
+
+.bubbleUser {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0 0 0.35rem 1.2rem;
+}
+
+.sent {
+  font-size: 1.05rem;
+  color: $text_muted;
+  margin: 0.4rem 0.8rem 0;
+}
+
+.lastReadIndicator {
+  align-self: center;
+  margin: 0.6rem 0 1rem;
+  padding: 0.3rem 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: $blue_dark;
+  background-color: $light_blue;
+  border-radius: 100rem;
+}
+
+.nonUserMembers {
+  font-weight: 600;
+}
+
+// ── Composer ────────────────────────────────────────────────────────────────
+.composeContainer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.8rem;
+  padding: 0.8rem 1.2rem 1.2rem;
+  box-sizing: border-box;
+  background-color: rgba(244, 246, 250, 0.9);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
 }
 
 .composer {
-  padding: 1rem;
-  border-radius: 4px;
-  background-color: $card_grey;
-  width: 100%;
-  box-sizing: border-box;
-  font-size: 1.3rem;
-  outline: none !important;
+  flex: 1;
+  min-height: 4.4rem;
+  max-height: 14rem;
+  padding: 1.2rem 1.6rem;
+  border-radius: 2.2rem;
+  border: 1.5px solid $light_grey;
+  background-color: $surface;
+  font-size: 1.45rem;
+  line-height: 1.4;
   resize: none;
-  font-family: Arial, Helvetica, sans-serif;
-  border: 1px solid $light_grey;
-  overflow-y: visible;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color $dur ease, box-shadow $dur ease;
+}
+
+.composer:focus {
+  border-color: $blue;
+  box-shadow: 0 0 0 4px rgba(91, 141, 239, 0.18);
 }
 
 .sendButton {
-  background-color: $button_grey;
+  flex-shrink: 0;
+  width: 4.4rem;
+  height: 4.4rem;
+  border-radius: 100rem;
   border: none;
-  outline: none;
-  width: 4rem;
-  box-sizing: border-box;
   display: flex;
-  flex-direction: column;
-  margin-left: 1rem;
-  justify-content: flex-end;
   align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #6a9bf5 0%, $blue_dark 100%);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(63, 111, 216, 0.35);
 }
 
 .sendIcon {
   width: 2rem;
-  margin-bottom: 0.5rem;
-}
-
-.sendIcon:hover {
-  cursor: pointer;
-  opacity: 0.7;
-}
-
-.chatContainer {
-  display: flex;
-  flex-direction: column-reverse;
-  padding: 1rem;
-  box-sizing: border-box;
-}
-
-.bubbleContainer {
-  display: flex;
-  width: 100%;
-  padding: 1rem 0;
-  flex-direction: row-reverse;
-  box-sizing: border-box;
-  margin-bottom: 1rem;
-}
-
-.bubbleContainerForeign {
-  display: flex;
-  width: 100%;
-  padding: 1rem 0;
-  box-sizing: border-box;
-  margin-bottom: 1rem;
-}
-
-.bubble {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  border-radius: 3px;
-  max-width: 80%;
-  
-}
-
-.bubbleUser {
-  font-size: 1rem;
-  color: grey;
-  margin-bottom: 0.4rem;
-}
-
-.bubbleMessage {
-  font-size: 1.2rem;
-}
-
-.bubbleTail {
-  border-left: 15px solid transparent;
-  border-bottom: 15px solid transparent;
-  position: absolute;
-  bottom: -20px;
-  right: 1rem;
-  
-}
-
-.bubbleTailForeign {
-  border-right: 15px solid transparent;
-  border-bottom: 15px solid transparent;
-  position: absolute;
-  bottom: -20px;
-  left: 1rem;
-}
-
-.sent {
-  font-size: 0.9rem;
-  color: grey;
-  margin-top: 0.5rem;
-}
-
-.nonUserMembers {
-  padding-top: 0.5rem;
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: black;
-}
-
-.lastReadIndicator {
-  margin-top: 1rem;
-  font-size: 1.2rem;
-  color: $light_grey;
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  border-top: 3px solid $light_grey;
-  padding: 0.5rem;
-}
-
-.createOutingButton {
-  margin: 1rem 0;
-  background-color: $blue;
-  color: white;
-  width: fit-content;
+  height: 2rem;
 }

@@ -115,3 +115,31 @@
   margin-left: 1rem;
   border-radius: 100rem;
 }
+
+// ── Modern card treatment ───────────────────────────────────────────────────
+.outerContainer {
+  border-radius: $radius_lg;
+  overflow: hidden;
+  box-shadow: $shadow_sm;
+  margin-bottom: 1.2rem;
+  @include pressable;
+}
+
+.outerContainer:hover {
+  box-shadow: $shadow_md;
+}
+
+.categoryStripe {
+  width: 0.6rem;
+  border-radius: 0;
+}
+
+.innerContainer,
+.flakedInnerContainer {
+  border: none;
+  border-radius: 0;
+}
+
+.innerContainer {
+  background-color: $surface;
+}

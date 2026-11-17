@@ -23,11 +23,11 @@ const AddUserModal = (props) => {
   const availableFriends = user.friends.filter(
     (f) =>
       (f.status.status === "Ready" || f.status.status === "Searching") &&
-      !goState.outing.users.includes(f) &&
+      !goState.outing.users.some((u) => u._id === f._id) &&
       f._id !== user._id
   );
   const availableMatches = matchedUsers.filter(
-    (u) => !goState.outing.users.includes(u)
+    (u) => !goState.outing.users.some((ou) => ou._id === u._id)
   );
 
   const addUserToOuting = (u) => {
@@ -87,12 +87,12 @@ const AddUserModal = (props) => {
           Add Outing Members
         </ModalHeaderPortal>
         <div className={styles.dailyMatchesContainer}>
-          <h2 className={styles.matchesHeader}>Daily Matches</h2>
+          <h2 className={styles.matchesHeader}>
+            Daily Matches <span className={styles.requiredBadge}>Required</span>
+          </h2>
           <div className={styles.headerSubtext}>
-            Matches are randomly generated every 24 hrs.
-            <div style={{ marginTop: "0.2rem" }}>
-              <b>Add at least one daily match to create an outing!</b>
-            </div>
+            Every Outing must include at least one person you haven't met yet.
+            Matches refresh every 24 hrs.
           </div>
 
           {availableMatches[0] ? (
@@ -101,7 +101,7 @@ const AddUserModal = (props) => {
                 id={`${u._id || u}-friendCard-addUserModal`}
                 buttonSet={"add"}
                 user={u}
-                key={Math.random()}
+                key={u._id}
                 buttons={<AddButton user={u} />}
               />
             ))
@@ -126,7 +126,7 @@ const AddUserModal = (props) => {
                   id={`${f._id || f}-friendCard-addUserModal`}
                   buttonSet={"add"}
                   user={f}
-                  key={Math.random()}
+                  key={f._id}
                   buttons={<AddButton user={f} />}
                 />
               )

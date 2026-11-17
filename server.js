@@ -59,13 +59,10 @@ const socket = require("socket.io");
 
 // Add cors to the socket server if in development
 const local = "http://localhost:3000";
-const ioConfig = inDev ? { cors: { origin: local, credentials: "include" } } : {};
+const ioConfig = inDev ? { cors: { origin: local, credentials: true } } : {};
 const io = socket(server, ioConfig);
 module.exports = io;
 
-// Chat socket logic
-io.on("connection", (socket) => onSocketConnection(socket));
-const { onSocketConnection } = require("./utils/utils");
 
 // Connect to the database and handle connection errors.
 // family: 4  → force IPv4 (Node 17+ prefers IPv6 which can break Atlas TLS)
@@ -77,10 +74,14 @@ global.db.on("error", (err) =>
 );
 global.db.once("open", () => console.log("Connected to the database"));
 
+// TLS is only forced for Atlas (mongodb+srv) URLs or when DB_TLS=true, so a
+// plain local mongod (no TLS) can be used in development.
+const useTLS =
+  process.env.DB_TLS === "true" || /^mongodb\+srv:/.test(process.env.DB_URL || "");
 mongoose
   .connect(process.env.DB_URL, {
     family: 4,
-    tls: true,
+    ...(useTLS ? { tls: true } : {}),
     serverSelectionTimeoutMS: 10000,
   })
   .catch((err) => {
@@ -98,13 +99,22 @@ const sessionConfig = {
     secret: process.env.SECRET,
   }),
   name: "go_session",
-  secure: false,
   secret: process.env.SECRET,
   resave: false,
-  saveUninitialized: true,
-  expires: Date.now() + parseInt(process.env.SESSION_DURATION),
+  // Don't create (and store) a session for every anonymous visitor
+  saveUninitialized: false,
+  // Cookie options must live under `cookie` — previously `expires` was set at
+  // the top level (ignored), so sessions silently became browser-session cookies.
+  cookie: {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: !inDev,
+    maxAge: parseInt(process.env.SESSION_DURATION) || 7 * 24 * 3600 * 1000,
+  },
 };
-app.use(session(sessionConfig));
+if (!inDev) app.set("trust proxy", 1);
+const sessionMiddleware = session(sessionConfig);
+app.use(sessionMiddleware);
 
 // Morgan logger
 const morgan = require("morgan");
@@ -116,6 +126,30 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+// Share the express session + passport with socket.io so socket handlers know
+// which user is connected (previously sockets were fully unauthenticated).
+const onlyForHandshake = (mw) => (req, res, next) =>
+  req._query.sid === undefined ? mw(req, res, next) : next();
+io.engine.use(onlyForHandshake(sessionMiddleware));
+io.engine.use(onlyForHandshake(passport.initialize()));
+io.engine.use(onlyForHandshake(passport.session()));
+const { onSocketConnection } = require("./utils/utils");
+io.on("connection", (socket) => onSocketConnection(socket));
+
+// Serve locally-stored images when running without S3 (STORAGE=local)
+const { useLocalStorage, LOCAL_STORAGE_DIR } = require("./utils/S3");
+if (useLocalStorage) {
+  const { reqAuthenticated } = require("./utils/middleware");
+  app.use(
+    "/local-images",
+    reqAuthenticated,
+    express.static(LOCAL_STORAGE_DIR, {
+      setHeaders: (res) => res.setHeader("Content-Type", "image/jpeg"),
+    })
+  );
+  console.log("[storage] Using local image storage in", LOCAL_STORAGE_DIR);
+}
 
 // App Routes
 app.use("/auth", require("./routes/auth"));
