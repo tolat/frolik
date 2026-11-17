@@ -305,3 +305,35 @@
     margin-top: 0.5rem;
   }
 }
+
+// ── Stale-outing countdowns ─────────────────────────────────────────────────
+.countdownNote {
+  width: 100%;
+  box-sizing: border-box;
+  margin: -0.4rem 0 1rem;
+  padding: 0.9rem 1.2rem;
+  border-radius: 1.2rem;
+  background: #fff6e6;
+  color: #8a5a0b;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.countdownTag {
+  flex-shrink: 0;
+  align-self: center;
+  margin-right: 1rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 100rem;
+  background: #fff1d6;
+  color: #a2660a;
+  font-size: 1.15rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.countdownDone {
+  background: #e3f6ec;
+  color: #23855a;
+}

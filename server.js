@@ -178,4 +178,7 @@ app.get("*", (req, res) => {
 
 server.listen(process.env.PORT, () => {
   console.log(`Example app listening on port ${process.env.PORT}`);
+  // Hourly: expire stale invites, boot members who never mark completed,
+  // send the 7- and 3-day reminders (utils/outingLifecycle.js)
+  require("./utils/outingLifecycle").startStaleOutingJob();
 });

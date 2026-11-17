@@ -35,6 +35,8 @@ const {
   genOutingInviteEmail,
 } = require("../utils/emailTemplates");
 
+const { finalizeOuting } = require("../utils/outingLifecycle");
+
 const router = express.Router({ mergeParams: true });
 
 // Create a new outing
@@ -734,43 +736,17 @@ router.post(
       await activity.save();
     }
 
-    // If this is final completion, set date_completed and notify all members
+    // The first completion starts the 30-day clock for everyone else
+    if (!outing.completion_started) outing.completion_started = new Date();
+
+    // If this is final completion, finish the outing (shared with the
+    // stale-outing job) — notifies members, clears invites, records it on
+    // the activity
     if (outing.completions.length == outing.users.length) {
-      outing.date_completed = new Date(Date.now());
-
-      // Notify all members
-      for (const u of outing.users) {
-        const foundUser = await User.findById(u);
-        const newNotification = {
-          id: Date.now() + Math.random(),
-          type: "outing-complete",
-          outing: outing._id.toString(),
-          created: new Date(Date.now()),
-          active: true,
-        };
-        foundUser.notifications.push(newNotification);
-        await foundUser.save();
-      }
-
-      // Remove all invited
-      for (const u of outing.invited) {
-        // Clear all notifications to do with outing
-        const foundUser = await User.findById(u);
-        foundUser.notifications = foundUser.notifications.filter((n) =>
-          n.outing ? n.outing != outing._id.toString() : true
-        );
-
-        await foundUser.save();
-      }
-
-      // Add outing to activity outings
-      if (activity) {
-        activity.outings.push(outing);
-        await activity.save();
-      }
+      await finalizeOuting(outing, activity);
     }
     // Else just notify all other members the outing has been marked completed
-    else {
+    if (!outing.date_completed) {
       for (const u of outing.users) {
         const foundUser = await User.findById(u);
 

@@ -20,7 +20,16 @@ const Chat = memo((props) => {
   const [chatSearch, setChatSearch] = useState("");
   const dispatch = useDispatch();
   const [showArchived, setShowArchived] = useState(false);
-  const [unreadOnly, setUnreadOnly] = useState(false);
+  // Filters: any mix of "unread", "dm", "outing" (none = All). DMs and
+  // Outings widen each other; Unread narrows whatever is shown.
+  const [filters, setFilters] = useState(() => new Set());
+  const toggleFilter = (key) =>
+    setFilters((prev) => {
+      const next = new Set(prev);
+      next.has(key) ? next.delete(key) : next.add(key);
+      return next;
+    });
+  const unreadOnly = filters.has("unread");
   const [searchParams, setSearchParams] = useSearchParams();
   const openChatID = searchParams.get("open");
 
@@ -47,7 +56,13 @@ const Chat = memo((props) => {
   // "Unread" filter
   const isUnread = (c) => user && getUnreadChatMessages(user, c) > 0;
   const unreadCount = validChats.filter(isUnread).length;
-  const filteredChats = unreadOnly ? validChats.filter(isUnread) : validChats;
+  const wantDM = filters.has("dm");
+  const wantOuting = filters.has("outing");
+  const filteredChats = validChats.filter(
+    (c) =>
+      (!unreadOnly || isUnread(c)) &&
+      (wantDM === wantOuting || (wantDM ? !c.outing : !!c.outing))
+  );
 
   // Archived Outing chats live in their own collapsible section
   const archivedChats = filteredChats.filter(
@@ -123,31 +138,49 @@ const Chat = memo((props) => {
           </div>
         ) : (
           <div className={styles.chatsContainer}>
-            <div className={styles.filterRow} role="tablist" aria-label="Filter chats">
+            <div className={styles.filterRow} role="group" aria-label="Filter chats">
               <button
                 type="button"
-                role="tab"
-                aria-selected={!unreadOnly}
-                className={`${styles.filterPill} ${!unreadOnly ? styles.filterPillActive : ""}`}
-                onClick={() => setUnreadOnly(false)}
+                aria-pressed={filters.size === 0}
+                className={`${styles.filterPill} ${filters.size === 0 ? styles.filterPillActive : ""}`}
+                onClick={() => setFilters(new Set())}
               >
                 All
               </button>
               <button
                 type="button"
-                role="tab"
-                aria-selected={unreadOnly}
+                aria-pressed={unreadOnly}
                 className={`${styles.filterPill} ${unreadOnly ? styles.filterPillActive : ""}`}
-                onClick={() => setUnreadOnly(true)}
+                onClick={() => toggleFilter("unread")}
               >
                 Unread
                 {unreadCount > 0 && (
                   <span className={styles.filterCount}>{unreadCount}</span>
                 )}
               </button>
+              <button
+                type="button"
+                aria-pressed={wantDM}
+                className={`${styles.filterPill} ${wantDM ? styles.filterPillActive : ""}`}
+                onClick={() => toggleFilter("dm")}
+              >
+                DMs
+              </button>
+              <button
+                type="button"
+                aria-pressed={wantOuting}
+                className={`${styles.filterPill} ${wantOuting ? styles.filterPillActive : ""}`}
+                onClick={() => toggleFilter("outing")}
+              >
+                Outings
+              </button>
             </div>
-            {unreadOnly && !activeChats.length && !archivedChats.length && (
-              <div className={styles.filterEmpty}>You're all caught up — no unread chats.</div>
+            {filters.size > 0 && !activeChats.length && !archivedChats.length && (
+              <div className={styles.filterEmpty}>
+                {unreadOnly
+                  ? "You're all caught up — no unread chats."
+                  : "No chats match these filters."}
+              </div>
             )}
             {archivedChats.length > 0 && (
               <Fragment>

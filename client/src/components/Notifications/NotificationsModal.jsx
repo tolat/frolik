@@ -1,3 +1,4 @@
+import OutingNotice from "./OutingNotice";
 import { Fragment } from "react";
 import ModalPortal from "../Modals/ModalPortal";
 import styles from "./styles/NotificationsModal.module.scss";
@@ -126,6 +127,8 @@ const NotificationsModal = (props) => {
                 return <FriendRemoved key={n.id} notification={n} />;
               case "chat-created":
                 return <ChatCreated key={n.id} notification={n} />;
+              case "outing-notice":
+                return <OutingNotice key={n.id} notification={n} />;
 
               default:
                 return null;

@@ -54,7 +54,6 @@ const OutingModal = (props) => {
   const categoryColor =
     globals && globals?.categoryColorMap[outing?.activity?.category];
   const completed = outing && outingIsCompleted(outing);
-  const status = completed ? "Completed" : "Pending";
   // Header subheading: what the outing is waiting on, in plain words
   const statusLabel = completed
     ? "Completed"
@@ -65,6 +64,36 @@ const OutingModal = (props) => {
     : outing?.completions?.find((id) => id === user?._id)
     ? "Waiting for others to finish"
     : "Ready to finish";
+  // Stale-outing countdowns (rules: utils/outingLifecycle.js on the server)
+  const STALE_DAYS = 30;
+  const DAY_MS = 24 * 60 * 60 * 1000;
+  const daysUntil = (start) =>
+    start
+      ? Math.max(
+          0,
+          Math.ceil(
+            (new Date(start).getTime() + STALE_DAYS * DAY_MS - Date.now()) /
+              DAY_MS
+          )
+        )
+      : null;
+  const inviteDaysLeft =
+    !completed && (outing?.invited?.length || (outing?.users?.length || 0) < 2)
+      ? daysUntil(outing?.date_created)
+      : null;
+  // (outings from before completion_started existed count from creation,
+  // same as the server)
+  const finishDaysLeft =
+    !completed &&
+    (outing?.completions?.length || 0) > 0 &&
+    (outing?.completions?.length || 0) < (outing?.users?.length || 0)
+      ? daysUntil(outing.completion_started || outing.date_created)
+      : null;
+  const daysText = (n) =>
+    n === 0 ? "less than a day" : `${n} day${n === 1 ? "" : "s"}`;
+  const hasCompleted = (u) =>
+    outing?.completions?.some((c) => (c?._id || c) === (u?._id || u));
+
   const statusTone = completed || statusLabel === "Ready to finish"
     ? styles.statusReady
     : styles.statusWaiting;
@@ -688,8 +717,36 @@ const OutingModal = (props) => {
                 </button>
               )}
             </h2>
+            {finishDaysLeft !== null ? (
+              <div className={styles.countdownNote}>
+                {daysText(finishDaysLeft)} left for everyone to mark it
+                completed. Anyone who hasn't by then is removed and gets a
+                flake.
+              </div>
+            ) : inviteDaysLeft !== null && (outing.users?.length || 0) < 2 ? (
+              <div className={styles.countdownNote}>
+                If no one joins within {daysText(inviteDaysLeft)}, this Outing
+                is deleted for inactivity.
+              </div>
+            ) : null}
             {outing.users.map((u) => (
-              <FriendCard user={u} key={u._id || u} />
+              <FriendCard
+                user={u}
+                key={u._id || u}
+                buttons={
+                  finishDaysLeft !== null ? (
+                    hasCompleted(u) ? (
+                      <span className={`${styles.countdownTag} ${styles.countdownDone}`}>
+                        ✓ Done
+                      </span>
+                    ) : (
+                      <span className={styles.countdownTag}>
+                        {finishDaysLeft === 0 ? "<1" : finishDaysLeft}d left
+                      </span>
+                    )
+                  ) : null
+                }
+              />
             ))}
             {outing.invited[0] ? (
               <Fragment>
@@ -702,8 +759,24 @@ const OutingModal = (props) => {
                   />{" "}
                   Invited
                 </h2>
+                {inviteDaysLeft !== null ? (
+                  <div className={styles.countdownNote}>
+                    Invites expire in {daysText(inviteDaysLeft)} if they
+                    haven't been accepted.
+                  </div>
+                ) : null}
                 {outing.invited.map((u) => (
-                  <FriendCard user={u} key={u._id || u} />
+                  <FriendCard
+                    user={u}
+                    key={u._id || u}
+                    buttons={
+                      inviteDaysLeft !== null ? (
+                        <span className={styles.countdownTag}>
+                          {inviteDaysLeft === 0 ? "<1" : inviteDaysLeft}d to join
+                        </span>
+                      ) : null
+                    }
+                  />
                 ))}
               </Fragment>
             ) : null}

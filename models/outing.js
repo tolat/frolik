@@ -14,6 +14,11 @@ const OutingSchema = new Schema(
     flakes: [{ type: Schema.Types.ObjectId, ref: "User" }],
     chat: { type: Schema.Types.ObjectId, ref: "Chat" },
     likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    // When the first member marked it completed (starts the 30-day clock for
+    // everyone else; see utils/outingLifecycle.js)
+    completion_started: Date,
+    // Stale-outing reminders already sent, e.g. "invite-7", "complete-3"
+    reminders_sent: [String],
     photos: [
       { uploader: { type: Schema.Types.ObjectId, ref: "User" }, key: String },
     ],

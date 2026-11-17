@@ -55,13 +55,15 @@ const ChatCard = memo((props) => {
   const startOffset = useRef(0);
   const didSwipe = useRef(false); // blocks the synthetic click after a swipe
 
+  // Other members only — your own name isn't needed on your own chat list
+  const otherMembers = (
+    (chat?.outing ? chat?.outing?.users : chat?.users) || []
+  ).filter((u) => (u?._id || u) !== user?._id);
   const memberNames = !chat
     ? ""
-    : genMembersString(
-        chat?.outing
-          ? chat?.outing?.users.map((u) => u.first_name)
-          : chat?.users?.map((u) => u.first_name)
-      );
+    : otherMembers.length
+    ? genMembersString(otherMembers.map((u) => u.first_name))
+    : "Just you";
 
   const openChat = useCallback(() => {
     const onChatFetched = () => {
@@ -196,15 +198,16 @@ const ChatCard = memo((props) => {
 
   return !chat ? null : (
     <div ref={rootRef} className={`${styles.outerContainer} fade-in`}>
-      <div
-        style={{
-          backgroundColor: chat.outing
-            ? globals.categoryColorMap[chat.outing.activity.category]
-            : "lightgrey",
-          width: chat.outing ? null : "0.5rem",
-        }}
-        className={styles.categoryStripe}
-      ></div>
+      {/* Category colour bar for outing chats only; DMs have none */}
+      {chat.outing ? (
+        <div
+          style={{
+            backgroundColor:
+              globals.categoryColorMap[chat.outing.activity.category],
+          }}
+          className={styles.categoryStripe}
+        ></div>
+      ) : null}
 
       <div className={styles.swipeClip}>
         {canMarkRead && (

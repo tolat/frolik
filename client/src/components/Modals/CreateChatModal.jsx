@@ -18,19 +18,23 @@ const CreateChatModal = (props) => {
     modalState.selector === "create-chat-modal" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
   const user = useSelector((state) => state.auth.user);
+  // Friends picked for the chat. You're always in it, so you aren't listed.
   const [newChatMembers, setNewChatMembers] = useState([]);
   const dispatch = useDispatch();
+  const isOpen = modalState.selector === "create-chat-modal";
+  const canCreate = newChatMembers.length >= 1; // you + at least one friend
 
-  // Initialize newChat Users
+  // Start fresh each time the panel opens
   useEffect(() => {
-    if (user) {
-      setNewChatMembers([user]);
+    if (isOpen) {
+      setNewChatMembers([]);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?._id]);
+  }, [isOpen]);
 
   const onAddMember = (m) => {
-    setNewChatMembers((prevState) => [...prevState, m]);
+    setNewChatMembers((prevState) =>
+      prevState.some((u) => u._id === m._id) ? prevState : [...prevState, m]
+    );
   };
 
   const onRemoveMember = (m) => {
@@ -65,11 +69,8 @@ const CreateChatModal = (props) => {
       dispatch(modalActions.showModal());
     };
 
-    createChat(
-      user,
-      newChatMembers.filter((m) => m._id !== user._id),
-      onComplete
-    );
+    if (!canCreate) return;
+    createChat(user, newChatMembers, onComplete);
   };
 
   const [friendSearch, setFriendSearch] = useState("");
@@ -98,25 +99,33 @@ const CreateChatModal = (props) => {
         <ModalHeaderPortal selector={"create-chat-modal"}>
           Create Chat
         </ModalHeaderPortal>
-        <h2 className={styles.header}>New Chat Members:</h2>
         <ModalButtonPortal selector={"create-chat-modal"}>
           <SimpleButton
-            onClick={newChatMembers.length === 1 ? null : onCreateChat}
+            onClick={canCreate ? onCreateChat : null}
             className={`${styles.createChatButton} ${
-              newChatMembers.length === 1 ? styles.unclickableButton : null
+              canCreate ? "" : styles.unclickableButton
             }`}
           >
             + Create Chat
           </SimpleButton>
         </ModalButtonPortal>
-        {newChatMembers.map((m) => (
-          <FriendCard
-            buttonSet={"add"}
-            user={m}
-            key={Math.random() + Date.now()}
-            buttons={m === user ? null : <RemoveButton user={m} />}
-          />
-        ))}
+        {canCreate ? (
+          <>
+            <h2 className={styles.header}>Chat with:</h2>
+            {newChatMembers.map((m) => (
+              <FriendCard
+                buttonSet={"add"}
+                user={m}
+                key={m._id}
+                buttons={<RemoveButton user={m} />}
+              />
+            ))}
+          </>
+        ) : (
+          <div className={styles.pickHint}>
+            Add at least one friend to start a chat.
+          </div>
+        )}
         <h2 className={styles.header}>Add Friends:</h2>
         <SimpleSearch
           placeholder={"Search Friends.."}
@@ -128,7 +137,7 @@ const CreateChatModal = (props) => {
             <FriendCard
               buttonSet={"add"}
               user={f}
-              key={Math.random() + Date.now()}
+              key={f._id}
               buttons={<AddButton user={f} />}
             />
           ))}

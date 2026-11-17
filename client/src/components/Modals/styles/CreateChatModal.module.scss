@@ -58,3 +58,16 @@
   cursor: auto;
   opacity: 1;
 }
+
+// Shown until at least one friend is picked
+.pickHint {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0.4rem 0 0.6rem;
+  padding: 1rem 1.2rem;
+  border-radius: 1.2rem;
+  background: $button_grey;
+  color: $text_muted;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
