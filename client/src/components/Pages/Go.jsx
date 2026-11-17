@@ -160,6 +160,12 @@ const Go = (props) => {
     (u) => u._id !== user._id && !friendIDs.has(u._id)
   );
   const hasDailyMatch = addedMatches.length > 0;
+  // At most one friend per Daily Match (also enforced by the server)
+  const addedFriends = goState.outing.users.filter(
+    (u) => u._id !== user._id && friendIDs.has(u._id)
+  );
+  const matchesNeeded = Math.max(0, addedFriends.length - addedMatches.length);
+  const matchesMet = hasDailyMatch && matchesNeeded === 0;
   const hasMembers = !!goState.outing.users[1];
   const hasActivity = !!goState.outing.activity?.name;
 
@@ -325,16 +331,23 @@ const Go = (props) => {
             type="button"
             onClick={handleAddUserClick}
             className={`${styles.requirement} ${
-              hasDailyMatch ? styles.requirementMet : styles.requirementAction
+              matchesMet ? styles.requirementMet : styles.requirementAction
             }`}
           >
-            <span className={styles.requirementDot}>{hasDailyMatch ? "✓" : "2"}</span>
-            {hasDailyMatch
-              ? `${addedMatches.length} Daily Match${addedMatches.length > 1 ? "es" : ""} added`
-              : "Add a Daily Match"}
+            <span className={styles.requirementDot}>{matchesMet ? "✓" : "2"}</span>
+            {!hasDailyMatch
+              ? "Add a Daily Match"
+              : matchesNeeded > 0
+              ? `Add ${matchesNeeded} more Daily Match${matchesNeeded > 1 ? "es" : ""}`
+              : `${addedMatches.length} Daily Match${addedMatches.length > 1 ? "es" : ""} added`}
           </button>
         </div>
-        {hasMembers && hasActivity && hasDailyMatch && (
+        {hasDailyMatch && matchesNeeded > 0 && (
+          <div className={styles.requirementNote}>
+            You can invite one friend for each Daily Match.
+          </div>
+        )}
+        {hasMembers && hasActivity && matchesMet && (
           <SimpleButton
             onClick={
               createButtonText === "Create Outing" ? handleCreateOuting : null

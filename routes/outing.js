@@ -98,6 +98,23 @@ router.post(
       return;
     }
 
+    // At most one friend per Daily Match, so every Outing is at least half
+    // new people
+    const friendCount = inviteeIDs.filter((id) => friendIDs.has(id)).length;
+    const newMatchCount = inviteeIDs.filter(
+      (id) => matchIDs.has(id) && !friendIDs.has(id)
+    ).length;
+    if (friendCount > newMatchCount) {
+      const needed = friendCount - newMatchCount;
+      res.status(406).send({
+        header: "Balance your Outing",
+        message: `You can invite one friend for each Daily Match. Add ${needed} more Daily Match${
+          needed > 1 ? "es" : ""
+        } or remove ${needed} friend${needed > 1 ? "s" : ""}.`,
+      });
+      return;
+    }
+
     const activity = await Activity.findById(
       outing.activity?._id || outing.activity
     );

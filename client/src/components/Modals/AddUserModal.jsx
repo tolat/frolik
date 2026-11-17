@@ -52,11 +52,23 @@ const AddUserModal = (props) => {
     fetchMatchedUsers(user, setMatchedUsers);
   }, [user, setMatchedUsers]);
 
+  // One friend per Daily Match: how many more friends can be added
+  const friendIDSet = new Set((user.friends || []).map((f) => f._id || f));
+  const membersAdded = goState.outing.users.filter((u) => u._id !== user._id);
+  const friendsAdded = membersAdded.filter((u) => friendIDSet.has(u._id)).length;
+  const matchesAdded = membersAdded.length - friendsAdded;
+  const friendSlots = Math.max(0, matchesAdded - friendsAdded);
+
   const AddButton = (props) => {
+    const locked = props.locked;
     return (
       <div
-        onClick={(e) => addUserToOuting(props.user, e.currentTarget)}
-        className={styles.addButton}
+        onClick={
+          locked ? undefined : (e) => addUserToOuting(props.user, e.currentTarget)
+        }
+        className={`${styles.addButton} ${locked ? styles.addButtonLocked : ""}`}
+        title={locked ? "Add another Daily Match to invite another friend" : undefined}
+        aria-disabled={locked || undefined}
       >
         +
       </div>
@@ -115,9 +127,14 @@ const AddUserModal = (props) => {
         </div>
         {availableFriends[0] ? (
           <Fragment>
-            <h2 style={{ width: "100%", fontSize: "1.8rem" }}>
+            <h2 style={{ width: "100%", fontSize: "1.8rem", marginBottom: "0.4rem" }}>
               Active Friends
             </h2>
+            <div className={styles.friendSlots}>
+              {friendSlots > 0
+                ? `You can add ${friendSlots} more friend${friendSlots > 1 ? "s" : ""} — one per Daily Match.`
+                : "Add a Daily Match to invite a friend — one friend per match."}
+            </div>
             <SimpleSearch
               placeholder={"Search Friends.."}
               setValue={setFriendSearch}
@@ -129,7 +146,7 @@ const AddUserModal = (props) => {
                   buttonSet={"add"}
                   user={f}
                   key={f._id}
-                  buttons={<AddButton user={f} />}
+                  buttons={<AddButton user={f} locked={friendSlots <= 0} />}
                 />
               )
             )}
