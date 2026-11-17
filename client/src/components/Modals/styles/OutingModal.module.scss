@@ -219,3 +219,32 @@
   flex-direction: column;
   padding-left: 2rem;
 }
+
+// ── Primary actions styled like the Create Outing button ───────────────────
+.ctaButton {
+  background: linear-gradient(135deg, #6a9bf5 0%, #4a7ee8 55%, #3f6fd8 100%) !important;
+  color: white !important;
+  font-weight: 700;
+  border: none;
+  box-shadow: 0 8px 20px rgba(63, 111, 216, 0.32);
+}
+
+.ctaButton:hover {
+  box-shadow: 0 10px 24px rgba(63, 111, 216, 0.4);
+}
+
+// Mark Completed: green, so it stands apart from the blue Chat button
+.completedButton {
+  background: linear-gradient(135deg, #45c58a 0%, #34b77a 55%, #2a9a66 100%) !important;
+  color: white !important;
+  font-weight: 700;
+  border: none;
+  box-shadow: 0 8px 20px rgba(42, 154, 102, 0.3);
+}
+
+// Disabled / already-completed state stays a flat grey
+.completedButton.unclickableButton {
+  background: $button_grey !important;
+  color: $text_muted !important;
+  box-shadow: none !important;
+}

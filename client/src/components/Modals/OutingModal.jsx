@@ -520,7 +520,7 @@ const OutingModal = (props) => {
               {joining || userFlaked ? null : (
                 <SimpleButton
                   onClick={onShowChatModal}
-                  className={styles.chatButton}
+                  className={`${styles.chatButton} ${styles.ctaButton}`}
                 >
                   Chat
                 </SimpleButton>
@@ -594,7 +594,7 @@ const OutingModal = (props) => {
 
                     <div className={styles.sideBySide}>
                       {userPhotoCount < 2 ? (
-                        <SimpleButton onClick={onUploadClick}>
+                        <SimpleButton onClick={onUploadClick} className={styles.ctaButton}>
                           + Upload
                         </SimpleButton>
                       ) : null}
