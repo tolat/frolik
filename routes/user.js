@@ -863,6 +863,107 @@ router.post(
   })
 );
 
+// Delete the requesting user's profile for good (Settings → Delete profile).
+// Cleans up everywhere they appear so nothing points at a missing user:
+//  - other people: friends, friend requests, daily matches, former friends,
+//    and alerts from them
+//  - pending Outings: removed from members/invites (an Outing left with no
+//    members is deleted); completed Outings stay for the other members
+//  - chats: DMs with them are deleted for everyone; Outing chats just lose
+//    them as a member
+//  - their profile picture; then the account itself, and they're signed out
+router.post(
+  "/:id/delete-account",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.sendStatus(404);
+    const id = user._id;
+    const idStr = id.toString();
+
+    // Pending Outings
+    const outings = await Outing.find({ $or: [{ users: id }, { invited: id }] });
+    for (const outing of outings) {
+      if (outing.date_completed) continue; // keep the shared memory for others
+      outing.users = outing.users.filter((u) => u.toString() !== idStr);
+      outing.invited = outing.invited.filter((u) => u.toString() !== idStr);
+      outing.completions = outing.completions.filter((u) => u.toString() !== idStr);
+      outing.flakes = outing.flakes.filter((u) => u.toString() !== idStr);
+      if (outing.users.length === 0) {
+        await deleteOutingCompletely(outing);
+      } else {
+        await outing.save();
+        if (outing.chat) await Chat.updateOne({ _id: outing.chat }, { $pull: { users: id } });
+      }
+    }
+
+    // Direct-message chats with them: gone for everyone
+    const dms = await Chat.find({ outing: null, users: id }, { _id: 1, users: 1 });
+    const dmIDs = dms.map((c) => c._id);
+    if (dmIDs.length) {
+      await User.updateMany(
+        {},
+        {
+          $pull: {
+            chats: { $in: dmIDs },
+            archived_chats: { $in: dmIDs },
+            cleared_chats: { chat: { $in: dmIDs } },
+          },
+        }
+      );
+      await Chat.deleteMany({ _id: { $in: dmIDs } });
+    }
+
+    // Everyone else: drop every reference to them
+    const affected = await User.find(
+      {
+        _id: { $ne: id },
+        $or: [
+          { friends: id },
+          { friend_requests: id },
+          { "matches.user": id },
+          { "former_friends.user": id },
+          { "notifications.from": idStr },
+          { "notifications.by": idStr },
+          { "notifications.userID": idStr },
+        ],
+      },
+      { _id: 1 }
+    );
+    await User.updateMany(
+      { _id: { $ne: id } },
+      {
+        $pull: {
+          friends: id,
+          friend_requests: id,
+          matches: { user: id },
+          former_friends: { user: id },
+          notifications: {
+            $or: [{ from: idStr }, { by: idStr }, { userID: idStr }],
+          },
+        },
+      }
+    );
+
+    // Their profile picture
+    if (user.profile_picture?.key) {
+      deleteFromS3(process.env.AWS_BUCKET, user.profile_picture.key).catch((e) =>
+        console.error("Error deleting profile picture:", e.message)
+      );
+    }
+
+    await User.deleteOne({ _id: id });
+    pushUserUpdate(affected.map((u) => u._id));
+
+    // Sign them out
+    req.logout(() => {
+      if (req.session?.destroy) req.session.destroy(() => res.sendStatus(200));
+      else res.sendStatus(200);
+    });
+  })
+);
+
 // Delete a non-outing chat for the requesting user.
 // Removes the chat from their chats array; if no users remain, deletes the document.
 router.post(

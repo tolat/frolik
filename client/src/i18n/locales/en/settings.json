@@ -5,5 +5,13 @@
   "saving": "Saving…",
   "takeTour": "Take the app tour",
   "installApp": "Install Frolik App",
-  "logout": "Logout"
+  "logout": "Logout",
+  "deleteProfile": {
+    "link": "Delete profile",
+    "header": "Delete your profile?",
+    "message": "This permanently deletes your profile, friends, chats and photos. Outings you've completed stay for the other members. This can't be undone.",
+    "confirm": "Delete my profile",
+    "deleting": "Deleting…",
+    "cancel": "Cancel"
+  }
 }

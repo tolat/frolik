@@ -13,5 +13,11 @@
     "iconAlt": "ícone de rolês",
     "ok": "OK"
   },
-  "footer": "Bora sair, galera!"
+  "footer": "Bora sair, galera!",
+  "resendVerification": {
+    "button": "Reenviar link de verificação",
+    "sending": "Enviando…",
+    "sentHeader": "Novo link enviado",
+    "sentMessage": "Enviamos um novo link de verificação para {{email}}. Pode levar um minuto para chegar, então confira também o spam."
+  }
 }

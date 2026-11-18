@@ -13,5 +13,11 @@
     "iconAlt": "出游图标",
     "ok": "好的"
   },
-  "footer": "大家快出去玩吧！"
+  "footer": "大家快出去玩吧！",
+  "resendVerification": {
+    "button": "重新发送验证链接",
+    "sending": "发送中…",
+    "sentHeader": "新链接已发送",
+    "sentMessage": "我们已向 {{email}} 发送了新的验证链接。可能需要一分钟才能收到，也请查看垃圾邮件文件夹。"
+  }
 }

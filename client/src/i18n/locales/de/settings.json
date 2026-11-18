@@ -5,5 +5,13 @@
   "saving": "Wird gespeichert …",
   "takeTour": "App-Tour starten",
   "installApp": "Frolik-App installieren",
-  "logout": "Abmelden"
+  "logout": "Abmelden",
+  "deleteProfile": {
+    "link": "Profil löschen",
+    "header": "Dein Profil löschen?",
+    "message": "Dein Profil, deine Freunde, Chats und Fotos werden endgültig gelöscht. Abgeschlossene Ausflüge bleiben für die anderen Teilnehmenden erhalten. Das lässt sich nicht rückgängig machen.",
+    "confirm": "Mein Profil löschen",
+    "deleting": "Wird gelöscht …",
+    "cancel": "Abbrechen"
+  }
 }

@@ -5,5 +5,13 @@
   "saving": "Enregistrement…",
   "takeTour": "Faire la visite guidée",
   "installApp": "Installer l'appli Frolik",
-  "logout": "Se déconnecter"
+  "logout": "Se déconnecter",
+  "deleteProfile": {
+    "link": "Supprimer le profil",
+    "header": "Supprimer ton profil ?",
+    "message": "Ton profil, tes amis, tes discussions et tes photos seront supprimés définitivement. Les sorties terminées restent pour les autres participants. C'est irréversible.",
+    "confirm": "Supprimer mon profil",
+    "deleting": "Suppression…",
+    "cancel": "Annuler"
+  }
 }

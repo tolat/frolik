@@ -5,5 +5,13 @@
   "saving": "Salvando…",
   "takeTour": "Fazer o tour pelo app",
   "installApp": "Instalar o app Frolik",
-  "logout": "Sair"
+  "logout": "Sair",
+  "deleteProfile": {
+    "link": "Excluir perfil",
+    "header": "Excluir seu perfil?",
+    "message": "Isso exclui para sempre seu perfil, amigos, chats e fotos. Os rolês que você concluiu continuam para os outros participantes. Não dá para desfazer.",
+    "confirm": "Excluir meu perfil",
+    "deleting": "Excluindo…",
+    "cancel": "Cancelar"
+  }
 }

@@ -13,5 +13,11 @@
     "iconAlt": "ícono de salidas",
     "ok": "OK"
   },
-  "footer": "¡A salir, gente!"
+  "footer": "¡A salir, gente!",
+  "resendVerification": {
+    "button": "Reenviar enlace de verificación",
+    "sending": "Enviando…",
+    "sentHeader": "Enlace nuevo enviado",
+    "sentMessage": "Hemos enviado un nuevo enlace de verificación a {{email}}. Puede tardar un minuto en llegar; revisa también la carpeta de spam."
+  }
 }

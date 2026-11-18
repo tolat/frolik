@@ -13,5 +13,11 @@
     "iconAlt": "icône des sorties",
     "ok": "OK"
   },
-  "footer": "Allez, sortez de chez vous !"
+  "footer": "Allez, sortez de chez vous !",
+  "resendVerification": {
+    "button": "Renvoyer le lien de vérification",
+    "sending": "Envoi…",
+    "sentHeader": "Nouveau lien envoyé",
+    "sentMessage": "On a envoyé un nouveau lien de vérification à {{email}}. Il peut mettre une minute à arriver : vérifie aussi tes spams."
+  }
 }

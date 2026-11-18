@@ -7,6 +7,9 @@ const initialState = {
   popupImage: false,
   warningMessage: "",
   warningHeader: "",
+  // Optional action for the generic warning, from the server's 406 body,
+  // e.g. { type: "resend-verification", email }
+  warningAction: null,
   // Activity being sent to a friend ("send-activity" popup)
   sendActivity: null,
   // Activity opened from a chat message ("shared-activity" popup)
@@ -34,6 +37,9 @@ const popupSlice = createSlice({
     },
     setWarningHeader(state, action) {
       state.warningHeader = action.payload;
+    },
+    setWarningAction(state, action) {
+      state.warningAction = action.payload;
     },
     setSendActivity(state, action) {
       state.sendActivity = action.payload;

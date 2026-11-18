@@ -13,5 +13,11 @@
     "iconAlt": "treff-ikon",
     "ok": "OK"
   },
-  "footer": "Kom dere ut, folkens!"
+  "footer": "Kom dere ut, folkens!",
+  "resendVerification": {
+    "button": "Send bekreftelseslenken på nytt",
+    "sending": "Sender …",
+    "sentHeader": "Ny lenke sendt",
+    "sentMessage": "Vi har sendt en ny bekreftelseslenke til {{email}}. Det kan ta et minutt før den kommer, så sjekk søppelposten også."
+  }
 }

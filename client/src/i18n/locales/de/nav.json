@@ -13,5 +13,11 @@
     "iconAlt": "Ausflüge-Symbol",
     "ok": "OK"
   },
-  "footer": "Raus mit euch!"
+  "footer": "Raus mit euch!",
+  "resendVerification": {
+    "button": "Bestätigungslink erneut senden",
+    "sending": "Wird gesendet …",
+    "sentHeader": "Neuer Link gesendet",
+    "sentMessage": "Wir haben einen neuen Bestätigungslink an {{email}} geschickt. Es kann eine Minute dauern – schau auch im Spam-Ordner nach."
+  }
 }

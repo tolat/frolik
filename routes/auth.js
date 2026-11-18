@@ -51,6 +51,9 @@ router.post(
       res.status(406).send({
         header: req.t("auth.verificationRequired.header"),
         message: req.t("auth.verificationRequired.message", { email: req.body.username }),
+        // the app offers a "Resend verification link" button for this one
+        action: "resend-verification",
+        email: req.body.username,
       });
       return;
     }

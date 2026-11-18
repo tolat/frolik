@@ -5,5 +5,13 @@
   "saving": "Lagrer …",
   "takeTour": "Ta en omvisning i appen",
   "installApp": "Installer Frolik-appen",
-  "logout": "Logg ut"
+  "logout": "Logg ut",
+  "deleteProfile": {
+    "link": "Slett profilen",
+    "header": "Vil du slette profilen din?",
+    "message": "Dette sletter profilen din, vennene dine, chatter og bilder for godt. Fullførte treff blir værende for de andre deltakerne. Dette kan ikke angres.",
+    "confirm": "Slett profilen min",
+    "deleting": "Sletter …",
+    "cancel": "Avbryt"
+  }
 }

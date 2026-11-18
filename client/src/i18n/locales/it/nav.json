@@ -13,5 +13,11 @@
     "iconAlt": "icona uscite",
     "ok": "OK"
   },
-  "footer": "Forza, tutti fuori!"
+  "footer": "Forza, tutti fuori!",
+  "resendVerification": {
+    "button": "Invia di nuovo il link di verifica",
+    "sending": "Invio…",
+    "sentHeader": "Nuovo link inviato",
+    "sentMessage": "Abbiamo inviato un nuovo link di verifica a {{email}}. Potrebbe metterci un minuto ad arrivare: controlla anche lo spam."
+  }
 }

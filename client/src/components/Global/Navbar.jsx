@@ -28,6 +28,7 @@ import SendActivityPopup from "../Popups/SendActivityPopup";
 import SharedActivityPopup from "../Popups/SharedActivityPopup";
 import PushDrawer from "../Popups/PushDrawer";
 import { syncKeyboardOpen } from "../../utils/pageScroll";
+import { resendVerificationEmail } from "../../utils/data-fetch";
 import { useT, T } from "../../i18n";
 
 const Navbar = (props) => {
@@ -48,6 +49,25 @@ const Navbar = (props) => {
   const currentUrl = location.pathname;
   const warningMessage = useSelector((state) => state.popup.warningMessage);
   const warningHeader = useSelector((state) => state.popup.warningHeader);
+  const warningAction = useSelector((state) => state.popup.warningAction);
+  const [resendState, setResendState] = useState("idle");
+
+  // "Email Verification Required" at login: send a new verification link,
+  // then turn the drawer into a "New link sent" confirmation
+  const onResendVerification = () => {
+    if (resendState === "sending" || !warningAction?.email) return;
+    const email = warningAction.email;
+    setResendState("sending");
+    resendVerificationEmail(email, (response) => {
+      setResendState("idle");
+      if (response?.ok === false || response instanceof Error) return; // its own error popup shows
+      dispatch(popupActions.setWarningAction(null));
+      dispatch(popupActions.setWarningHeader(t("nav.resendVerification.sentHeader")));
+      dispatch(
+        popupActions.setWarningMessage(t("nav.resendVerification.sentMessage", { email }))
+      );
+    });
+  };
   // Derive the active tab from the URL (was set via setState during render)
   const activePage = currentUrl.split("/")[1] || false;
   const [masterDisplay, setMasterDisplay] = useState("flex");
@@ -108,13 +128,31 @@ const Navbar = (props) => {
       id="navbar"
       className={`${styles.header} app-navbar`}
     >
-      <WarningPopup
-        selector={"generic-warning"}
-        header={warningHeader}
-        message={warningMessage}
-        ok={t("nav.ok")}
-        okClick={handleHideWarning}
-      />
+      {warningAction?.type === "resend-verification" ? (
+        // Login before verifying: offer a fresh link right here
+        <WarningPopup
+          selector={"generic-warning"}
+          header={warningHeader}
+          message={warningMessage}
+          ok={
+            resendState === "sending"
+              ? t("nav.resendVerification.sending")
+              : t("nav.resendVerification.button")
+          }
+          okUnclickable={resendState === "sending"}
+          okClick={onResendVerification}
+          cancel={t("nav.ok")}
+          cancelClick={handleHideWarning}
+        />
+      ) : (
+        <WarningPopup
+          selector={"generic-warning"}
+          header={warningHeader}
+          message={warningMessage}
+          ok={t("nav.ok")}
+          okClick={handleHideWarning}
+        />
+      )}
       <InstallPromptModal />
       {user && (
         <Fragment>

@@ -5,5 +5,13 @@
   "saving": "保存中…",
   "takeTour": "查看应用导览",
   "installApp": "安装Frolik应用",
-  "logout": "退出登录"
+  "logout": "退出登录",
+  "deleteProfile": {
+    "link": "删除个人资料",
+    "header": "删除你的个人资料？",
+    "message": "这将永久删除你的个人资料、好友、聊天和照片。你完成的出游会保留给其他成员。此操作无法撤销。",
+    "confirm": "删除我的资料",
+    "deleting": "正在删除…",
+    "cancel": "取消"
+  }
 }

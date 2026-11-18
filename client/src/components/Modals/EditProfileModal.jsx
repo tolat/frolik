@@ -21,6 +21,8 @@ import { modalActions } from "../../store/modal-slice";
 import { startTour } from "../Tour/Tour";
 import { confirmLocation, geoFromPoint } from "../../utils/location";
 import NotificationsToggle from "../UI/NotificationsToggle";
+import WarningPopup from "../Popups/WarningPopup";
+import { deleteAccount } from "../../utils/data-fetch";
 import { useT } from "../../i18n";
 
 const stagedDataReducer = (state, action) => {
@@ -123,6 +125,25 @@ const EditProfileModal = () => {
     fetchLogout();
   };
 
+  // Delete profile: confirm in a drawer, then delete and go to the login
+  // screen (a full reload, so nothing of the old account stays in memory)
+  const [deleting, setDeleting] = useState(false);
+  const askDeleteProfile = () => dispatch(popupActions.showPopup("confirm-delete-profile"));
+  const handleDeleteProfile = () => {
+    if (deleting) return;
+    setDeleting(true);
+    deleteAccount(
+      user._id,
+      () => {
+        try {
+          sessionStorage.removeItem("returnTo");
+        } catch {}
+        window.location = "/login";
+      },
+      () => setDeleting(false)
+    );
+  };
+
   // Opens the "Get the Frolik app" drawer over settings
   const handleInstall = () => {
     dispatch(popupActions.showPopup("install-prompt"));
@@ -209,6 +230,26 @@ const EditProfileModal = () => {
         >
           {t("settings.logout")}
         </SimpleButton>
+        <button
+          type="button"
+          className={styles.deleteProfileLink}
+          onClick={askDeleteProfile}
+        >
+          {t("settings.deleteProfile.link")}
+        </button>
+        <WarningPopup
+          selector="confirm-delete-profile"
+          header={t("settings.deleteProfile.header")}
+          message={t("settings.deleteProfile.message")}
+          delete={
+            deleting
+              ? t("settings.deleteProfile.deleting")
+              : t("settings.deleteProfile.confirm")
+          }
+          deleteClick={handleDeleteProfile}
+          cancel={t("settings.deleteProfile.cancel")}
+          cancelClick={() => dispatch(popupActions.hidePopup())}
+        />
       </div>
     </ModalPortal>
   );

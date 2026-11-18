@@ -31,6 +31,12 @@ export default async function httpFetch(
         response.json().then((body) => {
           store.dispatch(popupActions.setWarningHeader(body.header));
           store.dispatch(popupActions.setWarningMessage(body.message));
+          // e.g. "Email Verification Required" offers to resend the link
+          store.dispatch(
+            popupActions.setWarningAction(
+              body.action ? { type: body.action, email: body.email } : null
+            )
+          );
           store.dispatch(popupActions.showPopup("generic-warning"));
 
           handleError(response);

@@ -13,5 +13,11 @@
     "iconAlt": "나들이 아이콘",
     "ok": "확인"
   },
-  "footer": "자, 다들 밖으로 나가 봐요!"
+  "footer": "자, 다들 밖으로 나가 봐요!",
+  "resendVerification": {
+    "button": "인증 링크 다시 보내기",
+    "sending": "보내는 중…",
+    "sentHeader": "새 링크를 보냈어요",
+    "sentMessage": "{{email}}(으)로 새 인증 링크를 보냈어요. 도착까지 1분 정도 걸릴 수 있으니 스팸함도 확인해 주세요."
+  }
 }

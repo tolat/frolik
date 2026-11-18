@@ -13,5 +13,11 @@
     "iconAlt": "outings-icon",
     "ok": "OK"
   },
-  "footer": "Get out there people!"
+  "footer": "Get out there people!",
+  "resendVerification": {
+    "button": "Resend verification link",
+    "sending": "Sending…",
+    "sentHeader": "New link sent",
+    "sentMessage": "We've sent a new verification link to {{email}}. It can take a minute to arrive, so check your spam folder too."
+  }
 }

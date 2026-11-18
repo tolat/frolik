@@ -956,3 +956,19 @@ export const fetchActivityDetails = (activityID, onDone = () => {}) => {
     () => onDone(null)
   );
 };
+
+// Delete the signed-in user's profile for good (Settings → Delete profile)
+export const deleteAccount = (userID, onDone = () => {}, onFail = () => {}) => {
+  httpFetch(
+    {
+      url: `${getServer()}/user/${userID}/delete-account`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    },
+    () => onDone(),
+    (err) => {
+      console.log("deleteAccount error:", err);
+      onFail(err);
+    }
+  );
+};

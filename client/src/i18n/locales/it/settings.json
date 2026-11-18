@@ -5,5 +5,13 @@
   "saving": "Salvataggio…",
   "takeTour": "Fai il tour dell'app",
   "installApp": "Installa l'app Frolik",
-  "logout": "Esci"
+  "logout": "Esci",
+  "deleteProfile": {
+    "link": "Elimina profilo",
+    "header": "Eliminare il tuo profilo?",
+    "message": "Elimina per sempre il tuo profilo, gli amici, le chat e le foto. Le uscite completate restano per gli altri partecipanti. Non si può annullare.",
+    "confirm": "Elimina il mio profilo",
+    "deleting": "Eliminazione…",
+    "cancel": "Annulla"
+  }
 }
