@@ -15,7 +15,7 @@
   border-radius: $radius_md;
   background-color: $surface;
   box-shadow: $shadow_sm;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 }
 
@@ -78,4 +78,14 @@
   margin: 0.5rem 0 0 1rem;
   font-size: 1.2rem;
   color: $red;
+}
+
+// Right-to-left (Arabic): "on" is the left end of the switch
+:global([dir="rtl"]) .knob {
+  left: auto;
+  right: 0.3rem;
+}
+
+:global([dir="rtl"]) .switchOn .knob {
+  transform: translateX(-1.8rem);
 }

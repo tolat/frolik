@@ -46,7 +46,7 @@
   font-weight: 300;
   line-height: 1;
   padding: 0;
-  margin-left: 0.8rem;
+  margin-inline-start: 0.8rem;
   border-radius: 100rem !important;
   display: flex;
   align-items: center;
@@ -88,7 +88,7 @@
   font-size: 1.4rem;
   font-weight: 600;
   cursor: pointer;
-  text-align: left;
+  text-align: start;
 }
 
 .archivedIcon {
@@ -98,7 +98,7 @@
 }
 
 .archivedCount {
-  margin-left: 0.2rem;
+  margin-inline-start: 0.2rem;
   padding: 0.1rem 0.8rem;
   border-radius: 100rem;
   background-color: $button_grey;
@@ -109,7 +109,7 @@
 .archivedChevron {
   width: 1.8rem;
   height: 1.8rem;
-  margin-left: auto;
+  margin-inline-start: auto;
   color: $text_muted;
   transition: transform 0.25s $ease_out;
 }

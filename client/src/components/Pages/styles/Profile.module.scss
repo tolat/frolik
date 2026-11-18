@@ -156,7 +156,7 @@
 .logoutLogo {
   width: 1.5rem;
   height: 1.5rem;
-  margin-left: 0.5rem;
+  margin-inline-start: 0.5rem;
 }
 
 .fixedSliderNavbar {
@@ -186,7 +186,7 @@
   font-size: 1.25rem;
   font-weight: 600;
   color: $text_muted;
-  margin-right: 0.2rem;
+  margin-inline-end: 0.2rem;
 }
 
 .sortPill {
@@ -208,6 +208,6 @@
 }
 
 .sortArrow {
-  margin-left: 0.4rem;
+  margin-inline-start: 0.4rem;
   font-weight: 800;
 }

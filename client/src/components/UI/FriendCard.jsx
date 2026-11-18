@@ -15,7 +15,7 @@ import { useT } from "../../i18n";
 const FriendCard = memo((props) => {
   const { t } = useT();
   const statIconStyle = { width: "2rem", height: "2rem" };
-  const statContainerStyle = { marginLeft: "1rem" };
+  const statContainerStyle = { marginInlineStart: "1rem" };
   const sizeInRem = props.small ? "5" : "8.5";
   const borderSizeInRem = props.small ? "0.5" : "0.8";
   const nameStyle = { fontSize: props.small ? "1.8rem" : null };

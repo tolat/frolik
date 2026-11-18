@@ -82,7 +82,7 @@
   display: flex;
   background-color: inherit;
   border-radius: inherit;
-  padding-right: 0.5rem;
+  padding-inline-end: 0.5rem;
 }
 
 .nameStatusContainer {
@@ -115,7 +115,7 @@
 }
 
 .userIconContainer {
-  margin-left: 1rem;
+  margin-inline-start: 1rem;
   border-radius: 100rem;
 }
 

@@ -464,7 +464,7 @@ const OutingModal = (props) => {
         <div style={modalStyle} className={styles.feedCardContainer}>
           <ModalHeaderPortal selector={"outing-modal"}>
             <div
-              style={{ borderLeft: `10px solid ${categoryColor}` }}
+              style={{ borderInlineStart: `10px solid ${categoryColor}` }}
               className={styles.headerInnerContainerFeedCard}
             >
               <div className={styles.outingName}>{outing.name}</div>
@@ -579,7 +579,7 @@ const OutingModal = (props) => {
             <ModalHeaderPortal selector={"outing-modal"}>
               <div className={styles.header}>
                 <div
-                  style={{ borderLeft: `10px solid ${categoryColor}` }}
+                  style={{ borderInlineStart: `10px solid ${categoryColor}` }}
                   className={styles.headerInnerContainer}
                 >
                   <OutingTitleEditor

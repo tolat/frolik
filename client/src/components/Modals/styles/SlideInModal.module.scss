@@ -126,3 +126,20 @@
   font-weight: bold;
   margin-right: 0.5rem;
 }
+
+// Right-to-left languages (Arabic): the slide mechanics above use physical
+// left offsets inside a double-width strip, and RTL anchored the panel to the
+// other side, so it slid into empty space (settings etc. showed blank). Keep
+// the mechanics left-to-right and switch the panel's contents back to RTL.
+.outerContainer {
+  direction: ltr;
+}
+
+:global([dir="rtl"]) .container {
+  direction: rtl;
+}
+
+// The back arrow points the way you came: right in RTL
+:global([dir="rtl"]) .arrowImage {
+  transform: scaleX(-1);
+}

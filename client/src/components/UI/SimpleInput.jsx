@@ -45,8 +45,8 @@ const SimpleInput = forwardRef((props, ref) => {
         ) : null}
         <input
           style={{
-            ...(props.prefix ? { paddingLeft: "2.8rem" } : null),
-            ...(props.suffix ? { paddingRight: `${1.8 + 0.75 * String(props.suffix).length}rem` } : null),
+            ...(props.prefix ? { paddingInlineStart: "2.8rem" } : null),
+            ...(props.suffix ? { paddingInlineEnd: `${1.8 + 0.75 * String(props.suffix).length}rem` } : null),
             ...props.inputStyle,
           }}
           onBlur={onBlur}

@@ -3,3 +3,8 @@
     background-color: inherit;
     border-radius: inherit;
 }
+// Overlapping avatars are positioned with left margins: keep that geometry
+// left-to-right in every language (RTL shifted the stack sideways)
+.container {
+  direction: ltr;
+}
