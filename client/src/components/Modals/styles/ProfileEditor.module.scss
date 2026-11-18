@@ -143,3 +143,27 @@
 
 
 
+
+// Header Save: slim blue gradient pill like the app's other blue buttons;
+// a quiet grey pill until something has changed
+.saveButton,
+.unclickableButton {
+  height: auto !important;
+  padding: 0.65rem 1.7rem !important;
+  border: none !important;
+  border-radius: 100rem !important;
+  font-size: 1.35rem !important;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.saveButton {
+  background: linear-gradient(135deg, #6a9bf5 0%, #4a7ee8 55%, #3f6fd8 100%) !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(63, 111, 216, 0.28) !important;
+}
+
+.unclickableButton {
+  background: $button_grey !important;
+  color: #a7adbb !important;
+}

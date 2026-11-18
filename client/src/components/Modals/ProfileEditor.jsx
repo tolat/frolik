@@ -1,3 +1,4 @@
+import { resetViewportShift } from "../../utils/pageScroll";
 import SimpleButton from "../UI/SimpleButton";
 import SimpleInput from "../UI/SimpleInput";
 import styles from "./styles/ProfileEditor.module.scss";
@@ -98,6 +99,8 @@ const ProfileEditor = (props) => {
   };
 
   const onPhotoSelected = async () => {
+    // Back from the iOS photo picker: undo its viewport shift
+    resetViewportShift();
     const newPhoto = document.getElementById("upload-profile-photo").files[0];
 
     if (newPhoto) {
@@ -141,12 +144,14 @@ const ProfileEditor = (props) => {
     dispatch(popupActions.hidePopup());
     resetUploadFileList();
     resetCropper(index);
+    resetViewportShift();
   };
 
   const handleCropCancel = (index, resetCropper) => {
     dispatch(popupActions.hidePopup());
     resetUploadFileList();
     resetCropper(index);
+    resetViewportShift();
   };
 
   return (

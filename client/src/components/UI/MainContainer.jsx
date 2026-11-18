@@ -6,7 +6,11 @@ import { useSelector } from "react-redux";
 import PullToRefresh from "./PullToRefresh";
 import { refreshPage } from "../../utils/pageRefresh";
 import { onUpdateUser } from "../../store/socket-actions";
-import { scrollPageTo, setPageScrollLocked } from "../../utils/pageScroll";
+import {
+  installViewportShiftGuard,
+  scrollPageTo,
+  setPageScrollLocked,
+} from "../../utils/pageScroll";
 
 const MainContainer = (props) => {
   const location = useLocation();
@@ -26,6 +30,9 @@ const MainContainer = (props) => {
   // (moved here from modal-slice reducer, which must stay pure)
   const modalMarginLeft = useSelector((state) => state.modal.marginLeft);
   const prevMarginLeft = useRef(modalMarginLeft);
+
+  // iOS: snap the view back after the keyboard / photo picker closes
+  useEffect(() => installViewportShiftGuard(), []);
 
   // Every page opens at the top (the router doesn't reset the scroll).
   // Layout effect: reset before the new page paints, so there's no jump.

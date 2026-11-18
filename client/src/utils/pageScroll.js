@@ -13,3 +13,31 @@ export const scrollPageTo = (top, behavior = "auto") =>
 export const setPageScrollLocked = (locked) => {
   document.documentElement.style.overflowY = locked ? "clip" : "";
 };
+
+// iOS Safari: after the native photo picker, the keyboard, or a select
+// menu closes, the visual viewport can stay shifted up — fixed headers then
+// sit under the status bar ("forehead") until something scrolls. Scrolling
+// the page to where it already is snaps the viewport back.
+export const resetViewportShift = () => {
+  requestAnimationFrame(() => {
+    const vv = window.visualViewport;
+    if (vv && vv.offsetTop === 0 && vv.pageTop === pageScrollTop()) return;
+    window.scrollTo(0, pageScrollTop());
+  });
+};
+
+const isTextField = (el) =>
+  !!el && /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) && el.type !== "file";
+
+// Install once: snap back whenever a text field loses focus (keyboard
+// closed) and nothing else has taken focus
+let guardInstalled = false;
+export const installViewportShiftGuard = () => {
+  if (guardInstalled) return;
+  guardInstalled = true;
+  document.addEventListener("focusout", () =>
+    setTimeout(() => {
+      if (!isTextField(document.activeElement)) resetViewportShift();
+    }, 60)
+  );
+};

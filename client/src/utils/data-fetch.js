@@ -134,7 +134,12 @@ export const fetchGlobals = async () => {
 };
 
 // Update all the non-photo data for a user
-export const uploadProfileData = (userID, data, resetForm) => {
+export const uploadProfileData = (
+  userID,
+  data,
+  resetForm,
+  onError = () => {}
+) => {
   const photoString = data.profile_picture;
   const profileData = {
     first_name: data.first_name,
@@ -176,6 +181,7 @@ export const uploadProfileData = (userID, data, resetForm) => {
 
   const handleError = (err) => {
     console.log(err);
+    onError(err);
   };
 
   httpFetch(requestConfig, handleResponse, handleError);

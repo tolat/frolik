@@ -94,6 +94,8 @@ const EditProfileModal = () => {
     );
   };
 
+  // Saved: close the panel with the usual Back transition (the profile
+  // underneath already shows the new details)
   const resetForm = () => {
     hideModal();
     setButtonText("Save");
@@ -102,7 +104,10 @@ const EditProfileModal = () => {
   const onSubmit = (data) => {
     dispatch(dataActions.updateUserPhotoData({ userID: user._id, data }));
     const fullData = { ...data, status: stagedData.status };
-    uploadProfileData(user._id, fullData, resetForm);
+    // On failure the server's warning popup shows; the button comes back
+    uploadProfileData(user._id, fullData, resetForm, () =>
+      setButtonText("Save")
+    );
   };
 
   const handleLogout = async (e) => {

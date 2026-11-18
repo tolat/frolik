@@ -11,6 +11,7 @@ import FriendCard from "../UI/FriendCard";
 import ActivityCard from "../UI/ActivityCard";
 import { modalActions } from "../../store/modal-slice";
 import { hideModal, swapModal } from "../../store/modal-actions";
+import { resetViewportShift } from "../../utils/pageScroll";
 import {
   addOutingCompletion,
   deleteOuting,
@@ -241,6 +242,7 @@ const OutingModal = (props) => {
   };
 
   const onPhotosSelected = async () => {
+    resetViewportShift(); // back from the iOS photo picker
     const newPhotos = document.getElementById("upload-outing-photos").files;
 
     // Check if user has met upload quota
@@ -274,6 +276,7 @@ const OutingModal = (props) => {
   };
 
   const onPhotoUpload = (index, photoString, resetCropper) => {
+    resetViewportShift();
     const onComplete = (response) => {
       // Remove photo form uploads state
       onPhotoUploadDismiss(index);
@@ -291,6 +294,7 @@ const OutingModal = (props) => {
   };
 
   const onPhotoUploadDismiss = (index) => {
+    resetViewportShift();
     setUploads((prevState) => {
       const newState = [...prevState];
       newState.splice(index, 1);
