@@ -1,7 +1,11 @@
+// Every built-in activity has an illustrated cover (cover_photo): sketchy,
+// colourful AI-generated art in seeds/images/activity-art, uploaded by the
+// seed and by scripts/update-activity-art.js (live databases).
 module.exports.activitySeeds = [
   //Park Pong
   {
     name: "Park Pong",
+    cover_photo: "art-parkpong", // seeds/images/activity-art
     description:
       "Casual or competitive, beer pong in the park is an all-time games favourite.",
     category: "Games",
@@ -37,6 +41,7 @@ module.exports.activitySeeds = [
   // Grounders
   {
     name: "Grounders",
+    cover_photo: "art-grounders", // seeds/images/activity-art
     description: "Don't touch the ground, and don't peek!",
     category: "Games",
     goal: "Avoid getting caught by the seeker.",
@@ -64,6 +69,7 @@ module.exports.activitySeeds = [
   // Paparazzi Battle
   {
     name: "Paparazzi Battle",
+    cover_photo: "art-paparazzibattle", // seeds/images/activity-art
     description: "May the sneakiest team win!",
     category: "Games",
     goal: "Post a photo of the other team bofore they one of you.",
@@ -101,6 +107,7 @@ module.exports.activitySeeds = [
   // Dance Club
   {
     name: "Dance Club",
+    cover_photo: "art-danceclub", // seeds/images/activity-art
     description: "Get your booty on the floor tonight, make my day..",
     category: "Art",
     goal: "Choreograph a dance to a song of your choice! ",
@@ -128,6 +135,7 @@ module.exports.activitySeeds = [
   // Portrait Swap
   {
     name: "Portrait Swap",
+    cover_photo: "art-portraitswap", // seeds/images/activity-art
     description: "Not everyone is an artist, but you are today.",
     category: "Art",
     goal: "Draw portraits of eachother.",
@@ -158,6 +166,7 @@ module.exports.activitySeeds = [
   // Soccer Tennis
   {
     name: "Soccer Tennis",
+    cover_photo: "art-soccertennis", // seeds/images/activity-art
     description:
       "Two sports for the price of one! No tennis rackets, just a soccer ball and a court.",
     category: "Sports",
@@ -187,6 +196,7 @@ module.exports.activitySeeds = [
   // 3 v 3
   {
     name: "3 v 3 Hoops",
+    cover_photo: "art-3v3hoops", // seeds/images/activity-art
     description: "Classic 3 v 3 basketball ",
     category: "Sports",
     goal: "Beat the other team.",
@@ -214,6 +224,7 @@ module.exports.activitySeeds = [
   // Twice Cream
   {
     name: "Twice Cream",
+    cover_photo: "art-twicecream", // seeds/images/activity-art
     description: "Eat Ice cream once, shame on me. Eat ice cream twice..",
     category: "Food",
     goal: "Eat Ice Cream at two different locations, one after the other.",
@@ -254,6 +265,7 @@ module.exports.activitySeeds = [
   // Grocery Swap
   {
     name: "Grocery Swap",
+    cover_photo: "art-groceryswap", // seeds/images/activity-art
     description: "Add a litte fun to your grocery run..",
     category: "Food",
     goal: "Buy groceries for eachother without deciding what to buy beforehand.",
@@ -286,16 +298,13 @@ module.exports.activitySeeds = [
   },
 
   // Find The Rainbow (replaced Beach Glass Rainbow; same database record).
-  // Cover photo: "findtherainbow" (seeds/images/sampleUserPhotos), by
-  // @jcquiroga1982 on Unsplash ("Rainbow over city buildings during
-  // daytime", cropped square on the rainbow), free under the Unsplash License.
   {
     name: "Find The Rainbow",
+    cover_photo: "art-findtherainbow", // seeds/images/activity-art
     description: "Hit the streets and hunt down a rainbow, one colour at a time!",
     category: "Adventure",
     goal: "Find 5 things out in the world that make a full rainbow: red, orange, yellow, green and blue.",
     featured: true,
-    cover_photo: "findtherainbow",
     instructions: [
       {
         kind: "communicate",
@@ -331,6 +340,7 @@ module.exports.activitySeeds = [
   // Thrift Swap
   {
     name: "Thrift Swap",
+    cover_photo: "art-thriftswap", // seeds/images/activity-art
     description: "Definitely risky. Potentially risquée.",
     category: "Adventure",
     goal: "Buy clothing for eachother.",

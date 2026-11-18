@@ -88,6 +88,7 @@ const seedUsers = async () => {
   if (useLocalStorage) {
     await UploadImagesToS3(`${__dirname}/images`);
     await UploadImagesToS3(`${__dirname}/images/sampleUserPhotos`);
+    await UploadImagesToS3(`${__dirname}/images/activity-art`);
   }
   //await deleteAllFromS3(process.env.AWS_BUCKET);
   //const profilePicsPath = `${__dirname}/images`;
