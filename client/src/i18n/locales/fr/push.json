@@ -16,7 +16,10 @@
     "item2": "Nouveaux messages",
     "item3": "Demandes d'ami",
     "enable": "Activer les notifications",
-    "notNow": "Plus tard"
+    "notNow": "Plus tard",
+    "noEmails": "Tu les recevras à la place des e-mails.",
+    "skipWarning": "Tu rateras les invitations aux sorties et les messages tant qu'elles sont désactivées.",
+    "confirmSkip": "Oui, passer pour l'instant"
   },
   "toggle": {
     "title": "Notifications",

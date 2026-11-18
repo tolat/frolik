@@ -16,7 +16,10 @@
     "item2": "새 메시지",
     "item3": "친구 요청",
     "enable": "알림 켜기",
-    "notNow": "나중에"
+    "notNow": "나중에",
+    "noEmails": "이메일 대신 알림으로 받게 돼요.",
+    "skipWarning": "꺼져 있는 동안 나들이 초대와 메시지를 놓칠 수 있어요.",
+    "confirmSkip": "네, 지금은 건너뛸게요"
   },
   "toggle": {
     "title": "알림",

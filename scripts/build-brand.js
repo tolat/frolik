@@ -108,6 +108,13 @@ const ico = (images) => {
     .composite([{ input: balloon, left, top: Math.max(0, top) }])
     .png()
     .toFile(path.join(ROOT, "client/src/images/frolik2.png"));
+  // For emails: a fixed public address (no build hash), 2x for sharp text
+  fs.mkdirSync(path.join(PUBLIC, "email"), { recursive: true });
+  await sharp(path.join(ROOT, "client/src/images/frolik2.png"))
+    .resize({ width: 320 })
+    .png()
+    .toFile(path.join(PUBLIC, "email/frolik-logo.png"));
+  fs.writeFileSync(path.join(PUBLIC, "email/app-icon.png"), await png(iconSVG, 112));
   console.log("brand images written");
 })().catch((e) => {
   console.error(e);

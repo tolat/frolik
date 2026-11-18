@@ -39,15 +39,20 @@
   "common.serverError.header": "Erreur interne du serveur",
   "common.serverError.message": "Oups ! Un problème est survenu de notre côté. Actualise la page et réessaie.",
   "common.userNotFound.header": "Utilisateur introuvable",
+  "email.brandLine": "frolik · Rencontre de nouvelles personnes. Sors !",
   "email.daily.header": "Ton résumé frolik du jour",
   "email.daily.intro": "Tu reçois ce courriel parce que tu as des notifications non lues :",
   "email.daily.subject": "Ton résumé frolik du jour",
+  "email.getApp.body": "Des notifications sur ton téléphone au lieu des e-mails.",
+  "email.getApp.button": "Installer",
+  "email.getApp.title": "Installe l'app Frolik",
   "email.invite.body": "{{name}} t'invite à sa sortie :",
   "email.invite.header": "Tu es invité à une sortie !",
   "email.invite.subject": "Invitation à une sortie",
   "email.inviteAccepted.body": "{{name}} a rejoint ta sortie :",
   "email.inviteAccepted.header": "Ton invitation a été acceptée !",
   "email.inviteAccepted.subject": "Invitation à une sortie acceptée",
+  "email.linkHint": "Le bouton ne marche pas ? Colle ce lien dans ton navigateur :",
   "email.outingName": "Nom de la sortie : {{name}}",
   "email.resetPassword.body": "Tu reçois ce courriel parce que toi (ou quelqu'un d'autre) as demandé à réinitialiser le mot de passe de ton compte frolik.",
   "email.resetPassword.button": "Réinitialiser le mot de passe",
@@ -171,6 +176,24 @@
   "push.friendRequestAccepted.title": "Demande d'ami acceptée",
   "push.friendRequestDenied.body": "{{name}} a refusé ta demande d'ami",
   "push.friendRequestDenied.title": "Demande d'ami refusée",
+  "push.friends.v1.body": {
+    "one": "{{count}} de tes amis a publié une sortie cette semaine. Va voir ce qu'ils ont fait !",
+    "many": "{{count}} de tes amis ont publié des sorties cette semaine. Va voir ce qu'ils ont fait !",
+    "other": "{{count}} de tes amis ont publié des sorties cette semaine. Va voir ce qu'ils ont fait !"
+  },
+  "push.friends.v1.title": "Rejoins la fête ! 🎉",
+  "push.friends.v2.body": {
+    "one": "{{count}} de tes amis est parti en sortie cette semaine. À ton tour !",
+    "many": "{{count}} de tes amis sont partis en sortie cette semaine. À ton tour !",
+    "other": "{{count}} de tes amis sont partis en sortie cette semaine. À ton tour !"
+  },
+  "push.friends.v2.title": "Bouge-toi ! ☀️",
+  "push.friends.v3.body": {
+    "one": "{{count}} de tes amis a publié une sortie cette semaine. Viens jeter un œil !",
+    "many": "{{count}} de tes amis ont publié des sorties cette semaine. Viens jeter un œil !",
+    "other": "{{count}} de tes amis ont publié des sorties cette semaine. Viens jeter un œil !"
+  },
+  "push.friends.v3.title": "Ne rate rien ! 👀",
   "push.inviteDenied.body": "{{name}} a refusé ton invitation à la sortie : {{outing}}",
   "push.inviteDenied.title": "Invitation refusée",
   "push.outingCompleted.body": "{{name}} a marqué la sortie « {{outing}} » terminée",
@@ -187,40 +210,22 @@
   "push.subscribed.title": "Notifications activées 🎈",
   "push.test.body": "Ça marche !",
   "push.test.title": "Notification de test",
-  "user.exists.header": "Le compte {{email}} existe déjà",
-  "user.exists.message": "Essaie un autre identifiant.",
-  "user.invalidAccount.header": "Informations de compte invalides",
-  "user.invalidAccount.message": "Un courriel valide et un mot de passe sont requis.",
-  "user.invalidLocation.header": "Lieu invalide",
-  "user.invalidLocation.message": "Impossible de mettre à jour ta position.",
-  "push.weekly.v1.title": "Nouveaux matchs tout frais 🎈",
   "push.weekly.v1.body": {
     "one": "{{count}} personne près de toi a envie d'une sortie cette semaine. Jette un œil !",
     "many": "{{count}} personnes près de toi ont envie d'une sortie cette semaine. Jette un œil !",
     "other": "{{count}} personnes près de toi ont envie d'une sortie cette semaine. Jette un œil !"
   },
-  "push.weekly.v2.title": "Ton week-end a appelé 📞",
+  "push.weekly.v1.title": "Nouveaux matchs tout frais 🎈",
   "push.weekly.v2.body": "Il veut une sortie. De nouveaux matchs du jour t'attendent.",
-  "push.weekly.v3.title": "Psst… nouveaux matchs 👀",
+  "push.weekly.v2.title": "Ton week-end a appelé 📞",
   "push.weekly.v3.body": "Ton prochain partenaire de sortie se cache peut-être dans les matchs du jour. Viens voir !",
-  "push.weekly.v4.title": "C'est le moment de sortir 🌤️",
+  "push.weekly.v3.title": "Psst… nouveaux matchs 👀",
   "push.weekly.v4.body": "De nouveaux matchs du jour t'attendent. Choisis une activité et lance un plan !",
-  "push.friends.v1.title": "Rejoins la fête ! 🎉",
-  "push.friends.v1.body": {
-    "one": "{{count}} de tes amis a publié une sortie cette semaine. Va voir ce qu'ils ont fait !",
-    "many": "{{count}} de tes amis ont publié des sorties cette semaine. Va voir ce qu'ils ont fait !",
-    "other": "{{count}} de tes amis ont publié des sorties cette semaine. Va voir ce qu'ils ont fait !"
-  },
-  "push.friends.v2.title": "Bouge-toi ! ☀️",
-  "push.friends.v2.body": {
-    "one": "{{count}} de tes amis est parti en sortie cette semaine. À ton tour !",
-    "many": "{{count}} de tes amis sont partis en sortie cette semaine. À ton tour !",
-    "other": "{{count}} de tes amis sont partis en sortie cette semaine. À ton tour !"
-  },
-  "push.friends.v3.title": "Ne rate rien ! 👀",
-  "push.friends.v3.body": {
-    "one": "{{count}} de tes amis a publié une sortie cette semaine. Viens jeter un œil !",
-    "many": "{{count}} de tes amis ont publié des sorties cette semaine. Viens jeter un œil !",
-    "other": "{{count}} de tes amis ont publié des sorties cette semaine. Viens jeter un œil !"
-  }
+  "push.weekly.v4.title": "C'est le moment de sortir 🌤️",
+  "user.exists.header": "Le compte {{email}} existe déjà",
+  "user.exists.message": "Essaie un autre identifiant.",
+  "user.invalidAccount.header": "Informations de compte invalides",
+  "user.invalidAccount.message": "Un courriel valide et un mot de passe sont requis.",
+  "user.invalidLocation.header": "Lieu invalide",
+  "user.invalidLocation.message": "Impossible de mettre à jour ta position."
 }

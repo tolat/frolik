@@ -116,3 +116,23 @@
   padding: 1.35rem !important;
   font-size: 1.5rem !important;
 }
+
+// "You'll get these instead of emails"
+.noEmails {
+  margin: -0.6rem 0 1.4rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 99rem;
+  background: rgba(91, 141, 239, 0.1);
+  color: $blue_dark;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+// Shown after the first "Not now"
+.skipWarning {
+  margin: 0;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  color: #c23b3b;
+  font-weight: 600;
+}

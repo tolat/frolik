@@ -20,6 +20,16 @@ const isInstalled = () =>
 // The automatic prompt shows at most once a day. The time is recorded only
 // when the drawer actually opens (it used to be recorded as soon as the
 // check ran, so a prompt that was blocked still used up the day).
+// Arrived from an email's "Get the app" button (/?install=1): read once at
+// start-up, before any redirect drops the query string
+let askedToInstall = (() => {
+  try {
+    return new URLSearchParams(window.location.search).get("install") === "1";
+  } catch {
+    return false;
+  }
+})();
+
 const LAST_SHOWN_KEY = "frolik:install-prompt-shown";
 const DAY_MS = 24 * 60 * 60 * 1000;
 const shownRecently = () => {
@@ -64,14 +74,20 @@ const InstallPromptModal = () => {
   // the app can be installed (installEvent). Waits for a moment with no
   // other drawer open.
   useEffect(() => {
-    if (isInstalled() || shownRecently()) return;
-    if (!ios && !installEvent) return;
+    if (isInstalled()) return;
+    // From an email link: show it even if it was offered today, and even
+    // before Chrome offers an install (the drawer then shows the menu tip)
+    if (!askedToInstall) {
+      if (shownRecently()) return;
+      if (!ios && !installEvent) return;
+    }
     let tries = 0;
     const timer = setInterval(() => {
       tries++;
       if (store.getState().popup.selector === "none") {
         clearInterval(timer);
         recordShown();
+        askedToInstall = false; // the email link opens it once, not on every re-check
         dispatch(popupActions.showPopup(INSTALL_SELECTOR));
       } else if (tries > 60) {
         clearInterval(timer); // a drawer stayed open for a minute: try next visit

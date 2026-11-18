@@ -39,15 +39,20 @@
   "common.serverError.header": "Error interno del servidor",
   "common.serverError.message": "¡Ups! Algo salió mal de nuestro lado. Actualiza la página e inténtalo de nuevo.",
   "common.userNotFound.header": "Usuario no encontrado",
+  "email.brandLine": "frolik · Conoce gente nueva. Sal ahí fuera.",
   "email.daily.header": "Tu resumen diario de frolik",
   "email.daily.intro": "Te enviamos este correo porque tienes notificaciones sin leer:",
   "email.daily.subject": "Tu resumen diario de frolik",
+  "email.getApp.body": "Notificaciones en tu teléfono en lugar de correos.",
+  "email.getApp.button": "Descargar",
+  "email.getApp.title": "Descarga la app de Frolik",
   "email.invite.body": "{{name}} te invitó a su salida:",
   "email.invite.header": "¡Te invitaron a una salida!",
   "email.invite.subject": "Invitación a una salida",
   "email.inviteAccepted.body": "{{name}} se unió a tu salida:",
   "email.inviteAccepted.header": "¡Aceptaron tu invitación a la salida!",
   "email.inviteAccepted.subject": "Invitación a la salida aceptada",
+  "email.linkHint": "¿El botón no funciona? Pega este enlace en tu navegador:",
   "email.outingName": "Nombre de la salida: {{name}}",
   "email.resetPassword.body": "Recibes este correo porque alguien (tal vez tú) pidió restablecer la contraseña de tu cuenta de frolik.",
   "email.resetPassword.button": "Restablecer contraseña",
@@ -171,6 +176,24 @@
   "push.friendRequestAccepted.title": "Solicitud de amistad aceptada",
   "push.friendRequestDenied.body": "{{name}} rechazó tu solicitud de amistad",
   "push.friendRequestDenied.title": "Solicitud de amistad rechazada",
+  "push.friends.v1.body": {
+    "one": "{{count}} de tus amigos publicó una salida esta semana. ¡Mira qué hicieron!",
+    "many": "{{count}} de tus amigos publicaron salidas esta semana. ¡Mira qué hicieron!",
+    "other": "{{count}} de tus amigos publicaron salidas esta semana. ¡Mira qué hicieron!"
+  },
+  "push.friends.v1.title": "¡Súmate a la diversión! 🎉",
+  "push.friends.v2.body": {
+    "one": "{{count}} de tus amigos fue de salida esta semana. ¡Te toca!",
+    "many": "{{count}} de tus amigos fueron de salida esta semana. ¡Te toca!",
+    "other": "{{count}} de tus amigos fueron de salida esta semana. ¡Te toca!"
+  },
+  "push.friends.v2.title": "¡Sal y diviértete! ☀️",
+  "push.friends.v3.body": {
+    "one": "{{count}} de tus amigos publicó una salida esta semana. ¡Échale un vistazo!",
+    "many": "{{count}} de tus amigos publicaron salidas esta semana. ¡Échale un vistazo!",
+    "other": "{{count}} de tus amigos publicaron salidas esta semana. ¡Échale un vistazo!"
+  },
+  "push.friends.v3.title": "¡No te lo pierdas! 👀",
   "push.inviteDenied.body": "{{name}} rechazó tu invitación a la salida: {{outing}}",
   "push.inviteDenied.title": "Invitación a la salida rechazada",
   "push.outingCompleted.body": "{{name}} marcó la salida \"{{outing}}\" como completada",
@@ -187,40 +210,22 @@
   "push.subscribed.title": "Notificaciones activadas 🎈",
   "push.test.body": "¡Funciona!",
   "push.test.title": "Notificación de prueba",
-  "user.exists.header": "El usuario {{email}} ya existe",
-  "user.exists.message": "Prueba con otro nombre de usuario.",
-  "user.invalidAccount.header": "Datos de cuenta no válidos",
-  "user.invalidAccount.message": "Se requieren un correo electrónico y una contraseña válidos.",
-  "user.invalidLocation.header": "Ubicación no válida",
-  "user.invalidLocation.message": "No pudimos actualizar tu ubicación.",
-  "push.weekly.v1.title": "¡Llegaron matches nuevos! 🎈",
   "push.weekly.v1.body": {
     "one": "{{count}} persona cerca de ti tiene ganas de una salida esta semana. ¡Echa un vistazo!",
     "many": "{{count}} personas cerca de ti tienen ganas de una salida esta semana. ¡Echa un vistazo!",
     "other": "{{count}} personas cerca de ti tienen ganas de una salida esta semana. ¡Echa un vistazo!"
   },
-  "push.weekly.v2.title": "Tu fin de semana te llamó 📞",
+  "push.weekly.v1.title": "¡Llegaron matches nuevos! 🎈",
   "push.weekly.v2.body": "Quiere una salida. Tienes nuevos matches del día esperándote.",
-  "push.weekly.v3.title": "Psst… matches nuevos 👀",
+  "push.weekly.v2.title": "Tu fin de semana te llamó 📞",
   "push.weekly.v3.body": "Tu próximo compañero de salida podría estar en los matches del día. ¡Ven a ver quién es!",
-  "push.weekly.v4.title": "¡Hora de salir! 🌤️",
+  "push.weekly.v3.title": "Psst… matches nuevos 👀",
   "push.weekly.v4.body": "Tienes nuevos matches del día esperando. ¡Elige una actividad y haz un plan!",
-  "push.friends.v1.title": "¡Súmate a la diversión! 🎉",
-  "push.friends.v1.body": {
-    "one": "{{count}} de tus amigos publicó una salida esta semana. ¡Mira qué hicieron!",
-    "many": "{{count}} de tus amigos publicaron salidas esta semana. ¡Mira qué hicieron!",
-    "other": "{{count}} de tus amigos publicaron salidas esta semana. ¡Mira qué hicieron!"
-  },
-  "push.friends.v2.title": "¡Sal y diviértete! ☀️",
-  "push.friends.v2.body": {
-    "one": "{{count}} de tus amigos fue de salida esta semana. ¡Te toca!",
-    "many": "{{count}} de tus amigos fueron de salida esta semana. ¡Te toca!",
-    "other": "{{count}} de tus amigos fueron de salida esta semana. ¡Te toca!"
-  },
-  "push.friends.v3.title": "¡No te lo pierdas! 👀",
-  "push.friends.v3.body": {
-    "one": "{{count}} de tus amigos publicó una salida esta semana. ¡Échale un vistazo!",
-    "many": "{{count}} de tus amigos publicaron salidas esta semana. ¡Échale un vistazo!",
-    "other": "{{count}} de tus amigos publicaron salidas esta semana. ¡Échale un vistazo!"
-  }
+  "push.weekly.v4.title": "¡Hora de salir! 🌤️",
+  "user.exists.header": "El usuario {{email}} ya existe",
+  "user.exists.message": "Prueba con otro nombre de usuario.",
+  "user.invalidAccount.header": "Datos de cuenta no válidos",
+  "user.invalidAccount.message": "Se requieren un correo electrónico y una contraseña válidos.",
+  "user.invalidLocation.header": "Ubicación no válida",
+  "user.invalidLocation.message": "No pudimos actualizar tu ubicación."
 }

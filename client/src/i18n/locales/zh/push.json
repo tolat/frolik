@@ -16,7 +16,10 @@
     "item2": "新消息",
     "item3": "好友请求",
     "enable": "开启通知",
-    "notNow": "以后再说"
+    "notNow": "以后再说",
+    "noEmails": "通知将取代电子邮件。",
+    "skipWarning": "关闭期间，你会错过出游邀请和消息。",
+    "confirmSkip": "是的，暂时跳过"
   },
   "toggle": {
     "title": "通知",

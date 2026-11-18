@@ -39,15 +39,20 @@
   "common.serverError.header": "Errore interno del server",
   "common.serverError.message": "Ops! Qualcosa è andato storto da parte nostra. Ricarica la pagina e riprova.",
   "common.userNotFound.header": "Utente non trovato",
+  "email.brandLine": "frolik · Conosci persone nuove. Esci e divertiti.",
   "email.daily.header": "Il tuo riepilogo quotidiano di frolik",
   "email.daily.intro": "Ricevi questa email perché hai delle notifiche non lette:",
   "email.daily.subject": "Il tuo riepilogo quotidiano di frolik",
+  "email.getApp.body": "Notifiche sul telefono al posto delle email.",
+  "email.getApp.button": "Scarica l'app",
+  "email.getApp.title": "Scarica l'app Frolik",
   "email.invite.body": "{{name}} ti ha invitato alla sua uscita:",
   "email.invite.header": "Sei stato invitato a un'uscita!",
   "email.invite.subject": "Invito a un'uscita",
   "email.inviteAccepted.body": "{{name}} si è unito alla tua uscita:",
   "email.inviteAccepted.header": "Il tuo invito all'uscita è stato accettato!",
   "email.inviteAccepted.subject": "Invito all'uscita accettato",
+  "email.linkHint": "Il pulsante non funziona? Incolla questo link nel browser:",
   "email.outingName": "Nome dell'uscita: {{name}}",
   "email.resetPassword.body": "Ricevi questa email perché tu (o qualcun altro) hai chiesto di reimpostare la password del tuo account frolik.",
   "email.resetPassword.button": "Reimposta password",
@@ -171,6 +176,24 @@
   "push.friendRequestAccepted.title": "Richiesta di amicizia accettata",
   "push.friendRequestDenied.body": "{{name}} ha rifiutato la tua richiesta di amicizia",
   "push.friendRequestDenied.title": "Richiesta di amicizia rifiutata",
+  "push.friends.v1.body": {
+    "one": "{{count}} dei tuoi amici ha pubblicato un'uscita questa settimana. Guarda cosa hanno fatto!",
+    "many": "{{count}} dei tuoi amici hanno pubblicato uscite questa settimana. Guarda cosa hanno fatto!",
+    "other": "{{count}} dei tuoi amici hanno pubblicato uscite questa settimana. Guarda cosa hanno fatto!"
+  },
+  "push.friends.v1.title": "Unisciti al divertimento! 🎉",
+  "push.friends.v2.body": {
+    "one": "{{count}} dei tuoi amici è andato a un'uscita questa settimana. Tocca a te!",
+    "many": "{{count}} dei tuoi amici sono andati a delle uscite questa settimana. Tocca a te!",
+    "other": "{{count}} dei tuoi amici sono andati a delle uscite questa settimana. Tocca a te!"
+  },
+  "push.friends.v2.title": "Esci e divertiti! ☀️",
+  "push.friends.v3.body": {
+    "one": "{{count}} dei tuoi amici ha pubblicato un'uscita questa settimana. Dai un'occhiata!",
+    "many": "{{count}} dei tuoi amici hanno pubblicato uscite questa settimana. Dai un'occhiata!",
+    "other": "{{count}} dei tuoi amici hanno pubblicato uscite questa settimana. Dai un'occhiata!"
+  },
+  "push.friends.v3.title": "Non perdertelo! 👀",
   "push.inviteDenied.body": "{{name}} ha rifiutato il tuo invito all'uscita: {{outing}}",
   "push.inviteDenied.title": "Invito all'uscita rifiutato",
   "push.outingCompleted.body": "{{name}} ha segnato l'uscita \"{{outing}}\" come completata",
@@ -187,40 +210,22 @@
   "push.subscribed.title": "Notifiche attive 🎈",
   "push.test.body": "Funziona!",
   "push.test.title": "Notifica di prova",
-  "user.exists.header": "L'utente {{email}} esiste già",
-  "user.exists.message": "Prova un altro nome utente.",
-  "user.invalidAccount.header": "Dati dell'account non validi",
-  "user.invalidAccount.message": "Servono un indirizzo email e una password validi.",
-  "user.invalidLocation.header": "Posizione non valida",
-  "user.invalidLocation.message": "Impossibile aggiornare la tua posizione.",
-  "push.weekly.v1.title": "Nuovi match in arrivo! 🎈",
   "push.weekly.v1.body": {
     "one": "{{count}} persona vicino a te ha voglia di un'uscita questa settimana. Dai un'occhiata!",
     "many": "{{count}} persone vicino a te hanno voglia di un'uscita questa settimana. Dai un'occhiata!",
     "other": "{{count}} persone vicino a te hanno voglia di un'uscita questa settimana. Dai un'occhiata!"
   },
-  "push.weekly.v2.title": "Ha chiamato il tuo weekend 📞",
+  "push.weekly.v1.title": "Nuovi match in arrivo! 🎈",
   "push.weekly.v2.body": "Vuole un'uscita. Ci sono nuovi match del giorno che ti aspettano.",
-  "push.weekly.v3.title": "Psst… nuovi match 👀",
+  "push.weekly.v2.title": "Ha chiamato il tuo weekend 📞",
   "push.weekly.v3.body": "Il tuo prossimo compagno di uscita potrebbe essere tra i match del giorno. Vieni a vedere chi è!",
-  "push.weekly.v4.title": "È ora di uscire 🌤️",
+  "push.weekly.v3.title": "Psst… nuovi match 👀",
   "push.weekly.v4.body": "Ci sono nuovi match del giorno che ti aspettano. Scegli un'attività e organizza!",
-  "push.friends.v1.title": "Unisciti al divertimento! 🎉",
-  "push.friends.v1.body": {
-    "one": "{{count}} dei tuoi amici ha pubblicato un'uscita questa settimana. Guarda cosa hanno fatto!",
-    "many": "{{count}} dei tuoi amici hanno pubblicato uscite questa settimana. Guarda cosa hanno fatto!",
-    "other": "{{count}} dei tuoi amici hanno pubblicato uscite questa settimana. Guarda cosa hanno fatto!"
-  },
-  "push.friends.v2.title": "Esci e divertiti! ☀️",
-  "push.friends.v2.body": {
-    "one": "{{count}} dei tuoi amici è andato a un'uscita questa settimana. Tocca a te!",
-    "many": "{{count}} dei tuoi amici sono andati a delle uscite questa settimana. Tocca a te!",
-    "other": "{{count}} dei tuoi amici sono andati a delle uscite questa settimana. Tocca a te!"
-  },
-  "push.friends.v3.title": "Non perdertelo! 👀",
-  "push.friends.v3.body": {
-    "one": "{{count}} dei tuoi amici ha pubblicato un'uscita questa settimana. Dai un'occhiata!",
-    "many": "{{count}} dei tuoi amici hanno pubblicato uscite questa settimana. Dai un'occhiata!",
-    "other": "{{count}} dei tuoi amici hanno pubblicato uscite questa settimana. Dai un'occhiata!"
-  }
+  "push.weekly.v4.title": "È ora di uscire 🌤️",
+  "user.exists.header": "L'utente {{email}} esiste già",
+  "user.exists.message": "Prova un altro nome utente.",
+  "user.invalidAccount.header": "Dati dell'account non validi",
+  "user.invalidAccount.message": "Servono un indirizzo email e una password validi.",
+  "user.invalidLocation.header": "Posizione non valida",
+  "user.invalidLocation.message": "Impossibile aggiornare la tua posizione."
 }

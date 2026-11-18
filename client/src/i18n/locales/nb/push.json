@@ -16,7 +16,10 @@
     "item2": "Nye meldinger",
     "item3": "Venneforespørsler",
     "enable": "Slå på varsler",
-    "notNow": "Ikke nå"
+    "notNow": "Ikke nå",
+    "noEmails": "Du får disse i stedet for e-post.",
+    "skipWarning": "Du går glipp av invitasjoner til treff og meldinger mens de er av.",
+    "confirmSkip": "Ja, hopp over nå"
   },
   "toggle": {
     "title": "Varsler",

@@ -63,7 +63,7 @@ const subscribeAndSend = async () => {
 // Switched off in settings on this device: the quiet sync below must not
 // turn it back on just because permission is still granted
 const OFF_KEY = "frolik:push-off";
-const switchedOff = () => {
+export const switchedOff = () => {
   try {
     return localStorage.getItem(OFF_KEY) === "1";
   } catch {

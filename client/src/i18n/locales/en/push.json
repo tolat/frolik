@@ -16,7 +16,10 @@
     "item2": "New chat messages",
     "item3": "Friend requests",
     "enable": "Turn on notifications",
-    "notNow": "Not now"
+    "notNow": "Not now",
+    "noEmails": "You'll get these instead of emails.",
+    "skipWarning": "You'll miss Outing invites and messages while they're off.",
+    "confirmSkip": "Yes, skip for now"
   },
   "toggle": {
     "title": "Notifications",

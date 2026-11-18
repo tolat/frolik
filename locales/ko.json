@@ -39,15 +39,20 @@
   "common.serverError.header": "서버 오류",
   "common.serverError.message": "앗! 저희 쪽에 문제가 생겼어요. 페이지를 새로고침하고 다시 시도해 주세요.",
   "common.userNotFound.header": "사용자를 찾을 수 없어요",
+  "email.brandLine": "frolik · 새로운 사람을 만나고, 밖으로 나가요.",
   "email.daily.header": "frolik 데일리 소식",
   "email.daily.intro": "읽지 않은 알림이 있어서 이 메일을 보내 드려요:",
   "email.daily.subject": "frolik 데일리 소식",
+  "email.getApp.body": "이메일 대신 휴대폰으로 알림을 받아 보세요.",
+  "email.getApp.button": "앱 받기",
+  "email.getApp.title": "Frolik 앱 받기",
   "email.invite.body": "{{name}}님이 나들이에 초대했어요:",
   "email.invite.header": "나들이에 초대받았어요!",
   "email.invite.subject": "나들이 초대",
   "email.inviteAccepted.body": "{{name}}님이 내 나들이에 참여했어요:",
   "email.inviteAccepted.header": "나들이 초대가 수락되었어요!",
   "email.inviteAccepted.subject": "나들이 초대 수락됨",
+  "email.linkHint": "버튼이 작동하지 않나요? 이 링크를 브라우저에 붙여 넣으세요:",
   "email.outingName": "나들이 이름: {{name}}",
   "email.resetPassword.body": "회원님(또는 다른 누군가)이 frolik 계정의 비밀번호 재설정을 요청해서 이 메일을 보내 드려요.",
   "email.resetPassword.button": "비밀번호 재설정",
@@ -159,6 +164,18 @@
   "push.friendRequestAccepted.title": "친구 요청 수락됨",
   "push.friendRequestDenied.body": "{{name}}님이 친구 요청을 거절했어요",
   "push.friendRequestDenied.title": "친구 요청 거절됨",
+  "push.friends.v1.body": {
+    "other": "이번 주에 친구 {{count}}명이 나들이를 올렸어요. 뭘 했는지 구경해 보세요!"
+  },
+  "push.friends.v1.title": "함께 즐겨요! 🎉",
+  "push.friends.v2.body": {
+    "other": "이번 주에 친구 {{count}}명이 나들이를 다녀왔어요. 이제 당신 차례예요!"
+  },
+  "push.friends.v2.title": "밖으로 나가요! ☀️",
+  "push.friends.v3.body": {
+    "other": "이번 주에 친구 {{count}}명이 나들이를 올렸어요. 한번 둘러보세요!"
+  },
+  "push.friends.v3.title": "놓치지 마세요! 👀",
   "push.inviteDenied.body": "{{name}}님이 나들이 초대를 거절했어요: {{outing}}",
   "push.inviteDenied.title": "나들이 초대 거절됨",
   "push.outingCompleted.body": "{{name}}님이 '{{outing}}' 나들이를 완료 표시했어요",
@@ -175,32 +192,20 @@
   "push.subscribed.title": "알림이 켜졌어요 🎈",
   "push.test.body": "성공!",
   "push.test.title": "테스트 알림",
+  "push.weekly.v1.body": {
+    "other": "근처에 이번 주 나들이를 원하는 사람이 {{count}}명 있어요. 한번 둘러보세요!"
+  },
+  "push.weekly.v1.title": "새 매치가 도착했어요 🎈",
+  "push.weekly.v2.body": "나들이를 원한대요. 새로운 오늘의 매치가 기다리고 있어요.",
+  "push.weekly.v2.title": "주말이 전화했어요 📞",
+  "push.weekly.v3.body": "다음 나들이 친구가 오늘의 매치에 있을지도 몰라요. 누군지 보러 오세요!",
+  "push.weekly.v3.title": "저기요… 새 매치예요 👀",
+  "push.weekly.v4.body": "새로운 오늘의 매치가 기다리고 있어요. 액티비티를 고르고 계획을 세워 보세요!",
+  "push.weekly.v4.title": "밖으로 나갈 시간 🌤️",
   "user.exists.header": "{{email}} 사용자가 이미 있어요",
   "user.exists.message": "다른 아이디로 시도해 보세요.",
   "user.invalidAccount.header": "계정 정보가 올바르지 않아요",
   "user.invalidAccount.message": "올바른 이메일 주소와 비밀번호가 필요해요.",
   "user.invalidLocation.header": "잘못된 위치",
-  "user.invalidLocation.message": "위치를 업데이트할 수 없어요.",
-  "push.weekly.v1.title": "새 매치가 도착했어요 🎈",
-  "push.weekly.v1.body": {
-    "other": "근처에 이번 주 나들이를 원하는 사람이 {{count}}명 있어요. 한번 둘러보세요!"
-  },
-  "push.weekly.v2.title": "주말이 전화했어요 📞",
-  "push.weekly.v2.body": "나들이를 원한대요. 새로운 오늘의 매치가 기다리고 있어요.",
-  "push.weekly.v3.title": "저기요… 새 매치예요 👀",
-  "push.weekly.v3.body": "다음 나들이 친구가 오늘의 매치에 있을지도 몰라요. 누군지 보러 오세요!",
-  "push.weekly.v4.title": "밖으로 나갈 시간 🌤️",
-  "push.weekly.v4.body": "새로운 오늘의 매치가 기다리고 있어요. 액티비티를 고르고 계획을 세워 보세요!",
-  "push.friends.v1.title": "함께 즐겨요! 🎉",
-  "push.friends.v1.body": {
-    "other": "이번 주에 친구 {{count}}명이 나들이를 올렸어요. 뭘 했는지 구경해 보세요!"
-  },
-  "push.friends.v2.title": "밖으로 나가요! ☀️",
-  "push.friends.v2.body": {
-    "other": "이번 주에 친구 {{count}}명이 나들이를 다녀왔어요. 이제 당신 차례예요!"
-  },
-  "push.friends.v3.title": "놓치지 마세요! 👀",
-  "push.friends.v3.body": {
-    "other": "이번 주에 친구 {{count}}명이 나들이를 올렸어요. 한번 둘러보세요!"
-  }
+  "user.invalidLocation.message": "위치를 업데이트할 수 없어요."
 }

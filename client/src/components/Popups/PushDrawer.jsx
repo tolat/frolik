@@ -3,7 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import EmptyPopup from "./EmptyPopup";
 import store from "../../store";
 import { popupActions } from "../../store/popup-slice";
-import { enablePush, hasServiceWorker, pushPermission } from "../../utils/push";
+import {
+  enablePush,
+  hasServiceWorker,
+  pushPermission,
+  pushSupported,
+  switchedOff,
+} from "../../utils/push";
 import { useT } from "../../i18n";
 import styles from "./styles/PushDrawer.module.scss";
 
@@ -13,38 +19,56 @@ export const PUSH_SELECTOR = "push-prompt";
 const isInstalled = () =>
   window.navigator.standalone === true ||
   window.matchMedia?.("(display-mode: standalone)").matches;
+const isIOS = () =>
+  /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 
-// Shown at most every 3 days, recorded only when it actually opens
-const LAST_SHOWN_KEY = "frolik:push-prompt-shown";
-const EVERY_MS = 3 * 24 * 60 * 60 * 1000;
-const shownRecently = () => {
+// Push can be offered here: iOS only from the Home Screen app; other
+// browsers (Android, desktop) can do it on the website too
+const canOfferPush = () => pushSupported() && (!isIOS() || isInstalled());
+
+// Notifications are off but could be turned on: never decided, or switched
+// off in settings (blocked in the browser can't be asked again)
+const pushIsOff = () => {
+  const permission = pushPermission();
+  return permission === "default" || (permission === "granted" && switchedOff());
+};
+
+// When to offer it next: the first time right away, then at a random time
+// 2–4 weeks after each showing (a gentle reminder, never a nag)
+const NEXT_KEY = "frolik:push-prompt-next";
+const DAY_MS = 24 * 60 * 60 * 1000;
+const dueNow = () => {
   try {
-    const at = Number(localStorage.getItem(LAST_SHOWN_KEY));
-    return at > 0 && Date.now() - at < EVERY_MS;
+    const next = Number(localStorage.getItem(NEXT_KEY));
+    return !next || Date.now() >= next;
   } catch {
-    return false;
+    return true;
   }
 };
-const recordShown = () => {
+const scheduleNext = () => {
   try {
-    localStorage.setItem(LAST_SHOWN_KEY, String(Date.now()));
+    const days = 14 + Math.random() * 14;
+    localStorage.setItem(NEXT_KEY, String(Date.now() + days * DAY_MS));
   } catch {}
 };
 
-// "Turn on notifications" drawer: opens by itself when the installed app is
-// launched and notifications haven't been allowed or blocked yet. iOS only
-// lets a page ask for permission from a tap, so the Turn on button does the
-// asking. Waits until the app tour is done and no other drawer is open.
+// "Turn on notifications" drawer: opens by itself while notifications are
+// off (first time right away, then every 2–4 weeks). iOS only lets a page ask
+// for permission from a tap, so the Turn on button does the asking. "Not now"
+// asks once more before closing. Waits until the app tour is done and no
+// other drawer is open.
 const PushDrawer = () => {
   const { t } = useT();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const [busy, setBusy] = useState(false);
+  const [confirmSkip, setConfirmSkip] = useState(false);
   const tourDone = !!user?.tour_seen;
 
   useEffect(() => {
     if (!user?._id || !tourDone) return;
-    if (!isInstalled() || pushPermission() !== "default" || shownRecently()) return;
+    if (!canOfferPush() || !pushIsOff() || !dueNow()) return;
     let cancelled = false;
     let tries = 0;
     const timer = setInterval(async () => {
@@ -54,7 +78,8 @@ const PushDrawer = () => {
       if (!(await hasServiceWorker()) || cancelled) return;
       if (store.getState().popup.selector !== "none") return;
       clearInterval(timer);
-      recordShown();
+      scheduleNext();
+      setConfirmSkip(false);
       dispatch(popupActions.showPopup(PUSH_SELECTOR));
     }, 1000);
     return () => {
@@ -64,6 +89,12 @@ const PushDrawer = () => {
   }, [dispatch, user?._id, tourDone]);
 
   const close = () => dispatch(popupActions.hidePopup());
+
+  // First tap on "Not now" asks again; the second one closes
+  const onNotNow = () => {
+    if (!confirmSkip) return setConfirmSkip(true);
+    close();
+  };
 
   const onEnable = async () => {
     setBusy(true);
@@ -84,6 +115,7 @@ const PushDrawer = () => {
         </div>
         <h2 className={styles.title}>{t("push.drawer.title")}</h2>
         <p className={styles.body}>{t("push.drawer.body")}</p>
+        <p className={styles.noEmails}>{t("push.drawer.noEmails")}</p>
         <ul className={styles.list}>
           <li>{t("push.drawer.item1")}</li>
           <li>{t("push.drawer.item2")}</li>
@@ -93,8 +125,13 @@ const PushDrawer = () => {
           <button type="button" className={styles.enable} onClick={onEnable} disabled={busy}>
             {busy ? "…" : t("push.drawer.enable")}
           </button>
-          <button type="button" className={styles.later} onClick={close}>
-            {t("push.drawer.notNow")}
+          {confirmSkip && (
+            <p className={styles.skipWarning} role="alert">
+              {t("push.drawer.skipWarning")}
+            </p>
+          )}
+          <button type="button" className={styles.later} onClick={onNotNow}>
+            {confirmSkip ? t("push.drawer.confirmSkip") : t("push.drawer.notNow")}
           </button>
         </div>
       </div>

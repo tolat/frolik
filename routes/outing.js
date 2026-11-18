@@ -19,6 +19,7 @@ const {
   generateUniqueName,
   pushUserUpdate,
   handleFriendRequestAction,
+  wantsNotificationEmails,
   findNonOutingChat,
   getTotalUnreadMessages,
   outingIsPending,
@@ -168,7 +169,8 @@ router.post(
         : u.notifications.unshift(newNotification);
       await u.save();
 
-      // Send notification email to user
+      // Notification email, unless they get push notifications instead
+      if (!wantsNotificationEmails(u)) continue;
       await u.populate({
         path: "chats",
         populate: {

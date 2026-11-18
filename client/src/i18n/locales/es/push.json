@@ -16,7 +16,10 @@
     "item2": "Mensajes nuevos",
     "item3": "Solicitudes de amistad",
     "enable": "Activar notificaciones",
-    "notNow": "Ahora no"
+    "notNow": "Ahora no",
+    "noEmails": "Las recibirás en lugar de correos.",
+    "skipWarning": "Te perderás invitaciones a salidas y mensajes mientras estén desactivadas.",
+    "confirmSkip": "Sí, omitir por ahora"
   },
   "toggle": {
     "title": "Notificaciones",

@@ -16,7 +16,10 @@
     "item2": "Neue Nachrichten",
     "item3": "Freundschaftsanfragen",
     "enable": "Mitteilungen aktivieren",
-    "notNow": "Später"
+    "notNow": "Später",
+    "noEmails": "Du bekommst sie statt E-Mails.",
+    "skipWarning": "Solange sie aus sind, verpasst du Einladungen zu Ausflügen und Nachrichten.",
+    "confirmSkip": "Ja, jetzt überspringen"
   },
   "toggle": {
     "title": "Mitteilungen",

@@ -39,15 +39,20 @@
   "common.serverError.header": "सर्वर में गड़बड़ी",
   "common.serverError.message": "उफ़! हमारी तरफ़ से कुछ गड़बड़ हो गई। पेज रीफ़्रेश करके फिर से कोशिश करें।",
   "common.userNotFound.header": "यूज़र नहीं मिला",
+  "email.brandLine": "frolik · नए लोगों से मिलें। बाहर निकलें।",
   "email.daily.header": "frolik का डेली अपडेट",
   "email.daily.intro": "आपको यह ईमेल इसलिए मिल रहा है क्योंकि आपके कुछ नोटिफ़िकेशन अभी पढ़े नहीं गए हैं:",
   "email.daily.subject": "frolik का डेली अपडेट",
+  "email.getApp.body": "ईमेल की जगह फ़ोन पर नोटिफ़िकेशन।",
+  "email.getApp.button": "ऐप पाएँ",
+  "email.getApp.title": "Frolik ऐप पाएँ",
   "email.invite.body": "{{name}} ने आपको अपनी आउटिंग में बुलाया है:",
   "email.invite.header": "आपको एक आउटिंग का न्योता मिला है!",
   "email.invite.subject": "आउटिंग का न्योता",
   "email.inviteAccepted.body": "{{name}} आपकी आउटिंग में शामिल हो गए हैं:",
   "email.inviteAccepted.header": "आपका आउटिंग न्योता स्वीकार हो गया!",
   "email.inviteAccepted.subject": "आउटिंग न्योता स्वीकार हुआ",
+  "email.linkHint": "बटन काम नहीं कर रहा? यह लिंक अपने ब्राउज़र में पेस्ट करें:",
   "email.outingName": "आउटिंग का नाम: {{name}}",
   "email.resetPassword.body": "आपको यह ईमेल इसलिए मिल रहा है क्योंकि आपने (या किसी और ने) आपके frolik अकाउंट का पासवर्ड रीसेट करने की रिक्वेस्ट की है।",
   "email.resetPassword.button": "पासवर्ड रीसेट करें",
@@ -165,6 +170,21 @@
   "push.friendRequestAccepted.title": "फ़्रेंड रिक्वेस्ट स्वीकार हुई",
   "push.friendRequestDenied.body": "{{name}} ने आपकी फ़्रेंड रिक्वेस्ट ठुकरा दी",
   "push.friendRequestDenied.title": "फ़्रेंड रिक्वेस्ट ठुकराई गई",
+  "push.friends.v1.body": {
+    "one": "इस हफ़्ते आपके {{count}} दोस्त ने आउटिंग पोस्ट की। देखिए उन्होंने क्या किया!",
+    "other": "इस हफ़्ते आपके {{count}} दोस्तों ने आउटिंग पोस्ट कीं। देखिए उन्होंने क्या किया!"
+  },
+  "push.friends.v1.title": "मज़े में शामिल हों! 🎉",
+  "push.friends.v2.body": {
+    "one": "इस हफ़्ते आपका {{count}} दोस्त आउटिंग पर गया। अब आपकी बारी!",
+    "other": "इस हफ़्ते आपके {{count}} दोस्त आउटिंग पर गए। अब आपकी बारी!"
+  },
+  "push.friends.v2.title": "बाहर निकलिए! ☀️",
+  "push.friends.v3.body": {
+    "one": "इस हफ़्ते आपके {{count}} दोस्त ने आउटिंग पोस्ट की। एक नज़र डालें!",
+    "other": "इस हफ़्ते आपके {{count}} दोस्तों ने आउटिंग पोस्ट कीं। एक नज़र डालें!"
+  },
+  "push.friends.v3.title": "चूकिए मत! 👀",
   "push.inviteDenied.body": "{{name}} ने आउटिंग का आपका न्योता ठुकरा दिया: {{outing}}",
   "push.inviteDenied.title": "आउटिंग न्योता ठुकराया गया",
   "push.outingCompleted.body": "{{name}} ने आउटिंग \"{{outing}}\" को पूरा मार्क किया",
@@ -181,36 +201,21 @@
   "push.subscribed.title": "नोटिफ़िकेशन चालू हैं 🎈",
   "push.test.body": "सफल!",
   "push.test.title": "टेस्ट नोटिफ़िकेशन",
+  "push.weekly.v1.body": {
+    "one": "आपके पास {{count}} व्यक्ति इस हफ़्ते आउटिंग के लिए तैयार है। एक नज़र डालें!",
+    "other": "आपके पास {{count}} लोग इस हफ़्ते आउटिंग के लिए तैयार हैं। एक नज़र डालें!"
+  },
+  "push.weekly.v1.title": "नए मैच आ गए 🎈",
+  "push.weekly.v2.body": "उसे एक आउटिंग चाहिए। नए डेली मैच आपका इंतज़ार कर रहे हैं।",
+  "push.weekly.v2.title": "आपके वीकेंड का फ़ोन आया 📞",
+  "push.weekly.v3.body": "आपका अगला आउटिंग साथी डेली मैच में हो सकता है। आकर देखिए कौन है!",
+  "push.weekly.v3.title": "सुनिए… नए मैच 👀",
+  "push.weekly.v4.body": "नए डेली मैच आपका इंतज़ार कर रहे हैं। एक एक्टिविटी चुनें और प्लान बनाएँ!",
+  "push.weekly.v4.title": "बाहर निकलने का समय 🌤️",
   "user.exists.header": "यूज़र {{email}} पहले से मौजूद है",
   "user.exists.message": "कोई दूसरा यूज़रनेम आज़माएँ।",
   "user.invalidAccount.header": "अकाउंट की जानकारी गलत है",
   "user.invalidAccount.message": "एक सही ईमेल पता और पासवर्ड ज़रूरी है।",
   "user.invalidLocation.header": "गलत लोकेशन",
-  "user.invalidLocation.message": "आपकी लोकेशन अपडेट नहीं हो पाई।",
-  "push.weekly.v1.title": "नए मैच आ गए 🎈",
-  "push.weekly.v1.body": {
-    "one": "आपके पास {{count}} व्यक्ति इस हफ़्ते आउटिंग के लिए तैयार है। एक नज़र डालें!",
-    "other": "आपके पास {{count}} लोग इस हफ़्ते आउटिंग के लिए तैयार हैं। एक नज़र डालें!"
-  },
-  "push.weekly.v2.title": "आपके वीकेंड का फ़ोन आया 📞",
-  "push.weekly.v2.body": "उसे एक आउटिंग चाहिए। नए डेली मैच आपका इंतज़ार कर रहे हैं।",
-  "push.weekly.v3.title": "सुनिए… नए मैच 👀",
-  "push.weekly.v3.body": "आपका अगला आउटिंग साथी डेली मैच में हो सकता है। आकर देखिए कौन है!",
-  "push.weekly.v4.title": "बाहर निकलने का समय 🌤️",
-  "push.weekly.v4.body": "नए डेली मैच आपका इंतज़ार कर रहे हैं। एक एक्टिविटी चुनें और प्लान बनाएँ!",
-  "push.friends.v1.title": "मज़े में शामिल हों! 🎉",
-  "push.friends.v1.body": {
-    "one": "इस हफ़्ते आपके {{count}} दोस्त ने आउटिंग पोस्ट की। देखिए उन्होंने क्या किया!",
-    "other": "इस हफ़्ते आपके {{count}} दोस्तों ने आउटिंग पोस्ट कीं। देखिए उन्होंने क्या किया!"
-  },
-  "push.friends.v2.title": "बाहर निकलिए! ☀️",
-  "push.friends.v2.body": {
-    "one": "इस हफ़्ते आपका {{count}} दोस्त आउटिंग पर गया। अब आपकी बारी!",
-    "other": "इस हफ़्ते आपके {{count}} दोस्त आउटिंग पर गए। अब आपकी बारी!"
-  },
-  "push.friends.v3.title": "चूकिए मत! 👀",
-  "push.friends.v3.body": {
-    "one": "इस हफ़्ते आपके {{count}} दोस्त ने आउटिंग पोस्ट की। एक नज़र डालें!",
-    "other": "इस हफ़्ते आपके {{count}} दोस्तों ने आउटिंग पोस्ट कीं। एक नज़र डालें!"
-  }
+  "user.invalidLocation.message": "आपकी लोकेशन अपडेट नहीं हो पाई।"
 }

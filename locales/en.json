@@ -39,15 +39,20 @@
   "common.serverError.header": "Internal Server Error",
   "common.serverError.message": "Oops! Something went wrong on our end. Refresh the page and try again.",
   "common.userNotFound.header": "User not found",
+  "email.brandLine": "frolik · Meet new people. Get out there.",
   "email.daily.header": "Daily frolik Update",
   "email.daily.intro": "You're receiving this email because you have unread notifications:",
   "email.daily.subject": "Daily frolik Update",
+  "email.getApp.body": "Notifications on your phone instead of emails.",
+  "email.getApp.button": "Get the app",
+  "email.getApp.title": "Get the Frolik app",
   "email.invite.body": "{{name}} has invited you to their outing:",
   "email.invite.header": "You have been invited to an Outing!",
   "email.invite.subject": "Outing Invitation",
   "email.inviteAccepted.body": "{{name}} has joined your outing:",
   "email.inviteAccepted.header": "Your Outing invite was accepted!",
   "email.inviteAccepted.subject": "Outing Invite Accepted",
+  "email.linkHint": "Button not working? Paste this link into your browser:",
   "email.outingName": "Outing Name: {{name}}",
   "email.resetPassword.body": "You are receiving this because you (or someone else) have requested the reset of the password for your frolik account.",
   "email.resetPassword.button": "Reset Password",
@@ -165,6 +170,21 @@
   "push.friendRequestAccepted.title": "Friend Request Accepted",
   "push.friendRequestDenied.body": "{{name}} denied your friend request",
   "push.friendRequestDenied.title": "Friend Request Denied",
+  "push.friends.v1.body": {
+    "one": "{{count}} of your friends posted an Outing this week. See what they got up to!",
+    "other": "{{count}} of your friends posted Outings this week. See what they got up to!"
+  },
+  "push.friends.v1.title": "Join the fun! 🎉",
+  "push.friends.v2.body": {
+    "one": "{{count}} of your friends went on an Outing this week. Your turn!",
+    "other": "{{count}} of your friends went on Outings this week. Your turn!"
+  },
+  "push.friends.v2.title": "Get out there! ☀️",
+  "push.friends.v3.body": {
+    "one": "{{count}} of your friends posted an Outing this week. Come take a look!",
+    "other": "{{count}} of your friends posted Outings this week. Come take a look!"
+  },
+  "push.friends.v3.title": "Don't miss out! 👀",
   "push.inviteDenied.body": "{{name}} denied your invite for the Outing: {{outing}}",
   "push.inviteDenied.title": "Outing Invite Denied",
   "push.outingCompleted.body": "{{name}} marked the Outing \"{{outing}}\" completed",
@@ -181,36 +201,21 @@
   "push.subscribed.title": "Notifications are on 🎈",
   "push.test.body": "Success!",
   "push.test.title": "Test Notification",
+  "push.weekly.v1.body": {
+    "one": "{{count}} person near you is up for an Outing this week. Take a peek!",
+    "other": "{{count}} people near you are up for an Outing this week. Take a peek!"
+  },
+  "push.weekly.v1.title": "Fresh matches just dropped 🎈",
+  "push.weekly.v2.body": "It wants an Outing. New Daily Matches are waiting for you.",
+  "push.weekly.v2.title": "Your weekend called 📞",
+  "push.weekly.v3.body": "Your next Outing buddy might be in today's Daily Matches. Come see who!",
+  "push.weekly.v3.title": "Psst… new matches 👀",
+  "push.weekly.v4.body": "New Daily Matches are waiting. Pick an activity and make a plan!",
+  "push.weekly.v4.title": "Time to get out there 🌤️",
   "user.exists.header": "User {{email}} already exists",
   "user.exists.message": "Try another username.",
   "user.invalidAccount.header": "Invalid account details",
   "user.invalidAccount.message": "A valid email address and password are required.",
   "user.invalidLocation.header": "Invalid location",
-  "user.invalidLocation.message": "Couldn't update your location.",
-  "push.weekly.v1.title": "Fresh matches just dropped 🎈",
-  "push.weekly.v1.body": {
-    "one": "{{count}} person near you is up for an Outing this week. Take a peek!",
-    "other": "{{count}} people near you are up for an Outing this week. Take a peek!"
-  },
-  "push.weekly.v2.title": "Your weekend called 📞",
-  "push.weekly.v2.body": "It wants an Outing. New Daily Matches are waiting for you.",
-  "push.weekly.v3.title": "Psst… new matches 👀",
-  "push.weekly.v3.body": "Your next Outing buddy might be in today's Daily Matches. Come see who!",
-  "push.weekly.v4.title": "Time to get out there 🌤️",
-  "push.weekly.v4.body": "New Daily Matches are waiting. Pick an activity and make a plan!",
-  "push.friends.v1.title": "Join the fun! 🎉",
-  "push.friends.v1.body": {
-    "one": "{{count}} of your friends posted an Outing this week. See what they got up to!",
-    "other": "{{count}} of your friends posted Outings this week. See what they got up to!"
-  },
-  "push.friends.v2.title": "Get out there! ☀️",
-  "push.friends.v2.body": {
-    "one": "{{count}} of your friends went on an Outing this week. Your turn!",
-    "other": "{{count}} of your friends went on Outings this week. Your turn!"
-  },
-  "push.friends.v3.title": "Don't miss out! 👀",
-  "push.friends.v3.body": {
-    "one": "{{count}} of your friends posted an Outing this week. Come take a look!",
-    "other": "{{count}} of your friends posted Outings this week. Come take a look!"
-  }
+  "user.invalidLocation.message": "Couldn't update your location."
 }

@@ -16,7 +16,10 @@
     "item2": "Nuovi messaggi",
     "item3": "Richieste di amicizia",
     "enable": "Attiva le notifiche",
-    "notNow": "Non ora"
+    "notNow": "Non ora",
+    "noEmails": "Le riceverai al posto delle email.",
+    "skipWarning": "Ti perderai inviti alle uscite e messaggi finché sono disattivate.",
+    "confirmSkip": "Sì, salta per ora"
   },
   "toggle": {
     "title": "Notifiche",

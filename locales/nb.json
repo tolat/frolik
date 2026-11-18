@@ -39,15 +39,20 @@
   "common.serverError.header": "Intern serverfeil",
   "common.serverError.message": "Oi! Noe gikk galt hos oss. Last inn siden på nytt og prøv igjen.",
   "common.userNotFound.header": "Fant ikke brukeren",
+  "email.brandLine": "frolik · Bli kjent med nye folk. Kom deg ut.",
   "email.daily.header": "Daglig oppdatering fra frolik",
   "email.daily.intro": "Du får denne e-posten fordi du har uleste varsler:",
   "email.daily.subject": "Daglig oppdatering fra frolik",
+  "email.getApp.body": "Varsler på telefonen i stedet for e-post.",
+  "email.getApp.button": "Last ned",
+  "email.getApp.title": "Last ned Frolik-appen",
   "email.invite.body": "{{name}} har invitert deg til treffet sitt:",
   "email.invite.header": "Du er invitert til et treff!",
   "email.invite.subject": "Invitasjon til treff",
   "email.inviteAccepted.body": "{{name}} har blitt med på treffet ditt:",
   "email.inviteAccepted.header": "Treffinvitasjonen din ble godtatt!",
   "email.inviteAccepted.subject": "Treffinvitasjonen er godtatt",
+  "email.linkHint": "Fungerer ikke knappen? Lim inn denne lenken i nettleseren:",
   "email.outingName": "Navn på treffet: {{name}}",
   "email.resetPassword.body": "Du får denne e-posten fordi du (eller noen andre) har bedt om å tilbakestille passordet til frolik-kontoen din.",
   "email.resetPassword.button": "Tilbakestill passord",
@@ -165,6 +170,21 @@
   "push.friendRequestAccepted.title": "Venneforespørsel godtatt",
   "push.friendRequestDenied.body": "{{name}} avslo venneforespørselen din",
   "push.friendRequestDenied.title": "Venneforespørsel avslått",
+  "push.friends.v1.body": {
+    "one": "{{count}} av vennene dine la ut et treff denne uka. Se hva de fant på!",
+    "other": "{{count}} av vennene dine la ut treff denne uka. Se hva de fant på!"
+  },
+  "push.friends.v1.title": "Bli med på moroa! 🎉",
+  "push.friends.v2.body": {
+    "one": "{{count}} av vennene dine var på treff denne uka. Nå er det din tur!",
+    "other": "{{count}} av vennene dine var på treff denne uka. Nå er det din tur!"
+  },
+  "push.friends.v2.title": "Kom deg ut! ☀️",
+  "push.friends.v3.body": {
+    "one": "{{count}} av vennene dine la ut et treff denne uka. Ta en titt!",
+    "other": "{{count}} av vennene dine la ut treff denne uka. Ta en titt!"
+  },
+  "push.friends.v3.title": "Ikke gå glipp av det! 👀",
   "push.inviteDenied.body": "{{name}} takket nei til invitasjonen til treffet: {{outing}}",
   "push.inviteDenied.title": "Treffinvitasjon avslått",
   "push.outingCompleted.body": "{{name}} markerte treffet «{{outing}}» som fullført",
@@ -181,36 +201,21 @@
   "push.subscribed.title": "Varsler er slått på 🎈",
   "push.test.body": "Det funker!",
   "push.test.title": "Testvarsel",
+  "push.weekly.v1.body": {
+    "one": "{{count}} person i nærheten har lyst på et treff denne uka. Ta en titt!",
+    "other": "{{count}} personer i nærheten har lyst på et treff denne uka. Ta en titt!"
+  },
+  "push.weekly.v1.title": "Ferske matcher er her 🎈",
+  "push.weekly.v2.body": "Den vil ha et treff. Nye dagsmatcher venter på deg.",
+  "push.weekly.v2.title": "Helgen din ringte 📞",
+  "push.weekly.v3.body": "Kanskje din neste treffkompis er blant dagsmatchene. Kom og se hvem!",
+  "push.weekly.v3.title": "Psst … nye matcher 👀",
+  "push.weekly.v4.body": "Nye dagsmatcher venter. Velg en aktivitet og legg en plan!",
+  "push.weekly.v4.title": "På tide å komme seg ut 🌤️",
   "user.exists.header": "Brukeren {{email}} finnes allerede",
   "user.exists.message": "Prøv et annet brukernavn.",
   "user.invalidAccount.header": "Ugyldige kontoopplysninger",
   "user.invalidAccount.message": "Du må oppgi en gyldig e-postadresse og et passord.",
   "user.invalidLocation.header": "Ugyldig sted",
-  "user.invalidLocation.message": "Kunne ikke oppdatere posisjonen din.",
-  "push.weekly.v1.title": "Ferske matcher er her 🎈",
-  "push.weekly.v1.body": {
-    "one": "{{count}} person i nærheten har lyst på et treff denne uka. Ta en titt!",
-    "other": "{{count}} personer i nærheten har lyst på et treff denne uka. Ta en titt!"
-  },
-  "push.weekly.v2.title": "Helgen din ringte 📞",
-  "push.weekly.v2.body": "Den vil ha et treff. Nye dagsmatcher venter på deg.",
-  "push.weekly.v3.title": "Psst … nye matcher 👀",
-  "push.weekly.v3.body": "Kanskje din neste treffkompis er blant dagsmatchene. Kom og se hvem!",
-  "push.weekly.v4.title": "På tide å komme seg ut 🌤️",
-  "push.weekly.v4.body": "Nye dagsmatcher venter. Velg en aktivitet og legg en plan!",
-  "push.friends.v1.title": "Bli med på moroa! 🎉",
-  "push.friends.v1.body": {
-    "one": "{{count}} av vennene dine la ut et treff denne uka. Se hva de fant på!",
-    "other": "{{count}} av vennene dine la ut treff denne uka. Se hva de fant på!"
-  },
-  "push.friends.v2.title": "Kom deg ut! ☀️",
-  "push.friends.v2.body": {
-    "one": "{{count}} av vennene dine var på treff denne uka. Nå er det din tur!",
-    "other": "{{count}} av vennene dine var på treff denne uka. Nå er det din tur!"
-  },
-  "push.friends.v3.title": "Ikke gå glipp av det! 👀",
-  "push.friends.v3.body": {
-    "one": "{{count}} av vennene dine la ut et treff denne uka. Ta en titt!",
-    "other": "{{count}} av vennene dine la ut treff denne uka. Ta en titt!"
-  }
+  "user.invalidLocation.message": "Kunne ikke oppdatere posisjonen din."
 }

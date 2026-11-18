@@ -39,15 +39,20 @@
   "common.serverError.header": "Interner Serverfehler",
   "common.serverError.message": "Hoppla! Bei uns ist etwas schiefgelaufen. Lade die Seite neu und versuch es noch mal.",
   "common.userNotFound.header": "Nutzer nicht gefunden",
+  "email.brandLine": "frolik · Lerne neue Leute kennen. Raus mit dir.",
   "email.daily.header": "Dein frolik-Tagesupdate",
   "email.daily.intro": "Du bekommst diese E-Mail, weil du ungelesene Benachrichtigungen hast:",
   "email.daily.subject": "Dein frolik-Tagesupdate",
+  "email.getApp.body": "Mitteilungen aufs Handy statt E-Mails.",
+  "email.getApp.button": "App holen",
+  "email.getApp.title": "Hol dir die Frolik-App",
   "email.invite.body": "{{name}} hat dich zu einem Ausflug eingeladen:",
   "email.invite.header": "Du wurdest zu einem Ausflug eingeladen!",
   "email.invite.subject": "Einladung zu einem Ausflug",
   "email.inviteAccepted.body": "{{name}} macht bei deinem Ausflug mit:",
   "email.inviteAccepted.header": "Deine Ausflugseinladung wurde angenommen!",
   "email.inviteAccepted.subject": "Ausflugseinladung angenommen",
+  "email.linkHint": "Der Button funktioniert nicht? Füge diesen Link in deinen Browser ein:",
   "email.outingName": "Ausflug: {{name}}",
   "email.resetPassword.body": "Du bekommst diese E-Mail, weil du (oder jemand anderes) das Zurücksetzen des Passworts für dein frolik-Konto angefordert hast.",
   "email.resetPassword.button": "Passwort zurücksetzen",
@@ -165,6 +170,21 @@
   "push.friendRequestAccepted.title": "Freundschaftsanfrage angenommen",
   "push.friendRequestDenied.body": "{{name}} hat deine Freundschaftsanfrage abgelehnt",
   "push.friendRequestDenied.title": "Freundschaftsanfrage abgelehnt",
+  "push.friends.v1.body": {
+    "one": "{{count}} deiner Freunde hat diese Woche einen Ausflug gepostet. Schau, was los war!",
+    "other": "{{count}} deiner Freunde haben diese Woche Ausflüge gepostet. Schau, was los war!"
+  },
+  "push.friends.v1.title": "Mach mit! 🎉",
+  "push.friends.v2.body": {
+    "one": "{{count}} deiner Freunde war diese Woche auf einem Ausflug. Jetzt bist du dran!",
+    "other": "{{count}} deiner Freunde waren diese Woche auf Ausflügen. Jetzt bist du dran!"
+  },
+  "push.friends.v2.title": "Raus mit dir! ☀️",
+  "push.friends.v3.body": {
+    "one": "{{count}} deiner Freunde hat diese Woche einen Ausflug gepostet. Schau mal rein!",
+    "other": "{{count}} deiner Freunde haben diese Woche Ausflüge gepostet. Schau mal rein!"
+  },
+  "push.friends.v3.title": "Verpass nichts! 👀",
   "push.inviteDenied.body": "{{name}} hat deine Einladung zum Ausflug abgelehnt: {{outing}}",
   "push.inviteDenied.title": "Ausflugseinladung abgelehnt",
   "push.outingCompleted.body": "{{name}} hat den Ausflug „{{outing}}“ abgeschlossen",
@@ -181,36 +201,21 @@
   "push.subscribed.title": "Benachrichtigungen sind an 🎈",
   "push.test.body": "Hat geklappt!",
   "push.test.title": "Testbenachrichtigung",
+  "push.weekly.v1.body": {
+    "one": "{{count}} Person in deiner Nähe hat diese Woche Lust auf einen Ausflug. Schau mal rein!",
+    "other": "{{count}} Leute in deiner Nähe haben diese Woche Lust auf einen Ausflug. Schau mal rein!"
+  },
+  "push.weekly.v1.title": "Frische Matches sind da 🎈",
+  "push.weekly.v2.body": "Es will einen Ausflug. Neue Tagesmatches warten auf dich.",
+  "push.weekly.v2.title": "Dein Wochenende hat angerufen 📞",
+  "push.weekly.v3.body": "Vielleicht ist dein nächster Ausflugsbuddy unter den Tagesmatches. Schau, wer dabei ist!",
+  "push.weekly.v3.title": "Psst … neue Matches 👀",
+  "push.weekly.v4.body": "Neue Tagesmatches warten auf dich. Such dir eine Aktivität aus und mach einen Plan!",
+  "push.weekly.v4.title": "Raus mit dir 🌤️",
   "user.exists.header": "{{email}} ist schon registriert",
   "user.exists.message": "Versuch einen anderen Benutzernamen.",
   "user.invalidAccount.header": "Ungültige Kontodaten",
   "user.invalidAccount.message": "Eine gültige E-Mail-Adresse und ein Passwort sind erforderlich.",
   "user.invalidLocation.header": "Ungültiger Ort",
-  "user.invalidLocation.message": "Standort konnte nicht aktualisiert werden.",
-  "push.weekly.v1.title": "Frische Matches sind da 🎈",
-  "push.weekly.v1.body": {
-    "one": "{{count}} Person in deiner Nähe hat diese Woche Lust auf einen Ausflug. Schau mal rein!",
-    "other": "{{count}} Leute in deiner Nähe haben diese Woche Lust auf einen Ausflug. Schau mal rein!"
-  },
-  "push.weekly.v2.title": "Dein Wochenende hat angerufen 📞",
-  "push.weekly.v2.body": "Es will einen Ausflug. Neue Tagesmatches warten auf dich.",
-  "push.weekly.v3.title": "Psst … neue Matches 👀",
-  "push.weekly.v3.body": "Vielleicht ist dein nächster Ausflugsbuddy unter den Tagesmatches. Schau, wer dabei ist!",
-  "push.weekly.v4.title": "Raus mit dir 🌤️",
-  "push.weekly.v4.body": "Neue Tagesmatches warten auf dich. Such dir eine Aktivität aus und mach einen Plan!",
-  "push.friends.v1.title": "Mach mit! 🎉",
-  "push.friends.v1.body": {
-    "one": "{{count}} deiner Freunde hat diese Woche einen Ausflug gepostet. Schau, was los war!",
-    "other": "{{count}} deiner Freunde haben diese Woche Ausflüge gepostet. Schau, was los war!"
-  },
-  "push.friends.v2.title": "Raus mit dir! ☀️",
-  "push.friends.v2.body": {
-    "one": "{{count}} deiner Freunde war diese Woche auf einem Ausflug. Jetzt bist du dran!",
-    "other": "{{count}} deiner Freunde waren diese Woche auf Ausflügen. Jetzt bist du dran!"
-  },
-  "push.friends.v3.title": "Verpass nichts! 👀",
-  "push.friends.v3.body": {
-    "one": "{{count}} deiner Freunde hat diese Woche einen Ausflug gepostet. Schau mal rein!",
-    "other": "{{count}} deiner Freunde haben diese Woche Ausflüge gepostet. Schau mal rein!"
-  }
+  "user.invalidLocation.message": "Standort konnte nicht aktualisiert werden."
 }

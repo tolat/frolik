@@ -16,7 +16,10 @@
     "item2": "Novas mensagens",
     "item3": "Pedidos de amizade",
     "enable": "Ativar notificações",
-    "notNow": "Agora não"
+    "notNow": "Agora não",
+    "noEmails": "Você vai recebê-las no lugar dos e-mails.",
+    "skipWarning": "Você vai perder convites de rolês e mensagens enquanto estiverem desativadas.",
+    "confirmSkip": "Sim, pular por enquanto"
   },
   "toggle": {
     "title": "Notificações",

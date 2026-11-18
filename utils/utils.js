@@ -270,6 +270,11 @@ const userSubscriptions = (u) => {
 };
 module.exports.userSubscriptions = userSubscriptions;
 
+// Notification emails (invites etc.) only go to people without push
+// notifications on: once a device is subscribed, push replaces them. Account
+// emails (verify, password reset) always send.
+module.exports.wantsNotificationEmails = (u) => userSubscriptions(u).length === 0;
+
 // payload: { title, body, url?, tag? } — url is where tapping the
 // notification takes the user (defaults to Alerts). title/body may be
 // strings or (user) => string (e.g. i18n forUser(key, vars)) so each
