@@ -1,37 +1,35 @@
-// The page scrolls the document itself (see index.css). Read and set it here
-// rather than poking window/document directly, so the scroller can change in
-// one place.
+// App shell (index.css, MainContainer): page content scrolls inside
+// #page-scroller; the document itself never scrolls. Read and set the page
+// scroll through these helpers.
 export const pageScroller = () =>
-  document.scrollingElement || document.documentElement;
+  document.getElementById("page-scroller") ||
+  document.scrollingElement ||
+  document.documentElement;
 
-export const pageScrollTop = () => window.scrollY || pageScroller().scrollTop;
+export const pageScrollTop = () => pageScroller().scrollTop;
 
 export const scrollPageTo = (top, behavior = "auto") =>
-  window.scrollTo({ top, behavior });
+  pageScroller().scrollTo({ top, behavior });
 
 // Stop/allow page scrolling while a slide-in panel covers it
 export const setPageScrollLocked = (locked) => {
-  document.documentElement.style.overflowY = locked ? "clip" : "";
+  const el = document.getElementById("page-scroller");
+  if (el) el.style.overflowY = locked ? "hidden" : "";
 };
 
-// iOS Safari: after the native photo picker, the keyboard, or a select
-// menu closes, the view can stay shifted — iOS scrolled the document to show
-// the focused field (even when the page behind a panel is locked) and never
-// scrolls it back, leaving the app pannable by about the status-bar height
-// with the fixed nav riding up. Put the page back where it was.
-let savedScrollTop = null; // page scroll when typing started
-
+// iOS Safari: after the photo picker or the keyboard closes, the window can be
+// left scrolled/offset (iOS scrolls it to reveal the focused field and never
+// scrolls back). The document has nothing to scroll in the app shell, so
+// putting the window back at 0 is always right.
 const snapBack = () => {
-  const target = savedScrollTop ?? pageScrollTop();
   const vv = window.visualViewport;
-  const shifted =
-    pageScrollTop() !== target || (vv && Math.abs(vv.offsetTop) > 0.5);
-  if (shifted) window.scrollTo(0, target);
+  if (window.scrollY !== 0 || (vv && Math.abs(vv.offsetTop) > 0.5)) {
+    window.scrollTo(0, 0);
+  }
 };
 
 export const resetViewportShift = () => {
-  // The keyboard animates away over ~0.3s and iOS can re-shift during it:
-  // snap now and a few more times while it settles
+  // The keyboard animates away over ~0.3s and iOS can re-shift during it
   [0, 120, 350, 700].forEach((ms) =>
     setTimeout(() => requestAnimationFrame(snapBack), ms)
   );
@@ -42,13 +40,11 @@ const isTextField = (el) =>
 
 // Install once:
 //  - touch devices: while a text field has focus (keyboard up), add
-//    html.keyboard-open — hides the bottom nav bar (iOS scrolls the whole
-//    view while typing) and drops the nav-bar clearance under panels/chat,
-//    so the field sits just above the keyboard
-//  - remember the page scroll when typing starts; when the keyboard closes,
-//    put it back (several times while the keyboard animates away)
-//  - while nothing is focused, don't let the view stay panned: if iOS
-//    leaves it offset, snap it back
+//    html.keyboard-open — hides the bottom nav bar and drops the nav-bar
+//    clearance under panels/chat, so the field sits just above the keyboard
+//  - when the keyboard closes, snap the window back (several times while the
+//    keyboard animates away)
+//  - while nothing is focused, never leave the window offset
 let guardInstalled = false;
 export const installViewportShiftGuard = () => {
   if (guardInstalled) return;
@@ -57,9 +53,7 @@ export const installViewportShiftGuard = () => {
   const root = document.documentElement;
 
   document.addEventListener("focusin", (e) => {
-    if (!isTextField(e.target)) return;
-    if (!root.classList.contains("keyboard-open")) savedScrollTop = pageScrollTop();
-    if (touch) root.classList.add("keyboard-open");
+    if (touch && isTextField(e.target)) root.classList.add("keyboard-open");
   });
 
   document.addEventListener("focusout", () =>
@@ -67,19 +61,16 @@ export const installViewportShiftGuard = () => {
       if (isTextField(document.activeElement)) return; // moved to another field
       root.classList.remove("keyboard-open");
       resetViewportShift();
-      setTimeout(() => (savedScrollTop = null), 800);
     }, 60)
   );
 
   const vv = window.visualViewport;
-  if (vv && touch) {
-    let raf = 0;
-    const guard = () => {
-      if (isTextField(document.activeElement)) return; // keyboard up: iOS's turn
-      if (Math.abs(vv.offsetTop) < 0.5) return;
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => window.scrollTo(0, pageScrollTop()));
-    };
+  const guard = () => {
+    if (isTextField(document.activeElement)) return; // keyboard up: iOS's turn
+    requestAnimationFrame(snapBack);
+  };
+  window.addEventListener("scroll", guard, { passive: true });
+  if (vv) {
     vv.addEventListener("scroll", guard);
     vv.addEventListener("resize", guard);
   }

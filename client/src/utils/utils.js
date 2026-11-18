@@ -377,7 +377,7 @@ export function getElementOffsetTop(element) {
   const rect = element.getBoundingClientRect();
 
   // Return the top offset relative to the document
-  return rect.top + window.scrollY;
+  return rect.top + (document.getElementById("page-scroller")?.scrollTop || 0);
 }
 
 export function getElementOffsetToBottom(element) {
@@ -385,7 +385,7 @@ export function getElementOffsetToBottom(element) {
   const rect = element.getBoundingClientRect();
 
   // Return the offset to the bottom relative to the document
-  return rect.top + window.scrollY + element.offsetHeight;
+  return rect.top + (document.getElementById("page-scroller")?.scrollTop || 0) + element.offsetHeight;
 }
 
 export const objectsAreEqual = (obj1, obj2) => {

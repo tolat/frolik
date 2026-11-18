@@ -75,22 +75,39 @@ const MainContainer = (props) => {
     prevMarginLeft.current = modalMarginLeft;
   }, [modalMarginLeft]);
 
+  // App shell: the document never scrolls. Page content scrolls inside
+  // #page-scroller; slide-in panels sit OUTSIDE it (beside, not inside — a
+  // panel nested in a scroller went blank on iOS), as do the nav bar and
+  // popups. With no scrollable document, iOS has nothing to leave offset
+  // after the keyboard closes.
   return (
-    <div className={styles.outer} style={{ marginBottom: marginBottom }}>
-      <div id="main-container" className={styles.inner}>
-        <PullToRefresh onRefresh={handleRefresh} disabled={!loggedIn}>
-          <div
-            ref={childrenRef}
-            key={currentUrl}
-            id="main-container-children"
-            className={`${styles.mainContainerChildren} noscroll page-enter`}
-          >
-            {props.children}
+    <>
+      <div id="page-scroller" className={styles.pageScroller}>
+        <div
+          className={styles.outer}
+          style={marginBottom === "0" ? { paddingBottom: 0 } : undefined}
+        >
+          <div id="main-container" className={styles.inner}>
+            <PullToRefresh onRefresh={handleRefresh} disabled={!loggedIn}>
+              <div
+                ref={childrenRef}
+                key={currentUrl}
+                id="main-container-children"
+                className={`${styles.mainContainerChildren} noscroll page-enter`}
+              >
+                {props.children}
+              </div>
+            </PullToRefresh>
           </div>
-        </PullToRefresh>
-        <SlideInModal />
+        </div>
       </div>
-    </div>
+      {/* Same centred column as the page, so panels line up with it */}
+      <div className={`${styles.outer} ${styles.overlayHost}`}>
+        <div className={`${styles.inner} ${styles.overlayInner}`}>
+          <SlideInModal />
+        </div>
+      </div>
+    </>
   );
 };
 

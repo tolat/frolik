@@ -448,7 +448,9 @@ const OutingModal = (props) => {
   return !outing || !userData ? null : (
     <ModalPortal>
       {outing.date_completed ? (
-        <div className={styles.feedCardContainer}>
+        // Hidden unless the outing panel is the open one (it used to render
+        // under other panels, e.g. below a chat after Chat → Outing → Back)
+        <div style={modalStyle} className={styles.feedCardContainer}>
           <ModalHeaderPortal selector={"outing-modal"}>
             <div
               style={{ borderLeft: `10px solid ${categoryColor}` }}

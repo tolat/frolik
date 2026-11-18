@@ -10,7 +10,9 @@
   box-sizing: border-box;
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
-  margin-bottom: calc($navbar_height + env(safe-area-inset-bottom, 0px));
+  // room under the content for the floating nav bar (padding, not margin:
+  // Safari drops a trailing margin inside a scroll container)
+  padding-bottom: calc($navbar_height + env(safe-area-inset-bottom, 0px));
 }
 
 .outer::-webkit-scrollbar {
@@ -46,4 +48,38 @@
 
 .inner::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
+}
+
+// The one page scroller (the document itself never scrolls; see index.css)
+.pageScroller {
+  position: fixed;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: none; // pull-to-refresh is ours, no rubber band
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.pageScroller::-webkit-scrollbar {
+  display: none;
+}
+
+// Holder for the slide-in panels: same centred column as the page (the
+// panel's horizontal position comes from it), but takes no space
+.overlayHost {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  padding-bottom: 0 !important;
+  overflow: visible !important;
+}
+
+.overlayInner {
+  overflow: visible !important;
+  height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
