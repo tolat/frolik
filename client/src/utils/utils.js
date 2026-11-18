@@ -204,7 +204,9 @@ export const sortByDate = (a, b) => {
   return new Date(a).getTime() - new Date(b).getTime();
 };
 
-export function getCroppedImageBase64(imageBase64, crop) {
+// Crop, and cap the result at `maxSize` px on its longest side: a full-res
+// phone crop was several MB, slow to send and over the API's 5MB limit
+export function getCroppedImageBase64(imageBase64, crop, maxSize = 1200) {
   return new Promise((resolve, reject) => {
     const image = new Image();
     image.onload = () => {
@@ -215,13 +217,14 @@ export function getCroppedImageBase64(imageBase64, crop) {
       const y = crop.y;
       const width = crop.width;
       const height = crop.height;
+      const scale = Math.min(1, maxSize / Math.max(width, height));
 
-      canvas.width = width;
-      canvas.height = height;
+      canvas.width = Math.round(width * scale);
+      canvas.height = Math.round(height * scale);
 
-      ctx.drawImage(image, x, y, width, height, 0, 0, width, height);
+      ctx.drawImage(image, x, y, width, height, 0, 0, canvas.width, canvas.height);
 
-      const croppedImageBase64 = canvas.toDataURL("image/jpeg");
+      const croppedImageBase64 = canvas.toDataURL("image/jpeg", 0.85);
       resolve(croppedImageBase64);
     };
 

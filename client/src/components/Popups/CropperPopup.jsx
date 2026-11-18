@@ -1,155 +1,171 @@
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useSelector } from "react-redux";
-import BrandLoader from "../UI/BrandLoader";
-import SimpleButton from "../UI/SimpleButton";
-import Popup from "./Popup";
-import styles from "./styles/CropperPopup.module.scss";
 import Cropper from "react-easy-crop";
-import { useState } from "react";
-import { getCroppedImageBase64 } from "../../utils/utils";
+import BrandLoader from "../UI/BrandLoader";
 import LoaderSpinner from "../UI/LoaderSpinner";
+import { getCroppedImageBase64 } from "../../utils/utils";
+import { useScrollLock } from "../../utils/scrollLock";
+import styles from "./styles/CropperPopup.module.scss";
 
+const CLOSE_MS = 280; // a little longer than the 0.24s slide-down
+const MAX_ZOOM = 3;
+
+// Zoom & crop, as a bottom drawer (same look and motion as the activity
+// drawer): the photo to crop, a zoom slider, and Cancel / Done pinned to the
+// bottom. Handles up to two queued photos (outing uploads), one at a time.
+//
+// Props: images (data URLs; the last one is shown first), selector,
+// onUpload(index, croppedImage, resetCropper), onCancel(index, resetCropper),
+// button1Text / button1ActionText, defaultCrop, defaultZoom, cropShape.
 const CropperPopup = (props) => {
-  const popupState = useSelector((state) => state.popup);
-  const showPopup = popupState.selector === props.selector;
-  const popupDisplay = showPopup ? "flex" : "none";
-  const [zoom1, setZoom1] = useState(props.defautlZoom || 1);
-  const [crop1, setCrop1] = useState(props.defaultCrop || { x: 0, y: 0 });
-  const [zoom2, setZoom2] = useState(1);
-  const [crop2, setCrop2] = useState({ x: 0, y: 0 });
-  const buttonLoader = (
-    <div className={styles.loaderTextContainer}>
-      Upload &nbsp; <LoaderSpinner width="1.5rem" height="1.5rem" />
-    </div>
-  );
-  const [button1Text, setButton1Text] = useState(props.button1Text || "Upload");
-  const [button2Text, setButton2Text] = useState("Upload");
-  const [cropComplete1, setCropComplete1] = useState();
-  const [cropComplete2, setCropComplete2] = useState();
-  const cropCompletes = [cropComplete1, cropComplete2];
-  const setCropCompletes = [setCropComplete1, setCropComplete2];
-  const crops = [crop1, crop2];
-  const setCrops = [setCrop1, setCrop2];
-  const setZooms = [setZoom1, setZoom2];
-  const zooms = [zoom1, zoom2];
-  const buttonTexts = [button1Text, button2Text];
-  const buttonSetters = [setButton1Text, setButton2Text];
-  const [uploading1, setUploading1] = useState(false);
-  const [uploading2, setUploading2] = useState(false);
-  const uploadingStates = [uploading1, uploading2];
-  const uploadingStateSetters = [setUploading1, setUploading2];
+  const isOpen = useSelector((state) => state.popup.selector === props.selector);
+  useScrollLock(isOpen);
 
-  const onCrop1Change = (newCrop) => {
-    setCrop1(newCrop);
+  const images = props.images || [];
+  const index = images.length - 1; // the photo on top of the queue
+  const img = images[index];
+
+  const [crop, setCrop] = useState(props.defaultCrop || { x: 0, y: 0 });
+  const [zoom, setZoom] = useState(props.defaultZoom || 1);
+  const [cropArea, setCropArea] = useState(null);
+  const [busy, setBusy] = useState(false);
+
+  const resetCropper = () => {
+    setCrop({ x: 0, y: 0 });
+    setZoom(1);
+    setBusy(false);
   };
 
-  const onZoom1Change = (newZoom) => {
-    setZoom1(newZoom);
-  };
+  // A new photo on top of the queue starts uncropped
+  useEffect(() => {
+    resetCropper();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [img]);
 
-  const onCrop2Change = (newCrop) => {
-    setCrop2(newCrop);
-  };
-
-  const onZoom2Change = (newZoom) => {
-    setZoom2(newZoom);
-  };
-
-  const cropChangers = [onCrop1Change, onCrop2Change];
-  const zoomChangers = [onZoom1Change, onZoom2Change];
-
-  const resetCropper = (index) => {
-    setCrops[index]({ x: 0, y: 0 });
-    setZooms[index](1);
-    buttonSetters[index]("Upload");
-    uploadingStateSetters[index](false);
-  };
-
-  const onUploadImage = async (img) => {
-    const index = props.images.indexOf(img);
-    if (uploadingStates[index]) {
-      return;
+  // Stay mounted while sliding out; add "open" a frame after mounting so the
+  // slide-in runs. Keep showing the last photo while it slides away.
+  const [shown, setShown] = useState(false);
+  const [open, setOpen] = useState(false);
+  const lastImg = useRef(null);
+  if (img) lastImg.current = img;
+  useEffect(() => {
+    if (isOpen) {
+      setShown(true);
+      const raf = requestAnimationFrame(() =>
+        requestAnimationFrame(() => setOpen(true))
+      );
+      return () => cancelAnimationFrame(raf);
     }
+    setOpen(false);
+    const t = setTimeout(() => setShown(false), CLOSE_MS);
+    return () => clearTimeout(t);
+  }, [isOpen]);
 
-    uploadingStateSetters[index](true);
-    buttonSetters[index](props.button1ActionText || buttonLoader);
-    const croppedImage = await getCroppedImageBase64(
-      img,
-      cropCompletes[index].cap
-    );
-
-    props.onUpload(index, croppedImage, resetCropper);
+  const onDone = async () => {
+    if (busy || !img || !cropArea) return;
+    setBusy(true);
+    const cropped = await getCroppedImageBase64(img, cropArea);
+    props.onUpload(index, cropped, resetCropper);
   };
 
-  return (
-    <Popup style={{ display: popupDisplay }} showPopup={showPopup}>
-      <div className={styles.outerContainer}>
-        <div className={styles.cropperSpacer}>
-          {" "}
-          {props.images[0] ? null : <BrandLoader size={3.6} />}
+  const onCancel = () => {
+    if (busy) return;
+    props.onCancel(Math.max(0, index), resetCropper);
+  };
+
+  if (!shown && !isOpen) return null;
+
+  const actionLabel = props.button1Text || "Upload";
+  const showImg = img || lastImg.current;
+
+  return createPortal(
+    <div
+      className={`${styles.root} ${open ? styles.open : ""}`}
+      data-instant="true"
+    >
+      <div className={styles.backdrop} onClick={onCancel} />
+      <div className={styles.sheet} data-drawer-sheet="true" role="dialog" aria-modal="true" aria-label="Zoom and crop">
+        <div className={styles.handleArea}>
+          <div className={styles.handle} />
         </div>
-        {props.images &&
-          props.images.map((img) => (
-            <div
-              key={`crop${props.images.indexOf(img)}`}
-              onLoad={props.onLoad}
-              id={props.id}
-              className={styles.container}
-            >
-              <div className={styles.header}>
-                Zoom & Crop{" "}
-                <div className={styles.count}>
-                  {props.images.length - props.images.indexOf(img)} /{" "}
-                  {props.images.length}
-                </div>
-              </div>
-              <div className={styles.cropperContainer}>
-                {img && (
-                  <Cropper
-                    image={img}
-                    crop={crops[props.images.indexOf(img)]}
-                    zoom={zooms[props.images.indexOf(img)]}
-                    rotation={0}
-                    aspect={3 / 3}
-                    cropShape={props.cropShape || "rect"}
-                    onCropChange={cropChangers[props.images.indexOf(img)]}
-                    onZoomChange={zoomChangers[props.images.indexOf(img)]}
-                    objectFit={"cover"}
-                    showGrid={true}
-                    onCropComplete={(ca, cap) =>
-                      setCropCompletes[props.images.indexOf(img)]({ ca, cap })
-                    }
-                    style={{
-                      containerStyle: {
-                        width: "100%",
-                        height: "100%",
-                        borderRadius: props.cropperRadius || "4px",
-                      },
-                    }}
-                  />
-                )}
-              </div>
-              <div className={styles.buttonsContainer}>
-                <SimpleButton
-                  noShadow={true}
-                  onClick={(e) => onUploadImage(img)}
-                  className={styles.saveButton}
-                >
-                  {buttonTexts[props.images.indexOf(img)]}
-                </SimpleButton>
-                <SimpleButton
-                  noShadow={true}
-                  onClick={() =>
-                    props.onCancel(props.images.indexOf(img), resetCropper)
-                  }
-                  className={styles.cancelButton}
-                >
-                  Cancel
-                </SimpleButton>
-              </div>
+        {/* No heading; just "1 / 2" when two photos are queued */}
+        {images.length > 1 ? (
+          <div className={styles.header}>
+            <span className={styles.count}>
+              {images.length - index} / {images.length}
+            </span>
+          </div>
+        ) : null}
+
+        <div className={styles.cropArea}>
+          {showImg ? (
+            <Cropper
+              image={showImg}
+              crop={crop}
+              zoom={zoom}
+              rotation={0}
+              aspect={1}
+              cropShape={props.cropShape || "rect"}
+              onCropChange={setCrop}
+              onZoomChange={setZoom}
+              objectFit="cover"
+              showGrid={props.cropShape !== "round"}
+              maxZoom={MAX_ZOOM}
+              onCropComplete={(area, areaPixels) => setCropArea(areaPixels)}
+              style={{ containerStyle: { width: "100%", height: "100%" } }}
+            />
+          ) : (
+            <div className={styles.loading}>
+              <BrandLoader size={3.6} />
             </div>
-          ))}
+          )}
+        </div>
+
+        <label className={styles.zoomRow}>
+          <span className={styles.zoomIcon} aria-hidden="true">−</span>
+          <input
+            type="range"
+            min={1}
+            max={MAX_ZOOM}
+            step={0.01}
+            value={zoom}
+            onChange={(e) => setZoom(Number(e.target.value))}
+            aria-label="Zoom"
+            className={styles.zoomSlider}
+            disabled={!img}
+          />
+          <span className={styles.zoomIcon} aria-hidden="true">+</span>
+        </label>
+
+        <div className={styles.buttonBar}>
+          <button
+            type="button"
+            className={styles.cancelButton}
+            onClick={onCancel}
+            disabled={busy}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            className={styles.doneButton}
+            onClick={onDone}
+            disabled={busy || !img}
+          >
+            {busy && actionLabel !== "Done" ? (
+              <>
+                <LoaderSpinner width="1.3rem" height="1.3rem" color="#3f6fd8" />
+                Uploading…
+              </>
+            ) : (
+              actionLabel
+            )}
+          </button>
+        </div>
       </div>
-    </Popup>
+    </div>,
+    document.getElementById("popup")
   );
 };
 

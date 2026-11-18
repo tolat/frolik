@@ -2,7 +2,8 @@ import { resetViewportShift } from "../../utils/pageScroll";
 import SimpleButton from "../UI/SimpleButton";
 import SimpleInput from "../UI/SimpleInput";
 import styles from "./styles/ProfileEditor.module.scss";
-import { arrayBufferToBase64, genBackgroundStr } from "../../utils/utils";
+import { genBackgroundStr } from "../../utils/utils";
+import { fileToResizedDataURL } from "../../utils/imageResize";
 import CroppedImage from "../UI/CroppedImage";
 import LocationAutocomplete from "../UI/LocationAutocomplete";
 import CropperPopup from "../Popups/CropperPopup";
@@ -104,25 +105,24 @@ const ProfileEditor = (props) => {
     const newPhoto = document.getElementById("upload-profile-photo").files[0];
 
     if (newPhoto) {
-      // Read file into a base64String and update the staged image
-      const reader = new FileReader();
-      reader.onload = () => {
-        // Get image as base64 string
-        const base64Image = `data:image/jpeg;base64,${arrayBufferToBase64(
-          reader.result
-        )}`;
+      // Shrink it in the browser first (a byte-by-byte base64 copy of a
+      // full-res phone photo used to freeze the screen for seconds)
+      let base64Image;
+      try {
+        base64Image = await fileToResizedDataURL(newPhoto, 1600);
+      } catch {
+        resetUploadFileList();
+        return;
+      }
 
-        // Set upload for popup use
-        setUpload(base64Image);
+      // Set upload for popup use
+      setUpload(base64Image);
 
-        // Run onchange funciton from props if there is one
-        props.onPhotoChange && props.onPhotoChange(base64Image);
+      // Run onchange funciton from props if there is one
+      props.onPhotoChange && props.onPhotoChange(base64Image);
 
-        // Show cropper popup
-        dispatch(popupActions.showPopup("upload-profile-photo"));
-      };
-
-      reader.readAsArrayBuffer(newPhoto);
+      // Show the zoom & crop drawer
+      dispatch(popupActions.showPopup("upload-profile-photo"));
     }
   };
 

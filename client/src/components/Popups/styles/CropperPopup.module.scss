@@ -1,64 +1,177 @@
 @import "../../../utils/responsive.scss";
 
-.outerContainer {
-  position: relative;
+// Zoom & crop drawer — same look and motion as the activity drawer
+// (components/Popups/styles/ActivityDrawer.module.scss)
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 12; // above the floating nav bar
+  pointer-events: auto;
 }
 
-.container {
+.backdrop {
   position: absolute;
-  top: 0;
-  width: 100%;
-  box-sizing: border-box;
+  inset: 0;
+  background-color: rgba(15, 18, 30, 0.42);
+  touch-action: none;
+  opacity: 0;
+  transition: opacity 0.19s ease;
+}
+
+.open .backdrop {
+  opacity: 1;
+}
+
+.sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0 auto;
+  max-width: 48rem;
+  max-height: 85vh; // fallback
+  max-height: 85dvh;
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background: $surface;
+  border-radius: 2.4rem 2.4rem 0 0;
+  box-shadow: 0 -10px 40px rgba(20, 24, 40, 0.2);
+  overflow: hidden;
+  transform: translateY(100%);
+  transition: transform 0.24s $ease_out;
 }
 
-.cropperContainer {
-  position: relative;
-  width: 100%;
-  padding-top: 100%;
-  margin-bottom: 1rem;
+.open .sheet {
+  transform: none;
 }
 
-.cropperSpacer{
-    width: 100%;
-    padding-top: calc(100% + 9rem);
-    position: relative;
-    font-size: 1.5rem;
+.root:not(.open) .sheet {
+  transition: transform 0.24s cubic-bezier(0.4, 0, 0.7, 1);
 }
 
-.saveButton {
-  background-color: $blue;
+// The handle floats over the top of the photo (no white strip above it),
+// like the activity drawer
+.handleArea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  padding: 0.9rem 0 1.4rem;
+  pointer-events: none;
+}
+
+.handle {
+  width: 4rem;
+  height: 0.5rem;
+  border-radius: 100rem;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+// "1 / 2" when two photos are queued, floating on the photo's corner
+.header {
+  position: absolute;
+  top: 0.9rem;
+  right: 1.2rem;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.count {
+  padding: 0.3rem 0.9rem;
+  border-radius: 100rem;
+  background: rgba(15, 18, 30, 0.55);
   color: white;
-  font-weight: bold;
-  width: 48%;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+// Square crop area that always fits inside the drawer
+.cropArea {
+  position: relative;
+  flex-shrink: 1;
+  width: min(100%, calc(85dvh - 10rem));
+  aspect-ratio: 1;
+  margin: 0 auto;
+  background: #11131a;
+  overflow: hidden;
+}
+
+.loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $button_grey;
+}
+
+.zoomRow {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.4rem 2rem 0.8rem;
+}
+
+.zoomIcon {
+  width: 1.6rem;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: $text_muted;
+  line-height: 1;
+}
+
+.zoomSlider {
+  flex: 1;
+  accent-color: $blue;
+  height: 2.4rem;
+}
+
+// Pinned bottom bar, styled like the activity drawer's buttons
+.buttonBar {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.4rem calc(1.6rem + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid $light_grey;
+  background: $surface;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1.4rem;
+    border: none;
+    border-radius: $radius_sm;
+    background: transparent;
+    font: inherit;
+    font-size: 1.35rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover:not(:disabled) {
+      background-color: rgba(20, 24, 40, 0.05);
+    }
+
+    &:disabled {
+      cursor: default;
+      opacity: 0.6;
+    }
+  }
 }
 
 .cancelButton {
-  width: 48%;
+  color: $text_muted;
 }
 
-.header {
-  font-size: 1.7rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.count{
-    font-size: 1.4rem;
-    color: grey;
-}
-
-.buttonsContainer {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-}
-
-.loaderTextContainer{
-  display: flex;
+.doneButton {
+  color: $blue_dark;
 }

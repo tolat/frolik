@@ -21,3 +21,12 @@
     justify-content: center;
     align-items: center;
 }
+
+// A progress spinner has to keep moving even with Reduce Motion (the global
+// rule froze it at one frame, so saves/uploads looked stuck)
+@media (prefers-reduced-motion: reduce) {
+  .loader {
+    animation-duration: 1s !important;
+    animation-iteration-count: infinite !important;
+  }
+}

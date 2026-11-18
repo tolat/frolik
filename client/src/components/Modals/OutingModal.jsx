@@ -12,6 +12,7 @@ import ActivityCard from "../UI/ActivityCard";
 import { modalActions } from "../../store/modal-slice";
 import { hideModal, swapModal } from "../../store/modal-actions";
 import { resetViewportShift } from "../../utils/pageScroll";
+import { fileToResizedDataURL } from "../../utils/imageResize";
 import {
   addOutingCompletion,
   deleteOuting,
@@ -29,7 +30,6 @@ import WarningPopup from "../Popups/WarningPopup";
 import OutingTitleEditor from "../UI/OutingTitleEditor";
 import flakeIcon from "../../images/snowflake.png";
 import {
-  arrayBufferToBase64,
   outingIsCompleted,
   userIsLastCompletion,
 } from "../../utils/utils";
@@ -255,18 +255,15 @@ const OutingModal = (props) => {
     // Show cropper popup
     dispatch(popupActions.showPopup("outing-upload-popup"));
 
-    // Set uploads state with base64 images strings
+    // Shrink each photo in the browser (the old byte-by-byte base64 copy of
+    // a full-res phone photo froze the screen), then queue it for cropping
     for (let photo of newPhotos) {
-      // Read file into a base64String and update the staged image
-      const reader = new FileReader();
-      reader.onload = () => {
-        const base64Image = `data:image/jpeg;base64,${arrayBufferToBase64(
-          reader.result
-        )}`;
+      try {
+        const base64Image = await fileToResizedDataURL(photo, 1600);
         setUploads((prevState) => prevState.concat(base64Image));
-      };
-
-      reader.readAsArrayBuffer(photo);
+      } catch {
+        // not a readable image: skip it
+      }
     }
   };
 

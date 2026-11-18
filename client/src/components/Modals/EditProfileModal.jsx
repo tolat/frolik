@@ -44,10 +44,12 @@ const EditProfileModal = () => {
   const globals = useSelector((state) => state.auth.globals);
   const [stagedData, dispatchStageData] = useReducer(stagedDataReducer);
   const [defaultValues, setDefaultValues] = useState({});
+  // Saving: small white spinner + "Saving…" inside the blue Save pill
   const buttonTextOnSubmit = (
-    <div style={{ display: "flex" }}>
-      Saving &nbsp; <LoaderSpinner width="1.5rem" height="1.5rem" />
-    </div>
+    <span style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem" }}>
+      <LoaderSpinner width="1.3rem" height="1.3rem" />
+      Saving…
+    </span>
   );
 
   // Initialize defaultValues as daata is loaded from server
