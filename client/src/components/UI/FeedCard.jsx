@@ -18,6 +18,7 @@ import EmptyPopup from "../Popups/EmptyPopup";
 import FriendCard from "./FriendCard";
 import StatIcon from "./StatIcon";
 import SixPhotoGrid from "./SixPhotoGrid";
+import { SkeletonCard } from "./SkeletonCards";
 
 const FeedCard = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -70,7 +71,7 @@ const FeedCard = (props) => {
     outing && (
       <div
         className={`${styles.container} ${
-          ready ? "tile-ready" : `tile-loading ${styles.loadingSize}`
+          ready ? "tile-ready" : `tile-loading has-skeleton ${styles.loadingSize}`
         }`}
         style={ready ? undefined : shineSync()}
       >
@@ -81,6 +82,7 @@ const FeedCard = (props) => {
         )}
 
         <FeedCardFooter outing={outing} memberNames={memberNames} />
+        {!ready && <SkeletonCard variant="feed" fill />}
       </div>
     )
   );

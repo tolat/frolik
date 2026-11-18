@@ -34,12 +34,25 @@ export const fetchLogin = (username, password, onComplete) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// The session check in flight, shared by everyone who asks while it runs
+// (a second caller used to get an instant, empty resolve)
+let authInFlight = null;
+// Whether a session check has finished at least once since the app loaded
+let authCheckedOnce = false;
+export const authChecked = () => authCheckedOnce;
+
 export const fetchAuth = () => {
+  if (authInFlight) return authInFlight;
+  authInFlight = runFetchAuth().finally(() => {
+    authInFlight = null;
+    authCheckedOnce = true;
+  });
+  return authInFlight;
+};
+
+const runFetchAuth = () => {
   return new Promise((resolve, reject) => {
     const dispatch = store.dispatch;
-
-    // return if already fetching auth
-    if (store.getState().auth.fetchingAuth) return resolve();
 
     const requestConfig = { url: `${getServer()}/auth/check` };
 
@@ -77,6 +90,7 @@ export const fetchAuth = () => {
     } catch (err) {
       store.dispatch(authActions.setFetchingAuth(false));
       console.log(err);
+      resolve(); // never leave a waiting page loader hanging
     }
   });
 };

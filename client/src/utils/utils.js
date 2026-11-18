@@ -4,7 +4,7 @@ import { hideModal } from "../store/modal-actions";
 import { modalActions } from "../store/modal-slice";
 import { fetchChats, updateChatLastRead } from "./data-fetch";
 import { chatActions } from "../store/chat-slice";
-import { fetchAuth } from "../store/auth-actions";
+import { authChecked, fetchAuth } from "../store/auth-actions";
 
 export const calcAvgRating = (activity) => {
   if (!activity.ratings) {
@@ -22,18 +22,25 @@ export const pageRouteLoader = async (url) => {
   // Don't use previous modal
   store.dispatch(modalActions.setUsePrevious(false));
 
-  // Blur everything
-  const tmp = document.createElement("input");
-  document.body.appendChild(tmp);
-  setTimeout(() => {
-    tmp.click();
-    document.body.removeChild(tmp);
-  }, 100);
+  // Blur everything (closes the keyboard). This used to append a real
+  // <input> to the page for 100ms, which flashed as a white box at the top
+  // left on every page load.
+  if (document.activeElement && document.activeElement !== document.body) {
+    document.activeElement.blur?.();
+  }
 
   // Hide Modal if it is visible. await it to make sure visible modal
   // doesn't disappear until the modal is hidden
   if (store.getState().modal.marginLeft === "0%") {
     await hideModal();
+  }
+
+  // First page of a fresh load: the session hasn't been checked yet, so
+  // "not authenticated" just means "not known yet". Wait for the check
+  // instead of bouncing to /login (the login screen flashed on every reload
+  // before Login sent you back).
+  if (!store.getState().auth.isAuthenticated && !authChecked()) {
+    await fetchAuth();
   }
 
   // Redirect if user is not authenticated

@@ -1,5 +1,6 @@
 import StatIcon from "./StatIcon";
 import { shineSync } from "../../utils/shine";
+import { SkeletonCard } from "./SkeletonCards";
 import styles from "./styles/ActivityCard.module.scss";
 import timeIcon from "../../images/clock.png";
 import costIcon from "../../images/bill.png";
@@ -224,7 +225,7 @@ const ActivityCard = (props) => {
       <div
         style={photoLoaded ? props.style : { ...props.style, ...shineSync() }}
         className={`${styles.outerContainer} ${
-          photoLoaded ? "tile-ready" : "tile-loading"
+          photoLoaded ? "tile-ready" : "tile-loading has-skeleton"
         } ${props.fitHeight ? styles.fitHeight : ""} ${
           props.drawer ? styles.drawer : ""
         }`}
@@ -394,6 +395,7 @@ const ActivityCard = (props) => {
             </Fragment>
           )}
         </div>
+        {!photoLoaded && <SkeletonCard variant="activity" fill />}
       </div>
     )
   );

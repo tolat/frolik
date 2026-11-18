@@ -253,7 +253,11 @@ img {
 
 .tile-loading {
   position: relative;
-  /* flat while loading, exactly like the list placeholders */
+}
+
+/* flat while loading, exactly like the flat list placeholders (cards with a
+   shaped skeleton keep their shadow, like the skeleton list cards) */
+.tile-loading:not(.has-skeleton) {
   box-shadow: none !important;
 }
 
@@ -293,6 +297,16 @@ img {
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
+}
+
+/* A card loading with a shaped skeleton (SkeletonCard fill) shows that
+   instead of the flat shining tile */
+.tile-loading > .tile-skeleton {
+  visibility: visible;
+}
+
+.tile-loading.has-skeleton::after {
+  display: none;
 }
 
 .tile-ready > * {
