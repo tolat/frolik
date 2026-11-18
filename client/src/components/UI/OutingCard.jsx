@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles/OutingCard.module.scss";
 import UserIconCluster from "./UserIconCluster";
 import { modalActions } from "../../store/modal-slice";
-import { outingIsCompleted } from "../../utils/utils";
+import { outingIsCompleted, outingStatus } from "../../utils/utils";
 
 const OutingCard = memo((props) => {
   const user = useSelector((state) => state.auth.user);
@@ -13,6 +13,7 @@ const OutingCard = memo((props) => {
   const o = props.outing;
   const completed = o && outingIsCompleted(o);
   const status = completed ? "Completed" : "Pending";
+  const progress = completed ? null : outingStatus(o, user);
   const dispatch = useDispatch();
   const userFlaked = o.flakes.find((id) => id === user._id);
 
@@ -42,6 +43,15 @@ const OutingCard = memo((props) => {
               <div className={styles.activity}>{o.activity?.name}</div>
               <div className={styles.name}>{o.name}</div>
             </div>
+            {progress && (
+              <div
+                className={`${styles.progress} ${
+                  progress.ready ? styles.progressReady : styles.progressWaiting
+                }`}
+              >
+                {progress.label}
+              </div>
+            )}
 
             <div className={styles.status}>
               {`${status} - ${new Date(

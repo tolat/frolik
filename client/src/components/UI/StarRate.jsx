@@ -1,97 +1,32 @@
 import styles from "./styles/StarRate.module.scss";
-import starFullIcon from "../../images/star-full.png";
-import starEmptyIcon from "../../images/star-empty.png";
 
+// 1-5 star picker. rating 0 shows all stars empty (nothing picked yet).
 const StarRate = (props) => {
-  const click1 = (e) => {
-    props.setTouched(true)
-    props.setRating(1);
-  };
-  const click2 = (e) => {
-    props.setTouched(true)
-    props.setRating(2);
-  };
-  const click3 = (e) => {
-    props.setTouched(true)
-    props.setRating(3);
-  };
-  const click4 = (e) => {
-    props.setTouched(true)
-    props.setRating(4);
-  };
-  const click5 = (e) => {
-    props.setTouched(true)
-    props.setRating(5);
+  const pick = (n) => {
+    props.setTouched?.(true);
+    props.setRating(n);
   };
 
   return (
-    <div className={styles.container}>
-      <img
-        onClick={click1}
-        className={styles.ratingStar}
-        src={starFullIcon}
-        alt="star-full"
-      />
-      {props.rating < 2 ? (
-        <img
-          onClick={click2}
-          className={styles.ratingStar}
-          src={starEmptyIcon}
-          alt="star-mt"
-        />
-      ) : (
-        <img
-          onClick={click2}
-          className={styles.ratingStar}
-          src={starFullIcon}
-          alt="star-full"
-        />
-      )}
-      {props.rating < 3 ? (
-        <img
-          onClick={click3}
-          className={styles.ratingStar}
-          src={starEmptyIcon}
-          alt="star-mt"
-        />
-      ) : (
-        <img
-          onClick={click3}
-          className={styles.ratingStar}
-          src={starFullIcon}
-          alt="star-full"
-        />
-      )}
-      {props.rating < 4 ? (
-        <img
-          onClick={click4}
-          className={styles.ratingStar}
-          src={starEmptyIcon}
-          alt="star-mt"
-        />
-      ) : (
-        <img
-          onClick={click4}
-          className={styles.ratingStar}
-          src={starFullIcon}
-          alt="star-full"
-        />
-      )}
-      {props.rating < 5 ? (
-        <img
-          onClick={click5}
-          className={styles.ratingStar}
-          src={starEmptyIcon}
-          alt="star-mt"
-        />
-      ) : (
-        <img
-          onClick={click5}
-          className={styles.ratingStar}
-          src={starFullIcon}
-          alt="star-full"
-        />
-      )}
+    <div className={styles.container} role="radiogroup" aria-label="Rating">
+      {[1, 2, 3, 4, 5].map((n) => {
+        const filled = n <= props.rating;
+        return (
+          <button
+            key={n}
+            type="button"
+            role="radio"
+            aria-checked={props.rating === n}
+            aria-label={`${n} star${n > 1 ? "s" : ""}`}
+            className={`${styles.star} ${filled ? styles.filled : ""}`}
+            onClick={() => pick(n)}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.5L12 17.5l-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z" />
+            </svg>
+          </button>
+        );
+      })}
     </div>
   );
 };

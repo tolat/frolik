@@ -245,6 +245,23 @@ export const outingIsCompleted = (outing) =>
   (!!outing?.users?.[1] &&
     outing?.users?.length === outing?.completions?.length);
 
+// What a pending Outing is waiting on, in plain words (Outing panel header
+// and the Outing cards). ready: true when nothing is blocking it.
+export const outingStatus = (outing, user) => {
+  const id = (x) => x?._id || x;
+  const isMe = (x) => id(x) === user?._id;
+  if (outingIsCompleted(outing)) return { label: "Completed", ready: true };
+  if (outing?.flakes?.some(isMe)) return { label: "You left", ready: false };
+  if (outing?.invited?.some(isMe))
+    return { label: "Invited: tap to join", ready: false };
+  if ((outing?.users?.length || 0) < 2)
+    return { label: "Waiting for members", ready: false };
+  if (!outing?.photos?.[0]) return { label: "Waiting for photos", ready: false };
+  if (outing?.completions?.some(isMe))
+    return { label: "Waiting for others to finish", ready: false };
+  return { label: "Ready to finish", ready: true };
+};
+
 export const userIsLastCompletion = (user, outing) => {
   return (
     !outing.completions.find((c) => c === user._id) &&

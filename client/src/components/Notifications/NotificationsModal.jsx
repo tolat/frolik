@@ -2,9 +2,7 @@ import OutingNotice from "./OutingNotice";
 import { Fragment } from "react";
 import ModalPortal from "../Modals/ModalPortal";
 import styles from "./styles/NotificationsModal.module.scss";
-import WarningPopup from "../Popups/WarningPopup";
-import { popupActions } from "../../store/popup-slice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import sampleNotificationIcon from "../../images/active.png";
 import OutingInvite from "./OutingInvite";
 import OutingUpdate from "./OutingUpdate";
@@ -17,7 +15,6 @@ import ModalHeaderPortal from "../Modals/ModalHeaderPortal";
 import PushPrompt from "./PushPrompt";
 
 const NotificationsModal = (props) => {
-  const dispatch = useDispatch();
   const modalState = useSelector((state) => state.modal);
   // Rendered as the /alerts page (asPage) or, legacy, inside the slide-in modal
   const modalDisplay =
@@ -25,29 +22,10 @@ const NotificationsModal = (props) => {
   const modalStyle = { display: modalDisplay };
   const user = useSelector((state) => state.auth.user);
 
-  const onPopupOk = () => {
-    dispatch(popupActions.hidePopup());
-  };
-
-  const confirmOutingMessage = (
-    <div className={styles.confirmOutingMessage}>
-      Once you join an outing, it will count towards your 5 pending outings
-      limit. If you want to leave the Outing later you can, but it will
-      negatively affect your flake rating!
-    </div>
-  );
-
   const Wrapper = props.asPage ? Fragment : ModalPortal;
 
   return (
     <Wrapper>
-      <WarningPopup
-        selector={"confirm-join-outing"}
-        header={"Don't be a flake!"}
-        message={confirmOutingMessage}
-        ok={"OK"}
-        okClick={onPopupOk}
-      />
       <div
         style={modalStyle}
         className={`${styles.container} ${props.asPage ? styles.pageContainer : ""}`}

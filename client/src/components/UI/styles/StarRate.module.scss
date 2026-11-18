@@ -1,13 +1,42 @@
 @import '../../../utils/responsive.scss';
 
-.container{
-    display: flex;
-    width: 100%;
-    justify-content: space-evenly;
-    margin-bottom: 3rem;
+.container {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
 }
 
-.ratingStar{
-    height: 3rem;
-    cursor: pointer;
+.star {
+  border: none;
+  background: transparent;
+  padding: 0.3rem;
+  cursor: pointer;
+  border-radius: 50%;
+  -webkit-tap-highlight-color: transparent;
+  line-height: 0;
+  transition: transform 0.15s ease-out;
+
+  svg {
+    width: 3.8rem;
+    height: 3.8rem;
+    fill: #e3e7ee;
+    stroke: #cfd5df;
+    stroke-width: 1;
+    stroke-linejoin: round;
+    transition: fill 0.15s, stroke 0.15s;
+  }
+
+  &.filled svg {
+    fill: #ffc53d;
+    stroke: #f2a900;
+  }
+
+  &:active {
+    transform: scale(0.88);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $blue;
+  }
 }

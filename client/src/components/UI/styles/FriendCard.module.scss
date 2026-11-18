@@ -90,3 +90,15 @@
   transition: opacity $dur ease, max-height $dur $ease_out, padding $dur $ease_out,
     box-shadow $dur $ease_out;
 }
+
+// Profile can't be opened from here (see utils/friendAccess.js)
+.locked .leftContainer {
+  cursor: default;
+}
+
+.lockedNote {
+  margin-top: 0.3rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: $text_muted;
+}

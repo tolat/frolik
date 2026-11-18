@@ -146,3 +146,24 @@
 .innerContainer {
   background-color: $surface;
 }
+
+// What a pending Outing is waiting on (utils.outingStatus)
+.progress {
+  align-self: flex-start;
+  margin-top: 0.7rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 99rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.progressWaiting {
+  background: rgba(194, 124, 14, 0.12);
+  color: #a96a08;
+}
+
+.progressReady {
+  background: rgba(64, 192, 120, 0.14);
+  color: #1f8a4c;
+}

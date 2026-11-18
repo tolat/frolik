@@ -39,6 +39,25 @@ const {
 
 const router = express.Router({ mergeParams: true });
 
+// Re-friending after an unfriend. Either side's record counts; `since` is the
+// earliest rematch (after the unfriend) on either side, or null if neither
+// has come up in the other's daily matches yet.
+const refriendStatus = (a, b) => {
+  const entry = (u, other) =>
+    (u.former_friends || []).find(
+      (f) => f.user && f.user.toString() === other._id.toString()
+    );
+  const entries = [entry(a, b), entry(b, a)].filter(Boolean);
+  if (!entries.length) return { formerFriends: false, since: null };
+  const rematches = entries
+    .filter((f) => f.rematched && f.rematched >= f.removed)
+    .map((f) => new Date(f.rematched).getTime());
+  return {
+    formerFriends: true,
+    since: rematches.length ? new Date(Math.min(...rematches)) : null,
+  };
+};
+
 // Get a photo with given key for user with given id
 router.get(
   "/:id/photo/:key",
@@ -366,10 +385,27 @@ router.get(
       kept.push({ user: picked._id, updated: Date.now() });
     }
 
-    // Write only this field: a whole-document save() here raced the location
-    // update that runs at the same moment on login and failed (VersionError)
+    // A former friend showing up in the matches is the first step to being
+    // friends again (see /add-friend): stamp when it happened
+    const keptSet = new Set(kept.map((m) => m.user.toString()));
+    let formerChanged = false;
+    for (const f of user.former_friends || []) {
+      if (
+        f.user &&
+        keptSet.has(f.user.toString()) &&
+        !(f.rematched && f.rematched >= f.removed)
+      ) {
+        f.rematched = new Date();
+        formerChanged = true;
+      }
+    }
+
+    // Write only these fields: a whole-document save() here raced the
+    // location update that runs at the same moment on login (VersionError)
     user.matches = kept;
-    await User.updateOne({ _id: user._id }, { $set: { matches: kept } });
+    const changes = { matches: kept };
+    if (formerChanged) changes.former_friends = user.former_friends;
+    await User.updateOne({ _id: user._id }, { $set: changes });
 
     const matches = await populateFriends(user.matches.map((m) => m.user));
     res.send({ matches });
@@ -532,18 +568,51 @@ router.post(
       return res.status(406).send({ header: "User not found", message: "" });
     }
 
-    // You can only add someone after completing an Outing with them. Flaking
-    // removes a user from outing.users, so being in a completed outing's
-    // users means they saw it through.
-    const sharedCompletedOuting = await Outing.exists({
-      users: { $all: [user._id, friendUser._id] },
-      date_completed: { $exists: true, $ne: null },
-    });
-    if (!sharedCompletedOuting) {
+    if (user.friends.some((id) => id.toString() === friendUser._id.toString())) {
+      return res.status(406).send({
+        header: "Already friends",
+        message: `You and ${friendUser.first_name} are already friends.`,
+      });
+    }
+
+    // Friends can only be added after completing an Outing together that came
+    // from a daily match between the two of you: one of you created it (an
+    // Outing's invitees are always the creator's matches or friends). Someone
+    // you only met through a third person's match, or saw on Social, can't be
+    // added. Flaking removes a user from outing.users, so being in a
+    // completed outing's users means they saw it through.
+    const pairOuting = (extra = {}) =>
+      Outing.exists({
+        users: { $all: [user._id, friendUser._id] },
+        // Outings from before created_by was recorded count (legacy)
+        $or: [
+          { created_by: { $in: [user._id, friendUser._id] } },
+          { created_by: { $exists: false } },
+          { created_by: null },
+        ],
+        date_completed: { $exists: true, $ne: null },
+        ...extra,
+      });
+    if (!(await pairOuting())) {
       return res.status(406).send({
         header: "Complete an Outing first",
-        message: `You can add ${friendUser.first_name} as a friend once you've completed an Outing together.`,
+        message: `You can add ${friendUser.first_name} as a friend once one of you has matched with the other and you've completed an Outing together.`,
       });
+    }
+
+    // Unfriended before: they must come up in daily matches again, then
+    // complete a new Outing together (created after the rematch)
+    const refriend = refriendStatus(user, friendUser);
+    if (refriend.formerFriends) {
+      const newOuting =
+        refriend.since &&
+        (await pairOuting({ date_created: { $gte: refriend.since } }));
+      if (!newOuting) {
+        return res.status(406).send({
+          header: "Not yet",
+          message: `You and ${friendUser.first_name} were friends before. To be friends again, ${friendUser.first_name} needs to come up in your daily matches and you need to complete a new Outing together.`,
+        });
+      }
     }
 
     // send back 406 if user has already requested this friend
@@ -608,6 +677,16 @@ router.post(
     friendUser.friends = friendUser.friends.filter(
       (id) => id.toString() != user._id.toString()
     );
+
+    // Remember the unfriending on both sides (see /add-friend)
+    const markFormer = (u, otherID) => {
+      u.former_friends = (u.former_friends || []).filter(
+        (f) => f.user && f.user.toString() !== otherID.toString()
+      );
+      u.former_friends.push({ user: otherID, removed: new Date() });
+    };
+    markFormer(user, friendUser._id);
+    markFormer(friendUser, user._id);
 
     // Notify FriendUser
     const newNotification = {

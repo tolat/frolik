@@ -4,7 +4,8 @@ import styles from "./styles/FriendCard.module.scss";
 import UserIcon from "./UserIcon";
 import flakeIcon from "../../images/snowflake.png";
 import outingsIcon from "../../images/outing2.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { friendAccess } from "../../utils/friendAccess";
 import { modalActions } from "../../store/modal-slice";
 import { swapModal } from "../../store/modal-actions";
 import { calculateFlakeRating, outingStats } from "../../utils/utils";
@@ -17,6 +18,13 @@ const FriendCard = memo((props) => {
   const borderSizeInRem = props.small ? "0.5" : "0.8";
   const nameStyle = { fontSize: props.small ? "1.8rem" : null };
   const dispatch = useDispatch();
+  const authUser = useSelector((state) => state.auth.user);
+  // Social / completed Outings: only friends and people you've done an
+  // Outing with (and not unfriended) can be opened; others just show
+  const locked =
+    props.restrictProfile &&
+    !props.onClick &&
+    !friendAccess(authUser, props.user).canViewProfile;
   const flakeRating = props.user && calculateFlakeRating(props.user);
   const detailsContainerStyle = props.small
     ? {
@@ -48,12 +56,13 @@ const FriendCard = memo((props) => {
     <div
       id={props.id}
       style={{ ...props.style, boxShadow: props.noShadow ? "none" : null }}
-      className={`${styles.container} fade-in`}
+      className={`${styles.container} ${locked ? styles.locked : ""} fade-in`}
     >
       <div className={styles.upperContainer}>
         <div
           className={styles.leftContainer}
-          onClick={props.onClick || showProfileViewerModal}
+          onClick={locked ? undefined : props.onClick || showProfileViewerModal}
+          aria-disabled={locked || undefined}
         >
           <div className={styles.iconContainer}>
             <UserIcon
@@ -82,6 +91,9 @@ const FriendCard = memo((props) => {
             <div className={styles.userName} style={nameStyle}>
               {`${props.user.first_name} ${props.user.last_name}`}
               <div className={styles.location}>{props.user.location}</div>
+              {locked && (
+                <div className={styles.lockedNote}>Profile not shared</div>
+              )}
             </div>
             <div className={styles.ratingsContainer} data-tour="stats">
               <StatIcon

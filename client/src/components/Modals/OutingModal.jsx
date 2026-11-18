@@ -31,6 +31,7 @@ import OutingTitleEditor from "../UI/OutingTitleEditor";
 import flakeIcon from "../../images/snowflake.png";
 import {
   outingIsCompleted,
+  outingStatus,
   userIsLastCompletion,
 } from "../../utils/utils";
 import { fetchAuth } from "../../store/auth-actions";
@@ -38,6 +39,7 @@ import CropperPopup from "../Popups/CropperPopup";
 import addPhotosButton from "../../images/add-photos-button.png";
 import StarRate from "../UI/StarRate";
 import FeedCard from "../UI/FeedCard";
+import AddOutingFriendsDrawer from "../Popups/AddOutingFriendsDrawer";
 import SixPhotoGrid from "../UI/SixPhotoGrid";
 import ModalHeaderPortal from "./ModalHeaderPortal";
 
@@ -56,15 +58,8 @@ const OutingModal = (props) => {
     globals && globals?.categoryColorMap[outing?.activity?.category];
   const completed = outing && outingIsCompleted(outing);
   // Header subheading: what the outing is waiting on, in plain words
-  const statusLabel = completed
-    ? "Completed"
-    : (outing?.users?.length || 0) < 2
-    ? "Waiting for members"
-    : !outing?.photos?.[0]
-    ? "Waiting for photos"
-    : outing?.completions?.find((id) => id === user?._id)
-    ? "Waiting for others to finish"
-    : "Ready to finish";
+  const status = outingStatus(outing, user);
+  const statusLabel = status.label;
   // Stale-outing countdowns (rules: utils/outingLifecycle.js on the server)
   const STALE_DAYS = 30;
   const DAY_MS = 24 * 60 * 60 * 1000;
@@ -95,9 +90,7 @@ const OutingModal = (props) => {
   const hasCompleted = (u) =>
     outing?.completions?.some((c) => (c?._id || c) === (u?._id || u));
 
-  const statusTone = completed || statusLabel === "Ready to finish"
-    ? styles.statusReady
-    : styles.statusWaiting;
+  const statusTone = status.ready ? styles.statusReady : styles.statusWaiting;
   const isLastCompletion = user && outing && userIsLastCompletion(user, outing);
   const userHasCompleted = outing?.completions?.find((id) => user._id === id);
   const chatsState = useSelector((state) => state.chat.chats);
@@ -221,14 +214,20 @@ const OutingModal = (props) => {
     dispatch(popupActions.showPopup("confirm-join-outing"));
   };
 
+  // One drawer for joining (it used to open together with a second
+  // "Don't be a flake!" drawer from the Alerts page)
   const confirmJoinOutingMessage = (
-    <div className={styles.warningContainer}>
-      <div className={styles.warningName}>{outing?.name}</div>
-      <div className={styles.warningText}>
-        Once you join the Outing, it must be completed or deleted in order to
-        maintain your flake rating. Outings can only be deleted while there is{" "}
-        <b>one member</b> in the members list.
-      </div>
+    <div className={styles.sheetBody}>
+      <div className={styles.sheetOutingName}>{outing?.name}</div>
+      <ul className={styles.sheetPoints}>
+        <li>It counts toward your limit of 5 pending Outings.</li>
+        <li>
+          It has to be completed (or deleted while you're the only member).
+        </li>
+        <li>
+          Leaving after you join <b>lowers your flake rating</b>.
+        </li>
+      </ul>
     </div>
   );
 
@@ -385,39 +384,46 @@ const OutingModal = (props) => {
     </div>
   );
 
+  const ratingLabels = ["", "Not great", "It was OK", "Good", "Great", "Loved it!"];
   const confirmCompletionMessage = (
-    <div>
+    <div className={styles.sheetBody}>
       {isLastCompletion && (
-        <>
-          <b>You are the last member to mark the Outing completed!</b>
-          <br />
-          <br />
-        </>
+        <div className={styles.lastCompletionBadge}>
+          You're the last member to mark it completed
+        </div>
       )}
-      Once {isLastCompletion ? " you " : " all members "} mark the Outing
-      complete, the Outing status will update to 'Completed' and no more changes
-      can be made, including uploading or removing photos.
-      <br />
-      <br />
-      The chat for this Outing will stay active indefinitely so you can keep in
-      touch with Outing memebers!
-      <br />
-      <br />
-      <div className={styles.rateActivityHeader}>
-        Rate the activity to mark Outing Complete.{" "}
+      <div className={styles.rateCard}>
+        <div className={styles.rateEyebrow}>Rate the activity</div>
+        <div className={styles.rateActivityName}>
+          <span
+            className={styles.rateDot}
+            style={{ backgroundColor: categoryColor }}
+          />
+          {outing?.activity?.name}
+        </div>
+        <StarRate
+          setTouched={setRatingTouched}
+          rating={ratingTouched ? activityRating : 0}
+          setRating={setActivityRating}
+        />
+        <div
+          className={`${styles.rateLabel} ${
+            ratingTouched ? "" : styles.rateLabelHint
+          }`}
+        >
+          {ratingTouched
+            ? ratingLabels[activityRating]
+            : "Tap a star to rate it"}
+        </div>
       </div>
-      <div
-        className={styles.rateActivityName}
-        style={{ backgroundColor: categoryColor }}
-      >
-        Activity: <b>{outing?.activity?.name}</b>
-      </div>
-      <StarRate
-        setTouched={setRatingTouched}
-        rating={activityRating}
-        setRating={setActivityRating}
-      />
-      <b>Marking the Outing compelete is permanent.</b>
+      <ul className={styles.sheetPoints}>
+        <li>
+          Once {isLastCompletion ? "you mark it" : "every member marks it"}{" "}
+          completed, the Outing is locked: no more photo changes.
+        </li>
+        <li>The Outing chat stays open so you can keep in touch.</li>
+        <li>This can't be undone.</li>
+      </ul>
     </div>
   );
 
@@ -447,6 +453,10 @@ const OutingModal = (props) => {
 
   return !outing || !userData ? null : (
     <ModalPortal>
+      <AddOutingFriendsDrawer
+        outing={outing}
+        visible={modalDisplay === "flex"}
+      />
       {outing.date_completed ? (
         // Hidden unless the outing panel is the open one (it used to render
         // under other panels, e.g. below a chat after Chat → Outing → Back)
@@ -484,9 +494,9 @@ const OutingModal = (props) => {
           />
           <WarningPopup
             selector={"confirm-join-outing"}
-            header={"Confirm join Outing:"}
+            header={"Join this Outing?"}
             message={confirmJoinOutingMessage}
-            ok={"Join"}
+            ok={"Join Outing"}
             okClick={onOutingJoin}
             cancel={"Cancel"}
             cancelClick={() => {
@@ -543,7 +553,7 @@ const OutingModal = (props) => {
           />
           <WarningPopup
             selector={"confirm-completion"}
-            header={"Confirm Outing Completion"}
+            header={"Mark this Outing completed?"}
             message={confirmCompletionMessage}
             ok={"Mark Completed"}
             okClick={handleMarkCompleted}

@@ -28,6 +28,7 @@ import ModalHeaderPortal from "./ModalHeaderPortal";
 import SliderNavbar from "../UI/SliderNavbar";
 import CircleAction from "../UI/CircleAction";
 import WarningPopup from "../Popups/WarningPopup";
+import { friendAccess } from "../../utils/friendAccess";
 
 const sliderIcons = [
   {
@@ -111,25 +112,26 @@ const ControlButtons = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const isFriend = props.user.friends.find(
-    (f) => f._id === props.modalUser._id
-  );
+  const access = friendAccess(props.user, props.modalUser);
+  const isFriend = access.isFriend;
   const friendRequested = props.user.friend_requests.find(
     (fr) => fr === props.modalUser._id
   );
-  // Friends can only be added after completing an Outing together (flakers
-  // are removed from outing.users, so they don't count). Server enforces too.
-  const hasCompletedOutingTogether = props.user.outings?.some(
-    (o) =>
-      o?.date_completed &&
-      o.users?.some((u) => (u._id || u) === props.modalUser._id)
-  );
+  const former = access.former;
+  const hasCompletedOutingTogether = access.canAddFriend;
 
   const onLockedAddFriend = () => {
-    dispatch(popupActions.setWarningHeader("Complete an Outing first"));
+    const name = props.modalUser.first_name;
+    dispatch(
+      popupActions.setWarningHeader(
+        former ? "Not yet" : "Complete an Outing first"
+      )
+    );
     dispatch(
       popupActions.setWarningMessage(
-        `You can add ${props.modalUser.first_name} as a friend once you've completed an Outing together.`
+        former
+          ? `You and ${name} were friends before. To be friends again, ${name} needs to come up in your daily matches and you need to complete a new Outing together.`
+          : `You can add ${name} as a friend once one of you has matched with the other in Daily Matches and you've completed an Outing together.`
       )
     );
     dispatch(popupActions.showPopup("generic-warning"));
@@ -187,7 +189,17 @@ const ControlButtons = (props) => {
       <WarningPopup
         selector="confirm-unfriend"
         header={`Unfriend ${name}?`}
-        message={`${name} will be removed from your friends. To be friends again, one of you will need to send a new friend request.`}
+        message={
+          <>
+            {name} will be removed from your friends, and neither of you will
+            be able to open the other's profile.
+            <br />
+            <br />
+            <b>You can't just add {name} back.</b> To be friends again,{" "}
+            {name} has to come up in your Daily Matches and you have to
+            complete a new Outing together.
+          </>
+        }
         cancel="Cancel"
         cancelClick={hidePopup}
         delete="Unfriend"

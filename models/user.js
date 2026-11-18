@@ -21,6 +21,16 @@ const UserSchema = new Schema(
     archived_chats: [{ type: Schema.Types.ObjectId, ref: "Chat" }],
     friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
     friend_requests: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    // People this user was friends with and then unfriended (either side).
+    // Re-friending needs them to come up in daily matches again
+    // (`rematched`) and a new Outing completed together after that.
+    former_friends: [
+      {
+        user: { type: Schema.Types.ObjectId, ref: "User" },
+        removed: Date,
+        rematched: Date,
+      },
+    ],
     outings: [{ type: Schema.Types.ObjectId, ref: "Outing" }],
     activities: [{ type: Schema.Types.ObjectId, ref: "Activity" }],
     pushSubscription: Object, // legacy single-device subscription
