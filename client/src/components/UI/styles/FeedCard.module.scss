@@ -82,8 +82,8 @@
   padding: 0.55rem 1.5rem !important;
   border: none !important;
   border-radius: 100rem !important;
-  background: linear-gradient(135deg, #6a9bf5 0%, #4a7ee8 55%, #3f6fd8 100%) !important;
-  box-shadow: 0 4px 12px rgba(63, 111, 216, 0.28) !important;
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 55%, var(--primary-strong) 100%) !important;
+  box-shadow: 0 4px 12px rgba(var(--primary-strong-rgb), 0.28) !important;
   color: white !important;
   font-size: 1.25rem !important;
   font-weight: 700;

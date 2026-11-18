@@ -98,7 +98,7 @@
   &[aria-expanded="true"] {
     outline: none;
     border-color: $blue;
-    box-shadow: 0 0 0 4px rgba(91, 141, 239, 0.18);
+    box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.18);
   }
 }
 
@@ -169,7 +169,7 @@
 
   &:focus {
     border-color: $blue;
-    box-shadow: 0 0 0 4px rgba(91, 141, 239, 0.18);
+    box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.18);
   }
 }
 

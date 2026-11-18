@@ -1,6 +1,7 @@
 import { pageScrollTop } from "../../utils/pageScroll";
 import { useEffect, useRef, useState } from "react";
 import balloon from "../../images/air-balloon-blue.png";
+import TintedIcon from "./TintedIcon";
 import styles from "./styles/PullToRefresh.module.scss";
 
 const MAX_PULL = 120; // px — the pull eases toward this, never past it
@@ -162,7 +163,7 @@ const PullToRefresh = ({ onRefresh, children, disabled }) => {
             strokeDashoffset={RING_C}
           />
         </svg>
-        <img src={balloon} alt="" className={styles.balloon} />
+        <TintedIcon src={balloon} className={styles.balloon} />
       </div>
       <div ref={contentRef} className={styles.content}>
         {children}

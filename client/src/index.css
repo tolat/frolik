@@ -22,7 +22,16 @@ body {
   --surface: #ffffff;
   --text: #1b1d24;
   --text-muted: #6b7182;
+  /* ── Primary action colour (buttons, links, toggles, active nav tab) ──
+     The default (original blue). Once a user has outings, utils/theme.js
+     replaces these with the dominant colour of their colour wheel. Keep each
+     -rgb in step with its colour. */
   --primary: #5b8def;
+  --primary-rgb: 91, 141, 239;
+  --primary-strong: #3f6fd8;
+  --primary-strong-rgb: 63, 111, 216;
+  --primary-light: #6a9bf5;
+  --primary-soft: #eaf1fe;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 

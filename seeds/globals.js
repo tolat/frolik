@@ -1,8 +1,8 @@
 module.exports.categoryColorMap = {
   Adventure: "rgb(248 157 157)",
   Art: "rgb(186, 255, 169)",
-  Food: "rgb(238 183 220)",
-  Games: "rgb(117, 204, 255)",
+  Food: "rgb(255 196 140)",
+  Games: "rgb(201 184 255)",
   Sports: "rgb(255 236 69)",
 };
 

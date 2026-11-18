@@ -70,7 +70,7 @@
   font-size: 1.6rem;
   font-weight: 700;
   outline: none;
-  box-shadow: 0 0 0 4px rgba(91, 141, 239, 0.18);
+  box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.18);
 }
 
 .counter {

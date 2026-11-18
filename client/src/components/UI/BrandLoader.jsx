@@ -1,5 +1,6 @@
 import styles from "./styles/BrandLoader.module.scss";
 import balloon from "../../images/air-balloon-blue.png";
+import TintedIcon from "./TintedIcon";
 import { T } from "../../i18n";
 
 // On-brand loading spinner (same look as pull-to-refresh): a spinning ring
@@ -27,7 +28,7 @@ const BrandLoader = ({
         <circle className={styles.track} cx="18" cy="18" r="15" />
         <circle className={styles.arc} cx="18" cy="18" r="15" />
       </svg>
-      {noBalloon ? null : <img src={balloon} alt="" className={styles.balloon} />}
+      {noBalloon ? null : <TintedIcon src={balloon} className={styles.balloon} />}
     </div>
     {label ? (
       <span className={styles.label}>{label}</span>

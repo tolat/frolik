@@ -39,7 +39,7 @@
   min-width: 4.2rem;
   width: 4.2rem;
   height: 4.2rem;
-  box-shadow: 0 6px 16px rgba(91, 141, 239, 0.35);
+  box-shadow: 0 6px 16px rgba(var(--primary-rgb), 0.35);
   background-color: $blue;
   color: white;
   font-size: 2.2rem;
@@ -184,8 +184,8 @@
 // Blue gradient circle with a drawn, bold plus — matches the outing page's
 // create-activity button (a "+" text glyph never sat centred)
 .newChatButton {
-  background: linear-gradient(135deg, #6a9bf5 0%, #4a7ee8 55%, #3f6fd8 100%) !important;
-  box-shadow: 0 6px 16px rgba(63, 111, 216, 0.32) !important;
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 55%, var(--primary-strong) 100%) !important;
+  box-shadow: 0 6px 16px rgba(var(--primary-strong-rgb), 0.32) !important;
   border: none !important;
 
   svg {

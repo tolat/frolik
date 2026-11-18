@@ -17,6 +17,7 @@
     "remove": "Quitar",
     "add": "Agrega una foto de portada",
     "optional": "opcional",
-    "readError": "No pudimos leer ese archivo como imagen."
+    "readError": "No pudimos leer ese archivo como imagen.",
+    "drag": "Arrastra para colocar"
   }
 }

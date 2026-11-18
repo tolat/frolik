@@ -96,7 +96,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 0.8rem;
-  background: rgba(91, 141, 239, 0.1);
+  background: rgba(var(--primary-rgb), 0.1);
 }
 
 .inlineIcon {

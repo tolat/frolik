@@ -106,7 +106,7 @@
 .activeLink .navButton {
   img {
     transform: translateY(-1px) scale(1.1);
-    filter: drop-shadow(0 4px 6px rgba(91, 141, 239, 0.45));
+    filter: drop-shadow(0 4px 6px rgba(var(--primary-rgb), 0.45));
   }
 }
 

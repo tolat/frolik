@@ -17,6 +17,7 @@
     "remove": "Fjern",
     "add": "Legg til et forsidebilde",
     "optional": "valgfritt",
-    "readError": "Filen kunne ikke leses som et bilde."
+    "readError": "Filen kunne ikke leses som et bilde.",
+    "drag": "Dra for å plassere"
   }
 }

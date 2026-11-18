@@ -160,7 +160,7 @@
 
 .goal {
   font-size: 1.4rem;
-  font-weight: bold;
+  font-weight: normal;
   width: 100%;
 }
 
@@ -509,3 +509,244 @@
   padding-top: 2.4rem;
 }
 
+
+// ── Feed card (outing list): art untinted, text on white ────────────────────
+.feedCard {
+  @include card;
+  border: none !important; // the card's hairline showed as a white edge round the art
+  position: relative;
+  width: 100%;
+  border-radius: $radius_lg;
+  overflow: hidden;
+  margin-bottom: 1.4rem;
+  box-shadow: $shadow_md;
+  background: $surface;
+}
+
+.feedPhoto {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 5 / 3; // the top 60% of the square art
+  overflow: hidden;
+  background: $card_grey;
+
+  > div:first-child {
+    height: 100%;
+  }
+  > div:first-child > div {
+    height: 100%;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--cover-position, 50% 0%); // set in Create Activity
+    display: block;
+  }
+}
+
+// Rating floating on the art
+.feedRating {
+  position: absolute;
+  top: 1rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1b1d24;
+  box-shadow: 0 2px 6px rgba(20, 24, 40, 0.15);
+  pointer-events: none;
+}
+
+.feedRating {
+  inset-inline-end: 1rem;
+  background: rgba(255, 255, 255, 0.94);
+
+  img {
+    width: 1.3rem !important;
+    height: 1.3rem !important;
+  }
+}
+
+.feedBody {
+  padding: 1.3rem 1.5rem 1.1rem;
+}
+
+.feedName {
+  font-size: 1.9rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #1b1d24;
+  overflow-wrap: anywhere;
+}
+
+.feedMeta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 0.4rem;
+  margin-top: 0.2rem;
+  font-size: 1.25rem;
+  color: $text_muted;
+}
+
+.feedDescription {
+  margin-top: 0.8rem;
+  font-size: 1.45rem;
+  line-height: 1.4;
+  color: #2b2e38;
+}
+
+.feedChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.feedChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  background: $card_grey;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2b2e38;
+
+  img {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+}
+
+.feedActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.2rem;
+}
+
+.feedGhost {
+  border: none;
+  background: transparent;
+  padding: 0.7rem 0.2rem;
+  font: inherit;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: $text_muted;
+  cursor: pointer;
+}
+
+.feedSelect {
+  margin-inline-start: auto;
+  border: none;
+  border-radius: 999px;
+  padding: 0.8rem 2rem;
+  font: inherit;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, var(--primary-light), $blue);
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+  cursor: pointer;
+  transition: transform 0.12s ease;
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.feedRemove {
+  background: $red;
+  box-shadow: none;
+}
+
+.feedInstructions {
+  background: $surface;
+}
+
+// Goal: a soft panel above the instructions, in the description's type
+.goalLine {
+  margin: 1.2rem 1.5rem 0.6rem;
+  padding: 1rem 1.2rem;
+  border-radius: 1.2rem;
+  background: $card_grey;
+  font-size: 1.45rem;
+  line-height: 1.4;
+  color: #2b2e38;
+}
+
+.goalLabel {
+  font-weight: 800;
+  color: #1b1d24;
+}
+
+// Time / cost / group chips float top left on the art, like the rating
+.feedPhoto .feedChips {
+  position: absolute;
+  top: 1rem;
+  inset-inline-start: 1rem;
+  z-index: 2;
+  margin: 0;
+  gap: 0.5rem;
+  max-width: calc(100% - 9rem);
+  pointer-events: none;
+}
+
+.feedPhoto .feedChip {
+  background: rgba(255, 255, 255, 0.94);
+  color: #1b1d24;
+  font-weight: 700;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 6px rgba(20, 24, 40, 0.15);
+
+  img {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+}
+
+// Activity drawer: same card, edge to edge in the sheet, buttons pinned
+.feedCard.drawer {
+  overflow: visible; // a clipping ancestor would stop the sticky buttons
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+}
+
+.feedCard.drawer .feedPhoto {
+  border-radius: 0;
+}
+
+.feedCard.drawer .feedInstructions {
+  padding-bottom: 1rem;
+}
+
+// Drawer: stats and rating sit below the floating drag handle
+.feedCard.drawer .feedPhoto .feedChips,
+.feedCard.drawer .feedRating {
+  top: 2.4rem;
+}
+
+// Create Activity: the goal field lines up with the other fields, no panel
+.goalLineCreate {
+  margin: 1.2rem 1rem;
+  padding: 0;
+  background: none;
+
+  .goalLabel {
+    display: block;
+    margin: 0 0 0.6rem 0.4rem;
+  }
+}
+
+.createOutingIcon {
+  width: 1.8rem;
+  height: 1.8rem;
+}

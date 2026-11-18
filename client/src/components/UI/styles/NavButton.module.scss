@@ -63,8 +63,8 @@
     from 200deg,
     rgb(248 157 157),
     rgb(186, 255, 169),
-    rgb(238 183 220),
-    rgb(117, 204, 255),
+    rgb(255 196 140),
+    rgb(201 184 255),
     rgb(255 236 69),
     rgb(248 157 157)
   ); // fallback until the category colours load
@@ -122,10 +122,11 @@
 }
 
 .ringActive {
-  box-shadow: 0 8px 20px rgba(91, 141, 239, 0.28), 0 0 0 0.35rem rgba(255, 255, 255, 0.96);
+  box-shadow: 0 8px 20px rgba(var(--primary-rgb), 0.28), 0 0 0 0.35rem rgba(255, 255, 255, 0.96);
 
   .disc {
     background: $light_blue;
   }
 }
+
 

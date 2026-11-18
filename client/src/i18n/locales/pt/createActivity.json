@@ -17,6 +17,7 @@
     "remove": "Remover",
     "add": "Adicionar foto de capa",
     "optional": "opcional",
-    "readError": "Não foi possível ler esse arquivo como imagem."
+    "readError": "Não foi possível ler esse arquivo como imagem.",
+    "drag": "Arraste para posicionar"
   }
 }

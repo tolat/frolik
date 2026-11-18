@@ -18,7 +18,7 @@
   height: 7.2rem;
   border-radius: 1.7rem;
   background: $grad_blue;
-  box-shadow: 0 8px 20px rgba(74, 126, 232, 0.35);
+  box-shadow: 0 8px 20px rgba(var(--primary-rgb), 0.35);
   margin-bottom: 1.4rem;
 
   svg {
@@ -122,7 +122,7 @@
   margin: -0.6rem 0 1.4rem;
   padding: 0.6rem 1.2rem;
   border-radius: 99rem;
-  background: rgba(91, 141, 239, 0.1);
+  background: rgba(var(--primary-rgb), 0.1);
   color: $blue_dark;
   font-size: 1.25rem;
   font-weight: 600;

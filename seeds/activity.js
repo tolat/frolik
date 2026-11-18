@@ -5,7 +5,7 @@ module.exports.activitySeeds = [
   //Park Pong
   {
     name: "Park Pong",
-    cover_photo: "art-parkpong", // seeds/images/activity-art
+    cover_photo: "art-parkpong-v2", // seeds/images/activity-art
     description:
       "Casual or competitive, beer pong in the park is an all-time games favourite.",
     category: "Games",
@@ -41,7 +41,7 @@ module.exports.activitySeeds = [
   // Grounders
   {
     name: "Grounders",
-    cover_photo: "art-grounders", // seeds/images/activity-art
+    cover_photo: "art-grounders-v2", // seeds/images/activity-art
     description: "Don't touch the ground, and don't peek!",
     category: "Games",
     goal: "Avoid getting caught by the seeker.",
@@ -69,7 +69,7 @@ module.exports.activitySeeds = [
   // Paparazzi Battle
   {
     name: "Paparazzi Battle",
-    cover_photo: "art-paparazzibattle", // seeds/images/activity-art
+    cover_photo: "art-paparazzibattle-v2", // seeds/images/activity-art
     description: "May the sneakiest team win!",
     category: "Games",
     goal: "Post a photo of the other team bofore they one of you.",
@@ -224,7 +224,7 @@ module.exports.activitySeeds = [
   // Twice Cream
   {
     name: "Twice Cream",
-    cover_photo: "art-twicecream", // seeds/images/activity-art
+    cover_photo: "art-twicecream-v2", // seeds/images/activity-art
     description: "Eat Ice cream once, shame on me. Eat ice cream twice..",
     category: "Food",
     goal: "Eat Ice Cream at two different locations, one after the other.",
@@ -265,7 +265,7 @@ module.exports.activitySeeds = [
   // Grocery Swap
   {
     name: "Grocery Swap",
-    cover_photo: "art-groceryswap", // seeds/images/activity-art
+    cover_photo: "art-groceryswap-v2", // seeds/images/activity-art
     description: "Add a litte fun to your grocery run..",
     category: "Food",
     goal: "Buy groceries for eachother without deciding what to buy beforehand.",

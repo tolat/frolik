@@ -1,5 +1,14 @@
 import { Fragment } from "react";
 import styles from "./styles/NavButton.module.scss";
+import TintedIcon from "./TintedIcon";
+
+// The active tab's icon is painted in the primary colour
+const Icon = ({ src, className, active, style }) =>
+  active ? (
+    <TintedIcon src={src} className={className} style={style} />
+  ) : (
+    <img style={style} className={className} src={src} alt="" />
+  );
 
 const NavButton = (props) => {
   return (
@@ -13,7 +22,7 @@ const NavButton = (props) => {
               style={props.ringBackground ? { "--ring": props.ringBackground } : null}
             >
               <span className={styles.disc}>
-                <img className={styles.featuredIcon} src={props.icon} alt="" />
+                <Icon className={styles.featuredIcon} src={props.icon} active={props.blue} />
               </span>
             </span>
             <div
@@ -26,11 +35,11 @@ const NavButton = (props) => {
           </Fragment>
         ) : props.icon ? (
           <Fragment>
-            <img
+            <Icon
               style={props.imgStyle}
               className={styles.iconButton}
               src={props.icon}
-              alt=""
+              active={props.blue}
             />
             <div
               className={`${styles.iconText} ${

@@ -29,6 +29,8 @@ const ActivitySchema = new Schema(
     media: Object,
     // Storage key of the creator's cover photo (custom activities)
     cover_photo: String,
+    // Which part of the cover the cards show (CSS object-position, "x% y%")
+    cover_position: String,
   },
   { minimize: false }
 );

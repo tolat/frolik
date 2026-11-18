@@ -26,9 +26,9 @@
     },
     "costValue": "{{cost}} $",
     "participants": {
-      "one": "{{count}} +",
-      "many": "{{count}} +",
-      "other": "{{count}} +"
+      "one": "{{count}}+",
+      "many": "{{count}}+",
+      "other": "{{count}}+"
     }
   },
   "badges": {

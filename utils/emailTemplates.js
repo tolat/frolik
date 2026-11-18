@@ -21,7 +21,7 @@ const C = {
   panel: "#F4F6FA",
   blue: "#4A7EE8",
   blueLight: "#6A9BF5",
-  stripe: ["#F89D9D", "#BAFFA9", "#EEB7DC", "#75CCFF", "#FFEC45"], // categories
+  stripe: ["#F89D9D", "#BAFFA9", "#FFC48C", "#C9B8FF", "#FFEC45"], // categories
 };
 const FONT =
   "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";

@@ -47,8 +47,8 @@
   padding: 0;
   border: none;
   border-radius: 100rem;
-  background: linear-gradient(135deg, #6a9bf5 0%, #4a7ee8 55%, #3f6fd8 100%);
-  box-shadow: 0 6px 16px rgba(63, 111, 216, 0.32);
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 55%, var(--primary-strong) 100%);
+  box-shadow: 0 6px 16px rgba(var(--primary-strong-rgb), 0.32);
   cursor: pointer;
   transition: transform 0.15s $ease_out, box-shadow 0.15s ease;
 
@@ -59,7 +59,7 @@
   }
 
   &:hover {
-    box-shadow: 0 8px 20px rgba(63, 111, 216, 0.42);
+    box-shadow: 0 8px 20px rgba(var(--primary-strong-rgb), 0.42);
   }
 
   &:active {
@@ -330,7 +330,7 @@
 }
 
 .ctaButton:hover {
-  box-shadow: 0 10px 24px rgba(63, 111, 216, 0.4);
+  box-shadow: 0 10px 24px rgba(var(--primary-strong-rgb), 0.4);
 }
 
 // Mark Completed: green, so it stands apart from the blue Chat button

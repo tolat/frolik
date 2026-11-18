@@ -36,65 +36,15 @@ import {
   renameOuting,
 } from "../../utils/data-fetch";
 import SliderNavber from "../UI/SliderNavbar";
-import CreateActivityModal from "../Modals/CreateActivityModal";
+import CreateActivityDrawer from "../Popups/CreateActivityDrawer";
 import LoaderSpinner from "../UI/LoaderSpinner";
 import { useT } from "../../i18n";
+import { inkFor } from "../../utils/theme";
 
 // The category colour, see-through: a soft highlight behind the tab title
 const tint = (color, alpha) => {
   const m = String(color || "").match(/(\d+)[,\s]+(\d+)[,\s]+(\d+)/);
   return m ? `rgba(${m[1]}, ${m[2]}, ${m[3]}, ${alpha})` : color;
-};
-
-// Category tabs only: the category colour darkened just enough to reach a
-// contrast against the page (WCAG ratio), same hue — pastels like Sports
-// yellow or Art green were nearly invisible as text/underline. Everything
-// else (avatars, stripes) keeps the original colour.
-const PAGE_BG = [244, 246, 250];
-const luminance = ([r, g, b]) => {
-  const ch = (v) => {
-    v /= 255;
-    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
-  };
-  return 0.2126 * ch(r) + 0.7152 * ch(g) + 0.0722 * ch(b);
-};
-const contrast = (a, b) => {
-  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
-  return (hi + 0.05) / (lo + 0.05);
-};
-const hslToRgb = (h, s, l) => {
-  const k = (n) => (n + h / 30) % 12;
-  const a = s * Math.min(l, 1 - l);
-  const f = (n) => l - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1));
-  return [f(0), f(8), f(4)].map((v) => Math.round(v * 255));
-};
-const inkFor = (color, target) => {
-  const m = String(color || "").match(/(\d+)[,\s]+(\d+)[,\s]+(\d+)/);
-  if (!m) return color;
-  const rgb = m.slice(1, 4).map(Number);
-  if (contrast(rgb, PAGE_BG) >= target) return `rgb(${rgb.join(", ")})`;
-  const [r, g, b] = rgb.map((v) => v / 255);
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  const d = max - min;
-  let h = 0;
-  if (d) {
-    if (max === r) h = ((g - b) / d) % 6;
-    else if (max === g) h = (b - r) / d + 2;
-    else h = (r - g) / d + 4;
-    h = (h * 60 + 360) % 360;
-  }
-  let l = (max + min) / 2;
-  const sat = d ? d / (1 - Math.abs(2 * l - 1)) : 0;
-  // Softened saturation: pastels are near-100% saturated in HSL, so darkening
-  // them as-is turned out neon (lime green, pure red)
-  const soft = Math.min(sat, 0.6);
-  let out = rgb;
-  while (l > 0.05 && contrast(out, PAGE_BG) < target) {
-    l -= 0.01;
-    out = hslToRgb(h, soft, l);
-  }
-  return `rgb(${out.join(", ")})`;
 };
 
 const Go = (props) => {
@@ -381,10 +331,8 @@ const Go = (props) => {
     });
   };
 
-  const onCreateActivityClick = () => {
-    dispatch(modalActions.setSelector("create-activity"));
-    dispatch(modalActions.showModal());
-  };
+  const [createActivityOpen, setCreateActivityOpen] = useState(false);
+  const onCreateActivityClick = () => setCreateActivityOpen(true);
 
   const addActivity = (activity) => {
     dispatchFilter({ type: "add-activity", payload: activity });
@@ -401,7 +349,12 @@ const Go = (props) => {
     <Fragment>
       <AddUserModal />
       <EditUsersModal />
-      <CreateActivityModal addActivity={addActivity} />
+      <CreateActivityDrawer
+        open={createActivityOpen}
+        onClose={() => setCreateActivityOpen(false)}
+        addActivity={addActivity}
+        defaultCategory={selected}
+      />
       <FilterActivitiesModal
         filter={activityFilter.filter}
         dispatchFilter={dispatchFilter}

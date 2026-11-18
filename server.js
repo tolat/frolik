@@ -196,4 +196,6 @@ server.listen(process.env.PORT, () => {
   // Built-in activities: illustrated covers + Find The Rainbow, applied once
   // (does nothing when already up to date) (utils/activityArt.js)
   require("./utils/activityArt").startActivityArtSync();
+  // Category colours from seeds/globals.js (utils/globalsSync.js)
+  require("./utils/globalsSync").startGlobalsSync();
 });

@@ -17,6 +17,7 @@
     "remove": "Entfernen",
     "add": "Titelbild hinzufügen",
     "optional": "optional",
-    "readError": "Diese Datei konnte nicht als Bild gelesen werden."
+    "readError": "Diese Datei konnte nicht als Bild gelesen werden.",
+    "drag": "Zum Ausrichten ziehen"
   }
 }

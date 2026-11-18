@@ -17,6 +17,7 @@
     "remove": "Rimuovi",
     "add": "Aggiungi una foto di copertina",
     "optional": "facoltativa",
-    "readError": "Impossibile leggere il file come immagine."
+    "readError": "Impossibile leggere il file come immagine.",
+    "drag": "Trascina per posizionare"
   }
 }

@@ -14,7 +14,7 @@ const ListSentinel = forwardRef(({ hasMore }, ref) => (
       minHeight: 1,
     }}
   >
-    {hasMore && <LoaderSpinner width="2.2rem" height="2.2rem" color="#5b8def" />}
+    {hasMore && <LoaderSpinner width="2.2rem" height="2.2rem" color="var(--primary)" />}
   </div>
 ));
 

@@ -72,7 +72,7 @@
 }
 
 .headerAction:hover {
-  background-color: darken($light_blue, 4%);
+  background-color: color-mix(in srgb, var(--primary-soft) 92%, #000);
 }
 
 // ── Messages ────────────────────────────────────────────────────────────────
@@ -126,9 +126,9 @@
 }
 
 .own .bubble {
-  background: linear-gradient(135deg, #6a9bf5 0%, $blue_dark 100%);
+  background: linear-gradient(135deg, var(--primary-light) 0%, $blue_dark 100%);
   color: white;
-  box-shadow: 0 2px 8px rgba(63, 111, 216, 0.25);
+  box-shadow: 0 2px 8px rgba(var(--primary-strong-rgb), 0.25);
 }
 
 .foreign .bubble {
@@ -206,7 +206,7 @@
 
 .composer:focus {
   border-color: $blue;
-  box-shadow: 0 0 0 4px rgba(91, 141, 239, 0.18);
+  box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.18);
 }
 
 .sendButton {
@@ -218,10 +218,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #6a9bf5 0%, $blue_dark 100%);
+  background: linear-gradient(135deg, var(--primary-light) 0%, $blue_dark 100%);
   color: white;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(63, 111, 216, 0.35);
+  box-shadow: 0 4px 12px rgba(var(--primary-strong-rgb), 0.35);
 }
 
 .sendIcon {

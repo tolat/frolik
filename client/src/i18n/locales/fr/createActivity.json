@@ -17,6 +17,7 @@
     "remove": "Retirer",
     "add": "Ajouter une photo de couverture",
     "optional": "facultatif",
-    "readError": "Ce fichier n'a pas pu être lu comme une image."
+    "readError": "Ce fichier n'a pas pu être lu comme une image.",
+    "drag": "Faites glisser pour cadrer"
   }
 }

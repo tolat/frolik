@@ -167,6 +167,9 @@ router.post(
       number: n,
     }));
     delete fields.cover_photo; // only ever set from an uploaded photo below
+    // Cover framing chosen in the drawer: two percentages, nothing else
+    const pos = String(fields.cover_position || "");
+    fields.cover_position = /^(100|\d{1,2})% (100|\d{1,2})%$/.test(pos) ? pos : undefined;
 
     // Optional cover photo (data URL). Validate + shrink before saving
     // anything, so a bad image doesn't leave a half-created activity.

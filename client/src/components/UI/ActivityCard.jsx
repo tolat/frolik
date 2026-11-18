@@ -8,7 +8,6 @@ import ratingIcon from "../../images/star.png";
 import groupIcon from "../../images/friends.png";
 import SimpleButton from "./SimpleButton";
 import { Fragment, useState, useCallback, useEffect } from "react";
-import trophyIcon from "../../images/trophy.png";
 import balloonLightIcon from "../../images/air-balloon-light.png";
 import balloonBlueIcon from "../../images/air-balloon-blue.png";
 import completeIcon from "../../images/complete.png";
@@ -25,6 +24,7 @@ import { hideModal } from "../../store/modal-actions";
 import { deleteActivity } from "../../utils/data-fetch";
 import { useLocation, useNavigate } from "react-router-dom";
 import SixPhotoGrid from "./SixPhotoGrid";
+import TintedIcon from "./TintedIcon";
 import { useT } from "../../i18n";
 
 const ActivityCard = (props) => {
@@ -180,6 +180,11 @@ const ActivityCard = (props) => {
       )}
     </Fragment>
   );
+  // Photo cards in lists use the feed layout (not the drawer, not Create
+  // Activity, not the social popups that open with instructions shown)
+  // (and the activity drawer, which opens with the instructions showing)
+  const feedCard =
+    hasPhotos && !props.creatingActivity && (props.drawer || !props.showInstructions);
   const badges = (
     <Fragment>
       {props.completed ? (
@@ -214,7 +219,7 @@ const ActivityCard = (props) => {
               noShadow={true}
               onClick={handleDeleteActivity}
               className={styles.deleteActivityButton}
-              style={hasPhotos && { filter: "invert(1)" }}
+              style={hasPhotos && !feedCard ? { filter: "invert(1)" } : null}
             >
               {t("activity.actions.delete")}
             </SimpleButton>
@@ -223,6 +228,133 @@ const ActivityCard = (props) => {
       ) : null}
     </Fragment>
   );
+
+  if (feedCard && categoryColorMap) {
+    const isSelected = goState.outing.activity?.name === props.activity.name;
+    const rating = calcAvgRating(props.activity);
+    const chips = [
+      t("activity.stats.hours", { count: props.activity.duration }),
+      t("activity.stats.costValue", { cost: props.activity.cost }),
+      t("activity.stats.participants", { count: props.activity.participants }),
+    ];
+    const selectButton = props.hideSelect ? null : isSelected ? (
+      <button type="button" className={`${styles.feedSelect} ${styles.feedRemove}`} onClick={handleRemove}>
+        {t("activity.actions.remove")}
+      </button>
+    ) : (
+      <button type="button" className={styles.feedSelect} onClick={handleSelect}>
+        {t("activity.actions.select")}
+      </button>
+    );
+    const instructionsButton = (
+      <button type="button" className={styles.feedGhost} onClick={handleToggleInstructions}>
+        {instructionsVisible
+          ? t("activity.actions.hideInstructions")
+          : t("activity.actions.showInstructions")}
+      </button>
+    );
+    const chipRow = (
+      <div className={styles.feedChips}>
+        {chips.map((c, i) => (
+          <span key={i} className={styles.feedChip}>
+            <img src={[timeIcon, costIcon, groupIcon][i]} alt="" />
+            {c}
+          </span>
+        ))}
+      </div>
+    );
+    return (
+      <div
+        style={photoLoaded ? props.style : { ...props.style, ...shineSync() }}
+        className={`${styles.feedCard} ${props.drawer ? styles.drawer : ""} ${
+          photoLoaded ? "tile-ready" : "tile-loading has-skeleton"
+        }`}
+      >
+        {props.activity.created_by ? (
+          <WarningPopup
+            selector={`confirm-delete-activity-${props.activity._id}`}
+            header={t("activity.delete.header")}
+            message={confirmDeleteMessage}
+            delete={deleting ? t("activity.delete.deleting") : t("activity.actions.delete")}
+            deleteClick={onActivityDelete}
+            cancel={t("activity.actions.cancel")}
+            cancelClick={() => dispatch(popupActions.hidePopup())}
+          />
+        ) : null}
+        <div
+          className={styles.feedPhoto}
+          style={
+            props.activity.cover_position
+              ? { "--cover-position": props.activity.cover_position }
+              : null
+          }
+        >
+          <SixPhotoGrid
+            photos={props.activity.photos}
+            // Drawer: the drawer starts off-screen (lazy loading held the
+            // photo back), and tapping the art opens it full screen
+            eager={!!props.drawer}
+            onClick={props.drawer ? null : handleToggleInstructions}
+            onFirstLoad={handleFirstPhotoLoad}
+          />
+          {chipRow}
+          <span className={styles.feedRating}>
+            <img src={ratingIcon} alt={t("activity.stats.rating")} />
+            {rating}
+          </span>
+        </div>
+        <div className={styles.feedBody}>
+          <div className={styles.feedName}>{props.activity.name}</div>
+          <div className={styles.feedMeta}>
+            {props.activity.location}
+            <span className={styles.inlineBadges}>{badges}</span>
+          </div>
+          <div className={styles.feedDescription}>{props.activity.description}</div>
+          {props.drawer ? null : (
+            <div className={styles.feedActions}>
+              {instructionsButton}
+              {selectButton}
+            </div>
+          )}
+        </div>
+        <div
+          style={{
+            maxHeight: instructionsVisible || props.showInstructions ? "200rem" : "0",
+          }}
+          className={`${styles.instructionsContainer} ${styles.feedInstructions}`}
+        >
+          <div className={styles.goalLine}>
+            <span className={styles.goalLabel}>{t("activity.goalHeader")}</span>{" "}
+            {props.activity.goal}
+          </div>
+          {props.activity.instructions && props.activity.instructions[0] && (
+            <Fragment>
+              <div className={styles.iHeader}>{t("activity.instructionsHeader")}</div>
+              {props.activity.instructions.map((i, idx) => (
+                <InstructionCard key={`${i.type ?? ""}${idx}`} instruction={i} />
+              ))}
+            </Fragment>
+          )}
+        </div>
+        {/* Drawer: Create Outing / Send pinned to the bottom */}
+        {props.drawer ? (
+          <Buttons
+            {...props}
+            hasPhotos={false}
+            handleSend={handleSend}
+            currentUrl={currentUrl}
+            handleUseActivity={handleUseActivity}
+            handleToggleInstructions={handleToggleInstructions}
+            instructionsVisible={instructionsVisible}
+            goState={goState}
+            handleRemove={handleRemove}
+            handleSelect={handleSelect}
+          />
+        ) : null}
+        {!photoLoaded && <SkeletonCard variant="activity" fill />}
+      </div>
+    );
+  }
 
   return (
     categoryColorMap && (
@@ -352,6 +484,14 @@ const ActivityCard = (props) => {
             }}
             className={styles.instructionsContainer}
           >
+            <div
+              className={`${styles.goalLine} ${
+                props.creatingActivity ? styles.goalLineCreate : ""
+              }`}
+            >
+              <span className={styles.goalLabel}>{t("activity.goalHeader")}</span>{" "}
+              {props.activity.goal}
+            </div>
             {props.activity.instructions && props.activity.instructions[0] && (
               <Fragment>
                 <div className={styles.iHeader}>{t("activity.instructionsHeader")}</div>
@@ -373,15 +513,6 @@ const ActivityCard = (props) => {
                 {t("activity.addInstruction")}
               </SimpleButton>
             )}
-            <div className={styles.iHeader}>{t("activity.goalHeader")}</div>
-            <div className={styles.goalContainer}>
-              <img
-                className={styles.goalIcon}
-                src={trophyIcon}
-                alt={t("activity.goalAlt")}
-              />
-              <div className={styles.goal}>{props.activity.goal}</div>
-            </div>
           </div>
           {/* No bottom button bar while creating (it was an empty gap under Goal) */}
           {(hasPhotos && currentUrl === "/outing") || props.creatingActivity ? null : (
@@ -448,10 +579,11 @@ const Buttons = (props) => {
             : null}
           {social ? (
             <span className={styles.createOutingLabel}>
-              <img
-                src={props.hasPhotos ? balloonLightIcon : balloonBlueIcon}
-                alt=""
-              />
+              {props.hasPhotos ? (
+                <img src={balloonLightIcon} alt="" />
+              ) : (
+                <TintedIcon src={balloonBlueIcon} className={styles.createOutingIcon} />
+              )}
               {t("activity.actions.createOuting")}
             </span>
           ) : null}

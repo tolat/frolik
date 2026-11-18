@@ -15,6 +15,11 @@ import { socketActions } from "./store/socket-slice";
 import { modalActions } from "./store/modal-slice";
 import { authActions } from "./store/auth-slice";
 import { autoUpdateLocation } from "./utils/location";
+import {
+  applyPrimaryColor,
+  dominantCategory,
+  FOLLOW_COLOUR_WHEEL,
+} from "./utils/theme";
 
 const connectSocket = async (socket, user) => {
   try {
@@ -29,6 +34,20 @@ function App() {
   const dispatch = useDispatch();
   // Connect socket.io to server for message sending
   const user = useSelector((state) => state.auth.user);
+
+  // Primary colour: the dominant colour of the user's colour wheel (the
+  // default blue when logged out or before their first outing), when
+  // FOLLOW_COLOUR_WHEEL is on in utils/theme.js
+  const categoryColorMap = useSelector(
+    (state) => state.auth.globals?.categoryColorMap
+  );
+  const dominant = FOLLOW_COLOUR_WHEEL
+    ? dominantCategory(user, categoryColorMap)
+    : null;
+  const dominantColor = dominant ? categoryColorMap[dominant] : null;
+  useEffect(() => {
+    applyPrimaryColor(dominantColor);
+  }, [dominantColor]);
 
   // Register service worker and set app badge prompt if logged in
   useEffect(() => {

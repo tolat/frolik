@@ -138,7 +138,7 @@ const LocationAutocomplete = (props) => {
         {props.locked && <span className={styles.autoPill}>{t("location.auto.pill")}</span>}
         {loading && !props.locked && (
           <span className={styles.inputSpinner}>
-            <LoaderSpinner width="1.6rem" height="1.6rem" color="#5b8def" />
+            <LoaderSpinner width="1.6rem" height="1.6rem" color="var(--primary)" />
           </span>
         )}
         {showList && (

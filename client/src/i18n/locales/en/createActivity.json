@@ -17,6 +17,7 @@
     "remove": "Remove",
     "add": "Add a cover photo",
     "optional": "optional",
-    "readError": "That file couldn't be read as an image."
+    "readError": "That file couldn't be read as an image.",
+    "drag": "Drag to position"
   }
 }

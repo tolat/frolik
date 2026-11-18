@@ -6,9 +6,9 @@ $navbar_height: 8.8rem;
 
 // ── Design tokens ────────────────────────────────────────────────────────────
 // Palette (kept close to the original hues so existing PNG icons still match)
-$blue: #5b8def;
-$blue_dark: #3f6fd8;
-$light_blue: #eaf1fe;
+$blue: var(--primary); // primary action colour: set in index.css :root
+$blue_dark: var(--primary-strong);
+$light_blue: var(--primary-soft);
 $green: #34b77a;
 $card_grey: #f7f8fb;
 $button_grey: #eef0f5;
@@ -54,7 +54,7 @@ $dur: 0.28s;
 // ── Buttons ──────────────────────────────────────────────────────────────────
 // One look for every action button (SimpleButton + className). !important
 // because SimpleButton's own base colour can load after a module's rules.
-$grad_blue: linear-gradient(135deg, #6a9bf5 0%, #4a7ee8 55%, #3f6fd8 100%);
+$grad_blue: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 55%, var(--primary-strong) 100%);
 $grad_green: linear-gradient(135deg, #45c58a 0%, #34b77a 55%, #2a9a66 100%);
 $grad_red: linear-gradient(135deg, #f47f7c 0%, #ef6461 55%, #d94d4a 100%);
 
@@ -70,7 +70,7 @@ $grad_red: linear-gradient(135deg, #f47f7c 0%, #ef6461 55%, #d94d4a 100%);
   @include btn_base;
   background: $grad_blue !important;
   color: white !important;
-  box-shadow: 0 4px 12px rgba(63, 111, 216, 0.28) !important;
+  box-shadow: 0 4px 12px rgba(var(--primary-strong-rgb), 0.28) !important;
 }
 
 // Positive action (Accept, Mark Completed): green gradient

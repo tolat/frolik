@@ -29,12 +29,12 @@
     },
     "costValue": "${{cost}}",
     "participants": {
-      "zero": "{{count}} +",
-      "one": "{{count}} +",
-      "two": "{{count}} +",
-      "few": "{{count}} +",
-      "many": "{{count}} +",
-      "other": "{{count}} +"
+      "zero": "{{count}}+",
+      "one": "{{count}}+",
+      "two": "{{count}}+",
+      "few": "{{count}}+",
+      "many": "{{count}}+",
+      "other": "{{count}}+"
     }
   },
   "badges": {

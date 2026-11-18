@@ -26,7 +26,7 @@
   justify-content: center;
   border-radius: 100rem;
   background: $grad_blue;
-  box-shadow: 0 6px 16px rgba(63, 111, 216, 0.3);
+  box-shadow: 0 6px 16px rgba(var(--primary-strong-rgb), 0.3);
   transition: transform $dur_fast $ease_out, box-shadow $dur_fast ease;
 }
 

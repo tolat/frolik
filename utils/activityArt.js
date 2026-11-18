@@ -4,6 +4,9 @@
 //  - gives every built-in activity its illustrated cover (cover_photo) and
 //    uploads the art from seeds/images/activity-art to the app's image
 //    storage (local-storage/ or AWS_BUCKET, like the rest of the app)
+// To replace a picture, save it under a new name (art-<key>-v2.jpeg, -v3...)
+// and point the seed's cover_photo at it: the changed name is what makes
+// every server upload it and switch over on its next start.
 // Only built-in activities (no created_by) are touched, and an activity whose
 // cover already matches is left alone, so running it again does nothing.
 // Runs on server start (server.js) and from scripts/update-activity-art.js.
