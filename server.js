@@ -193,4 +193,7 @@ server.listen(process.env.PORT, () => {
   require("./utils/outingLifecycle").startStaleOutingJob();
   // Thursday-evening "new matches waiting" push (utils/weeklyNudge.js)
   require("./utils/weeklyNudge").startWeeklyNudgeJob();
+  // Built-in activities: illustrated covers + Find The Rainbow, applied once
+  // (does nothing when already up to date) (utils/activityArt.js)
+  require("./utils/activityArt").startActivityArtSync();
 });
