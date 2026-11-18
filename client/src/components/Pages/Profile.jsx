@@ -19,7 +19,7 @@ import {
 } from "../../utils/utils";
 import balloonIcon from "../../images/air-balloon.png";
 import { useNavigate } from "react-router-dom";
-import IconButton from "../UI/IconButton";
+import CircleAction from "../UI/CircleAction";
 import chatIcon from "../../images/chat.png";
 import getOutIcon from "../../images/air-balloon.png";
 import SimpleSearch from "../UI/SimpleSearch";
@@ -64,7 +64,6 @@ const Profile = (props) => {
   const dataState = useSelector((state) => state.data);
   const userData = dataState.users[user._id];
   const userPhotos = getPhotosFromState(userData);
-  const friendCardButtonStyle = { width: "3rem", height: "3rem" };
   const modalIsShowing = useSelector(
     (state) => state.modal.selector !== "none"
   );
@@ -103,19 +102,15 @@ const Profile = (props) => {
   const FriendCardButtons = (props) => {
     return (
       <div className={styles.friendCardButtons}>
-        <IconButton
+        <CircleAction
           onClick={() => onCreateChat(props.user)}
-          className={styles.friendCardButton}
-          iconStyle={friendCardButtonStyle}
           icon={chatIcon}
-          subText={"+ Chat"}
+          label="+ Chat"
         />
-        <IconButton
+        <CircleAction
           onClick={() => onCreateOuting(props.user)}
-          className={styles.friendCardButton}
-          iconStyle={friendCardButtonStyle}
           icon={getOutIcon}
-          subText={"+ Outing"}
+          label="+ Outing"
         />
       </div>
     );

@@ -44,12 +44,16 @@ router.post(
 
     const existing = userSubscriptions(user);
     const isNew = !existing.some((s) => s.endpoint === subscription.endpoint);
-    user.pushSubscriptions = [
+    // Only these fields: this runs on every app load, alongside other writes
+    // to the same user, and a whole-document save() can fail with VersionError
+    const pushSubscriptions = [
       ...existing.filter((s) => s.endpoint !== subscription.endpoint),
       subscription,
     ].slice(-MAX_DEVICES);
-    user.pushSubscription = undefined;
-    await user.save();
+    await User.updateOne(
+      { _id: user._id },
+      { $set: { pushSubscriptions }, $unset: { pushSubscription: "" } }
+    );
 
     // Confirm only the first time this device is registered
     if (isNew) {

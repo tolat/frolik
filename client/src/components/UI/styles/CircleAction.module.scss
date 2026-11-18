@@ -1,0 +1,81 @@
+@import "../../../utils/responsive.scss";
+
+.action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  width: 6rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active .circle {
+    transform: scale(0.93);
+  }
+}
+
+.circle {
+  width: 4.4rem;
+  height: 4.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100rem;
+  background: $grad_blue;
+  box-shadow: 0 6px 16px rgba(63, 111, 216, 0.3);
+  transition: transform $dur_fast $ease_out, box-shadow $dur_fast ease;
+}
+
+// The PNG icons are black; white on the blue circle
+.icon {
+  width: 2.3rem;
+  height: 2.3rem;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: $text_muted;
+  white-space: nowrap;
+}
+
+.secondary,
+.locked {
+  .circle {
+    background: $button_grey;
+    box-shadow: none;
+  }
+  .icon {
+    filter: brightness(0);
+    opacity: 0.55;
+  }
+}
+
+.locked {
+  .circle,
+  .label {
+    opacity: 0.5;
+  }
+}
+
+.compact {
+  width: 5rem;
+
+  .circle {
+    width: 3.8rem;
+    height: 3.8rem;
+  }
+  .icon {
+    width: 2rem;
+    height: 2rem;
+  }
+  .label {
+    font-size: 1rem;
+  }
+}

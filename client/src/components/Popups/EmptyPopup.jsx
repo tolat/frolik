@@ -1,48 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
-import styles from "./styles/EmptyPopup.module.scss";
-import { createPortal } from "react-dom";
 import { popupActions } from "../../store/popup-slice";
-import { useEffect } from "react";
-import { useState } from "react";
-import { pixelsToRem } from "../../utils/utils";
-import { useScrollLock } from "../../utils/scrollLock";
+import Drawer from "./Drawer";
 
+// A popup with custom content (Outing Members, Send to a friend…), shown in
+// a bottom drawer. Open with popupActions.showPopup(selector).
 const EmptyPopup = (props) => {
-  const popupState = useSelector((state) => state.popup);
-  const showPopup = popupState.selector === props.selector;
-  const popupDisplay = showPopup ? "flex" : "none";
-  const [opacity, setOpacity] = useState(0);
-  const noGutters = pixelsToRem(window.innerWidth) < 40;
-  const popupStyle = { display: popupDisplay, opacity: opacity };
-  const containerStyle = {
-    // Keep a small side gutter on phones (was full-bleed)
-    width: noGutters ? "calc(100% - 2.4rem)" : null,
-    height: noGutters ? "fit-content" : null,
-  };
-
   const dispatch = useDispatch();
-  useScrollLock(showPopup);
-
-  // Change opacity
-  useEffect(() => {
-    showPopup ? setOpacity(1) : setOpacity(0);
-  }, [showPopup]);
-
-  const handleClosePopup = () => {
-    dispatch(popupActions.hidePopup());
-  };
-
-  return createPortal(
-    <div
-      style={popupStyle}
-      className={`${styles.container} ${props.aboveNav ? styles.aboveNav : ""}`}
+  const open = useSelector((state) => state.popup.selector === props.selector);
+  return (
+    <Drawer
+      open={open}
+      onClose={() => dispatch(popupActions.hidePopup())}
+      label={props.label}
     >
-      <div onClick={handleClosePopup} className={styles.blackout}></div>
-      <div style={containerStyle} className={styles.contentContainer}>
-        {props.children}
-      </div>
-    </div>,
-    document.getElementById("popup")
+      {props.children}
+    </Drawer>
   );
 };
 

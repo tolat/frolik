@@ -45,6 +45,17 @@ const isTextField = (el) =>
 //  - when the keyboard closes, snap the window back (several times while the
 //    keyboard animates away)
 //  - while nothing is focused, never leave the window offset
+// Drop html.keyboard-open when no text field has focus. Needed because a
+// focused field that is REMOVED (e.g. Log In submitted with the keyboard's
+// Go key, then the login page unmounts) never fires focusout, which left the
+// nav bar hidden after logging in.
+export const syncKeyboardOpen = () => {
+  const root = document.documentElement;
+  if (root.classList.contains("keyboard-open") && !isTextField(document.activeElement)) {
+    root.classList.remove("keyboard-open");
+  }
+};
+
 let guardInstalled = false;
 export const installViewportShiftGuard = () => {
   if (guardInstalled) return;
@@ -67,6 +78,7 @@ export const installViewportShiftGuard = () => {
   const vv = window.visualViewport;
   const guard = () => {
     if (isTextField(document.activeElement)) return; // keyboard up: iOS's turn
+    syncKeyboardOpen();
     requestAnimationFrame(snapBack);
   };
   window.addEventListener("scroll", guard, { passive: true });

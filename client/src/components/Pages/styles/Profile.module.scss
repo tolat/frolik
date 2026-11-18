@@ -115,6 +115,8 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  gap: 0.2rem;
+  flex-shrink: 0;
 }
 
 .friendCardButton {

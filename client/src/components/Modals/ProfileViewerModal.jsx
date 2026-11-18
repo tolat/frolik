@@ -12,16 +12,22 @@ import sentMail from "../../images/sent-mail.png";
 import ProfileHeader from "../UI/ProfileHeader";
 import ModalPortal from "./ModalPortal";
 import {
+  createChat,
+  fetchChats,
   fetchPhotos,
   removeFriend,
   sendFriendRequest,
 } from "../../utils/data-fetch";
+import chatIcon from "../../images/chat.png";
+import { modalActions } from "../../store/modal-slice";
+import { hideModal } from "../../store/modal-actions";
 import { authActions } from "../../store/auth-slice";
 import { useNavigate } from "react-router-dom";
 import { goActions } from "../../store/go-slice";
 import ModalHeaderPortal from "./ModalHeaderPortal";
 import SliderNavbar from "../UI/SliderNavbar";
-import IconButton from "../UI/IconButton";
+import CircleAction from "../UI/CircleAction";
+import WarningPopup from "../Popups/WarningPopup";
 
 const sliderIcons = [
   {
@@ -158,50 +164,95 @@ const ControlButtons = (props) => {
     navigate("/outing");
   };
 
-  const buttonIconStyle = { width: "3.5rem" };
+  // Same as + Chat on the friend cards: open (or create) a chat with them
+  const onCreateChat = () => {
+    createChat(props.user, [props.modalUser], async (response) => {
+      fetchChats(props.user);
+      dispatch(modalActions.setActiveChat(response.chat));
+      await hideModal(true);
+      dispatch(modalActions.setSelector("chat-modal"));
+      dispatch(
+        modalActions.showModal({
+          headerStyle: { backgroundColor: "transparent" },
+        })
+      );
+    });
+  };
+
+  const name = props.modalUser.first_name;
+  const hidePopup = () => dispatch(popupActions.hidePopup());
 
   return (
     <div className={styles.friendCardButtons}>
+      <WarningPopup
+        selector="confirm-unfriend"
+        header={`Unfriend ${name}?`}
+        message={`${name} will be removed from your friends. To be friends again, one of you will need to send a new friend request.`}
+        cancel="Cancel"
+        cancelClick={hidePopup}
+        delete="Unfriend"
+        deleteClick={() => {
+          hidePopup();
+          onRemoveFriend();
+        }}
+      />
+      <WarningPopup
+        selector="confirm-friend-request"
+        header={`Send ${name} a friend request?`}
+        message={`${name} will get an alert and can accept or deny it.`}
+        ok="Send Request"
+        okClick={() => {
+          hidePopup();
+          onAddFriend();
+        }}
+        cancel="Cancel"
+        cancelClick={hidePopup}
+      />
       {isFriend ? (
-        <div className={styles.buttonContainer}>
-          <IconButton
-            onClick={() => onCreateOuting()}
-            className={styles.buttonStyle}
-            iconStyle={buttonIconStyle}
-            icon={getOutIcon}
-            subText={'+ Outing'}
+        <>
+          <CircleAction
+            compact
+            onClick={onCreateChat}
+            icon={chatIcon}
+            label="+ Chat"
           />
-          <IconButton
-            onClick={() => onRemoveFriend(props.user)}
-            className={styles.buttonStyle}
-            iconStyle={buttonIconStyle}
+          <CircleAction
+            compact
+            onClick={onCreateOuting}
+            icon={getOutIcon}
+            label="+ Outing"
+          />
+          <CircleAction
+            compact
+            onClick={() => dispatch(popupActions.showPopup("confirm-unfriend"))}
             icon={deleteFriend}
-            subText={'Unfriend'}
-          />{" "}
-        </div>
+            label="Unfriend"
+            tone="secondary"
+          />
+        </>
       ) : friendRequested ? (
-        <IconButton
-          onClick={() => {}}
-          className={styles.buttonStyle}
-          iconStyle={buttonIconStyle}
+        <CircleAction
+          compact
           icon={sentMail}
-          subText={'Requested'}
+          label="Requested"
+          tone="secondary"
         />
       ) : hasCompletedOutingTogether ? (
-        <IconButton
-          onClick={() => onAddFriend()}
-          className={styles.buttonStyle}
-          iconStyle={buttonIconStyle}
+        <CircleAction
+          compact
+          onClick={() =>
+            dispatch(popupActions.showPopup("confirm-friend-request"))
+          }
           icon={addFriend}
-          subText={'+ Friend'}
+          label="+ Friend"
         />
       ) : (
-        <IconButton
+        <CircleAction
+          compact
           onClick={onLockedAddFriend}
-          className={`${styles.buttonStyle} ${styles.lockedButton}`}
-          iconStyle={buttonIconStyle}
           icon={addFriend}
-          subText={'+ Friend'}
+          label="+ Friend"
+          tone="locked"
         />
       )}
     </div>

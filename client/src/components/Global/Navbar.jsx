@@ -26,6 +26,7 @@ import InstallPromptModal from "../Modals/InstallPromptModal";
 import Tour from "../Tour/Tour";
 import SendActivityPopup from "../Popups/SendActivityPopup";
 import SharedActivityPopup from "../Popups/SharedActivityPopup";
+import { syncKeyboardOpen } from "../../utils/pageScroll";
 
 const Navbar = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -49,6 +50,8 @@ const Navbar = (props) => {
 
   // Hide navbar on login page
   useEffect(() => {
+    syncKeyboardOpen(); // a page change never leaves the nav hidden
+
     if (
       currentUrl === "/profile" ||
       currentUrl === "/alerts" ||

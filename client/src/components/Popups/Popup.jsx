@@ -1,39 +1,19 @@
-import { createPortal } from "react-dom";
-import styles from "./styles/Popup.module.scss";
-import { useEffect, useState } from "react";
-import { pixelsToRem } from "../../utils/utils";
-import { useScrollLock } from "../../utils/scrollLock";
+import { useDispatch } from "react-redux";
+import { popupActions } from "../../store/popup-slice";
+import Drawer from "./Drawer";
 
+// Popup content (e.g. WarningPopup) shown in a bottom drawer. Tapping outside
+// or dragging it down closes it, like Cancel.
 const Popup = (props) => {
-  const [opacity, setOpacity] = useState(0);
-  const showPopup = props.showPopup;
-  useScrollLock(!!showPopup);
-  const noGutters = pixelsToRem(window.innerWidth) < 40;
-  const containerStyle = {
-    width: noGutters ? "100vw" : null,
-    margin: noGutters ? "0" : null,
-  };
-  const popupStyle = {
-    width: noGutters ? "90%" : null,
-    padding: noGutters ? "1rem" : null,
-  };
-
-  // Change opacity
-  useEffect(() => {
-    showPopup ? setOpacity(1) : setOpacity(0);
-  }, [showPopup]);
-
-  return createPortal(
-    <div
-      style={{ ...props.style, opacity: opacity, ...containerStyle }}
-      className={styles.container}
+  const dispatch = useDispatch();
+  return (
+    <Drawer
+      open={!!props.showPopup}
+      onClose={() => dispatch(popupActions.hidePopup())}
+      label={props.label}
     >
-      <div className={styles.blackout}></div>
-      <div style={popupStyle} className={styles.popup}>
-        {props.children}
-      </div>
-    </div>,
-    document.getElementById("popup")
+      {props.children}
+    </Drawer>
   );
 };
 

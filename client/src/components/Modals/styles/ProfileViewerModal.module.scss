@@ -59,18 +59,10 @@
   opacity: 1 !important;
 }
 
-.buttonContainer{
+// + Outing / Unfriend / + Friend / Requested (components/UI/CircleAction)
+.friendCardButtons {
   display: flex;
-  width: 10rem;
-  justify-content: space-between;
-
-}
-
-.buttonStyle{
-  display: flex;
-  flex-direction: column;
-}
-// "+ Friend" before you've completed an Outing together
-.lockedButton {
-  opacity: 0.4;
+  align-items: center;
+  gap: 0;
+  flex-shrink: 0;
 }

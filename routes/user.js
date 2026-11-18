@@ -366,8 +366,10 @@ router.get(
       kept.push({ user: picked._id, updated: Date.now() });
     }
 
+    // Write only this field: a whole-document save() here raced the location
+    // update that runs at the same moment on login and failed (VersionError)
     user.matches = kept;
-    await user.save();
+    await User.updateOne({ _id: user._id }, { $set: { matches: kept } });
 
     const matches = await populateFriends(user.matches.map((m) => m.user));
     res.send({ matches });
@@ -874,7 +876,10 @@ router.post(
     const user = req.user;
     const { location, location_geo, auto_location } = req.body;
 
-    if (typeof auto_location === "boolean") user.auto_location = auto_location;
+    const changes = {};
+    if (typeof auto_location === "boolean") {
+      user.auto_location = changes.auto_location = auto_location;
+    }
 
     if (location !== undefined) {
       const geo = toGeoPoint(location_geo);
@@ -884,11 +889,14 @@ router.post(
           message: "Couldn't update your location.",
         });
       }
-      user.location = location.slice(0, 200);
-      user.location_geo = geo;
+      user.location = changes.location = location.slice(0, 200);
+      user.location_geo = changes.location_geo = geo;
     }
 
-    await user.save();
+    // Only these fields (see /matches: concurrent whole-document saves fail)
+    if (Object.keys(changes).length) {
+      await User.updateOne({ _id: user._id }, { $set: changes });
+    }
     pushUserUpdate(user.friends);
     res.send({
       location: user.location,
