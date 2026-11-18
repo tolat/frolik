@@ -287,7 +287,8 @@ module.exports.activitySeeds = [
 
   // Find The Rainbow (replaced Beach Glass Rainbow; same database record).
   // Cover photo: "findtherainbow" (seeds/images/sampleUserPhotos), by
-  // @ramone on Unsplash, free under the Unsplash License.
+  // @jcquiroga1982 on Unsplash ("Rainbow over city buildings during
+  // daytime", cropped square on the rainbow), free under the Unsplash License.
   {
     name: "Find The Rainbow",
     description: "Hit the streets and hunt down a rainbow, one colour at a time!",
