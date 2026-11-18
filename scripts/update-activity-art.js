@@ -7,7 +7,8 @@
 // Only built-in activities (no created_by) are touched.
 //   DB_URL=<db> node scripts/update-activity-art.js            # preview
 //   DB_URL=<db> node scripts/update-activity-art.js --apply    # write
-// Needs the AWS_* variables for a live S3 bucket.
+// For a live database pass the live S3 settings as well (STORAGE=s3 plus the
+// AWS_* variables); the script refuses a remote DB with local image storage.
 require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
@@ -23,6 +24,17 @@ const RENAME_FIELDS = ["name", "description", "category", "goal", "featured", "i
 
 (async () => {
   const apply = process.argv.includes("--apply");
+  // A live (remote) database with local image storage would point the live
+  // activities at covers that only exist on this computer: refuse that.
+  const remoteDb = !/localhost|127\.0\.0\.1/.test(process.env.DB_URL || "");
+  if (remoteDb && useLocalStorage) {
+    throw new Error(
+      "DB_URL is a remote database but images would go to local-storage/ " +
+        "(STORAGE=local in .env, or no AWS_BUCKET). Run it with the live " +
+        "S3 settings too: STORAGE=s3 AWS_BUCKET=... AWS_ACCESS_KEY_ID=... " +
+        "AWS_SECRET_ACCESS_KEY=... AWS_DEFAULT_REGION=..."
+    );
+  }
   await mongoose.connect(process.env.DB_URL);
   console.log(`Images go to ${useLocalStorage ? "local-storage/" : `bucket ${process.env.AWS_BUCKET}`}\n`);
 
