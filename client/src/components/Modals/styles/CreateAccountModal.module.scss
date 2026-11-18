@@ -38,16 +38,13 @@
 
 .resendEmailButton{
     @include btn_primary;
-    width: 50%;
+    @include btn_slim;
+    width: fit-content;
+    padding: 1.1rem 2.4rem !important;
     margin-bottom: 2rem;
 }
 
-.unclickable{
-    background-color: $button_grey;
-    color: grey;
-}
-
-.unclickable:hover{
-    cursor: not-allowed !important;
-    opacity: 1 !important;
+.resendEmailButton.unclickable,
+.resendEmailButton.unclickable:hover{
+    @include btn_disabled;
 }

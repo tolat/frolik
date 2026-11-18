@@ -1,5 +1,5 @@
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import styles from "./styles/Utility.module.scss";
+import styles from "./styles/Auth.module.scss";
 import SimpleButton from "../UI/SimpleButton";
 import SimpleInput from "../UI/SimpleInput";
 import { useState } from "react";
@@ -36,7 +36,7 @@ const Utility = (props) => {
       setSendLinkButtonText("Send Link");
     };
     if (resetUsername && resetUsername !== "") {
-      setSendLinkButtonText("Sending Link..");
+      setSendLinkButtonText("Sending link…");
       sendResetLink(resetUsername, onComplete);
     }
   };
@@ -49,13 +49,13 @@ const Utility = (props) => {
       }
       setResetButtonText("Reset Password");
     };
-    setResetButtonText("Resetting..");
+    setResetButtonText("Resetting…");
     resetPassword(userID, resetToken, password, onComplete);
   };
 
   const headers = {
     "email-verified": "Email Address Verified!",
-    "send-reset-password-link": "Get Password Reset Link",
+    "send-reset-password-link": "Forgot your password?",
     "reset-password-link-sent": "Reset Link Sent",
     "reset-password": "Reset Password",
     "password-reset-success": "Password Reset Successful!",
@@ -65,101 +65,98 @@ const Utility = (props) => {
     "email-verified":
       "Your email address has been verified. You may now login with your username and password.",
     "send-reset-password-link":
-      "A password reset link will be sent to your email.",
+      "Enter your email and we'll send you a link to reset it.",
     "reset-password-link-sent": "Check your email for the password reset link!",
     "reset-password": "Enter a new password below.",
     "password-reset-success": "You may now log in with your new password.",
   };
 
+  const hasEmail = resetUsername && resetUsername !== "";
+
+  const loginButton = (text) => (
+    <SimpleButton
+      className={styles.primaryButton}
+      noShadow={true}
+      onClick={handleGoToLoginClick}
+    >
+      {text}
+    </SimpleButton>
+  );
+
   const elements = {
-    "email-verified": (
-      <SimpleButton
-        className={styles.actionButton}
-        noShadow={true}
-        onClick={handleGoToLoginClick}
-      >
-        Go to Login
-      </SimpleButton>
-    ),
+    "email-verified": loginButton("Go to Login"),
     "send-reset-password-link": (
-      <div className={styles.sendResetLinkElements}>
-        <SimpleInput
-          defaultVal={""}
-          setDataChanged={setResetUsername}
-          label="Enter Email"
-          name="enter-username"
-        ></SimpleInput>
+      <>
+        <div className={styles.fields}>
+          <SimpleInput
+            defaultVal={""}
+            setDataChanged={setResetUsername}
+            label="Email"
+            name="enter-username"
+            type="email"
+          ></SimpleInput>
+        </div>
         <SimpleButton
           noShadow={true}
-          className={
-            !resetUsername || resetUsername === ""
-              ? styles.unclickable
-              : styles.actionButton
-          }
-          onClick={
-            resetUsername && resetUsername !== "" ? handleSendLink : null
-          }
+          className={`${styles.primaryButton} ${
+            hasEmail ? "" : styles.disabled
+          }`}
+          onClick={hasEmail ? handleSendLink : null}
         >
           {sendLinkButtonText}
         </SimpleButton>
-        <SimpleButton noShadow={true} onClick={handleGoToLoginClick}>
-          Back
-        </SimpleButton>
-      </div>
+        <div className={`${styles.links} ${styles.center}`}>
+          <button
+            type="button"
+            className={styles.link}
+            onClick={handleGoToLoginClick}
+          >
+            Back to Login
+          </button>
+        </div>
+      </>
     ),
-    "reset-password-link-sent": (
-      <SimpleButton
-        className={styles.button}
-        noShadow={true}
-        onClick={handleGoToLoginClick}
-      >
-        Back to Login
-      </SimpleButton>
-    ),
+    "reset-password-link-sent": loginButton("Back to Login"),
     "reset-password": (
-      <div className={styles.passwordResetContainer}>
-        <SimpleInput
-          defaultVal={""}
-          setDataChanged={setPassword}
-          label="Enter new password"
-          name="enter-new-password"
-          type="password"
-        ></SimpleInput>
-        <SimpleInput
-          defaultVal={""}
-          setDataChanged={setConfirmPassword}
-          label="Confrim password"
-          name="confirm-password"
-          type="password"
-        ></SimpleInput>
+      <>
+        <div className={styles.fields}>
+          <SimpleInput
+            defaultVal={""}
+            setDataChanged={setPassword}
+            label="New password"
+            name="enter-new-password"
+            type="password"
+          ></SimpleInput>
+          <SimpleInput
+            defaultVal={""}
+            setDataChanged={setConfirmPassword}
+            label="Confirm password"
+            name="confirm-password"
+            type="password"
+          ></SimpleInput>
+        </div>
         <SimpleButton
           noShadow={true}
-          className={!passwordsEqual ? styles.unclickable : styles.actionButton}
+          className={`${styles.primaryButton} ${
+            passwordsEqual ? "" : styles.disabled
+          }`}
           onClick={passwordsEqual ? handleResetPassword : null}
         >
           {resetButtonText}
         </SimpleButton>
-      </div>
+      </>
     ),
-    "password-reset-success": (
-      <SimpleButton
-        className={styles.button}
-        noShadow={true}
-        onClick={handleGoToLoginClick}
-      >
-        Go to Login
-      </SimpleButton>
-    ),
+    "password-reset-success": loginButton("Go to Login"),
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.logoContainer}>
-        <img alt="logo" src={logo} className={styles.logo} />
+    <div className={styles.page}>
+      <img alt="frolik" src={logo} className={styles.logo} />
+      <div className={styles.card}>
+        <h1 className={styles.title}>{headers[props.page]}</h1>
+        <p className={styles.subtitle}>{messages[props.page]}</p>
+        {elements[props.page]}
       </div>
-      <h1>{headers[props.page]}</h1>
-      <div className={styles.subText}>{messages[props.page]}</div>
-      {elements[props.page]}
     </div>
   );
 };

@@ -318,3 +318,15 @@ html.keyboard-open #modal-container {
 html.keyboard-open .chat-panel {
   height: 100dvh !important;
 }
+
+/* Drawers (activity, shared activity, zoom & crop): no visible scrollbars on
+   desktop, anywhere inside the sheet; they still scroll by wheel/trackpad/touch */
+[data-drawer-sheet],
+[data-drawer-sheet] * {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+[data-drawer-sheet]::-webkit-scrollbar,
+[data-drawer-sheet] *::-webkit-scrollbar {
+  display: none;
+}

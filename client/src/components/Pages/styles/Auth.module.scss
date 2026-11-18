@@ -1,0 +1,131 @@
+@import "../../../utils/responsive.scss";
+
+// Shared look for the signed-out screens (Login, email verified, password
+// reset): centred logo, a white card, app buttons and inputs.
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: calc(4rem + env(safe-area-inset-top, 0px)) 2rem 4rem;
+  box-sizing: border-box;
+  flex-grow: 1;
+}
+
+.logo {
+  height: 5.6rem;
+  margin-bottom: 2.4rem;
+}
+
+.card {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 2.4rem 2rem 2rem;
+  background-color: $surface;
+  border-radius: $radius_lg;
+  box-shadow: $shadow_md;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: $text;
+}
+
+.subtitle {
+  margin: 0.6rem 0 0.4rem;
+  font-size: 1.4rem;
+  line-height: 1.45;
+  color: $text_muted;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 0.4rem;
+}
+
+.primaryButton {
+  @include btn_primary;
+  margin-top: 1.8rem;
+  padding: 1.3rem !important;
+  font-size: 1.45rem !important;
+}
+
+.secondaryButton {
+  @include btn_secondary;
+  margin-top: 1rem;
+  padding: 1.3rem !important;
+  font-size: 1.45rem !important;
+}
+
+.primaryButton.disabled,
+.primaryButton.disabled:hover {
+  @include btn_disabled;
+}
+
+.buttonContent {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+// Text links under the buttons (Forgot password, Sample login, Back)
+.links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.4rem;
+}
+
+.links.center {
+  justify-content: center;
+}
+
+.link {
+  border: none;
+  background: transparent;
+  padding: 0.6rem 0.4rem;
+  font: inherit;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: $blue_dark;
+  cursor: pointer;
+  border-radius: $radius_sm;
+  -webkit-tap-highlight-color: transparent;
+
+  &:hover {
+    background-color: rgba(91, 141, 239, 0.08);
+  }
+}
+
+// Login only: what Frolik is, under the card
+.blurb {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2.8rem;
+  text-align: center;
+  font-size: 1.35rem;
+  line-height: 1.5;
+  color: $text_muted;
+  max-width: 30rem;
+}
+
+.blurbLogo {
+  height: 1.9rem;
+  margin-bottom: -0.25rem;
+}
+
+.flavourImage {
+  width: 14rem;
+  margin-top: 1.6rem;
+  opacity: 0.9;
+}

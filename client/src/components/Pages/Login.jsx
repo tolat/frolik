@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import styles from "./styles/Login.module.scss";
+import styles from "./styles/Auth.module.scss";
 import { useDispatch } from "react-redux";
 import { fetchAuth, fetchLogin } from "../../store/auth-actions";
 import { useSelector } from "react-redux";
@@ -9,7 +9,7 @@ import CreateAccountModal from "../Modals/CreateAccountModal";
 import SimpleButton from "../UI/SimpleButton";
 import { modalActions } from "../../store/modal-slice";
 import { popupActions } from "../../store/popup-slice";
-import LoaderSpinner from "../UI/LoaderSpinner";
+import BrandLoader from "../UI/BrandLoader";
 import biking from "../../images/_biking.png";
 import hiking from "../../images/_hiking.png";
 import playingball from "../../images/_playingball.png";
@@ -86,79 +86,79 @@ function Login() {
     handleSubmit(e);
   };
 
-  return (
-    <div className={styles["login-page"]}>
-      <CreateAccountModal />
-      <img className={styles.logoTop} src={logo} alt="logo" />
-      <div className={styles.formContainer}>
-        <form className={styles["login-form"]} onSubmit={handleSubmit}>
-          <h1 className={styles.header}>Login</h1>
-          <div>
-            <SimpleInput
-              type="text"
-              id="username"
-              name="username"
-              label="Email:"
-              ref={usernameRef}
-              defaultVal={""}
-              required
-            />
-          </div>
-          <div>
-            <SimpleInput
-              type="password"
-              id="password"
-              name="password"
-              label="Password:"
-              ref={passwordRef}
-              defaultVal={""}
-              required
-            />
-          </div>
+  const busy = isLoggingIn || authState.isAuthenticated;
 
-          <SimpleButton
-            noShadow={true}
-            className={styles.loginButton}
-            type={"submit"}
+  return (
+    <div className={styles.page}>
+      <CreateAccountModal />
+      <img className={styles.logo} src={logo} alt="frolik" />
+      <form className={styles.card} onSubmit={handleSubmit}>
+        <h1 className={styles.title}>Welcome back</h1>
+        <p className={styles.subtitle}>Log in to plan your next outing.</p>
+        <div className={styles.fields}>
+          <SimpleInput
+            type="text"
+            id="username"
+            name="username"
+            label="Email"
+            ref={usernameRef}
+            defaultVal={""}
+            required
+          />
+          <SimpleInput
+            type="password"
+            id="password"
+            name="password"
+            label="Password"
+            ref={passwordRef}
+            defaultVal={""}
+            required
+          />
+        </div>
+
+        <SimpleButton
+          noShadow={true}
+          className={styles.primaryButton}
+          type={"submit"}
+        >
+          {busy ? (
+            <span className={styles.buttonContent}>
+              <BrandLoader inline plain light noBalloon size={1.4} />
+              Logging in…
+            </span>
+          ) : (
+            "Log In"
+          )}
+        </SimpleButton>
+        <SimpleButton
+          noShadow={true}
+          onClick={handleCreateAccountButtonClick}
+          className={styles.secondaryButton}
+        >
+          Create Account
+        </SimpleButton>
+        <div className={styles.links}>
+          <button
+            type="button"
+            onClick={onForgotPasswordClick}
+            className={styles.link}
           >
-            {!isLoggingIn && !authState.isAuthenticated ? (
-              "Login"
-            ) : (
-              <div className={styles.loaderContainer}>
-                Loggin In &nbsp;{" "}
-                <LoaderSpinner width="1.5rem" height="1.5rem" />
-              </div>
-            )}
-          </SimpleButton>
-          <SimpleButton
-            noShadow={true}
-            onClick={handleCreateAccountButtonClick}
-            className={styles.createAccountButton}
-          >
-            Create Profile
-          </SimpleButton>
-          <div className={styles.smallButtons}>
-            <button
-              onClick={onForgotPasswordClick}
-              className={styles.forgotButton}
-            >
-              Forgot Password
-            </button>
-            <button onClick={onSampleLogin} className={styles.forgotButton}>
-              Sample Login
-            </button>
-          </div>
-        </form>
-      </div>
-      <div className={styles.flavourContainer}>
-        <div className={styles.appBlurb}>
-          <img className={styles.logo} src={logo} alt="logo" /> is a social
-          media platform designed to engage people to make new connections and
-          get out of the house!
+            Forgot password?
+          </button>
+          <button type="button" onClick={onSampleLogin} className={styles.link}>
+            Sample login
+          </button>
+        </div>
+      </form>
+      <div className={styles.blurb}>
+        <div>
+          <img className={styles.blurbLogo} src={logo} alt="frolik" /> is a
+          social app that gets people making new connections and getting out
+          of the house!
         </div>
         <img
           className={styles.flavourImage}
-          alt="froliking"
+          alt=""
           src={flavourImages[flavourIndex]}
         />
       </div>
