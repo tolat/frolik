@@ -21,6 +21,7 @@ const {
   pushUserUpdate,
   handleFriendRequestAction,
   findNonOutingChat,
+  chatForUser,
   getTotalUnreadMessages,
   outingIsPending,
   webpushNotify,
@@ -451,7 +452,7 @@ router.get(
         : chat.users.map((u) => u.toString())
     );
 
-    res.send({ chat, populatedUsers });
+    res.send({ chat: chatForUser(user, chat), populatedUsers });
   })
 );
 
@@ -483,7 +484,10 @@ router.get(
       chatMembersMap[chat._id.toString()] = populatedMembers;
     }
 
-    res.send({ chats: user.chats, chatMembersMap });
+    res.send({
+      chats: user.chats.map((c) => chatForUser(user, c)),
+      chatMembersMap,
+    });
   })
 );
 
@@ -776,7 +780,21 @@ router.post(
     // if chat with users found already, send back that chat
     const foundChat = findNonOutingChat(user, withUsers);
     if (foundChat) {
-      res.send({ chat: foundChat });
+      res.send({ chat: chatForUser(user, foundChat) });
+      return;
+    }
+
+    // A chat with exactly these people that this user deleted "for me": bring
+    // it back for them (old messages stay hidden) instead of starting a
+    // second chat the others would see twice
+    const memberIDs = [user._id, ...withUsers.map((u) => u._id)];
+    const deletedChat = await Chat.findOne({
+      outing: null, // matches missing too
+      users: { $all: memberIDs, $size: memberIDs.length },
+    });
+    if (deletedChat) {
+      await User.updateOne({ _id: user._id }, { $addToSet: { chats: deletedChat._id } });
+      res.send({ chat: chatForUser(user, deletedChat) });
       return;
     }
 
@@ -862,20 +880,35 @@ router.post(
       return res.status(401).send("Not authorized");
     }
 
-    // Remove chat from user's chats list
+    // "Delete for me": the chat leaves this user's list and its earlier
+    // messages are hidden for them; the other members keep it unchanged
+    // (they used to see this person drop out of the chat). A later message
+    // brings it back for this user.
+    const now = new Date();
     user.chats = user.chats.filter((c) => c.toString() !== chat._id.toString());
+    user.cleared_chats = (user.cleared_chats || []).filter(
+      (c) => c.chat && c.chat.toString() !== chat._id.toString()
+    );
+    user.cleared_chats.push({ chat: chat._id, at: now });
     await user.save();
 
-    // Remove user from the chat's member list
-    chat.users = chat.users.filter((u) => u.toString() !== user._id.toString());
-
-    if (chat.users.length === 0) {
-      // No one left in the chat — delete the document entirely
-      await Chat.deleteOne({ _id: chat._id });
-    } else {
+    // Nothing left unread for them in it
+    const latest = chat.messages?.[0];
+    if (latest) {
+      if (!chat.last_read) chat.last_read = {};
+      chat.last_read[user._id.toString()] = latest.id;
+      chat.markModified("last_read");
       await chat.save();
-      // Notify remaining members so their UI refreshes
-      pushUserUpdate(chat.users);
+    }
+
+    // Everyone has deleted it: remove the chat itself
+    const stillListed = await User.exists({ _id: { $in: chat.users }, chats: chat._id });
+    if (!stillListed) {
+      await Chat.deleteOne({ _id: chat._id });
+      await User.updateMany(
+        { _id: { $in: chat.users } },
+        { $pull: { cleared_chats: { chat: chat._id } } }
+      );
     }
 
     res.sendStatus(200);

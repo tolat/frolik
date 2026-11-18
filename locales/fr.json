@@ -192,5 +192,35 @@
   "user.invalidAccount.header": "Informations de compte invalides",
   "user.invalidAccount.message": "Un courriel valide et un mot de passe sont requis.",
   "user.invalidLocation.header": "Lieu invalide",
-  "user.invalidLocation.message": "Impossible de mettre à jour ta position."
+  "user.invalidLocation.message": "Impossible de mettre à jour ta position.",
+  "push.weekly.v1.title": "Nouveaux matchs tout frais 🎈",
+  "push.weekly.v1.body": {
+    "one": "{{count}} personne près de toi a envie d'une sortie cette semaine. Jette un œil !",
+    "many": "{{count}} personnes près de toi ont envie d'une sortie cette semaine. Jette un œil !",
+    "other": "{{count}} personnes près de toi ont envie d'une sortie cette semaine. Jette un œil !"
+  },
+  "push.weekly.v2.title": "Ton week-end a appelé 📞",
+  "push.weekly.v2.body": "Il veut une sortie. De nouveaux matchs du jour t'attendent.",
+  "push.weekly.v3.title": "Psst… nouveaux matchs 👀",
+  "push.weekly.v3.body": "Ton prochain partenaire de sortie se cache peut-être dans les matchs du jour. Viens voir !",
+  "push.weekly.v4.title": "C'est le moment de sortir 🌤️",
+  "push.weekly.v4.body": "De nouveaux matchs du jour t'attendent. Choisis une activité et lance un plan !",
+  "push.friends.v1.title": "Rejoins la fête ! 🎉",
+  "push.friends.v1.body": {
+    "one": "{{count}} de tes amis a publié une sortie cette semaine. Va voir ce qu'ils ont fait !",
+    "many": "{{count}} de tes amis ont publié des sorties cette semaine. Va voir ce qu'ils ont fait !",
+    "other": "{{count}} de tes amis ont publié des sorties cette semaine. Va voir ce qu'ils ont fait !"
+  },
+  "push.friends.v2.title": "Bouge-toi ! ☀️",
+  "push.friends.v2.body": {
+    "one": "{{count}} de tes amis est parti en sortie cette semaine. À ton tour !",
+    "many": "{{count}} de tes amis sont partis en sortie cette semaine. À ton tour !",
+    "other": "{{count}} de tes amis sont partis en sortie cette semaine. À ton tour !"
+  },
+  "push.friends.v3.title": "Ne rate rien ! 👀",
+  "push.friends.v3.body": {
+    "one": "{{count}} de tes amis a publié une sortie cette semaine. Viens jeter un œil !",
+    "many": "{{count}} de tes amis ont publié des sorties cette semaine. Viens jeter un œil !",
+    "other": "{{count}} de tes amis ont publié des sorties cette semaine. Viens jeter un œil !"
+  }
 }

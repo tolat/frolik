@@ -93,7 +93,7 @@
   transition: background-color $dur $ease_out, transform $dur_fast $ease_out;
 
   img {
-    transition: transform $dur $ease_spring;
+    transition: transform $dur $ease_spring, filter $dur ease;
   }
 }
 
@@ -101,11 +101,12 @@
   transform: scale(0.94);
 }
 
+// Current page: no box behind it. The (blue) icon lifts a touch with a soft
+// blue glow under it, the same treatment as the Outing button's ring
 .activeLink .navButton {
-  background-color: $light_blue;
-
   img {
-    transform: scale(1.06);
+    transform: translateY(-1px) scale(1.1);
+    filter: drop-shadow(0 4px 6px rgba(91, 141, 239, 0.45));
   }
 }
 
@@ -174,4 +175,21 @@
 
 .logo {
   height: 4rem;
+}
+
+// The centre Outing button draws its own round highlight (NavButton ring):
+// no pill behind it, no extra icon zoom, and it overflows the bar upward
+.navButton.featuredNavButton,
+.activeLink .navButton.featuredNavButton {
+  background-color: transparent;
+  overflow: visible;
+
+  img {
+    transform: none;
+    filter: none;
+  }
+}
+
+.navButton.featuredNavButton:active {
+  transform: none;
 }

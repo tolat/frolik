@@ -186,5 +186,31 @@
   "user.invalidAccount.header": "Ugyldige kontoopplysninger",
   "user.invalidAccount.message": "Du må oppgi en gyldig e-postadresse og et passord.",
   "user.invalidLocation.header": "Ugyldig sted",
-  "user.invalidLocation.message": "Kunne ikke oppdatere posisjonen din."
+  "user.invalidLocation.message": "Kunne ikke oppdatere posisjonen din.",
+  "push.weekly.v1.title": "Ferske matcher er her 🎈",
+  "push.weekly.v1.body": {
+    "one": "{{count}} person i nærheten har lyst på et treff denne uka. Ta en titt!",
+    "other": "{{count}} personer i nærheten har lyst på et treff denne uka. Ta en titt!"
+  },
+  "push.weekly.v2.title": "Helgen din ringte 📞",
+  "push.weekly.v2.body": "Den vil ha et treff. Nye dagsmatcher venter på deg.",
+  "push.weekly.v3.title": "Psst … nye matcher 👀",
+  "push.weekly.v3.body": "Kanskje din neste treffkompis er blant dagsmatchene. Kom og se hvem!",
+  "push.weekly.v4.title": "På tide å komme seg ut 🌤️",
+  "push.weekly.v4.body": "Nye dagsmatcher venter. Velg en aktivitet og legg en plan!",
+  "push.friends.v1.title": "Bli med på moroa! 🎉",
+  "push.friends.v1.body": {
+    "one": "{{count}} av vennene dine la ut et treff denne uka. Se hva de fant på!",
+    "other": "{{count}} av vennene dine la ut treff denne uka. Se hva de fant på!"
+  },
+  "push.friends.v2.title": "Kom deg ut! ☀️",
+  "push.friends.v2.body": {
+    "one": "{{count}} av vennene dine var på treff denne uka. Nå er det din tur!",
+    "other": "{{count}} av vennene dine var på treff denne uka. Nå er det din tur!"
+  },
+  "push.friends.v3.title": "Ikke gå glipp av det! 👀",
+  "push.friends.v3.body": {
+    "one": "{{count}} av vennene dine la ut et treff denne uka. Ta en titt!",
+    "other": "{{count}} av vennene dine la ut treff denne uka. Ta en titt!"
+  }
 }

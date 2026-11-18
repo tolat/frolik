@@ -38,7 +38,8 @@
     "unarchive": "आर्काइव से हटाएँ",
     "markRead": "✓ पढ़ लिया",
     "justYou": "सिर्फ़ आप",
-    "lastActive": "आखिरी बार एक्टिव {{date}}"
+    "lastActive": "आखिरी बार एक्टिव {{date}}",
+    "directMessage": "डायरेक्ट मैसेज"
   },
   "feedCard": {
     "members": "आउटिंग के सदस्य",

@@ -180,5 +180,27 @@
   "user.invalidAccount.header": "账号信息无效",
   "user.invalidAccount.message": "需要填写有效的邮箱地址和密码。",
   "user.invalidLocation.header": "位置无效",
-  "user.invalidLocation.message": "无法更新你的位置。"
+  "user.invalidLocation.message": "无法更新你的位置。",
+  "push.weekly.v1.title": "新匹配来啦 🎈",
+  "push.weekly.v1.body": {
+    "other": "你附近有 {{count}} 人这周想去出游，快来看看！"
+  },
+  "push.weekly.v2.title": "你的周末来电了 📞",
+  "push.weekly.v2.body": "它想来一次出游。新的每日匹配正在等你。",
+  "push.weekly.v3.title": "嘘……有新匹配 👀",
+  "push.weekly.v3.body": "你的下一位出游搭子可能就在每日匹配里，快来看看是谁！",
+  "push.weekly.v4.title": "该出门啦 🌤️",
+  "push.weekly.v4.body": "新的每日匹配在等你。选个活动，定个计划吧！",
+  "push.friends.v1.title": "一起来玩！🎉",
+  "push.friends.v1.body": {
+    "other": "你有 {{count}} 位好友本周发布了出游，快看看他们玩了什么！"
+  },
+  "push.friends.v2.title": "出门玩吧！☀️",
+  "push.friends.v2.body": {
+    "other": "你有 {{count}} 位好友本周去出游了，轮到你啦！"
+  },
+  "push.friends.v3.title": "别错过！👀",
+  "push.friends.v3.body": {
+    "other": "你有 {{count}} 位好友本周发布了出游，快来看看！"
+  }
 }

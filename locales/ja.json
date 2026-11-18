@@ -180,5 +180,27 @@
   "user.invalidAccount.header": "アカウント情報が無効です",
   "user.invalidAccount.message": "有効なメールアドレスとパスワードが必要です。",
   "user.invalidLocation.header": "無効な場所です",
-  "user.invalidLocation.message": "位置情報を更新できませんでした。"
+  "user.invalidLocation.message": "位置情報を更新できませんでした。",
+  "push.weekly.v1.title": "新しいマッチが届きました 🎈",
+  "push.weekly.v1.body": {
+    "other": "近くの{{count}}人が今週おでかけしたがっています。のぞいてみましょう！"
+  },
+  "push.weekly.v2.title": "週末から電話です 📞",
+  "push.weekly.v2.body": "おでかけしたいそうです。新しいデイリーマッチが待っています。",
+  "push.weekly.v3.title": "ねえ、新しいマッチだよ 👀",
+  "push.weekly.v3.body": "次のおでかけ仲間がデイリーマッチにいるかも。誰か見に来てください！",
+  "push.weekly.v4.title": "おでかけしよう 🌤️",
+  "push.weekly.v4.body": "新しいデイリーマッチが待っています。アクティビティを選んで予定を立てましょう！",
+  "push.friends.v1.title": "一緒に楽しもう！🎉",
+  "push.friends.v1.body": {
+    "other": "今週、友だち{{count}}人がおでかけを投稿しました。何をしたか見てみましょう！"
+  },
+  "push.friends.v2.title": "おでかけしよう！☀️",
+  "push.friends.v2.body": {
+    "other": "今週、友だち{{count}}人がおでかけしました。次はあなたの番です！"
+  },
+  "push.friends.v3.title": "見逃さないで！👀",
+  "push.friends.v3.body": {
+    "other": "今週、友だち{{count}}人がおでかけを投稿しました。のぞいてみましょう！"
+  }
 }

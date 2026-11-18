@@ -186,5 +186,31 @@
   "user.invalidAccount.header": "Invalid account details",
   "user.invalidAccount.message": "A valid email address and password are required.",
   "user.invalidLocation.header": "Invalid location",
-  "user.invalidLocation.message": "Couldn't update your location."
+  "user.invalidLocation.message": "Couldn't update your location.",
+  "push.weekly.v1.title": "Fresh matches just dropped 🎈",
+  "push.weekly.v1.body": {
+    "one": "{{count}} person near you is up for an Outing this week. Take a peek!",
+    "other": "{{count}} people near you are up for an Outing this week. Take a peek!"
+  },
+  "push.weekly.v2.title": "Your weekend called 📞",
+  "push.weekly.v2.body": "It wants an Outing. New Daily Matches are waiting for you.",
+  "push.weekly.v3.title": "Psst… new matches 👀",
+  "push.weekly.v3.body": "Your next Outing buddy might be in today's Daily Matches. Come see who!",
+  "push.weekly.v4.title": "Time to get out there 🌤️",
+  "push.weekly.v4.body": "New Daily Matches are waiting. Pick an activity and make a plan!",
+  "push.friends.v1.title": "Join the fun! 🎉",
+  "push.friends.v1.body": {
+    "one": "{{count}} of your friends posted an Outing this week. See what they got up to!",
+    "other": "{{count}} of your friends posted Outings this week. See what they got up to!"
+  },
+  "push.friends.v2.title": "Get out there! ☀️",
+  "push.friends.v2.body": {
+    "one": "{{count}} of your friends went on an Outing this week. Your turn!",
+    "other": "{{count}} of your friends went on Outings this week. Your turn!"
+  },
+  "push.friends.v3.title": "Don't miss out! 👀",
+  "push.friends.v3.body": {
+    "one": "{{count}} of your friends posted an Outing this week. Come take a look!",
+    "other": "{{count}} of your friends posted Outings this week. Come take a look!"
+  }
 }

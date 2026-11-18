@@ -42,7 +42,8 @@
     "unarchive": "إلغاء الأرشفة",
     "markRead": "✓ مقروءة",
     "justYou": "أنت فقط",
-    "lastActive": "آخر نشاط {{date}}"
+    "lastActive": "آخر نشاط {{date}}",
+    "directMessage": "رسالة مباشرة"
   },
   "feedCard": {
     "members": "أعضاء النزهة",

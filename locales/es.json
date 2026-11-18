@@ -192,5 +192,35 @@
   "user.invalidAccount.header": "Datos de cuenta no válidos",
   "user.invalidAccount.message": "Se requieren un correo electrónico y una contraseña válidos.",
   "user.invalidLocation.header": "Ubicación no válida",
-  "user.invalidLocation.message": "No pudimos actualizar tu ubicación."
+  "user.invalidLocation.message": "No pudimos actualizar tu ubicación.",
+  "push.weekly.v1.title": "¡Llegaron matches nuevos! 🎈",
+  "push.weekly.v1.body": {
+    "one": "{{count}} persona cerca de ti tiene ganas de una salida esta semana. ¡Echa un vistazo!",
+    "many": "{{count}} personas cerca de ti tienen ganas de una salida esta semana. ¡Echa un vistazo!",
+    "other": "{{count}} personas cerca de ti tienen ganas de una salida esta semana. ¡Echa un vistazo!"
+  },
+  "push.weekly.v2.title": "Tu fin de semana te llamó 📞",
+  "push.weekly.v2.body": "Quiere una salida. Tienes nuevos matches del día esperándote.",
+  "push.weekly.v3.title": "Psst… matches nuevos 👀",
+  "push.weekly.v3.body": "Tu próximo compañero de salida podría estar en los matches del día. ¡Ven a ver quién es!",
+  "push.weekly.v4.title": "¡Hora de salir! 🌤️",
+  "push.weekly.v4.body": "Tienes nuevos matches del día esperando. ¡Elige una actividad y haz un plan!",
+  "push.friends.v1.title": "¡Súmate a la diversión! 🎉",
+  "push.friends.v1.body": {
+    "one": "{{count}} de tus amigos publicó una salida esta semana. ¡Mira qué hicieron!",
+    "many": "{{count}} de tus amigos publicaron salidas esta semana. ¡Mira qué hicieron!",
+    "other": "{{count}} de tus amigos publicaron salidas esta semana. ¡Mira qué hicieron!"
+  },
+  "push.friends.v2.title": "¡Sal y diviértete! ☀️",
+  "push.friends.v2.body": {
+    "one": "{{count}} de tus amigos fue de salida esta semana. ¡Te toca!",
+    "many": "{{count}} de tus amigos fueron de salida esta semana. ¡Te toca!",
+    "other": "{{count}} de tus amigos fueron de salida esta semana. ¡Te toca!"
+  },
+  "push.friends.v3.title": "¡No te lo pierdas! 👀",
+  "push.friends.v3.body": {
+    "one": "{{count}} de tus amigos publicó una salida esta semana. ¡Échale un vistazo!",
+    "many": "{{count}} de tus amigos publicaron salidas esta semana. ¡Échale un vistazo!",
+    "other": "{{count}} de tus amigos publicaron salidas esta semana. ¡Échale un vistazo!"
+  }
 }

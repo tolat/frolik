@@ -192,5 +192,35 @@
   "user.invalidAccount.header": "Dati dell'account non validi",
   "user.invalidAccount.message": "Servono un indirizzo email e una password validi.",
   "user.invalidLocation.header": "Posizione non valida",
-  "user.invalidLocation.message": "Impossibile aggiornare la tua posizione."
+  "user.invalidLocation.message": "Impossibile aggiornare la tua posizione.",
+  "push.weekly.v1.title": "Nuovi match in arrivo! 🎈",
+  "push.weekly.v1.body": {
+    "one": "{{count}} persona vicino a te ha voglia di un'uscita questa settimana. Dai un'occhiata!",
+    "many": "{{count}} persone vicino a te hanno voglia di un'uscita questa settimana. Dai un'occhiata!",
+    "other": "{{count}} persone vicino a te hanno voglia di un'uscita questa settimana. Dai un'occhiata!"
+  },
+  "push.weekly.v2.title": "Ha chiamato il tuo weekend 📞",
+  "push.weekly.v2.body": "Vuole un'uscita. Ci sono nuovi match del giorno che ti aspettano.",
+  "push.weekly.v3.title": "Psst… nuovi match 👀",
+  "push.weekly.v3.body": "Il tuo prossimo compagno di uscita potrebbe essere tra i match del giorno. Vieni a vedere chi è!",
+  "push.weekly.v4.title": "È ora di uscire 🌤️",
+  "push.weekly.v4.body": "Ci sono nuovi match del giorno che ti aspettano. Scegli un'attività e organizza!",
+  "push.friends.v1.title": "Unisciti al divertimento! 🎉",
+  "push.friends.v1.body": {
+    "one": "{{count}} dei tuoi amici ha pubblicato un'uscita questa settimana. Guarda cosa hanno fatto!",
+    "many": "{{count}} dei tuoi amici hanno pubblicato uscite questa settimana. Guarda cosa hanno fatto!",
+    "other": "{{count}} dei tuoi amici hanno pubblicato uscite questa settimana. Guarda cosa hanno fatto!"
+  },
+  "push.friends.v2.title": "Esci e divertiti! ☀️",
+  "push.friends.v2.body": {
+    "one": "{{count}} dei tuoi amici è andato a un'uscita questa settimana. Tocca a te!",
+    "many": "{{count}} dei tuoi amici sono andati a delle uscite questa settimana. Tocca a te!",
+    "other": "{{count}} dei tuoi amici sono andati a delle uscite questa settimana. Tocca a te!"
+  },
+  "push.friends.v3.title": "Non perdertelo! 👀",
+  "push.friends.v3.body": {
+    "one": "{{count}} dei tuoi amici ha pubblicato un'uscita questa settimana. Dai un'occhiata!",
+    "many": "{{count}} dei tuoi amici hanno pubblicato uscite questa settimana. Dai un'occhiata!",
+    "other": "{{count}} dei tuoi amici hanno pubblicato uscite questa settimana. Dai un'occhiata!"
+  }
 }

@@ -1,7 +1,10 @@
 const User = require("../models/user");
 const Chat = require("../models/chat");
 const nodemailer = require("nodemailer");
-const io = require("../server");
+// The socket server, looked up when first used: requiring server.js at load
+// time started the whole server (and its jobs) in any script that used these
+// helpers, e.g. scripts/send-weekly-nudge.js
+const getIO = () => require("../server");
 const webpush = require("web-push");
 const { forUser } = require("./i18n");
 
@@ -253,7 +256,8 @@ module.exports.handleOutingInviteAction = async (
 module.exports.pushUserUpdate = (users) => {
   for (const user of users) {
     const usrID = user._id ? user._id.toString() : user.toString();
-    io.to(usrID).emit("update-user");
+    const io = getIO();
+    if (io?.to) io.to(usrID).emit("update-user");
   }
 };
 
@@ -389,6 +393,22 @@ module.exports.handleFriendRequestAction = async (
   this.pushUserUpdate([user, requestingUser]);
 
   await this.populateUser(user);
+};
+
+// A chat as this user should see it: messages from before they deleted it
+// ("delete for me", user.cleared_chats) are left out. Returns a plain object.
+module.exports.chatForUser = (user, chat) => {
+  const plain = chat?.toObject ? chat.toObject() : chat;
+  if (!plain) return plain;
+  const cleared = (user.cleared_chats || []).find(
+    (c) => c.chat && c.chat.toString() === plain._id.toString()
+  );
+  if (!cleared) return plain;
+  const after = new Date(cleared.at).getTime();
+  return {
+    ...plain,
+    messages: (plain.messages || []).filter((m) => new Date(m.sent).getTime() > after),
+  };
 };
 
 module.exports.findNonOutingChat = (user, withUsers) => {
@@ -542,6 +562,13 @@ module.exports.onSocketConnection = async (socket) => {
         .emit("new-message", { message: { ...data.message, ...message }, chat });
 
       const chatUsers = chatMemberIDs(chat);
+
+      // A new message brings a chat someone deleted "for me" back into their
+      // list (still hiding the messages from before they deleted it)
+      await User.updateMany(
+        { _id: { $in: chatUsers }, chats: { $ne: chat._id } },
+        { $addToSet: { chats: chat._id } }
+      );
 
       // A new message brings an archived chat back into everyone's main list
       await User.updateMany(

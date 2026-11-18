@@ -38,7 +38,8 @@
     "unarchive": "Wiederherstellen",
     "markRead": "✓ Gelesen",
     "justYou": "Nur du",
-    "lastActive": "Zuletzt aktiv {{date}}"
+    "lastActive": "Zuletzt aktiv {{date}}",
+    "directMessage": "Direktnachricht"
   },
   "feedCard": {
     "members": "Beim Ausflug dabei",

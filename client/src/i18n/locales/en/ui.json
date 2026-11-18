@@ -38,7 +38,8 @@
     "unarchive": "Unarchive",
     "markRead": "✓ Read",
     "justYou": "Just you",
-    "lastActive": "Last Active {{date}}"
+    "lastActive": "Last Active {{date}}",
+    "directMessage": "Direct Message"
   },
   "feedCard": {
     "members": "Outing Members",

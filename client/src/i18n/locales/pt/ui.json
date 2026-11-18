@@ -39,7 +39,8 @@
     "unarchive": "Desarquivar",
     "markRead": "✓ Lido",
     "justYou": "Só você",
-    "lastActive": "Última atividade: {{date}}"
+    "lastActive": "Última atividade: {{date}}",
+    "directMessage": "Mensagem direta"
   },
   "feedCard": {
     "members": "Participantes do rolê",

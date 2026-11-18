@@ -39,7 +39,8 @@
     "unarchive": "Desarchivar",
     "markRead": "✓ Leído",
     "justYou": "Solo tú",
-    "lastActive": "Última actividad: {{date}}"
+    "lastActive": "Última actividad: {{date}}",
+    "directMessage": "Mensaje directo"
   },
   "feedCard": {
     "members": "Miembros de la salida",

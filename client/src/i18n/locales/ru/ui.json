@@ -40,7 +40,8 @@
     "unarchive": "Из архива",
     "markRead": "✓ Прочитано",
     "justYou": "Только ты",
-    "lastActive": "Был(а) в сети {{date}}"
+    "lastActive": "Был(а) в сети {{date}}",
+    "directMessage": "Личный чат"
   },
   "feedCard": {
     "members": "Участники вылазки",

@@ -37,7 +37,8 @@
     "unarchive": "보관 해제",
     "markRead": "✓ 읽음",
     "justYou": "나만 있음",
-    "lastActive": "마지막 활동 {{date}}"
+    "lastActive": "마지막 활동 {{date}}",
+    "directMessage": "다이렉트 메시지"
   },
   "feedCard": {
     "members": "나들이 멤버",

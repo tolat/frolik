@@ -192,5 +192,35 @@
   "user.invalidAccount.header": "Dados da conta inválidos",
   "user.invalidAccount.message": "É preciso informar um e-mail e uma senha válidos.",
   "user.invalidLocation.header": "Localização inválida",
-  "user.invalidLocation.message": "Não foi possível atualizar sua localização."
+  "user.invalidLocation.message": "Não foi possível atualizar sua localização.",
+  "push.weekly.v1.title": "Chegaram matches novos! 🎈",
+  "push.weekly.v1.body": {
+    "one": "{{count}} pessoa perto de você está a fim de um rolê esta semana. Dá uma olhada!",
+    "many": "{{count}} pessoas perto de você estão a fim de um rolê esta semana. Dá uma olhada!",
+    "other": "{{count}} pessoas perto de você estão a fim de um rolê esta semana. Dá uma olhada!"
+  },
+  "push.weekly.v2.title": "Seu fim de semana ligou 📞",
+  "push.weekly.v2.body": "Ele quer um rolê. Novos matches do dia estão te esperando.",
+  "push.weekly.v3.title": "Psiu… matches novos 👀",
+  "push.weekly.v3.body": "Sua próxima companhia de rolê pode estar nos matches do dia. Vem ver quem é!",
+  "push.weekly.v4.title": "Hora de sair 🌤️",
+  "push.weekly.v4.body": "Novos matches do dia estão te esperando. Escolha uma atividade e faça um plano!",
+  "push.friends.v1.title": "Entra na diversão! 🎉",
+  "push.friends.v1.body": {
+    "one": "{{count}} dos seus amigos postou um rolê esta semana. Veja o que rolou!",
+    "many": "{{count}} dos seus amigos postaram rolês esta semana. Veja o que rolou!",
+    "other": "{{count}} dos seus amigos postaram rolês esta semana. Veja o que rolou!"
+  },
+  "push.friends.v2.title": "Bora sair! ☀️",
+  "push.friends.v2.body": {
+    "one": "{{count}} dos seus amigos foi a um rolê esta semana. Sua vez!",
+    "many": "{{count}} dos seus amigos foram a rolês esta semana. Sua vez!",
+    "other": "{{count}} dos seus amigos foram a rolês esta semana. Sua vez!"
+  },
+  "push.friends.v3.title": "Não fica de fora! 👀",
+  "push.friends.v3.body": {
+    "one": "{{count}} dos seus amigos postou um rolê esta semana. Vem dar uma olhada!",
+    "many": "{{count}} dos seus amigos postaram rolês esta semana. Vem dar uma olhada!",
+    "other": "{{count}} dos seus amigos postaram rolês esta semana. Vem dar uma olhada!"
+  }
 }

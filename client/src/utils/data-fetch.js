@@ -280,7 +280,9 @@ export const fetchChat = (userID, chatID, onComplete = () => {}) => {
     // Set chats in data store
     store.dispatch(chatActions.updateChat(response.chat));
 
-    onComplete();
+    // Hand the loaded chat to the caller (View Chat on an alert opened an
+    // empty chat panel: it expected the chat here and got nothing)
+    onComplete(response.chat);
   };
 
   const handleError = (err) => {

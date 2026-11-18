@@ -37,7 +37,8 @@
     "unarchive": "取消归档",
     "markRead": "✓ 已读",
     "justYou": "只有你",
-    "lastActive": "最近活跃：{{date}}"
+    "lastActive": "最近活跃：{{date}}",
+    "directMessage": "私信"
   },
   "feedCard": {
     "members": "出游成员",

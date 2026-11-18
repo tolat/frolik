@@ -17,6 +17,15 @@ const UserSchema = new Schema(
     reset_token: { expires: Date, hash: String },
     notifications: [Object],
     chats: [{ type: Schema.Types.ObjectId, ref: "Chat" }],
+    // Chats this user deleted "for me": when they did it. The chat stays for
+    // everyone else; if a new message arrives it comes back for this user,
+    // showing only messages after `at` (routes/user.js chat routes)
+    cleared_chats: [
+      {
+        chat: { type: Schema.Types.ObjectId, ref: "Chat" },
+        at: Date,
+      },
+    ],
     // Outing chats the user has swiped away into the Archived section
     archived_chats: [{ type: Schema.Types.ObjectId, ref: "Chat" }],
     friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
@@ -40,6 +49,9 @@ const UserSchema = new Schema(
     auto_location: { type: Boolean, default: false },
     // Interface language (utils/i18n.js LANGS); emails and pushes use it too
     language: { type: String, default: "en" },
+    // Week each weekly push was last sent, e.g. { matches: "2026-W47",
+    // friends: "2026-W47" } (utils/weeklyNudge.js)
+    weekly_nudges: { matches: String, friends: String },
     // Set once the user has finished (or skipped) the in-app tour
     tour_seen: { type: Boolean, default: false },
     status: {

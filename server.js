@@ -184,4 +184,6 @@ server.listen(process.env.PORT, () => {
   // Hourly: expire stale invites, boot members who never mark completed,
   // send the 7- and 3-day reminders (utils/outingLifecycle.js)
   require("./utils/outingLifecycle").startStaleOutingJob();
+  // Thursday-evening "new matches waiting" push (utils/weeklyNudge.js)
+  require("./utils/weeklyNudge").startWeeklyNudgeJob();
 });

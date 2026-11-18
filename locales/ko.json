@@ -180,5 +180,27 @@
   "user.invalidAccount.header": "계정 정보가 올바르지 않아요",
   "user.invalidAccount.message": "올바른 이메일 주소와 비밀번호가 필요해요.",
   "user.invalidLocation.header": "잘못된 위치",
-  "user.invalidLocation.message": "위치를 업데이트할 수 없어요."
+  "user.invalidLocation.message": "위치를 업데이트할 수 없어요.",
+  "push.weekly.v1.title": "새 매치가 도착했어요 🎈",
+  "push.weekly.v1.body": {
+    "other": "근처에 이번 주 나들이를 원하는 사람이 {{count}}명 있어요. 한번 둘러보세요!"
+  },
+  "push.weekly.v2.title": "주말이 전화했어요 📞",
+  "push.weekly.v2.body": "나들이를 원한대요. 새로운 오늘의 매치가 기다리고 있어요.",
+  "push.weekly.v3.title": "저기요… 새 매치예요 👀",
+  "push.weekly.v3.body": "다음 나들이 친구가 오늘의 매치에 있을지도 몰라요. 누군지 보러 오세요!",
+  "push.weekly.v4.title": "밖으로 나갈 시간 🌤️",
+  "push.weekly.v4.body": "새로운 오늘의 매치가 기다리고 있어요. 액티비티를 고르고 계획을 세워 보세요!",
+  "push.friends.v1.title": "함께 즐겨요! 🎉",
+  "push.friends.v1.body": {
+    "other": "이번 주에 친구 {{count}}명이 나들이를 올렸어요. 뭘 했는지 구경해 보세요!"
+  },
+  "push.friends.v2.title": "밖으로 나가요! ☀️",
+  "push.friends.v2.body": {
+    "other": "이번 주에 친구 {{count}}명이 나들이를 다녀왔어요. 이제 당신 차례예요!"
+  },
+  "push.friends.v3.title": "놓치지 마세요! 👀",
+  "push.friends.v3.body": {
+    "other": "이번 주에 친구 {{count}}명이 나들이를 올렸어요. 한번 둘러보세요!"
+  }
 }

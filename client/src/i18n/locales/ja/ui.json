@@ -37,7 +37,8 @@
     "unarchive": "アーカイブ解除",
     "markRead": "✓ 既読",
     "justYou": "あなただけ",
-    "lastActive": "最終アクティブ：{{date}}"
+    "lastActive": "最終アクティブ：{{date}}",
+    "directMessage": "ダイレクトメッセージ"
   },
   "feedCard": {
     "members": "おでかけメンバー",

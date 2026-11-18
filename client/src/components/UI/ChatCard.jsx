@@ -283,6 +283,13 @@ const ChatCard = memo((props) => {
               >
                 {memberNames}
               </div>
+              {/* DMs: the person's name is the title, with a grey label
+                  under it like an Outing chat's activity */}
+              {!chat.outing && (
+                <div className={styles.outingActivity}>
+                  {t("ui.chatCard.directMessage")}
+                </div>
+              )}
             </div>
             <div className={styles.lastActive}>
               {t("ui.chatCard.lastActive", { date: toAppDate(chat.touched) })}

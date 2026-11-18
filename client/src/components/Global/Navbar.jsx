@@ -33,6 +33,7 @@ const Navbar = (props) => {
   const { t } = useT();
   const user = useSelector((state) => state.auth.user);
   const authState = useSelector((state) => state.auth);
+  const globals = useSelector((state) => state.auth.globals);
   const chats = useSelector((state) => state.chat.chats);
   const dispatch = useDispatch();
   // Count from the chat list (refreshed whenever a chat is read), not the
@@ -49,6 +50,11 @@ const Navbar = (props) => {
   // Derive the active tab from the URL (was set via setState during render)
   const activePage = currentUrl.split("/")[1] || false;
   const [masterDisplay, setMasterDisplay] = useState("flex");
+  // Outing button ring: all the category colours, like a full avatar ring
+  const ringColors = Object.values(globals?.categoryColorMap || {});
+  const outingRing = ringColors.length
+    ? `conic-gradient(from 200deg, ${[...ringColors, ringColors[0]].join(", ")})`
+    : undefined;
 
   // Hide navbar on login page
   useEffect(() => {
@@ -163,11 +169,15 @@ const Navbar = (props) => {
               className={(navData) => makeActive(navData, "outing")}
               to="/outing"
             >
+              {/* The centre button: round, a little bigger and lifted, with
+                  the avatars' multicolour ring (every category colour) */}
               <NavButton
                 icon={activePage === "outing" ? outingIconBlue : outingIcon}
                 text={t("nav.tabs.outing")}
-                className={`${styles.navButton} ${styles.createOutingHover}`}
+                className={`${styles.navButton} ${styles.featuredNavButton} ${styles.createOutingHover}`}
                 blue={activePage === "outing"}
+                featured={true}
+                ringBackground={outingRing}
               />
             </NavLink>
             <NavLink

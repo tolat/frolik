@@ -38,7 +38,8 @@
     "unarchive": "Hent fra arkiv",
     "markRead": "✓ Lest",
     "justYou": "Bare deg",
-    "lastActive": "Sist aktiv {{date}}"
+    "lastActive": "Sist aktiv {{date}}",
+    "directMessage": "Direktemelding"
   },
   "feedCard": {
     "members": "Deltakere",

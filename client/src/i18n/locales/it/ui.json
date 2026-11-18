@@ -39,7 +39,8 @@
     "unarchive": "Ripristina",
     "markRead": "✓ Letta",
     "justYou": "Solo tu",
-    "lastActive": "Ultima attività: {{date}}"
+    "lastActive": "Ultima attività: {{date}}",
+    "directMessage": "Messaggio diretto"
   },
   "feedCard": {
     "members": "Partecipanti all'uscita",

@@ -39,7 +39,8 @@
     "unarchive": "Désarchiver",
     "markRead": "✓ Lu",
     "justYou": "Juste toi",
-    "lastActive": "Actif {{date}}"
+    "lastActive": "Actif {{date}}",
+    "directMessage": "Message privé"
   },
   "feedCard": {
     "members": "Membres de la sortie",
