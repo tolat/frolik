@@ -1,65 +1,155 @@
 @import "../../../utils/responsive.scss";
 
+// "Get the Frolik app" drawer
 .container {
-  margin-top: 6rem;
   display: flex;
   flex-direction: column;
-  padding: 2rem;
+  align-items: center;
+  text-align: center;
+  padding-top: 0.4rem;
 }
 
-.container h3 {
-  font-size: 1.6rem;
-  margin-top: 1.5rem;
+.appIcon {
+  width: 7.2rem;
+  height: 7.2rem;
+  border-radius: 1.7rem; // iOS-style rounded square
+  box-shadow: 0 8px 20px rgba(27, 29, 36, 0.14), 0 0 0 1px rgba(27, 29, 36, 0.05);
+  margin-bottom: 1.4rem;
 }
 
-.headerContainer {
-  display: flex;
-  box-sizing: border-box;
+.title {
+  margin: 0;
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: $text;
+}
+
+.subtitle {
+  margin: 0.6rem 0 1.8rem;
+  max-width: 30rem;
+  font-size: 1.4rem;
+  line-height: 1.45;
+  color: $text_muted;
+}
+
+// iPhone steps
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem;
   width: 100%;
-  justify-content: flex-start;
-  flex-direction: column;
-  margin-bottom: 2rem;
-}
-
-.subHeader {
-  font-size: 1.3rem;
-  font-weight: normal;
-  color: rgb(63, 63, 63);
-}
-
-.header {
-  font-size: 3rem;
+  box-sizing: border-box;
   display: flex;
-  align-items: end;
-  font-weight: bold;
-}
-
-.logo {
-  height: 4.5rem;
-  padding: 0 0.3rem 0.2rem 0.3rem;
+  flex-direction: column;
+  gap: 0.4rem;
+  background: $card_grey;
+  border-radius: $radius_lg;
+  text-align: start;
 }
 
 .step {
-  width: 100%;
-  border-radius: 5px;
-}
-
-.safari {
-  height: 3rem;
-  margin: 0 1rem;
-}
-
-.safariContainer {
   display: flex;
   align-items: center;
+  gap: 1.2rem;
+  padding: 1.1rem 1.2rem;
+  border-radius: $radius_md;
+  background: $surface;
 }
 
-.continueButton {
-  font-size: 1.5rem;
-  font-weight: normal;
+.stepNumber {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  background: $grad_blue;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
 }
 
-.installButton{
-  @include btn_primary;
+.stepText {
+  flex: 1;
+  font-size: 1.45rem;
+  line-height: 1.35;
+  color: $text;
+
+  b {
+    font-weight: 700;
+  }
+}
+
+.stepIcon {
+  width: 2.6rem;
+  height: 2.6rem;
+  flex-shrink: 0;
+}
+
+.stepGlyph {
+  display: flex;
+  flex-shrink: 0;
+  width: 2.6rem;
+  height: 2.6rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.8rem;
+  background: rgba(91, 141, 239, 0.1);
+}
+
+.inlineIcon {
+  width: 1.9rem;
+  height: 1.9rem;
+  fill: none;
+  stroke: #3478f6; // iOS system blue, like the real Share button
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.note {
+  margin: 1rem 0 0;
+  font-size: 1.2rem;
+  color: $text_muted;
+}
+
+// Browsers without a one-tap install (desktop Safari, Firefox…)
+.otherSteps {
+  margin: 0;
+  padding: 1.4rem 1.6rem;
+  width: 100%;
+  box-sizing: border-box;
+  background: $card_grey;
+  border-radius: $radius_lg;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: $text;
+
+  b {
+    font-weight: 700;
+  }
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
   margin-top: 2rem;
+}
+
+.installButton {
+  @include btn_primary;
+  width: 100%;
+  padding: 1.35rem !important;
+  font-size: 1.5rem !important;
+}
+
+.laterButton {
+  @include btn_secondary;
+  width: 100%;
+  padding: 1.35rem !important;
+  font-size: 1.5rem !important;
 }

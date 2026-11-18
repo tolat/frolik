@@ -1,13 +1,16 @@
 {
-  "header": "Installer <logo/>",
-  "subHeader": "Når du installerer Frolik, kan du få varsler og bruke Frolik som en vanlig mobilapp. (iOS > 16.4)",
+  "title": "Last ned Frolik-appen",
+  "subtitle": "Få varsler og åpne Frolik rett fra Hjem-skjermen.",
   "ios": {
-    "step1": "1. <safari/> Gå til www.frolik.ca i Safari",
-    "step1Alt": "steg1",
-    "step2": "2. Trykk på del-ikonet i verktøylinjen i Safari",
-    "step2Alt": "steg2",
-    "step3": "3. Trykk på «Legg til på Hjem-skjerm»"
+    "step1": "Åpne <b>frolik.ca</b> i Safari",
+    "step2": "Trykk på <b>Del</b>-knappen",
+    "step3": "Velg <b>Legg til på Hjem-skjerm</b>",
+    "note": "Varsler krever iOS 16.4 eller nyere."
+  },
+  "other": {
+    "step": "Åpne menyen i nettleseren og velg <b>Installer app</b> eller <b>Legg til på startskjermen</b>."
   },
   "installButton": "Installer Frolik",
-  "backToWeb": "Tilbake til Frolik på nett"
+  "notNow": "Ikke nå",
+  "gotIt": "Skjønner"
 }

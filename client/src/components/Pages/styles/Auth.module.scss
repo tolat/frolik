@@ -20,11 +20,25 @@
   margin-bottom: 2.4rem;
 }
 
+// White card with the avatars' multicolour ring as its border (every
+// category colour, like the Outing nav button)
 .card {
   width: 100%;
   box-sizing: border-box;
   padding: 2.4rem 2rem 2rem;
-  background-color: $surface;
+  border: 0.35rem solid transparent;
+  background:
+    linear-gradient($surface, $surface) padding-box,
+    conic-gradient(
+        from 200deg,
+        rgb(248 157 157),
+        rgb(186, 255, 169),
+        rgb(238 183 220),
+        rgb(117, 204, 255),
+        rgb(255 236 69),
+        rgb(248 157 157)
+      )
+      border-box;
   border-radius: $radius_lg;
   box-shadow: $shadow_md;
   display: flex;

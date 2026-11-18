@@ -540,7 +540,7 @@ export const showIosInstallModal = (localStorageKey) => {
   // check when modal has been shown last. show once every day.
   const localStorageKeyValue = localStorage.getItem(localStorageKey);
   const iosInstallModalShown = localStorageKeyValue
-    ? Date.now() - parseInt(JSON.parse(localStorageKeyValue).time) < 10000
+    ? Date.now() - parseInt(JSON.parse(localStorageKeyValue).time) < 86400000
       ? true
       : false
     : false;

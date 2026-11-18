@@ -1,13 +1,16 @@
 {
-  "header": "<logo/> 설치",
-  "subHeader": "Frolik을 설치하면 알림을 받을 수 있고, 일반 모바일 앱처럼 사용할 수 있어요. (iOS > 16.4)",
+  "title": "Frolik 앱 받기",
+  "subtitle": "알림을 받고 홈 화면에서 바로 Frolik을 열어 보세요.",
   "ios": {
-    "step1": "1. <safari/> Safari로 www.frolik.ca에 접속하세요",
-    "step1Alt": "1단계",
-    "step2": "2. Safari 도구 막대에서 공유 아이콘을 탭하세요",
-    "step2Alt": "2단계",
-    "step3": "3. '홈 화면에 추가'를 탭하세요"
+    "step1": "Safari에서 <b>frolik.ca</b>를 여세요",
+    "step2": "<b>공유</b> 버튼을 탭하세요",
+    "step3": "<b>홈 화면에 추가</b>를 선택하세요",
+    "note": "알림은 iOS 16.4 이상에서 사용할 수 있어요."
+  },
+  "other": {
+    "step": "브라우저 메뉴를 열고 <b>앱 설치</b> 또는 <b>홈 화면에 추가</b>를 선택하세요."
   },
   "installButton": "Frolik 설치",
-  "backToWeb": "Frolik 웹으로 돌아가기"
+  "notNow": "나중에",
+  "gotIt": "확인"
 }

@@ -1,13 +1,16 @@
 {
-  "header": "安装<logo/>",
-  "subHeader": "安装Frolik后，你可以接收通知，像普通手机应用一样使用Frolik。（iOS > 16.4）",
+  "title": "获取 Frolik 应用",
+  "subtitle": "接收通知，并直接从主屏幕打开 Frolik。",
   "ios": {
-    "step1": "1. <safari/>用Safari打开www.frolik.ca",
-    "step1Alt": "步骤1",
-    "step2": "2. 点击Safari工具栏上的分享图标",
-    "step2Alt": "步骤2",
-    "step3": "3. 点击“添加到主屏幕”"
+    "step1": "在 Safari 中打开 <b>frolik.ca</b>",
+    "step2": "轻点<b>分享</b>按钮",
+    "step3": "选择<b>添加到主屏幕</b>",
+    "note": "通知需要 iOS 16.4 或更高版本。"
   },
-  "installButton": "安装Frolik",
-  "backToWeb": "返回Frolik网页版"
+  "other": {
+    "step": "打开浏览器菜单，选择<b>安装应用</b>或<b>添加到主屏幕</b>。"
+  },
+  "installButton": "安装 Frolik",
+  "notNow": "以后再说",
+  "gotIt": "知道了"
 }

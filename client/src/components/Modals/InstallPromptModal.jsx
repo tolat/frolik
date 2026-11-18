@@ -1,122 +1,125 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import styles from "./styles/InstallPromptModal.module.scss";
-import { useEffect, useState } from "react";
 import {
   showAndroidInstallModal,
   showIosInstallModal,
 } from "../../utils/utils";
-import logo from "../../images/frolik2.png";
-import install1 from "../../images/ios-install1.png";
-import install2 from "../../images/ios-install2.png";
 import safari from "../../images/safari.png";
-import { modalActions } from "../../store/modal-slice";
-import ModalPortal from "./ModalPortal";
-import ModalHeaderPortal from "./ModalHeaderPortal";
-import SimpleButton from "../UI/SimpleButton";
-import { hideModal } from "../../store/modal-actions";
+import appIcon from "../../images/brand/app-icon.png";
+import EmptyPopup from "../Popups/EmptyPopup";
+import { popupActions } from "../../store/popup-slice";
 import { useT, T } from "../../i18n";
 
-const InstallPromptModal = (props) => {
+export const INSTALL_SELECTOR = "install-prompt";
+
+const isIosDevice = () => /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+
+// iOS Share icon (square with an arrow) and Add-to-Home-Screen icon (plus in
+// a rounded square), drawn inline so the steps read like the real buttons
+const ShareIcon = () => (
+  <svg className={styles.inlineIcon} viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M12 3v12M8 7l4-4 4 4" />
+    <path d="M7 10H5.5A1.5 1.5 0 0 0 4 11.5v8A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5v-8a1.5 1.5 0 0 0-1.5-1.5H17" />
+  </svg>
+);
+const AddIcon = () => (
+  <svg className={styles.inlineIcon} viewBox="0 0 24 24" aria-hidden="true">
+    <rect x="4" y="4" width="16" height="16" rx="4" />
+    <path d="M12 8.5v7M8.5 12h7" />
+  </svg>
+);
+
+// "Get the Frolik app": a bottom drawer. Opens by itself (iPhone in Safari,
+// or when Chrome/Android offers an install) at most once a day, or from the
+// Install button in settings.
+const InstallPromptModal = () => {
   const { t } = useT();
   const dispatch = useDispatch();
-  const modalState = useSelector((state) => state.modal);
-  const modalDisplay =
-    modalState.selector === "install-prompt" ? "flex" : "none";
-  const modalStyle = { display: modalDisplay };
-  const [isIos, setIsIos] = useState(false);
-  const installEvent = modalState.installPrompted;
+  const installEvent = useSelector((state) => state.modal.installPrompted);
+  const popupSelector = useSelector((state) => state.popup.selector);
+  const ios = isIosDevice();
 
-  // Handle showing PWA install prompt
   useEffect(() => {
-    const showPromptModal = () => {
-      setTimeout(() => {
-        dispatch(modalActions.setSelector("install-prompt"));
-        dispatch(modalActions.showModal());
-      }, 500);
-    };
-
-    if (showIosInstallModal("iOS-install-prompt")) {
-      setIsIos(true);
-      showPromptModal();
-    } else if (
-      installEvent &&
-      showAndroidInstallModal("android-install-prompt")
-    ) {
-      setIsIos(false);
-      showPromptModal();
-    }
+    const shouldShow =
+      showIosInstallModal("iOS-install-prompt") ||
+      (installEvent && showAndroidInstallModal("android-install-prompt"));
+    if (!shouldShow) return;
+    const timer = setTimeout(() => {
+      // don't cover another drawer that's already open
+      if (popupSelector === "none") dispatch(popupActions.showPopup(INSTALL_SELECTOR));
+    }, 800);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, installEvent]);
 
-  const onInstallClick = () => {
-    installEvent && installEvent.prompt();
-    hideModal(true)
+  const close = () => dispatch(popupActions.hidePopup());
+
+  const onInstallClick = async () => {
+    close();
+    if (installEvent) installEvent.prompt();
   };
 
-  const header = (
-    <div className={styles.headerContainer}>
-      <div className={styles.header}>
-        <T
-          k="install.header"
-          components={{
-            logo: <img className={styles.logo} src={logo} alt="logo" />,
-          }}
-        />
-      </div>
-      <div className={styles.subHeader}>
-        {t("install.subHeader")}
-      </div>
-    </div>
-  );
-
-  const iOSMessage = (
-    <div className={styles.messageContainer}>
-      <h3>
-        <div className={styles.safariContainer}>
-          <T
-            k="install.ios.step1"
-            components={{
-              safari: (
-                <img
-                  className={styles.safari}
-                  src={safari}
-                  alt={t("install.ios.step1Alt")}
-                />
-              ),
-            }}
-          />
-        </div>
-      </h3>
-      <h3>{t("install.ios.step2")}</h3>
-      <img
-        className={styles.step}
-        src={install1}
-        alt={t("install.ios.step1Alt")}
-      />
-      <h3>{t("install.ios.step3")}</h3>
-      <img
-        className={styles.step}
-        src={install2}
-        alt={t("install.ios.step2Alt")}
-      />
-    </div>
-  );
-
-  const androidButton = (
-    <SimpleButton onClick={onInstallClick} className={styles.installButton}>
-      {t("install.installButton")}
-    </SimpleButton>
-  );
-
   return (
-    <ModalPortal>
-      <ModalHeaderPortal selector={"install-prompt"}>
-        <div className={styles.continueButton}>{t("install.backToWeb")} </div>
-      </ModalHeaderPortal>
-      <div className={styles.container} style={modalStyle}>
-        {header}
-        {isIos ? iOSMessage : androidButton}
+    <EmptyPopup selector={INSTALL_SELECTOR} label={t("install.title")}>
+      <div className={styles.container}>
+        <img
+          className={styles.appIcon}
+          src={appIcon}
+          alt=""
+        />
+        <h2 className={styles.title}>{t("install.title")}</h2>
+        <p className={styles.subtitle}>{t("install.subtitle")}</p>
+
+        {ios ? (
+          <>
+            <ol className={styles.steps}>
+              <li className={styles.step}>
+                <span className={styles.stepNumber}>1</span>
+                <span className={styles.stepText}>
+                  <T k="install.ios.step1" />
+                </span>
+                <img className={styles.stepIcon} src={safari} alt="" />
+              </li>
+              <li className={styles.step}>
+                <span className={styles.stepNumber}>2</span>
+                <span className={styles.stepText}>
+                  <T k="install.ios.step2" />
+                </span>
+                <span className={styles.stepGlyph}>
+                  <ShareIcon />
+                </span>
+              </li>
+              <li className={styles.step}>
+                <span className={styles.stepNumber}>3</span>
+                <span className={styles.stepText}>
+                  <T k="install.ios.step3" />
+                </span>
+                <span className={styles.stepGlyph}>
+                  <AddIcon />
+                </span>
+              </li>
+            </ol>
+            <p className={styles.note}>{t("install.ios.note")}</p>
+          </>
+        ) : installEvent ? null : (
+          <p className={styles.otherSteps}>
+            <T k="install.other.step" />
+          </p>
+        )}
+
+        <div className={styles.buttons}>
+          {!ios && installEvent && (
+            <button type="button" className={styles.installButton} onClick={onInstallClick}>
+              {t("install.installButton")}
+            </button>
+          )}
+          <button type="button" className={styles.laterButton} onClick={close}>
+            {ios || !installEvent ? t("install.gotIt") : t("install.notNow")}
+          </button>
+        </div>
       </div>
-    </ModalPortal>
+    </EmptyPopup>
   );
 };
 

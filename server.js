@@ -46,6 +46,12 @@ app.use(
   express.static(path.join(__dirname, "/client/build/static"))
 );
 app.use("/public", express.static(path.join(__dirname, "/client/build/")));
+// The built public files at the root too (favicon.ico, manifest.json, app
+// icons): index.html links them as /favicon.ico etc., and without this the
+// catch-all below answered with index.html, breaking the tab icon, the
+// install manifest and the iPhone home-screen icon. index: false keeps "/"
+// going to the app.
+app.use(express.static(path.join(__dirname, "/client/build/"), { index: false }));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json({ limit: "5mb" }));
 app.use(handleCORS);

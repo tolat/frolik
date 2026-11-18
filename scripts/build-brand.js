@@ -88,6 +88,8 @@ const ico = (images) => {
   fs.writeFileSync(path.join(PUBLIC, "icon_512.png"), await png(iconSVG, 512));
   fs.writeFileSync(path.join(PUBLIC, "icon_192.png"), await png(iconSVG, 192));
   fs.writeFileSync(path.join(PUBLIC, "apple-touch-icon.png"), await png(iconSVG, 180));
+  // For in-app use (e.g. the "Get the Frolik app" drawer)
+  fs.writeFileSync(path.join(BRAND, "app-icon.png"), await png(iconSVG, 192));
   const fav = await Promise.all([16, 32, 48].map(async (size) => ({ size, data: await png(faviconSVG, size) })));
   fs.writeFileSync(path.join(PUBLIC, "favicon.ico"), ico(fav));
   fs.writeFileSync(path.join(PUBLIC, "favicon-32.png"), fav[1].data);

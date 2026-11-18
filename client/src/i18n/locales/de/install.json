@@ -1,13 +1,16 @@
 {
-  "header": "<logo/> installieren",
-  "subHeader": "Installiere Frolik, um Benachrichtigungen zu bekommen und Frolik wie eine normale App zu nutzen. (ab iOS 16.4)",
+  "title": "Hol dir die Frolik-App",
+  "subtitle": "Erhalte Mitteilungen und öffne Frolik direkt vom Home-Bildschirm.",
   "ios": {
-    "step1": "1. <safari/> Öffne www.frolik.ca in Safari",
-    "step1Alt": "Schritt 1",
-    "step2": "2. Tippe in der Safari-Leiste auf das Teilen-Symbol",
-    "step2Alt": "Schritt 2",
-    "step3": "3. Tippe auf „Zum Home-Bildschirm“"
+    "step1": "Öffne <b>frolik.ca</b> in Safari",
+    "step2": "Tippe auf <b>Teilen</b>",
+    "step3": "Wähle <b>Zum Home-Bildschirm</b>",
+    "note": "Mitteilungen brauchen iOS 16.4 oder neuer."
+  },
+  "other": {
+    "step": "Öffne das Menü deines Browsers und wähle <b>App installieren</b> oder <b>Zum Startbildschirm hinzufügen</b>."
   },
   "installButton": "Frolik installieren",
-  "backToWeb": "Zurück zu Frolik im Web"
+  "notNow": "Später",
+  "gotIt": "Alles klar"
 }

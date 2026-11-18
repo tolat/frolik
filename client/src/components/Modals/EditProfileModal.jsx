@@ -1,3 +1,4 @@
+import { popupActions } from "../../store/popup-slice";
 import LanguagePicker from "../UI/LanguagePicker";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles/EditProfileModal.module.scss";
@@ -122,10 +123,9 @@ const EditProfileModal = () => {
     fetchLogout();
   };
 
-  const handleInstall = async () => {
-    await hideModal(true);
-    dispatch(modalActions.setSelector("install-prompt"));
-    dispatch(modalActions.showModal());
+  // Opens the "Get the Frolik app" drawer over settings
+  const handleInstall = () => {
+    dispatch(popupActions.showPopup("install-prompt"));
   };
 
   // check if the device is in standalone mode
