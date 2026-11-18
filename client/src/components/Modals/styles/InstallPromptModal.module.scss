@@ -60,7 +60,6 @@
 }
 
 .installButton{
-  background-color: $blue;
-  color: white;
+  @include btn_primary;
   margin-top: 2rem;
 }

@@ -507,6 +507,7 @@ export const dismissNotification = (user, notification, onComplete, status) => {
 
 // Fetch a user with stripped down data
 export const fetchStrippedUser = (userID, onComplete) => {
+  if (!userID) return; // e.g. an alert whose sender no longer exists
   const requestConfig = {
     url: `${getServer()}/user/stripped-user/${userID}`,
   };

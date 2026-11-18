@@ -109,16 +109,13 @@
 }
 
 .outingInviteButtons button {
-  padding: 1rem;
-  font-size: 1.3rem;
-  background-color: $button_grey;
-  color: $text;
+  @include btn_secondary;
+  @include btn_slim;
 }
 
 // primary action (e.g. View Outing) when there are two buttons
 .outingInviteButtons button:first-child:not(:last-child) {
-  background-color: $blue;
-  color: white;
+  @include btn_primary;
 }
 
 .buttonSpacer {

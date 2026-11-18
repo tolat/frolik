@@ -56,21 +56,18 @@
 }
 
 .logoutButton{
-  background-color: $red;
+  @include btn_danger;
   width: calc(100% - 2rem);
-  color: white;
   margin: 1rem 2rem 4rem 2rem ;
 }
 
 .installButton{
-  background-color: $button_grey;
+  @include btn_secondary;
   width: calc(100% - 2rem);
-  color: black;
   margin: 1rem 2rem 2rem 2rem ;
 }
 .tourButton {
-  background-color: $light_blue;
-  color: $blue_dark;
+  @include btn_soft;
   width: calc(100% - 2rem);
   margin: 1rem 2rem 0 2rem;
 }

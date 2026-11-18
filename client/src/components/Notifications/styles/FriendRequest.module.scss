@@ -32,11 +32,6 @@
   height: 1rem;
 }
 
-.acceptButton {
-  background-color: $green;
-  color: white;
-}
-
 // ── Card style aligned with the rest of the app ─────────────────────────────
 .container {
   gap: 0.6rem;
@@ -74,17 +69,19 @@
 }
 
 .buttons button {
-  padding: 1rem;
-  font-size: 1.3rem;
-  background-color: $button_grey;
-  color: $text;
+  @include btn_secondary;
+  @include btn_slim;
+}
+
+// primary action (View Chat, Accept…) when there are two buttons
+.buttons button:first-child:not(:last-child) {
+  @include btn_primary;
 }
 
 .buttonSpacer {
   display: none;
 }
 
-.acceptButton {
-  background-color: $green !important;
-  color: white !important;
+.buttons button.acceptButton:first-child {
+  @include btn_success;
 }

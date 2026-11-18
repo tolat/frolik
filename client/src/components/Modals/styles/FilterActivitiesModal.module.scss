@@ -87,13 +87,9 @@
 }
 
 .applyButton {
-  background: linear-gradient(135deg, #6a9bf5 0%, #4a7ee8 55%, #3f6fd8 100%) !important;
-  color: white !important;
-  font-weight: 700;
-  border: none;
-  box-shadow: 0 8px 20px rgba(63, 111, 216, 0.32);
+  @include btn_primary;
 }
 
 .clearButton {
-  font-weight: 600;
+  @include btn_secondary;
 }

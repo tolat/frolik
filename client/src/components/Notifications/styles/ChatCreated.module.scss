@@ -69,10 +69,13 @@
 }
 
 .buttons button {
-  padding: 1rem;
-  font-size: 1.3rem;
-  background-color: $button_grey;
-  color: $text;
+  @include btn_secondary;
+  @include btn_slim;
+}
+
+// primary action (View Chat, Accept…) when there are two buttons
+.buttons button:first-child:not(:last-child) {
+  @include btn_primary;
 }
 
 .buttonSpacer {

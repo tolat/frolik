@@ -116,8 +116,7 @@
 }
 
 .revertButton {
-  background-color: $button_grey;
-  color: black;
+  @include btn_secondary;
   border: none;
   margin-top: 1rem;
   cursor: pointer;

@@ -51,6 +51,79 @@ $dur: 0.28s;
   }
 }
 
+// ── Buttons ──────────────────────────────────────────────────────────────────
+// One look for every action button (SimpleButton + className). !important
+// because SimpleButton's own base colour can load after a module's rules.
+$grad_blue: linear-gradient(135deg, #6a9bf5 0%, #4a7ee8 55%, #3f6fd8 100%);
+$grad_green: linear-gradient(135deg, #45c58a 0%, #34b77a 55%, #2a9a66 100%);
+$grad_red: linear-gradient(135deg, #f47f7c 0%, #ef6461 55%, #d94d4a 100%);
+
+@mixin btn_base {
+  border: none !important;
+  border-radius: 100rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em;
+}
+
+// Primary action: blue gradient
+@mixin btn_primary {
+  @include btn_base;
+  background: $grad_blue !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(63, 111, 216, 0.28) !important;
+}
+
+// Positive action (Accept, Mark Completed): green gradient
+@mixin btn_success {
+  @include btn_base;
+  background: $grad_green !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(42, 154, 102, 0.26) !important;
+}
+
+// Destructive action (Delete, Leave, Logout): red gradient
+@mixin btn_danger {
+  @include btn_base;
+  background: $grad_red !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(217, 77, 74, 0.26) !important;
+}
+
+// Secondary action (Cancel, Clear): flat grey
+@mixin btn_secondary {
+  @include btn_base;
+  background: $button_grey !important;
+  color: $text !important;
+  box-shadow: none !important;
+}
+
+// Soft blue (helpful but optional, e.g. Take the tour)
+@mixin btn_soft {
+  @include btn_base;
+  background: $light_blue !important;
+  color: $blue_dark !important;
+  box-shadow: none !important;
+}
+
+// Disabled / not available yet
+@mixin btn_disabled {
+  background: $button_grey !important;
+  color: #a7adbb !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+  filter: none !important;
+  &:active {
+    transform: none;
+  }
+}
+
+// Compact size for buttons inside cards and popups
+@mixin btn_slim {
+  padding: 1rem 1.4rem !important;
+  font-size: 1.35rem !important;
+  line-height: 1.2;
+}
+
 @mixin mbl_styles {
   @media (max-width: $breakpoint_s) {
     @content;

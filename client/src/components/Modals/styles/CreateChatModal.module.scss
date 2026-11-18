@@ -41,8 +41,7 @@
 }
 
 .createChatButton {
-  background-color: $blue;
-  color: white;
+  @include btn_primary;
   width: fit-content;
 }
 
@@ -57,6 +56,11 @@
 .unclickableButton:hover {
   cursor: auto;
   opacity: 1;
+}
+
+.createChatButton.unclickableButton,
+.createChatButton.unclickableButton:hover {
+  @include btn_disabled;
 }
 
 // Shown until at least one friend is picked

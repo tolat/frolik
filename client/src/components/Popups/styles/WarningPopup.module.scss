@@ -31,34 +31,33 @@
   width: 100%;
 }
 
+.buttonContainer {
+  gap: 1rem;
+}
+
 .buttonSpacer {
-  width: 2rem;
-  height: 1rem;
+  display: none;
+}
+
+.buttonContainer > button {
+  flex: 1;
+  @include btn_slim;
+  padding: 1.15rem 1.4rem !important;
 }
 
 .okButton {
-  background-color: $blue;
-  color: white;
+  @include btn_primary;
 }
 
 .cancelButton {
-  background-color: $button_grey;
+  @include btn_secondary;
 }
 
-.deleteButton{
-  background-color: $red;
-  color: white;
-  font-weight: bold;
+.deleteButton {
+  @include btn_danger;
 }
 
-.unclickableButton {
-  background-color: $button_grey;
-  color: grey;
-  cursor: not-allowed !important;
-  box-shadow: none !important;
-}
-
+.unclickableButton,
 .unclickableButton:hover {
-  cursor: not-allowed !important;
-  background-color: $button_grey !important;
+  @include btn_disabled;
 }

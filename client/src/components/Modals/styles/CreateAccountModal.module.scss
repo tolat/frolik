@@ -37,9 +37,7 @@
 }
 
 .resendEmailButton{
-    background-color: $blue;
-    font-weight: bold;
-    color: white;
+    @include btn_primary;
     width: 50%;
     margin-bottom: 2rem;
 }
