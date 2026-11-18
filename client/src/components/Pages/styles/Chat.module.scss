@@ -180,3 +180,21 @@
   color: $text_muted;
   font-size: 1.4rem;
 }
+
+// Blue gradient circle with a drawn, bold plus — matches the outing page's
+// create-activity button (a "+" text glyph never sat centred)
+.newChatButton {
+  background: linear-gradient(135deg, #6a9bf5 0%, #4a7ee8 55%, #3f6fd8 100%) !important;
+  box-shadow: 0 6px 16px rgba(63, 111, 216, 0.32) !important;
+  border: none !important;
+
+  svg {
+    width: 2rem;
+    height: 2rem;
+    fill: none;
+    stroke: white;
+    stroke-width: 2.8;
+    stroke-linecap: round;
+    display: block;
+  }
+}

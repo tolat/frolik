@@ -123,7 +123,21 @@ const Chat = memo((props) => {
             className={styles.newChatButton}
             data-tour="new-chat"
           >
-            +
+            {/* Same bold plus as the outing page's "create activity" button */}
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+            <span
+              style={{
+                position: "absolute",
+                width: 1,
+                height: 1,
+                overflow: "hidden",
+                clip: "rect(0 0 0 0)",
+              }}
+            >
+              New chat
+            </span>
           </SimpleButton>
         </div>
         {!chats || (fetchingChats && !chats[0]) ? (
