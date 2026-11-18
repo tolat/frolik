@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Eat: fork and knife -->
+  <g fill="none" stroke="#000" stroke-width="36" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M150 64v120M200 64v120M250 64v120"/>
+    <path d="M150 184c0 40 22 60 50 60s50-20 50-60"/>
+    <path d="M200 244v204"/>
+  </g>
+  <path d="M352 52c-34 34-52 96-52 168 0 30 16 46 40 50v178a18 18 0 0 0 36 0V70c0-20-14-28-24-18z" fill="#000"/>
+</svg>

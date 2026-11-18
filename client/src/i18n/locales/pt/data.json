@@ -23,6 +23,9 @@
     "travel": "Deslocar-se",
     "play": "Jogar",
     "capture": "Registrar",
-    "create": "Criar"
+    "create": "Criar",
+    "eat": "Comer",
+    "meet": "Encontrar",
+    "explore": "Explorar"
   }
 }

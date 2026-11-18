@@ -23,6 +23,9 @@
     "travel": "Travel",
     "play": "Play",
     "capture": "Capture",
-    "create": "Create"
+    "create": "Create",
+    "eat": "Eat",
+    "meet": "Meet up",
+    "explore": "Explore"
   }
 }

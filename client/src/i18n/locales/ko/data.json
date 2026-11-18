@@ -23,6 +23,9 @@
     "travel": "이동",
     "play": "놀기",
     "capture": "촬영",
-    "create": "만들기"
+    "create": "만들기",
+    "eat": "먹기",
+    "meet": "만나기",
+    "explore": "탐험"
   }
 }

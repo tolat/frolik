@@ -20,4 +20,7 @@ module.exports.instructionTypes = [
   "play",
   "capture",
   "create",
+  "eat",
+  "meet",
+  "explore",
 ];

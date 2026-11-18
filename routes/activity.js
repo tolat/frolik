@@ -52,6 +52,9 @@ const INSTRUCTION_KINDS = [
   "play",
   "capture",
   "create",
+  "eat",
+  "meet",
+  "explore",
 ];
 
 router.get(

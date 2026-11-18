@@ -23,6 +23,9 @@
     "travel": "Reis",
     "play": "Spill",
     "capture": "Ta bilder",
-    "create": "Lag"
+    "create": "Lag",
+    "eat": "Spise",
+    "meet": "Møtes",
+    "explore": "Utforske"
   }
 }

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Meet up: two people side by side -->
+  <circle cx="176" cy="150" r="64" fill="#000"/>
+  <circle cx="344" cy="150" r="64" fill="#000"/>
+  <path d="M60 420c0-80 52-140 116-140 34 0 64 16 86 44-26 30-40 68-40 96z" fill="#000"/>
+  <path d="M228 420c0-80 52-140 116-140s116 60 116 140z" fill="#000"/>
+</svg>

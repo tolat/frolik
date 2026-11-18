@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import styles from "./styles/InstructionCard.module.scss";
 import { useState } from "react";
 import travelIcon from "../../images/walk.png";
@@ -7,26 +6,32 @@ import purchaseIcon from "../../images/cart.png";
 import captureIcon from "../../images/camera.png";
 import whistleIcon from "../../images/whistle.png";
 import createIcon from "../../images/paint.png";
+import eatIcon from "../../images/eat.png";
+import meetIcon from "../../images/meet.png";
+import exploreIcon from "../../images/explore.png";
 import SimpleInput from "./SimpleInput";
 import { INSTRUCTION_TITLE_MAX } from "../../utils/limits";
 import { useT } from "../../i18n";
 
+// Icons for activity steps, in picker order (a 3 x 3 grid). New kinds also
+// go in routes/activity.js INSTRUCTION_KINDS and data.instructionTypes.
 export const instructionIconMap = {
   communicate: communicateIcon,
+  meet: meetIcon,
   travel: travelIcon,
+  explore: exploreIcon,
   purchase: purchaseIcon,
-  capture: captureIcon,
+  eat: eatIcon,
   play: whistleIcon,
+  capture: captureIcon,
   create: createIcon,
 };
 
 const InstructionCard = (props) => {
   const { t, tOr } = useT();
-  const globals = useSelector((state) => state.auth.globals);
   // The kinds are now just icons: pick one, then write any short title
-  const iconKinds = (globals?.instructionTypes || Object.keys(instructionIconMap))
-    .map((k) => k.toLowerCase())
-    .filter((k) => instructionIconMap[k]);
+  // Every icon the app has (the database's older list only had six)
+  const iconKinds = Object.keys(instructionIconMap);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [kind, setKind] = useState(props.instruction.kind);
   const [title, setTitle] = useState(props.instruction.title);

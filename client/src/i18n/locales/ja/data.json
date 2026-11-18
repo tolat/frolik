@@ -23,6 +23,9 @@
     "travel": "移動",
     "play": "遊ぶ",
     "capture": "撮影",
-    "create": "つくる"
+    "create": "つくる",
+    "eat": "食べる",
+    "meet": "集合",
+    "explore": "探検"
   }
 }

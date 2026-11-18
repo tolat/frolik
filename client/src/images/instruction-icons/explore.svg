@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Explore: map pin over a dotted path -->
+  <path d="M256 40c-80 0-140 60-140 138 0 96 116 214 128 226a17 17 0 0 0 24 0c12-12 128-130 128-226 0-78-60-138-140-138zm0 196a60 60 0 1 1 0-120 60 60 0 0 1 0 120z" fill="#000" fill-rule="evenodd"/>
+  <g fill="none" stroke="#000" stroke-width="30" stroke-linecap="round">
+    <path d="M96 462h50M206 462h100M366 462h50"/>
+  </g>
+</svg>
