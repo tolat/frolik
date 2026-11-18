@@ -3,9 +3,21 @@ import balloon from "../../images/air-balloon-blue.png";
 
 // On-brand loading spinner (same look as pull-to-refresh): a spinning ring
 // with the frolik balloon bobbing inside. `size` in rem; optional `label`.
-const BrandLoader = ({ size = 4.6, label, className, inline }) => (
+// Ring only, for buttons: `noBalloon` drops the balloon, `plain` drops the
+// white bubble behind it, `light` = white arc (for blue buttons).
+const BrandLoader = ({
+  size = 4.6,
+  label,
+  className,
+  inline,
+  noBalloon,
+  plain,
+  light,
+}) => (
   <div
-    className={`${styles.wrap} ${inline ? styles.inline : ""} ${className || ""}`}
+    className={`${styles.wrap} ${inline ? styles.inline : ""} ${
+      plain ? styles.plain : ""
+    } ${light ? styles.light : ""} ${className || ""}`}
     role="status"
     aria-live="polite"
   >
@@ -14,7 +26,7 @@ const BrandLoader = ({ size = 4.6, label, className, inline }) => (
         <circle className={styles.track} cx="18" cy="18" r="15" />
         <circle className={styles.arc} cx="18" cy="18" r="15" />
       </svg>
-      <img src={balloon} alt="" className={styles.balloon} />
+      {noBalloon ? null : <img src={balloon} alt="" className={styles.balloon} />}
     </div>
     {label ? (
       <span className={styles.label}>{label}</span>

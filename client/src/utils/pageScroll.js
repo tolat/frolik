@@ -29,15 +29,27 @@ export const resetViewportShift = () => {
 const isTextField = (el) =>
   !!el && /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) && el.type !== "file";
 
-// Install once: snap back whenever a text field loses focus (keyboard
-// closed) and nothing else has taken focus
+// Install once:
+//  - touch devices: while a text field has focus (keyboard up), add
+//    html.keyboard-open, which hides the bottom nav bar — iOS lets the whole
+//    view scroll while the keyboard is open, dragging a fixed nav up with it
+//  - snap the view back when the field loses focus (keyboard closed) and
+//    nothing else has taken focus
 let guardInstalled = false;
 export const installViewportShiftGuard = () => {
   if (guardInstalled) return;
   guardInstalled = true;
+  const touch = window.matchMedia?.("(pointer: coarse)").matches;
+  const root = document.documentElement;
+  document.addEventListener("focusin", (e) => {
+    if (touch && isTextField(e.target)) root.classList.add("keyboard-open");
+  });
   document.addEventListener("focusout", () =>
     setTimeout(() => {
-      if (!isTextField(document.activeElement)) resetViewportShift();
+      if (!isTextField(document.activeElement)) {
+        root.classList.remove("keyboard-open");
+        resetViewportShift();
+      }
     }, 60)
   );
 };

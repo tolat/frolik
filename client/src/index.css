@@ -298,3 +298,9 @@ img {
 html.scroll-locked {
   overflow: hidden !important;
 }
+
+/* Keyboard up on a touch device (utils/pageScroll.js): hide the floating nav
+   bar — iOS scrolls the whole view while typing and would drag it along */
+html.keyboard-open .app-navbar {
+  display: none !important;
+}

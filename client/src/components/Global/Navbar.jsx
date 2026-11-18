@@ -97,7 +97,7 @@ const Navbar = (props) => {
     <div
       style={{ display: masterDisplay }}
       id="navbar"
-      className={styles.header}
+      className={`${styles.header} app-navbar`}
     >
       <WarningPopup
         selector={"generic-warning"}

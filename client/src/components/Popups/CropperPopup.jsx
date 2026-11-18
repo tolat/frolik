@@ -3,7 +3,6 @@ import { createPortal } from "react-dom";
 import { useSelector } from "react-redux";
 import Cropper from "react-easy-crop";
 import BrandLoader from "../UI/BrandLoader";
-import LoaderSpinner from "../UI/LoaderSpinner";
 import { getCroppedImageBase64 } from "../../utils/utils";
 import { useScrollLock } from "../../utils/scrollLock";
 import styles from "./styles/CropperPopup.module.scss";
@@ -155,7 +154,7 @@ const CropperPopup = (props) => {
           >
             {busy && actionLabel !== "Done" ? (
               <>
-                <LoaderSpinner width="1.3rem" height="1.3rem" color="#3f6fd8" />
+                <BrandLoader inline plain noBalloon size={1.4} />
                 Uploading…
               </>
             ) : (

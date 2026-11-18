@@ -97,3 +97,30 @@
     animation-iteration-count: infinite !important;
   }
 }
+
+// Ring only, sitting inside a button: no bubble, ring fills the box
+.plain {
+  .bubble {
+    background: none;
+    box-shadow: none;
+  }
+  .ring {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .track,
+  .arc {
+    stroke-width: 4;
+  }
+}
+
+// White arc on a translucent track, for blue buttons
+.light {
+  .track {
+    stroke: rgba(255, 255, 255, 0.35);
+  }
+  .arc {
+    stroke: white;
+  }
+}

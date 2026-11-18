@@ -10,7 +10,7 @@ import ProfileEditor from "./ProfileEditor";
 import { hideModal } from "../../store/modal-actions";
 import ValidatorBubble, { runValidators } from "../UI/ValidatorBubble";
 import { editProfileValidators } from "../../utils/validators";
-import LoaderSpinner from "../UI/LoaderSpinner";
+import BrandLoader from "../UI/BrandLoader";
 import ModalHeaderPortal from "./ModalHeaderPortal";
 import SimpleButton from "../UI/SimpleButton";
 import { fetchLogout } from "../../store/auth-actions";
@@ -44,10 +44,10 @@ const EditProfileModal = () => {
   const globals = useSelector((state) => state.auth.globals);
   const [stagedData, dispatchStageData] = useReducer(stagedDataReducer);
   const [defaultValues, setDefaultValues] = useState({});
-  // Saving: small white spinner + "Saving…" inside the blue Save pill
+  // Saving: the app's ring spinner (no balloon), white on the blue Save pill
   const buttonTextOnSubmit = (
     <span style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem" }}>
-      <LoaderSpinner width="1.3rem" height="1.3rem" />
+      <BrandLoader inline plain light noBalloon size={1.4} />
       Saving…
     </span>
   );
