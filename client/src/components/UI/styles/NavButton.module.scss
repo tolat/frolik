@@ -79,12 +79,14 @@
   box-sizing: border-box;
   border-radius: 50%;
   box-shadow: 0 6px 16px rgba(27, 29, 36, 0.16), 0 0 0 0.35rem rgba(255, 255, 255, 0.96);
-  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow $dur ease;
+  transition: box-shadow $dur ease;
 
   &::before {
     content: "";
     position: absolute;
-    inset: 0;
+    // 1px past the edge, under the white collar: at exactly the edge the
+    // anti-aliased rim let dark photos behind the bar show as a hairline
+    inset: -1px;
     border-radius: 50%;
     background: var(--ring);
     -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--ring-width)), #000 calc(100% - var(--ring-width) + 0.5px));
@@ -101,9 +103,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  // inside the ring, not under it
-  width: calc(100% - 2 * var(--ring-width));
-  height: calc(100% - 2 * var(--ring-width));
+  // a little under the ring's inner edge (the ring is drawn on top), so no
+  // see-through sliver opens between them
+  width: calc(100% - 2 * var(--ring-width) + 4px);
+  height: calc(100% - 2 * var(--ring-width) + 4px);
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.96);
   transition: background-color $dur ease;
@@ -126,12 +129,3 @@
   }
 }
 
-.button:active .ring {
-  transform: scale(0.9);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .button:hover .ring {
-    transform: translateY(-2px) rotate(-8deg);
-  }
-}

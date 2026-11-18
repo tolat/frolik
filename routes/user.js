@@ -436,13 +436,23 @@ router.get(
       return;
     }
 
-    // Send back unauthorized if chatid is not in the user's chats
-    if (!user.chats.find((c) => c.toString() == chat._id.toString())) {
-      res.status(401).send("User Not Authorized For This Chat");
-      return;
+    await chat.populate("outing");
+
+    // Only members may open a chat. A member who deleted it "for me" (so it's
+    // not in their list) gets it back when they open it, e.g. from a chat
+    // alert's View Chat, which used to do nothing for them
+    const memberIDs = (chat.outing ? chat.outing.users : chat.users).map((u) =>
+      (u._id || u).toString()
+    );
+    const listed = user.chats.find((c) => c.toString() == chat._id.toString());
+    if (!listed) {
+      if (!memberIDs.includes(user._id.toString())) {
+        res.status(401).send("User Not Authorized For This Chat");
+        return;
+      }
+      await User.updateOne({ _id: user._id }, { $addToSet: { chats: chat._id } });
     }
 
-    await chat.populate("outing");
     await chat.populate("outing.activity");
 
     // Populate chat users with stripped down data
