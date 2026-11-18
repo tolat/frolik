@@ -8,5 +8,24 @@
     "title": "Benachrichtigungen aktivieren",
     "body": "Erfahre sofort von Einladungen, Nachrichten und Freundschaftsanfragen.",
     "button": "Aktivieren"
+  },
+  "drawer": {
+    "title": "Verpass keinen Ausflug",
+    "body": "Aktiviere Mitteilungen, damit du sofort erfährst, wenn etwas passiert.",
+    "item1": "Einladungen und Neuigkeiten zu Ausflügen",
+    "item2": "Neue Nachrichten",
+    "item3": "Freundschaftsanfragen",
+    "enable": "Mitteilungen aktivieren",
+    "notNow": "Später"
+  },
+  "toggle": {
+    "title": "Mitteilungen",
+    "on": "An für Einladungen, Nachrichten und Freundschaftsanfragen auf diesem Gerät.",
+    "off": "Erhalte Einladungen, Nachrichten und Freundschaftsanfragen auf diesem Gerät.",
+    "blocked": "Blockiert. Erlaube Mitteilungen für Frolik in den Einstellungen deines Handys oder Browsers.",
+    "installFirst": "Füge Frolik zum Home-Bildschirm hinzu, um sie zu aktivieren.",
+    "unsupported": "Dieser Browser unterstützt keine Mitteilungen.",
+    "turningOn": "Wird aktiviert …",
+    "turningOff": "Wird deaktiviert …"
   }
 }

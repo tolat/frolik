@@ -20,7 +20,7 @@ import logoutIcon from "../../images/logout.png";
 import { modalActions } from "../../store/modal-slice";
 import { startTour } from "../Tour/Tour";
 import { confirmLocation, geoFromPoint } from "../../utils/location";
-import PushPrompt from "../Notifications/PushPrompt";
+import NotificationsToggle from "../UI/NotificationsToggle";
 import { useT } from "../../i18n";
 
 const stagedDataReducer = (state, action) => {
@@ -163,7 +163,12 @@ const EditProfileModal = () => {
           dataChanged={dataChanged}
           runValidation={runValidation}
           locationLocked={!!user.auto_location}
-          locationExtra={<AutoLocationToggle />}
+          locationExtra={
+            <>
+              <AutoLocationToggle />
+              <NotificationsToggle />
+            </>
+          }
           clearValidators={() => setValidationDisplay("none")}
           resetForm={resetForm}
           placeholderLabels={true}
@@ -179,7 +184,6 @@ const EditProfileModal = () => {
             }}
           />
         </ProfileEditor>
-        <PushPrompt compact />
         <SimpleButton
           onClick={async () => {
             await hideModal();

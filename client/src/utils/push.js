@@ -60,9 +60,25 @@ const subscribeAndSend = async () => {
   });
 };
 
+// Switched off in settings on this device: the quiet sync below must not
+// turn it back on just because permission is still granted
+const OFF_KEY = "frolik:push-off";
+const switchedOff = () => {
+  try {
+    return localStorage.getItem(OFF_KEY) === "1";
+  } catch {
+    return false;
+  }
+};
+const setSwitchedOff = (off) => {
+  try {
+    off ? localStorage.setItem(OFF_KEY, "1") : localStorage.removeItem(OFF_KEY);
+  } catch {}
+};
+
 // Quiet sync on load — never prompts
 export const syncPush = async () => {
-  if (pushPermission() !== "granted") return;
+  if (pushPermission() !== "granted" || switchedOff()) return;
   try {
     await subscribeAndSend();
   } catch (err) {
@@ -73,6 +89,7 @@ export const syncPush = async () => {
 // Call from a tap/click. Returns the resulting permission state.
 export const enablePush = async () => {
   if (!pushSupported()) return "unsupported";
+  setSwitchedOff(false);
   let permission = Notification.permission;
   if (permission === "default") {
     permission = await Notification.requestPermission();
@@ -100,5 +117,27 @@ export const removePushFromServer = async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ endpoint: subscription.endpoint }),
     });
+  } catch {}
+};
+
+// Is this device currently set up to receive notifications?
+export const isPushOn = async () => {
+  if (pushPermission() !== "granted" || switchedOff()) return false;
+  try {
+    const registration = await navigator.serviceWorker.getRegistration();
+    return !!(await registration?.pushManager.getSubscription());
+  } catch {
+    return false;
+  }
+};
+
+// Settings toggle off: stop notifications on this device only
+export const disablePush = async () => {
+  setSwitchedOff(true);
+  await removePushFromServer();
+  try {
+    const registration = await navigator.serviceWorker.getRegistration();
+    const subscription = await registration?.pushManager.getSubscription();
+    await subscription?.unsubscribe();
   } catch {}
 };

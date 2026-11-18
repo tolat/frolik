@@ -1,10 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import styles from "./styles/InstallPromptModal.module.scss";
-import {
-  showAndroidInstallModal,
-  showIosInstallModal,
-} from "../../utils/utils";
+import store from "../../store";
 import safari from "../../images/safari.png";
 import appIcon from "../../images/brand/app-icon.png";
 import EmptyPopup from "../Popups/EmptyPopup";
@@ -14,6 +11,30 @@ import { useT, T } from "../../i18n";
 export const INSTALL_SELECTOR = "install-prompt";
 
 const isIosDevice = () => /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+
+// Already running as the installed app (iOS home screen or any PWA window)
+const isInstalled = () =>
+  window.navigator.standalone === true ||
+  window.matchMedia?.("(display-mode: standalone)").matches;
+
+// The automatic prompt shows at most once a day. The time is recorded only
+// when the drawer actually opens (it used to be recorded as soon as the
+// check ran, so a prompt that was blocked still used up the day).
+const LAST_SHOWN_KEY = "frolik:install-prompt-shown";
+const DAY_MS = 24 * 60 * 60 * 1000;
+const shownRecently = () => {
+  try {
+    const at = Number(localStorage.getItem(LAST_SHOWN_KEY));
+    return at > 0 && Date.now() - at < DAY_MS;
+  } catch {
+    return false;
+  }
+};
+const recordShown = () => {
+  try {
+    localStorage.setItem(LAST_SHOWN_KEY, String(Date.now()));
+  } catch {}
+};
 
 // iOS Share icon (square with an arrow) and Add-to-Home-Screen icon (plus in
 // a rounded square), drawn inline so the steps read like the real buttons
@@ -37,21 +58,27 @@ const InstallPromptModal = () => {
   const { t } = useT();
   const dispatch = useDispatch();
   const installEvent = useSelector((state) => state.modal.installPrompted);
-  const popupSelector = useSelector((state) => state.popup.selector);
   const ios = isIosDevice();
 
+  // Offer it on its own: iPhone Safari (instructions), or when Chrome says
+  // the app can be installed (installEvent). Waits for a moment with no
+  // other drawer open.
   useEffect(() => {
-    const shouldShow =
-      showIosInstallModal("iOS-install-prompt") ||
-      (installEvent && showAndroidInstallModal("android-install-prompt"));
-    if (!shouldShow) return;
-    const timer = setTimeout(() => {
-      // don't cover another drawer that's already open
-      if (popupSelector === "none") dispatch(popupActions.showPopup(INSTALL_SELECTOR));
-    }, 800);
-    return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, installEvent]);
+    if (isInstalled() || shownRecently()) return;
+    if (!ios && !installEvent) return;
+    let tries = 0;
+    const timer = setInterval(() => {
+      tries++;
+      if (store.getState().popup.selector === "none") {
+        clearInterval(timer);
+        recordShown();
+        dispatch(popupActions.showPopup(INSTALL_SELECTOR));
+      } else if (tries > 60) {
+        clearInterval(timer); // a drawer stayed open for a minute: try next visit
+      }
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [dispatch, installEvent, ios]);
 
   const close = () => dispatch(popupActions.hidePopup());
 

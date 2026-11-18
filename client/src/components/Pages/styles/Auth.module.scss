@@ -142,6 +142,11 @@
   width: 14rem;
   margin-top: 1.6rem;
   opacity: 0.9;
+
+  // Phones: just the card and the blurb
+  @media (max-width: $breakpoint_s) {
+    display: none;
+  }
 }
 
 // Login only: language switch under the card

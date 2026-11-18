@@ -8,5 +8,24 @@
     "title": "Ative as notificações",
     "body": "Fique sabendo de convites, mensagens e solicitações de amizade.",
     "button": "Ativar"
+  },
+  "drawer": {
+    "title": "Não perca nenhum rolê",
+    "body": "Ative as notificações para saber na hora quando algo acontecer.",
+    "item1": "Convites e novidades de rolês",
+    "item2": "Novas mensagens",
+    "item3": "Pedidos de amizade",
+    "enable": "Ativar notificações",
+    "notNow": "Agora não"
+  },
+  "toggle": {
+    "title": "Notificações",
+    "on": "Ativadas para convites, mensagens e pedidos de amizade neste dispositivo.",
+    "off": "Receba convites, mensagens e pedidos de amizade neste dispositivo.",
+    "blocked": "Bloqueadas. Permita as notificações do Frolik nos ajustes do celular ou do navegador.",
+    "installFirst": "Adicione o Frolik à Tela de Início para ativá-las.",
+    "unsupported": "Este navegador não é compatível com notificações.",
+    "turningOn": "Ativando…",
+    "turningOff": "Desativando…"
   }
 }

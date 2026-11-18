@@ -8,5 +8,24 @@
     "title": "Slå på varsler",
     "body": "Få beskjed om invitasjoner, meldinger og venneforespørsler.",
     "button": "Slå på"
+  },
+  "drawer": {
+    "title": "Gå aldri glipp av et treff",
+    "body": "Slå på varsler så du får vite det med en gang noe skjer.",
+    "item1": "Invitasjoner og nytt om treff",
+    "item2": "Nye meldinger",
+    "item3": "Venneforespørsler",
+    "enable": "Slå på varsler",
+    "notNow": "Ikke nå"
+  },
+  "toggle": {
+    "title": "Varsler",
+    "on": "På for invitasjoner, meldinger og venneforespørsler på denne enheten.",
+    "off": "Få invitasjoner, meldinger og venneforespørsler på denne enheten.",
+    "blocked": "Blokkert. Tillat varsler for Frolik i innstillingene på telefonen eller i nettleseren.",
+    "installFirst": "Legg Frolik til på Hjem-skjermen for å slå dem på.",
+    "unsupported": "Denne nettleseren støtter ikke varsler.",
+    "turningOn": "Slår på …",
+    "turningOff": "Slår av …"
   }
 }

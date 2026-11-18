@@ -8,5 +8,24 @@
     "title": "Activa las notificaciones",
     "body": "Entérate de invitaciones, mensajes y solicitudes de amistad.",
     "button": "Activar"
+  },
+  "drawer": {
+    "title": "No te pierdas ninguna salida",
+    "body": "Activa las notificaciones para enterarte al momento de lo que pasa.",
+    "item1": "Invitaciones y novedades de salidas",
+    "item2": "Mensajes nuevos",
+    "item3": "Solicitudes de amistad",
+    "enable": "Activar notificaciones",
+    "notNow": "Ahora no"
+  },
+  "toggle": {
+    "title": "Notificaciones",
+    "on": "Activadas para invitaciones, mensajes y solicitudes de amistad en este dispositivo.",
+    "off": "Recibe invitaciones, mensajes y solicitudes de amistad en este dispositivo.",
+    "blocked": "Bloqueadas. Permite las notificaciones de Frolik en los ajustes de tu teléfono o navegador.",
+    "installFirst": "Añade Frolik a tu pantalla de inicio para activarlas.",
+    "unsupported": "Este navegador no admite notificaciones.",
+    "turningOn": "Activando…",
+    "turningOff": "Desactivando…"
   }
 }

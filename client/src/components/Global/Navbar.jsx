@@ -26,6 +26,7 @@ import InstallPromptModal from "../Modals/InstallPromptModal";
 import Tour from "../Tour/Tour";
 import SendActivityPopup from "../Popups/SendActivityPopup";
 import SharedActivityPopup from "../Popups/SharedActivityPopup";
+import PushDrawer from "../Popups/PushDrawer";
 import { syncKeyboardOpen } from "../../utils/pageScroll";
 import { useT, T } from "../../i18n";
 
@@ -123,6 +124,7 @@ const Navbar = (props) => {
           <PhotoPopup />
           <SendActivityPopup />
           <SharedActivityPopup />
+          <PushDrawer />
           <Tour />
           <WarningPopup
             selector={"too-many-outings"}

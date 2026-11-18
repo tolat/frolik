@@ -8,5 +8,24 @@
     "title": "Turn on notifications",
     "body": "Get told about invites, messages and friend requests.",
     "button": "Turn on"
+  },
+  "drawer": {
+    "title": "Never miss an Outing",
+    "body": "Turn on notifications so you know the moment something happens.",
+    "item1": "Outing invites and updates",
+    "item2": "New chat messages",
+    "item3": "Friend requests",
+    "enable": "Turn on notifications",
+    "notNow": "Not now"
+  },
+  "toggle": {
+    "title": "Notifications",
+    "on": "On for invites, messages and friend requests on this device.",
+    "off": "Get invites, messages and friend requests on this device.",
+    "blocked": "Blocked. Allow notifications for Frolik in your phone or browser settings.",
+    "installFirst": "Add Frolik to your Home Screen to turn these on.",
+    "unsupported": "Notifications aren't supported in this browser.",
+    "turningOn": "Turning on…",
+    "turningOff": "Turning off…"
   }
 }

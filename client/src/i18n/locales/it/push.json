@@ -8,5 +8,24 @@
     "title": "Attiva le notifiche",
     "body": "Ricevi un avviso per inviti, messaggi e richieste di amicizia.",
     "button": "Attiva"
+  },
+  "drawer": {
+    "title": "Non perderti nessuna uscita",
+    "body": "Attiva le notifiche per sapere subito quando succede qualcosa.",
+    "item1": "Inviti e aggiornamenti sulle uscite",
+    "item2": "Nuovi messaggi",
+    "item3": "Richieste di amicizia",
+    "enable": "Attiva le notifiche",
+    "notNow": "Non ora"
+  },
+  "toggle": {
+    "title": "Notifiche",
+    "on": "Attive per inviti, messaggi e richieste di amicizia su questo dispositivo.",
+    "off": "Ricevi inviti, messaggi e richieste di amicizia su questo dispositivo.",
+    "blocked": "Bloccate. Consenti le notifiche di Frolik nelle impostazioni del telefono o del browser.",
+    "installFirst": "Aggiungi Frolik alla schermata Home per attivarle.",
+    "unsupported": "Questo browser non supporta le notifiche.",
+    "turningOn": "Attivazione…",
+    "turningOff": "Disattivazione…"
   }
 }
