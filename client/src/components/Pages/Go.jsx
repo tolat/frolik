@@ -38,8 +38,36 @@ import {
 import SliderNavber from "../UI/SliderNavbar";
 import CreateActivityModal from "../Modals/CreateActivityModal";
 import LoaderSpinner from "../UI/LoaderSpinner";
+import { useT } from "../../i18n";
+
+// The category colour, see-through: a soft highlight behind the tab title
+const tint = (color, alpha) => {
+  const m = String(color || "").match(/(\d+)[,\s]+(\d+)[,\s]+(\d+)/);
+  return m ? `rgba(${m[1]}, ${m[2]}, ${m[3]}, ${alpha})` : color;
+};
+
+// A darker, readable shade of a (pastel) category colour, same hue:
+// "rgb(255 236 69)" -> a deep mustard. Falls back to the colour as given.
+const readableShade = (color) => {
+  const m = String(color || "").match(/(\d+)[,\s]+(\d+)[,\s]+(\d+)/);
+  if (!m) return color;
+  const [r, g, b] = m.slice(1, 4).map((n) => Number(n) / 255);
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h = 0;
+  const d = max - min;
+  if (d) {
+    if (max === r) h = ((g - b) / d) % 6;
+    else if (max === g) h = (b - r) / d + 2;
+    else h = (r - g) / d + 4;
+    h *= 60;
+    if (h < 0) h += 360;
+  }
+  return `hsl(${Math.round(h)} ${d ? 70 : 0}% 36%)`;
+};
 
 const Go = (props) => {
+  const { t, tOr } = useT();
   const user = useSelector((state) => state.auth.user);
   const goUsers = useSelector((state) => state.go.outing.users);
   const dispatch = useDispatch();
@@ -57,21 +85,24 @@ const Go = (props) => {
       setSelected(Object.keys(categoryColorMap)[0]);
   }, [selected, categoryColorMap]);
   const selectedSliderKey = `_${selected}_tab`;
-  const [createButtonText, setCreateButtonText] = useState("Create Outing");
+  const [creatingOuting, setCreatingOuting] = useState(false);
   const creatingOutingText = (
     <div style={{ display: "flex" }}>
-      Creating.. &nbsp; <LoaderSpinner width="1.5rem" height="1.5rem" />
+      {t("go.create.creating")} &nbsp; <LoaderSpinner width="1.5rem" height="1.5rem" />
     </div>
   );
 
+  // The selected category tab takes that category's colour: the underline in
+  // the colour itself, the title in a deeper shade of it (the colours are
+  // pastels — yellow text would be unreadable)
   const getHighlightStyle = (key) => {
     let keyCategory = Object.keys(categoryColorMap).find((k) =>
       key.includes(k)
     );
 
-    return {
-      backgroundColor: keyCategory === selected ? null : null,
-    };
+    return keyCategory === selected
+      ? { backgroundColor: categoryColorMap[keyCategory] }
+      : {};
   };
 
   const handleSetSelectedCategory = (key) => {
@@ -79,7 +110,21 @@ const Go = (props) => {
   };
 
   const CategoryTab = (props) => {
-    return <div className={styles.categoryTabContainer}>{props.name}</div>;
+    return (
+      <div
+        className={styles.categoryTabContainer}
+        style={
+          props.selected
+            ? {
+                color: readableShade(props.color),
+                backgroundColor: tint(props.color, 0.4),
+              }
+            : null
+        }
+      >
+        {props.name}
+      </div>
+    );
   };
 
   const sliderTabs = Object.keys(categoryColorMap).map((cat) => {
@@ -88,8 +133,9 @@ const Go = (props) => {
       component: (
         <CategoryTab
           className={styles.categoryTab}
-          name={cat}
+          name={tOr("data.categories." + cat, cat)}
           color={categoryColorMap[cat]}
+          selected={cat === selected}
         />
       ),
     };
@@ -228,7 +274,7 @@ const Go = (props) => {
       return;
     }
     const onComplete = (outing) => {
-      setCreateButtonText("Create Outing");
+      setCreatingOuting(false);
       dispatch(modalActions.setActiveOuting(outing));
       dispatch(popupActions.setShowCreateOutingPopup(true));
       dispatch(modalActions.setSelector("outing-modal"));
@@ -240,9 +286,9 @@ const Go = (props) => {
       fetchChat(user._id, outing.chat, () => {});
     };
 
-    setCreateButtonText(creatingOutingText);
+    setCreatingOuting(true);
     createOuting(goState.outing, user, onComplete, () =>
-      setCreateButtonText("Create Outing")
+      setCreatingOuting(false)
     );
   };
 
@@ -262,7 +308,7 @@ const Go = (props) => {
           maxLength={OUTING_NAME_MAX}
           onChange={(e) => setNewOutingName(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && onPopupOk()}
-          aria-label="Outing name"
+          aria-label={t("go.created.nameLabel")}
         />
         <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.outingNamePencil}>
           <path d="M4 20h4l10.5-10.5a2.1 2.1 0 0 0-4-4L4 16v4z" />
@@ -270,18 +316,19 @@ const Go = (props) => {
         </svg>
       </div>
       <div className={styles.outingNameHint}>
-        Tap the name to change it ({newOutingName.length}/{OUTING_NAME_MAX})
+        {t("go.created.nameHint", {
+          length: newOutingName.length,
+          max: OUTING_NAME_MAX,
+        })}
       </div>
-      An invite has been sent to the other users. You can view this outing any
-      time on the Profile page under the following tab:
+      {t("go.created.inviteSent")}
       <img
         className={styles.outingsIcon}
         src={outingsBarIcon}
-        alt={"outings-icon"}
+        alt={t("go.created.outingsIconAlt")}
       />
       <div>
-        A new chat for this outing has also been created! When others accept the
-        Outing they will be added to the chat.
+        {t("go.created.chatCreated")}
       </div>
     </div>
   );
@@ -330,9 +377,9 @@ const Go = (props) => {
       />
       <WarningPopup
         selector={"outing-created"}
-        header={"Your new outing is called:"}
+        header={t("go.created.header")}
         message={newOutingMessage}
-        ok={savingName ? "Saving…" : "OK"}
+        ok={savingName ? t("go.created.saving") : t("go.created.ok")}
         okClick={onPopupOk}
       />
       <div className={styles.container}>
@@ -347,7 +394,9 @@ const Go = (props) => {
               src={editIcon}
               alt=""
             />
-            <span className={styles.roundButtonLabel}>Edit Members</span>
+            <span className={styles.roundButtonLabel}>
+              {t("go.members.edit")}
+            </span>
           </button>
           <UserIconCluster
             users={goUsers}
@@ -364,7 +413,9 @@ const Go = (props) => {
               src={plusIcon}
               alt=""
             />
-            <span className={styles.roundButtonLabel}>Add Members</span>
+            <span className={styles.roundButtonLabel}>
+              {t("go.members.add")}
+            </span>
           </button>
         </div>
         {/* Checklist until the outing is ready, then just the Create button.
@@ -373,7 +424,7 @@ const Go = (props) => {
           {hasMembers && hasActivity && matchesMet ? (
             <SimpleButton
               onClick={
-                createButtonText === "Create Outing" ? handleCreateOuting : null
+                creatingOuting ? null : handleCreateOuting
               }
               className={styles.goCta}
             >
@@ -381,10 +432,14 @@ const Go = (props) => {
                 <img src={balloonIcon} alt="" />
               </span>
               <span className={styles.goCtaText}>
-                <span className={styles.goCtaTitle}>{createButtonText}</span>
+                <span className={styles.goCtaTitle}>
+                  {creatingOuting ? creatingOutingText : t("go.create.button")}
+                </span>
                 <span className={styles.goCtaSub}>
-                  You + {goState.outing.users.length - 1} ·{" "}
-                  {goState.outing.activity?.name}
+                  {t("go.create.summary", {
+                    count: goState.outing.users.length - 1,
+                    activity: goState.outing.activity?.name,
+                  })}
                 </span>
               </span>
               <svg viewBox="0 0 24 24" className={styles.goCtaArrow} aria-hidden="true">
@@ -409,7 +464,9 @@ const Go = (props) => {
                 }`}
               >
                 <span className={styles.requirementDot}>{hasActivity ? "✓" : "1"}</span>
-                {hasActivity ? "Activity picked" : "Pick an activity"}
+                {hasActivity
+                  ? t("go.requirements.activityPicked")
+                  : t("go.requirements.pickActivity")}
               </button>
               <button
                 type="button"
@@ -420,15 +477,17 @@ const Go = (props) => {
               >
                 <span className={styles.requirementDot}>{matchesMet ? "✓" : "2"}</span>
                 {!hasDailyMatch
-                  ? "Add a Daily Match"
+                  ? t("go.requirements.addMatch")
                   : matchesNeeded > 0
-                  ? `Add ${matchesNeeded} more Daily Match${matchesNeeded > 1 ? "es" : ""}`
-                  : `${addedMatches.length} Daily Match${addedMatches.length > 1 ? "es" : ""} added`}
+                  ? t("go.requirements.addMoreMatches", { count: matchesNeeded })
+                  : t("go.requirements.matchesAdded", {
+                      count: addedMatches.length,
+                    })}
               </button>
               </div>
               {matchesNeeded > 0 && (
                 <div className={styles.requirementNote}>
-                  Every Outing needs a Daily Match for each friend you invite.
+                  {t("go.requirements.matchNote")}
                 </div>
               )}
             </>
@@ -471,7 +530,7 @@ const Go = (props) => {
               >
                 <path d="M4 6h16M7 12h10M10 18h4" />
               </svg>
-              Filter
+              {t("go.filter")}
               {activeFilterCount ? (
                 <span className={styles.filterCount}>{activeFilterCount}</span>
               ) : null}
@@ -489,8 +548,8 @@ const Go = (props) => {
                 type="button"
                 onClick={onCreateActivityClick}
                 className={styles.createActivityPlus}
-                aria-label="Create a custom activity"
-                title="Create activity"
+                aria-label={t("go.createActivityLabel")}
+                title={t("go.createActivityTitle")}
                 data-tour="create-activity"
               >
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -509,7 +568,7 @@ const Go = (props) => {
                   activityFilter.filter.completed ||
                   activityFilter.filter.featured ||
                   activityFilter.filter.created ? (
-                    <h4>No Activities Match Filters!</h4>
+                    <h4>{t("go.noMatchingActivities")}</h4>
                   ) : (
                     <SkeletonCards variant="activity" count={2} />
                   )}

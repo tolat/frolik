@@ -1,0 +1,22 @@
+{
+  "header": "Aktivität erstellen",
+  "create": "Erstellen",
+  "saving": "Wird gespeichert",
+  "placeholders": {
+    "name": "Name (max. {{max}} Zeichen)",
+    "description": "Beschreibung (max. {{max}} Zeichen)",
+    "city": "Stadt",
+    "goal": "Ziel eingeben",
+    "hours": "Anzahl Std.",
+    "cost": "Kosten ($)",
+    "people": "Anzahl Personen"
+  },
+  "cover": {
+    "alt": "Titelbild der Aktivität",
+    "change": "Ändern",
+    "remove": "Entfernen",
+    "add": "Titelbild hinzufügen",
+    "optional": "optional",
+    "readError": "Diese Datei konnte nicht als Bild gelesen werden."
+  }
+}

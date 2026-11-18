@@ -25,8 +25,10 @@ import { hideModal } from "../../store/modal-actions";
 import { deleteActivity } from "../../utils/data-fetch";
 import { useLocation, useNavigate } from "react-router-dom";
 import SixPhotoGrid from "./SixPhotoGrid";
+import { useT } from "../../i18n";
 
 const ActivityCard = (props) => {
+  const { t } = useT();
   const categoryColorMap = useSelector(
     (state) => state.auth.globals.categoryColorMap
   );
@@ -35,7 +37,7 @@ const ActivityCard = (props) => {
   const dispatch = useDispatch();
   const goState = useSelector((state) => state.go);
   const user = useSelector((state) => state.auth.user);
-  const [deleteText, setDeleteText] = useState("Delete");
+  const [deleting, setDeleting] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const noPhotoContainerStyle = {
@@ -56,8 +58,8 @@ const ActivityCard = (props) => {
   // Whole-card loading tile until the photo is in (8s safety net)
   useEffect(() => {
     if (photoLoaded) return;
-    const t = setTimeout(() => setPhotoLoaded(true), 8000);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setPhotoLoaded(true), 8000);
+    return () => clearTimeout(timer);
   }, [photoLoaded]);
   const handleFirstPhotoLoad = useCallback(() => setPhotoLoaded(true), []);
 
@@ -85,13 +87,15 @@ const ActivityCard = (props) => {
   const confirmDeleteMessage = (
     <div className={styles.warningContainer}>
       <div className={styles.warningName}>{props.activity?.name}</div>
-      <div className={styles.warningText}>This action is permanent.</div>
+      <div className={styles.warningText}>
+        {t("activity.delete.permanent")}
+      </div>
     </div>
   );
 
   const onActivityDelete = () => {
     const onComplete = () => {
-      setDeleteText("Delete");
+      setDeleting(false);
       dispatch(popupActions.hidePopup());
 
       // Set goActivity to false
@@ -106,7 +110,7 @@ const ActivityCard = (props) => {
       props.removeActivity(props.activity);
     };
 
-    setDeleteText("Deleting..");
+    setDeleting(true);
     deleteActivity(user, props.activity, onComplete);
   };
 
@@ -132,42 +136,42 @@ const ActivityCard = (props) => {
   const statIcons = (
     <Fragment>
       <StatIcon
-        alt="time"
+        alt={t("activity.stats.time")}
         icon={timeIcon}
         iconStyle={statIconStyle}
         rating={
           props.creatingActivity
             ? props.activity.duration
-            : `${props.activity.duration} hrs`
+            : t("activity.stats.hours", { count: props.activity.duration })
         }
       />
       <div className={styles.spacer} />
       <StatIcon
-        alt="cost"
+        alt={t("activity.stats.cost")}
         icon={costIcon}
         iconStyle={statIconStyle}
         rating={
           props.creatingActivity
             ? props.activity.cost
-            : `$${props.activity.cost}`
+            : t("activity.stats.costValue", { cost: props.activity.cost })
         }
       />
       <div className={styles.spacer} />
       <StatIcon
-        alt="group"
+        alt={t("activity.stats.group")}
         icon={groupIcon}
         iconStyle={statIconStyle}
         rating={
           props.creatingActivity
             ? props.activity.participants
-            : `${props.activity.participants} +`
+            : t("activity.stats.participants", { count: props.activity.participants })
         }
       />
       {!props.creatingActivity && (
         <Fragment>
           <div className={styles.spacer} />
           <StatIcon
-            alt="rating"
+            alt={t("activity.stats.rating")}
             icon={ratingIcon}
             iconStyle={statIconStyle}
             rating={calcAvgRating(props.activity)}
@@ -183,7 +187,7 @@ const ActivityCard = (props) => {
           <img
             src={completeIcon}
             className={styles.completedIcon}
-            alt="completed-icon"
+            alt={t("activity.badges.completed")}
           />
         </div>
       ) : null}
@@ -192,7 +196,7 @@ const ActivityCard = (props) => {
           <img
             src={featuredIcon}
             className={styles.completedIcon}
-            alt="completed-icon"
+            alt={t("activity.badges.featured")}
           />
         </div>
       ) : null}
@@ -202,7 +206,7 @@ const ActivityCard = (props) => {
             <img
               src={creationIcon}
               className={styles.completedIcon}
-              alt="creation-icon"
+              alt={t("activity.badges.created")}
             />
           </div>
           {currentUrl === "/outing" && (
@@ -212,7 +216,7 @@ const ActivityCard = (props) => {
               className={styles.deleteActivityButton}
               style={hasPhotos && { filter: "invert(1)" }}
             >
-              Delete
+              {t("activity.actions.delete")}
             </SimpleButton>
           )}
         </Fragment>
@@ -233,11 +237,15 @@ const ActivityCard = (props) => {
         {!props.creatingActivity && (
           <WarningPopup
             selector={`confirm-delete-activity-${props.activity._id}`}
-            header={"Confirm Delete Activity:"}
+            header={t("activity.delete.header")}
             message={confirmDeleteMessage}
-            delete={deleteText}
+            delete={
+              deleting
+                ? t("activity.delete.deleting")
+                : t("activity.actions.delete")
+            }
             deleteClick={onActivityDelete}
-            cancel={"Cancel"}
+            cancel={t("activity.actions.cancel")}
             cancelClick={() => {
               dispatch(popupActions.hidePopup());
             }}
@@ -346,7 +354,7 @@ const ActivityCard = (props) => {
           >
             {props.activity.instructions && props.activity.instructions[0] && (
               <Fragment>
-                <div className={styles.iHeader}>Instructions:</div>
+                <div className={styles.iHeader}>{t("activity.instructionsHeader")}</div>
                 {props.activity.instructions.map((i, idx) => (
                   <InstructionCard
                     creatingActivity={props.creatingActivity}
@@ -362,15 +370,15 @@ const ActivityCard = (props) => {
                 noShadow={true}
                 className={styles.addInstructionButton}
               >
-                + Add Instruction
+                {t("activity.addInstruction")}
               </SimpleButton>
             )}
-            <div className={styles.iHeader}>Goal:</div>
+            <div className={styles.iHeader}>{t("activity.goalHeader")}</div>
             <div className={styles.goalContainer}>
               <img
                 className={styles.goalIcon}
                 src={trophyIcon}
-                alt="goalIcon"
+                alt={t("activity.goalAlt")}
               />
               <div className={styles.goal}>{props.activity.goal}</div>
             </div>
@@ -402,6 +410,7 @@ const ActivityCard = (props) => {
 };
 
 const Buttons = (props) => {
+  const { t } = useT();
   // Social feed / chat popups: "Create Outing" + "Send" instead of the
   // instructions toggle and Select
   const social =
@@ -434,8 +443,8 @@ const Buttons = (props) => {
         >
           {!props.showInstructions
             ? !props.instructionsVisible
-              ? "Show Instructions"
-              : "Hide Instructions"
+              ? t("activity.actions.showInstructions")
+              : t("activity.actions.hideInstructions")
             : null}
           {social ? (
             <span className={styles.createOutingLabel}>
@@ -443,7 +452,7 @@ const Buttons = (props) => {
                 src={props.hasPhotos ? balloonLightIcon : balloonBlueIcon}
                 alt=""
               />
-              Create Outing
+              {t("activity.actions.createOuting")}
             </span>
           ) : null}
         </SimpleButton>
@@ -462,7 +471,7 @@ const Buttons = (props) => {
             color: props.hasPhotos ? "white" : null,
           }}
         >
-          Send to a friend
+          {t("activity.actions.sendToFriend")}
         </SimpleButton>
       ) : null}
 
@@ -480,7 +489,7 @@ const Buttons = (props) => {
             color: props.hasPhotos ? "white" : null,
           }}
         >
-          Remove
+          {t("activity.actions.remove")}
         </SimpleButton>
       ) : (
         <SimpleButton
@@ -495,7 +504,7 @@ const Buttons = (props) => {
             color: props.hasPhotos ? "white" : null,
           }}
         >
-          Select
+          {t("activity.actions.select")}
         </SimpleButton>
       )}
     </div>

@@ -1,0 +1,22 @@
+{
+  "header": "Créer une activité",
+  "create": "Créer l'activité",
+  "saving": "Enregistrement",
+  "placeholders": {
+    "name": "Nom ({{max}} caractères max.)",
+    "description": "Description ({{max}} caractères max.)",
+    "city": "Ville",
+    "goal": "Objectif",
+    "hours": "Nb d'heures",
+    "cost": "Coût ($)",
+    "people": "Nb de personnes"
+  },
+  "cover": {
+    "alt": "Couverture de l'activité",
+    "change": "Changer",
+    "remove": "Retirer",
+    "add": "Ajouter une photo de couverture",
+    "optional": "facultatif",
+    "readError": "Ce fichier n'a pas pu être lu comme une image."
+  }
+}

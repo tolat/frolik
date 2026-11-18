@@ -1,0 +1,24 @@
+{
+  "header": "Aktivitäten filtern",
+  "showOnly": {
+    "title": "Nur anzeigen",
+    "completed": "Abgeschlossen",
+    "featured": "Empfohlen",
+    "created": "Eigene"
+  },
+  "details": "Details",
+  "fields": {
+    "minParticipants": "Min. Teilnehmende:",
+    "maxParticipants": "Max. Teilnehmende:",
+    "minCost": "Min. Kosten:",
+    "maxCost": "Max. Kosten:",
+    "minRating": "Min. Bewertung:",
+    "maxTime": "Max. Dauer:"
+  },
+  "units": {
+    "people": "Pers.",
+    "hours": "Std."
+  },
+  "clearAll": "Zurücksetzen",
+  "apply": "Anwenden"
+}

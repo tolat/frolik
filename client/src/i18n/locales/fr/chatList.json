@@ -1,0 +1,16 @@
+{
+  "searchPlaceholder": "Rechercher des discussions…",
+  "newChat": "Nouvelle discussion",
+  "emptyTitle": "Rien à afficher pour l'instant !",
+  "emptyText": "Tes discussions avec tes amis et celles de tes sorties apparaîtront ici.",
+  "filters": {
+    "label": "Filtrer les discussions",
+    "all": "Toutes",
+    "unread": "Non lues",
+    "dms": "Privés",
+    "outings": "Sorties",
+    "noUnread": "Tu es à jour — aucune discussion non lue.",
+    "noMatch": "Aucune discussion ne correspond à ces filtres."
+  },
+  "archived": "Archivées"
+}

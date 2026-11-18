@@ -10,7 +10,7 @@ import {
   fetchStrippedUser,
 } from "../../utils/data-fetch";
 import { authActions } from "../../store/auth-slice";
-import { toAppDate } from "../../utils/utils";
+import { useT } from "../../i18n";
 import SimpleButton from "../UI/SimpleButton";
 import FriendCard from "../UI/FriendCard";
 import { dataActions } from "../../store/data-slice";
@@ -19,6 +19,7 @@ import { hideModal } from "../../store/modal-actions";
 
 const ChatCreated = (props) => {
   const dispatch = useDispatch();
+  const { t, formatDate } = useT();
   const user = useSelector((state) => state.auth.user);
   const notification = props.notification;
   const cachedUsers = useSelector((state) => state.data.cachedUsers);
@@ -64,21 +65,21 @@ const ChatCreated = (props) => {
   return (
     creationUser && (
       <div className={styles.container}>
-        <div className={styles.header}>You were added to a chat by:</div>
+        <div className={styles.header}>{t("notifications.headers.chatCreated")}</div>
         <FriendCard
           style={{ margin: "0" }}
           noShadow={true}
           small={true}
           user={creationUser}
         />
-        <div>{toAppDate(props.notification.created)}</div>
+        <div>{formatDate(props.notification.created, { dateStyle: "medium", timeStyle: "short" })}</div>
         <div className={styles.buttons}>
           <SimpleButton noShadow={true} onClick={handleViewChat}>
-            View Chat
+            {t("notifications.actions.viewChat")}
           </SimpleButton>
           <div className={styles.buttonSpacer}></div>
           <SimpleButton onClick={handleDismissRequest} noShadow={true}>
-            Clear
+            {t("notifications.actions.clear")}
           </SimpleButton>
         </div>
       </div>

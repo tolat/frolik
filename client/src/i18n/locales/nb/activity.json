@@ -1,0 +1,47 @@
+{
+  "actions": {
+    "delete": "Slett",
+    "cancel": "Avbryt",
+    "showInstructions": "Vis instruksjoner",
+    "hideInstructions": "Skjul instruksjoner",
+    "createOuting": "Opprett treff",
+    "sendToFriend": "Send til en venn",
+    "remove": "Fjern",
+    "select": "Velg"
+  },
+  "delete": {
+    "header": "Bekreft sletting av aktivitet:",
+    "permanent": "Dette kan ikke angres.",
+    "deleting": "Sletter …"
+  },
+  "stats": {
+    "time": "Tid",
+    "cost": "Pris",
+    "group": "Gruppestørrelse",
+    "rating": "Vurdering",
+    "hours": {
+      "one": "{{count}} t",
+      "other": "{{count}} t"
+    },
+    "costValue": "${{cost}}",
+    "participants": {
+      "one": "{{count}} +",
+      "other": "{{count}} +"
+    }
+  },
+  "badges": {
+    "completed": "Fullført",
+    "featured": "Utvalgt",
+    "created": "Laget av en bruker"
+  },
+  "instructionsHeader": "Instruksjoner:",
+  "addInstruction": "+ Legg til instruksjon",
+  "goalHeader": "Mål:",
+  "goalAlt": "Mål",
+  "instruction": {
+    "chooseIcon": "Velg et ikon",
+    "titlePlaceholder": "Tittel på instruksjonen",
+    "detailsPlaceholder": "Detaljer om instruksjonen",
+    "remove": "Fjern instruksjon"
+  }
+}

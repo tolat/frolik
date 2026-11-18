@@ -1,0 +1,13 @@
+{
+  "header": "Installer <logo/>",
+  "subHeader": "Når du installerer Frolik, kan du få varsler og bruke Frolik som en vanlig mobilapp. (iOS > 16.4)",
+  "ios": {
+    "step1": "1. <safari/> Gå til www.frolik.ca i Safari",
+    "step1Alt": "steg1",
+    "step2": "2. Trykk på del-ikonet i verktøylinjen i Safari",
+    "step2Alt": "steg2",
+    "step3": "3. Trykk på «Legg til på Hjem-skjerm»"
+  },
+  "installButton": "Installer Frolik",
+  "backToWeb": "Tilbake til Frolik på nett"
+}

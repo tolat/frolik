@@ -1,0 +1,32 @@
+{
+  "header": "Perfil",
+  "tabs": {
+    "photos": "Fotos"
+  },
+  "noPhotos": "Nenhuma foto ainda!",
+  "buttons": {
+    "cancel": "Cancelar",
+    "unfriend": "Desfazer amizade",
+    "sendRequest": "Enviar solicitação"
+  },
+  "actions": {
+    "chat": "+ Chat",
+    "outing": "+ Rolê",
+    "friend": "+ Amigo",
+    "requested": "Solicitado"
+  },
+  "locked": {
+    "header": "Conclua um rolê primeiro",
+    "formerHeader": "Ainda não",
+    "message": "Você pode adicionar {{name}} como amigo depois que um de vocês aparecer para o outro nos matches do dia e vocês concluírem um rolê juntos.",
+    "formerMessage": "Você e {{name}} já foram amigos. Para voltarem a ser amigos, {{name}} precisa aparecer nos seus matches do dia e vocês precisam concluir um novo rolê juntos."
+  },
+  "unfriend": {
+    "header": "Desfazer amizade com {{name}}?",
+    "message": "{{name}} vai sair da sua lista de amigos, e nenhum de vocês vai poder abrir o perfil do outro.<br/><br/><b>Não dá para simplesmente adicionar {{name}} de novo.</b> Para voltarem a ser amigos, {{name}} precisa aparecer nos seus matches do dia e vocês precisam concluir um novo rolê juntos."
+  },
+  "friendRequest": {
+    "header": "Enviar uma solicitação de amizade para {{name}}?",
+    "message": "{{name}} vai receber um alerta e poderá aceitar ou recusar."
+  }
+}

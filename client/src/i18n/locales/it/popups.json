@@ -1,0 +1,24 @@
+{
+  "cropper": {
+    "label": "Zoom e ritaglio",
+    "zoom": "Zoom",
+    "cancel": "Annulla",
+    "upload": "Carica",
+    "done": "Fatto",
+    "uploading": "Caricamento…"
+  },
+  "photo": {
+    "alt": "Foto"
+  },
+  "sendActivity": {
+    "header": "Invia a un amico",
+    "searchPlaceholder": "Cerca amici…",
+    "noFriends": "Aggiungi degli amici per inviargli attività. Puoi aggiungere qualcuno dopo aver completato un'uscita insieme.",
+    "noMatches": "Nessun amico corrisponde a \"{{query}}\".",
+    "send": "Invia",
+    "sending": "Invio…"
+  },
+  "sharedActivity": {
+    "label": "Attività"
+  }
+}

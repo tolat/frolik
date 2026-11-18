@@ -1,0 +1,20 @@
+{
+  "searchPlaceholder": "Søk etter byen din",
+  "searchUnavailable": "Stedssøket er ikke tilgjengelig akkurat nå.",
+  "noMatches": "Fant ingen byer",
+  "finding": "Finner byen din …",
+  "useCurrent": "Bruk posisjonen min",
+  "auto": {
+    "pill": "Auto",
+    "title": "Hold posisjonen min oppdatert",
+    "turningOff": "Slår av …",
+    "caption": "Vi oppdaterer byen din hver gang du åpner frolik. Bare byen lagres."
+  },
+  "errors": {
+    "denied": "Tilgang til posisjon ble avslått. Søk etter byen din i stedet.",
+    "unavailable": "Fant ikke posisjonen din. Søk etter byen din i stedet.",
+    "cityNotFound": "Fant ikke byen din.",
+    "unsupported": "Posisjon er ikke tilgjengelig på denne enheten.",
+    "saveFailed": "Kunne ikke oppdatere posisjonen din."
+  }
+}

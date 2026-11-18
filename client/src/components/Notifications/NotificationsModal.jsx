@@ -13,8 +13,10 @@ import ChatCreated from "./ChatCreated";
 import { dateSort, toSorted } from "../../utils/utils";
 import ModalHeaderPortal from "../Modals/ModalHeaderPortal";
 import PushPrompt from "./PushPrompt";
+import { useT } from "../../i18n";
 
 const NotificationsModal = (props) => {
+  const { t } = useT();
   const modalState = useSelector((state) => state.modal);
   // Rendered as the /alerts page (asPage) or, legacy, inside the slide-in modal
   const modalDisplay =
@@ -31,7 +33,7 @@ const NotificationsModal = (props) => {
         className={`${styles.container} ${props.asPage ? styles.pageContainer : ""}`}
       >
         {!props.asPage && (
-          <ModalHeaderPortal selector={"notifications"}>Alerts</ModalHeaderPortal>
+          <ModalHeaderPortal selector={"notifications"}>{t("notifications.title")}</ModalHeaderPortal>
         )}
         {props.asPage && <PushPrompt />}
         {user.notifications[0] ? (
@@ -42,7 +44,7 @@ const NotificationsModal = (props) => {
               case "outing-invite":
                 return (
                   <OutingInvite
-                    header={"You have been invited to an outing!"}
+                    header={t("notifications.headers.outingInvite")}
                     key={n.id}
                     notification={n}
                   />
@@ -52,8 +54,8 @@ const NotificationsModal = (props) => {
                   <OutingUpdate
                     header={
                       n.status === "denied"
-                        ? `Your Outing invite was denied by:`
-                        : `Your Outing invite was accepted by: `
+                        ? t("notifications.headers.inviteDenied")
+                        : t("notifications.headers.inviteAccepted")
                     }
                     key={n.id}
                     notification={n}
@@ -62,7 +64,7 @@ const NotificationsModal = (props) => {
               case "outing-leave":
                 return (
                   <OutingUpdate
-                    header={"Your Outing was left by:"}
+                    header={t("notifications.headers.outingLeft")}
                     key={n.id}
                     notification={n}
                   />
@@ -70,7 +72,7 @@ const NotificationsModal = (props) => {
               case "outing-join":
                 return (
                   <OutingUpdate
-                    header={"Your Outing was joined by:"}
+                    header={t("notifications.headers.outingJoined")}
                     key={n.id}
                     notification={n}
                   />
@@ -78,7 +80,7 @@ const NotificationsModal = (props) => {
               case "outing-complete":
                 return (
                   <OutingInvite
-                    header={"Your Outing was completed!"}
+                    header={t("notifications.headers.outingCompleted")}
                     key={n.id}
                     notification={n}
                     showOuting={true}
@@ -87,10 +89,8 @@ const NotificationsModal = (props) => {
               case "outing-marked-complete":
                 return (
                   <OutingUpdate
-                    header={`Your Outing was marked complete by:`}
-                    footer={
-                      "Your turn to Mark the outing complete when you are done uploading photos!"
-                    }
+                    header={t("notifications.headers.outingMarkedComplete")}
+                    footer={t("notifications.footers.markComplete")}
                     key={n.id}
                     notification={n}
                   />
@@ -117,11 +117,11 @@ const NotificationsModal = (props) => {
             <img
               src={sampleNotificationIcon}
               className={styles.nothingIcon}
-              alt="bell"
+              alt={t("notifications.empty.iconAlt")}
             />
             <div className={styles.nothingRightContainer}>
-              <div className={styles.nothingRightHeader}>Nothing Here!</div>
-              <div>Your alerts will show up here</div>
+              <div className={styles.nothingRightHeader}>{t("notifications.empty.title")}</div>
+              <div>{t("notifications.empty.body")}</div>
             </div>
           </div>
         )}

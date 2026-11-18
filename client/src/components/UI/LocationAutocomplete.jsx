@@ -2,11 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./styles/LocationAutocomplete.module.scss";
 import { confirmLocation, currentPlace, searchPlaces } from "../../utils/location";
 import LoaderSpinner from "./LoaderSpinner";
+import { useT } from "../../i18n";
 
 // City input backed by the server's geocoding search. Typing shows matching
 // cities; picking one (or "Use my current location") confirms it with
 // coordinates. Calls setDataChanged(label) on every change.
 const LocationAutocomplete = (props) => {
+  const { t } = useT();
   const [value, setValue] = useState(props.defaultVal || "");
   const [results, setResults] = useState([]);
   const [open, setOpen] = useState(false);
@@ -49,7 +51,7 @@ const LocationAutocomplete = (props) => {
         setActive(places.length ? 0 : -1);
         setError("");
       } catch (err) {
-        if (err.name !== "AbortError") setError("Location search is unavailable right now.");
+        if (err.name !== "AbortError") setError(t("location.searchUnavailable"));
       } finally {
         if (abortRef.current === controller) setLoading(false);
       }
@@ -120,7 +122,7 @@ const LocationAutocomplete = (props) => {
           name={props.name}
           className={styles.input}
           value={value}
-          placeholder={props.placeholder || "Search for your city"}
+          placeholder={props.placeholder || t("location.searchPlaceholder")}
           autoComplete="off"
           role="combobox"
           aria-expanded={showList}
@@ -133,7 +135,7 @@ const LocationAutocomplete = (props) => {
           aria-readonly={!!props.locked}
           onBlur={() => setTimeout(() => setOpen(false), 150)}
         />
-        {props.locked && <span className={styles.autoPill}>Auto</span>}
+        {props.locked && <span className={styles.autoPill}>{t("location.auto.pill")}</span>}
         {loading && !props.locked && (
           <span className={styles.inputSpinner}>
             <LoaderSpinner width="1.6rem" height="1.6rem" color="#5b8def" />
@@ -156,7 +158,7 @@ const LocationAutocomplete = (props) => {
               </li>
             ))}
             {!loading && !results.length && (
-              <li className={styles.empty}>No matching cities</li>
+              <li className={styles.empty}>{t("location.noMatches")}</li>
             )}
           </ul>
         )}
@@ -179,7 +181,7 @@ const LocationAutocomplete = (props) => {
             />
             <circle cx="12" cy="10" r="2.3" fill="none" stroke="currentColor" strokeWidth="1.8" />
           </svg>
-          {locating ? "Finding your city…" : "Use my current location"}
+          {locating ? t("location.finding") : t("location.useCurrent")}
         </button>
       )}
       {error && <div className={styles.error}>{error}</div>}

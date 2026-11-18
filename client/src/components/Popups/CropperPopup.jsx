@@ -6,6 +6,7 @@ import BrandLoader from "../UI/BrandLoader";
 import { getCroppedImageBase64 } from "../../utils/utils";
 import { useScrollLock } from "../../utils/scrollLock";
 import styles from "./styles/CropperPopup.module.scss";
+import { useT } from "../../i18n";
 
 const CLOSE_MS = 280; // a little longer than the 0.24s slide-down
 const MAX_ZOOM = 3;
@@ -18,6 +19,7 @@ const MAX_ZOOM = 3;
 // onUpload(index, croppedImage, resetCropper), onCancel(index, resetCropper),
 // button1Text / button1ActionText, defaultCrop, defaultZoom, cropShape.
 const CropperPopup = (props) => {
+  const { t } = useT();
   const isOpen = useSelector((state) => state.popup.selector === props.selector);
   useScrollLock(isOpen);
 
@@ -57,8 +59,8 @@ const CropperPopup = (props) => {
       return () => cancelAnimationFrame(raf);
     }
     setOpen(false);
-    const t = setTimeout(() => setShown(false), CLOSE_MS);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setShown(false), CLOSE_MS);
+    return () => clearTimeout(timer);
   }, [isOpen]);
 
   const onDone = async () => {
@@ -75,7 +77,10 @@ const CropperPopup = (props) => {
 
   if (!shown && !isOpen) return null;
 
-  const actionLabel = props.button1Text || "Upload";
+  const actionLabel = props.button1Text || t("popups.cropper.upload");
+  // A "Done" action only crops (no upload), so no "Uploading…" for it
+  const isDoneAction =
+    actionLabel === "Done" || actionLabel === t("popups.cropper.done");
   const showImg = img || lastImg.current;
 
   return createPortal(
@@ -84,7 +89,7 @@ const CropperPopup = (props) => {
       data-instant="true"
     >
       <div className={styles.backdrop} onClick={onCancel} />
-      <div className={styles.sheet} data-drawer-sheet="true" role="dialog" aria-modal="true" aria-label="Zoom and crop">
+      <div className={styles.sheet} data-drawer-sheet="true" role="dialog" aria-modal="true" aria-label={t("popups.cropper.label")}>
         <div className={styles.handleArea}>
           <div className={styles.handle} />
         </div>
@@ -130,7 +135,7 @@ const CropperPopup = (props) => {
             step={0.01}
             value={zoom}
             onChange={(e) => setZoom(Number(e.target.value))}
-            aria-label="Zoom"
+            aria-label={t("popups.cropper.zoom")}
             className={styles.zoomSlider}
             disabled={!img}
           />
@@ -144,7 +149,7 @@ const CropperPopup = (props) => {
             onClick={onCancel}
             disabled={busy}
           >
-            Cancel
+            {t("popups.cropper.cancel")}
           </button>
           <button
             type="button"
@@ -152,10 +157,10 @@ const CropperPopup = (props) => {
             onClick={onDone}
             disabled={busy || !img}
           >
-            {busy && actionLabel !== "Done" ? (
+            {busy && !isDoneAction ? (
               <>
                 <BrandLoader inline plain noBalloon size={1.4} />
-                Uploading…
+                {t("popups.cropper.uploading")}
               </>
             ) : (
               actionLabel

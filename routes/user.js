@@ -37,6 +37,7 @@ const {
   genOutingInviteEmail,
 } = require("../utils/emailTemplates");
 
+const { normalize: normalizeLang, tr, userLang, forUser } = require("../utils/i18n");
 const router = express.Router({ mergeParams: true });
 
 // Re-friending after an unfriend. Either side's record counts; `since` is the
@@ -178,6 +179,8 @@ router.post(
     const geo = toGeoPoint(profileData?.location_geo);
     if (geo) user.location_geo = geo;
     else if (user.location !== previousLocation) user.location_geo = undefined;
+    const language = normalizeLang(profileData?.language);
+    if (language) user.language = language;
     const ALLOWED_STATUSES = ["Ready", "Busy", "Inactive"];
     if (ALLOWED_STATUSES.includes(profileData?.status?.status)) {
       user.status = { status: profileData.status.status, updated: Date.now() };
@@ -238,8 +241,8 @@ router.post(
     const username = String(body.username || "").trim().toLowerCase();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username) || !body.password) {
       res.status(406).send({
-        header: "Invalid account details",
-        message: "A valid email address and password are required.",
+        header: req.t("user.invalidAccount.header"),
+        message: req.t("user.invalidAccount.message"),
       });
       return;
     }
@@ -252,6 +255,7 @@ router.post(
       location: String(body.location || "").slice(0, 200),
       ...(toGeoPoint(body.location_geo) ? { location_geo: toGeoPoint(body.location_geo) } : {}),
       tagline: String(body.tagline || "").slice(0, 200),
+      language: normalizeLang(body.language) || req.lang || "en",
       profile_picture: {
         key: username,
         crop: body.profile_picture?.crop,
@@ -262,8 +266,8 @@ router.post(
     // Send back error code if user already exists
     if (await User.findOne({ username: userData.username })) {
       res.status(406).send({
-        header: `User ${userData.username} already exists`,
-        message: "Try another username.",
+        header: req.t("user.exists.header", { email: userData.username }),
+        message: req.t("user.exists.message"),
       });
       return;
     } else {
@@ -273,7 +277,12 @@ router.post(
 
       // Send email confirmation linkand set user status as pending
       const link = `${process.env.SERVER}/user/${user._id.toString()}/verify`;
-      sendEmail(userData.username, "Verify frolik.ca Email", genVerifyAccountEmail(link));
+      const lang = userLang(user);
+      sendEmail(
+        userData.username,
+        tr(lang, "email.verify.subject"),
+        genVerifyAccountEmail(lang, link)
+      );
       if (process.env.NODE_ENV == "development")
         console.log("[dev] verification link:", link);
       user.status = { status: "Pending", updated: Date.now() };
@@ -312,8 +321,8 @@ router.get(
     // If user not found, send unacceptable (406)
     if (!user) {
       res.status(406).send({
-        header: "User Not Found",
-        message: `We can't find a user with the username you provided!`,
+        header: req.t("auth.userNotFound.header"),
+        message: req.t("auth.userNotFound.message"),
       });
       return;
     }
@@ -565,13 +574,13 @@ router.post(
     const friendUser = await User.findById(req.body.friendID);
 
     if (!friendUser || friendUser._id.toString() === user._id.toString()) {
-      return res.status(406).send({ header: "User not found", message: "" });
+      return res.status(406).send({ header: req.t("common.userNotFound.header"), message: "" });
     }
 
     if (user.friends.some((id) => id.toString() === friendUser._id.toString())) {
       return res.status(406).send({
-        header: "Already friends",
-        message: `You and ${friendUser.first_name} are already friends.`,
+        header: req.t("friend.alreadyFriends.header"),
+        message: req.t("friend.alreadyFriends.message", { name: friendUser.first_name }),
       });
     }
 
@@ -595,8 +604,8 @@ router.post(
       });
     if (!(await pairOuting())) {
       return res.status(406).send({
-        header: "Complete an Outing first",
-        message: `You can add ${friendUser.first_name} as a friend once one of you has matched with the other and you've completed an Outing together.`,
+        header: req.t("friend.completeOutingFirst.header"),
+        message: req.t("friend.completeOutingFirst.message", { name: friendUser.first_name }),
       });
     }
 
@@ -609,8 +618,8 @@ router.post(
         (await pairOuting({ date_created: { $gte: refriend.since } }));
       if (!newOuting) {
         return res.status(406).send({
-          header: "Not yet",
-          message: `You and ${friendUser.first_name} were friends before. To be friends again, ${friendUser.first_name} needs to come up in your daily matches and you need to complete a new Outing together.`,
+          header: req.t("friend.notYet.header"),
+          message: req.t("friend.notYet.message", { name: friendUser.first_name }),
         });
       }
     }
@@ -618,8 +627,10 @@ router.post(
     // send back 406 if user has already requested this friend
     if (user.friend_requests.find((id) => id.toString() == req.body.friendID)) {
       res.status(406).send({
-        header: `Friend request already sent`,
-        message: `You have already asked ${friendUser.first_name} ${friendUser.last_name} to be your friend.`,
+        header: req.t("friend.requestAlreadySent.header"),
+        message: req.t("friend.requestAlreadySent.message", {
+          name: `${friendUser.first_name} ${friendUser.last_name}`,
+        }),
       });
       return;
     }
@@ -642,8 +653,10 @@ router.post(
 
     // Send a webpush Notification to other users as well
     webpushNotify([friendUser], {
-      title: "Friend Request",
-      body: `${user.first_name} ${user.last_name} is asking to be your friend!`,
+      title: forUser("push.friendRequest.title"),
+      body: forUser("push.friendRequest.body", {
+        name: `${user.first_name} ${user.last_name}`,
+      }),
     });
 
     await populateUser(user);
@@ -664,8 +677,10 @@ router.post(
     // send back 406 if user does not have this friend
     if (!user.friends.find((id) => id.toString() == req.body.friendID)) {
       res.status(406).send({
-        header: `Could not remove friend`,
-        message: `You are not friends with ${friendUser.first_name} ${friendUser.last_name}`,
+        header: req.t("friend.cannotRemove.header"),
+        message: req.t("friend.cannotRemove.message", {
+          name: `${friendUser.first_name} ${friendUser.last_name}`,
+        }),
       });
       return;
     }
@@ -727,8 +742,8 @@ router.post(
       // Check for non-existant users
       if (!usr) {
         res.status(406).send({
-          header: `Could not add user to chat`,
-          message: `User does not exist, or has been deleted.`,
+          header: req.t("chat.userMissing.header"),
+          message: req.t("chat.userMissing.message"),
         });
         return;
       }
@@ -738,8 +753,8 @@ router.post(
     // Check for empty withUsers
     if (withUsers.length == 0) {
       res.status(406).send({
-        header: `Could not create chat`,
-        message: `Chats must have more than one member.`,
+        header: req.t("chat.tooFewMembers.header"),
+        message: req.t("chat.tooFewMembers.message"),
       });
       return;
     }
@@ -748,8 +763,10 @@ router.post(
     for (const usr of withUsers) {
       if (!user.friends.find((id) => id.toString() == usr._id.toString())) {
         res.status(406).send({
-          header: `Could not add friend to chat`,
-          message: `You are not friends with ${usr.first_name} ${usr.last_name}`,
+          header: req.t("chat.notFriends.header"),
+          message: req.t("chat.notFriends.message", {
+            name: `${usr.first_name} ${usr.last_name}`,
+          }),
         });
         return;
       }
@@ -805,8 +822,10 @@ router.post(
 
     // Send a webpush Notification to involved users as well
     webpushNotify(withUsers, {
-      title: "Chat Created",
-      body: `${user.first_name} ${user.last_name} added you to a chat`,
+      title: forUser("push.chatCreated.title"),
+      body: forUser("push.chatCreated.body", {
+        name: `${user.first_name} ${user.last_name}`,
+      }),
       url: `/chat?open=${chat._id.toString()}`,
     });
 
@@ -827,14 +846,14 @@ router.post(
     const chat = await Chat.findById(req.params.chatid);
 
     if (!chat) {
-      return res.status(404).send({ header: "Chat not found", message: "" });
+      return res.status(404).send({ header: req.t("chat.notFound.header"), message: "" });
     }
 
     // Outing chats are owned by the outing — delete the outing to remove the chat
     if (chat.outing) {
       return res.status(406).send({
-        header: "Cannot delete Outing chat",
-        message: "Outing chats can only be removed by deleting the Outing itself.",
+        header: req.t("chat.cannotDeleteOutingChat.header"),
+        message: req.t("chat.cannotDeleteOutingChat.message"),
       });
     }
 
@@ -964,8 +983,8 @@ router.post(
       const geo = toGeoPoint(location_geo);
       if (typeof location !== "string" || !location.trim() || !geo) {
         return res.status(406).send({
-          header: "Invalid location",
-          message: "Couldn't update your location.",
+          header: req.t("user.invalidLocation.header"),
+          message: req.t("user.invalidLocation.message"),
         });
       }
       user.location = changes.location = location.slice(0, 200);
@@ -1013,7 +1032,7 @@ router.post(
     });
 
     if (!outing) {
-      return res.status(404).send({ header: "Outing not found", message: "" });
+      return res.status(404).send({ header: req.t("outing.notFound.header"), message: "" });
     }
 
     pushUserUpdate([...outing.users, user]);

@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import steps from "./tourSteps";
 import styles from "./Tour.module.scss";
 import { markTourSeen } from "../../utils/data-fetch";
+import { useT } from "../../i18n";
 
 // Start the tour from anywhere (e.g. the Settings screen)
 export const startTour = () =>
@@ -40,6 +41,7 @@ const measure = (el, fitChildren) => {
 };
 
 const Tour = () => {
+  const { t } = useT();
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const location = useLocation();
@@ -58,11 +60,11 @@ const Tour = () => {
   useEffect(() => {
     if (!user?._id || user.tour_seen || autoStarted.current) return;
     if (!MAIN_PAGES.includes(location.pathname)) return;
-    const t = setTimeout(() => {
+    const timer = setTimeout(() => {
       autoStarted.current = true;
       setIndex(0);
     }, 900);
-    return () => clearTimeout(t);
+    return () => clearTimeout(timer);
   }, [user?._id, user?.tour_seen, location.pathname]);
 
   // Manual start (Settings → "Take the app tour")
@@ -217,19 +219,19 @@ const Tour = () => {
           ))}
         </div>
         <h2 id="tour-title" className={styles.title}>
-          {step.title}
+          {t(`tour.steps.${step.id}.title`)}
         </h2>
-        <p className={styles.body}>{step.body}</p>
+        <p className={styles.body}>{t(`tour.steps.${step.id}.body`)}</p>
         <div className={styles.actions}>
           {!isLast && (
             <button type="button" className={styles.skip} onClick={finish}>
-              Skip tour
+              {t("tour.skip")}
             </button>
           )}
           <div className={styles.navButtons}>
             {index > 0 && (
               <button type="button" className={styles.back} onClick={back}>
-                Back
+                {t("tour.back")}
               </button>
             )}
             <button
@@ -238,7 +240,11 @@ const Tour = () => {
               className={styles.next}
               onClick={next}
             >
-              {index === 0 ? "Start tour" : isLast ? "Let's go" : "Next"}
+              {index === 0
+                ? t("tour.start")
+                : isLast
+                ? t("tour.letsGo")
+                : t("tour.next")}
             </button>
           </div>
         </div>

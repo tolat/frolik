@@ -19,6 +19,7 @@ const LocalStrategy = require("passport-local");
 const session = require("express-session");
 const webpush = require("web-push");
 const { handleCORS } = require("./utils/middleware");
+const { attachI18n } = require("./utils/i18n");
 const inDev = process.env.NODE_ENV == "development";
 const favicon = require("serve-favicon");
 
@@ -123,6 +124,8 @@ app.use(morgan("dev"));
 // Passport
 app.use(passport.initialize());
 app.use(passport.session());
+// req.t(key, vars): server messages in the user's language (utils/i18n.js)
+app.use(attachI18n);
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());

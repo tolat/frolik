@@ -1,0 +1,39 @@
+{
+  "create": {
+    "button": "Opprett treff",
+    "creating": "Oppretter …",
+    "summary": "Du + {{count}} · {{activity}}"
+  },
+  "created": {
+    "header": "Det nye treffet ditt heter:",
+    "nameLabel": "Navn på treffet",
+    "nameHint": "Trykk på navnet for å endre det ({{length}}/{{max}})",
+    "inviteSent": "Invitasjonen er sendt til de andre. Du finner treffet når som helst på profilsiden, under denne fanen:",
+    "outingsIconAlt": "treff-ikon",
+    "chatCreated": "Det er også laget en ny chat for treffet! Når de andre takker ja, blir de lagt til i chatten.",
+    "saving": "Lagrer …",
+    "ok": "OK"
+  },
+  "members": {
+    "edit": "Endre deltakere",
+    "add": "Legg til deltakere"
+  },
+  "requirements": {
+    "activityPicked": "Aktivitet valgt",
+    "pickActivity": "Velg en aktivitet",
+    "addMatch": "Legg til en dagsmatch",
+    "addMoreMatches": {
+      "one": "Legg til {{count}} dagsmatch til",
+      "other": "Legg til {{count}} dagsmatcher til"
+    },
+    "matchesAdded": {
+      "one": "{{count}} dagsmatch lagt til",
+      "other": "{{count}} dagsmatcher lagt til"
+    },
+    "matchNote": "Hvert treff trenger én dagsmatch for hver venn du inviterer."
+  },
+  "filter": "Filtrer",
+  "createActivityLabel": "Lag en egen aktivitet",
+  "createActivityTitle": "Opprett aktivitet",
+  "noMatchingActivities": "Ingen aktiviteter passer med filtrene!"
+}

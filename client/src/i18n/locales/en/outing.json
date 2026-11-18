@@ -1,0 +1,118 @@
+{
+  "sections": {
+    "activity": "Activity",
+    "photos": "Photos",
+    "members": "Members",
+    "invited": "Invited"
+  },
+  "alt": {
+    "flake": "flake",
+    "activity": "activity",
+    "photos": "photos",
+    "members": "members",
+    "invited": "invited"
+  },
+  "buttons": {
+    "joinOuting": "Join Outing",
+    "markCompleted": "Mark Completed",
+    "markedCompleted": "Marked Completed!",
+    "deleteOuting": "Delete Outing",
+    "leaveOuting": "Leave Outing",
+    "delete": "Delete",
+    "deleting": "Deleting..",
+    "leave": "Leave",
+    "cancel": "Cancel",
+    "ok": "OK",
+    "gotIt": "Got it"
+  },
+  "flakedOut": "You flaked out!",
+  "chat": {
+    "openLabel": "Open outing chat",
+    "title": "Chat"
+  },
+  "deleteDrawer": {
+    "header": "Confirm Delete Outing:",
+    "message": "Once you have deleted the Outing, it will no longer be joinable by any invitees. Deleting this Outing <b>will not</b> affect your flake rating. This action is permanent."
+  },
+  "leaveDrawer": {
+    "header": "Confirm Leave Outing:",
+    "message": "Once you leave the Outing, it may still be completed by the other members. If it is, you <b>will negatively affect</b> your flake rating. This action is permanent (you cannot re-join after leaving)."
+  },
+  "joinDrawer": {
+    "header": "Join this Outing?",
+    "pendingLimit": "It counts toward your limit of 5 pending Outings.",
+    "mustComplete": "It has to be completed (or deleted while you're the only member).",
+    "leavingLowersRating": "Leaving after you join <b>lowers your flake rating</b>."
+  },
+  "completeDrawer": {
+    "header": "Mark this Outing completed?",
+    "lastMember": "You're the last member to mark it completed",
+    "lockedYou": "Once you mark it completed, the Outing is locked: no more photo changes.",
+    "lockedEveryone": "Once every member marks it completed, the Outing is locked: no more photo changes.",
+    "chatStaysOpen": "The Outing chat stays open so you can keep in touch.",
+    "cantUndo": "This can't be undone."
+  },
+  "rating": {
+    "title": "Rate the activity",
+    "hint": "Tap a star to rate it",
+    "labels": {
+      "1": "Not great",
+      "2": "It was OK",
+      "3": "Good",
+      "4": "Great",
+      "5": "Loved it!"
+    }
+  },
+  "completion": {
+    "needMembers": "Outing must have 2+ members to be marked completed.",
+    "count": "{{completed}} / {{total}} Members have marked this Outing completed."
+  },
+  "howToComplete": {
+    "header": "How to complete an Outing",
+    "intro": "An Outing needs at least 2 members before it can be completed.",
+    "waitForInvites": {
+      "one": "Wait for your invite to be accepted, or invite someone else.",
+      "other": "Wait for your {{count}} invites to be accepted, or invite someone else."
+    },
+    "inviteSomeone": "Invite a friend or a Daily Match to join.",
+    "goTogether": "Go on the Outing together.",
+    "uploadPhoto": "Upload at least one photo from it.",
+    "everyoneMarks": "Every member taps Mark Completed."
+  },
+  "photos": {
+    "limitHint": "Each member can upload up to 2 photos.",
+    "upload": "+ Upload",
+    "edit": "Edit",
+    "doneEditing": "Done Editing"
+  },
+  "tooManyPhotos": {
+    "header": "Too many photos!",
+    "message": "Each Outing member can only upload up to 2 photos. You can remove some of your photos if you want to change or edit your uploads for this Outing."
+  },
+  "deletePhoto": {
+    "header": "Delete Photo?"
+  },
+  "noPhotos": {
+    "header": "No Photos Uploaded!",
+    "message": "Outings need to have at least one photo uploaded before they can be marked completed. You can add photos in the Outing page using the button shown below:",
+    "buttonAlt": "Add photos button",
+    "allMembers": "All Outing members must mark the Outing completed!"
+  },
+  "countdown": {
+    "lessThanADay": "less than a day",
+    "days": {
+      "one": "{{count}} day",
+      "other": "{{count}} days"
+    },
+    "finishNote": "{{time}} left for everyone to mark it completed. Anyone who hasn't by then is removed and gets a flake.",
+    "inviteNote": "If no one joins within {{time}}, this Outing is deleted for inactivity.",
+    "invitesExpire": "Invites expire in {{time}} if they haven't been accepted.",
+    "done": "✓ Done",
+    "daysLeftTag": "{{days}}d left",
+    "daysToJoinTag": "{{days}}d to join"
+  },
+  "deleteHelp": {
+    "onlyMember": "You can delete the outing because you are the only member. Deleting the outing <b>will not negatively affect</b> your flake rating.",
+    "otherMembers": "You cannot delete the outing because there are other members. Leaving the outing <b>will negatively affect</b> your flake rating."
+  }
+}

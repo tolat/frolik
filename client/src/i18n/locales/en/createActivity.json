@@ -1,0 +1,22 @@
+{
+  "header": "Create Activity",
+  "create": "Create Activity",
+  "saving": "Saving",
+  "placeholders": {
+    "name": "Name (max {{max}} characters)",
+    "description": "Description (max {{max}} characters)",
+    "city": "City",
+    "goal": "Enter goal",
+    "hours": "# Hours",
+    "cost": "$ Cost",
+    "people": "# People"
+  },
+  "cover": {
+    "alt": "Activity cover",
+    "change": "Change",
+    "remove": "Remove",
+    "add": "Add a cover photo",
+    "optional": "optional",
+    "readError": "That file couldn't be read as an image."
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "header": "Install <logo/>",
+  "subHeader": "Installing Frolik will allow you to receive notifications and use Frolik like a regular mobile app. (iOS > 16.4)",
+  "ios": {
+    "step1": "1. <safari/> Use Safari to go to www.frolik.ca",
+    "step1Alt": "step1",
+    "step2": "2. Tap the share icon on the Safari toolbar",
+    "step2Alt": "step2",
+    "step3": "3. Tap 'Add to Home Screen'"
+  },
+  "installButton": "Install Frolik",
+  "backToWeb": "Back to Frolik web"
+}

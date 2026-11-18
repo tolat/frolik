@@ -1,0 +1,24 @@
+{
+  "header": "アカウント作成",
+  "create": "+ 作成",
+  "creating": "作成中",
+  "ok": "OK",
+  "fields": {
+    "email": "メールアドレス：",
+    "password": "パスワード："
+  },
+  "alreadyExists": {
+    "header": "{{email}}のアカウントはすでに存在します。",
+    "message": "別のメールアドレスでもう一度お試しください。"
+  },
+  "confirmEmail": {
+    "header": "メールを確認してください！",
+    "message": "{{email}}宛てにリンクを送信しました。リンクからアカウント作成を完了してください。",
+    "resend": {
+      "idle": "確認メールを再送信",
+      "sending": "送信中…",
+      "sent": "送信しました！",
+      "failed": "確認メールを再送信"
+    }
+  }
+}

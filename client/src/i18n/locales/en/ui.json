@@ -1,0 +1,88 @@
+{
+  "loading": "Loading",
+  "dateTime": "{{date}} - {{time}}",
+  "rating": {
+    "unrated": "unrated",
+    "outOfFive": "{{rating}}/5"
+  },
+  "outingStatus": {
+    "completed": "Completed",
+    "youLeft": "You left",
+    "invited": "Invited: tap to join",
+    "waitingForMembers": "Waiting for members",
+    "waitingForPhotos": "Waiting for photos",
+    "waitingForOthers": "Waiting for others to finish",
+    "readyToFinish": "Ready to finish"
+  },
+  "outingCard": {
+    "completed": "Completed - {{date}}",
+    "pending": "Pending - {{date}}"
+  },
+  "outingList": {
+    "searchPlaceholder": "Search My Outings",
+    "pendingHeader": "Pending Outings",
+    "pendingLimit": {
+      "one": "You can have up to {{count}} pending outing at a time.",
+      "other": "You can have up to {{count}} pending outings at a time."
+    }
+  },
+  "outingTitle": {
+    "rename": "Rename outing",
+    "name": "Outing name",
+    "save": "Save name",
+    "cancel": "Cancel rename"
+  },
+  "chatCard": {
+    "delete": "Delete",
+    "archive": "Archive",
+    "unarchive": "Unarchive",
+    "markRead": "✓ Read",
+    "justYou": "Just you",
+    "lastActive": "Last Active {{date}}"
+  },
+  "feedCard": {
+    "members": "Outing Members",
+    "viewActivity": "View Activity",
+    "like": "Like",
+    "unlike": "Unlike"
+  },
+  "friendCard": {
+    "profileNotShared": "Profile not shared"
+  },
+  "stats": {
+    "flakeRating": "Flake rating",
+    "outings": "Outings"
+  },
+  "statusButtons": {
+    "label": "Status",
+    "hints": {
+      "ready": "Open to Outings — you'll appear in Daily Matches",
+      "busy": "Taking a break — you won't be matched"
+    },
+    "currently": "Currently {{status}}",
+    "choose": "Choose your status"
+  },
+  "starRate": {
+    "label": "Rating",
+    "stars": {
+      "one": "{{count}} star",
+      "other": "{{count}} stars"
+    }
+  },
+  "photos": {
+    "none": "No photos",
+    "remove": "Remove photo",
+    "userPhoto": "Photo",
+    "change": "Change photo"
+  },
+  "addUsers": {
+    "edit": "Edit people",
+    "add": "Add people"
+  },
+  "search": {
+    "icon": "Search"
+  },
+  "profileHeader": {
+    "settings": "Settings"
+  }
+}

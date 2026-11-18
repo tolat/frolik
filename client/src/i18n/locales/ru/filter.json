@@ -1,0 +1,24 @@
+{
+  "header": "Фильтр активностей",
+  "showOnly": {
+    "title": "Показать только",
+    "completed": "Пройденные",
+    "featured": "Рекомендуемые",
+    "created": "Авторские"
+  },
+  "details": "Параметры",
+  "fields": {
+    "minParticipants": "Мин. участников:",
+    "maxParticipants": "Макс. участников:",
+    "minCost": "Мин. цена:",
+    "maxCost": "Макс. цена:",
+    "minRating": "Мин. рейтинг:",
+    "maxTime": "Макс. время:"
+  },
+  "units": {
+    "people": "чел.",
+    "hours": "ч"
+  },
+  "clearAll": "Сбросить",
+  "apply": "Применить"
+}

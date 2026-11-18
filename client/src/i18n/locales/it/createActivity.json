@@ -1,0 +1,22 @@
+{
+  "header": "Crea attività",
+  "create": "Crea attività",
+  "saving": "Salvataggio",
+  "placeholders": {
+    "name": "Nome (max {{max}} caratteri)",
+    "description": "Descrizione (max {{max}} caratteri)",
+    "city": "Città",
+    "goal": "Inserisci l'obiettivo",
+    "hours": "N. ore",
+    "cost": "$ Costo",
+    "people": "N. persone"
+  },
+  "cover": {
+    "alt": "Copertina dell'attività",
+    "change": "Cambia",
+    "remove": "Rimuovi",
+    "add": "Aggiungi una foto di copertina",
+    "optional": "facoltativa",
+    "readError": "Impossibile leggere il file come immagine."
+  }
+}

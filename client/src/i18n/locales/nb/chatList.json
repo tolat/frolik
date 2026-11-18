@@ -1,0 +1,16 @@
+{
+  "searchPlaceholder": "Søk i chatter …",
+  "newChat": "Ny chat",
+  "emptyTitle": "Ingenting her ennå!",
+  "emptyText": "Her ser du chattene dine med venner og chattene for treffene dine.",
+  "filters": {
+    "label": "Filtrer chatter",
+    "all": "Alle",
+    "unread": "Uleste",
+    "dms": "Direkte",
+    "outings": "Treff",
+    "noUnread": "Du har lest alt – ingen uleste chatter.",
+    "noMatch": "Ingen chatter passer med filtrene."
+  },
+  "archived": "Arkivert"
+}

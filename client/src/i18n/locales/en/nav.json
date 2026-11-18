@@ -1,0 +1,17 @@
+{
+  "tabs": {
+    "alerts": "Alerts",
+    "profile": "Profile",
+    "outing": "Outing",
+    "social": "Social",
+    "chats": "Chats"
+  },
+  "ok": "OK",
+  "tooManyOutings": {
+    "header": "You have too many Pending Outings!",
+    "message": "<b>You can only have up to 5 pending outings at a time.</b> <br/>Either complete or delete some outings before trying to create another one. You can view your outings any time in the 'Profile' page by clicking the following tab:",
+    "iconAlt": "outings-icon",
+    "ok": "OK"
+  },
+  "footer": "Get out there people!"
+}

@@ -1,0 +1,38 @@
+{
+  "title": "التنبيهات",
+  "empty": {
+    "title": "لا شيء هنا!",
+    "body": "ستظهر تنبيهاتك هنا",
+    "iconAlt": "جرس"
+  },
+  "headers": {
+    "outingInvite": "لقد تلقيت دعوة إلى نزهة!",
+    "inviteAccepted": "قَبِل دعوتك إلى النزهة:",
+    "inviteDenied": "رفض دعوتك إلى النزهة:",
+    "outingLeft": "غادر نزهتك:",
+    "outingJoined": "انضم إلى نزهتك:",
+    "outingCompleted": "اكتملت نزهتك!",
+    "outingMarkedComplete": "حدّد نزهتك كمكتملة:",
+    "friendRequest": "لديك طلب صداقة من:",
+    "friendRequestStatus": {
+      "accepted": "قَبِل طلب صداقتك:",
+      "denied": "رفض طلب صداقتك:",
+      "other": "حالة طلب صداقتك ({{status}}) من:"
+    },
+    "friendRemoved": "أزالك من أصدقائه:",
+    "chatCreated": "أضافك إلى محادثة:"
+  },
+  "footers": {
+    "markComplete": "حان دورك لتحديد النزهة كمكتملة بعد الانتهاء من رفع الصور!"
+  },
+  "outingLabel": "النزهة: <b>{{name}}</b>",
+  "outingLoading": "النزهة: …",
+  "activityLabel": "النشاط: <b>{{name}}</b>",
+  "actions": {
+    "viewOuting": "عرض النزهة",
+    "viewChat": "عرض المحادثة",
+    "clear": "مسح",
+    "accept": "قبول",
+    "deny": "رفض"
+  }
+}

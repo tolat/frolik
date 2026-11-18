@@ -1,0 +1,13 @@
+{
+  "active": "Aktiv {{date}}",
+  "outing": "Ausflug",
+  "newOuting": "+ Ausflug",
+  "placeholder": "Nachricht …",
+  "send": "Nachricht senden",
+  "new": "Neu",
+  "sentAt": "{{date}} · {{time}}",
+  "share": {
+    "opening": "Wird geöffnet …",
+    "activity": "Aktivität"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "searchPlaceholder": "Cherche ta ville",
+  "searchUnavailable": "La recherche de lieux est indisponible pour le moment.",
+  "noMatches": "Aucune ville trouvée",
+  "finding": "On cherche ta ville…",
+  "useCurrent": "Utiliser ma position actuelle",
+  "auto": {
+    "pill": "Auto",
+    "title": "Garder ma position à jour",
+    "turningOff": "Désactivation…",
+    "caption": "On mettra ta ville à jour chaque fois que tu ouvres frolik. Seule ta ville est enregistrée."
+  },
+  "errors": {
+    "denied": "L'accès à la position a été refusé. Cherche plutôt ta ville.",
+    "unavailable": "Impossible d'obtenir ta position. Cherche plutôt ta ville.",
+    "cityNotFound": "Impossible de trouver ta ville.",
+    "unsupported": "La localisation n'est pas disponible sur cet appareil.",
+    "saveFailed": "Impossible de mettre à jour ta position."
+  }
+}

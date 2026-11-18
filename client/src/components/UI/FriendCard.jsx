@@ -10,8 +10,10 @@ import { modalActions } from "../../store/modal-slice";
 import { swapModal } from "../../store/modal-actions";
 import { calculateFlakeRating, outingStats } from "../../utils/utils";
 import { popupActions } from "../../store/popup-slice";
+import { useT } from "../../i18n";
 
 const FriendCard = memo((props) => {
+  const { t } = useT();
   const statIconStyle = { width: "2rem", height: "2rem" };
   const statContainerStyle = { marginLeft: "1rem" };
   const sizeInRem = props.small ? "5" : "8.5";
@@ -92,19 +94,21 @@ const FriendCard = memo((props) => {
               {`${props.user.first_name} ${props.user.last_name}`}
               <div className={styles.location}>{props.user.location}</div>
               {locked && (
-                <div className={styles.lockedNote}>Profile not shared</div>
+                <div className={styles.lockedNote}>
+                  {t("ui.friendCard.profileNotShared")}
+                </div>
               )}
             </div>
             <div className={styles.ratingsContainer} data-tour="stats">
               <StatIcon
-                alt="flake"
+                alt={t("ui.stats.flakeRating")}
                 icon={flakeIcon}
                 style={statContainerStyle}
                 iconStyle={statIconStyle}
                 rating={flakeRating}
               />
               <StatIcon
-                alt="outings"
+                alt={t("ui.stats.outings")}
                 icon={outingsIcon}
                 style={statContainerStyle}
                 iconStyle={statIconStyle}

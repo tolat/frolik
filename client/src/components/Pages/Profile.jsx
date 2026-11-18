@@ -31,21 +31,23 @@ import { goActions } from "../../store/go-slice";
 import { createChat, fetchChats } from "../../utils/data-fetch";
 import { hideModal } from "../../store/modal-actions";
 import editIcon from "../../images/edit-light.png";
+import { useT, T } from "../../i18n";
 
-const sliderIcons = [
+// Labels are translated at render time (t is passed in)
+const getSliderIcons = (t) => [
   {
     key: "_photos",
-    name: "Photos",
+    name: t("profile.tabs.photos"),
     url: photos,
   },
   {
     key: "_outings",
-    name: "Outings",
+    name: t("profile.tabs.outings"),
     url: outings,
   },
   {
     key: "_friends",
-    name: "Friends",
+    name: t("profile.tabs.friends"),
     url: friends,
   },
 ];
@@ -57,6 +59,7 @@ const getPhotosFromState = (userData) => {
 };
 
 const Profile = (props) => {
+  const { t } = useT();
   const user = { ...useSelector((state) => state.auth.user) };
   const [selectedSliderKey, setSelectedSliderKey] = useState("_outings");
   const dispatch = useDispatch();
@@ -105,12 +108,12 @@ const Profile = (props) => {
         <CircleAction
           onClick={() => onCreateChat(props.user)}
           icon={chatIcon}
-          label="+ Chat"
+          label={t("profile.friendCard.chat")}
         />
         <CircleAction
           onClick={() => onCreateOuting(props.user)}
           icon={getOutIcon}
-          label="+ Outing"
+          label={t("profile.friendCard.outing")}
         />
       </div>
     );
@@ -118,16 +121,24 @@ const Profile = (props) => {
 
   const tooManyOutingsMessage = (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <b>You can only have up to 5 pending outings at a time.</b> <br />
-      Either complete or delete some outings before trying to create another
-      one. You can view your outings any time in the 'Profile' page by clicking
-      the following tab:
+      <T k="nav.tooManyOutings.message" />
       <img
         className={styles.outingsIcon}
         src={outingsBarIcon}
-        alt={"outings-icon"}
+        alt={t("nav.tooManyOutings.iconAlt")}
       />
     </div>
+  );
+
+  // The balloon icon inside the empty-state sentences (links to the Outing page)
+  const balloonLink = (
+    <img
+      onClick={onBalloonIconClick}
+      className={styles.outingBalloon}
+      style={{ verticalAlign: "middle" }}
+      src={balloonIcon}
+      alt={t("profile.empty.balloonAlt")}
+    />
   );
 
   const handleHideWarning = () => {
@@ -186,9 +197,9 @@ const Profile = (props) => {
       <EditProfileModal />
       <WarningPopup
         selector={"too-many-outings"}
-        header={"You have too many Pending Outings!"}
+        header={t("nav.tooManyOutings.header")}
         message={tooManyOutingsMessage}
-        ok={"OK"}
+        ok={t("nav.tooManyOutings.ok")}
         okClick={handleHideWarning}
       />
       <div className={styles.nonMediaSection} id="non-media-section">
@@ -198,7 +209,7 @@ const Profile = (props) => {
               onClick={handleEditButtonClick}
               src={editIcon}
               className={styles.editIcon}
-              alt="edit"
+              alt={t("profile.edit")}
             />
           }
           onEditClick={handleEditButtonClick}
@@ -208,23 +219,18 @@ const Profile = (props) => {
           id="slider-navbar"
           selected={selectedSliderKey}
           setSelected={setSelectedSliderKey}
-          icons={sliderIcons}
+          icons={getSliderIcons(t)}
           style={{ paddingTop: "0" }}
         />
       </div>
       {!userPhotos[0] && !user.friends[0] && !user.outings[0] ? (
         <div className={styles.noContentBlurb}>
-          <h3>You have no media yet!</h3>
-          <div>To start adding photos, outings and friends, create </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            and complete an outing on the{" "}
-            <img
-              onClick={onBalloonIconClick}
-              className={styles.outingBalloon}
-              src={balloonIcon}
-              alt="outing page icon"
-            />{" "}
-            page!
+          <h3>{t("profile.empty.title")}</h3>
+          <div style={{ textAlign: "center" }}>
+            <T
+              k="profile.empty.noMedia"
+              components={{ balloon: balloonLink }}
+            />
           </div>
         </div>
       ) : selectedSliderKey === "_photos" ? (
@@ -246,16 +252,11 @@ const Profile = (props) => {
 
           {!userPhotos[0] ? (
             <div className={styles.noImagesBlurb}>
-              <div>To add photos, complete more </div>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                outings on the{" "}
-                <img
-                  onClick={onBalloonIconClick}
-                  className={styles.outingBalloon}
-                  src={balloonIcon}
-                  alt="outing page icon"
-                />{" "}
-                page!
+              <div style={{ textAlign: "center" }}>
+                <T
+                  k="profile.empty.noPhotos"
+                  components={{ balloon: balloonLink }}
+                />
               </div>
             </div>
           ) : null}
@@ -268,28 +269,30 @@ const Profile = (props) => {
         <Fragment>
           <SimpleSearch
             style={{ marginTop: "1rem" }}
-            placeholder={"Search Friends.."}
+            placeholder={t("profile.friends.searchPlaceholder")}
             setValue={setFriendSearch}
           />
           {user.friends[0] ? (
-            <div className={styles.sortRow} role="group" aria-label="Sort friends">
-              <span className={styles.sortLabel}>Sort:</span>
+            <div className={styles.sortRow} role="group" aria-label={t("profile.friends.sortLabel")}>
+              <span className={styles.sortLabel}>
+                {t("profile.friends.sort")}
+              </span>
               {[
-                ["name", "Name"],
-                ["outings", "Outings"],
-                ["flake", "Flake rating"],
+                ["name", t("profile.friends.sortName")],
+                ["outings", t("profile.friends.sortOutings")],
+                ["flake", t("profile.friends.sortFlake")],
               ].map(([key, label]) => (
                 <button
                   key={key}
                   type="button"
                   aria-pressed={friendSort?.key === key}
-                  aria-label={`Sort by ${label}${
+                  aria-label={
                     friendSort?.key === key
                       ? friendSort.dir === "asc"
-                        ? ", ascending"
-                        : ", descending"
-                      : ""
-                  }`}
+                        ? t("profile.friends.sortByAsc", { label })
+                        : t("profile.friends.sortByDesc", { label })
+                      : t("profile.friends.sortBy", { label })
+                  }
                   className={`${styles.sortPill} ${
                     friendSort?.key === key ? styles.sortPillActive : ""
                   }`}
@@ -315,15 +318,11 @@ const Profile = (props) => {
             ))
           ) : (
             <div className={styles.noImagesBlurb}>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                To add friends, go to the
-                <img
-                  onClick={onBalloonIconClick}
-                  className={styles.outingBalloon}
-                  src={balloonIcon}
-                  alt="outing page icon"
-                />{" "}
-                page!
+              <div style={{ textAlign: "center" }}>
+                <T
+                  k="profile.empty.noFriends"
+                  components={{ balloon: balloonLink }}
+                />
               </div>
             </div>
           )}

@@ -1,0 +1,20 @@
+{
+  "searchPlaceholder": "搜索你所在的城市",
+  "searchUnavailable": "位置搜索暂时不可用。",
+  "noMatches": "没有匹配的城市",
+  "finding": "正在查找你的城市…",
+  "useCurrent": "使用我当前的位置",
+  "auto": {
+    "pill": "自动",
+    "title": "自动更新我的位置",
+    "turningOff": "正在关闭…",
+    "caption": "每次打开frolik时，我们都会更新你所在的城市。只会保存城市信息。"
+  },
+  "errors": {
+    "denied": "定位权限被拒绝，请改为搜索你的城市。",
+    "unavailable": "无法获取你的位置，请改为搜索你的城市。",
+    "cityNotFound": "找不到你所在的城市。",
+    "unsupported": "此设备无法使用定位。",
+    "saveFailed": "无法更新你的位置。"
+  }
+}

@@ -4,8 +4,11 @@ import styles from "./styles/OutingCard.module.scss";
 import UserIconCluster from "./UserIconCluster";
 import { modalActions } from "../../store/modal-slice";
 import { outingIsCompleted, outingStatus } from "../../utils/utils";
+import { useT } from "../../i18n";
+import flakeIcon from "../../images/snowflake.png";
 
 const OutingCard = memo((props) => {
+  const { t, formatDate } = useT();
   const user = useSelector((state) => state.auth.user);
   const categoryColorMap = useSelector(
     (state) => state.auth.globals.categoryColorMap
@@ -33,9 +36,7 @@ const OutingCard = memo((props) => {
       ></div>
       <div
         onClick={handleClick}
-        className={
-          userFlaked ? styles.flakedInnerContainer : styles.innerContainer
-        }
+        className={styles.innerContainer}
       >
         <div className={styles.upperSection}>
           <div className={styles.leftUpperSection}>
@@ -43,7 +44,14 @@ const OutingCard = memo((props) => {
               <div className={styles.activity}>{o.activity?.name}</div>
               <div className={styles.name}>{o.name}</div>
             </div>
-            {progress && (
+            {/* Flaked: a pill with the app's flake icon (the whole card used
+                to turn pink) */}
+            {userFlaked ? (
+              <div className={`${styles.progress} ${styles.flakePill}`}>
+                <img src={flakeIcon} alt="" className={styles.flakePillIcon} />
+                {t("ui.outingStatus.youLeft")}
+              </div>
+            ) : progress && (
               <div
                 className={`${styles.progress} ${
                   progress.ready ? styles.progressReady : styles.progressWaiting
@@ -54,9 +62,14 @@ const OutingCard = memo((props) => {
             )}
 
             <div className={styles.status}>
-              {`${status} - ${new Date(
-                completed ? o.date_completed : o.date_created
-              ).toDateString()}`}
+              {t(`ui.outingCard.${status === "Completed" ? "completed" : "pending"}`, {
+                date: formatDate(completed ? o.date_completed : o.date_created, {
+                  weekday: "short",
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                }),
+              })}
             </div>
           </div>
           <div className={styles.rightUpperSection}>

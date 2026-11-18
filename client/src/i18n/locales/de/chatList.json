@@ -1,0 +1,16 @@
+{
+  "searchPlaceholder": "Chats suchen …",
+  "newChat": "Neuer Chat",
+  "emptyTitle": "Noch nichts zu sehen!",
+  "emptyText": "Hier siehst du deine Chats mit Freunden und zu einzelnen Ausflügen.",
+  "filters": {
+    "label": "Chats filtern",
+    "all": "Alle",
+    "unread": "Ungelesen",
+    "dms": "Direkt",
+    "outings": "Ausflüge",
+    "noUnread": "Alles gelesen – keine ungelesenen Chats.",
+    "noMatch": "Keine Chats passen zu diesen Filtern."
+  },
+  "archived": "Archiviert"
+}

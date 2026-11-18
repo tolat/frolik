@@ -1,0 +1,38 @@
+{
+  "title": "Mitteilungen",
+  "empty": {
+    "title": "Hier ist nichts!",
+    "body": "Deine Mitteilungen erscheinen hier",
+    "iconAlt": "Glocke"
+  },
+  "headers": {
+    "outingInvite": "Du wurdest zu einem Ausflug eingeladen!",
+    "inviteAccepted": "Deine Ausflugseinladung wurde angenommen von:",
+    "inviteDenied": "Deine Ausflugseinladung wurde abgelehnt von:",
+    "outingLeft": "Hat deinen Ausflug verlassen:",
+    "outingJoined": "Ist deinem Ausflug beigetreten:",
+    "outingCompleted": "Dein Ausflug ist abgeschlossen!",
+    "outingMarkedComplete": "Hat deinen Ausflug abgeschlossen:",
+    "friendRequest": "Du hast eine Freundschaftsanfrage von:",
+    "friendRequestStatus": {
+      "accepted": "Deine Freundschaftsanfrage wurde angenommen von:",
+      "denied": "Deine Freundschaftsanfrage wurde abgelehnt von:",
+      "other": "Status deiner Freundschaftsanfrage ({{status}}) – von:"
+    },
+    "friendRemoved": "Hat die Freundschaft mit dir beendet:",
+    "chatCreated": "Du wurdest zu einem Chat hinzugefügt von:"
+  },
+  "footers": {
+    "markComplete": "Du bist dran: Markiere den Ausflug als abgeschlossen, sobald du deine Fotos hochgeladen hast!"
+  },
+  "outingLabel": "Ausflug: <b>{{name}}</b>",
+  "outingLoading": "Ausflug: …",
+  "activityLabel": "Aktivität: <b>{{name}}</b>",
+  "actions": {
+    "viewOuting": "Ausflug ansehen",
+    "viewChat": "Chat ansehen",
+    "clear": "Entfernen",
+    "accept": "Annehmen",
+    "deny": "Ablehnen"
+  }
+}

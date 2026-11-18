@@ -1,0 +1,55 @@
+{
+  "actions": {
+    "delete": "حذف",
+    "cancel": "إلغاء",
+    "showInstructions": "عرض التعليمات",
+    "hideInstructions": "إخفاء التعليمات",
+    "createOuting": "إنشاء نزهة",
+    "sendToFriend": "إرسال إلى صديق",
+    "remove": "إزالة",
+    "select": "اختيار"
+  },
+  "delete": {
+    "header": "تأكيد حذف النشاط:",
+    "permanent": "لا يمكن التراجع عن هذا الإجراء.",
+    "deleting": "جارٍ الحذف.."
+  },
+  "stats": {
+    "time": "المدة",
+    "cost": "التكلفة",
+    "group": "حجم المجموعة",
+    "rating": "التقييم",
+    "hours": {
+      "zero": "{{count}} ساعة",
+      "one": "ساعة واحدة",
+      "two": "ساعتان",
+      "few": "{{count}} ساعات",
+      "many": "{{count}} ساعة",
+      "other": "{{count}} ساعة"
+    },
+    "costValue": "${{cost}}",
+    "participants": {
+      "zero": "{{count}} +",
+      "one": "{{count}} +",
+      "two": "{{count}} +",
+      "few": "{{count}} +",
+      "many": "{{count}} +",
+      "other": "{{count}} +"
+    }
+  },
+  "badges": {
+    "completed": "مكتمل",
+    "featured": "مميّز",
+    "created": "من إنشاء مستخدم"
+  },
+  "instructionsHeader": "التعليمات:",
+  "addInstruction": "+ إضافة تعليمة",
+  "goalHeader": "الهدف:",
+  "goalAlt": "الهدف",
+  "instruction": {
+    "chooseIcon": "اختر أيقونة",
+    "titlePlaceholder": "عنوان التعليمة",
+    "detailsPlaceholder": "تفاصيل التعليمة",
+    "remove": "إزالة التعليمة"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "header": "Criar conta",
+  "create": "+ Criar",
+  "creating": "Criando",
+  "ok": "OK",
+  "fields": {
+    "email": "E-mail:",
+    "password": "Senha:"
+  },
+  "alreadyExists": {
+    "header": "Já existe uma conta para {{email}}.",
+    "message": "Tente de novo com outro e-mail."
+  },
+  "confirmEmail": {
+    "header": "Confira seu e-mail!",
+    "message": "Enviamos um link para {{email}} que você pode usar para terminar de criar sua conta.",
+    "resend": {
+      "idle": "Reenviar e-mail de verificação",
+      "sending": "Enviando e-mail...",
+      "sent": "E-mail enviado!",
+      "failed": "Reenviar e-mail de confirmação"
+    }
+  }
+}

@@ -42,8 +42,10 @@ import FeedCard from "../UI/FeedCard";
 import AddOutingFriendsDrawer from "../Popups/AddOutingFriendsDrawer";
 import SixPhotoGrid from "../UI/SixPhotoGrid";
 import ModalHeaderPortal from "./ModalHeaderPortal";
+import { useT, T } from "../../i18n";
 
 const OutingModal = (props) => {
+  const { t } = useT();
   const modalState = useSelector((state) => state.modal);
   const modalDisplay = modalState.selector === "outing-modal" ? "flex" : "none";
   const modalStyle = { display: modalDisplay };
@@ -86,7 +88,9 @@ const OutingModal = (props) => {
       ? daysUntil(outing.completion_started || outing.date_created)
       : null;
   const daysText = (n) =>
-    n === 0 ? "less than a day" : `${n} day${n === 1 ? "" : "s"}`;
+    n === 0
+      ? t("outing.countdown.lessThanADay")
+      : t("outing.countdown.days", { count: n });
   const hasCompleted = (u) =>
     outing?.completions?.some((c) => (c?._id || c) === (u?._id || u));
 
@@ -98,7 +102,7 @@ const OutingModal = (props) => {
   const joining = !!outing?.invited?.find((i) => i._id === user?._id);
   const isOnlyUser = outing?.users?.length < 2;
   const userFlaked = outing?.flakes?.find((id) => id === user._id);
-  const [editButtonText, setEditButtonText] = useState("Edit");
+  const [editingPhotos, setEditingPhotos] = useState(false);
   const [uploads, setUploads] = useState([]);
   const userPhotoCount = outing?.photos?.filter(
     (p) => p.uploader === user?._id
@@ -116,7 +120,7 @@ const OutingModal = (props) => {
     .filter((i) => i >= 0);
   const [deleteKey, setDeleteKey] = useState(false);
   const uploadInputRef = useRef(null);
-  const [deletePhotoButtonText, setDeletePhotoButtonText] = useState("Delete");
+  const [deletingPhoto, setDeletingPhoto] = useState(false);
   const [activityRating, setActivityRating] = useState(5);
   const [ratingTouched, setRatingTouched] = useState(false);
 
@@ -188,9 +192,7 @@ const OutingModal = (props) => {
     <div className={styles.warningContainer}>
       <div className={styles.warningName}>{outing?.name}</div>
       <div className={styles.warningText}>
-        Once you have deleted the Outing, it will no longer be joinable by any
-        invitees. Deleting this Outing <b>will not</b> affect your flake rating.
-        This action is permanent.
+        <T k="outing.deleteDrawer.message" />
       </div>
     </div>
   );
@@ -203,9 +205,7 @@ const OutingModal = (props) => {
     <div className={styles.warningContainer}>
       <div className={styles.warningName}>{outing?.name}</div>
       <div className={styles.warningText}>
-        Once you leave the Outing, it may still be completed by the other
-        members. If it is, you <b>will negatively affect</b> your flake rating.
-        This action is permanent (you cannot re-join after leaving).
+        <T k="outing.leaveDrawer.message" />
       </div>
     </div>
   );
@@ -220,12 +220,10 @@ const OutingModal = (props) => {
     <div className={styles.sheetBody}>
       <div className={styles.sheetOutingName}>{outing?.name}</div>
       <ul className={styles.sheetPoints}>
-        <li>It counts toward your limit of 5 pending Outings.</li>
+        <li>{t("outing.joinDrawer.pendingLimit")}</li>
+        <li>{t("outing.joinDrawer.mustComplete")}</li>
         <li>
-          It has to be completed (or deleted while you're the only member).
-        </li>
-        <li>
-          Leaving after you join <b>lowers your flake rating</b>.
+          <T k="outing.joinDrawer.leavingLowersRating" />
         </li>
       </ul>
     </div>
@@ -286,7 +284,7 @@ const OutingModal = (props) => {
     // Upload photo and add photo to photos for display
     uploadOutingPhoto(user, outing, photoString, onComplete);
     setShowDeleteable(false);
-    setEditButtonText("Edit");
+    setEditingPhotos(false);
   };
 
   const onPhotoUploadDismiss = (index) => {
@@ -306,17 +304,12 @@ const OutingModal = (props) => {
   };
 
   const tooManyPhotosMessage = (
-    <div>
-      Each Outing member can only upload up to 2 photos. You can remove some of
-      your photos if you want to change or edit your uploads for this Outing.
-    </div>
+    <div>{t("outing.tooManyPhotos.message")}</div>
   );
 
   const onEditPhotosClick = () => {
     setShowDeleteable((prevState) => (prevState ? false : true));
-    setEditButtonText((preveState) =>
-      preveState === "Edit" ? "Done Editing" : "Edit"
-    );
+    setEditingPhotos((prevState) => !prevState);
   };
 
   const onDeletePhoto = (index) => {
@@ -329,71 +322,78 @@ const OutingModal = (props) => {
       fetchAuth();
       fetchPhotos(response.user);
       dispatch(popupActions.hidePopup());
-      setDeletePhotoButtonText("Delete");
+      setDeletingPhoto(false);
     };
 
     // Upload photo and add photo to photos for display
     deleteOutingPhoto(user, outing, deleteKey, onComplete);
-    setDeletePhotoButtonText("Deleting..");
+    setDeletingPhoto(true);
   };
 
   const noPhotosMessage = (
     <div>
-      Outings need to have at least one photo uploaded before they can be marked
-      completed. You can add photos in the Outing page using the button shown
-      below:
+      {t("outing.noPhotos.message")}
       <img
         className={styles.addPhotosButton}
         src={addPhotosButton}
-        alt="add-photos-button"
+        alt={t("outing.noPhotos.buttonAlt")}
       />
       <br />
-      <b>All Outing members must mark the Outing completed!</b>
+      <b>{t("outing.noPhotos.allMembers")}</b>
     </div>
   );
 
   const needUsersMessage = (
     <div className={styles.completionMessage}>
-      Outing must have 2+ members to be marked completed.
+      {t("outing.completion.needMembers")}
     </div>
   );
 
   const pendingInvites = outing?.invited?.length || 0;
   const howToCompleteMessage = (
     <div className={styles.howToComplete}>
-      <p>An Outing needs at least 2 members before it can be completed.</p>
+      <p>{t("outing.howToComplete.intro")}</p>
       <ol>
         <li>
           {pendingInvites
-            ? `Wait for your ${
-                pendingInvites === 1 ? "invite" : `${pendingInvites} invites`
-              } to be accepted, or invite someone else.`
-            : "Invite a friend or a Daily Match to join."}
+            ? t("outing.howToComplete.waitForInvites", {
+                count: pendingInvites,
+              })
+            : t("outing.howToComplete.inviteSomeone")}
         </li>
-        <li>Go on the Outing together.</li>
-        <li>Upload at least one photo from it.</li>
-        <li>Every member taps Mark Completed.</li>
+        <li>{t("outing.howToComplete.goTogether")}</li>
+        <li>{t("outing.howToComplete.uploadPhoto")}</li>
+        <li>{t("outing.howToComplete.everyoneMarks")}</li>
       </ol>
     </div>
   );
 
   const completionCountMessage = (
     <div className={styles.completionMessage}>
-      {outing?.completions?.length} / {outing?.users?.length} Members have
-      marked this Outing completed.
+      {t("outing.completion.count", {
+        completed: outing?.completions?.length,
+        total: outing?.users?.length,
+      })}
     </div>
   );
 
-  const ratingLabels = ["", "Not great", "It was OK", "Good", "Great", "Loved it!"];
+  const ratingLabels = [
+    "",
+    t("outing.rating.labels.1"),
+    t("outing.rating.labels.2"),
+    t("outing.rating.labels.3"),
+    t("outing.rating.labels.4"),
+    t("outing.rating.labels.5"),
+  ];
   const confirmCompletionMessage = (
     <div className={styles.sheetBody}>
       {isLastCompletion && (
         <div className={styles.lastCompletionBadge}>
-          You're the last member to mark it completed
+          {t("outing.completeDrawer.lastMember")}
         </div>
       )}
       <div className={styles.rateCard}>
-        <div className={styles.rateEyebrow}>Rate the activity</div>
+        <div className={styles.rateEyebrow}>{t("outing.rating.title")}</div>
         <div className={styles.rateActivityName}>
           <span
             className={styles.rateDot}
@@ -413,16 +413,17 @@ const OutingModal = (props) => {
         >
           {ratingTouched
             ? ratingLabels[activityRating]
-            : "Tap a star to rate it"}
+            : t("outing.rating.hint")}
         </div>
       </div>
       <ul className={styles.sheetPoints}>
         <li>
-          Once {isLastCompletion ? "you mark it" : "every member marks it"}{" "}
-          completed, the Outing is locked: no more photo changes.
+          {isLastCompletion
+            ? t("outing.completeDrawer.lockedYou")
+            : t("outing.completeDrawer.lockedEveryone")}
         </li>
-        <li>The Outing chat stays open so you can keep in touch.</li>
-        <li>This can't be undone.</li>
+        <li>{t("outing.completeDrawer.chatStaysOpen")}</li>
+        <li>{t("outing.completeDrawer.cantUndo")}</li>
       </ul>
     </div>
   );
@@ -483,49 +484,49 @@ const OutingModal = (props) => {
         <Fragment>
           <WarningPopup
             selector={"confirm-delete-outing"}
-            header={"Confirm Delete Outing:"}
+            header={t("outing.deleteDrawer.header")}
             message={confirmDeleteOutingMessage}
-            delete={"Delete"}
+            delete={t("outing.buttons.delete")}
             deleteClick={onOutingDelete}
-            cancel={"Cancel"}
+            cancel={t("outing.buttons.cancel")}
             cancelClick={() => {
               dispatch(popupActions.hidePopup());
             }}
           />
           <WarningPopup
             selector={"confirm-join-outing"}
-            header={"Join this Outing?"}
+            header={t("outing.joinDrawer.header")}
             message={confirmJoinOutingMessage}
-            ok={"Join Outing"}
+            ok={t("outing.buttons.joinOuting")}
             okClick={onOutingJoin}
-            cancel={"Cancel"}
+            cancel={t("outing.buttons.cancel")}
             cancelClick={() => {
               dispatch(popupActions.hidePopup());
             }}
           />
           <WarningPopup
             selector={"confirm-leave-outing"}
-            header={"Confirm Leave Outing:"}
+            header={t("outing.leaveDrawer.header")}
             message={confirmLeaveOutingMessage}
-            delete={"Leave"}
+            delete={t("outing.buttons.leave")}
             deleteClick={onOutingLeave}
-            cancel={"Cancel"}
+            cancel={t("outing.buttons.cancel")}
             cancelClick={() => {
               dispatch(popupActions.hidePopup());
             }}
           />
           <WarningPopup
             selector={"outing-needs-members"}
-            header={"How to complete an Outing"}
+            header={t("outing.howToComplete.header")}
             message={howToCompleteMessage}
-            ok={"Got it"}
+            ok={t("outing.buttons.gotIt")}
             okClick={() => dispatch(popupActions.hidePopup())}
           />
           <WarningPopup
             selector={"maximum-2-photos"}
-            header={"Too many photos!"}
+            header={t("outing.tooManyPhotos.header")}
             message={tooManyPhotosMessage}
-            ok={"OK"}
+            ok={t("outing.buttons.ok")}
             okClick={() => {
               dispatch(popupActions.hidePopup());
               resetUploads();
@@ -533,32 +534,36 @@ const OutingModal = (props) => {
           />
           <WarningPopup
             selector={"confirm-delete-photo"}
-            header={"Delete Photo?"}
+            header={t("outing.deletePhoto.header")}
             message={null}
-            delete={deletePhotoButtonText}
+            delete={
+              deletingPhoto
+                ? t("outing.buttons.deleting")
+                : t("outing.buttons.delete")
+            }
             deleteClick={onDeleteConfirm}
-            cancel={"Cancel"}
+            cancel={t("outing.buttons.cancel")}
             cancelClick={() => {
               dispatch(popupActions.hidePopup());
             }}
           />
           <WarningPopup
             selector={"no-photos"}
-            header={"No Photos Uploaded!"}
+            header={t("outing.noPhotos.header")}
             message={noPhotosMessage}
-            ok={"OK"}
+            ok={t("outing.buttons.ok")}
             okClick={() => {
               dispatch(popupActions.hidePopup());
             }}
           />
           <WarningPopup
             selector={"confirm-completion"}
-            header={"Mark this Outing completed?"}
+            header={t("outing.completeDrawer.header")}
             message={confirmCompletionMessage}
-            ok={"Mark Completed"}
+            ok={t("outing.buttons.markCompleted")}
             okClick={handleMarkCompleted}
             okUnclickable={!ratingTouched}
-            cancel={"Cancel"}
+            cancel={t("outing.buttons.cancel")}
             cancelClick={() => {
               setRatingTouched(false);
               dispatch(popupActions.hidePopup());
@@ -605,10 +610,10 @@ const OutingModal = (props) => {
                   }`}
                 >
                   {joining
-                    ? "Join Outing"
+                    ? t("outing.buttons.joinOuting")
                     : userHasCompleted
-                    ? `Marked Completed!`
-                    : "Mark Completed"}
+                    ? t("outing.buttons.markedCompleted")
+                    : t("outing.buttons.markCompleted")}
                 </SimpleButton>
               )}
             </div>
@@ -623,9 +628,11 @@ const OutingModal = (props) => {
                   <img
                     className={styles.flakeIcon}
                     src={flakeIcon}
-                    alt={"flake"}
+                    alt={t("outing.alt.flake")}
                   />
-                  <h1 className={styles.flakeText}>You flaked out!</h1>
+                  <h1 className={styles.flakeText}>
+                    {t("outing.flakedOut")}
+                  </h1>
                 </div>
               </Fragment>
             )}
@@ -634,9 +641,9 @@ const OutingModal = (props) => {
               <img
                 className={styles.sectionHeaderIcon}
                 src={activityIcon}
-                alt={"activity"}
+                alt={t("outing.alt.activity")}
               />{" "}
-              Activity
+              {t("outing.sections.activity")}
             </h2>
             <ActivityCard
               key={outing.activity?._id}
@@ -651,13 +658,13 @@ const OutingModal = (props) => {
                   <img
                     className={styles.sectionHeaderIcon}
                     src={photosIcon}
-                    alt={"photos"}
+                    alt={t("outing.alt.photos")}
                   />{" "}
                   <div className={styles.photosHeader}>
-                    Photos
+                    {t("outing.sections.photos")}
                     {!completed ? (
                       <div className={styles.photosHeaderText}>
-                        Each member can upload up to 2 photos.
+                        {t("outing.photos.limitHint")}
                       </div>
                     ) : null}
                   </div>
@@ -681,7 +688,7 @@ const OutingModal = (props) => {
                     <div className={styles.sideBySide}>
                       {userPhotoCount < 2 ? (
                         <SimpleButton onClick={onUploadClick} className={styles.ctaButton}>
-                          + Upload
+                          {t("outing.photos.upload")}
                         </SimpleButton>
                       ) : null}
 
@@ -690,7 +697,9 @@ const OutingModal = (props) => {
                       ) : null}
                       {userPhotoCount > 0 ? (
                         <SimpleButton onClick={onEditPhotosClick}>
-                          {editButtonText}
+                          {editingPhotos
+                            ? t("outing.photos.doneEditing")
+                            : t("outing.photos.edit")}
                         </SimpleButton>
                       ) : null}
                     </div>
@@ -713,16 +722,16 @@ const OutingModal = (props) => {
               <img
                 className={styles.sectionHeaderIcon}
                 src={membersIcon}
-                alt={"members"}
+                alt={t("outing.alt.members")}
               />{" "}
-              Members
+              {t("outing.sections.members")}
               {joining || userFlaked ? null : (
                 <button
                   type="button"
                   onClick={onShowChatModal}
                   className={styles.chatCircle}
-                  aria-label="Open outing chat"
-                  title="Chat"
+                  aria-label={t("outing.chat.openLabel")}
+                  title={t("outing.chat.title")}
                 >
                   <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.2 3.6c-.5.4-1.3.1-1.3-.6V16A2.5 2.5 0 0 1 4 13.5z" />
@@ -732,14 +741,15 @@ const OutingModal = (props) => {
             </h2>
             {finishDaysLeft !== null ? (
               <div className={styles.countdownNote}>
-                {daysText(finishDaysLeft)} left for everyone to mark it
-                completed. Anyone who hasn't by then is removed and gets a
-                flake.
+                {t("outing.countdown.finishNote", {
+                  time: daysText(finishDaysLeft),
+                })}
               </div>
             ) : inviteDaysLeft !== null && (outing.users?.length || 0) < 2 ? (
               <div className={styles.countdownNote}>
-                If no one joins within {daysText(inviteDaysLeft)}, this Outing
-                is deleted for inactivity.
+                {t("outing.countdown.inviteNote", {
+                  time: daysText(inviteDaysLeft),
+                })}
               </div>
             ) : null}
             {outing.users.map((u) => (
@@ -750,11 +760,13 @@ const OutingModal = (props) => {
                   finishDaysLeft !== null ? (
                     hasCompleted(u) ? (
                       <span className={`${styles.countdownTag} ${styles.countdownDone}`}>
-                        ✓ Done
+                        {t("outing.countdown.done")}
                       </span>
                     ) : (
                       <span className={styles.countdownTag}>
-                        {finishDaysLeft === 0 ? "<1" : finishDaysLeft}d left
+                        {t("outing.countdown.daysLeftTag", {
+                          days: finishDaysLeft === 0 ? "<1" : finishDaysLeft,
+                        })}
                       </span>
                     )
                   ) : null
@@ -768,14 +780,15 @@ const OutingModal = (props) => {
                   <img
                     className={styles.sectionHeaderIcon}
                     src={inviteIcon}
-                    alt={"invited"}
+                    alt={t("outing.alt.invited")}
                   />{" "}
-                  Invited
+                  {t("outing.sections.invited")}
                 </h2>
                 {inviteDaysLeft !== null ? (
                   <div className={styles.countdownNote}>
-                    Invites expire in {daysText(inviteDaysLeft)} if they
-                    haven't been accepted.
+                    {t("outing.countdown.invitesExpire", {
+                      time: daysText(inviteDaysLeft),
+                    })}
                   </div>
                 ) : null}
                 {outing.invited.map((u) => (
@@ -785,7 +798,9 @@ const OutingModal = (props) => {
                     buttons={
                       inviteDaysLeft !== null ? (
                         <span className={styles.countdownTag}>
-                          {inviteDaysLeft === 0 ? "<1" : inviteDaysLeft}d to join
+                          {t("outing.countdown.daysToJoinTag", {
+                            days: inviteDaysLeft === 0 ? "<1" : inviteDaysLeft,
+                          })}
                         </span>
                       ) : null
                     }
@@ -806,19 +821,17 @@ const OutingModal = (props) => {
                   }
                   className={styles.leaveButton}
                 >
-                  {isOnlyUser ? "Delete Outing" : "Leave Outing"}
+                  {isOnlyUser
+                    ? t("outing.buttons.deleteOuting")
+                    : t("outing.buttons.leaveOuting")}
                 </SimpleButton>
                 {isOnlyUser ? (
                   <div className={styles.deleteHelp}>
-                    You can delete the outing becauase you are the only member.
-                    Deleting the outing <b>will not negatively affect</b> your
-                    flake rating.
+                    <T k="outing.deleteHelp.onlyMember" />
                   </div>
                 ) : (
                   <div className={styles.deleteHelp}>
-                    You cannot delete the outing becauase there are other
-                    members. Leaving the outing <b>will negatively affect</b>{" "}
-                    your flake rating.
+                    <T k="outing.deleteHelp.otherMembers" />
                   </div>
                 )}
               </Fragment>

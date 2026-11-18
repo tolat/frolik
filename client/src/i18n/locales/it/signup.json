@@ -1,0 +1,24 @@
+{
+  "header": "Crea account",
+  "create": "+ Crea",
+  "creating": "Creazione",
+  "ok": "OK",
+  "fields": {
+    "email": "Email:",
+    "password": "Password:"
+  },
+  "alreadyExists": {
+    "header": "Esiste già un account per {{email}}.",
+    "message": "Riprova con un'altra email."
+  },
+  "confirmEmail": {
+    "header": "Controlla la tua email!",
+    "message": "Abbiamo inviato a {{email}} un link che puoi usare per completare la creazione del tuo account.",
+    "resend": {
+      "idle": "Invia di nuovo l'email di verifica",
+      "sending": "Invio email...",
+      "sent": "Email inviata!",
+      "failed": "Invia di nuovo l'email di conferma"
+    }
+  }
+}

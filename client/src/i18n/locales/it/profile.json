@@ -1,0 +1,30 @@
+{
+  "tabs": {
+    "photos": "Foto",
+    "outings": "Uscite",
+    "friends": "Amici"
+  },
+  "friendCard": {
+    "chat": "+ Chat",
+    "outing": "+ Uscita"
+  },
+  "edit": "modifica",
+  "empty": {
+    "title": "Non hai ancora contenuti!",
+    "noMedia": "Per iniziare ad aggiungere foto, uscite e amici, crea e completa un'uscita nella pagina <balloon/>!",
+    "noPhotos": "Per aggiungere foto, completa altre uscite nella pagina <balloon/>!",
+    "noFriends": "Per aggiungere amici, vai alla pagina <balloon/>!",
+    "balloonAlt": "icona della pagina uscite"
+  },
+  "friends": {
+    "searchPlaceholder": "Cerca amici...",
+    "sortLabel": "Ordina amici",
+    "sort": "Ordina:",
+    "sortName": "Nome",
+    "sortOutings": "Uscite",
+    "sortFlake": "Indice bidoni",
+    "sortBy": "Ordina per {{label}}",
+    "sortByAsc": "Ordina per {{label}}, crescente",
+    "sortByDesc": "Ordina per {{label}}, decrescente"
+  }
+}

@@ -64,8 +64,8 @@ router.get(
 
     if (!user) {
       res.status(406).send({
-        header: `Could not fetch activities`,
-        message: `You must be logged in the see activities.`,
+        header: req.t("activity.fetchLoggedOut.header"),
+        message: req.t("activity.fetchLoggedOut.message"),
       });
       return;
     }
@@ -104,8 +104,8 @@ router.get(
     );
     if (!activity) {
       res.status(406).send({
-        header: "Activity not found",
-        message: "It may have been deleted.",
+        header: req.t("activity.notFound.header"),
+        message: req.t("activity.notFound.message"),
       });
       return;
     }
@@ -125,8 +125,8 @@ router.post(
     const name = typeof fields.name === "string" ? fields.name.trim() : "";
     if (!name || name.length > ACTIVITY_NAME_MAX) {
       res.status(406).send({
-        header: "Could not create activity",
-        message: `Activity names must be 1-${ACTIVITY_NAME_MAX} characters.`,
+        header: req.t("activity.nameLength.header"),
+        message: req.t("activity.nameLength.message", { max: ACTIVITY_NAME_MAX }),
       });
       return;
     }
@@ -135,8 +135,8 @@ router.post(
       typeof fields.description === "string" ? fields.description.trim() : "";
     if (description.length > ACTIVITY_DESCRIPTION_MAX) {
       res.status(406).send({
-        header: "Could not create activity",
-        message: `Descriptions can be at most ${ACTIVITY_DESCRIPTION_MAX} characters.`,
+        header: req.t("activity.descriptionTooLong.header"),
+        message: req.t("activity.descriptionTooLong.message", { max: ACTIVITY_DESCRIPTION_MAX }),
       });
       return;
     }
@@ -150,8 +150,8 @@ router.post(
       )
     ) {
       res.status(406).send({
-        header: "Could not create activity",
-        message: `Instruction titles can be at most ${INSTRUCTION_TITLE_MAX} characters.`,
+        header: req.t("activity.instructionTitleTooLong.header"),
+        message: req.t("activity.instructionTitleTooLong.message", { max: INSTRUCTION_TITLE_MAX }),
       });
       return;
     }
@@ -182,8 +182,8 @@ router.post(
           .toBuffer();
       } catch (e) {
         res.status(406).send({
-          header: "Could not use that photo",
-          message: "That file couldn't be read as an image. Please try another photo.",
+          header: req.t("activity.badPhoto.header"),
+          message: req.t("activity.badPhoto.message"),
         });
         return;
       }
@@ -231,8 +231,8 @@ router.post(
     // Previously `!a == b` (always false) let anyone delete any activity
     if (!activity || activity.created_by?.toString() !== user._id.toString()) {
       res.status(406).send({
-        header: `Could not delete activities`,
-        message: `You can only delete activities you created.`,
+        header: req.t("activity.deleteNotOwner.header"),
+        message: req.t("activity.deleteNotOwner.message"),
       });
       return;
     }

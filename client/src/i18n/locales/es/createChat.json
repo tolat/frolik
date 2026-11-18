@@ -1,0 +1,8 @@
+{
+  "header": "Crear chat",
+  "create": "+ Crear chat",
+  "chatWith": "Chatear con:",
+  "pickHint": "Agrega al menos a un amigo para empezar un chat.",
+  "addFriends": "Agregar amigos:",
+  "searchPlaceholder": "Buscar amigos..."
+}

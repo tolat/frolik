@@ -1,0 +1,24 @@
+{
+  "header": "Filtrer les activités",
+  "showOnly": {
+    "title": "Afficher seulement",
+    "completed": "Terminées",
+    "featured": "En vedette",
+    "created": "Créations"
+  },
+  "details": "Détails",
+  "fields": {
+    "minParticipants": "Participants min. :",
+    "maxParticipants": "Participants max. :",
+    "minCost": "Coût min. :",
+    "maxCost": "Coût max. :",
+    "minRating": "Note min. :",
+    "maxTime": "Durée max. :"
+  },
+  "units": {
+    "people": "pers.",
+    "hours": "h"
+  },
+  "clearAll": "Tout effacer",
+  "apply": "Appliquer"
+}

@@ -1,0 +1,180 @@
+@import "../../../utils/responsive.scss";
+
+.container {
+  width: 100%;
+  margin-top: 0.8rem;
+}
+
+// Same settings-row look as "Keep my location up to date"
+.row {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  width: 100%;
+  padding: 1.1rem 1.2rem;
+  border: none;
+  border-radius: $radius_md;
+  background-color: $surface;
+  box-shadow: $shadow_sm;
+  text-align: start;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.icon {
+  display: flex;
+  flex-shrink: 0;
+  width: 3.4rem;
+  height: 3.4rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(91, 141, 239, 0.12);
+
+  svg {
+    width: 1.9rem;
+    height: 1.9rem;
+    fill: none;
+    stroke: $blue_dark;
+    stroke-width: 1.7;
+  }
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: $text;
+}
+
+.caption {
+  font-size: 1.2rem;
+  color: $text_muted;
+  line-height: 1.35;
+  margin-top: 0.2rem;
+}
+
+.value {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: $blue_dark;
+  white-space: nowrap;
+}
+
+.chevron {
+  font-size: 2rem;
+  line-height: 1;
+  color: $text_muted;
+}
+
+[dir="rtl"] .chevron {
+  transform: scaleX(-1);
+}
+
+// Small link-style button (login screen)
+.compact {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: none;
+  background: transparent;
+  padding: 0.6rem 0.8rem;
+  border-radius: $radius_sm;
+  font: inherit;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: $text_muted;
+  cursor: pointer;
+
+  svg {
+    width: 1.7rem;
+    height: 1.7rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+  }
+
+  &:hover {
+    background-color: rgba(91, 141, 239, 0.08);
+  }
+}
+
+// Drawer
+.sheetTitle {
+  margin: 0.4rem 0 1.2rem;
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: $text;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1.2rem 1.4rem;
+  border: none;
+  border-radius: $radius_md;
+  background: transparent;
+  text-align: start;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  &:hover {
+    background-color: $card_grey;
+  }
+}
+
+.selected {
+  background-color: rgba(91, 141, 239, 0.1);
+
+  &:hover {
+    background-color: rgba(91, 141, 239, 0.14);
+  }
+}
+
+.optionText {
+  display: flex;
+  flex-direction: column;
+}
+
+.native {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: $text;
+}
+
+.english {
+  font-size: 1.2rem;
+  color: $text_muted;
+  margin-top: 0.1rem;
+}
+
+.check {
+  width: 2.2rem;
+  height: 2.2rem;
+  flex-shrink: 0;
+  fill: none;
+  stroke: $blue_dark;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

@@ -11,8 +11,10 @@ import { modalActions } from "../../store/modal-slice";
 import { alphabetSort, toSorted } from "../../utils/utils";
 import ModalHeaderPortal from "./ModalHeaderPortal";
 import ModalButtonPortal from "./ModalButtonPortal";
+import { useT } from "../../i18n";
 
 const CreateChatModal = (props) => {
+  const { t } = useT();
   const modalState = useSelector((state) => state.modal);
   const modalDisplay =
     modalState.selector === "create-chat-modal" ? "flex" : "none";
@@ -97,7 +99,7 @@ const CreateChatModal = (props) => {
     <ModalPortal>
       <div style={modalStyle} className={styles.container}>
         <ModalHeaderPortal selector={"create-chat-modal"}>
-          Create Chat
+          {t("createChat.header")}
         </ModalHeaderPortal>
         <ModalButtonPortal selector={"create-chat-modal"}>
           <SimpleButton
@@ -106,12 +108,12 @@ const CreateChatModal = (props) => {
               canCreate ? "" : styles.unclickableButton
             }`}
           >
-            + Create Chat
+            {t("createChat.create")}
           </SimpleButton>
         </ModalButtonPortal>
         {canCreate ? (
           <>
-            <h2 className={styles.header}>Chat with:</h2>
+            <h2 className={styles.header}>{t("createChat.chatWith")}</h2>
             {newChatMembers.map((m) => (
               <FriendCard
                 buttonSet={"add"}
@@ -123,12 +125,12 @@ const CreateChatModal = (props) => {
           </>
         ) : (
           <div className={styles.pickHint}>
-            Add at least one friend to start a chat.
+            {t("createChat.pickHint")}
           </div>
         )}
-        <h2 className={styles.header}>Add Friends:</h2>
+        <h2 className={styles.header}>{t("createChat.addFriends")}</h2>
         <SimpleSearch
-          placeholder={"Search Friends.."}
+          placeholder={t("createChat.searchPlaceholder")}
           setValue={setFriendSearch}
         />
         {toSorted(applyFriendSearch(user.friends), alphabetSort)

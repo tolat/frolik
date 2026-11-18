@@ -1,0 +1,116 @@
+{
+  "sections": {
+    "activity": "活动",
+    "photos": "照片",
+    "members": "成员",
+    "invited": "已邀请"
+  },
+  "alt": {
+    "flake": "放鸽子",
+    "activity": "活动",
+    "photos": "照片",
+    "members": "成员",
+    "invited": "已邀请"
+  },
+  "buttons": {
+    "joinOuting": "加入出游",
+    "markCompleted": "标记完成",
+    "markedCompleted": "已标记完成！",
+    "deleteOuting": "删除出游",
+    "leaveOuting": "退出出游",
+    "delete": "删除",
+    "deleting": "删除中…",
+    "leave": "退出",
+    "cancel": "取消",
+    "ok": "好的",
+    "gotIt": "知道了"
+  },
+  "flakedOut": "你放鸽子了！",
+  "chat": {
+    "openLabel": "打开出游群聊",
+    "title": "聊天"
+  },
+  "deleteDrawer": {
+    "header": "确认删除出游：",
+    "message": "出游删除后，受邀者将无法再加入。删除此出游<b>不会</b>影响你的靠谱分。此操作无法撤销。"
+  },
+  "leaveDrawer": {
+    "header": "确认退出出游：",
+    "message": "你退出后，其他成员仍可以完成这次出游。如果他们完成了，你的靠谱分<b>会受到负面影响</b>。此操作无法撤销（退出后无法重新加入）。"
+  },
+  "joinDrawer": {
+    "header": "加入这次出游？",
+    "pendingLimit": "它会计入你最多5个待进行出游的上限。",
+    "mustComplete": "加入后需要完成它（或在你是唯一成员时删除）。",
+    "leavingLowersRating": "加入后再退出会<b>降低你的靠谱分</b>。"
+  },
+  "completeDrawer": {
+    "header": "将这次出游标记为完成？",
+    "lastMember": "你是最后一位标记完成的成员",
+    "lockedYou": "标记完成后，出游将被锁定：无法再修改照片。",
+    "lockedEveryone": "所有成员都标记完成后，出游将被锁定：无法再修改照片。",
+    "chatStaysOpen": "出游群聊会继续保留，方便大家保持联系。",
+    "cantUndo": "此操作无法撤销。"
+  },
+  "rating": {
+    "title": "给这个活动打分",
+    "hint": "点击星星即可评分",
+    "labels": {
+      "1": "不太行",
+      "2": "还行",
+      "3": "不错",
+      "4": "很棒",
+      "5": "超喜欢！"
+    }
+  },
+  "completion": {
+    "needMembers": "出游至少需要2位成员才能标记完成。",
+    "count": "{{completed}}/{{total}}位成员已将此出游标记为完成。"
+  },
+  "howToComplete": {
+    "header": "如何完成一次出游",
+    "intro": "出游至少需要2位成员才能完成。",
+    "waitForInvites": {
+      "other": "等待你发出的{{count}}个邀请被接受，或者再邀请其他人。"
+    },
+    "inviteSomeone": "邀请一位好友或每日匹配加入。",
+    "goTogether": "一起去出游。",
+    "uploadPhoto": "至少上传一张出游照片。",
+    "everyoneMarks": "每位成员都点击“标记完成”。"
+  },
+  "photos": {
+    "limitHint": "每位成员最多可上传2张照片。",
+    "upload": "+ 上传",
+    "edit": "编辑",
+    "doneEditing": "完成编辑"
+  },
+  "tooManyPhotos": {
+    "header": "照片太多啦！",
+    "message": "每位出游成员最多只能上传2张照片。如果想更换或修改你在这次出游中上传的照片，可以先删掉一些。"
+  },
+  "deletePhoto": {
+    "header": "删除照片？"
+  },
+  "noPhotos": {
+    "header": "还没有上传照片！",
+    "message": "出游至少要上传一张照片才能标记完成。你可以在出游页面用下方所示的按钮添加照片：",
+    "buttonAlt": "添加照片按钮",
+    "allMembers": "所有出游成员都必须标记完成！"
+  },
+  "countdown": {
+    "lessThanADay": "不到一天",
+    "days": {
+      "other": "{{count}}天"
+    },
+    "finishNote": "还剩{{time}}，所有人需在此之前标记完成。届时仍未标记的人会被移出，并记一次放鸽子。",
+    "inviteNote": "如果{{time}}内没有人加入，这次出游会因不活跃而被删除。",
+    "invitesExpire": "未被接受的邀请将在{{time}}后失效。",
+    "done": "✓ 已完成",
+    "daysLeftTag": "剩{{days}}天",
+    "daysToJoinTag": "{{days}}天内可加入"
+  },
+  "deleteHelp": {
+    "onlyMember": "你是唯一的成员，所以可以删除这次出游。删除出游<b>不会影响</b>你的靠谱分。",
+    "otherMembers": "还有其他成员，所以你无法删除这次出游。退出出游<b>会降低</b>你的靠谱分。"
+  }
+}

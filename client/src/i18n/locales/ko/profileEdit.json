@@ -1,0 +1,14 @@
+{
+  "photo": {
+    "editAlt": "편집"
+  },
+  "fields": {
+    "city": "도시:",
+    "firstName": "이름:",
+    "lastName": "성 (선택):",
+    "tagline": "한 줄 소개:"
+  },
+  "buttons": {
+    "revertPhoto": "사진 되돌리기"
+  }
+}

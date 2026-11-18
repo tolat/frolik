@@ -1,0 +1,14 @@
+{
+  "photo": {
+    "editAlt": "rediger"
+  },
+  "fields": {
+    "city": "By:",
+    "firstName": "Fornavn:",
+    "lastName": "Etternavn (valgfritt):",
+    "tagline": "Slagord:"
+  },
+  "buttons": {
+    "revertPhoto": "Tilbakestill bilde"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "steps": {
+    "welcome": {
+      "title": "Bienvenue sur frolik 👋",
+      "body": "frolik t'aide à sortir de chez toi et à rencontrer de nouvelles personnes grâce à de vraies sorties. Commençons par voir comment planifier une sortie — ça prend environ une minute."
+    },
+    "planOuting": {
+      "title": "Planifier une sortie",
+      "body": "Chaque sortie demande deux choses : une activité et au moins un match du jour — quelqu'un que tu n'as jamais rencontré. Tu reçois de nouveaux matchs toutes les 24 heures, et tu peux aussi inviter des amis."
+    },
+    "pickActivity": {
+      "title": "Choisis une activité",
+      "body": "Parcours les activités par catégorie et touche Choisir. Dès que tu as ajouté un match du jour, un bouton Créer la sortie apparaît. Les invitations partent et une discussion de groupe est créée pour la sortie."
+    },
+    "filterOrCreate": {
+      "title": "Filtrer ou créer",
+      "body": "Filtre par coût, durée, note ou taille du groupe, ou affiche seulement les activités terminées, en vedette ou créées par la communauté. Touche le + bleu à côté des catégories pour créer une activité perso que tout le monde dans ta ville pourra utiliser."
+    },
+    "stats": {
+      "title": "Tes stats",
+      "body": "❄️ est ton indice de fiabilité sur 5. Plus il est haut, mieux c'est : 5.0 veut dire que tu n'as jamais posé de lapin, et il baisse chaque fois que tu quittes une sortie ou que tu ne la marques pas terminée. 🎈 compte les sorties que tu as terminées."
+    },
+    "settings": {
+      "title": "Réglages",
+      "body": "Modifie ton profil et choisis ton statut ici. Mets-le sur Disponible pour apparaître dans les matchs du jour des autres. Tu peux revoir cette visite d'ici à tout moment."
+    },
+    "alerts": {
+      "title": "Alertes",
+      "body": "Les invitations, les demandes d'ami et les mises à jour arrivent ici. Accepte une invitation pour rejoindre une sortie — tu peux avoir jusqu'à 5 sorties en attente à la fois."
+    },
+    "finishing": {
+      "title": "Terminer une sortie",
+      "body": "Après une sortie, ouvre-la depuis ton Profil pour téléverser des photos et la marquer terminée en lui donnant une note. Une fois terminée, tu peux ajouter les personnes qui étaient avec toi comme amis. Quitter une sortie que tu as rejointe compte comme un lapin."
+    },
+    "social": {
+      "title": "Social",
+      "body": "Découvre les sorties terminées de tes amis et aime leurs photos."
+    },
+    "chats": {
+      "title": "Discussions",
+      "body": "Chaque sortie a sa propre discussion de groupe. Touche + pour lancer une discussion avec des amis."
+    },
+    "allSet": {
+      "title": "Tout est prêt ! 🎈",
+      "body": "Revois cette visite quand tu veux depuis les Réglages — l'icône ⚙️ de ton Profil."
+    }
+  },
+  "skip": "Passer",
+  "back": "Retour",
+  "start": "Commencer",
+  "letsGo": "C'est parti",
+  "next": "Suivant"
+}

@@ -1,0 +1,20 @@
+{
+  "searchPlaceholder": "Busque sua cidade",
+  "searchUnavailable": "A busca de localização não está disponível agora.",
+  "noMatches": "Nenhuma cidade encontrada",
+  "finding": "Encontrando sua cidade…",
+  "useCurrent": "Usar minha localização atual",
+  "auto": {
+    "pill": "Auto",
+    "title": "Manter minha localização atualizada",
+    "turningOff": "Desativando…",
+    "caption": "Vamos atualizar sua cidade sempre que você abrir o frolik. Só a sua cidade fica salva."
+  },
+  "errors": {
+    "denied": "A permissão de localização foi negada. Busque sua cidade no lugar.",
+    "unavailable": "Não foi possível obter sua localização. Busque sua cidade no lugar.",
+    "cityNotFound": "Não encontramos sua cidade.",
+    "unsupported": "A localização não está disponível neste dispositivo.",
+    "saveFailed": "Não foi possível atualizar sua localização."
+  }
+}

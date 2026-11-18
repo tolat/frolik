@@ -1,0 +1,24 @@
+{
+  "header": "创建账号",
+  "create": "+ 创建",
+  "creating": "创建中",
+  "ok": "好的",
+  "fields": {
+    "email": "邮箱：",
+    "password": "密码："
+  },
+  "alreadyExists": {
+    "header": "{{email}}的账号已存在。",
+    "message": "请换一个邮箱再试。"
+  },
+  "confirmEmail": {
+    "header": "请查收邮件！",
+    "message": "我们已向{{email}}发送了一个链接，点击即可完成账号创建。",
+    "resend": {
+      "idle": "重新发送验证邮件",
+      "sending": "发送中…",
+      "sent": "邮件已发送！",
+      "failed": "重新发送确认邮件"
+    }
+  }
+}

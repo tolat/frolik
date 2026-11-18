@@ -1,0 +1,24 @@
+{
+  "header": "アクティビティを絞り込む",
+  "showOnly": {
+    "title": "表示するもの",
+    "completed": "完了済み",
+    "featured": "おすすめ",
+    "created": "ユーザー作成"
+  },
+  "details": "詳細",
+  "fields": {
+    "minParticipants": "最少人数：",
+    "maxParticipants": "最大人数：",
+    "minCost": "最低費用：",
+    "maxCost": "最高費用：",
+    "minRating": "最低評価：",
+    "maxTime": "最長時間："
+  },
+  "units": {
+    "people": "人",
+    "hours": "時間"
+  },
+  "clearAll": "すべてクリア",
+  "apply": "適用"
+}

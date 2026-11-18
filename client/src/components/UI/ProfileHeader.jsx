@@ -4,8 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
 import gear from "../../images/gear.png";
 import { Fragment } from "react";
+import { useT } from "../../i18n";
 
 const ProfileHeader = (props) => {
+  const { t } = useT();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const isSameUser = props.user._id === user._id;
@@ -39,7 +41,8 @@ const ProfileHeader = (props) => {
                         onClick={handleClick}
                         className={styles.settingsButton}
                         src={gear}
-                        alt="settings"
+                        alt={t("ui.profileHeader.settings")}
+                        data-tour="settings"
                       />
                     </div>
                   ) : (

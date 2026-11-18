@@ -1,0 +1,13 @@
+{
+  "header": "<logo/>をインストール",
+  "subHeader": "Frolikをインストールすると、通知を受け取れるようになり、普通のスマホアプリと同じように使えます。（iOS > 16.4）",
+  "ios": {
+    "step1": "1. <safari/>Safariでwww.frolik.caを開きます",
+    "step1Alt": "ステップ1",
+    "step2": "2. Safariのツールバーにある共有アイコンをタップします",
+    "step2Alt": "ステップ2",
+    "step3": "3. 「ホーム画面に追加」をタップします"
+  },
+  "installButton": "Frolikをインストール",
+  "backToWeb": "Frolikのウェブ版に戻る"
+}

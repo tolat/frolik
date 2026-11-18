@@ -1,0 +1,47 @@
+{
+  "actions": {
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "showInstructions": "Show Instructions",
+    "hideInstructions": "Hide Instructions",
+    "createOuting": "Create Outing",
+    "sendToFriend": "Send to a friend",
+    "remove": "Remove",
+    "select": "Select"
+  },
+  "delete": {
+    "header": "Confirm Delete Activity:",
+    "permanent": "This action is permanent.",
+    "deleting": "Deleting.."
+  },
+  "stats": {
+    "time": "Time",
+    "cost": "Cost",
+    "group": "Group size",
+    "rating": "Rating",
+    "hours": {
+      "one": "{{count}} hr",
+      "other": "{{count}} hrs"
+    },
+    "costValue": "${{cost}}",
+    "participants": {
+      "one": "{{count}} +",
+      "other": "{{count}} +"
+    }
+  },
+  "badges": {
+    "completed": "Completed",
+    "featured": "Featured",
+    "created": "Created by a user"
+  },
+  "instructionsHeader": "Instructions:",
+  "addInstruction": "+ Add Instruction",
+  "goalHeader": "Goal:",
+  "goalAlt": "Goal",
+  "instruction": {
+    "chooseIcon": "Choose an icon",
+    "titlePlaceholder": "Instruction title",
+    "detailsPlaceholder": "Instruction details",
+    "remove": "Remove instruction"
+  }
+}

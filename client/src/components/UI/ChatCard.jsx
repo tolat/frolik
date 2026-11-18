@@ -6,6 +6,7 @@ import {
   genMembersString,
   getUnreadChatMessages,
   setLastReadMessage,
+  toAppDate,
 } from "../../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
@@ -20,6 +21,7 @@ import { fetchAuth } from "../../store/auth-actions";
 import { authActions } from "../../store/auth-slice";
 import { collapseOut } from "../../utils/animations";
 import { chatActions } from "../../store/chat-slice";
+import { useT } from "../../i18n";
 
 const store_user = (fallback) => store.getState().auth.user || fallback;
 
@@ -28,6 +30,7 @@ const SNAP_THRESHOLD = DELETE_ZONE_WIDTH / 2;
 const AXIS_LOCK_PX = 8; // movement needed before deciding swipe vs scroll
 
 const ChatCard = memo((props) => {
+  const { t } = useT();
   const user = useSelector((state) => state.auth.user);
   const chat = props.chat;
   const globals = useSelector((state) => state.auth.globals);
@@ -41,6 +44,11 @@ const ChatCard = memo((props) => {
       ? "Unarchive"
       : "Archive"
     : "Delete";
+  const swipeActionLabel = {
+    Delete: t("ui.chatCard.delete"),
+    Archive: t("ui.chatCard.archive"),
+    Unarchive: t("ui.chatCard.unarchive"),
+  }[swipeAction];
   const rootRef = useRef(null);
   // Swipe right (only when there's something unread) marks the chat read
   const canMarkRead = unreadChatMessages > 0;
@@ -63,7 +71,7 @@ const ChatCard = memo((props) => {
     ? ""
     : otherMembers.length
     ? genMembersString(otherMembers.map((u) => u.first_name))
-    : "Just you";
+    : t("ui.chatCard.justYou");
 
   const openChat = useCallback(() => {
     const onChatFetched = () => {
@@ -220,7 +228,7 @@ const ChatCard = memo((props) => {
               setTranslateX(0);
             }}
           >
-            <span className={styles.deleteZoneText}>✓ Read</span>
+            <span className={styles.deleteZoneText}>{t("ui.chatCard.markRead")}</span>
           </div>
         )}
         {swipeEnabled && (
@@ -231,7 +239,7 @@ const ChatCard = memo((props) => {
             style={{ opacity: translateX < 0 ? 1 : 0 }}
             onClick={handleSwipeAction}
           >
-            <span className={styles.deleteZoneText}>{swipeAction}</span>
+            <span className={styles.deleteZoneText}>{swipeActionLabel}</span>
           </div>
         )}
 
@@ -277,8 +285,7 @@ const ChatCard = memo((props) => {
               </div>
             </div>
             <div className={styles.lastActive}>
-              Last Active {new Date(chat.touched).toDateString().slice(4, 15)} -{" "}
-              {new Date(chat.touched).toTimeString().slice(0, 5)}
+              {t("ui.chatCard.lastActive", { date: toAppDate(chat.touched) })}
             </div>
           </div>
         </div>

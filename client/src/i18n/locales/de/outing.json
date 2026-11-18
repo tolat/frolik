@@ -1,0 +1,118 @@
+{
+  "sections": {
+    "activity": "Aktivität",
+    "photos": "Fotos",
+    "members": "Teilnehmende",
+    "invited": "Eingeladen"
+  },
+  "alt": {
+    "flake": "abgesprungen",
+    "activity": "Aktivität",
+    "photos": "Fotos",
+    "members": "Teilnehmende",
+    "invited": "Eingeladen"
+  },
+  "buttons": {
+    "joinOuting": "Mitmachen",
+    "markCompleted": "Abschließen",
+    "markedCompleted": "Abgeschlossen!",
+    "deleteOuting": "Ausflug löschen",
+    "leaveOuting": "Ausflug verlassen",
+    "delete": "Löschen",
+    "deleting": "Wird gelöscht …",
+    "leave": "Verlassen",
+    "cancel": "Abbrechen",
+    "ok": "OK",
+    "gotIt": "Verstanden"
+  },
+  "flakedOut": "Du bist abgesprungen!",
+  "chat": {
+    "openLabel": "Ausflugschat öffnen",
+    "title": "Chat"
+  },
+  "deleteDrawer": {
+    "header": "Ausflug wirklich löschen?",
+    "message": "Sobald du den Ausflug löschst, können Eingeladene ihm nicht mehr beitreten. Das Löschen <b>wirkt sich nicht</b> auf deine Zuverlässigkeit aus. Das kann nicht rückgängig gemacht werden."
+  },
+  "leaveDrawer": {
+    "header": "Ausflug wirklich verlassen?",
+    "message": "Auch wenn du den Ausflug verlässt, können die anderen ihn noch abschließen. Passiert das, <b>sinkt</b> deine Zuverlässigkeit. Das kann nicht rückgängig gemacht werden (du kannst danach nicht wieder beitreten)."
+  },
+  "joinDrawer": {
+    "header": "Bei diesem Ausflug mitmachen?",
+    "pendingLimit": "Er zählt zu deinem Limit von 5 offenen Ausflügen.",
+    "mustComplete": "Er muss abgeschlossen werden (oder gelöscht, solange du als Einzige*r dabei bist).",
+    "leavingLowersRating": "Wenn du nach dem Beitreten wieder aussteigst, <b>sinkt deine Zuverlässigkeit</b>."
+  },
+  "completeDrawer": {
+    "header": "Diesen Ausflug abschließen?",
+    "lastMember": "Du bist die letzte Person, die ihn abschließt",
+    "lockedYou": "Sobald du ihn abschließt, ist der Ausflug gesperrt: Fotos können nicht mehr geändert werden.",
+    "lockedEveryone": "Sobald alle ihn abgeschlossen haben, ist der Ausflug gesperrt: Fotos können nicht mehr geändert werden.",
+    "chatStaysOpen": "Der Ausflugschat bleibt offen, damit ihr in Kontakt bleiben könnt.",
+    "cantUndo": "Das kann nicht rückgängig gemacht werden."
+  },
+  "rating": {
+    "title": "Bewerte die Aktivität",
+    "hint": "Tippe auf einen Stern zum Bewerten",
+    "labels": {
+      "1": "Nicht so toll",
+      "2": "Ganz okay",
+      "3": "Gut",
+      "4": "Super",
+      "5": "Geliebt!"
+    }
+  },
+  "completion": {
+    "needMembers": "Ein Ausflug braucht mindestens 2 Teilnehmende, um abgeschlossen zu werden.",
+    "count": "{{completed}} / {{total}} haben diesen Ausflug abgeschlossen."
+  },
+  "howToComplete": {
+    "header": "So schließt du einen Ausflug ab",
+    "intro": "Ein Ausflug braucht mindestens 2 Teilnehmende, bevor er abgeschlossen werden kann.",
+    "waitForInvites": {
+      "one": "Warte, bis deine Einladung angenommen wird, oder lade jemand anderen ein.",
+      "other": "Warte, bis deine {{count}} Einladungen angenommen werden, oder lade jemand anderen ein."
+    },
+    "inviteSomeone": "Lade Freunde oder ein Tagesmatch ein.",
+    "goTogether": "Macht den Ausflug zusammen.",
+    "uploadPhoto": "Lade mindestens ein Foto davon hoch.",
+    "everyoneMarks": "Alle tippen auf Abschließen."
+  },
+  "photos": {
+    "limitHint": "Alle können bis zu 2 Fotos hochladen.",
+    "upload": "+ Hochladen",
+    "edit": "Bearbeiten",
+    "doneEditing": "Fertig"
+  },
+  "tooManyPhotos": {
+    "header": "Zu viele Fotos!",
+    "message": "Pro Ausflug kann jede*r höchstens 2 Fotos hochladen. Du kannst einige deiner Fotos entfernen, wenn du deine Uploads für diesen Ausflug ändern möchtest."
+  },
+  "deletePhoto": {
+    "header": "Foto löschen?"
+  },
+  "noPhotos": {
+    "header": "Keine Fotos hochgeladen!",
+    "message": "Ein Ausflug braucht mindestens ein Foto, bevor er abgeschlossen werden kann. Fotos fügst du auf der Ausflugsseite mit diesem Button hinzu:",
+    "buttonAlt": "Button „Fotos hinzufügen“",
+    "allMembers": "Alle Teilnehmenden müssen den Ausflug abschließen!"
+  },
+  "countdown": {
+    "lessThanADay": "weniger als einem Tag",
+    "days": {
+      "one": "{{count}} Tag",
+      "other": "{{count}} Tagen"
+    },
+    "finishNote": "In {{time}} endet die Frist zum Abschließen. Wer es bis dahin nicht getan hat, wird entfernt und bekommt einen Minuspunkt bei der Zuverlässigkeit.",
+    "inviteNote": "Wenn innerhalb von {{time}} niemand beitritt, wird dieser Ausflug wegen Inaktivität gelöscht.",
+    "invitesExpire": "Nicht angenommene Einladungen verfallen in {{time}}.",
+    "done": "✓ Erledigt",
+    "daysLeftTag": "noch {{days}} T.",
+    "daysToJoinTag": "{{days}} T. zum Beitreten"
+  },
+  "deleteHelp": {
+    "onlyMember": "Du kannst den Ausflug löschen, weil du als Einzige*r dabei bist. Das Löschen <b>wirkt sich nicht negativ</b> auf deine Zuverlässigkeit aus.",
+    "otherMembers": "Du kannst den Ausflug nicht löschen, weil noch andere dabei sind. Wenn du ihn verlässt, <b>sinkt</b> deine Zuverlässigkeit."
+  }
+}

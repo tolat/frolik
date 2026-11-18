@@ -1,0 +1,32 @@
+{
+  "header": "프로필 보기",
+  "tabs": {
+    "photos": "사진"
+  },
+  "noPhotos": "아직 사진이 없어요!",
+  "buttons": {
+    "cancel": "취소",
+    "unfriend": "친구 끊기",
+    "sendRequest": "요청 보내기"
+  },
+  "actions": {
+    "chat": "+ 채팅",
+    "outing": "+ 나들이",
+    "friend": "+ 친구",
+    "requested": "요청함"
+  },
+  "locked": {
+    "header": "먼저 나들이를 완료하세요",
+    "formerHeader": "아직은 안 돼요",
+    "message": "둘 중 한 명이 오늘의 매치에서 상대와 매치되고 함께 나들이를 완료하면 {{name}}님을 친구로 추가할 수 있어요.",
+    "formerMessage": "{{name}}님과는 예전에 친구였어요. 다시 친구가 되려면 {{name}}님이 오늘의 매치에 나타나고, 함께 새 나들이를 완료해야 해요."
+  },
+  "unfriend": {
+    "header": "{{name}}님과 친구를 끊을까요?",
+    "message": "{{name}}님이 친구 목록에서 삭제되고, 서로의 프로필을 열 수 없게 돼요.<br/><br/><b>{{name}}님을 바로 다시 친구로 추가할 수는 없어요.</b> 다시 친구가 되려면 {{name}}님이 오늘의 매치에 나타나고, 함께 새 나들이를 완료해야 해요."
+  },
+  "friendRequest": {
+    "header": "{{name}}님에게 친구 요청을 보낼까요?",
+    "message": "{{name}}님이 알림을 받고 수락하거나 거절할 수 있어요."
+  }
+}

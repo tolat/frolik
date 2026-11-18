@@ -1,0 +1,13 @@
+{
+  "header": "Installer <logo/>",
+  "subHeader": "Installe Frolik pour recevoir des notifications et l'utiliser comme une vraie appli mobile. (iOS 16.4 ou plus)",
+  "ios": {
+    "step1": "1. <safari/> Ouvre www.frolik.ca dans Safari",
+    "step1Alt": "étape 1",
+    "step2": "2. Touche l'icône de partage dans la barre de Safari",
+    "step2Alt": "étape 2",
+    "step3": "3. Touche « Sur l'écran d'accueil »"
+  },
+  "installButton": "Installer Frolik",
+  "backToWeb": "Retour à Frolik web"
+}

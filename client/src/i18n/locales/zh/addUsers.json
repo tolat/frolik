@@ -1,0 +1,19 @@
+{
+  "header": "添加出游成员",
+  "removeHeader": "移除出游成员",
+  "dailyMatches": "每日匹配",
+  "required": "必选",
+  "matchesSubtext": "每次出游都至少要有一位你还没见过的人。匹配每24小时刷新一次。",
+  "noMatches": "暂无可用的匹配！",
+  "activeFriends": "活跃好友",
+  "friendSlots": {
+    "firstFriend": "现在可以添加一位好友——每位好友都需要搭配一位每日匹配。",
+    "more": {
+      "other": "还可以添加{{count}}位好友——每位每日匹配对应一位好友。"
+    },
+    "none": "再添加一位每日匹配，就能多邀请一位好友——每位匹配对应一位好友。"
+  },
+  "lockedTitle": "再添加一位每日匹配，即可多邀请一位好友",
+  "searchPlaceholder": "搜索好友…",
+  "noFriends": "暂无可添加的好友！"
+}

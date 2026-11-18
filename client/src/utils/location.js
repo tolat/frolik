@@ -1,4 +1,5 @@
 import { getServer } from "./env-utils";
+import { t } from "../i18n";
 
 // Labels the user actually picked from geocoding results (or already had),
 // with their coordinates. Validators accept only these, and the save calls
@@ -71,8 +72,8 @@ const getPosition = (options) =>
 const positionError = (err) =>
   new Error(
     err?.code === 1
-      ? "Location permission was denied. Search for your city instead."
-      : "Couldn't get your location. Search for your city instead."
+      ? t("location.errors.denied")
+      : t("location.errors.unavailable")
   );
 
 // One retry on a network blip *or* a server error (the geocoding providers
@@ -83,7 +84,7 @@ const reverseLookup = async (lat, lng) => {
     const res = await fetch(url);
     const body = await res.json().catch(() => ({}));
     if (res.ok && body.place) return body.place;
-    const err = new Error(body.header || "Couldn't find your city.");
+    const err = new Error(body.header || t("location.errors.cityNotFound"));
     err.final = res.status === 406;
     throw err;
   };
@@ -98,7 +99,7 @@ const reverseLookup = async (lat, lng) => {
 
 export const currentPlace = async () => {
   if (!navigator.geolocation) {
-    throw new Error("Location isn't available on this device.");
+    throw new Error(t("location.errors.unsupported"));
   }
   let position;
   try {
@@ -127,7 +128,7 @@ export const saveLocation = async (userID, body) => {
     body: JSON.stringify({ userID, ...body }),
   });
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.message || "Couldn't update your location.");
+  if (!res.ok) throw new Error(data.message || t("location.errors.saveFailed"));
   return data;
 };
 

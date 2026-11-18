@@ -1,0 +1,28 @@
+{
+  "categories": {
+    "Adventure": "مغامرة",
+    "Art": "فن",
+    "Food": "طعام",
+    "Games": "ألعاب",
+    "Sports": "رياضة"
+  },
+  "statuses": {
+    "Ready": "متاح",
+    "Busy": "مشغول",
+    "Inactive": "غير نشط",
+    "Pending": "معلّق"
+  },
+  "statusDescriptions": {
+    "Ready": "أنت متاح لتلقي دعوات النزهات من أي شخص!",
+    "Busy": "أنت مشغول بأمور أخرى أقل متعة.",
+    "Inactive": "ستتحول حالتك إلى «غير نشط» بعد أسبوعين من عدم النشاط."
+  },
+  "instructionTypes": {
+    "communicate": "تواصل",
+    "purchase": "شراء",
+    "travel": "تنقّل",
+    "play": "لعب",
+    "capture": "تصوير",
+    "create": "إبداع"
+  }
+}

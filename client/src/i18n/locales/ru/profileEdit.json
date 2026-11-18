@@ -1,0 +1,14 @@
+{
+  "photo": {
+    "editAlt": "изменить"
+  },
+  "fields": {
+    "city": "Город:",
+    "firstName": "Имя:",
+    "lastName": "Фамилия (необязательно):",
+    "tagline": "Девиз:"
+  },
+  "buttons": {
+    "revertPhoto": "Вернуть фото"
+  }
+}

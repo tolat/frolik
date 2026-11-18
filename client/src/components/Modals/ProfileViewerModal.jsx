@@ -29,11 +29,12 @@ import SliderNavbar from "../UI/SliderNavbar";
 import CircleAction from "../UI/CircleAction";
 import WarningPopup from "../Popups/WarningPopup";
 import { friendAccess } from "../../utils/friendAccess";
+import { useT, T } from "../../i18n";
 
-const sliderIcons = [
+const sliderIcons = (t) => [
   {
     key: "_photos",
-    name: "Photos",
+    name: t("profileView.tabs.photos"),
     url: photos,
   },
 ];
@@ -45,6 +46,7 @@ const getPhotosFromState = (userData) => {
 };
 
 const ProfileViewerModal = (props) => {
+  const { t } = useT();
   const modalState = useSelector((state) => state.modal);
   const modalDisplay =
     modalState.selector === "profile-viewer-modal" ? "flex" : "none";
@@ -66,7 +68,7 @@ const ProfileViewerModal = (props) => {
     <ModalPortal>
       <div style={modalStyle} className={styles.container}>
         <ModalHeaderPortal selector={"profile-viewer-modal"}>
-          Viewing Profile
+          {t("profileView.header")}
         </ModalHeaderPortal>
         <ProfileHeader
           user={modalUser}
@@ -76,7 +78,7 @@ const ProfileViewerModal = (props) => {
           id="slider-navbar"
           selected={"_photos"}
           setSelected={() => {}}
-          icons={sliderIcons}
+          icons={sliderIcons(t)}
           style={{ paddingTop: "0" }}
         />
         <Fragment>
@@ -98,7 +100,7 @@ const ProfileViewerModal = (props) => {
               }
             />
           ) : user.outings.length > 0 ? (
-            <h2>No Photos Yet!</h2>
+            <h2>{t("profileView.noPhotos")}</h2>
           ) : (
             <BrandLoader />
           )}
@@ -109,6 +111,7 @@ const ProfileViewerModal = (props) => {
 };
 
 const ControlButtons = (props) => {
+  const { t } = useT();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -124,14 +127,16 @@ const ControlButtons = (props) => {
     const name = props.modalUser.first_name;
     dispatch(
       popupActions.setWarningHeader(
-        former ? "Not yet" : "Complete an Outing first"
+        former
+          ? t("profileView.locked.formerHeader")
+          : t("profileView.locked.header")
       )
     );
     dispatch(
       popupActions.setWarningMessage(
         former
-          ? `You and ${name} were friends before. To be friends again, ${name} needs to come up in your daily matches and you need to complete a new Outing together.`
-          : `You can add ${name} as a friend once one of you has matched with the other in Daily Matches and you've completed an Outing together.`
+          ? t("profileView.locked.formerMessage", { name })
+          : t("profileView.locked.message", { name })
       )
     );
     dispatch(popupActions.showPopup("generic-warning"));
@@ -188,21 +193,11 @@ const ControlButtons = (props) => {
     <div className={styles.friendCardButtons}>
       <WarningPopup
         selector="confirm-unfriend"
-        header={`Unfriend ${name}?`}
-        message={
-          <>
-            {name} will be removed from your friends, and neither of you will
-            be able to open the other's profile.
-            <br />
-            <br />
-            <b>You can't just add {name} back.</b> To be friends again,{" "}
-            {name} has to come up in your Daily Matches and you have to
-            complete a new Outing together.
-          </>
-        }
-        cancel="Cancel"
+        header={t("profileView.unfriend.header", { name })}
+        message={<T k="profileView.unfriend.message" vars={{ name }} />}
+        cancel={t("profileView.buttons.cancel")}
         cancelClick={hidePopup}
-        delete="Unfriend"
+        delete={t("profileView.buttons.unfriend")}
         deleteClick={() => {
           hidePopup();
           onRemoveFriend();
@@ -210,14 +205,14 @@ const ControlButtons = (props) => {
       />
       <WarningPopup
         selector="confirm-friend-request"
-        header={`Send ${name} a friend request?`}
-        message={`${name} will get an alert and can accept or deny it.`}
-        ok="Send Request"
+        header={t("profileView.friendRequest.header", { name })}
+        message={t("profileView.friendRequest.message", { name })}
+        ok={t("profileView.buttons.sendRequest")}
         okClick={() => {
           hidePopup();
           onAddFriend();
         }}
-        cancel="Cancel"
+        cancel={t("profileView.buttons.cancel")}
         cancelClick={hidePopup}
       />
       {isFriend ? (
@@ -226,19 +221,19 @@ const ControlButtons = (props) => {
             compact
             onClick={onCreateChat}
             icon={chatIcon}
-            label="+ Chat"
+            label={t("profileView.actions.chat")}
           />
           <CircleAction
             compact
             onClick={onCreateOuting}
             icon={getOutIcon}
-            label="+ Outing"
+            label={t("profileView.actions.outing")}
           />
           <CircleAction
             compact
             onClick={() => dispatch(popupActions.showPopup("confirm-unfriend"))}
             icon={deleteFriend}
-            label="Unfriend"
+            label={t("profileView.buttons.unfriend")}
             tone="secondary"
           />
         </>
@@ -246,7 +241,7 @@ const ControlButtons = (props) => {
         <CircleAction
           compact
           icon={sentMail}
-          label="Requested"
+          label={t("profileView.actions.requested")}
           tone="secondary"
         />
       ) : hasCompletedOutingTogether ? (
@@ -256,14 +251,14 @@ const ControlButtons = (props) => {
             dispatch(popupActions.showPopup("confirm-friend-request"))
           }
           icon={addFriend}
-          label="+ Friend"
+          label={t("profileView.actions.friend")}
         />
       ) : (
         <CircleAction
           compact
           onClick={onLockedAddFriend}
           icon={addFriend}
-          label="+ Friend"
+          label={t("profileView.actions.friend")}
           tone="locked"
         />
       )}

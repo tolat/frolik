@@ -1,0 +1,47 @@
+{
+  "actions": {
+    "delete": "Löschen",
+    "cancel": "Abbrechen",
+    "showInstructions": "Anleitung zeigen",
+    "hideInstructions": "Anleitung ausblenden",
+    "createOuting": "Ausflug erstellen",
+    "sendToFriend": "An Freunde senden",
+    "remove": "Entfernen",
+    "select": "Auswählen"
+  },
+  "delete": {
+    "header": "Aktivität wirklich löschen?",
+    "permanent": "Das kann nicht rückgängig gemacht werden.",
+    "deleting": "Wird gelöscht …"
+  },
+  "stats": {
+    "time": "Dauer",
+    "cost": "Kosten",
+    "group": "Gruppengröße",
+    "rating": "Bewertung",
+    "hours": {
+      "one": "{{count}} Std.",
+      "other": "{{count}} Std."
+    },
+    "costValue": "{{cost}} $",
+    "participants": {
+      "one": "{{count}}+",
+      "other": "{{count}}+"
+    }
+  },
+  "badges": {
+    "completed": "Abgeschlossen",
+    "featured": "Empfohlen",
+    "created": "Von der Community"
+  },
+  "instructionsHeader": "Anleitung:",
+  "addInstruction": "+ Schritt hinzufügen",
+  "goalHeader": "Ziel:",
+  "goalAlt": "Ziel",
+  "instruction": {
+    "chooseIcon": "Symbol wählen",
+    "titlePlaceholder": "Titel des Schritts",
+    "detailsPlaceholder": "Details zum Schritt",
+    "remove": "Schritt entfernen"
+  }
+}

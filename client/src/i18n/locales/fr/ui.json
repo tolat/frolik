@@ -1,0 +1,90 @@
+{
+  "loading": "Chargement",
+  "dateTime": "{{date}} - {{time}}",
+  "rating": {
+    "unrated": "pas de note",
+    "outOfFive": "{{rating}}/5"
+  },
+  "outingStatus": {
+    "completed": "Terminée",
+    "youLeft": "Tu l'as quittée",
+    "invited": "Invité : touche pour rejoindre",
+    "waitingForMembers": "En attente de membres",
+    "waitingForPhotos": "En attente de photos",
+    "waitingForOthers": "En attente des autres",
+    "readyToFinish": "Prête à terminer"
+  },
+  "outingCard": {
+    "completed": "Terminée - {{date}}",
+    "pending": "En attente - {{date}}"
+  },
+  "outingList": {
+    "searchPlaceholder": "Rechercher mes sorties",
+    "pendingHeader": "Sorties en attente",
+    "pendingLimit": {
+      "one": "Tu peux avoir jusqu'à {{count}} sortie en attente à la fois.",
+      "many": "Tu peux avoir jusqu'à {{count}} sorties en attente à la fois.",
+      "other": "Tu peux avoir jusqu'à {{count}} sorties en attente à la fois."
+    }
+  },
+  "outingTitle": {
+    "rename": "Renommer la sortie",
+    "name": "Nom de la sortie",
+    "save": "Enregistrer le nom",
+    "cancel": "Annuler"
+  },
+  "chatCard": {
+    "delete": "Supprimer",
+    "archive": "Archiver",
+    "unarchive": "Désarchiver",
+    "markRead": "✓ Lu",
+    "justYou": "Juste toi",
+    "lastActive": "Actif {{date}}"
+  },
+  "feedCard": {
+    "members": "Membres de la sortie",
+    "viewActivity": "Voir l'activité",
+    "like": "J'aime",
+    "unlike": "Je n'aime plus"
+  },
+  "friendCard": {
+    "profileNotShared": "Profil non partagé"
+  },
+  "stats": {
+    "flakeRating": "Indice de fiabilité",
+    "outings": "Sorties"
+  },
+  "statusButtons": {
+    "label": "Statut",
+    "hints": {
+      "ready": "Partant pour des sorties — tu apparais dans les matchs du jour",
+      "busy": "En pause — tu ne seras pas matché"
+    },
+    "currently": "Actuellement : {{status}}",
+    "choose": "Choisis ton statut"
+  },
+  "starRate": {
+    "label": "Note",
+    "stars": {
+      "one": "{{count}} étoile",
+      "many": "{{count}} étoiles",
+      "other": "{{count}} étoiles"
+    }
+  },
+  "photos": {
+    "none": "Aucune photo",
+    "remove": "Retirer la photo",
+    "userPhoto": "Photo",
+    "change": "Changer la photo"
+  },
+  "addUsers": {
+    "edit": "Modifier les participants",
+    "add": "Ajouter des participants"
+  },
+  "search": {
+    "icon": "Rechercher"
+  },
+  "profileHeader": {
+    "settings": "Réglages"
+  }
+}

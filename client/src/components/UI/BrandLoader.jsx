@@ -1,5 +1,6 @@
 import styles from "./styles/BrandLoader.module.scss";
 import balloon from "../../images/air-balloon-blue.png";
+import { T } from "../../i18n";
 
 // On-brand loading spinner (same look as pull-to-refresh): a spinning ring
 // with the frolik balloon bobbing inside. `size` in rem; optional `label`.
@@ -31,7 +32,9 @@ const BrandLoader = ({
     {label ? (
       <span className={styles.label}>{label}</span>
     ) : (
-      <span className={styles.srOnly}>Loading</span>
+      <span className={styles.srOnly}>
+        <T k="ui.loading" />
+      </span>
     )}
   </div>
 );

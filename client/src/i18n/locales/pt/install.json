@@ -1,0 +1,13 @@
+{
+  "header": "Instale o <logo/>",
+  "subHeader": "Instalando o Frolik, você recebe notificações e usa o Frolik como um app normal do celular. (iOS > 16.4)",
+  "ios": {
+    "step1": "1. <safari/> Abra www.frolik.ca no Safari",
+    "step1Alt": "passo1",
+    "step2": "2. Toque no ícone de compartilhar na barra do Safari",
+    "step2Alt": "passo2",
+    "step3": "3. Toque em \"Adicionar à Tela de Início\""
+  },
+  "installButton": "Instalar o Frolik",
+  "backToWeb": "Voltar para o Frolik web"
+}

@@ -1,0 +1,8 @@
+{
+  "header": "チャットを作成",
+  "create": "+ チャットを作成",
+  "chatWith": "チャット相手：",
+  "pickHint": "チャットを始めるには友だちを1人以上追加してください。",
+  "addFriends": "友だちを追加：",
+  "searchPlaceholder": "友だちを検索…"
+}

@@ -1,0 +1,28 @@
+{
+  "categories": {
+    "Adventure": "アドベンチャー",
+    "Art": "アート",
+    "Food": "グルメ",
+    "Games": "ゲーム",
+    "Sports": "スポーツ"
+  },
+  "statuses": {
+    "Ready": "参加OK",
+    "Busy": "取り込み中",
+    "Inactive": "非アクティブ",
+    "Pending": "保留中"
+  },
+  "statusDescriptions": {
+    "Ready": "誰からのおでかけのお誘いも受け付けています！",
+    "Busy": "ほかの（あまり楽しくない）用事で忙しい状態です。",
+    "Inactive": "2週間利用がないと、ステータスは非アクティブになります。"
+  },
+  "instructionTypes": {
+    "communicate": "連絡",
+    "purchase": "購入",
+    "travel": "移動",
+    "play": "遊ぶ",
+    "capture": "撮影",
+    "create": "つくる"
+  }
+}

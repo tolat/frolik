@@ -1,0 +1,12 @@
+{
+  "ios": {
+    "title": "Vuoi ricevere le notifiche?",
+    "body": "Aggiungi frolik alla schermata Home (Condividi → Aggiungi alla schermata Home), poi attivale."
+  },
+  "blocked": "Le notifiche sono bloccate. Attivale per frolik nelle impostazioni del browser o del telefono.",
+  "prompt": {
+    "title": "Attiva le notifiche",
+    "body": "Ricevi un avviso per inviti, messaggi e richieste di amicizia.",
+    "button": "Attiva"
+  }
+}

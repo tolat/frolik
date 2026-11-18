@@ -1,0 +1,16 @@
+{
+  "searchPlaceholder": "チャットを検索…",
+  "newChat": "新しいチャット",
+  "emptyTitle": "まだ何もありません！",
+  "emptyText": "友だちとのチャットや、おでかけごとのチャットがここに表示されます。",
+  "filters": {
+    "label": "チャットを絞り込む",
+    "all": "すべて",
+    "unread": "未読",
+    "dms": "DM",
+    "outings": "おでかけ",
+    "noUnread": "未読のチャットはありません。",
+    "noMatch": "条件に合うチャットはありません。"
+  },
+  "archived": "アーカイブ済み"
+}

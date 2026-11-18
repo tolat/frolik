@@ -4,8 +4,10 @@ import closeIcon from "../../images/close.png";
 import { useDispatch } from "react-redux";
 import { popupActions } from "../../store/popup-slice";
 import ImageLoadingTile from "./ImageLoadingTile";
+import { useT } from "../../i18n";
 
 const SixPhotoGrid = (props) => {
+  const { t } = useT();
   const dispatch = useDispatch();
   const [loadedSet, setLoadedSet] = useState(new Set());
   // Photos whose image failed to load are dropped from the grid entirely
@@ -95,7 +97,7 @@ const SixPhotoGrid = (props) => {
             />
             <circle cx="12" cy="12.5" r="3.2" fill="none" stroke="currentColor" strokeWidth="1.6" />
           </svg>
-          <span>No photos</span>
+          <span>{t("ui.photos.none")}</span>
         </div>
       </div>
     );
@@ -141,7 +143,7 @@ const SixPhotoGrid = (props) => {
             onClick={() => props.onDeleteClick(props.photos.indexOf(img))}
             className={styles.deleteButton}
           >
-            <img className={styles.deleteIcon} src={closeIcon} alt="close" />
+            <img className={styles.deleteIcon} src={closeIcon} alt={t("ui.photos.remove")} />
           </div>
         ) : null}
       </div>

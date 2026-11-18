@@ -1,0 +1,53 @@
+{
+  "steps": {
+    "welcome": {
+      "title": "Velkommen til frolik 👋",
+      "body": "frolik hjelper deg å komme deg ut og bli kjent med nye folk gjennom treff i virkeligheten. Vi starter med hvordan du planlegger et treff – det tar omtrent ett minutt."
+    },
+    "planOuting": {
+      "title": "Planlegg et treff",
+      "body": "Hvert treff trenger to ting: en aktivitet og minst én dagsmatch – noen du ikke har møtt før. Du får nye matcher hver 24. time, og du kan invitere venner også."
+    },
+    "pickActivity": {
+      "title": "Velg en aktivitet",
+      "body": "Bla gjennom aktivitetene etter kategori og trykk på Velg. Når du har lagt til en dagsmatch, dukker knappen Opprett treff opp. Invitasjonene sendes ut, og det opprettes en gruppechat for treffet."
+    },
+    "filterOrCreate": {
+      "title": "Filtrer eller lag din egen",
+      "body": "Filtrer på pris, tid, vurdering eller gruppestørrelse, eller vis bare fullførte, utvalgte eller brukerlagde aktiviteter. Trykk på den blå + ved siden av kategoriene for å lage en egen aktivitet som alle i byen din kan bruke."
+    },
+    "stats": {
+      "title": "Statistikken din",
+      "body": "❄️ er påliteligheten din, på en skala opp til 5. Jo høyere, jo bedre: 5.0 betyr at du aldri har droppet ut av et treff, og tallet synker hver gang du forlater et treff eller ikke markerer det som fullført. 🎈 viser hvor mange treff du har fullført."
+    },
+    "settings": {
+      "title": "Innstillinger",
+      "body": "Her redigerer du profilen din og setter status. Sett den til Klar for å dukke opp blant andres dagsmatcher. Du kan ta denne omvisningen på nytt herfra når som helst."
+    },
+    "alerts": {
+      "title": "Varsler",
+      "body": "Treffinvitasjoner, venneforespørsler og oppdateringer havner her. Godta en invitasjon for å bli med på et treff – du kan ha opptil 5 ventende treff om gangen."
+    },
+    "finishing": {
+      "title": "Fullføre et treff",
+      "body": "Etter et treff åpner du det fra profilen din for å laste opp bilder og markere det som fullført med en vurdering. Når det er fullført, kan du legge til dem du var med, som venner. Forlater du et treff du har blitt med på, regnes det som å droppe ut."
+    },
+    "social": {
+      "title": "Sosialt",
+      "body": "Se vennenes fullførte treff, og lik bildene deres."
+    },
+    "chats": {
+      "title": "Chatter",
+      "body": "Hvert treff får sin egen gruppechat. Trykk på + for å starte en chat med venner."
+    },
+    "allSet": {
+      "title": "Alt er klart! 🎈",
+      "body": "Ta omvisningen på nytt når som helst fra Innstillinger – ⚙️ på profilen din."
+    }
+  },
+  "skip": "Hopp over",
+  "back": "Tilbake",
+  "start": "Start omvisningen",
+  "letsGo": "Kjør på",
+  "next": "Neste"
+}

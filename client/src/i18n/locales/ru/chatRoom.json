@@ -1,0 +1,13 @@
+{
+  "active": "В сети {{date}}",
+  "outing": "Вылазка",
+  "newOuting": "+ Вылазка",
+  "placeholder": "Сообщение…",
+  "send": "Отправить сообщение",
+  "new": "Новые",
+  "sentAt": "{{date}} · {{time}}",
+  "share": {
+    "opening": "Открываем…",
+    "activity": "Активность"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "active": "نشط {{date}}",
+  "outing": "النزهة",
+  "newOuting": "+ نزهة",
+  "placeholder": "اكتب رسالة…",
+  "send": "إرسال الرسالة",
+  "new": "جديد",
+  "sentAt": "{{date}} · {{time}}",
+  "share": {
+    "opening": "جارٍ الفتح…",
+    "activity": "نشاط"
+  }
+}

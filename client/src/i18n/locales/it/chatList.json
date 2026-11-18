@@ -1,0 +1,16 @@
+{
+  "searchPlaceholder": "Cerca chat...",
+  "newChat": "Nuova chat",
+  "emptyTitle": "Ancora niente da vedere!",
+  "emptyText": "Qui vedrai le tue chat con gli amici e quelle delle singole uscite.",
+  "filters": {
+    "label": "Filtra chat",
+    "all": "Tutte",
+    "unread": "Non lette",
+    "dms": "Dirette",
+    "outings": "Uscite",
+    "noUnread": "Sei in pari: nessuna chat da leggere.",
+    "noMatch": "Nessuna chat corrisponde a questi filtri."
+  },
+  "archived": "Archiviate"
+}

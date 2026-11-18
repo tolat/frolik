@@ -1,0 +1,37 @@
+{
+  "create": {
+    "button": "おでかけを作成",
+    "creating": "作成中…",
+    "summary": "あなた + {{count}} · {{activity}}"
+  },
+  "created": {
+    "header": "新しいおでかけの名前は：",
+    "nameLabel": "おでかけ名",
+    "nameHint": "名前をタップして変更できます（{{length}}/{{max}}）",
+    "inviteSent": "ほかのユーザーに招待を送りました。このおでかけは、プロフィールページの次のタブからいつでも確認できます：",
+    "outingsIconAlt": "おでかけアイコン",
+    "chatCreated": "このおでかけ用のチャットも作成されました！招待を受けた人は、参加するとチャットに追加されます。",
+    "saving": "保存中…",
+    "ok": "OK"
+  },
+  "members": {
+    "edit": "メンバーを編集",
+    "add": "メンバーを追加"
+  },
+  "requirements": {
+    "activityPicked": "アクティビティ選択済み",
+    "pickActivity": "アクティビティを選ぶ",
+    "addMatch": "デイリーマッチを追加",
+    "addMoreMatches": {
+      "other": "デイリーマッチをあと{{count}}人追加"
+    },
+    "matchesAdded": {
+      "other": "デイリーマッチを{{count}}人追加済み"
+    },
+    "matchNote": "招待する友だち1人につき、デイリーマッチが1人必要です。"
+  },
+  "filter": "絞り込み",
+  "createActivityLabel": "オリジナルのアクティビティを作成",
+  "createActivityTitle": "アクティビティを作成",
+  "noMatchingActivities": "条件に合うアクティビティがありません！"
+}

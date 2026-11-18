@@ -1,0 +1,17 @@
+{
+  "tabs": {
+    "alerts": "Avvisi",
+    "profile": "Profilo",
+    "outing": "Uscita",
+    "social": "Social",
+    "chats": "Chat"
+  },
+  "ok": "OK",
+  "tooManyOutings": {
+    "header": "Hai troppe uscite in sospeso!",
+    "message": "<b>Puoi avere al massimo 5 uscite in sospeso alla volta.</b> <br/>Completa o elimina qualche uscita prima di crearne un'altra. Puoi vedere le tue uscite quando vuoi nella pagina \"Profilo\", toccando questa scheda:",
+    "iconAlt": "icona uscite",
+    "ok": "OK"
+  },
+  "footer": "Forza, tutti fuori!"
+}

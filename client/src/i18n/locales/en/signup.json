@@ -1,0 +1,24 @@
+{
+  "header": "Create Account",
+  "create": "+ Create",
+  "creating": "Creating",
+  "ok": "OK",
+  "fields": {
+    "email": "Email:",
+    "password": "Password:"
+  },
+  "alreadyExists": {
+    "header": "Account for {{email}} already exists.",
+    "message": "Please try again with a different email."
+  },
+  "confirmEmail": {
+    "header": "Check your email!",
+    "message": "We've sent a link to {{email}} that you can use to finish creating your account.",
+    "resend": {
+      "idle": "Resend Verification Email",
+      "sending": "Sending Email..",
+      "sent": "Email Sent!",
+      "failed": "Resend Confirmation Email"
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "steps": {
+    "welcome": {
+      "title": "Boas-vindas ao frolik 👋",
+      "body": "O frolik te ajuda a sair de casa e conhecer gente nova com rolês na vida real. Vamos começar vendo como planejar um rolê — leva mais ou menos um minuto."
+    },
+    "planOuting": {
+      "title": "Planeje um rolê",
+      "body": "Todo rolê precisa de duas coisas: uma atividade e pelo menos um match do dia — alguém que você ainda não conhece. Você recebe matches novos a cada 24 horas e também pode convidar amigos."
+    },
+    "pickActivity": {
+      "title": "Escolha uma atividade",
+      "body": "Navegue pelas atividades por categoria e toque em Escolher. Depois de adicionar um match do dia, aparece o botão Criar rolê. Os convites são enviados e um chat em grupo é criado para o rolê."
+    },
+    "filterOrCreate": {
+      "title": "Filtre ou crie",
+      "body": "Filtre por custo, tempo, avaliação ou tamanho do grupo, ou mostre só as concluídas, os destaques ou as criações da comunidade. Toque no + azul ao lado das categorias para criar uma atividade personalizada que qualquer pessoa da sua cidade pode usar."
+    },
+    "stats": {
+      "title": "Suas estatísticas",
+      "body": "❄️ é o seu índice de furos, de 0 a 5. Quanto mais alto, melhor: 5.0 significa que você nunca furou um rolê, e ele cai cada vez que você sai de um ou não marca como concluído. 🎈 conta os rolês que você concluiu."
+    },
+    "settings": {
+      "title": "Configurações",
+      "body": "Edite seu perfil e defina seu status aqui. Fique Disponível para aparecer nos matches do dia de outras pessoas. Você pode rever este tour por aqui quando quiser."
+    },
+    "alerts": {
+      "title": "Alertas",
+      "body": "Convites para rolês, solicitações de amizade e novidades chegam aqui. Aceite um convite para entrar em um rolê — você pode ter até 5 rolês pendentes por vez."
+    },
+    "finishing": {
+      "title": "Concluindo um rolê",
+      "body": "Depois do rolê, abra-o pelo seu Perfil para enviar fotos e marcá-lo como concluído com uma avaliação. Depois de concluído, você pode adicionar como amigos as pessoas que foram com você. Sair de um rolê em que você entrou conta como furo."
+    },
+    "social": {
+      "title": "Social",
+      "body": "Veja os rolês concluídos dos seus amigos e curta as fotos deles."
+    },
+    "chats": {
+      "title": "Chats",
+      "body": "Todo rolê ganha seu próprio chat em grupo. Toque em + para começar um chat com amigos."
+    },
+    "allSet": {
+      "title": "Tudo pronto! 🎈",
+      "body": "Reveja este tour quando quiser em Configurações — o ⚙️ no seu Perfil."
+    }
+  },
+  "skip": "Pular tour",
+  "back": "Voltar",
+  "start": "Começar tour",
+  "letsGo": "Bora!",
+  "next": "Próximo"
+}

@@ -1,0 +1,21 @@
+{
+  "header": "Adicionar participantes ao rolê",
+  "removeHeader": "Remover participantes do rolê",
+  "dailyMatches": "Matches do dia",
+  "required": "Obrigatório",
+  "matchesSubtext": "Todo rolê precisa incluir pelo menos uma pessoa que você ainda não conhece. Os matches são renovados a cada 24 h.",
+  "noMatches": "Nenhum match disponível!",
+  "activeFriends": "Amigos ativos",
+  "friendSlots": {
+    "firstFriend": "Você já pode adicionar um amigo — e vai precisar de um match do dia para cada amigo.",
+    "more": {
+      "one": "Você pode adicionar mais {{count}} amigo — um para cada match do dia.",
+      "many": "Você pode adicionar mais {{count}} amigos — um para cada match do dia.",
+      "other": "Você pode adicionar mais {{count}} amigos — um para cada match do dia."
+    },
+    "none": "Adicione outro match do dia para convidar mais um amigo — um amigo por match."
+  },
+  "lockedTitle": "Adicione outro match do dia para convidar mais um amigo",
+  "searchPlaceholder": "Buscar amigos...",
+  "noFriends": "Nenhum amigo disponível!"
+}

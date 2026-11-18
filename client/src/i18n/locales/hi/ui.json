@@ -1,0 +1,88 @@
+{
+  "loading": "लोड हो रहा है",
+  "dateTime": "{{date}} - {{time}}",
+  "rating": {
+    "unrated": "रेटिंग नहीं",
+    "outOfFive": "{{rating}}/5"
+  },
+  "outingStatus": {
+    "completed": "पूरी हुई",
+    "youLeft": "आपने छोड़ दी",
+    "invited": "न्योता: जुड़ने के लिए टैप करें",
+    "waitingForMembers": "सदस्यों का इंतज़ार",
+    "waitingForPhotos": "फ़ोटो का इंतज़ार",
+    "waitingForOthers": "बाकी लोगों के पूरा करने का इंतज़ार",
+    "readyToFinish": "पूरी करने के लिए तैयार"
+  },
+  "outingCard": {
+    "completed": "पूरी हुई - {{date}}",
+    "pending": "पेंडिंग - {{date}}"
+  },
+  "outingList": {
+    "searchPlaceholder": "मेरी आउटिंग खोजें",
+    "pendingHeader": "पेंडिंग आउटिंग",
+    "pendingLimit": {
+      "one": "एक समय में आपकी ज़्यादा से ज़्यादा {{count}} आउटिंग पेंडिंग हो सकती है।",
+      "other": "एक समय में आपकी ज़्यादा से ज़्यादा {{count}} आउटिंग पेंडिंग हो सकती हैं।"
+    }
+  },
+  "outingTitle": {
+    "rename": "आउटिंग का नाम बदलें",
+    "name": "आउटिंग का नाम",
+    "save": "नाम सेव करें",
+    "cancel": "नाम बदलना रद्द करें"
+  },
+  "chatCard": {
+    "delete": "डिलीट करें",
+    "archive": "आर्काइव करें",
+    "unarchive": "आर्काइव से हटाएँ",
+    "markRead": "✓ पढ़ लिया",
+    "justYou": "सिर्फ़ आप",
+    "lastActive": "आखिरी बार एक्टिव {{date}}"
+  },
+  "feedCard": {
+    "members": "आउटिंग के सदस्य",
+    "viewActivity": "एक्टिविटी देखें",
+    "like": "लाइक",
+    "unlike": "अनलाइक"
+  },
+  "friendCard": {
+    "profileNotShared": "प्रोफ़ाइल शेयर नहीं की गई"
+  },
+  "stats": {
+    "flakeRating": "फ़्लेक रेटिंग",
+    "outings": "आउटिंग"
+  },
+  "statusButtons": {
+    "label": "स्टेटस",
+    "hints": {
+      "ready": "आउटिंग के लिए तैयार — आप डेली मैच में दिखेंगे",
+      "busy": "ब्रेक पर — आपका मैच नहीं होगा"
+    },
+    "currently": "अभी: {{status}}",
+    "choose": "अपना स्टेटस चुनें"
+  },
+  "starRate": {
+    "label": "रेटिंग",
+    "stars": {
+      "one": "{{count}} स्टार",
+      "other": "{{count}} स्टार"
+    }
+  },
+  "photos": {
+    "none": "कोई फ़ोटो नहीं",
+    "remove": "फ़ोटो हटाएँ",
+    "userPhoto": "फ़ोटो",
+    "change": "फ़ोटो बदलें"
+  },
+  "addUsers": {
+    "edit": "लोग बदलें",
+    "add": "लोग जोड़ें"
+  },
+  "search": {
+    "icon": "खोजें"
+  },
+  "profileHeader": {
+    "settings": "सेटिंग"
+  }
+}

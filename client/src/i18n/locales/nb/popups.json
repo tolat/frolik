@@ -1,0 +1,24 @@
+{
+  "cropper": {
+    "label": "Zoom og beskjær",
+    "zoom": "Zoom",
+    "cancel": "Avbryt",
+    "upload": "Last opp",
+    "done": "Ferdig",
+    "uploading": "Laster opp …"
+  },
+  "photo": {
+    "alt": "Bilde"
+  },
+  "sendActivity": {
+    "header": "Send til en venn",
+    "searchPlaceholder": "Søk etter venner …",
+    "noFriends": "Legg til venner for å sende dem aktiviteter. Du kan legge til noen som venn når dere har fullført et treff sammen.",
+    "noMatches": "Ingen venner passer med «{{query}}».",
+    "send": "Send",
+    "sending": "Sender …"
+  },
+  "sharedActivity": {
+    "label": "Aktivitet"
+  }
+}

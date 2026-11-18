@@ -1,0 +1,24 @@
+{
+  "cropper": {
+    "label": "확대 및 자르기",
+    "zoom": "확대",
+    "cancel": "취소",
+    "upload": "업로드",
+    "done": "완료",
+    "uploading": "업로드 중…"
+  },
+  "photo": {
+    "alt": "사진"
+  },
+  "sendActivity": {
+    "header": "친구에게 보내기",
+    "searchPlaceholder": "친구 검색…",
+    "noFriends": "친구를 추가하면 액티비티를 보낼 수 있어요. 함께 나들이를 완료한 사람을 친구로 추가할 수 있어요.",
+    "noMatches": "'{{query}}' 검색 결과에 해당하는 친구가 없어요.",
+    "send": "보내기",
+    "sending": "보내는 중…"
+  },
+  "sharedActivity": {
+    "label": "액티비티"
+  }
+}

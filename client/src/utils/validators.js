@@ -4,6 +4,9 @@ import {
   INSTRUCTION_TITLE_MAX,
 } from "./limits";
 import { isConfirmedLocation } from "./location";
+import { t } from "../i18n";
+
+// Messages are getters so they read in the current language when shown
 
 const isNotEmpty = (value) => {
   return value && value !== "";
@@ -16,7 +19,9 @@ export const createProfileValidators = (defaultImage) => {
         isValid(value) {
           return value && value !== "" && value.includes("@");
         },
-        message: "Please enter a valid email",
+        get message() {
+          return t("validation.email");
+        },
       },
     ],
     "create-password": [
@@ -24,7 +29,9 @@ export const createProfileValidators = (defaultImage) => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter a valid password",
+        get message() {
+          return t("validation.password");
+        },
       },
       {
         isValid(value) {
@@ -33,7 +40,9 @@ export const createProfileValidators = (defaultImage) => {
             .map((char) => value.includes(char))
             .find((val) => val);
         },
-        message: "Password must contain one number or special carachter",
+        get message() {
+          return t("validation.passwordSpecialChar");
+        },
       },
     ],
     location: [
@@ -41,13 +50,17 @@ export const createProfileValidators = (defaultImage) => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter a valid location",
+        get message() {
+          return t("validation.location");
+        },
       },
       {
         isValid(value) {
           return isConfirmedLocation(value);
         },
-        message: "Please choose a city from the list, or use your current location",
+        get message() {
+          return t("validation.locationConfirm");
+        },
       },
     ],
     first_name: [
@@ -55,7 +68,9 @@ export const createProfileValidators = (defaultImage) => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter a First Name",
+        get message() {
+          return t("validation.firstName");
+        },
       },
     ],
     tagline: [
@@ -63,14 +78,17 @@ export const createProfileValidators = (defaultImage) => {
         isValid(value) {
           return value && value !== "";
         },
-        message:
-          "Please enter a Tagline. Something short and fun, that anyone viewing your profile will see!",
+        get message() {
+          return t("validation.tagline");
+        },
       },
       {
         isValid(value) {
           return value.length < 50;
         },
-        message: "Tagline must be less than 50 characters",
+        get message() {
+          return t("validation.taglineMax", { max: 50 });
+        },
       },
     ],
     profile_picture: [
@@ -78,7 +96,9 @@ export const createProfileValidators = (defaultImage) => {
         isValid(value) {
           return value && value !== defaultImage;
         },
-        message: "Please upload a profile picture!",
+        get message() {
+          return t("validation.profilePicture");
+        },
       },
     ],
   };
@@ -91,7 +111,9 @@ export const editProfileValidators = () => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter a valid status",
+        get message() {
+          return t("validation.status");
+        },
       },
     ],
     location: [
@@ -99,13 +121,17 @@ export const editProfileValidators = () => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter a valid location",
+        get message() {
+          return t("validation.location");
+        },
       },
       {
         isValid(value) {
           return isConfirmedLocation(value);
         },
-        message: "Please choose a city from the list, or use your current location",
+        get message() {
+          return t("validation.locationConfirm");
+        },
       },
     ],
     first_name: [
@@ -113,7 +139,9 @@ export const editProfileValidators = () => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter a First Name",
+        get message() {
+          return t("validation.firstName");
+        },
       },
     ],
     tagline: [
@@ -121,14 +149,17 @@ export const editProfileValidators = () => {
         isValid(value) {
           return value && value !== "";
         },
-        message:
-          "Please enter a Tagline. Something short and fun, that anyone viewing your profile will see!",
+        get message() {
+          return t("validation.tagline");
+        },
       },
       {
         isValid(value) {
           return value.length < 50;
         },
-        message: "Tagline must be less than 50 characters",
+        get message() {
+          return t("validation.taglineMax", { max: 50 });
+        },
       },
     ],
   };
@@ -141,13 +172,17 @@ export const createActivityValidators = (instructions) => {
         isValid(value) {
           return isNotEmpty(value);
         },
-        message: "Please enter an activity name",
+        get message() {
+          return t("validation.activityName");
+        },
       },
       {
         isValid(value) {
           return String(value || "").trim().length <= ACTIVITY_NAME_MAX;
         },
-        message: `Activity names can be at most ${ACTIVITY_NAME_MAX} characters`,
+        get message() {
+          return t("validation.activityNameMax", { max: ACTIVITY_NAME_MAX });
+        },
       },
     ],
     "create-activity-location": [
@@ -155,13 +190,17 @@ export const createActivityValidators = (instructions) => {
         isValid(value) {
           return isNotEmpty(value);
         },
-        message: "Please enter a valid location.",
+        get message() {
+          return t("validation.location");
+        },
       },
       {
         isValid(value) {
           return isConfirmedLocation(value);
         },
-        message: "Please choose a city from the list, or use your current location",
+        get message() {
+          return t("validation.locationConfirm");
+        },
       },
     ],
     "create-activity-description": [
@@ -169,13 +208,17 @@ export const createActivityValidators = (instructions) => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter a description.",
+        get message() {
+          return t("validation.description");
+        },
       },
       {
         isValid(value) {
           return String(value || "").trim().length <= ACTIVITY_DESCRIPTION_MAX;
         },
-        message: `Descriptions can be at most ${ACTIVITY_DESCRIPTION_MAX} characters`,
+        get message() {
+          return t("validation.descriptionMax", { max: ACTIVITY_DESCRIPTION_MAX });
+        },
       },
     ],
     "create-activity-category": [
@@ -183,7 +226,9 @@ export const createActivityValidators = (instructions) => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter a category.",
+        get message() {
+          return t("validation.category");
+        },
       },
     ],
     "create-activity-duration": [
@@ -191,7 +236,9 @@ export const createActivityValidators = (instructions) => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter a duration (hrs).",
+        get message() {
+          return t("validation.duration");
+        },
       },
     ],
     "create-activity-cost": [
@@ -199,7 +246,9 @@ export const createActivityValidators = (instructions) => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter a cost.",
+        get message() {
+          return t("validation.cost");
+        },
       },
     ],
     "create-activity-participants": [
@@ -207,7 +256,9 @@ export const createActivityValidators = (instructions) => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter a number of participants.",
+        get message() {
+          return t("validation.participants");
+        },
         position: "right"
       },
       
@@ -217,7 +268,9 @@ export const createActivityValidators = (instructions) => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter a decription.",
+        get message() {
+          return t("validation.goal");
+        },
       },
     ],
   };
@@ -228,7 +281,9 @@ export const createActivityValidators = (instructions) => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter instruction type.",
+        get message() {
+          return t("validation.instructionType");
+        },
       },
     ];
 
@@ -237,13 +292,17 @@ export const createActivityValidators = (instructions) => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter instruction title.",
+        get message() {
+          return t("validation.instructionTitle");
+        },
       },
       {
         isValid(value) {
           return String(value || "").trim().length <= INSTRUCTION_TITLE_MAX;
         },
-        message: `Instruction titles can be at most ${INSTRUCTION_TITLE_MAX} characters`,
+        get message() {
+          return t("validation.instructionTitleMax", { max: INSTRUCTION_TITLE_MAX });
+        },
       },
     ];
 
@@ -252,7 +311,9 @@ export const createActivityValidators = (instructions) => {
         isValid(value) {
           return value && value !== "";
         },
-        message: "Please enter instruction details.",
+        get message() {
+          return t("validation.instructionDetails");
+        },
       },
     ];
   });

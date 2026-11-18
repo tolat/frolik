@@ -1,0 +1,28 @@
+{
+  "categories": {
+    "Adventure": "Aventure",
+    "Art": "Art",
+    "Food": "Bouffe",
+    "Games": "Jeux",
+    "Sports": "Sports"
+  },
+  "statuses": {
+    "Ready": "Disponible",
+    "Busy": "Occupé",
+    "Inactive": "Inactif",
+    "Pending": "En attente"
+  },
+  "statusDescriptions": {
+    "Ready": "Tu es disponible pour des invitations à des sorties de n'importe qui !",
+    "Busy": "Tu es occupé à faire d'autres trucs, moins amusants.",
+    "Inactive": "Ton statut passera à Inactif après deux semaines d'inactivité."
+  },
+  "instructionTypes": {
+    "communicate": "Communiquer",
+    "purchase": "Acheter",
+    "travel": "Se déplacer",
+    "play": "Jouer",
+    "capture": "Immortaliser",
+    "create": "Créer"
+  }
+}

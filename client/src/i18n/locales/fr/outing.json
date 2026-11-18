@@ -1,0 +1,120 @@
+{
+  "sections": {
+    "activity": "Activité",
+    "photos": "Photos",
+    "members": "Membres",
+    "invited": "Invités"
+  },
+  "alt": {
+    "flake": "lapin",
+    "activity": "activité",
+    "photos": "photos",
+    "members": "membres",
+    "invited": "invités"
+  },
+  "buttons": {
+    "joinOuting": "Rejoindre",
+    "markCompleted": "Marquer terminée",
+    "markedCompleted": "Marquée terminée !",
+    "deleteOuting": "Supprimer la sortie",
+    "leaveOuting": "Quitter la sortie",
+    "delete": "Supprimer",
+    "deleting": "Suppression…",
+    "leave": "Quitter",
+    "cancel": "Annuler",
+    "ok": "OK",
+    "gotIt": "Compris"
+  },
+  "flakedOut": "Tu as posé un lapin !",
+  "chat": {
+    "openLabel": "Ouvrir la discussion de la sortie",
+    "title": "Discussion"
+  },
+  "deleteDrawer": {
+    "header": "Supprimer la sortie ?",
+    "message": "Une fois la sortie supprimée, les personnes invitées ne pourront plus la rejoindre. Supprimer cette sortie <b>n'affectera pas</b> ton indice de fiabilité. Cette action est définitive."
+  },
+  "leaveDrawer": {
+    "header": "Quitter la sortie ?",
+    "message": "Une fois que tu quittes la sortie, les autres membres peuvent quand même la terminer. Si c'est le cas, ton indice de fiabilité <b>en prendra un coup</b>. Cette action est définitive (impossible de revenir après l'avoir quittée)."
+  },
+  "joinDrawer": {
+    "header": "Rejoindre cette sortie ?",
+    "pendingLimit": "Elle compte dans ta limite de 5 sorties en attente.",
+    "mustComplete": "Elle devra être terminée (ou supprimée si tu en es le seul membre).",
+    "leavingLowersRating": "La quitter après l'avoir rejointe <b>fait baisser ton indice de fiabilité</b>."
+  },
+  "completeDrawer": {
+    "header": "Marquer cette sortie terminée ?",
+    "lastMember": "Tu es le dernier membre à la marquer terminée",
+    "lockedYou": "Une fois marquée terminée, la sortie est verrouillée : plus de modifications de photos.",
+    "lockedEveryone": "Une fois que tous les membres l'ont marquée terminée, la sortie est verrouillée : plus de modifications de photos.",
+    "chatStaysOpen": "La discussion de la sortie reste ouverte pour que vous gardiez le contact.",
+    "cantUndo": "Impossible d'annuler."
+  },
+  "rating": {
+    "title": "Note l'activité",
+    "hint": "Touche une étoile pour noter",
+    "labels": {
+      "1": "Bof",
+      "2": "C'était correct",
+      "3": "Bien",
+      "4": "Super",
+      "5": "J'ai adoré !"
+    }
+  },
+  "completion": {
+    "needMembers": "Une sortie doit compter au moins 2 membres pour être marquée terminée.",
+    "count": "{{completed}} / {{total}} membres ont marqué cette sortie terminée."
+  },
+  "howToComplete": {
+    "header": "Comment terminer une sortie",
+    "intro": "Une sortie doit compter au moins 2 membres pour pouvoir être terminée.",
+    "waitForInvites": {
+      "one": "Attends que ton invitation soit acceptée, ou invite quelqu'un d'autre.",
+      "many": "Attends que tes {{count}} invitations soient acceptées, ou invite quelqu'un d'autre.",
+      "other": "Attends que tes {{count}} invitations soient acceptées, ou invite quelqu'un d'autre."
+    },
+    "inviteSomeone": "Invite un ami ou un match du jour à se joindre à toi.",
+    "goTogether": "Faites la sortie ensemble.",
+    "uploadPhoto": "Téléverse au moins une photo de la sortie.",
+    "everyoneMarks": "Chaque membre touche Marquer terminée."
+  },
+  "photos": {
+    "limitHint": "Chaque membre peut téléverser jusqu'à 2 photos.",
+    "upload": "+ Téléverser",
+    "edit": "Modifier",
+    "doneEditing": "Terminer"
+  },
+  "tooManyPhotos": {
+    "header": "Trop de photos !",
+    "message": "Chaque membre d'une sortie peut téléverser au maximum 2 photos. Tu peux retirer certaines de tes photos si tu veux changer ou modifier ce que tu as téléversé pour cette sortie."
+  },
+  "deletePhoto": {
+    "header": "Supprimer la photo ?"
+  },
+  "noPhotos": {
+    "header": "Aucune photo téléversée !",
+    "message": "Une sortie doit avoir au moins une photo avant de pouvoir être marquée terminée. Tu peux ajouter des photos sur la page de la sortie avec le bouton ci-dessous :",
+    "buttonAlt": "Bouton d'ajout de photos",
+    "allMembers": "Tous les membres doivent marquer la sortie terminée !"
+  },
+  "countdown": {
+    "lessThanADay": "moins d'un jour",
+    "days": {
+      "one": "{{count}} jour",
+      "many": "{{count}} jours",
+      "other": "{{count}} jours"
+    },
+    "finishNote": "Il reste {{time}} à tout le monde pour la marquer terminée. Ceux qui ne l'auront pas fait seront retirés et écoperont d'un lapin.",
+    "inviteNote": "Si personne ne la rejoint d'ici {{time}}, cette sortie sera supprimée pour inactivité.",
+    "invitesExpire": "Les invitations non acceptées expirent dans {{time}}.",
+    "done": "✓ Fait",
+    "daysLeftTag": "{{days}} j restants",
+    "daysToJoinTag": "{{days}} j pour rejoindre"
+  },
+  "deleteHelp": {
+    "onlyMember": "Tu peux supprimer la sortie parce que tu en es le seul membre. La supprimer <b>n'affectera pas</b> ton indice de fiabilité.",
+    "otherMembers": "Tu ne peux pas supprimer la sortie parce qu'il y a d'autres membres. La quitter <b>fera baisser</b> ton indice de fiabilité."
+  }
+}

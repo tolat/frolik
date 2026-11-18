@@ -19,6 +19,7 @@ import FriendCard from "./FriendCard";
 import StatIcon from "./StatIcon";
 import SixPhotoGrid from "./SixPhotoGrid";
 import { SkeletonCard } from "./SkeletonCards";
+import { useT } from "../../i18n";
 
 const FeedCard = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -36,8 +37,8 @@ const FeedCard = (props) => {
   const [ready, setReady] = useState(!outing?.photos?.length);
   useEffect(() => {
     if (ready) return;
-    const t = setTimeout(() => setReady(true), 8000);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setReady(true), 8000);
+    return () => clearTimeout(timer);
   }, [ready]);
 
   let memberNames = outingUsers
@@ -89,6 +90,7 @@ const FeedCard = (props) => {
 };
 
 const FeedCardFooter = (props) => {
+  const { t } = useT();
   const globals = useSelector((state) => state.auth.globals);
   let outing = props.outing;
   const user = useSelector((state) => state.auth.user);
@@ -159,7 +161,9 @@ const FeedCardFooter = (props) => {
       <div className={styles.topContainer}>
         <EmptyPopup selector={usersPopupSelector}>
           <div className={styles.friendsPopupContainer}>
-            <h2 className={styles.friendsPopupHeader}>Outing Members</h2>
+            <h2 className={styles.friendsPopupHeader}>
+              {t("ui.feedCard.members")}
+            </h2>
             {outing.users.map((u) => (
               <FriendCard key={u._id} user={u} restrictProfile={true} />
             ))}
@@ -186,7 +190,7 @@ const FeedCardFooter = (props) => {
                   className={styles.viewActivityButton}
                   noShadow={true}
                 >
-                  View Activity
+                  {t("ui.feedCard.viewActivity")}
                 </SimpleButton>
               </div>
             </div>
@@ -198,7 +202,7 @@ const FeedCardFooter = (props) => {
               icon={liked ? heartFull : heart}
               className={styles.likeIcon}
               iconStyle={{ width: "3rem", height: "3rem" }}
-              alt="like"
+              alt={liked ? t("ui.feedCard.unlike") : t("ui.feedCard.like")}
               rating={likes.length || null}
             />
           </div>

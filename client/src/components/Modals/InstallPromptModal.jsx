@@ -14,8 +14,10 @@ import ModalPortal from "./ModalPortal";
 import ModalHeaderPortal from "./ModalHeaderPortal";
 import SimpleButton from "../UI/SimpleButton";
 import { hideModal } from "../../store/modal-actions";
+import { useT, T } from "../../i18n";
 
 const InstallPromptModal = (props) => {
+  const { t } = useT();
   const dispatch = useDispatch();
   const modalState = useSelector((state) => state.modal);
   const modalDisplay =
@@ -53,11 +55,15 @@ const InstallPromptModal = (props) => {
   const header = (
     <div className={styles.headerContainer}>
       <div className={styles.header}>
-        Install <img className={styles.logo} src={logo} alt="logo" />
+        <T
+          k="install.header"
+          components={{
+            logo: <img className={styles.logo} src={logo} alt="logo" />,
+          }}
+        />
       </div>
       <div className={styles.subHeader}>
-        Installing Frolik will allow you to receive notifications and use Frolik
-        like a regular mobile app. {`(iOS > 16.4)`}
+        {t("install.subHeader")}
       </div>
     </div>
   );
@@ -66,27 +72,45 @@ const InstallPromptModal = (props) => {
     <div className={styles.messageContainer}>
       <h3>
         <div className={styles.safariContainer}>
-          1. <img className={styles.safari} src={safari} alt="step1" />
-          Use Safari to go to www.frolik.ca
+          <T
+            k="install.ios.step1"
+            components={{
+              safari: (
+                <img
+                  className={styles.safari}
+                  src={safari}
+                  alt={t("install.ios.step1Alt")}
+                />
+              ),
+            }}
+          />
         </div>
       </h3>
-      <h3>2. Tap the share icon on the Safari toolbar</h3>
-      <img className={styles.step} src={install1} alt="step1" />
-      <h3>3. Tap 'Add to Home Screen'</h3>
-      <img className={styles.step} src={install2} alt="step2" />
+      <h3>{t("install.ios.step2")}</h3>
+      <img
+        className={styles.step}
+        src={install1}
+        alt={t("install.ios.step1Alt")}
+      />
+      <h3>{t("install.ios.step3")}</h3>
+      <img
+        className={styles.step}
+        src={install2}
+        alt={t("install.ios.step2Alt")}
+      />
     </div>
   );
 
   const androidButton = (
     <SimpleButton onClick={onInstallClick} className={styles.installButton}>
-      Install Frolik
+      {t("install.installButton")}
     </SimpleButton>
   );
 
   return (
     <ModalPortal>
       <ModalHeaderPortal selector={"install-prompt"}>
-        <div className={styles.continueButton}>Back to Frolik web </div>
+        <div className={styles.continueButton}>{t("install.backToWeb")} </div>
       </ModalHeaderPortal>
       <div className={styles.container} style={modalStyle}>
         {header}

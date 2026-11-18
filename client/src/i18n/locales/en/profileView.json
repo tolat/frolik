@@ -1,0 +1,32 @@
+{
+  "header": "Viewing Profile",
+  "tabs": {
+    "photos": "Photos"
+  },
+  "noPhotos": "No Photos Yet!",
+  "buttons": {
+    "cancel": "Cancel",
+    "unfriend": "Unfriend",
+    "sendRequest": "Send Request"
+  },
+  "actions": {
+    "chat": "+ Chat",
+    "outing": "+ Outing",
+    "friend": "+ Friend",
+    "requested": "Requested"
+  },
+  "locked": {
+    "header": "Complete an Outing first",
+    "formerHeader": "Not yet",
+    "message": "You can add {{name}} as a friend once one of you has matched with the other in Daily Matches and you've completed an Outing together.",
+    "formerMessage": "You and {{name}} were friends before. To be friends again, {{name}} needs to come up in your daily matches and you need to complete a new Outing together."
+  },
+  "unfriend": {
+    "header": "Unfriend {{name}}?",
+    "message": "{{name}} will be removed from your friends, and neither of you will be able to open the other's profile.<br/><br/><b>You can't just add {{name}} back.</b> To be friends again, {{name}} has to come up in your Daily Matches and you have to complete a new Outing together."
+  },
+  "friendRequest": {
+    "header": "Send {{name}} a friend request?",
+    "message": "{{name}} will get an alert and can accept or deny it."
+  }
+}

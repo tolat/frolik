@@ -1,0 +1,24 @@
+{
+  "header": "Konto erstellen",
+  "create": "+ Erstellen",
+  "creating": "Wird erstellt",
+  "ok": "OK",
+  "fields": {
+    "email": "E-Mail:",
+    "password": "Passwort:"
+  },
+  "alreadyExists": {
+    "header": "Für {{email}} gibt es schon ein Konto.",
+    "message": "Versuch es bitte mit einer anderen E-Mail-Adresse."
+  },
+  "confirmEmail": {
+    "header": "Schau in dein Postfach!",
+    "message": "Wir haben dir an {{email}} einen Link geschickt, mit dem du die Kontoerstellung abschließen kannst.",
+    "resend": {
+      "idle": "Bestätigungs-E-Mail erneut senden",
+      "sending": "E-Mail wird gesendet …",
+      "sent": "E-Mail gesendet!",
+      "failed": "Bestätigungs-E-Mail erneut senden"
+    }
+  }
+}

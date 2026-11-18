@@ -1,0 +1,32 @@
+{
+  "header": "Profilo",
+  "tabs": {
+    "photos": "Foto"
+  },
+  "noPhotos": "Ancora nessuna foto!",
+  "buttons": {
+    "cancel": "Annulla",
+    "unfriend": "Rimuovi amico",
+    "sendRequest": "Invia richiesta"
+  },
+  "actions": {
+    "chat": "+ Chat",
+    "outing": "+ Uscita",
+    "friend": "+ Amico",
+    "requested": "Richiesta inviata"
+  },
+  "locked": {
+    "header": "Prima completa un'uscita",
+    "formerHeader": "Non ancora",
+    "message": "Potrai aggiungere {{name}} come amico quando uno di voi due sarà comparso tra i match del giorno dell'altro e avrete completato un'uscita insieme.",
+    "formerMessage": "Tu e {{name}} eravate già amici. Per tornare amici, {{name}} deve comparire tra i tuoi match del giorno e dovete completare insieme una nuova uscita."
+  },
+  "unfriend": {
+    "header": "Rimuovere {{name}} dagli amici?",
+    "message": "{{name}} verrà rimosso dai tuoi amici e nessuno dei due potrà più aprire il profilo dell'altro.<br/><br/><b>Non potrai semplicemente riaggiungere {{name}}.</b> Per tornare amici, {{name}} deve comparire tra i tuoi match del giorno e dovete completare insieme una nuova uscita."
+  },
+  "friendRequest": {
+    "header": "Inviare una richiesta di amicizia a {{name}}?",
+    "message": "{{name}} riceverà un avviso e potrà accettarla o rifiutarla."
+  }
+}

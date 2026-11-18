@@ -1,0 +1,11 @@
+{
+  "language": {
+    "label": "Idioma",
+    "hint": "O Frolik vai aparecer neste idioma.",
+    "searchPlaceholder": "Buscar idiomas"
+  },
+  "errors": {
+    "serverHeader": "Erro interno do servidor",
+    "serverMessage": "Ops, algo deu errado do nosso lado! Atualize a página e tente de novo."
+  }
+}

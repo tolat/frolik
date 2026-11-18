@@ -1,0 +1,17 @@
+{
+  "tabs": {
+    "alerts": "Alertas",
+    "profile": "Perfil",
+    "outing": "Salida",
+    "social": "Social",
+    "chats": "Chats"
+  },
+  "ok": "OK",
+  "tooManyOutings": {
+    "header": "¡Tienes demasiadas salidas pendientes!",
+    "message": "<b>Solo puedes tener hasta 5 salidas pendientes a la vez.</b> <br/>Completa o elimina algunas antes de crear otra. Puedes ver tus salidas cuando quieras en tu Perfil, tocando esta pestaña:",
+    "iconAlt": "ícono de salidas",
+    "ok": "OK"
+  },
+  "footer": "¡A salir, gente!"
+}

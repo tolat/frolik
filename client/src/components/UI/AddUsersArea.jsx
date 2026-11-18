@@ -3,8 +3,10 @@ import styles from "./styles/AddUsersArea.module.scss";
 import UserIconCluster from "./UserIconCluster";
 import editIcon from "../../images/edit.png";
 import plusIcon from "../../images/plus.png";
+import { useT } from "../../i18n";
 
 const AddUsersArea = (props) => {
+  const { t } = useT();
   return (
     <Fragment>
       <div className={styles.usersContainer}>
@@ -12,7 +14,7 @@ const AddUsersArea = (props) => {
           <img
             className={props.editButtonClassName}
             src={editIcon}
-            alt="edit-friends"
+            alt={t("ui.addUsers.edit")}
           />
         </button>
         <UserIconCluster
@@ -22,7 +24,7 @@ const AddUsersArea = (props) => {
           pieShadow={true}
         />
         <button onClick={props.onAddClick} className={styles.roundButton}>
-          <img className={styles.editIcon} src={plusIcon} alt="add-people" />
+          <img className={styles.editIcon} src={plusIcon} alt={t("ui.addUsers.add")} />
         </button>
       </div>
     </Fragment>

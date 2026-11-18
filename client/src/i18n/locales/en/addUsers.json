@@ -1,0 +1,20 @@
+{
+  "header": "Add Outing Members",
+  "removeHeader": "Remove Outing Members",
+  "dailyMatches": "Daily Matches",
+  "required": "Required",
+  "matchesSubtext": "Every Outing must include at least one person you haven't met yet. Matches refresh every 24 hrs.",
+  "noMatches": "No Available Matches!",
+  "activeFriends": "Active Friends",
+  "friendSlots": {
+    "firstFriend": "You can add a friend now — you'll also need a Daily Match for each friend.",
+    "more": {
+      "one": "You can add {{count}} more friend — one per Daily Match.",
+      "other": "You can add {{count}} more friends — one per Daily Match."
+    },
+    "none": "Add another Daily Match to invite another friend — one friend per match."
+  },
+  "lockedTitle": "Add another Daily Match to invite another friend",
+  "searchPlaceholder": "Search Friends..",
+  "noFriends": "No Friends Available!"
+}

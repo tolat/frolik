@@ -1,0 +1,24 @@
+{
+  "cropper": {
+    "label": "Ampliar e recortar",
+    "zoom": "Zoom",
+    "cancel": "Cancelar",
+    "upload": "Enviar",
+    "done": "Pronto",
+    "uploading": "Enviando…"
+  },
+  "photo": {
+    "alt": "Foto"
+  },
+  "sendActivity": {
+    "header": "Enviar para um amigo",
+    "searchPlaceholder": "Buscar amigos…",
+    "noFriends": "Adicione amigos para enviar atividades para eles. Você pode adicionar alguém depois de concluir um rolê juntos.",
+    "noMatches": "Nenhum amigo corresponde a \"{{query}}\".",
+    "send": "Enviar",
+    "sending": "Enviando…"
+  },
+  "sharedActivity": {
+    "label": "Atividade"
+  }
+}

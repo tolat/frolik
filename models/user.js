@@ -38,6 +38,8 @@ const UserSchema = new Schema(
     pushSubscriptions: [Object],
     // Keep location synced to the device's current city on app open
     auto_location: { type: Boolean, default: false },
+    // Interface language (utils/i18n.js LANGS); emails and pushes use it too
+    language: { type: String, default: "en" },
     // Set once the user has finished (or skipped) the in-app tour
     tour_seen: { type: Boolean, default: false },
     status: {

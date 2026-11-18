@@ -1,0 +1,30 @@
+{
+  "tabs": {
+    "photos": "Fotos",
+    "outings": "Salidas",
+    "friends": "Amigos"
+  },
+  "friendCard": {
+    "chat": "+ Chat",
+    "outing": "+ Salida"
+  },
+  "edit": "editar",
+  "empty": {
+    "title": "¡Aún no tienes contenido!",
+    "noMedia": "Para empezar a sumar fotos, salidas y amigos, ¡crea y completa una salida en la página <balloon/>!",
+    "noPhotos": "Para agregar fotos, ¡completa más salidas en la página <balloon/>!",
+    "noFriends": "Para agregar amigos, ¡ve a la página <balloon/>!",
+    "balloonAlt": "ícono de la página de salidas"
+  },
+  "friends": {
+    "searchPlaceholder": "Buscar amigos...",
+    "sortLabel": "Ordenar amigos",
+    "sort": "Ordenar:",
+    "sortName": "Nombre",
+    "sortOutings": "Salidas",
+    "sortFlake": "Índice de plantones",
+    "sortBy": "Ordenar por {{label}}",
+    "sortByAsc": "Ordenar por {{label}}, ascendente",
+    "sortByDesc": "Ordenar por {{label}}, descendente"
+  }
+}

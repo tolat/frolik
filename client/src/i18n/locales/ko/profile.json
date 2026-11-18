@@ -1,0 +1,30 @@
+{
+  "tabs": {
+    "photos": "사진",
+    "outings": "나들이",
+    "friends": "친구"
+  },
+  "friendCard": {
+    "chat": "+ 채팅",
+    "outing": "+ 나들이"
+  },
+  "edit": "편집",
+  "empty": {
+    "title": "아직 아무것도 없어요!",
+    "noMedia": "사진, 나들이, 친구를 추가하려면 <balloon/> 페이지에서 나들이를 만들고 완료해 보세요!",
+    "noPhotos": "사진을 추가하려면 <balloon/> 페이지에서 나들이를 더 완료해 보세요!",
+    "noFriends": "친구를 추가하려면 <balloon/> 페이지로 가 보세요!",
+    "balloonAlt": "나들이 페이지 아이콘"
+  },
+  "friends": {
+    "searchPlaceholder": "친구 검색…",
+    "sortLabel": "친구 정렬",
+    "sort": "정렬:",
+    "sortName": "이름",
+    "sortOutings": "나들이",
+    "sortFlake": "신뢰도",
+    "sortBy": "{{label}} 기준 정렬",
+    "sortByAsc": "{{label}} 기준 오름차순 정렬",
+    "sortByDesc": "{{label}} 기준 내림차순 정렬"
+  }
+}

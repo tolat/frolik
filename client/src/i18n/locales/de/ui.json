@@ -1,0 +1,88 @@
+{
+  "loading": "Lädt",
+  "dateTime": "{{date}} - {{time}}",
+  "rating": {
+    "unrated": "keine Bewertung",
+    "outOfFive": "{{rating}}/5"
+  },
+  "outingStatus": {
+    "completed": "Abgeschlossen",
+    "youLeft": "Verlassen",
+    "invited": "Eingeladen: Tippen zum Mitmachen",
+    "waitingForMembers": "Wartet auf Teilnehmende",
+    "waitingForPhotos": "Wartet auf Fotos",
+    "waitingForOthers": "Wartet auf die anderen",
+    "readyToFinish": "Bereit zum Abschließen"
+  },
+  "outingCard": {
+    "completed": "Abgeschlossen - {{date}}",
+    "pending": "Offen - {{date}}"
+  },
+  "outingList": {
+    "searchPlaceholder": "Meine Ausflüge suchen",
+    "pendingHeader": "Offene Ausflüge",
+    "pendingLimit": {
+      "one": "Du kannst bis zu {{count}} offenen Ausflug gleichzeitig haben.",
+      "other": "Du kannst bis zu {{count}} offene Ausflüge gleichzeitig haben."
+    }
+  },
+  "outingTitle": {
+    "rename": "Ausflug umbenennen",
+    "name": "Name des Ausflugs",
+    "save": "Namen speichern",
+    "cancel": "Umbenennen abbrechen"
+  },
+  "chatCard": {
+    "delete": "Löschen",
+    "archive": "Archivieren",
+    "unarchive": "Wiederherstellen",
+    "markRead": "✓ Gelesen",
+    "justYou": "Nur du",
+    "lastActive": "Zuletzt aktiv {{date}}"
+  },
+  "feedCard": {
+    "members": "Beim Ausflug dabei",
+    "viewActivity": "Aktivität ansehen",
+    "like": "Gefällt mir",
+    "unlike": "Gefällt mir nicht mehr"
+  },
+  "friendCard": {
+    "profileNotShared": "Profil nicht geteilt"
+  },
+  "stats": {
+    "flakeRating": "Zuverlässigkeit",
+    "outings": "Ausflüge"
+  },
+  "statusButtons": {
+    "label": "Status",
+    "hints": {
+      "ready": "Offen für Ausflüge – du erscheinst in den Tagesmatches",
+      "busy": "Pause – du bekommst keine Matches"
+    },
+    "currently": "Aktuell: {{status}}",
+    "choose": "Wähle deinen Status"
+  },
+  "starRate": {
+    "label": "Bewertung",
+    "stars": {
+      "one": "{{count}} Stern",
+      "other": "{{count}} Sterne"
+    }
+  },
+  "photos": {
+    "none": "Keine Fotos",
+    "remove": "Foto entfernen",
+    "userPhoto": "Foto",
+    "change": "Foto ändern"
+  },
+  "addUsers": {
+    "edit": "Leute bearbeiten",
+    "add": "Leute hinzufügen"
+  },
+  "search": {
+    "icon": "Suchen"
+  },
+  "profileHeader": {
+    "settings": "Einstellungen"
+  }
+}

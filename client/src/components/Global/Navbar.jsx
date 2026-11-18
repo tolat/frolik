@@ -27,8 +27,10 @@ import Tour from "../Tour/Tour";
 import SendActivityPopup from "../Popups/SendActivityPopup";
 import SharedActivityPopup from "../Popups/SharedActivityPopup";
 import { syncKeyboardOpen } from "../../utils/pageScroll";
+import { useT, T } from "../../i18n";
 
 const Navbar = (props) => {
+  const { t } = useT();
   const user = useSelector((state) => state.auth.user);
   const authState = useSelector((state) => state.auth);
   const chats = useSelector((state) => state.chat.chats);
@@ -71,14 +73,11 @@ const Navbar = (props) => {
 
   const tooManyOutingsMessage = (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <b>You can only have up to 5 pending outings at a time.</b> <br />
-      Either complete or delete some outings before trying to create another
-      one. You can view your outings any time in the 'Profile' page by clicking
-      the following tab:
+      <T k="nav.tooManyOutings.message" />
       <img
         className={styles.outingsIcon}
         src={outingsBarIcon}
-        alt={"outings-icon"}
+        alt={t("nav.tooManyOutings.iconAlt")}
       />
     </div>
   );
@@ -106,7 +105,7 @@ const Navbar = (props) => {
         selector={"generic-warning"}
         header={warningHeader}
         message={warningMessage}
-        ok={"OK"}
+        ok={t("nav.ok")}
         okClick={handleHideWarning}
       />
       <InstallPromptModal />
@@ -121,9 +120,9 @@ const Navbar = (props) => {
           <Tour />
           <WarningPopup
             selector={"too-many-outings"}
-            header={"You have too many Pending Outings!"}
+            header={t("nav.tooManyOutings.header")}
             message={tooManyOutingsMessage}
-            ok={"OK"}
+            ok={t("nav.tooManyOutings.ok")}
             okClick={handleHideWarning}
           />
         </Fragment>
@@ -138,7 +137,7 @@ const Navbar = (props) => {
             >
               <NavButton
                 icon={activePage === "alerts" ? bellBlue : bell}
-                text={"Alerts"}
+                text={t("nav.tabs.alerts")}
                 className={`${styles.navButton} ${styles.notificationsHover}`}
                 blue={activePage === "alerts"}
               >
@@ -155,7 +154,7 @@ const Navbar = (props) => {
             >
               <NavButton
                 icon={activePage === "profile" ? profileIconBlue : profileIcon}
-                text={"Profile"}
+                text={t("nav.tabs.profile")}
                 className={`${styles.navButton} ${styles.profileHover}`}
                 blue={activePage === "profile"}
               />
@@ -166,7 +165,7 @@ const Navbar = (props) => {
             >
               <NavButton
                 icon={activePage === "outing" ? outingIconBlue : outingIcon}
-                text={"Outing"}
+                text={t("nav.tabs.outing")}
                 className={`${styles.navButton} ${styles.createOutingHover}`}
                 blue={activePage === "outing"}
               />
@@ -177,7 +176,7 @@ const Navbar = (props) => {
             >
               <NavButton
                 icon={activePage === "social" ? feedIconBlue : feedIcon}
-                text={"Social"}
+                text={t("nav.tabs.social")}
                 className={`${styles.navButton} ${styles.socialHover}`}
                 blue={activePage === "social"}
               />
@@ -188,7 +187,7 @@ const Navbar = (props) => {
             >
               <NavButton
                 icon={activePage === "chat" ? chatIconBlue : chatIcon}
-                text={"Chats"}
+                text={t("nav.tabs.chats")}
                 className={`${styles.navButton} ${styles.chatsHover}`}
                 blue={activePage === "chat"}
               >
@@ -201,7 +200,7 @@ const Navbar = (props) => {
             </NavLink>
           </div>
         ) : (
-          <img alt="logo" src={logo} className={styles.logo} />
+          <img alt="frolik" src={logo} className={styles.logo} />
         )}
       </div>
     </div>

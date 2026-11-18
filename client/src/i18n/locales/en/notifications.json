@@ -1,0 +1,38 @@
+{
+  "title": "Alerts",
+  "empty": {
+    "title": "Nothing Here!",
+    "body": "Your alerts will show up here",
+    "iconAlt": "Bell"
+  },
+  "headers": {
+    "outingInvite": "You have been invited to an Outing!",
+    "inviteAccepted": "Your Outing invite was accepted by:",
+    "inviteDenied": "Your Outing invite was denied by:",
+    "outingLeft": "Your Outing was left by:",
+    "outingJoined": "Your Outing was joined by:",
+    "outingCompleted": "Your Outing was completed!",
+    "outingMarkedComplete": "Your Outing was marked complete by:",
+    "friendRequest": "You have a friend request from:",
+    "friendRequestStatus": {
+      "accepted": "Your friend request was accepted by:",
+      "denied": "Your friend request was denied by:",
+      "other": "Your friend request was {{status}} by:"
+    },
+    "friendRemoved": "You were unfriended by:",
+    "chatCreated": "You were added to a chat by:"
+  },
+  "footers": {
+    "markComplete": "Your turn to mark the Outing complete when you are done uploading photos!"
+  },
+  "outingLabel": "Outing: <b>{{name}}</b>",
+  "outingLoading": "Outing: …",
+  "activityLabel": "Activity: <b>{{name}}</b>",
+  "actions": {
+    "viewOuting": "View Outing",
+    "viewChat": "View Chat",
+    "clear": "Clear",
+    "accept": "Accept",
+    "deny": "Deny"
+  }
+}

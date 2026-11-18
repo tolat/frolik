@@ -1,0 +1,24 @@
+{
+  "header": "تصفية الأنشطة",
+  "showOnly": {
+    "title": "عرض فقط",
+    "completed": "المكتملة",
+    "featured": "المميّزة",
+    "created": "من إنشاء المستخدمين"
+  },
+  "details": "التفاصيل",
+  "fields": {
+    "minParticipants": "أقل عدد مشاركين:",
+    "maxParticipants": "أكبر عدد مشاركين:",
+    "minCost": "أقل تكلفة:",
+    "maxCost": "أعلى تكلفة:",
+    "minRating": "أدنى تقييم:",
+    "maxTime": "أطول مدة:"
+  },
+  "units": {
+    "people": "أشخاص",
+    "hours": "ساعات"
+  },
+  "clearAll": "مسح الكل",
+  "apply": "تطبيق"
+}

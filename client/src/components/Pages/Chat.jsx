@@ -12,8 +12,10 @@ import { setLastReadMessage, getUnreadChatMessages } from "../../utils/utils";
 import CreateChatModal from "../Modals/CreateChatModal";
 import { modalActions } from "../../store/modal-slice";
 import { onUpdateUser } from "../../store/socket-actions";
+import { useT } from "../../i18n";
 
 const Chat = memo((props) => {
+  const { t } = useT();
   const chats = useSelector((state) => state.chat.chats);
   const user = useSelector((state) => state.auth.user);
   const fetchingChats = useSelector((state) => state.chat.fetchingChats);
@@ -116,7 +118,7 @@ const Chat = memo((props) => {
             style={{ marginBottom: 0 }}
             setValue={setChatSearch}
             defaultVal={""}
-            placeholder={"Search Chats.."}
+            placeholder={t("chatList.searchPlaceholder")}
           />
           <SimpleButton
             onClick={onCreateChat}
@@ -136,7 +138,7 @@ const Chat = memo((props) => {
                 clip: "rect(0 0 0 0)",
               }}
             >
-              New chat
+              {t("chatList.newChat")}
             </span>
           </SimpleButton>
         </div>
@@ -144,22 +146,22 @@ const Chat = memo((props) => {
           <SkeletonCards variant="chat" count={4} />
         ) : !chats[0] ? (
           <div className={styles.noChatsMessage}>
-            <h2 className={styles.noChatsMessageHeader}>Nothing to show yet!</h2>
+            <h2 className={styles.noChatsMessageHeader}>{t("chatList.emptyTitle")}</h2>
 
             <div className={styles.noChatsMessageText}>
-              You'll see your chats with friends and for specific Outings here.
+              {t("chatList.emptyText")}
             </div>
           </div>
         ) : (
           <div className={styles.chatsContainer}>
-            <div className={styles.filterRow} role="group" aria-label="Filter chats">
+            <div className={styles.filterRow} role="group" aria-label={t("chatList.filters.label")}>
               <button
                 type="button"
                 aria-pressed={filters.size === 0}
                 className={`${styles.filterPill} ${filters.size === 0 ? styles.filterPillActive : ""}`}
                 onClick={() => setFilters(new Set())}
               >
-                All
+                {t("chatList.filters.all")}
               </button>
               <button
                 type="button"
@@ -167,7 +169,7 @@ const Chat = memo((props) => {
                 className={`${styles.filterPill} ${unreadOnly ? styles.filterPillActive : ""}`}
                 onClick={() => toggleFilter("unread")}
               >
-                Unread
+                {t("chatList.filters.unread")}
                 {unreadCount > 0 && (
                   <span className={styles.filterCount}>{unreadCount}</span>
                 )}
@@ -178,7 +180,7 @@ const Chat = memo((props) => {
                 className={`${styles.filterPill} ${wantDM ? styles.filterPillActive : ""}`}
                 onClick={() => toggleFilter("dm")}
               >
-                DMs
+                {t("chatList.filters.dms")}
               </button>
               <button
                 type="button"
@@ -186,14 +188,14 @@ const Chat = memo((props) => {
                 className={`${styles.filterPill} ${wantOuting ? styles.filterPillActive : ""}`}
                 onClick={() => toggleFilter("outing")}
               >
-                Outings
+                {t("chatList.filters.outings")}
               </button>
             </div>
             {filters.size > 0 && !activeChats.length && !archivedChats.length && (
               <div className={styles.filterEmpty}>
                 {unreadOnly
-                  ? "You're all caught up — no unread chats."
-                  : "No chats match these filters."}
+                  ? t("chatList.filters.noUnread")
+                  : t("chatList.filters.noMatch")}
               </div>
             )}
             {archivedChats.length > 0 && (
@@ -216,7 +218,7 @@ const Chat = memo((props) => {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  Archived
+                  {t("chatList.archived")}
                   <span className={styles.archivedCount}>{archivedChats.length}</span>
                   <svg viewBox="0 0 24 24" className={styles.archivedChevron} aria-hidden="true">
                     <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

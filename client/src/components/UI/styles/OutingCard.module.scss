@@ -167,3 +167,17 @@
   background: rgba(64, 192, 120, 0.14);
   color: #1f8a4c;
 }
+
+// You flaked on this Outing (left it, or were removed for not finishing)
+.flakePill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(224, 82, 82, 0.1);
+  color: #c23b3b;
+}
+
+.flakePillIcon {
+  width: 1.4rem;
+  height: 1.4rem;
+}

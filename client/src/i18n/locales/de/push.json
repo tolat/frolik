@@ -1,0 +1,12 @@
+{
+  "ios": {
+    "title": "Benachrichtigungen erhalten?",
+    "body": "Füge frolik zu deinem Home-Bildschirm hinzu (Teilen → Zum Home-Bildschirm) und aktiviere sie dann."
+  },
+  "blocked": "Benachrichtigungen sind blockiert. Aktiviere sie für frolik in den Einstellungen deines Browsers oder Handys.",
+  "prompt": {
+    "title": "Benachrichtigungen aktivieren",
+    "body": "Erfahre sofort von Einladungen, Nachrichten und Freundschaftsanfragen.",
+    "button": "Aktivieren"
+  }
+}

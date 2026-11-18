@@ -1,0 +1,16 @@
+{
+  "searchPlaceholder": "Buscar chats...",
+  "newChat": "Nuevo chat",
+  "emptyTitle": "¡Aún no hay nada por aquí!",
+  "emptyText": "Aquí verás tus chats con amigos y los de cada salida.",
+  "filters": {
+    "label": "Filtrar chats",
+    "all": "Todos",
+    "unread": "No leídos",
+    "dms": "Directos",
+    "outings": "Salidas",
+    "noUnread": "Estás al día: no tienes chats sin leer.",
+    "noMatch": "Ningún chat coincide con estos filtros."
+  },
+  "archived": "Archivados"
+}

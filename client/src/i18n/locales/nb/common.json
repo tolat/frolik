@@ -1,0 +1,11 @@
+{
+  "language": {
+    "label": "Språk",
+    "hint": "Frolik vises på dette språket.",
+    "searchPlaceholder": "Søk etter språk"
+  },
+  "errors": {
+    "serverHeader": "Intern serverfeil",
+    "serverMessage": "Oi, noe gikk galt hos oss! Last inn siden på nytt og prøv igjen."
+  }
+}

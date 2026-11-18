@@ -1,0 +1,118 @@
+{
+  "sections": {
+    "activity": "Aktivitet",
+    "photos": "Bilder",
+    "members": "Deltakere",
+    "invited": "Invitert"
+  },
+  "alt": {
+    "flake": "droppet ut",
+    "activity": "aktivitet",
+    "photos": "bilder",
+    "members": "deltakere",
+    "invited": "inviterte"
+  },
+  "buttons": {
+    "joinOuting": "Bli med på treffet",
+    "markCompleted": "Marker som fullført",
+    "markedCompleted": "Markert som fullført!",
+    "deleteOuting": "Slett treffet",
+    "leaveOuting": "Forlat treffet",
+    "delete": "Slett",
+    "deleting": "Sletter …",
+    "leave": "Forlat",
+    "cancel": "Avbryt",
+    "ok": "OK",
+    "gotIt": "Skjønner"
+  },
+  "flakedOut": "Du droppet ut!",
+  "chat": {
+    "openLabel": "Åpne chatten for treffet",
+    "title": "Chat"
+  },
+  "deleteDrawer": {
+    "header": "Bekreft sletting av treffet:",
+    "message": "Når treffet er slettet, kan ingen av de inviterte bli med lenger. Å slette treffet <b>påvirker ikke</b> påliteligheten din. Dette kan ikke angres."
+  },
+  "leaveDrawer": {
+    "header": "Bekreft at du vil forlate treffet:",
+    "message": "Selv om du forlater treffet, kan de andre deltakerne fortsatt fullføre det. Gjør de det, <b>går det ut over</b> påliteligheten din. Dette kan ikke angres (du kan ikke bli med igjen etter at du har gått ut)."
+  },
+  "joinDrawer": {
+    "header": "Bli med på dette treffet?",
+    "pendingLimit": "Det teller mot grensen din på 5 ventende treff.",
+    "mustComplete": "Det må fullføres (eller slettes mens du er eneste deltaker).",
+    "leavingLowersRating": "Forlater du treffet etter at du har blitt med, <b>senker det påliteligheten din</b>."
+  },
+  "completeDrawer": {
+    "header": "Markere treffet som fullført?",
+    "lastMember": "Du er den siste som markerer det som fullført",
+    "lockedYou": "Når du markerer det som fullført, låses treffet: ingen flere endringer i bildene.",
+    "lockedEveryone": "Når alle deltakerne har markert det som fullført, låses treffet: ingen flere endringer i bildene.",
+    "chatStaysOpen": "Chatten for treffet forblir åpen, så dere kan holde kontakten.",
+    "cantUndo": "Dette kan ikke angres."
+  },
+  "rating": {
+    "title": "Vurder aktiviteten",
+    "hint": "Trykk på en stjerne for å gi en vurdering",
+    "labels": {
+      "1": "Ikke så bra",
+      "2": "Helt greit",
+      "3": "Bra",
+      "4": "Kjempebra",
+      "5": "Elsket det!"
+    }
+  },
+  "completion": {
+    "needMembers": "Treffet må ha minst 2 deltakere for å kunne markeres som fullført.",
+    "count": "{{completed}} / {{total}} deltakere har markert treffet som fullført."
+  },
+  "howToComplete": {
+    "header": "Slik fullfører du et treff",
+    "intro": "Et treff må ha minst 2 deltakere før det kan fullføres.",
+    "waitForInvites": {
+      "one": "Vent til invitasjonen din blir godtatt, eller inviter noen andre.",
+      "other": "Vent til de {{count}} invitasjonene dine blir godtatt, eller inviter noen andre."
+    },
+    "inviteSomeone": "Inviter en venn eller en dagsmatch til å bli med.",
+    "goTogether": "Gjennomfør treffet sammen.",
+    "uploadPhoto": "Last opp minst ett bilde fra treffet.",
+    "everyoneMarks": "Alle deltakerne trykker på Marker som fullført."
+  },
+  "photos": {
+    "limitHint": "Hver deltaker kan laste opp opptil 2 bilder.",
+    "upload": "+ Last opp",
+    "edit": "Rediger",
+    "doneEditing": "Ferdig"
+  },
+  "tooManyPhotos": {
+    "header": "For mange bilder!",
+    "message": "Hver deltaker kan laste opp maks 2 bilder per treff. Du kan fjerne noen av bildene dine hvis du vil bytte dem ut eller endre dem."
+  },
+  "deletePhoto": {
+    "header": "Slette bildet?"
+  },
+  "noPhotos": {
+    "header": "Ingen bilder lastet opp!",
+    "message": "Et treff må ha minst ett bilde før det kan markeres som fullført. Du kan legge til bilder på treffsiden med knappen nedenfor:",
+    "buttonAlt": "Knapp for å legge til bilder",
+    "allMembers": "Alle deltakerne må markere treffet som fullført!"
+  },
+  "countdown": {
+    "lessThanADay": "under ett døgn",
+    "days": {
+      "one": "{{count}} dag",
+      "other": "{{count}} dager"
+    },
+    "finishNote": "Alle har {{time}} igjen på å markere treffet som fullført. De som ikke har gjort det innen da, fjernes og får en prikk.",
+    "inviteNote": "Hvis ingen blir med innen {{time}}, slettes treffet på grunn av inaktivitet.",
+    "invitesExpire": "Invitasjoner som ikke er godtatt, utløper om {{time}}.",
+    "done": "✓ Ferdig",
+    "daysLeftTag": "{{days}} d igjen",
+    "daysToJoinTag": "{{days}} d til å bli med"
+  },
+  "deleteHelp": {
+    "onlyMember": "Du kan slette treffet fordi du er eneste deltaker. Å slette treffet <b>går ikke ut over</b> påliteligheten din.",
+    "otherMembers": "Du kan ikke slette treffet fordi det har andre deltakere. Forlater du treffet, <b>går det ut over</b> påliteligheten din."
+  }
+}

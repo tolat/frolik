@@ -1,0 +1,13 @@
+{
+  "active": "{{date}} 활동",
+  "outing": "나들이",
+  "newOuting": "+ 나들이",
+  "placeholder": "메시지…",
+  "send": "메시지 보내기",
+  "new": "새 메시지",
+  "sentAt": "{{date}} · {{time}}",
+  "share": {
+    "opening": "여는 중…",
+    "activity": "액티비티"
+  }
+}

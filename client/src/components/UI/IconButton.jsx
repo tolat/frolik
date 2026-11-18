@@ -10,7 +10,7 @@ const IconButton = (props) => {
         style={props.iconStyle}
         src={props.icon}
         className={styles.icon}
-        alt={`${props.alt}_button`}
+        alt={props.alt}
       />
       <div className={styles.subText}>{props.subText}</div>
     </div>

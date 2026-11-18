@@ -196,6 +196,7 @@ export const createAccount = (data, resetForm) => {
       location: data.location,
       location_geo: getLocationGeo(data.location),
       tagline: data.tagline,
+      language: data.language,
       profile_picture: {
         zoom: data.zoom,
         crop: data.crop,

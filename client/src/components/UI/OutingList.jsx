@@ -7,8 +7,10 @@ import { useMemo, useState } from "react";
 import FeedCard from "./FeedCard";
 import useIncrementalList from "../../utils/useIncrementalList";
 import ListSentinel from "./ListSentinel";
+import { useT } from "../../i18n";
 
 const OutingList = (props) => {
+  const { t } = useT();
   let user = useSelector((state) => state.auth.user);
   if (props.user) user = props.user;
 
@@ -62,13 +64,15 @@ const OutingList = (props) => {
         defaultVal={""}
         setValue={setOutingSearch}
         style={{ marginTop: "1rem" }}
-        placeholder={"Search Outings.."}
+        placeholder={t("ui.outingList.searchPlaceholder")}
       />
       {pending[0] && (
         <div className={styles.pendingContainer}>
-          <div className={styles.completedHeader}>Pending Outings</div>
+          <div className={styles.completedHeader}>
+            {t("ui.outingList.pendingHeader")}
+          </div>
           <div className={styles.headingBlurb}>
-            <b>You can have up to 5 pending outings at a time.</b>
+            <b>{t("ui.outingList.pendingLimit", { count: 5 })}</b>
             <br />
             <br />
           </div>
@@ -80,10 +84,6 @@ const OutingList = (props) => {
             ))}
         </div>
       )}
-      <div className={styles.completedHeader}>Completed Outings</div>
-      <div style={{ marginBottom: "2rem" }} className={styles.headingBlurb}>
-        <b>Your flaked outings show up in red.</b>
-      </div>
       {nonPending[0] &&
         visibleCompleted.map((o) =>
           o.flakes.find((id) => id === user._id) ? (

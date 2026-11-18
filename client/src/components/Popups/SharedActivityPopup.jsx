@@ -5,6 +5,7 @@ import ActivityCard from "../UI/ActivityCard";
 import { popupActions } from "../../store/popup-slice";
 import { useScrollLock } from "../../utils/scrollLock";
 import styles from "./styles/ActivityDrawer.module.scss";
+import { useT } from "../../i18n";
 
 const CLOSE_MS = 280; // a little longer than the 0.24s slide-down
 
@@ -14,6 +15,7 @@ const CLOSE_MS = 280; // a little longer than the 0.24s slide-down
 // the handle down, to close.
 const SharedActivityPopup = () => {
   const dispatch = useDispatch();
+  const { t } = useT();
   const activity = useSelector((state) => state.popup.sharedActivity);
   const isOpen = useSelector(
     (state) => state.popup.selector === "shared-activity"
@@ -39,8 +41,8 @@ const SharedActivityPopup = () => {
       return () => cancelAnimationFrame(raf);
     }
     setOpen(false);
-    const t = setTimeout(() => setShown(false), CLOSE_MS);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setShown(false), CLOSE_MS);
+    return () => clearTimeout(timer);
   }, [isOpen]);
 
   const close = () => dispatch(popupActions.hidePopup());
@@ -98,7 +100,7 @@ const SharedActivityPopup = () => {
         data-drawer-sheet="true"
         role="dialog"
         aria-modal="true"
-        aria-label={activity?.name || "Activity"}
+        aria-label={activity?.name || t("popups.sharedActivity.label")}
       >
         <div
           className={styles.handleArea}

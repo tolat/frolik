@@ -1,0 +1,17 @@
+{
+  "tabs": {
+    "alerts": "Alertes",
+    "profile": "Profil",
+    "outing": "Sortie",
+    "social": "Social",
+    "chats": "Discussions"
+  },
+  "ok": "OK",
+  "tooManyOutings": {
+    "header": "Tu as trop de sorties en attente !",
+    "message": "<b>Tu peux avoir au maximum 5 sorties en attente à la fois.</b> <br/>Termine ou supprime quelques sorties avant d'en créer une autre. Tu peux retrouver tes sorties à tout moment dans ton Profil, en touchant cet onglet :",
+    "iconAlt": "icône des sorties",
+    "ok": "OK"
+  },
+  "footer": "Allez, sortez de chez vous !"
+}

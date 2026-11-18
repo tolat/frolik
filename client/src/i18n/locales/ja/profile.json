@@ -1,0 +1,30 @@
+{
+  "tabs": {
+    "photos": "写真",
+    "outings": "おでかけ",
+    "friends": "友だち"
+  },
+  "friendCard": {
+    "chat": "+ チャット",
+    "outing": "+ おでかけ"
+  },
+  "edit": "編集",
+  "empty": {
+    "title": "まだ何もありません！",
+    "noMedia": "写真やおでかけ、友だちを増やすには、<balloon/>ページでおでかけを作成して完了しましょう！",
+    "noPhotos": "写真を増やすには、<balloon/>ページでおでかけをもっと完了しましょう！",
+    "noFriends": "友だちを増やすには、<balloon/>ページへ！",
+    "balloonAlt": "おでかけページのアイコン"
+  },
+  "friends": {
+    "searchPlaceholder": "友だちを検索…",
+    "sortLabel": "友だちを並べ替え",
+    "sort": "並べ替え：",
+    "sortName": "名前",
+    "sortOutings": "おでかけ",
+    "sortFlake": "信頼度",
+    "sortBy": "{{label}}で並べ替え",
+    "sortByAsc": "{{label}}で並べ替え（昇順）",
+    "sortByDesc": "{{label}}で並べ替え（降順）"
+  }
+}

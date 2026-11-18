@@ -7,6 +7,7 @@ const sha256 = (t) => crypto.createHash("sha256").update(String(t)).digest("hex"
 const rateLimit = require("express-rate-limit");
 const { populateUser, populateFriends, sendEmail } = require("../utils/utils");
 const { tryCatch } = require("../utils/middleware");
+const { userLang, tr } = require("../utils/i18n");
 const {
   genResetPasswordEmail: resetPassword,
   genVerifyAccountEmail: verifyEmail,
@@ -18,7 +19,10 @@ const router = express.Router({ mergeParams: true });
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 20,
-  message: { header: "Too Many Attempts", message: "Too many login attempts. Please try again in 15 minutes." },
+  message: (req) => ({
+    header: req.t("auth.tooManyLogins.header"),
+    message: req.t("auth.tooManyLogins.message"),
+  }),
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -26,7 +30,10 @@ const loginLimiter = rateLimit({
 const resetLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: 5,
-  message: { header: "Too Many Attempts", message: "Too many password reset requests. Please try again in an hour." },
+  message: (req) => ({
+    header: req.t("auth.tooManyResets.header"),
+    message: req.t("auth.tooManyResets.message"),
+  }),
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -42,8 +49,8 @@ router.post(
     if (user.status?.status == "Pending") {
       await new Promise((resolve) => req.logout(resolve));
       res.status(406).send({
-        header: "Email Verification Required",
-        message: `Check your email at ${req.body.username} for a verification link.`,
+        header: req.t("auth.verificationRequired.header"),
+        message: req.t("auth.verificationRequired.message", { email: req.body.username }),
       });
       return;
     }
@@ -97,8 +104,8 @@ router.post(
     // If user status is pending, don't allow login
     if (!user) {
       res.status(406).send({
-        header: "User Not Found",
-        message: `We can't find a user with the username you provided!`,
+        header: req.t("auth.userNotFound.header"),
+        message: req.t("auth.userNotFound.message"),
       });
       return;
     }
@@ -111,7 +118,8 @@ router.post(
     await user.save();
 
     const link = `${process.env.SERVER}/reset-password/${user._id.toString()}?token=${token}`;
-    sendEmail(username, "Reset frolik.ca Password", resetPassword(link));
+    const lang = userLang(user);
+    sendEmail(username, tr(lang, "email.resetPassword.subject"), resetPassword(lang, link));
     if (process.env.NODE_ENV == "development")
       console.log("[dev] password reset link:", link);
     res.sendStatus(200);
@@ -129,16 +137,16 @@ router.post(
     // If user not found, send unacceptable (406)
     if (!user) {
       res.status(406).send({
-        header: "User Not Found",
-        message: `We can't find a user with the username you provided!`,
+        header: req.t("auth.userNotFound.header"),
+        message: req.t("auth.userNotFound.message"),
       });
       return;
     }
 
     if (!req.body.password || String(req.body.password).length < 8) {
       res.status(406).send({
-        header: "Password Too Short",
-        message: "Passwords must be at least 8 characters.",
+        header: req.t("auth.passwordTooShort.header"),
+        message: req.t("auth.passwordTooShort.message"),
       });
       return;
     }
@@ -152,8 +160,8 @@ router.post(
       crypto.timingSafeEqual(Buffer.from(stored), Buffer.from(supplied));
     if (!tokenValid || !user.reset_token.expires || user.reset_token.expires < Date.now()) {
       res.status(406).send({
-        header: "Link Expired",
-        message: "This password reset link has expired. Please request a new one.",
+        header: req.t("auth.linkExpired.header"),
+        message: req.t("auth.linkExpired.message"),
       });
       return;
     }
@@ -175,8 +183,8 @@ router.post(
     // If user not found, send unacceptable (406)
     if (!user) {
       res.status(406).send({
-        header: "User Not Found",
-        message: `We can't find a user with the username you provided!`,
+        header: req.t("auth.userNotFound.header"),
+        message: req.t("auth.userNotFound.message"),
       });
       return;
     }
@@ -184,15 +192,16 @@ router.post(
     // If user is already verified, don't resend
     if (user.status.status !== "Pending") {
       res.status(406).send({
-        header: `Could not send email`,
-        message: `User ${req.body.username} has already been verified.`,
+        header: req.t("auth.alreadyVerified.header"),
+        message: req.t("auth.alreadyVerified.message", { email: req.body.username }),
       });
       return;
     }
 
     // Send email confirmation link
     const link = `${process.env.SERVER}/user/${user._id.toString()}/verify`;
-    sendEmail(req.body.username, "Verify frolik.ca Email", verifyEmail(link));
+    const lang = userLang(user);
+    sendEmail(req.body.username, tr(lang, "email.verify.subject"), verifyEmail(lang, link));
 
     res.sendStatus(200);
   })

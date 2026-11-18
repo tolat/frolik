@@ -1,0 +1,16 @@
+{
+  "searchPlaceholder": "채팅 검색…",
+  "newChat": "새 채팅",
+  "emptyTitle": "아직 아무것도 없어요!",
+  "emptyText": "친구와의 채팅, 나들이별 채팅이 여기에 표시돼요.",
+  "filters": {
+    "label": "채팅 필터",
+    "all": "전체",
+    "unread": "안 읽음",
+    "dms": "DM",
+    "outings": "나들이",
+    "noUnread": "모두 확인했어요. 안 읽은 채팅이 없어요.",
+    "noMatch": "조건에 맞는 채팅이 없어요."
+  },
+  "archived": "보관됨"
+}

@@ -1,0 +1,28 @@
+{
+  "categories": {
+    "Adventure": "모험",
+    "Art": "예술",
+    "Food": "음식",
+    "Games": "게임",
+    "Sports": "스포츠"
+  },
+  "statuses": {
+    "Ready": "참여 가능",
+    "Busy": "바쁨",
+    "Inactive": "비활성",
+    "Pending": "대기 중"
+  },
+  "statusDescriptions": {
+    "Ready": "누구에게서든 나들이 요청을 받을 수 있어요!",
+    "Busy": "덜 재밌는 다른 일로 바쁜 상태예요.",
+    "Inactive": "2주 동안 활동이 없으면 상태가 비활성으로 바뀌어요."
+  },
+  "instructionTypes": {
+    "communicate": "소통",
+    "purchase": "구매",
+    "travel": "이동",
+    "play": "놀기",
+    "capture": "촬영",
+    "create": "만들기"
+  }
+}

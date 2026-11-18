@@ -15,10 +15,12 @@ import { goActions } from "../../store/go-slice";
 import { useNavigate } from "react-router-dom";
 import { modalActions } from "../../store/modal-slice";
 import { swapModal } from "../../store/modal-actions";
+import { useT } from "../../i18n";
 // Sender-name colours for other people's messages
 const nameColours = ["#9b5de5", "#e05a6a", "#d68a00", "#2f9e66", "#1f8fbf"];
 
 const ChatModal = (props) => {
+  const { t, formatDate } = useT();
   const user = useSelector((state) => state.auth.user);
   const modalState = useSelector((state) => state.modal);
   const modalDisplay = modalState.selector === "chat-modal" ? "flex" : "none";
@@ -109,7 +111,12 @@ const ChatModal = (props) => {
             <div className={styles.chatMembers}>
               {chat.outing
                 ? membersString
-                : `Active ${new Date(chat.touched).toDateString().slice(4, 10)}`}
+                : t("chatRoom.active", {
+                    date: formatDate(chat.touched, {
+                      month: "short",
+                      day: "numeric",
+                    }),
+                  })}
             </div>
           </div>
         </div>
@@ -120,7 +127,7 @@ const ChatModal = (props) => {
           onClick={chat.outing ? handleShowOuting : handleCreateOuting}
           className={styles.headerAction}
         >
-          {chat.outing ? "Outing" : "+ Outing"}
+          {chat.outing ? t("chatRoom.outing") : t("chatRoom.newOuting")}
         </button>
       </ModalButtonPortal>
 
@@ -152,7 +159,7 @@ const ChatModal = (props) => {
           <textarea
             id="composer-textarea"
             rows={1}
-            placeholder="Message…"
+            placeholder={t("chatRoom.placeholder")}
             onChange={(e) => {
               e.target.style.height = "";
               e.target.style.height = e.target.scrollHeight + "px";
@@ -171,7 +178,7 @@ const ChatModal = (props) => {
             type="button"
             onClick={handleSendMessage}
             className={styles.sendButton}
-            aria-label="Send message"
+            aria-label={t("chatRoom.send")}
           >
             <svg viewBox="0 0 24 24" className={styles.sendIcon} aria-hidden="true">
               <path
@@ -191,6 +198,7 @@ const ChatModal = (props) => {
 };
 
 const MessageBubble = (props) => {
+  const { t, formatDate } = useT();
   const user = useSelector((state) => state.auth.user);
   const usersData = useSelector((state) => state.data.users);
   const messageUser = usersData[props.user];
@@ -208,7 +216,9 @@ const MessageBubble = (props) => {
         props.lastInGroup ? styles.groupEnd : ""
       }`}
     >
-      {isLastRead && <div className={styles.lastReadIndicator}>New</div>}
+      {isLastRead && (
+        <div className={styles.lastReadIndicator}>{t("chatRoom.new")}</div>
+      )}
       {foreign && props.firstInGroup && messageUser && (
         <div className={styles.bubbleUser} style={{ color: nameColour }}>
           {messageUser.first_name}
@@ -228,8 +238,10 @@ const MessageBubble = (props) => {
       ) : null}
       {props.lastInGroup && (
         <div className={styles.sent}>
-          {sentDate.toDateString().slice(4, 10)} ·{" "}
-          {sentDate.toTimeString().slice(0, 5)}
+          {t("chatRoom.sentAt", {
+            date: formatDate(sentDate, { month: "short", day: "numeric" }),
+            time: formatDate(sentDate, { timeStyle: "short" }),
+          })}
         </div>
       )}
     </div>
@@ -239,6 +251,7 @@ const MessageBubble = (props) => {
 // A shared activity in the chat: tap to open the same activity popup as the
 // social feed (Create Outing / Send to a friend)
 const ActivityShareBubble = ({ activity, foreign }) => {
+  const { t } = useT();
   const dispatch = useDispatch();
   const colour = useSelector(
     (state) => state.auth.globals?.categoryColorMap?.[activity.category]
@@ -269,7 +282,7 @@ const ActivityShareBubble = ({ activity, foreign }) => {
       />
       <span className={styles.activityShareBody}>
         <span className={styles.activityShareLabel}>
-          {loading ? "Opening…" : "Activity"}
+          {loading ? t("chatRoom.share.opening") : t("chatRoom.share.activity")}
         </span>
         <span className={styles.activityShareName}>{activity.name}</span>
         {activity.location ? (

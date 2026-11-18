@@ -1,0 +1,13 @@
+{
+  "active": "{{date}}活跃",
+  "outing": "出游",
+  "newOuting": "+ 出游",
+  "placeholder": "发消息…",
+  "send": "发送消息",
+  "new": "新消息",
+  "sentAt": "{{date}} · {{time}}",
+  "share": {
+    "opening": "打开中…",
+    "activity": "活动"
+  }
+}

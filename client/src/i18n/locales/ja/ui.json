@@ -1,0 +1,86 @@
+{
+  "loading": "読み込み中",
+  "dateTime": "{{date}} - {{time}}",
+  "rating": {
+    "unrated": "未評価",
+    "outOfFive": "{{rating}}/5"
+  },
+  "outingStatus": {
+    "completed": "完了済み",
+    "youLeft": "抜けました",
+    "invited": "招待されています：タップして参加",
+    "waitingForMembers": "メンバー待ち",
+    "waitingForPhotos": "写真待ち",
+    "waitingForOthers": "ほかのメンバーの完了待ち",
+    "readyToFinish": "完了できます"
+  },
+  "outingCard": {
+    "completed": "完了 - {{date}}",
+    "pending": "予定中 - {{date}}"
+  },
+  "outingList": {
+    "searchPlaceholder": "マイおでかけを検索",
+    "pendingHeader": "予定中のおでかけ",
+    "pendingLimit": {
+      "other": "予定中のおでかけは同時に{{count}}件までです。"
+    }
+  },
+  "outingTitle": {
+    "rename": "おでかけ名を変更",
+    "name": "おでかけ名",
+    "save": "名前を保存",
+    "cancel": "名前の変更をキャンセル"
+  },
+  "chatCard": {
+    "delete": "削除",
+    "archive": "アーカイブ",
+    "unarchive": "アーカイブ解除",
+    "markRead": "✓ 既読",
+    "justYou": "あなただけ",
+    "lastActive": "最終アクティブ：{{date}}"
+  },
+  "feedCard": {
+    "members": "おでかけメンバー",
+    "viewActivity": "アクティビティを見る",
+    "like": "いいね",
+    "unlike": "いいねを取り消す"
+  },
+  "friendCard": {
+    "profileNotShared": "プロフィール非公開"
+  },
+  "stats": {
+    "flakeRating": "信頼度",
+    "outings": "おでかけ"
+  },
+  "statusButtons": {
+    "label": "ステータス",
+    "hints": {
+      "ready": "おでかけ募集中：デイリーマッチに表示されます",
+      "busy": "お休み中：マッチングされません"
+    },
+    "currently": "現在：{{status}}",
+    "choose": "ステータスを選択"
+  },
+  "starRate": {
+    "label": "評価",
+    "stars": {
+      "other": "星{{count}}つ"
+    }
+  },
+  "photos": {
+    "none": "写真なし",
+    "remove": "写真を削除",
+    "userPhoto": "写真",
+    "change": "写真を変更"
+  },
+  "addUsers": {
+    "edit": "メンバーを編集",
+    "add": "メンバーを追加"
+  },
+  "search": {
+    "icon": "検索"
+  },
+  "profileHeader": {
+    "settings": "設定"
+  }
+}

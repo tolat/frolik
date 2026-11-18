@@ -322,11 +322,13 @@
   padding: 1.2rem 0.8rem;
   box-sizing: border-box;
   font-size: 1.3rem;
-  border-top-right-radius: 3px;
-  border-top-left-radius: 3px;
+  // Selected: tinted in the category colour (Go.jsx), sitting on its underline
+  border-top-right-radius: 1rem;
+  border-top-left-radius: 1rem;
   font-weight: bold;
   justify-content: center;
   display: flex;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 

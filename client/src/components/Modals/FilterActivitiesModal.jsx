@@ -12,15 +12,17 @@ import creationIcon from "../../images/sketch.png";
 import creationIconLight from "../../images/sketch-light.png";
 import featuredIcon from "../../images/feature.png";
 import featuredIconLight from "../../images/feature-light.png";
+import { useT } from "../../i18n";
 
 // "Show only" toggles — pick any number; an activity must match all of them
 const SHOW_ONLY = [
-  { key: "completed", label: "Completed", icon: completeIcon, iconOn: completeIconLight },
-  { key: "featured", label: "Featured", icon: featuredIcon, iconOn: featuredIconLight },
-  { key: "created", label: "Creations", icon: creationIcon, iconOn: creationIconLight },
+  { key: "completed", labelKey: "filter.showOnly.completed", icon: completeIcon, iconOn: completeIconLight },
+  { key: "featured", labelKey: "filter.showOnly.featured", icon: featuredIcon, iconOn: featuredIconLight },
+  { key: "created", labelKey: "filter.showOnly.created", icon: creationIcon, iconOn: creationIconLight },
 ];
 
 const FilterActivitiesModal = (props) => {
+  const { t } = useT();
   const modalState = useSelector((state) => state.modal);
   const isOpen = modalState.selector === "filter-activities";
   const modalStyle = { display: isOpen ? "flex" : "none" };
@@ -85,11 +87,15 @@ const FilterActivitiesModal = (props) => {
     <ModalPortal>
       <div style={modalStyle} className={`${styles.container} noscroll`}>
         <ModalHeaderPortal selector={"filter-activities"}>
-          Filter Activities
+          {t("filter.header")}
         </ModalHeaderPortal>
 
-        <div className={styles.sectionLabel}>Show only</div>
-        <div className={styles.chips} role="group" aria-label="Show only">
+        <div className={styles.sectionLabel}>{t("filter.showOnly.title")}</div>
+        <div
+          className={styles.chips}
+          role="group"
+          aria-label={t("filter.showOnly.title")}
+        >
           {SHOW_ONLY.map((o) => (
             <button
               key={o.key}
@@ -99,18 +105,18 @@ const FilterActivitiesModal = (props) => {
               className={`${styles.chip} ${showOnly[o.key] ? styles.chipOn : ""}`}
             >
               <img src={showOnly[o.key] ? o.iconOn : o.icon} alt="" />
-              {o.label}
+              {t(o.labelKey)}
             </button>
           ))}
         </div>
 
-        <div className={styles.sectionLabel}>Details</div>
+        <div className={styles.sectionLabel}>{t("filter.details")}</div>
         <div key={formKey} className={styles.fields}>
           <div className={styles.sideBySide}>
             <SimpleInput
               name={"min-participants"}
-              label={"Min. Participants:"}
-              suffix="people"
+              label={t("filter.fields.minParticipants")}
+              suffix={t("filter.units.people")}
               type="number"
               min={0}
               ref={filterRefs.minParticipants}
@@ -119,8 +125,8 @@ const FilterActivitiesModal = (props) => {
             <div className={styles.spacer}></div>
             <SimpleInput
               name={"max-participants"}
-              label={"Max. Participants:"}
-              suffix="people"
+              label={t("filter.fields.maxParticipants")}
+              suffix={t("filter.units.people")}
               type="number"
               min={0}
               ref={filterRefs.maxParticipants}
@@ -132,7 +138,7 @@ const FilterActivitiesModal = (props) => {
               min={0}
               type={"number"}
               name={"min-cost"}
-              label={"Min. Cost:"}
+              label={t("filter.fields.minCost")}
               prefix="$"
               ref={filterRefs.minCost}
               defaultVal={f.minCost}
@@ -142,7 +148,7 @@ const FilterActivitiesModal = (props) => {
               min={0}
               type={"number"}
               name={"max-cost"}
-              label={"Max. Cost:"}
+              label={t("filter.fields.maxCost")}
               prefix="$"
               ref={filterRefs.maxCost}
               defaultVal={f.maxCost}
@@ -154,7 +160,7 @@ const FilterActivitiesModal = (props) => {
               max={5}
               type={"number"}
               name={"min-rating"}
-              label={"Min. Rating:"}
+              label={t("filter.fields.minRating")}
               suffix="★"
               step={0.5}
               ref={filterRefs.minRating}
@@ -166,8 +172,8 @@ const FilterActivitiesModal = (props) => {
               max={24}
               type={"number"}
               name={"max-time"}
-              label={"Max. Time:"}
-              suffix="hrs"
+              label={t("filter.fields.maxTime")}
+              suffix={t("filter.units.hours")}
               step={0.5}
               ref={filterRefs.maxTime}
               defaultVal={f.maxTime}
@@ -180,13 +186,13 @@ const FilterActivitiesModal = (props) => {
             onClick={handleClearFilter}
             className={styles.clearButton}
           >
-            Clear All
+            {t("filter.clearAll")}
           </SimpleButton>
           <SimpleButton
             onClick={handleApplyFilter}
             className={styles.applyButton}
           >
-            Apply
+            {t("filter.apply")}
           </SimpleButton>
         </div>
       </div>

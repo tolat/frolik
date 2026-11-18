@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles/AutoLocationToggle.module.scss";
 import { authActions } from "../../store/auth-slice";
 import { confirmLocation, currentPlace, saveLocation } from "../../utils/location";
+import { useT } from "../../i18n";
 
 // Settings switch: "Keep my location up to date". Turning it on asks for
 // location permission (from this tap) and sets the city right away; after
 // that the app refreshes it on open (see autoUpdateLocation).
 const AutoLocationToggle = () => {
+  const { t } = useT();
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const [busy, setBusy] = useState(false);
@@ -50,13 +52,13 @@ const AutoLocationToggle = () => {
         disabled={busy}
       >
         <span className={styles.text}>
-          <span className={styles.title}>Keep my location up to date</span>
+          <span className={styles.title}>{t("location.auto.title")}</span>
           <span className={styles.caption}>
             {busy
               ? on
-                ? "Turning off…"
-                : "Finding your city…"
-              : "We'll update your city whenever you open frolik. Only your city is saved."}
+                ? t("location.auto.turningOff")
+                : t("location.finding")
+              : t("location.auto.caption")}
           </span>
         </span>
         <span className={`${styles.switch} ${on ? styles.switchOn : ""}`}>

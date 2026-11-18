@@ -1,0 +1,28 @@
+{
+  "categories": {
+    "Adventure": "探险",
+    "Art": "艺术",
+    "Food": "美食",
+    "Games": "游戏",
+    "Sports": "运动"
+  },
+  "statuses": {
+    "Ready": "有空",
+    "Busy": "忙碌",
+    "Inactive": "不活跃",
+    "Pending": "待定"
+  },
+  "statusDescriptions": {
+    "Ready": "你有空，任何人都可以邀请你出游！",
+    "Busy": "你在忙别的事，没那么好玩的那种。",
+    "Inactive": "两周没有活动后，你的状态会自动变为不活跃。"
+  },
+  "instructionTypes": {
+    "communicate": "沟通",
+    "purchase": "购买",
+    "travel": "出行",
+    "play": "游玩",
+    "capture": "拍摄",
+    "create": "创作"
+  }
+}

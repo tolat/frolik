@@ -1,0 +1,8 @@
+{
+  "header": "创建聊天",
+  "create": "+ 创建聊天",
+  "chatWith": "聊天对象：",
+  "pickHint": "至少添加一位好友才能开始聊天。",
+  "addFriends": "添加好友：",
+  "searchPlaceholder": "搜索好友…"
+}

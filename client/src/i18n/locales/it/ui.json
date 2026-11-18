@@ -1,0 +1,90 @@
+{
+  "loading": "Caricamento",
+  "dateTime": "{{date}} - {{time}}",
+  "rating": {
+    "unrated": "nessuna valutazione",
+    "outOfFive": "{{rating}}/5"
+  },
+  "outingStatus": {
+    "completed": "Completata",
+    "youLeft": "L'hai lasciata",
+    "invited": "Invitato: tocca per partecipare",
+    "waitingForMembers": "In attesa di partecipanti",
+    "waitingForPhotos": "In attesa di foto",
+    "waitingForOthers": "In attesa che gli altri finiscano",
+    "readyToFinish": "Pronta da completare"
+  },
+  "outingCard": {
+    "completed": "Completata - {{date}}",
+    "pending": "In sospeso - {{date}}"
+  },
+  "outingList": {
+    "searchPlaceholder": "Cerca le mie uscite",
+    "pendingHeader": "Uscite in sospeso",
+    "pendingLimit": {
+      "one": "Puoi avere al massimo {{count}} uscita in sospeso alla volta.",
+      "many": "Puoi avere al massimo {{count}} uscite in sospeso alla volta.",
+      "other": "Puoi avere al massimo {{count}} uscite in sospeso alla volta."
+    }
+  },
+  "outingTitle": {
+    "rename": "Rinomina uscita",
+    "name": "Nome dell'uscita",
+    "save": "Salva nome",
+    "cancel": "Annulla modifica nome"
+  },
+  "chatCard": {
+    "delete": "Elimina",
+    "archive": "Archivia",
+    "unarchive": "Ripristina",
+    "markRead": "✓ Letta",
+    "justYou": "Solo tu",
+    "lastActive": "Ultima attività: {{date}}"
+  },
+  "feedCard": {
+    "members": "Partecipanti all'uscita",
+    "viewActivity": "Vedi attività",
+    "like": "Mi piace",
+    "unlike": "Non mi piace più"
+  },
+  "friendCard": {
+    "profileNotShared": "Profilo non condiviso"
+  },
+  "stats": {
+    "flakeRating": "Indice bidoni",
+    "outings": "Uscite"
+  },
+  "statusButtons": {
+    "label": "Stato",
+    "hints": {
+      "ready": "Aperto alle uscite: comparirai nei match del giorno",
+      "busy": "In pausa: non riceverai match"
+    },
+    "currently": "Ora: {{status}}",
+    "choose": "Scegli il tuo stato"
+  },
+  "starRate": {
+    "label": "Valutazione",
+    "stars": {
+      "one": "{{count}} stella",
+      "many": "{{count}} stelle",
+      "other": "{{count}} stelle"
+    }
+  },
+  "photos": {
+    "none": "Nessuna foto",
+    "remove": "Rimuovi foto",
+    "userPhoto": "Foto",
+    "change": "Cambia foto"
+  },
+  "addUsers": {
+    "edit": "Modifica persone",
+    "add": "Aggiungi persone"
+  },
+  "search": {
+    "icon": "Cerca"
+  },
+  "profileHeader": {
+    "settings": "Impostazioni"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "header": "Filtrer aktiviteter",
+  "showOnly": {
+    "title": "Vis bare",
+    "completed": "Fullførte",
+    "featured": "Utvalgte",
+    "created": "Brukerlagde"
+  },
+  "details": "Detaljer",
+  "fields": {
+    "minParticipants": "Min. deltakere:",
+    "maxParticipants": "Maks. deltakere:",
+    "minCost": "Min. pris:",
+    "maxCost": "Maks. pris:",
+    "minRating": "Min. vurdering:",
+    "maxTime": "Maks. tid:"
+  },
+  "units": {
+    "people": "personer",
+    "hours": "t"
+  },
+  "clearAll": "Nullstill alt",
+  "apply": "Bruk"
+}

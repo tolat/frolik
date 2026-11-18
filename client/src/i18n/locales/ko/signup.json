@@ -1,0 +1,24 @@
+{
+  "header": "계정 만들기",
+  "create": "+ 만들기",
+  "creating": "만드는 중",
+  "ok": "확인",
+  "fields": {
+    "email": "이메일:",
+    "password": "비밀번호:"
+  },
+  "alreadyExists": {
+    "header": "{{email}} 계정이 이미 있어요.",
+    "message": "다른 이메일로 다시 시도해 주세요."
+  },
+  "confirmEmail": {
+    "header": "이메일을 확인하세요!",
+    "message": "{{email}} 주소로 링크를 보냈어요. 링크를 눌러 계정 만들기를 완료하세요.",
+    "resend": {
+      "idle": "인증 메일 다시 보내기",
+      "sending": "메일 보내는 중…",
+      "sent": "메일을 보냈어요!",
+      "failed": "확인 메일 다시 보내기"
+    }
+  }
+}

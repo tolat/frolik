@@ -1,0 +1,21 @@
+{
+  "header": "Aggiungi partecipanti all'uscita",
+  "removeHeader": "Rimuovi partecipanti dall'uscita",
+  "dailyMatches": "Match del giorno",
+  "required": "Obbligatorio",
+  "matchesSubtext": "Ogni uscita deve includere almeno una persona che non hai ancora conosciuto. I match si rinnovano ogni 24 ore.",
+  "noMatches": "Nessun match disponibile!",
+  "activeFriends": "Amici attivi",
+  "friendSlots": {
+    "firstFriend": "Ora puoi aggiungere un amico: ti servirà anche un match del giorno per ogni amico.",
+    "more": {
+      "one": "Puoi aggiungere ancora {{count}} amico: uno per ogni match del giorno.",
+      "many": "Puoi aggiungere ancora {{count}} amici: uno per ogni match del giorno.",
+      "other": "Puoi aggiungere ancora {{count}} amici: uno per ogni match del giorno."
+    },
+    "none": "Aggiungi un altro match del giorno per invitare un altro amico: un amico per ogni match."
+  },
+  "lockedTitle": "Aggiungi un altro match del giorno per invitare un altro amico",
+  "searchPlaceholder": "Cerca amici...",
+  "noFriends": "Nessun amico disponibile!"
+}

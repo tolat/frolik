@@ -1,0 +1,12 @@
+{
+  "ios": {
+    "title": "Want notifications?",
+    "body": "Add frolik to your Home Screen (Share → Add to Home Screen), then turn them on."
+  },
+  "blocked": "Notifications are blocked. Turn them on for frolik in your browser or phone settings.",
+  "prompt": {
+    "title": "Turn on notifications",
+    "body": "Get told about invites, messages and friend requests.",
+    "button": "Turn on"
+  }
+}

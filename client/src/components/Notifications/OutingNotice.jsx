@@ -4,7 +4,7 @@ import { dismissNotification } from "../../utils/data-fetch";
 import { hideModal } from "../../store/modal-actions";
 import { modalActions } from "../../store/modal-slice";
 import { authActions } from "../../store/auth-slice";
-import { toAppDate } from "../../utils/utils";
+import { useT } from "../../i18n";
 import SimpleButton from "../UI/SimpleButton";
 
 // System alerts about an outing from the stale-outing job: reminders to join
@@ -12,6 +12,7 @@ import SimpleButton from "../UI/SimpleButton";
 // (server: utils/outingLifecycle.js). Text comes with the notification.
 const OutingNotice = ({ notification: n }) => {
   const dispatch = useDispatch();
+  const { t, formatDate } = useT();
   const user = useSelector((state) => state.auth.user);
   const outing = user?.outings?.find((o) => o._id === n.outing);
   const stripeColor = useSelector(
@@ -40,18 +41,18 @@ const OutingNotice = ({ notification: n }) => {
       <div className={styles.outingInviteInnerContainer}>
         <div className={styles.outingInviteHeader}>{n.title}</div>
         <div className={styles.outingInviteActivity}>{n.message}</div>
-        <div>{toAppDate(n.created)}</div>
+        <div>{formatDate(n.created, { dateStyle: "medium", timeStyle: "short" })}</div>
         <div className={styles.outingInviteButtons}>
           {outing ? (
             <>
               <SimpleButton noShadow={true} onClick={handleViewOuting}>
-                View Outing
+                {t("notifications.actions.viewOuting")}
               </SimpleButton>
               <div className={styles.buttonSpacer}></div>
             </>
           ) : null}
           <SimpleButton onClick={handleClear} noShadow={true}>
-            Clear
+            {t("notifications.actions.clear")}
           </SimpleButton>
         </div>
       </div>

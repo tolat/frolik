@@ -10,8 +10,10 @@ import { collapseOut } from "../../utils/animations";
 import ModalHeaderPortal from "./ModalHeaderPortal";
 import { alphabetSort, toSorted } from "../../utils/utils";
 import SimpleSearch from "../UI/SimpleSearch";
+import { useT } from "../../i18n";
 
 const AddUserModal = (props) => {
+  const { t } = useT();
   const user = useSelector((state) => state.auth.user);
   const goState = useSelector((state) => state.go);
   const dispatch = useDispatch();
@@ -69,7 +71,7 @@ const AddUserModal = (props) => {
           locked ? undefined : (e) => addUserToOuting(props.user, e.currentTarget)
         }
         className={`${styles.addButton} ${locked ? styles.addButtonLocked : ""}`}
-        title={locked ? "Add another Daily Match to invite another friend" : undefined}
+        title={locked ? t("addUsers.lockedTitle") : undefined}
         aria-disabled={locked || undefined}
       >
         +
@@ -100,15 +102,17 @@ const AddUserModal = (props) => {
     <ModalPortal>
       <div style={modalStyle} className={`${styles.container} noscroll`}>
         <ModalHeaderPortal selector={"add-user"}>
-          Add Outing Members
+          {t("addUsers.header")}
         </ModalHeaderPortal>
         <div className={styles.dailyMatchesContainer}>
           <h2 className={styles.matchesHeader}>
-            Daily Matches <span className={styles.requiredBadge}>Required</span>
+            {t("addUsers.dailyMatches")}{" "}
+            <span className={styles.requiredBadge}>
+              {t("addUsers.required")}
+            </span>
           </h2>
           <div className={styles.headerSubtext}>
-            Every Outing must include at least one person you haven't met yet.
-            Matches refresh every 24 hrs.
+            {t("addUsers.matchesSubtext")}
           </div>
 
           {availableMatches[0] ? (
@@ -124,23 +128,23 @@ const AddUserModal = (props) => {
           ) : fetchingMatchedUsers ? (
             <SkeletonCards variant="person" count={3} />
           ) : (
-            <h2>No Available Matches!</h2>
+            <h2>{t("addUsers.noMatches")}</h2>
           )}
         </div>
         {availableFriends[0] ? (
           <Fragment>
             <h2 style={{ width: "100%", fontSize: "1.8rem", marginBottom: "0.4rem" }}>
-              Active Friends
+              {t("addUsers.activeFriends")}
             </h2>
             <div className={styles.friendSlots}>
               {friendSlots > 0
                 ? matchesAdded === 0
-                  ? "You can add a friend now — you'll also need a Daily Match for each friend."
-                  : `You can add ${friendSlots} more friend${friendSlots > 1 ? "s" : ""} — one per Daily Match.`
-                : "Add another Daily Match to invite another friend — one friend per match."}
+                  ? t("addUsers.friendSlots.firstFriend")
+                  : t("addUsers.friendSlots.more", { count: friendSlots })
+                : t("addUsers.friendSlots.none")}
             </div>
             <SimpleSearch
-              placeholder={"Search Friends.."}
+              placeholder={t("addUsers.searchPlaceholder")}
               setValue={setFriendSearch}
             />
             {toSorted(applyFriendSearch(availableFriends), alphabetSort).map(
@@ -156,7 +160,7 @@ const AddUserModal = (props) => {
             )}
           </Fragment>
         ) : (
-          <h2 style={{ marginTop: "3rem" }}>No Friends Available!</h2>
+          <h2 style={{ marginTop: "3rem" }}>{t("addUsers.noFriends")}</h2>
         )}
       </div>
     </ModalPortal>

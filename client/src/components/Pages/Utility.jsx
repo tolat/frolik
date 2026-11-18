@@ -5,14 +5,16 @@ import SimpleInput from "../UI/SimpleInput";
 import { useState } from "react";
 import { resetPassword, sendResetLink } from "../../utils/data-fetch";
 import logo from "../../images/frolik2.png";
+import { useT } from "../../i18n";
 
 const Utility = (props) => {
   const navigate = useNavigate();
+  const { t } = useT();
   const [resetUsername, setResetUsername] = useState(false);
   const [password, setPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState(false);
-  const [resetButtonText, setResetButtonText] = useState("Reset Password");
-  const [sendLinkButtonText, setSendLinkButtonText] = useState("Send Link");
+  const [isResetting, setIsResetting] = useState(false);
+  const [isSendingLink, setIsSendingLink] = useState(false);
   const { userID } = useParams();
   const [searchParams] = useSearchParams();
   const resetToken = searchParams.get("token");
@@ -33,10 +35,10 @@ const Utility = (props) => {
         navigate("/reset-password-link-sent");
       }
 
-      setSendLinkButtonText("Send Link");
+      setIsSendingLink(false);
     };
     if (resetUsername && resetUsername !== "") {
-      setSendLinkButtonText("Sending link…");
+      setIsSendingLink(true);
       sendResetLink(resetUsername, onComplete);
     }
   };
@@ -47,29 +49,21 @@ const Utility = (props) => {
       if (response.ok) {
         navigate("/password-reset-success");
       }
-      setResetButtonText("Reset Password");
+      setIsResetting(false);
     };
-    setResetButtonText("Resetting…");
+    setIsResetting(true);
     resetPassword(userID, resetToken, password, onComplete);
   };
 
-  const headers = {
-    "email-verified": "Email Address Verified!",
-    "send-reset-password-link": "Forgot your password?",
-    "reset-password-link-sent": "Reset Link Sent",
-    "reset-password": "Reset Password",
-    "password-reset-success": "Password Reset Successful!",
+  // i18n keys per page (auth.utility.<key>.header / .message)
+  const pageKeys = {
+    "email-verified": "emailVerified",
+    "send-reset-password-link": "sendResetLink",
+    "reset-password-link-sent": "resetLinkSent",
+    "reset-password": "resetPassword",
+    "password-reset-success": "resetSuccess",
   };
-
-  const messages = {
-    "email-verified":
-      "Your email address has been verified. You may now login with your username and password.",
-    "send-reset-password-link":
-      "Enter your email and we'll send you a link to reset it.",
-    "reset-password-link-sent": "Check your email for the password reset link!",
-    "reset-password": "Enter a new password below.",
-    "password-reset-success": "You may now log in with your new password.",
-  };
+  const pageKey = pageKeys[props.page];
 
   const hasEmail = resetUsername && resetUsername !== "";
 
@@ -84,14 +78,14 @@ const Utility = (props) => {
   );
 
   const elements = {
-    "email-verified": loginButton("Go to Login"),
+    "email-verified": loginButton(t("auth.utility.goToLogin")),
     "send-reset-password-link": (
       <>
         <div className={styles.fields}>
           <SimpleInput
             defaultVal={""}
             setDataChanged={setResetUsername}
-            label="Email"
+            label={t("auth.utility.email")}
             name="enter-username"
             type="email"
           ></SimpleInput>
@@ -103,7 +97,9 @@ const Utility = (props) => {
           }`}
           onClick={hasEmail ? handleSendLink : null}
         >
-          {sendLinkButtonText}
+          {isSendingLink
+            ? t("auth.utility.sendingLink")
+            : t("auth.utility.sendLink")}
         </SimpleButton>
         <div className={`${styles.links} ${styles.center}`}>
           <button
@@ -111,26 +107,26 @@ const Utility = (props) => {
             className={styles.link}
             onClick={handleGoToLoginClick}
           >
-            Back to Login
+            {t("auth.utility.backToLogin")}
           </button>
         </div>
       </>
     ),
-    "reset-password-link-sent": loginButton("Back to Login"),
+    "reset-password-link-sent": loginButton(t("auth.utility.backToLogin")),
     "reset-password": (
       <>
         <div className={styles.fields}>
           <SimpleInput
             defaultVal={""}
             setDataChanged={setPassword}
-            label="New password"
+            label={t("auth.utility.newPassword")}
             name="enter-new-password"
             type="password"
           ></SimpleInput>
           <SimpleInput
             defaultVal={""}
             setDataChanged={setConfirmPassword}
-            label="Confirm password"
+            label={t("auth.utility.confirmPassword")}
             name="confirm-password"
             type="password"
           ></SimpleInput>
@@ -142,19 +138,25 @@ const Utility = (props) => {
           }`}
           onClick={passwordsEqual ? handleResetPassword : null}
         >
-          {resetButtonText}
+          {isResetting
+            ? t("auth.utility.resetting")
+            : t("auth.utility.resetPasswordButton")}
         </SimpleButton>
       </>
     ),
-    "password-reset-success": loginButton("Go to Login"),
+    "password-reset-success": loginButton(t("auth.utility.goToLogin")),
   };
 
   return (
     <div className={styles.page}>
       <img alt="frolik" src={logo} className={styles.logo} />
       <div className={styles.card}>
-        <h1 className={styles.title}>{headers[props.page]}</h1>
-        <p className={styles.subtitle}>{messages[props.page]}</p>
+        <h1 className={styles.title}>
+          {pageKey && t(`auth.utility.${pageKey}.header`)}
+        </h1>
+        <p className={styles.subtitle}>
+          {pageKey && t(`auth.utility.${pageKey}.message`)}
+        </p>
         {elements[props.page]}
       </div>
     </div>

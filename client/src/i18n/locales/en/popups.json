@@ -1,0 +1,24 @@
+{
+  "cropper": {
+    "label": "Zoom and crop",
+    "zoom": "Zoom",
+    "cancel": "Cancel",
+    "upload": "Upload",
+    "done": "Done",
+    "uploading": "Uploading…"
+  },
+  "photo": {
+    "alt": "Photo"
+  },
+  "sendActivity": {
+    "header": "Send to a friend",
+    "searchPlaceholder": "Search friends…",
+    "noFriends": "Add friends to send them activities. You can add someone after you've completed an Outing together.",
+    "noMatches": "No friends match \"{{query}}\".",
+    "send": "Send",
+    "sending": "Sending…"
+  },
+  "sharedActivity": {
+    "label": "Activity"
+  }
+}

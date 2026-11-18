@@ -5,8 +5,10 @@ import { memo } from "react";
 import ImageLoadingTile from "./ImageLoadingTile";
 import useIncrementalList from "../../utils/useIncrementalList";
 import ListSentinel from "./ListSentinel";
+import { useT } from "../../i18n";
 
 const PhotoGrid = memo((props) => {
+  const { t } = useT();
   const dispatch = useDispatch();
   const { visible, hasMore, sentinelRef } = useIncrementalList(
     props.images,
@@ -38,7 +40,7 @@ const PhotoGrid = memo((props) => {
                 onClick={() => onImageClick(m)}
                 onLoad={(e) => onImageLoad(e, m)}
                 className={`${styles.img} hidden`}
-                alt="userImage"
+                alt={t("ui.photos.userPhoto")}
                 src={m}
               />
             </div>

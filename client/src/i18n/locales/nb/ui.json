@@ -1,0 +1,88 @@
+{
+  "loading": "Laster",
+  "dateTime": "{{date}} - {{time}}",
+  "rating": {
+    "unrated": "ikke vurdert",
+    "outOfFive": "{{rating}}/5"
+  },
+  "outingStatus": {
+    "completed": "Fullført",
+    "youLeft": "Du gikk ut",
+    "invited": "Invitert: trykk for å bli med",
+    "waitingForMembers": "Venter på deltakere",
+    "waitingForPhotos": "Venter på bilder",
+    "waitingForOthers": "Venter på at de andre blir ferdige",
+    "readyToFinish": "Klar til å fullføres"
+  },
+  "outingCard": {
+    "completed": "Fullført – {{date}}",
+    "pending": "Venter – {{date}}"
+  },
+  "outingList": {
+    "searchPlaceholder": "Søk i mine treff",
+    "pendingHeader": "Ventende treff",
+    "pendingLimit": {
+      "one": "Du kan ha opptil {{count}} ventende treff om gangen.",
+      "other": "Du kan ha opptil {{count}} ventende treff om gangen."
+    }
+  },
+  "outingTitle": {
+    "rename": "Gi treffet nytt navn",
+    "name": "Navn på treffet",
+    "save": "Lagre navnet",
+    "cancel": "Avbryt endring av navn"
+  },
+  "chatCard": {
+    "delete": "Slett",
+    "archive": "Arkiver",
+    "unarchive": "Hent fra arkiv",
+    "markRead": "✓ Lest",
+    "justYou": "Bare deg",
+    "lastActive": "Sist aktiv {{date}}"
+  },
+  "feedCard": {
+    "members": "Deltakere",
+    "viewActivity": "Se aktiviteten",
+    "like": "Lik",
+    "unlike": "Fjern liker"
+  },
+  "friendCard": {
+    "profileNotShared": "Profilen er ikke delt"
+  },
+  "stats": {
+    "flakeRating": "Pålitelighet",
+    "outings": "Treff"
+  },
+  "statusButtons": {
+    "label": "Status",
+    "hints": {
+      "ready": "Åpen for treff – du dukker opp blant dagsmatcher",
+      "busy": "Tar en pause – du blir ikke matchet"
+    },
+    "currently": "Nå: {{status}}",
+    "choose": "Velg status"
+  },
+  "starRate": {
+    "label": "Vurdering",
+    "stars": {
+      "one": "{{count}} stjerne",
+      "other": "{{count}} stjerner"
+    }
+  },
+  "photos": {
+    "none": "Ingen bilder",
+    "remove": "Fjern bilde",
+    "userPhoto": "Bilde",
+    "change": "Bytt bilde"
+  },
+  "addUsers": {
+    "edit": "Endre deltakere",
+    "add": "Legg til folk"
+  },
+  "search": {
+    "icon": "Søk"
+  },
+  "profileHeader": {
+    "settings": "Innstillinger"
+  }
+}

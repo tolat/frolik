@@ -1,0 +1,28 @@
+{
+  "categories": {
+    "Adventure": "Aventura",
+    "Art": "Arte",
+    "Food": "Comida",
+    "Games": "Jogos",
+    "Sports": "Esportes"
+  },
+  "statuses": {
+    "Ready": "Disponível",
+    "Busy": "Ocupado",
+    "Inactive": "Inativo",
+    "Pending": "Pendente"
+  },
+  "statusDescriptions": {
+    "Ready": "Você está disponível para convites de rolê de qualquer pessoa!",
+    "Busy": "Você está ocupado com outras coisas, menos divertidas.",
+    "Inactive": "Seu status vai mudar para Inativo depois de duas semanas sem atividade."
+  },
+  "instructionTypes": {
+    "communicate": "Comunicar",
+    "purchase": "Comprar",
+    "travel": "Deslocar-se",
+    "play": "Jogar",
+    "capture": "Registrar",
+    "create": "Criar"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "actions": {
+    "delete": "Удалить",
+    "cancel": "Отмена",
+    "showInstructions": "Показать шаги",
+    "hideInstructions": "Скрыть шаги",
+    "createOuting": "Создать вылазку",
+    "sendToFriend": "Отправить другу",
+    "remove": "Убрать",
+    "select": "Выбрать"
+  },
+  "delete": {
+    "header": "Удалить активность?",
+    "permanent": "Это действие нельзя отменить.",
+    "deleting": "Удаляем…"
+  },
+  "stats": {
+    "time": "Время",
+    "cost": "Цена",
+    "group": "Размер группы",
+    "rating": "Рейтинг",
+    "hours": {
+      "one": "{{count}} ч",
+      "few": "{{count}} ч",
+      "many": "{{count}} ч",
+      "other": "{{count}} ч"
+    },
+    "costValue": "{{cost}} $",
+    "participants": {
+      "one": "{{count}}+",
+      "few": "{{count}}+",
+      "many": "{{count}}+",
+      "other": "{{count}}+"
+    }
+  },
+  "badges": {
+    "completed": "Завершена",
+    "featured": "Рекомендуем",
+    "created": "От пользователя"
+  },
+  "instructionsHeader": "Шаги:",
+  "addInstruction": "+ Добавить шаг",
+  "goalHeader": "Цель:",
+  "goalAlt": "Цель",
+  "instruction": {
+    "chooseIcon": "Выбери иконку",
+    "titlePlaceholder": "Название шага",
+    "detailsPlaceholder": "Подробности шага",
+    "remove": "Убрать шаг"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "steps": {
+    "welcome": {
+      "title": "Te damos la bienvenida a frolik 👋",
+      "body": "frolik te ayuda a salir de casa y conocer gente nueva a través de salidas en la vida real. Empecemos por cómo planear una salida: toma como un minuto."
+    },
+    "planOuting": {
+      "title": "Planea una salida",
+      "body": "Cada salida necesita dos cosas: una actividad y al menos un match del día, alguien que todavía no conoces. Recibes matches nuevos cada 24 horas y también puedes invitar a tus amigos."
+    },
+    "pickActivity": {
+      "title": "Elige una actividad",
+      "body": "Explora las actividades por categoría y toca Elegir. Cuando agregues un match del día, aparecerá el botón Crear salida. Se envían las invitaciones y se crea un chat grupal para la salida."
+    },
+    "filterOrCreate": {
+      "title": "Filtra o crea",
+      "body": "Filtra por costo, tiempo, calificación o tamaño del grupo, o muestra solo las completadas, las destacadas o las creaciones de la comunidad. Toca el + azul junto a las categorías para crear una actividad personalizada que cualquiera en tu ciudad pueda usar."
+    },
+    "stats": {
+      "title": "Tus estadísticas",
+      "body": "❄️ es tu índice de plantones sobre 5. Cuanto más alto, mejor: 5.0 significa que nunca le has fallado a una salida, y baja cada vez que abandonas una o no la marcas como completada. 🎈 cuenta las salidas que has completado."
+    },
+    "settings": {
+      "title": "Configuración",
+      "body": "Aquí puedes editar tu perfil y elegir tu estado. Ponte en Disponible para aparecer en los matches del día de otras personas. Puedes repetir este recorrido desde aquí cuando quieras."
+    },
+    "alerts": {
+      "title": "Alertas",
+      "body": "Aquí llegan las invitaciones a salidas, las solicitudes de amistad y las novedades. Acepta una invitación para unirte a una salida: puedes tener hasta 5 salidas pendientes a la vez."
+    },
+    "finishing": {
+      "title": "Cómo terminar una salida",
+      "body": "Después de una salida, ábrela desde tu Perfil para subir fotos y marcarla como completada con una calificación. Una vez completada, puedes agregar como amigos a las personas con las que fuiste. Abandonar una salida a la que te uniste cuenta como plantón."
+    },
+    "social": {
+      "title": "Social",
+      "body": "Mira las salidas que completaron tus amigos y dale me gusta a sus fotos."
+    },
+    "chats": {
+      "title": "Chats",
+      "body": "Cada salida tiene su propio chat grupal. Toca + para empezar un chat con tus amigos."
+    },
+    "allSet": {
+      "title": "¡Todo listo! 🎈",
+      "body": "Repite este recorrido cuando quieras desde Configuración: el ⚙️ de tu Perfil."
+    }
+  },
+  "skip": "Saltar recorrido",
+  "back": "Atrás",
+  "start": "Empezar recorrido",
+  "letsGo": "¡Vamos!",
+  "next": "Siguiente"
+}

@@ -36,6 +36,7 @@ const {
 } = require("../utils/emailTemplates");
 
 const { finalizeOuting } = require("../utils/outingLifecycle");
+const { tr, userLang, forUser } = require("../utils/i18n");
 
 const router = express.Router({ mergeParams: true });
 
@@ -63,9 +64,8 @@ router.post(
     await user.populate("outings");
     if (user.outings.filter((o) => outingIsPending(user, o)).length > 4) {
       res.status(406).send({
-        header: "Too Many Pending Outings",
-        message: `You can only have up to 5 pending outings at a time. Either complete, leave, 
-        or delete an outing before creating another one.`,
+        header: req.t("outing.tooManyPending.header"),
+        message: req.t("outing.tooManyPending.message"),
       });
       return;
     }
@@ -82,8 +82,8 @@ router.post(
     );
     if (!hasDailyMatch) {
       res.status(406).send({
-        header: "Add a Daily Match",
-        message: `Every Outing needs at least one of today's Daily Matches — someone new! Add a match from the Daily Matches list and try again.`,
+        header: req.t("outing.needDailyMatch.header"),
+        message: req.t("outing.needDailyMatch.message"),
       });
       return;
     }
@@ -94,8 +94,8 @@ router.post(
     );
     if (strangers.length) {
       res.status(406).send({
-        header: "Can't invite that user",
-        message: "You can only invite friends and your Daily Matches.",
+        header: req.t("outing.cantInvite.header"),
+        message: req.t("outing.cantInvite.message"),
       });
       return;
     }
@@ -109,10 +109,8 @@ router.post(
     if (friendCount > newMatchCount) {
       const needed = friendCount - newMatchCount;
       res.status(406).send({
-        header: "Balance your Outing",
-        message: `You can invite one friend for each Daily Match. Add ${needed} more Daily Match${
-          needed > 1 ? "es" : ""
-        } or remove ${needed} friend${needed > 1 ? "s" : ""}.`,
+        header: req.t("outing.balance.header"),
+        message: req.t("outing.balance.message", { count: needed }),
       });
       return;
     }
@@ -122,8 +120,8 @@ router.post(
     );
     if (!activity) {
       res.status(406).send({
-        header: "Activity not found",
-        message: "Pick an activity for your Outing and try again.",
+        header: req.t("outing.activityNotFound.header"),
+        message: req.t("outing.activityNotFound.message"),
       });
       return;
     }
@@ -141,8 +139,8 @@ router.post(
         : "";
     if (requestedName.length > OUTING_NAME_MAX) {
       res.status(406).send({
-        header: "Could not create outing",
-        message: `Outing names can be at most ${OUTING_NAME_MAX} characters.`,
+        header: req.t("outing.nameTooLong.header"),
+        message: req.t("outing.nameTooLong.message", { max: OUTING_NAME_MAX }),
       });
       return;
     }
@@ -178,12 +176,16 @@ router.post(
         },
       });
       const userUnreadMessages = getTotalUnreadMessages(u);
+      const lang = userLang(u);
       sendEmail(
         u.username,
-        "Outing Invitation",
+        tr(lang, "email.invite.subject"),
         genOutingInviteEmail(
+          lang,
           user,
-          outing,
+          // the activity loaded above (outing.activity is only its id here,
+          // so the email's activity name used to come out blank)
+          { ...outing.toObject(), activity },
           u.notifications.length,
           userUnreadMessages
         )
@@ -226,8 +228,10 @@ router.post(
 
     // Send webpush Notification to invited users
     webpushNotify(newOuting.invited, {
-      title: "Outing Invite",
-      body: `${user.first_name} ${user.last_name} has invited you on an Outing!`,
+      title: forUser("push.outingInvite.title"),
+      body: forUser("push.outingInvite.body", {
+        name: `${user.first_name} ${user.last_name}`,
+      }),
     });
 
     // Send updated user and populated friends back
@@ -252,7 +256,7 @@ router.get(
       !user.notifications.find((n) => n.outing == outingID)
     ) {
       res.status(406).send({
-        header: `User does not have access to Outing ${outingID}`,
+        header: req.t("outing.noAccess.header", { id: outingID }),
         message: "",
       });
       return;
@@ -295,8 +299,8 @@ router.post(
         : "";
     if (!name || name.length > OUTING_NAME_MAX) {
       res.status(406).send({
-        header: "Could not rename outing",
-        message: `Outing names must be 1-${OUTING_NAME_MAX} characters.`,
+        header: req.t("outing.renameInvalid.header"),
+        message: req.t("outing.renameInvalid.message", { max: OUTING_NAME_MAX }),
       });
       return;
     }
@@ -305,8 +309,8 @@ router.post(
     if (!outing) return res.status(404).send("Outing not found");
     if (!outing.users.some((u) => u.toString() === user._id.toString())) {
       res.status(406).send({
-        header: "Could not rename outing",
-        message: "Only members of the Outing can rename it.",
+        header: req.t("outing.renameNotMember.header"),
+        message: req.t("outing.renameNotMember.message"),
       });
       return;
     }
@@ -350,8 +354,8 @@ router.get(
     // If user is not in the invited list, they cannot join. send 406
     if (!outing.invited.find((u) => u._id.toString() == user._id.toString())) {
       res.status(406).send({
-        header: `Cannot join Outing`,
-        message: "User was not invited to this Outing.",
+        header: req.t("outing.joinNotInvited.header"),
+        message: req.t("outing.joinNotInvited.message"),
       });
       return;
     }
@@ -360,9 +364,8 @@ router.get(
     await user.populate("outings");
     if (user.outings.filter((o) => outingIsPending(user, o)).length > 4) {
       res.status(406).send({
-        header: "Too Many Pending Outings",
-        message: `You can only have up to 5 pending outings at a time. Either complete, leave, 
-        or delete an outing before creating another one.`,
+        header: req.t("outing.tooManyPending.header"),
+        message: req.t("outing.tooManyPending.message"),
       });
       return;
     }
@@ -392,8 +395,8 @@ router.get(
     // If user is not in the members list, they cannot leave.
     if (!outing.users.find((u) => u._id.toString() == user._id.toString())) {
       res.status(406).send({
-        header: `Cannot leave Outing`,
-        message: "You must be in the Outing members list to leave the Outing.",
+        header: req.t("outing.leaveNotMember.header"),
+        message: req.t("outing.leaveNotMember.message"),
       });
       return;
     }
@@ -401,8 +404,8 @@ router.get(
     // They also cannot leave if they are the only member
     if (outing.users.length <= 1) {
       res.status(406).send({
-        header: `Cannot leave Outing.`,
-        message: "You are the only member - you can only delete this Outing.",
+        header: req.t("outing.leaveOnlyMember.header"),
+        message: req.t("outing.leaveOnlyMember.message"),
       });
       return;
     }
@@ -434,8 +437,11 @@ router.get(
 
     // Send webpush Notification to all outing members
     webpushNotify(outing.users, {
-      title: "Outing Left",
-      body: `${user.first_name} ${user.last_name} has left the Outing: ${outing.name}`,
+      title: forUser("push.outingLeft.title"),
+      body: forUser("push.outingLeft.body", {
+        name: `${user.first_name} ${user.last_name}`,
+        outing: outing.name,
+      }),
     });
 
     // Remove all notifications from this outing for the leaving user
@@ -470,8 +476,8 @@ router.get(
     // If user is not in the members list, they cannot delete.
     if (!outing.users.find((u) => u._id.toString() == user._id.toString())) {
       res.status(406).send({
-        header: `Cannot delete Outing`,
-        message: "Only Outing members can delete an Outing.",
+        header: req.t("outing.deleteNotMember.header"),
+        message: req.t("outing.deleteNotMember.message"),
       });
       return;
     }
@@ -479,8 +485,8 @@ router.get(
     // They also cannot delete if there are still other members
     if (outing.users.length > 1) {
       res.status(406).send({
-        header: `Cannot delete Outing`,
-        message: "You can only delete an Outing when you are the only remaining member.",
+        header: req.t("outing.deleteNotLast.header"),
+        message: req.t("outing.deleteNotLast.message"),
       });
       return;
     }
@@ -519,8 +525,11 @@ router.get(
         ...outing.flakes,
       ],
       {
-        title: "Outing Deleted",
-        body: `${user.first_name} ${user.last_name} has deleted the Outing "${outing.name}"`,
+        title: forUser("push.outingDeleted.title"),
+        body: forUser("push.outingDeleted.body", {
+          name: `${user.first_name} ${user.last_name}`,
+          outing: outing.name,
+        }),
       }
     );
 
@@ -570,8 +579,8 @@ router.post(
 
     if (!photoString) {
       res.status(406).send({
-        header: `Could not upload photo`,
-        message: "No photo was received.",
+        header: req.t("outing.photo.noPhoto.header"),
+        message: req.t("outing.photo.noPhoto.message"),
       });
       return;
     }
@@ -582,8 +591,8 @@ router.post(
         .length > 1
     ) {
       res.status(406).send({
-        header: `Too many photos`,
-        message: "You can only upload maximum 2 photos per user per Outing.",
+        header: req.t("outing.photo.tooMany.header"),
+        message: req.t("outing.photo.tooMany.message"),
       });
       return;
     }
@@ -591,8 +600,8 @@ router.post(
     // Don't allow upload if user isn't in outing users
     if (!outing.users.find((u) => u._id.toString() == user._id.toString())) {
       res.status(406).send({
-        header: `Could not upload photo`,
-        message: "You are not a member of the Outing.",
+        header: req.t("outing.photo.uploadNotMember.header"),
+        message: req.t("outing.photo.uploadNotMember.message"),
       });
       return;
     }
@@ -643,8 +652,8 @@ router.post(
 
     if (!photoKey) {
       res.status(406).send({
-        header: `Could not delete photo`,
-        message: "No deletion key received.",
+        header: req.t("outing.photo.noKey.header"),
+        message: req.t("outing.photo.noKey.message"),
       });
       return;
     }
@@ -652,8 +661,8 @@ router.post(
     // Only delete if outing has photo with key
     if (!outing.photos.find((p) => p.key == photoKey)) {
       res.status(406).send({
-        header: `Could not delet photo`,
-        message: `Could not find photo ${photoKey} in Outing photos.`,
+        header: req.t("outing.photo.notFound.header"),
+        message: req.t("outing.photo.notFound.message", { key: photoKey }),
       });
       return;
     }
@@ -661,8 +670,8 @@ router.post(
     // Don't allow delete if user isn't in outing users
     if (!outing.users.find((u) => u._id.toString() == user._id.toString())) {
       res.status(406).send({
-        header: `Could not delete photo`,
-        message: "You are not a member of the Outing.",
+        header: req.t("outing.photo.deleteNotMember.header"),
+        message: req.t("outing.photo.deleteNotMember.message"),
       });
       return;
     }
@@ -711,8 +720,8 @@ router.post(
     // could mark the outing finished before everyone had completed it)
     if (outing.completions.some((c) => c.toString() == user._id.toString())) {
       res.status(406).send({
-        header: `Already completed`,
-        message: "You've already marked this Outing complete.",
+        header: req.t("outing.alreadyCompleted.header"),
+        message: req.t("outing.alreadyCompleted.message"),
       });
       return;
     }
@@ -720,8 +729,8 @@ router.post(
     // Don't allow if user us not in outing members
     if (!outing.users.find((uid) => uid.toString() == user._id.toString())) {
       res.status(406).send({
-        header: `Could not complete Outing`,
-        message: "You are not a member of the Outing.",
+        header: req.t("outing.completeNotMember.header"),
+        message: req.t("outing.completeNotMember.message"),
       });
       return;
     }
@@ -786,8 +795,11 @@ router.post(
 
     // Send a webpush Notification to other users as well
     webpushNotify(otherUsers, {
-      title: "Outing Marked Complete",
-      body: `${user.first_name} ${user.last_name} marked the Outing "${outing.name}" completed`,
+      title: forUser("push.outingCompleted.title"),
+      body: forUser("push.outingCompleted.body", {
+        name: `${user.first_name} ${user.last_name}`,
+        outing: outing.name,
+      }),
     });
 
     // remove user from outing invited
@@ -807,9 +819,10 @@ router.get(
     // Return unacceptable if photo is not in outing
     if (!outing || !outing.photos.find((p) => p.key == req.params.key)) {
       res.status(406).send({
-        message: `photo with key ${
-          req.params.key
-        } not found in outing ${outing._id.toString()}`,
+        message: req.t("outing.photo.keyNotFound.message", {
+          key: req.params.key,
+          outing: outing._id.toString(),
+        }),
       });
       return;
     }

@@ -1,0 +1,16 @@
+{
+  "searchPlaceholder": "Buscar chats...",
+  "newChat": "Novo chat",
+  "emptyTitle": "Nada por aqui ainda!",
+  "emptyText": "Aqui você vai ver seus chats com amigos e os chats de cada rolê.",
+  "filters": {
+    "label": "Filtrar chats",
+    "all": "Todos",
+    "unread": "Não lidos",
+    "dms": "Diretas",
+    "outings": "Rolês",
+    "noUnread": "Tudo em dia — nenhum chat não lido.",
+    "noMatch": "Nenhum chat corresponde a esses filtros."
+  },
+  "archived": "Arquivados"
+}

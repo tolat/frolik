@@ -1,0 +1,37 @@
+{
+  "create": {
+    "button": "发起出游",
+    "creating": "创建中…",
+    "summary": "你 + {{count}} · {{activity}}"
+  },
+  "created": {
+    "header": "你的新出游名为：",
+    "nameLabel": "出游名称",
+    "nameHint": "点击名称即可修改（{{length}}/{{max}}）",
+    "inviteSent": "邀请已发送给其他用户。你随时可以在个人主页的以下标签中查看这次出游：",
+    "outingsIconAlt": "出游图标",
+    "chatCreated": "这次出游的群聊也已创建！其他人接受邀请后会自动加入群聊。",
+    "saving": "保存中…",
+    "ok": "好的"
+  },
+  "members": {
+    "edit": "编辑成员",
+    "add": "添加成员"
+  },
+  "requirements": {
+    "activityPicked": "已选好活动",
+    "pickActivity": "选择一个活动",
+    "addMatch": "添加一位每日匹配",
+    "addMoreMatches": {
+      "other": "再添加{{count}}位每日匹配"
+    },
+    "matchesAdded": {
+      "other": "已添加{{count}}位每日匹配"
+    },
+    "matchNote": "每邀请一位好友，出游中就需要有一位每日匹配。"
+  },
+  "filter": "筛选",
+  "createActivityLabel": "创建自定义活动",
+  "createActivityTitle": "创建活动",
+  "noMatchingActivities": "没有符合筛选条件的活动！"
+}

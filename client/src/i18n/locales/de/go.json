@@ -1,0 +1,39 @@
+{
+  "create": {
+    "button": "Ausflug erstellen",
+    "creating": "Wird erstellt …",
+    "summary": "Du + {{count}} · {{activity}}"
+  },
+  "created": {
+    "header": "Dein neuer Ausflug heißt:",
+    "nameLabel": "Name des Ausflugs",
+    "nameHint": "Tippe auf den Namen, um ihn zu ändern ({{length}}/{{max}})",
+    "inviteSent": "Die anderen haben eine Einladung bekommen. Du findest diesen Ausflug jederzeit auf deinem Profil unter diesem Tab:",
+    "outingsIconAlt": "Ausflüge-Symbol",
+    "chatCreated": "Für diesen Ausflug wurde auch ein neuer Chat erstellt! Wer den Ausflug annimmt, wird automatisch hinzugefügt.",
+    "saving": "Wird gespeichert …",
+    "ok": "OK"
+  },
+  "members": {
+    "edit": "Leute bearbeiten",
+    "add": "Leute hinzufügen"
+  },
+  "requirements": {
+    "activityPicked": "Aktivität gewählt",
+    "pickActivity": "Wähle eine Aktivität",
+    "addMatch": "Füge ein Tagesmatch hinzu",
+    "addMoreMatches": {
+      "one": "Füge noch {{count}} Tagesmatch hinzu",
+      "other": "Füge noch {{count}} Tagesmatches hinzu"
+    },
+    "matchesAdded": {
+      "one": "{{count}} Tagesmatch hinzugefügt",
+      "other": "{{count}} Tagesmatches hinzugefügt"
+    },
+    "matchNote": "Für alle Freunde, die du einlädst, braucht jeder Ausflug je ein Tagesmatch."
+  },
+  "filter": "Filter",
+  "createActivityLabel": "Eigene Aktivität erstellen",
+  "createActivityTitle": "Aktivität erstellen",
+  "noMatchingActivities": "Keine Aktivitäten passen zu den Filtern!"
+}

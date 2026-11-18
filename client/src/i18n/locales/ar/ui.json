@@ -1,0 +1,96 @@
+{
+  "loading": "جارٍ التحميل",
+  "dateTime": "{{date}} - {{time}}",
+  "rating": {
+    "unrated": "بلا تقييم",
+    "outOfFive": "{{rating}}/5"
+  },
+  "outingStatus": {
+    "completed": "مكتملة",
+    "youLeft": "غادرتها",
+    "invited": "مدعو: اضغط للانضمام",
+    "waitingForMembers": "بانتظار الأعضاء",
+    "waitingForPhotos": "بانتظار الصور",
+    "waitingForOthers": "بانتظار انتهاء الآخرين",
+    "readyToFinish": "جاهزة للإنهاء"
+  },
+  "outingCard": {
+    "completed": "مكتملة - {{date}}",
+    "pending": "معلّقة - {{date}}"
+  },
+  "outingList": {
+    "searchPlaceholder": "ابحث في نزهاتي",
+    "pendingHeader": "النزهات المعلّقة",
+    "pendingLimit": {
+      "zero": "يمكن أن يكون لديك حتى {{count}} نزهة معلّقة في الوقت نفسه.",
+      "one": "يمكن أن تكون لديك نزهة معلّقة واحدة فقط في الوقت نفسه.",
+      "two": "يمكن أن تكون لديك نزهتان معلّقتان كحد أقصى في الوقت نفسه.",
+      "few": "يمكن أن يكون لديك حتى {{count}} نزهات معلّقة في الوقت نفسه.",
+      "many": "يمكن أن يكون لديك حتى {{count}} نزهة معلّقة في الوقت نفسه.",
+      "other": "يمكن أن يكون لديك حتى {{count}} نزهة معلّقة في الوقت نفسه."
+    }
+  },
+  "outingTitle": {
+    "rename": "إعادة تسمية النزهة",
+    "name": "اسم النزهة",
+    "save": "حفظ الاسم",
+    "cancel": "إلغاء إعادة التسمية"
+  },
+  "chatCard": {
+    "delete": "حذف",
+    "archive": "أرشفة",
+    "unarchive": "إلغاء الأرشفة",
+    "markRead": "✓ مقروءة",
+    "justYou": "أنت فقط",
+    "lastActive": "آخر نشاط {{date}}"
+  },
+  "feedCard": {
+    "members": "أعضاء النزهة",
+    "viewActivity": "عرض النشاط",
+    "like": "إعجاب",
+    "unlike": "إلغاء الإعجاب"
+  },
+  "friendCard": {
+    "profileNotShared": "الملف الشخصي غير مُشارك"
+  },
+  "stats": {
+    "flakeRating": "تقييم الالتزام",
+    "outings": "النزهات"
+  },
+  "statusButtons": {
+    "label": "الحالة",
+    "hints": {
+      "ready": "منفتح على النزهات — ستظهر في المطابقات اليومية",
+      "busy": "في استراحة — لن تتم مطابقتك"
+    },
+    "currently": "الحالة الآن: {{status}}",
+    "choose": "اختر حالتك"
+  },
+  "starRate": {
+    "label": "التقييم",
+    "stars": {
+      "zero": "{{count}} نجمة",
+      "one": "نجمة واحدة",
+      "two": "نجمتان",
+      "few": "{{count}} نجوم",
+      "many": "{{count}} نجمة",
+      "other": "{{count}} نجمة"
+    }
+  },
+  "photos": {
+    "none": "لا توجد صور",
+    "remove": "إزالة الصورة",
+    "userPhoto": "صورة",
+    "change": "تغيير الصورة"
+  },
+  "addUsers": {
+    "edit": "تعديل الأشخاص",
+    "add": "إضافة أشخاص"
+  },
+  "search": {
+    "icon": "بحث"
+  },
+  "profileHeader": {
+    "settings": "الإعدادات"
+  }
+}

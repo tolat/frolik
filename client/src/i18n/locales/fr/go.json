@@ -1,0 +1,41 @@
+{
+  "create": {
+    "button": "Créer la sortie",
+    "creating": "Création…",
+    "summary": "Toi + {{count}} · {{activity}}"
+  },
+  "created": {
+    "header": "Ta nouvelle sortie s'appelle :",
+    "nameLabel": "Nom de la sortie",
+    "nameHint": "Touche le nom pour le modifier ({{length}}/{{max}})",
+    "inviteSent": "Une invitation a été envoyée aux autres. Tu peux retrouver cette sortie à tout moment dans ton Profil, sous cet onglet :",
+    "outingsIconAlt": "icône des sorties",
+    "chatCreated": "Une discussion a aussi été créée pour cette sortie ! Les autres y seront ajoutés dès qu'ils accepteront la sortie.",
+    "saving": "Enregistrement…",
+    "ok": "OK"
+  },
+  "members": {
+    "edit": "Modifier les membres",
+    "add": "Ajouter des membres"
+  },
+  "requirements": {
+    "activityPicked": "Activité choisie",
+    "pickActivity": "Choisis une activité",
+    "addMatch": "Ajoute un match du jour",
+    "addMoreMatches": {
+      "one": "Ajoute encore {{count}} match du jour",
+      "many": "Ajoute encore {{count}} matchs du jour",
+      "other": "Ajoute encore {{count}} matchs du jour"
+    },
+    "matchesAdded": {
+      "one": "{{count}} match du jour ajouté",
+      "many": "{{count}} matchs du jour ajoutés",
+      "other": "{{count}} matchs du jour ajoutés"
+    },
+    "matchNote": "Chaque sortie demande un match du jour pour chaque ami que tu invites."
+  },
+  "filter": "Filtrer",
+  "createActivityLabel": "Créer une activité perso",
+  "createActivityTitle": "Créer une activité",
+  "noMatchingActivities": "Aucune activité ne correspond aux filtres !"
+}

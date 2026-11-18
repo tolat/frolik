@@ -1,0 +1,13 @@
+{
+  "header": "ثبّت <logo/>",
+  "subHeader": "تثبيت Frolik يتيح لك تلقي الإشعارات واستخدام Frolik مثل أي تطبيق جوال عادي. (iOS > 16.4)",
+  "ios": {
+    "step1": "1. <safari/> افتح www.frolik.ca في Safari",
+    "step1Alt": "الخطوة 1",
+    "step2": "2. اضغط على أيقونة المشاركة في شريط أدوات Safari",
+    "step2Alt": "الخطوة 2",
+    "step3": "3. اضغط على «إضافة إلى الشاشة الرئيسية»"
+  },
+  "installButton": "تثبيت Frolik",
+  "backToWeb": "العودة إلى Frolik على الويب"
+}

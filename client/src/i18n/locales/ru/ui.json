@@ -1,0 +1,92 @@
+{
+  "loading": "Загрузка",
+  "dateTime": "{{date}} - {{time}}",
+  "rating": {
+    "unrated": "без оценки",
+    "outOfFive": "{{rating}}/5"
+  },
+  "outingStatus": {
+    "completed": "Завершена",
+    "youLeft": "Ты вышел(а)",
+    "invited": "Приглашение: нажми, чтобы присоединиться",
+    "waitingForMembers": "Ждём участников",
+    "waitingForPhotos": "Ждём фото",
+    "waitingForOthers": "Ждём остальных",
+    "readyToFinish": "Можно завершать"
+  },
+  "outingCard": {
+    "completed": "Завершена - {{date}}",
+    "pending": "Не завершена - {{date}}"
+  },
+  "outingList": {
+    "searchPlaceholder": "Поиск моих вылазок",
+    "pendingHeader": "Незавершённые вылазки",
+    "pendingLimit": {
+      "one": "Одновременно можно иметь до {{count}} незавершённой вылазки.",
+      "few": "Одновременно можно иметь до {{count}} незавершённых вылазок.",
+      "many": "Одновременно можно иметь до {{count}} незавершённых вылазок.",
+      "other": "Одновременно можно иметь до {{count}} незавершённой вылазки."
+    }
+  },
+  "outingTitle": {
+    "rename": "Переименовать вылазку",
+    "name": "Название вылазки",
+    "save": "Сохранить название",
+    "cancel": "Отменить"
+  },
+  "chatCard": {
+    "delete": "Удалить",
+    "archive": "В архив",
+    "unarchive": "Из архива",
+    "markRead": "✓ Прочитано",
+    "justYou": "Только ты",
+    "lastActive": "Был(а) в сети {{date}}"
+  },
+  "feedCard": {
+    "members": "Участники вылазки",
+    "viewActivity": "К активности",
+    "like": "Нравится",
+    "unlike": "Убрать лайк"
+  },
+  "friendCard": {
+    "profileNotShared": "Профиль скрыт"
+  },
+  "stats": {
+    "flakeRating": "Надёжность",
+    "outings": "Вылазки"
+  },
+  "statusButtons": {
+    "label": "Статус",
+    "hints": {
+      "ready": "Открыт(а) для вылазок — ты появишься в мэтчах дня",
+      "busy": "Перерыв — мэтчей не будет"
+    },
+    "currently": "Сейчас: {{status}}",
+    "choose": "Выбери статус"
+  },
+  "starRate": {
+    "label": "Оценка",
+    "stars": {
+      "one": "{{count}} звезда",
+      "few": "{{count}} звезды",
+      "many": "{{count}} звёзд",
+      "other": "{{count}} звезды"
+    }
+  },
+  "photos": {
+    "none": "Нет фото",
+    "remove": "Убрать фото",
+    "userPhoto": "Фото",
+    "change": "Сменить фото"
+  },
+  "addUsers": {
+    "edit": "Изменить участников",
+    "add": "Добавить участников"
+  },
+  "search": {
+    "icon": "Поиск"
+  },
+  "profileHeader": {
+    "settings": "Настройки"
+  }
+}

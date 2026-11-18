@@ -1,0 +1,30 @@
+{
+  "tabs": {
+    "photos": "Fotos",
+    "outings": "Ausflüge",
+    "friends": "Freunde"
+  },
+  "friendCard": {
+    "chat": "+ Chat",
+    "outing": "+ Ausflug"
+  },
+  "edit": "bearbeiten",
+  "empty": {
+    "title": "Hier ist noch nichts!",
+    "noMedia": "Um Fotos, Ausflüge und Freunde zu sammeln, erstelle auf der Seite <balloon/> einen Ausflug und schließ ihn ab!",
+    "noPhotos": "Für mehr Fotos schließ weitere Ausflüge auf der Seite <balloon/> ab!",
+    "noFriends": "Um Freunde hinzuzufügen, geh auf die Seite <balloon/>!",
+    "balloonAlt": "Symbol der Ausflugsseite"
+  },
+  "friends": {
+    "searchPlaceholder": "Freunde suchen …",
+    "sortLabel": "Freunde sortieren",
+    "sort": "Sortieren:",
+    "sortName": "Name",
+    "sortOutings": "Ausflüge",
+    "sortFlake": "Zuverlässigkeit",
+    "sortBy": "Nach {{label}} sortieren",
+    "sortByAsc": "Nach {{label}} sortieren, aufsteigend",
+    "sortByDesc": "Nach {{label}} sortieren, absteigend"
+  }
+}

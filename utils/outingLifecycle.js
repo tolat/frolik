@@ -15,6 +15,7 @@ const Activity = require("../models/activity");
 const Chat = require("../models/chat");
 const { deleteFromS3 } = require("./S3");
 const { pushUserUpdate, webpushNotify } = require("./utils");
+const { tr, userLang, forUser } = require("./i18n");
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const STALE_DAYS = 30;
@@ -35,25 +36,45 @@ const completionDeadline = (outing) =>
 const daysLeft = (deadline, now = Date.now()) =>
   Math.ceil((deadline.getTime() - now) / DAY_MS);
 
-// An in-app alert (rendered by the client's OutingNotice) plus a push
-const notify = async (userIDs, { title, message, outing, url }) => {
+// An in-app alert (rendered by the client's OutingNotice) plus a push.
+// `key` is an i18n prefix ("notice.x" → notice.x.title / notice.x.message);
+// the stored title/message are written in each recipient's language, and
+// key/vars are kept on the alert too so the client can re-render it.
+const notify = async (userIDs, { key, vars = {}, outing, url }) => {
   if (!userIDs.length) return;
-  const notification = {
-    id: Date.now() + Math.random(),
+  const base = {
     type: "outing-notice",
-    title,
-    message,
+    key,
+    vars,
     outing: outing ? outing._id.toString() : undefined,
     outingName: outing?.name,
     created: new Date(),
     active: true,
   };
-  await User.updateMany(
-    { _id: { $in: userIDs } },
-    { $push: { notifications: notification } }
-  );
+  const recipients = await User.find({ _id: { $in: userIDs } }).select("language");
+  const byLang = {};
+  for (const u of recipients) (byLang[userLang(u)] ||= []).push(u._id);
+  for (const [lang, ids] of Object.entries(byLang)) {
+    await User.updateMany(
+      { _id: { $in: ids } },
+      {
+        $push: {
+          notifications: {
+            id: Date.now() + Math.random(),
+            ...base,
+            title: tr(lang, `${key}.title`, vars),
+            message: tr(lang, `${key}.message`, vars),
+          },
+        },
+      }
+    );
+  }
   pushUserUpdate(userIDs);
-  webpushNotify(userIDs, { title, body: message, url: url || "/alerts" });
+  webpushNotify(userIDs, {
+    title: forUser(`${key}.title`, vars),
+    body: forUser(`${key}.message`, vars),
+    url: url || "/alerts",
+  });
 };
 
 // All members have marked it completed: finish the outing (shared with the
@@ -126,14 +147,14 @@ const processInvites = async (outing, now) => {
       if (left <= d && !outing.reminders_sent.includes(key)) {
         outing.reminders_sent.push(key);
         await notify(outing.invited.map(idStr), {
-          title: "Your Outing invite expires soon",
-          message: `Join "${outing.name}" within ${left} day${left === 1 ? "" : "s"} or your invite will expire.`,
+          key: "notice.inviteExpiring",
+          vars: { outing: outing.name, count: left },
           outing,
         });
         if (lone) {
           await notify(outing.users.map(idStr), {
-            title: "No one has joined your Outing yet",
-            message: `"${outing.name}" will be deleted in ${left} day${left === 1 ? "" : "s"} if no one joins.`,
+            key: "notice.noOneJoined",
+            vars: { outing: outing.name, count: left },
             outing,
           });
         }
@@ -152,15 +173,15 @@ const processInvites = async (outing, now) => {
     { $pull: { notifications: { outing: outing._id.toString(), type: "outing-invite" } } }
   );
   await notify(expired, {
-    title: "Outing invite expired",
-    message: `Your invite to "${outing.name}" expired after ${STALE_DAYS} days.`,
+    key: "notice.inviteExpired",
+    vars: { outing: outing.name, days: STALE_DAYS },
   });
 
   if (outing.users.length >= 2) {
     await outing.save();
     await notify(outing.users.map(idStr), {
-      title: "Pending invites expired",
-      message: `Invites to "${outing.name}" that weren't accepted within ${STALE_DAYS} days were removed. Your Outing carries on.`,
+      key: "notice.invitesExpired",
+      vars: { outing: outing.name, days: STALE_DAYS },
       outing,
     });
     return "invites-expired";
@@ -169,8 +190,8 @@ const processInvites = async (outing, now) => {
   const members = outing.users.map(idStr);
   await deleteOutingCompletely(outing);
   await notify(members, {
-    title: "Outing deleted for inactivity",
-    message: `No one joined "${outing.name}" within ${STALE_DAYS} days, so it was deleted.`,
+    key: "notice.deletedInactive",
+    vars: { outing: outing.name, days: STALE_DAYS },
   });
   return "deleted";
 };
@@ -197,8 +218,8 @@ const processCompletions = async (outing, now) => {
       if (left <= d && !outing.reminders_sent.includes(key)) {
         outing.reminders_sent.push(key);
         await notify(pending.map(idStr), {
-          title: "Mark your Outing completed",
-          message: `Mark "${outing.name}" completed within ${left} day${left === 1 ? "" : "s"} or you'll be removed from it and get a flake.`,
+          key: "notice.completeReminder",
+          vars: { outing: outing.name, count: left },
           outing,
         });
         await outing.save();
@@ -224,8 +245,8 @@ const processCompletions = async (outing, now) => {
   await outing.save();
 
   await notify(booted, {
-    title: "Removed from an Outing",
-    message: `You didn't mark "${outing.name}" completed within ${STALE_DAYS} days, so you were removed and got a flake.`,
+    key: "notice.removed",
+    vars: { outing: outing.name, days: STALE_DAYS },
     outing,
   });
   pushUserUpdate(outing.users.map(idStr));

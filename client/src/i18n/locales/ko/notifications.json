@@ -1,0 +1,38 @@
+{
+  "title": "알림",
+  "empty": {
+    "title": "아무것도 없어요!",
+    "body": "알림이 여기에 표시돼요",
+    "iconAlt": "종"
+  },
+  "headers": {
+    "outingInvite": "나들이에 초대받았어요!",
+    "inviteAccepted": "나들이 초대를 수락한 사람:",
+    "inviteDenied": "나들이 초대를 거절한 사람:",
+    "outingLeft": "나들이에서 나간 사람:",
+    "outingJoined": "나들이에 참여한 사람:",
+    "outingCompleted": "나들이가 완료되었어요!",
+    "outingMarkedComplete": "나들이를 완료 표시한 사람:",
+    "friendRequest": "친구 요청을 보낸 사람:",
+    "friendRequestStatus": {
+      "accepted": "친구 요청을 수락한 사람:",
+      "denied": "친구 요청을 거절한 사람:",
+      "other": "친구 요청을 {{status}} 처리한 사람:"
+    },
+    "friendRemoved": "나를 친구에서 삭제한 사람:",
+    "chatCreated": "나를 채팅에 추가한 사람:"
+  },
+  "footers": {
+    "markComplete": "사진을 다 올렸다면 이제 나들이를 완료 표시할 차례예요!"
+  },
+  "outingLabel": "나들이: <b>{{name}}</b>",
+  "outingLoading": "나들이: …",
+  "activityLabel": "액티비티: <b>{{name}}</b>",
+  "actions": {
+    "viewOuting": "나들이 보기",
+    "viewChat": "채팅 보기",
+    "clear": "지우기",
+    "accept": "수락",
+    "deny": "거절"
+  }
+}

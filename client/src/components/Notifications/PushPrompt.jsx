@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./styles/PushPrompt.module.scss";
 import { enablePush, hasServiceWorker, pushPermission } from "../../utils/push";
+import { useT } from "../../i18n";
 
 const isIOS = () =>
   /iPhone|iPad|iPod/.test(navigator.userAgent) ||
@@ -12,6 +13,7 @@ const isStandalone = () =>
 // Asks for notification permission from a real tap (required by iOS and
 // increasingly by Chrome). Renders nothing once notifications are on.
 const PushPrompt = ({ compact }) => {
+  const { t } = useT();
   const [permission, setPermission] = useState(pushPermission());
   const [swReady, setSwReady] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -30,8 +32,8 @@ const PushPrompt = ({ compact }) => {
       <div className={`${styles.card} ${styles.muted}`}>
         <BellIcon />
         <div className={styles.text}>
-          <div className={styles.title}>Want notifications?</div>
-          <div>Add frolik to your Home Screen (Share → Add to Home Screen), then turn them on.</div>
+          <div className={styles.title}>{t("push.ios.title")}</div>
+          <div>{t("push.ios.body")}</div>
         </div>
       </div>
     );
@@ -46,7 +48,7 @@ const PushPrompt = ({ compact }) => {
       <div className={`${styles.card} ${styles.muted} ${compact ? styles.compact : ""}`}>
         <BellIcon />
         <div className={styles.text}>
-          Notifications are blocked. Turn them on for frolik in your browser or phone settings.
+          {t("push.blocked")}
         </div>
       </div>
     );
@@ -63,11 +65,11 @@ const PushPrompt = ({ compact }) => {
     <div className={`${styles.card} ${compact ? styles.compact : ""}`}>
       <BellIcon />
       <div className={styles.text}>
-        <div className={styles.title}>Turn on notifications</div>
-        {!compact && <div>Get told about invites, messages and friend requests.</div>}
+        <div className={styles.title}>{t("push.prompt.title")}</div>
+        {!compact && <div>{t("push.prompt.body")}</div>}
       </div>
       <button type="button" className={styles.button} onClick={onEnable} disabled={busy}>
-        {busy ? "…" : "Turn on"}
+        {busy ? "…" : t("push.prompt.button")}
       </button>
     </div>
   );

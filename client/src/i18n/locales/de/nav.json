@@ -1,0 +1,17 @@
+{
+  "tabs": {
+    "alerts": "Mitteilungen",
+    "profile": "Profil",
+    "outing": "Ausflug",
+    "social": "Social",
+    "chats": "Chats"
+  },
+  "ok": "OK",
+  "tooManyOutings": {
+    "header": "Du hast zu viele offene Ausflüge!",
+    "message": "<b>Du kannst höchstens 5 offene Ausflüge gleichzeitig haben.</b> <br/>Schließ ein paar Ausflüge ab oder lösche sie, bevor du einen neuen erstellst. Deine Ausflüge findest du jederzeit auf deinem Profil unter diesem Tab:",
+    "iconAlt": "Ausflüge-Symbol",
+    "ok": "OK"
+  },
+  "footer": "Raus mit euch!"
+}

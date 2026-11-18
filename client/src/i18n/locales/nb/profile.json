@@ -1,0 +1,30 @@
+{
+  "tabs": {
+    "photos": "Bilder",
+    "outings": "Treff",
+    "friends": "Venner"
+  },
+  "friendCard": {
+    "chat": "+ Chat",
+    "outing": "+ Treff"
+  },
+  "edit": "rediger",
+  "empty": {
+    "title": "Her er det tomt ennå!",
+    "noMedia": "Opprett og fullfør et treff på <balloon/>-siden for å begynne å samle bilder, treff og venner!",
+    "noPhotos": "Fullfør flere treff på <balloon/>-siden for å få bilder!",
+    "noFriends": "Gå til <balloon/>-siden for å legge til venner!",
+    "balloonAlt": "ikon for treffsiden"
+  },
+  "friends": {
+    "searchPlaceholder": "Søk etter venner …",
+    "sortLabel": "Sorter venner",
+    "sort": "Sorter:",
+    "sortName": "Navn",
+    "sortOutings": "Treff",
+    "sortFlake": "Pålitelighet",
+    "sortBy": "Sorter etter {{label}}",
+    "sortByAsc": "Sorter etter {{label}}, stigende",
+    "sortByDesc": "Sorter etter {{label}}, synkende"
+  }
+}

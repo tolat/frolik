@@ -1,0 +1,38 @@
+{
+  "title": "Varsler",
+  "empty": {
+    "title": "Ingenting her!",
+    "body": "Varslene dine dukker opp her",
+    "iconAlt": "Bjelle"
+  },
+  "headers": {
+    "outingInvite": "Du er invitert til et treff!",
+    "inviteAccepted": "Treffinvitasjonen din ble godtatt av:",
+    "inviteDenied": "Treffinvitasjonen din ble avslått av:",
+    "outingLeft": "Treffet ditt ble forlatt av:",
+    "outingJoined": "Nytt medlem i treffet ditt:",
+    "outingCompleted": "Treffet ditt er fullført!",
+    "outingMarkedComplete": "Treffet ditt ble markert som fullført av:",
+    "friendRequest": "Du har fått en venneforespørsel fra:",
+    "friendRequestStatus": {
+      "accepted": "Venneforespørselen din ble godtatt av:",
+      "denied": "Venneforespørselen din ble avslått av:",
+      "other": "Venneforespørselen din ble {{status}} av:"
+    },
+    "friendRemoved": "Du ble fjernet som venn av:",
+    "chatCreated": "Du ble lagt til i en chat av:"
+  },
+  "footers": {
+    "markComplete": "Din tur til å markere treffet som fullført når du er ferdig med å laste opp bilder!"
+  },
+  "outingLabel": "Treff: <b>{{name}}</b>",
+  "outingLoading": "Treff: …",
+  "activityLabel": "Aktivitet: <b>{{name}}</b>",
+  "actions": {
+    "viewOuting": "Se treffet",
+    "viewChat": "Se chatten",
+    "clear": "Fjern",
+    "accept": "Godta",
+    "deny": "Avslå"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "searchPlaceholder": "Suche deine Stadt",
+  "searchUnavailable": "Die Ortssuche ist gerade nicht verfügbar.",
+  "noMatches": "Keine passenden Städte",
+  "finding": "Deine Stadt wird gesucht …",
+  "useCurrent": "Aktuellen Standort verwenden",
+  "auto": {
+    "pill": "Auto",
+    "title": "Standort automatisch aktualisieren",
+    "turningOff": "Wird deaktiviert …",
+    "caption": "Wir aktualisieren deine Stadt jedes Mal, wenn du frolik öffnest. Gespeichert wird nur deine Stadt."
+  },
+  "errors": {
+    "denied": "Standortzugriff wurde verweigert. Such stattdessen nach deiner Stadt.",
+    "unavailable": "Standort konnte nicht ermittelt werden. Such stattdessen nach deiner Stadt.",
+    "cityNotFound": "Deine Stadt wurde nicht gefunden.",
+    "unsupported": "Standort ist auf diesem Gerät nicht verfügbar.",
+    "saveFailed": "Standort konnte nicht aktualisiert werden."
+  }
+}

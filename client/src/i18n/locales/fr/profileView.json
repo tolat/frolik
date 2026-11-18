@@ -1,0 +1,32 @@
+{
+  "header": "Profil",
+  "tabs": {
+    "photos": "Photos"
+  },
+  "noPhotos": "Pas encore de photos !",
+  "buttons": {
+    "cancel": "Annuler",
+    "unfriend": "Retirer des amis",
+    "sendRequest": "Envoyer"
+  },
+  "actions": {
+    "chat": "+ Discussion",
+    "outing": "+ Sortie",
+    "friend": "+ Ami",
+    "requested": "Demandé"
+  },
+  "locked": {
+    "header": "Termine d'abord une sortie",
+    "formerHeader": "Pas encore",
+    "message": "Tu pourras ajouter {{name}} comme ami une fois que l'un de vous sera tombé sur l'autre dans les matchs du jour et que vous aurez terminé une sortie ensemble.",
+    "formerMessage": "{{name}} et toi étiez amis avant. Pour redevenir amis, {{name}} doit apparaître dans tes matchs du jour et vous devez terminer une nouvelle sortie ensemble."
+  },
+  "unfriend": {
+    "header": "Retirer {{name}} de tes amis ?",
+    "message": "{{name}} sera retiré de tes amis, et vous ne pourrez plus ouvrir le profil l'un de l'autre.<br/><br/><b>Tu ne pourras pas simplement rajouter {{name}}.</b> Pour redevenir amis, {{name}} devra apparaître dans tes matchs du jour et vous devrez terminer une nouvelle sortie ensemble."
+  },
+  "friendRequest": {
+    "header": "Envoyer une demande d'ami à {{name}} ?",
+    "message": "{{name}} recevra une alerte et pourra l'accepter ou la refuser."
+  }
+}

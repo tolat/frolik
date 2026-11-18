@@ -1,0 +1,20 @@
+{
+  "header": "Leute zum Ausflug hinzufügen",
+  "removeHeader": "Leute vom Ausflug entfernen",
+  "dailyMatches": "Tagesmatches",
+  "required": "Pflicht",
+  "matchesSubtext": "Bei jedem Ausflug muss mindestens eine Person dabei sein, die du noch nicht kennst. Die Matches werden alle 24 Std. erneuert.",
+  "noMatches": "Keine Matches verfügbar!",
+  "activeFriends": "Aktive Freunde",
+  "friendSlots": {
+    "firstFriend": "Du kannst jetzt Freunde hinzufügen – pro Person brauchst du aber auch ein Tagesmatch.",
+    "more": {
+      "one": "Du kannst noch {{count}} Person aus deinen Freunden hinzufügen – eine pro Tagesmatch.",
+      "other": "Du kannst noch {{count}} Freunde hinzufügen – eine Person pro Tagesmatch."
+    },
+    "none": "Füge ein weiteres Tagesmatch hinzu, um noch jemanden aus deinen Freunden einzuladen – eine Person pro Match."
+  },
+  "lockedTitle": "Füge ein weiteres Tagesmatch hinzu, um noch jemanden aus deinen Freunden einzuladen",
+  "searchPlaceholder": "Freunde suchen …",
+  "noFriends": "Keine Freunde verfügbar!"
+}

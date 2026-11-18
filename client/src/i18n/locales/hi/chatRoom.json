@@ -1,0 +1,13 @@
+{
+  "active": "एक्टिव {{date}}",
+  "outing": "आउटिंग",
+  "newOuting": "+ आउटिंग",
+  "placeholder": "मैसेज…",
+  "send": "मैसेज भेजें",
+  "new": "नया",
+  "sentAt": "{{date}} · {{time}}",
+  "share": {
+    "opening": "खुल रहा है…",
+    "activity": "एक्टिविटी"
+  }
+}

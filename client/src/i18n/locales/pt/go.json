@@ -1,0 +1,41 @@
+{
+  "create": {
+    "button": "Criar rolê",
+    "creating": "Criando...",
+    "summary": "Você + {{count}} · {{activity}}"
+  },
+  "created": {
+    "header": "Seu novo rolê se chama:",
+    "nameLabel": "Nome do rolê",
+    "nameHint": "Toque no nome para mudar ({{length}}/{{max}})",
+    "inviteSent": "Enviamos um convite para as outras pessoas. Você pode ver este rolê quando quiser no seu Perfil, nesta aba:",
+    "outingsIconAlt": "ícone de rolês",
+    "chatCreated": "Também criamos um chat para este rolê! Quando os outros aceitarem o rolê, eles entram no chat.",
+    "saving": "Salvando…",
+    "ok": "OK"
+  },
+  "members": {
+    "edit": "Editar participantes",
+    "add": "Adicionar participantes"
+  },
+  "requirements": {
+    "activityPicked": "Atividade escolhida",
+    "pickActivity": "Escolha uma atividade",
+    "addMatch": "Adicione um match do dia",
+    "addMoreMatches": {
+      "one": "Adicione mais {{count}} match do dia",
+      "many": "Adicione mais {{count}} matches do dia",
+      "other": "Adicione mais {{count}} matches do dia"
+    },
+    "matchesAdded": {
+      "one": "{{count}} match do dia adicionado",
+      "many": "{{count}} matches do dia adicionados",
+      "other": "{{count}} matches do dia adicionados"
+    },
+    "matchNote": "Todo rolê precisa de um match do dia para cada amigo que você convidar."
+  },
+  "filter": "Filtrar",
+  "createActivityLabel": "Criar uma atividade personalizada",
+  "createActivityTitle": "Criar atividade",
+  "noMatchingActivities": "Nenhuma atividade corresponde aos filtros!"
+}

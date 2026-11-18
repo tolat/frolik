@@ -1,0 +1,30 @@
+{
+  "tabs": {
+    "photos": "Fotos",
+    "outings": "Rolês",
+    "friends": "Amigos"
+  },
+  "friendCard": {
+    "chat": "+ Chat",
+    "outing": "+ Rolê"
+  },
+  "edit": "editar",
+  "empty": {
+    "title": "Você ainda não tem conteúdo!",
+    "noMedia": "Para começar a adicionar fotos, rolês e amigos, crie e conclua um rolê na página <balloon/>!",
+    "noPhotos": "Para adicionar fotos, conclua mais rolês na página <balloon/>!",
+    "noFriends": "Para adicionar amigos, vá até a página <balloon/>!",
+    "balloonAlt": "ícone da página de rolês"
+  },
+  "friends": {
+    "searchPlaceholder": "Buscar amigos...",
+    "sortLabel": "Ordenar amigos",
+    "sort": "Ordenar:",
+    "sortName": "Nome",
+    "sortOutings": "Rolês",
+    "sortFlake": "Índice de furos",
+    "sortBy": "Ordenar por {{label}}",
+    "sortByAsc": "Ordenar por {{label}}, crescente",
+    "sortByDesc": "Ordenar por {{label}}, decrescente"
+  }
+}

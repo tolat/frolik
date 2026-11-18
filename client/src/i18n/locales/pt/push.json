@@ -1,0 +1,12 @@
+{
+  "ios": {
+    "title": "Quer receber notificações?",
+    "body": "Adicione o frolik à sua Tela de Início (Compartilhar → Adicionar à Tela de Início) e depois ative as notificações."
+  },
+  "blocked": "As notificações estão bloqueadas. Ative-as para o frolik nas configurações do navegador ou do celular.",
+  "prompt": {
+    "title": "Ative as notificações",
+    "body": "Fique sabendo de convites, mensagens e solicitações de amizade.",
+    "button": "Ativar"
+  }
+}

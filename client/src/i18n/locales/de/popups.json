@@ -1,0 +1,24 @@
+{
+  "cropper": {
+    "label": "Zoomen und zuschneiden",
+    "zoom": "Zoom",
+    "cancel": "Abbrechen",
+    "upload": "Hochladen",
+    "done": "Fertig",
+    "uploading": "Wird hochgeladen …"
+  },
+  "photo": {
+    "alt": "Foto"
+  },
+  "sendActivity": {
+    "header": "An Freunde senden",
+    "searchPlaceholder": "Freunde suchen …",
+    "noFriends": "Füge Freunde hinzu, um ihnen Aktivitäten zu schicken. Jemanden hinzufügen kannst du, nachdem ihr zusammen einen Ausflug abgeschlossen habt.",
+    "noMatches": "Keine Freunde passend zu „{{query}}“.",
+    "send": "Senden",
+    "sending": "Wird gesendet …"
+  },
+  "sharedActivity": {
+    "label": "Aktivität"
+  }
+}

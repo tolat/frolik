@@ -1,3 +1,4 @@
+import LanguagePicker from "../UI/LanguagePicker";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles/EditProfileModal.module.scss";
 import ModalPortal from "./ModalPortal";
@@ -19,6 +20,7 @@ import { modalActions } from "../../store/modal-slice";
 import { startTour } from "../Tour/Tour";
 import { confirmLocation, geoFromPoint } from "../../utils/location";
 import PushPrompt from "../Notifications/PushPrompt";
+import { useT } from "../../i18n";
 
 const stagedDataReducer = (state, action) => {
   return action.type === "setAll"
@@ -27,6 +29,7 @@ const stagedDataReducer = (state, action) => {
 };
 
 const EditProfileModal = () => {
+  const { t } = useT();
   const user = useSelector((state) => state.auth.user);
   const modalState = useSelector((state) => state.modal);
   const dataState = useSelector((state) => state.data);
@@ -35,7 +38,8 @@ const EditProfileModal = () => {
   const modalStyle = { display: modalDisplay };
   const userData = dataState.users[user._id];
   const validatorBubbleID = "validator-bubble";
-  const [buttonText, setButtonText] = useState("Save");
+  // null = the idle "Save" label (translated at render time)
+  const [buttonText, setButtonText] = useState(null);
   const [editingPhoto, setEditingPhoto] = useState(false);
   const [validationMessage, setValidationMessage] = useState(false);
   const [validationDisplay, setValidationDisplay] = useState("none");
@@ -48,7 +52,7 @@ const EditProfileModal = () => {
   const buttonTextOnSubmit = (
     <span style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem" }}>
       <BrandLoader inline plain light noBalloon size={1.4} />
-      Saving…
+      {t("settings.saving")}
     </span>
   );
 
@@ -100,7 +104,7 @@ const EditProfileModal = () => {
   // underneath already shows the new details)
   const resetForm = () => {
     hideModal();
-    setButtonText("Save");
+    setButtonText(null);
   };
 
   const onSubmit = (data) => {
@@ -108,7 +112,7 @@ const EditProfileModal = () => {
     const fullData = { ...data, status: stagedData.status };
     // On failure the server's warning popup shows; the button comes back
     uploadProfileData(user._id, fullData, resetForm, () =>
-      setButtonText("Save")
+      setButtonText(null)
     );
   };
 
@@ -134,7 +138,7 @@ const EditProfileModal = () => {
     <ModalPortal>
       <div style={modalStyle} className={`${styles.container} noscroll`}>
         <ModalHeaderPortal selector={"edit-profile"}>
-          Edit Profile
+          {t("settings.header")}
         </ModalHeaderPortal>
         <ValidatorBubble
           id={validatorBubbleID}
@@ -147,7 +151,7 @@ const EditProfileModal = () => {
         <ProfileEditor
           stagedData={stagedData}
           dispatchStageData={dispatchStageData}
-          buttonText={buttonText}
+          buttonText={buttonText || t("settings.save")}
           setButtonText={setButtonText}
           buttonTextOnSubmit={buttonTextOnSubmit}
           buttonSelector={"edit-profile"}
@@ -162,10 +166,13 @@ const EditProfileModal = () => {
           locationExtra={<AutoLocationToggle />}
           clearValidators={() => setValidationDisplay("none")}
           resetForm={resetForm}
+          placeholderLabels={true}
+          beforeLocation={
+            <LanguagePicker save={true} selector="language-picker-settings" />
+          }
         >
           <StatusButtons
             id={"status"}
-            label={"Status:"}
             defaultVal={defaultValues.status}
             setDataChanged={(value) => {
               dispatchStageData({ id: "status", value });
@@ -180,23 +187,23 @@ const EditProfileModal = () => {
           }}
           className={styles.tourButton}
         >
-          Take the app tour
+          {t("settings.takeTour")}
         </SimpleButton>
         <SimpleButton
           style={{ display: inStandaloneMode ? "none" : null }}
           onClick={handleInstall}
-          text={"Install Frolik App"}
+          text={t("settings.installApp")}
           className={styles.installButton}
         >
-          Install Frolik App
+          {t("settings.installApp")}
         </SimpleButton>
         <SimpleButton
           onClick={handleLogout}
-          text={"Logout"}
+          text={t("settings.logout")}
           icon={logoutIcon}
           className={styles.logoutButton}
         >
-          Logout
+          {t("settings.logout")}
         </SimpleButton>
       </div>
     </ModalPortal>

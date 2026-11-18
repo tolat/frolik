@@ -1,0 +1,17 @@
+{
+  "tabs": {
+    "alerts": "Varsler",
+    "profile": "Profil",
+    "outing": "Treff",
+    "social": "Sosialt",
+    "chats": "Chatter"
+  },
+  "ok": "OK",
+  "tooManyOutings": {
+    "header": "Du har for mange ventende treff!",
+    "message": "<b>Du kan ha opptil 5 ventende treff om gangen.</b> <br/>Fullfør eller slett noen treff før du oppretter et nytt. Du finner treffene dine når som helst på profilsiden ved å trykke på denne fanen:",
+    "iconAlt": "treff-ikon",
+    "ok": "OK"
+  },
+  "footer": "Kom dere ut, folkens!"
+}

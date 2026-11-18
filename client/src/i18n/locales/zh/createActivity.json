@@ -1,0 +1,22 @@
+{
+  "header": "创建活动",
+  "create": "创建活动",
+  "saving": "保存中",
+  "placeholders": {
+    "name": "名称（最多{{max}}个字符）",
+    "description": "简介（最多{{max}}个字符）",
+    "city": "城市",
+    "goal": "输入目标",
+    "hours": "时长（小时）",
+    "cost": "费用（$）",
+    "people": "人数"
+  },
+  "cover": {
+    "alt": "活动封面",
+    "change": "更换",
+    "remove": "移除",
+    "add": "添加封面照片",
+    "optional": "可选",
+    "readError": "无法将该文件识别为图片。"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "header": "Opprett aktivitet",
+  "create": "Opprett aktivitet",
+  "saving": "Lagrer",
+  "placeholders": {
+    "name": "Navn (maks {{max}} tegn)",
+    "description": "Beskrivelse (maks {{max}} tegn)",
+    "city": "By",
+    "goal": "Skriv inn et mål",
+    "hours": "Antall timer",
+    "cost": "Pris i $",
+    "people": "Antall personer"
+  },
+  "cover": {
+    "alt": "Forsidebilde for aktiviteten",
+    "change": "Bytt",
+    "remove": "Fjern",
+    "add": "Legg til et forsidebilde",
+    "optional": "valgfritt",
+    "readError": "Filen kunne ikke leses som et bilde."
+  }
+}

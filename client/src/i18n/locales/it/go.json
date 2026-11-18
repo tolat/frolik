@@ -1,0 +1,41 @@
+{
+  "create": {
+    "button": "Crea uscita",
+    "creating": "Creazione...",
+    "summary": "Tu + {{count}} · {{activity}}"
+  },
+  "created": {
+    "header": "La tua nuova uscita si chiama:",
+    "nameLabel": "Nome dell'uscita",
+    "nameHint": "Tocca il nome per cambiarlo ({{length}}/{{max}})",
+    "inviteSent": "Abbiamo inviato un invito agli altri utenti. Puoi vedere questa uscita quando vuoi nella pagina Profilo, in questa scheda:",
+    "outingsIconAlt": "icona uscite",
+    "chatCreated": "Abbiamo creato anche una chat per questa uscita! Quando gli altri accetteranno l'uscita, verranno aggiunti alla chat.",
+    "saving": "Salvataggio…",
+    "ok": "OK"
+  },
+  "members": {
+    "edit": "Modifica partecipanti",
+    "add": "Aggiungi partecipanti"
+  },
+  "requirements": {
+    "activityPicked": "Attività scelta",
+    "pickActivity": "Scegli un'attività",
+    "addMatch": "Aggiungi un match del giorno",
+    "addMoreMatches": {
+      "one": "Aggiungi ancora {{count}} match del giorno",
+      "many": "Aggiungi ancora {{count}} match del giorno",
+      "other": "Aggiungi ancora {{count}} match del giorno"
+    },
+    "matchesAdded": {
+      "one": "{{count}} match del giorno aggiunto",
+      "many": "{{count}} match del giorno aggiunti",
+      "other": "{{count}} match del giorno aggiunti"
+    },
+    "matchNote": "Ogni uscita richiede un match del giorno per ogni amico che inviti."
+  },
+  "filter": "Filtra",
+  "createActivityLabel": "Crea un'attività personalizzata",
+  "createActivityTitle": "Crea attività",
+  "noMatchingActivities": "Nessuna attività corrisponde ai filtri!"
+}

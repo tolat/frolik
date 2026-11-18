@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const { tr, reqLang } = require("./i18n");
 
 module.exports.handleCORS = async (req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
@@ -11,7 +12,7 @@ module.exports.handleCORS = async (req, res, next) => {
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
   res.header(
     "Access-Control-Allow-Headers",
-    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-Frolik-Lang"
   );
 
   // Send success if CORS checks options on pre-flight test
@@ -34,7 +35,7 @@ module.exports.sameUserOnly = async (req, res, next) => {
 
     // Send not found if no user exists
     if (!user) {
-      return res.status(406).send({ header: "User not found" });
+      return res.status(406).send({ header: tr(reqLang(req), "common.userNotFound.header") });
     }
 
     // Only move along if the request params id is the same as the
@@ -60,10 +61,10 @@ module.exports.tryCatch = (fn) => {
   return (req, res, next) => {
     fn(req, res, next).catch((e) => {
       console.log("ERROR ON PATH, ", req.path, "\n", e);
+      const lang = reqLang(req);
       res.status(500).send({
-        header: "Internal Server Error",
-        message:
-          "Oops! Something went wrong on our end. Refresh the page and try again. ",
+        header: tr(lang, "common.serverError.header"),
+        message: tr(lang, "common.serverError.message"),
       });
     });
   };

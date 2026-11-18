@@ -1,0 +1,20 @@
+{
+  "searchPlaceholder": "Search for your city",
+  "searchUnavailable": "Location search is unavailable right now.",
+  "noMatches": "No matching cities",
+  "finding": "Finding your city…",
+  "useCurrent": "Use my current location",
+  "auto": {
+    "pill": "Auto",
+    "title": "Keep my location up to date",
+    "turningOff": "Turning off…",
+    "caption": "We'll update your city whenever you open frolik. Only your city is saved."
+  },
+  "errors": {
+    "denied": "Location permission was denied. Search for your city instead.",
+    "unavailable": "Couldn't get your location. Search for your city instead.",
+    "cityNotFound": "Couldn't find your city.",
+    "unsupported": "Location isn't available on this device.",
+    "saveFailed": "Couldn't update your location."
+  }
+}

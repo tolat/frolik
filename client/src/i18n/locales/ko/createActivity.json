@@ -1,0 +1,22 @@
+{
+  "header": "액티비티 만들기",
+  "create": "액티비티 만들기",
+  "saving": "저장 중",
+  "placeholders": {
+    "name": "이름 (최대 {{max}}자)",
+    "description": "설명 (최대 {{max}}자)",
+    "city": "도시",
+    "goal": "목표 입력",
+    "hours": "시간",
+    "cost": "$ 비용",
+    "people": "인원"
+  },
+  "cover": {
+    "alt": "액티비티 커버",
+    "change": "변경",
+    "remove": "삭제",
+    "add": "커버 사진 추가",
+    "optional": "선택",
+    "readError": "이 파일은 이미지로 읽을 수 없어요."
+  }
+}

@@ -7,6 +7,7 @@ import { dataActions } from "./data-slice";
 import { initializeUserPhotos } from "./data-actions";
 import { fetchChats } from "../utils/data-fetch";
 import { setBadge } from "../utils/badge";
+import { syncUserLanguage } from "../i18n";
 
 // Send request to log the user in and start a session in the browser
 export const fetchLogin = (username, password, onComplete) => {
@@ -22,6 +23,7 @@ export const fetchLogin = (username, password, onComplete) => {
   const handleResponse = (response) => {
     response.user.friends = response.populatedFriends;
     store.dispatch(authActions.login(response));
+    syncUserLanguage(response.user);
     initializeUserPhotos(response.user);
     fetchChats(response.user);
     onComplete(response);
@@ -65,22 +67,25 @@ const runFetchAuth = () => {
         initializeUserPhotos(response.user);
         fetchChats(response.user);
         dispatch(authActions.login(response));
+        syncUserLanguage(response.user);
       }
 
       resolve()
     };
 
     const handleError = (err) => {
-      // Resolve (not reject) so route loaders don't crash to the error page
-      resolve();
       store.dispatch(authActions.setFetchingAuth(false));
-      dispatch(authActions.logout());
 
-      // Logout if unauthorized
-      if (err.status === 401) {
-        window.location = "/login";
+      // Only the server saying "not signed in" logs you out. A failed request
+      // (no signal, server restarting) used to log you out too, dropping you
+      // on the login screen mid-use.
+      if (err?.status === 401 || err?.status === 403) {
+        dispatch(authActions.logout());
+        if (err.status === 401) window.location = "/login";
       }
 
+      // Resolve (not reject) so route loaders don't crash to the error page
+      resolve();
       return null;
     };
 

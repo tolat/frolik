@@ -1,0 +1,30 @@
+{
+  "tabs": {
+    "photos": "Photos",
+    "outings": "Outings",
+    "friends": "Friends"
+  },
+  "friendCard": {
+    "chat": "+ Chat",
+    "outing": "+ Outing"
+  },
+  "edit": "edit",
+  "empty": {
+    "title": "You have no media yet!",
+    "noMedia": "To start adding photos, outings and friends, create and complete an outing on the <balloon/> page!",
+    "noPhotos": "To add photos, complete more outings on the <balloon/> page!",
+    "noFriends": "To add friends, go to the <balloon/> page!",
+    "balloonAlt": "outing page icon"
+  },
+  "friends": {
+    "searchPlaceholder": "Search Friends..",
+    "sortLabel": "Sort friends",
+    "sort": "Sort:",
+    "sortName": "Name",
+    "sortOutings": "Outings",
+    "sortFlake": "Flake rating",
+    "sortBy": "Sort by {{label}}",
+    "sortByAsc": "Sort by {{label}}, ascending",
+    "sortByDesc": "Sort by {{label}}, descending"
+  }
+}

@@ -1,31 +1,34 @@
-module.exports.genResetPasswordEmail = (link) => {
+// Every template takes the RECIPIENT's language first (i18n userLang(user))
+const { tr } = require("./i18n");
+
+module.exports.genResetPasswordEmail = (lang, link) => {
   return basicEmailTemplate(
-    "Reset Account Password",
+    lang,
+    tr(lang, "email.resetPassword.header"),
     `<div>
-    You are receiving this because you (or someone else) 
-    have requested the reset of the password for your frolik account.
+    ${tr(lang, "email.resetPassword.body")}
     </div>`,
     link,
-    "Reset Password",
-    `If you did not request this, please ignore this email and 
-    your password will remain unchanged.`
+    tr(lang, "email.resetPassword.button"),
+    tr(lang, "email.resetPassword.footer")
   );
 };
 
-module.exports.genVerifyAccountEmail = (link) => {
+module.exports.genVerifyAccountEmail = (lang, link) => {
   return basicEmailTemplate(
-    "Verify Account Email",
+    lang,
+    tr(lang, "email.verify.header"),
     `<div>
-    You're almost signed up! Click the link below to verify
-    your email and log in to your frolik account.
+    ${tr(lang, "email.verify.body")}
     </div>`,
     link,
-    "Verify Email",
-    "If you did not sign up on frolik.ca, please ignore this email."
+    tr(lang, "email.verify.button"),
+    tr(lang, "email.verify.footer")
   );
 };
 
 module.exports.genOutingInviteAcceptedEmail = (
+  lang,
   by,
   outing,
   unreadAlerts,
@@ -46,18 +49,20 @@ module.exports.genOutingInviteAcceptedEmail = (
   color: #FFFFFF;`;
 
   return basicEmailTemplate(
-    "Your Outing invite was accepted!",
-    `<div style="${inviteHeaderStyle}">${by.first_name} ${by.last_name} 
-    has joined your outing:
+    lang,
+    tr(lang, "email.inviteAccepted.header"),
+    `<div style="${inviteHeaderStyle}">${tr(lang, "email.inviteAccepted.body", {
+      name: `${by.first_name} ${by.last_name}`,
+    })}
     </div>
     <div style="${activityNameStyle}">
         ${outing.activity.name}
     </div>
     <div style="${outingNameStyle}">
-        Outing Name: ${outing.name}
+        ${tr(lang, "email.outingName", { name: outing.name })}
     </div>`,
     "https://www.frolik.ca/profile",
-    "View on frolik.ca",
+    tr(lang, "email.viewOnSite"),
     "",
     unreadAlerts,
     unreadChats
@@ -65,6 +70,7 @@ module.exports.genOutingInviteAcceptedEmail = (
 };
 
 module.exports.genOutingInviteEmail = (
+  lang,
   from,
   outing,
   unreadAlerts = 0,
@@ -85,33 +91,36 @@ module.exports.genOutingInviteEmail = (
   color: #FFFFFF;`;
 
   return basicEmailTemplate(
-    "You have been invited to an Outing!",
-    `<div style="${inviteHeaderStyle}">${from.first_name} ${from.last_name} 
-    has invited you to their outing:
+    lang,
+    tr(lang, "email.invite.header"),
+    `<div style="${inviteHeaderStyle}">${tr(lang, "email.invite.body", {
+      name: `${from.first_name} ${from.last_name}`,
+    })}
     </div>
     <div style="${activityNameStyle}">
         ${outing.activity.name}
     </div>
     <div style="${outingNameStyle}">
-        Outing Name: ${outing.name}
+        ${tr(lang, "email.outingName", { name: outing.name })}
     </div>`,
     "https://www.frolik.ca/profile",
-    "View on frolik.ca",
+    tr(lang, "email.viewOnSite"),
     "",
     unreadAlerts,
     unreadChats
   );
 };
 
-module.exports.dailyUpdateEmail = (unreadAlerts, unreadChats) => {
+module.exports.dailyUpdateEmail = (lang, unreadAlerts, unreadChats) => {
   return basicEmailTemplate(
-    "Daily frolik Update",
+    lang,
+    tr(lang, "email.daily.header"),
     `<div>
-        You're receiving this email because you have unread notifications:
-        ${alertsSection(unreadAlerts, unreadChats)}
+        ${tr(lang, "email.daily.intro")}
+        ${alertsSection(lang, unreadAlerts, unreadChats)}
     </div>`,
     "https://www.frolik.ca",
-    "View on frolik.ca",
+    tr(lang, "email.viewOnSite"),
     "",
     0,
     0
@@ -119,6 +128,7 @@ module.exports.dailyUpdateEmail = (unreadAlerts, unreadChats) => {
 };
 
 function basicEmailTemplate(
+  lang,
   headerText,
   content,
   buttonLink,
@@ -176,7 +186,7 @@ function basicEmailTemplate(
 
   return `
   <!DOCTYPE html>
-  <html style='background-color: #2A2A2A'; >
+  <html lang="${lang || "en"}" dir="${lang === "ar" ? "rtl" : "ltr"}" style='background-color: #2A2A2A'; >
   <body style="${bodyStyle}">
   <div style="${mainContainerStyle}">
     <div style=${mainHeaderContainerStyle}>
@@ -190,13 +200,13 @@ function basicEmailTemplate(
     <div>
       ${footerText}
     </div>
-    ${alertsSection(unreadAlerts, unreadChats)}
+    ${alertsSection(lang, unreadAlerts, unreadChats)}
 </div>
 </body>
 </html>`;
 }
 
-function alertsSection(unreadAlerts = 0, unreadChats = 0) {
+function alertsSection(lang, unreadAlerts = 0, unreadChats = 0) {
   const bellIconLink = `http://drive.google.com/uc?export=view&id=1MUl83_4SZYlEGcAT7mDFuJi0xpBzwqi-`;
   const chatIconLink = `http://drive.google.com/uc?export=view&id=137Ses-ZRQK-r6StWfA4Bx0rYSvbDIHrY`;
 
@@ -228,7 +238,7 @@ function alertsSection(unreadAlerts = 0, unreadChats = 0) {
         ? `
         <div style="${alertContainerStyle}">
             <img style="${alertIconStyle}" alt="bell" src="${bellIconLink}" />
-            <div style="${badgeStyle}">${unreadAlerts} unread alert(s)</div>
+            <div style="${badgeStyle}">${tr(lang, "email.unreadAlerts", { count: unreadAlerts })}</div>
         </div>`
         : ""
     }
@@ -237,7 +247,7 @@ function alertsSection(unreadAlerts = 0, unreadChats = 0) {
         ? `
       <div style="${alertContainerStyle}">
           <img style="${alertIconStyle}" alt="bell" src="${chatIconLink}" />
-          <div style="${badgeStyle}">${unreadChats} unread chat messsage(s)</div>
+          <div style="${badgeStyle}">${tr(lang, "email.unreadChats", { count: unreadChats })}</div>
       </div>`
         : ""
     }

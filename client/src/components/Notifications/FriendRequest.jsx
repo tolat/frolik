@@ -10,13 +10,14 @@ import {
   fetchStrippedUser,
 } from "../../utils/data-fetch";
 import { authActions } from "../../store/auth-slice";
-import { toAppDate } from "../../utils/utils";
+import { useT } from "../../i18n";
 import SimpleButton from "../UI/SimpleButton";
 import FriendCard from "../UI/FriendCard";
 import { dataActions } from "../../store/data-slice";
 
 const FriendRequest = (props) => {
   const dispatch = useDispatch();
+  const { t, formatDate } = useT();
   const user = useSelector((state) => state.auth.user);
   const notification = props.notification;
   const cachedUsers = useSelector((state) => state.data.cachedUsers);
@@ -46,30 +47,28 @@ const FriendRequest = (props) => {
   return (
     requestingUser && (
       <div className={styles.container}>
-        <div className={styles.header}>You have a friend request from:</div>
+        <div className={styles.header}>{t("notifications.headers.friendRequest")}</div>
         <FriendCard
           style={{ margin: "0" }}
           noShadow={true}
           small={true}
           user={requestingUser}
         />
-        <div>{toAppDate(props.notification.created)}</div>
+        <div>{formatDate(props.notification.created, { dateStyle: "medium", timeStyle: "short" })}</div>
         <div className={styles.buttons}>
           <SimpleButton
             noShadow={true}
             onClick={() => handleDismissRequest("accepted")}
             className={styles.acceptButton}
           >
-            {" "}
-            Accept
+            {t("notifications.actions.accept")}
           </SimpleButton>
           <div className={styles.buttonSpacer}></div>
           <SimpleButton
             onClick={() => handleDismissRequest("denied")}
             noShadow={true}
           >
-            {" "}
-            Deny
+            {t("notifications.actions.deny")}
           </SimpleButton>
         </div>
       </div>

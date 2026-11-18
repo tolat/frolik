@@ -1,0 +1,22 @@
+{
+  "header": "アクティビティを作成",
+  "create": "アクティビティを作成",
+  "saving": "保存中",
+  "placeholders": {
+    "name": "名前（最大{{max}}文字）",
+    "description": "説明（最大{{max}}文字）",
+    "city": "都市",
+    "goal": "ゴールを入力",
+    "hours": "時間数",
+    "cost": "費用（$）",
+    "people": "人数"
+  },
+  "cover": {
+    "alt": "アクティビティのカバー",
+    "change": "変更",
+    "remove": "削除",
+    "add": "カバー写真を追加",
+    "optional": "任意",
+    "readError": "このファイルは画像として読み込めませんでした。"
+  }
+}

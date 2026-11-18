@@ -1,0 +1,38 @@
+{
+  "title": "Alertes",
+  "empty": {
+    "title": "Rien ici !",
+    "body": "Tes alertes apparaîtront ici",
+    "iconAlt": "Cloche"
+  },
+  "headers": {
+    "outingInvite": "Tu es invité à une sortie !",
+    "inviteAccepted": "Ton invitation à une sortie a été acceptée par :",
+    "inviteDenied": "Ton invitation à une sortie a été refusée par :",
+    "outingLeft": "Quelqu'un a quitté ta sortie :",
+    "outingJoined": "Quelqu'un a rejoint ta sortie :",
+    "outingCompleted": "Ta sortie est terminée !",
+    "outingMarkedComplete": "Ta sortie a été marquée terminée par :",
+    "friendRequest": "Tu as une demande d'ami de :",
+    "friendRequestStatus": {
+      "accepted": "Ta demande d'ami a été acceptée par :",
+      "denied": "Ta demande d'ami a été refusée par :",
+      "other": "Ta demande d'ami : {{status}}, par :"
+    },
+    "friendRemoved": "Tu as été retiré des amis de :",
+    "chatCreated": "Tu as été ajouté à une discussion par :"
+  },
+  "footers": {
+    "markComplete": "À toi de marquer la sortie terminée une fois tes photos téléversées !"
+  },
+  "outingLabel": "Sortie : <b>{{name}}</b>",
+  "outingLoading": "Sortie : …",
+  "activityLabel": "Activité : <b>{{name}}</b>",
+  "actions": {
+    "viewOuting": "Voir la sortie",
+    "viewChat": "Voir la discussion",
+    "clear": "Effacer",
+    "accept": "Accepter",
+    "deny": "Refuser"
+  }
+}

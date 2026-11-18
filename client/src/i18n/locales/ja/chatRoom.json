@@ -1,0 +1,13 @@
+{
+  "active": "{{date}}にアクティブ",
+  "outing": "おでかけ",
+  "newOuting": "+ おでかけ",
+  "placeholder": "メッセージ…",
+  "send": "メッセージを送信",
+  "new": "新着",
+  "sentAt": "{{date}} · {{time}}",
+  "share": {
+    "opening": "開いています…",
+    "activity": "アクティビティ"
+  }
+}

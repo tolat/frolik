@@ -1,0 +1,32 @@
+{
+  "header": "Profil",
+  "tabs": {
+    "photos": "Bilder"
+  },
+  "noPhotos": "Ingen bilder ennå!",
+  "buttons": {
+    "cancel": "Avbryt",
+    "unfriend": "Fjern som venn",
+    "sendRequest": "Send forespørsel"
+  },
+  "actions": {
+    "chat": "+ Chat",
+    "outing": "+ Treff",
+    "friend": "+ Venn",
+    "requested": "Sendt"
+  },
+  "locked": {
+    "header": "Fullfør et treff først",
+    "formerHeader": "Ikke ennå",
+    "message": "Du kan legge til {{name}} som venn når en av dere har fått den andre som dagsmatch og dere har fullført et treff sammen.",
+    "formerMessage": "Du og {{name}} har vært venner før. For å bli venner igjen må {{name}} dukke opp blant dagsmatchene dine, og dere må fullføre et nytt treff sammen."
+  },
+  "unfriend": {
+    "header": "Fjerne {{name}} som venn?",
+    "message": "{{name}} fjernes fra vennene dine, og ingen av dere kan åpne den andres profil.<br/><br/><b>Du kan ikke bare legge til {{name}} igjen.</b> For å bli venner igjen må {{name}} dukke opp blant dagsmatchene dine, og dere må fullføre et nytt treff sammen."
+  },
+  "friendRequest": {
+    "header": "Sende venneforespørsel til {{name}}?",
+    "message": "{{name}} får et varsel og kan godta eller avslå forespørselen."
+  }
+}

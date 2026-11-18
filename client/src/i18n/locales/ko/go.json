@@ -1,0 +1,37 @@
+{
+  "create": {
+    "button": "나들이 만들기",
+    "creating": "만드는 중…",
+    "summary": "나 + {{count}} · {{activity}}"
+  },
+  "created": {
+    "header": "새 나들이 이름:",
+    "nameLabel": "나들이 이름",
+    "nameHint": "이름을 탭하면 바꿀 수 있어요 ({{length}}/{{max}})",
+    "inviteSent": "다른 사용자에게 초대를 보냈어요. 이 나들이는 언제든 프로필 페이지의 아래 탭에서 볼 수 있어요:",
+    "outingsIconAlt": "나들이 아이콘",
+    "chatCreated": "이 나들이를 위한 새 채팅방도 만들어졌어요! 다른 사람들이 나들이를 수락하면 채팅방에 추가돼요.",
+    "saving": "저장 중…",
+    "ok": "확인"
+  },
+  "members": {
+    "edit": "멤버 편집",
+    "add": "멤버 추가"
+  },
+  "requirements": {
+    "activityPicked": "액티비티 선택 완료",
+    "pickActivity": "액티비티 고르기",
+    "addMatch": "오늘의 매치 추가",
+    "addMoreMatches": {
+      "other": "오늘의 매치 {{count}}명 더 추가"
+    },
+    "matchesAdded": {
+      "other": "오늘의 매치 {{count}}명 추가됨"
+    },
+    "matchNote": "초대하는 친구 한 명마다 오늘의 매치가 한 명씩 필요해요."
+  },
+  "filter": "필터",
+  "createActivityLabel": "나만의 액티비티 만들기",
+  "createActivityTitle": "액티비티 만들기",
+  "noMatchingActivities": "조건에 맞는 액티비티가 없어요!"
+}

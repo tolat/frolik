@@ -166,3 +166,22 @@
   background: $button_grey !important;
   color: #a7adbb !important;
 }
+
+// Settings (placeholderLabels): the form rows as one evenly spaced column
+.fieldStack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 100%;
+  margin: 1.6rem 0;
+
+  > * {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+// Sign-up: no wrapper box, rows keep their own spacing
+.fieldPlain {
+  display: contents;
+}

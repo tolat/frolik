@@ -1,0 +1,120 @@
+{
+  "sections": {
+    "activity": "Attività",
+    "photos": "Foto",
+    "members": "Partecipanti",
+    "invited": "Invitati"
+  },
+  "alt": {
+    "flake": "bidone",
+    "activity": "attività",
+    "photos": "foto",
+    "members": "partecipanti",
+    "invited": "invitati"
+  },
+  "buttons": {
+    "joinOuting": "Partecipa all'uscita",
+    "markCompleted": "Segna come completata",
+    "markedCompleted": "Segnata come completata!",
+    "deleteOuting": "Elimina uscita",
+    "leaveOuting": "Lascia uscita",
+    "delete": "Elimina",
+    "deleting": "Eliminazione...",
+    "leave": "Lascia",
+    "cancel": "Annulla",
+    "ok": "OK",
+    "gotIt": "Ho capito"
+  },
+  "flakedOut": "Hai tirato un bidone!",
+  "chat": {
+    "openLabel": "Apri la chat dell'uscita",
+    "title": "Chat"
+  },
+  "deleteDrawer": {
+    "header": "Confermi di voler eliminare l'uscita?",
+    "message": "Una volta eliminata l'uscita, nessuno degli invitati potrà più partecipare. Eliminare questa uscita <b>non influirà</b> sul tuo indice bidoni. Questa azione è definitiva."
+  },
+  "leaveDrawer": {
+    "header": "Confermi di voler lasciare l'uscita?",
+    "message": "Anche se lasci l'uscita, gli altri partecipanti potranno comunque completarla. In quel caso, <b>il tuo indice bidoni peggiorerà</b>. Questa azione è definitiva (dopo averla lasciata non potrai più rientrare)."
+  },
+  "joinDrawer": {
+    "header": "Vuoi partecipare a questa uscita?",
+    "pendingLimit": "Conta per il tuo limite di 5 uscite in sospeso.",
+    "mustComplete": "Dovrà essere completata (o eliminata finché sei l'unico partecipante).",
+    "leavingLowersRating": "Se la lasci dopo esserti unito, <b>il tuo indice bidoni peggiora</b>."
+  },
+  "completeDrawer": {
+    "header": "Segnare questa uscita come completata?",
+    "lastMember": "Sei l'ultimo partecipante a segnarla come completata",
+    "lockedYou": "Una volta segnata come completata, l'uscita viene bloccata: non potrai più modificare le foto.",
+    "lockedEveryone": "Quando tutti i partecipanti l'avranno segnata come completata, l'uscita verrà bloccata: non si potranno più modificare le foto.",
+    "chatStaysOpen": "La chat dell'uscita resta aperta, così potete restare in contatto.",
+    "cantUndo": "Non si può annullare."
+  },
+  "rating": {
+    "title": "Valuta l'attività",
+    "hint": "Tocca una stella per valutarla",
+    "labels": {
+      "1": "Non granché",
+      "2": "Così così",
+      "3": "Bella",
+      "4": "Bellissima",
+      "5": "Mi è piaciuta un sacco!"
+    }
+  },
+  "completion": {
+    "needMembers": "L'uscita deve avere almeno 2 partecipanti per essere segnata come completata.",
+    "count": "{{completed}} / {{total}} partecipanti hanno segnato questa uscita come completata."
+  },
+  "howToComplete": {
+    "header": "Come completare un'uscita",
+    "intro": "Un'uscita ha bisogno di almeno 2 partecipanti per poter essere completata.",
+    "waitForInvites": {
+      "one": "Aspetta che il tuo invito venga accettato, oppure invita qualcun altro.",
+      "many": "Aspetta che i tuoi {{count}} inviti vengano accettati, oppure invita qualcun altro.",
+      "other": "Aspetta che i tuoi {{count}} inviti vengano accettati, oppure invita qualcun altro."
+    },
+    "inviteSomeone": "Invita un amico o un match del giorno a partecipare.",
+    "goTogether": "Fate l'uscita insieme.",
+    "uploadPhoto": "Carica almeno una foto dell'uscita.",
+    "everyoneMarks": "Ogni partecipante tocca Segna come completata."
+  },
+  "photos": {
+    "limitHint": "Ogni partecipante può caricare fino a 2 foto.",
+    "upload": "+ Carica",
+    "edit": "Modifica",
+    "doneEditing": "Fine modifiche"
+  },
+  "tooManyPhotos": {
+    "header": "Troppe foto!",
+    "message": "Ogni partecipante all'uscita può caricare al massimo 2 foto. Se vuoi cambiare o modificare le foto che hai caricato per questa uscita, puoi rimuoverne qualcuna."
+  },
+  "deletePhoto": {
+    "header": "Eliminare la foto?"
+  },
+  "noPhotos": {
+    "header": "Nessuna foto caricata!",
+    "message": "Un'uscita deve avere almeno una foto caricata prima di poter essere segnata come completata. Puoi aggiungere foto nella pagina dell'uscita con il pulsante qui sotto:",
+    "buttonAlt": "Pulsante per aggiungere foto",
+    "allMembers": "Tutti i partecipanti devono segnare l'uscita come completata!"
+  },
+  "countdown": {
+    "lessThanADay": "meno di un giorno",
+    "days": {
+      "one": "{{count}} giorno",
+      "many": "{{count}} giorni",
+      "other": "{{count}} giorni"
+    },
+    "finishNote": "Mancano {{time}} perché tutti la segnino come completata. Chi non lo fa in tempo viene rimosso e gli viene segnato un bidone.",
+    "inviteNote": "Se nessuno si unisce entro {{time}}, questa uscita verrà eliminata per inattività.",
+    "invitesExpire": "Gli inviti scadono tra {{time}} se non vengono accettati.",
+    "done": "✓ Fatto",
+    "daysLeftTag": "Mancano {{days}} g",
+    "daysToJoinTag": "{{days}} g per unirti"
+  },
+  "deleteHelp": {
+    "onlyMember": "Puoi eliminare l'uscita perché sei l'unico partecipante. Eliminarla <b>non peggiorerà</b> il tuo indice bidoni.",
+    "otherMembers": "Non puoi eliminare l'uscita perché ci sono altri partecipanti. Lasciarla <b>peggiorerà</b> il tuo indice bidoni."
+  }
+}

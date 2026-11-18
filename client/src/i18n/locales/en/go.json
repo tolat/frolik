@@ -1,0 +1,39 @@
+{
+  "create": {
+    "button": "Create Outing",
+    "creating": "Creating..",
+    "summary": "You + {{count}} · {{activity}}"
+  },
+  "created": {
+    "header": "Your new outing is called:",
+    "nameLabel": "Outing name",
+    "nameHint": "Tap the name to change it ({{length}}/{{max}})",
+    "inviteSent": "An invite has been sent to the other users. You can view this outing any time on the Profile page under the following tab:",
+    "outingsIconAlt": "outings-icon",
+    "chatCreated": "A new chat for this outing has also been created! When others accept the Outing they will be added to the chat.",
+    "saving": "Saving…",
+    "ok": "OK"
+  },
+  "members": {
+    "edit": "Edit Members",
+    "add": "Add Members"
+  },
+  "requirements": {
+    "activityPicked": "Activity picked",
+    "pickActivity": "Pick an activity",
+    "addMatch": "Add a Daily Match",
+    "addMoreMatches": {
+      "one": "Add {{count}} more Daily Match",
+      "other": "Add {{count}} more Daily Matches"
+    },
+    "matchesAdded": {
+      "one": "{{count}} Daily Match added",
+      "other": "{{count}} Daily Matches added"
+    },
+    "matchNote": "Every Outing needs a Daily Match for each friend you invite."
+  },
+  "filter": "Filter",
+  "createActivityLabel": "Create a custom activity",
+  "createActivityTitle": "Create activity",
+  "noMatchingActivities": "No Activities Match Filters!"
+}

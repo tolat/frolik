@@ -4,10 +4,12 @@ import EmptyPopup from "./EmptyPopup";
 import UserIcon from "../UI/UserIcon";
 import styles from "./styles/SendActivityPopup.module.scss";
 import { sendActivityToFriend } from "../../utils/shareActivity";
+import { useT } from "../../i18n";
 
 // "Send to a friend": pick a friend, the activity is posted in your chat with
 // them (an existing one is reused) and that chat opens.
 const SendActivityPopup = () => {
+  const { t } = useT();
   const user = useSelector((state) => state.auth.user);
   const activity = useSelector((state) => state.popup.sendActivity);
   const isOpen = useSelector((state) => state.popup.selector === "send-activity");
@@ -42,16 +44,16 @@ const SendActivityPopup = () => {
   };
 
   return (
-    <EmptyPopup selector="send-activity">
+    <EmptyPopup selector="send-activity" label={t("popups.sendActivity.header")}>
       <div className={styles.container}>
-        <div className={styles.header}>Send to a friend</div>
+        <div className={styles.header}>{t("popups.sendActivity.header")}</div>
         {activity ? (
           <div className={styles.subheader}>{activity.name}</div>
         ) : null}
         {friends.length > 6 ? (
           <input
             className={styles.search}
-            placeholder="Search friends…"
+            placeholder={t("popups.sendActivity.searchPlaceholder")}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
@@ -59,11 +61,12 @@ const SendActivityPopup = () => {
         <div className={styles.list}>
           {friends.length === 0 ? (
             <div className={styles.empty}>
-              Add friends to send them activities. You can add someone after
-              you've completed an outing together.
+              {t("popups.sendActivity.noFriends")}
             </div>
           ) : shown.length === 0 ? (
-            <div className={styles.empty}>No friends match "{query}".</div>
+            <div className={styles.empty}>
+              {t("popups.sendActivity.noMatches", { query })}
+            </div>
           ) : (
             shown.map((f) => (
               <button
@@ -83,7 +86,9 @@ const SendActivityPopup = () => {
                   ) : null}
                 </span>
                 <span className={styles.sendLabel}>
-                  {sendingTo === f._id ? "Sending…" : "Send"}
+                  {sendingTo === f._id
+                    ? t("popups.sendActivity.sending")
+                    : t("popups.sendActivity.send")}
                 </span>
               </button>
             ))

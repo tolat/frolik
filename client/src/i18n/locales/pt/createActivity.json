@@ -1,0 +1,22 @@
+{
+  "header": "Criar atividade",
+  "create": "Criar atividade",
+  "saving": "Salvando",
+  "placeholders": {
+    "name": "Nome (máx. {{max}} caracteres)",
+    "description": "Descrição (máx. {{max}} caracteres)",
+    "city": "Cidade",
+    "goal": "Digite o objetivo",
+    "hours": "Nº de horas",
+    "cost": "$ Custo",
+    "people": "Nº de pessoas"
+  },
+  "cover": {
+    "alt": "Capa da atividade",
+    "change": "Trocar",
+    "remove": "Remover",
+    "add": "Adicionar foto de capa",
+    "optional": "opcional",
+    "readError": "Não foi possível ler esse arquivo como imagem."
+  }
+}

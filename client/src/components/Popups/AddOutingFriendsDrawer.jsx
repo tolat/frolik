@@ -10,6 +10,7 @@ import { friendAccess } from "../../utils/friendAccess";
 import addFriend from "../../images/add-friend.png";
 import sentMail from "../../images/sent-mail.png";
 import styles from "./styles/AddOutingFriendsDrawer.module.scss";
+import { useT } from "../../i18n";
 
 const seenKey = (userID, outingID) =>
   `frolik:friend-prompt:${userID}:${outingID}`;
@@ -32,6 +33,7 @@ const markSeen = (key) => {
 // completed, or later from the Alert / Outings list), once per device.
 const AddOutingFriendsDrawer = ({ outing, visible }) => {
   const dispatch = useDispatch();
+  const { t } = useT();
   const user = useSelector((state) => state.auth.user);
   const selector = `add-friends-${outing?._id}`;
   const completed = !!outing?.date_completed;
@@ -72,11 +74,11 @@ const AddOutingFriendsDrawer = ({ outing, visible }) => {
   if (!completed) return null;
 
   return (
-    <EmptyPopup selector={selector} label="Add friends from this Outing">
+    <EmptyPopup selector={selector} label={t("friendsDrawer.label")}>
       <div className={styles.container}>
-        <h2 className={styles.header}>Nice work, Outing completed!</h2>
+        <h2 className={styles.header}>{t("friendsDrawer.header")}</h2>
         <p className={styles.subtitle}>
-          Want to stay in touch? Send a friend request to the people you met.
+          {t("friendsDrawer.subtitle")}
         </p>
         <div className={styles.list}>
           {shownList.map((m) => {
@@ -92,14 +94,14 @@ const AddOutingFriendsDrawer = ({ outing, visible }) => {
                     <CircleAction
                       compact
                       icon={sentMail}
-                      label="Requested"
+                      label={t("friendsDrawer.requested")}
                       tone="secondary"
                     />
                   ) : (
                     <CircleAction
                       compact
                       icon={addFriend}
-                      label="+ Friend"
+                      label={t("friendsDrawer.addFriend")}
                       onClick={() => onAdd(m)}
                     />
                   )
@@ -113,7 +115,7 @@ const AddOutingFriendsDrawer = ({ outing, visible }) => {
           className={styles.doneButton}
           onClick={() => dispatch(popupActions.hidePopup())}
         >
-          Done
+          {t("friendsDrawer.done")}
         </button>
       </div>
     </EmptyPopup>

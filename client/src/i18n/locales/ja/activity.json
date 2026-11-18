@@ -1,0 +1,45 @@
+{
+  "actions": {
+    "delete": "削除",
+    "cancel": "キャンセル",
+    "showInstructions": "手順を表示",
+    "hideInstructions": "手順を隠す",
+    "createOuting": "おでかけを作成",
+    "sendToFriend": "友だちに送る",
+    "remove": "外す",
+    "select": "選択"
+  },
+  "delete": {
+    "header": "アクティビティの削除を確認：",
+    "permanent": "この操作は取り消せません。",
+    "deleting": "削除中…"
+  },
+  "stats": {
+    "time": "所要時間",
+    "cost": "費用",
+    "group": "人数",
+    "rating": "評価",
+    "hours": {
+      "other": "{{count}}時間"
+    },
+    "costValue": "${{cost}}",
+    "participants": {
+      "other": "{{count}}人〜"
+    }
+  },
+  "badges": {
+    "completed": "完了済み",
+    "featured": "おすすめ",
+    "created": "ユーザー作成"
+  },
+  "instructionsHeader": "手順：",
+  "addInstruction": "+ 手順を追加",
+  "goalHeader": "ゴール：",
+  "goalAlt": "ゴール",
+  "instruction": {
+    "chooseIcon": "アイコンを選択",
+    "titlePlaceholder": "手順のタイトル",
+    "detailsPlaceholder": "手順の詳細",
+    "remove": "手順を削除"
+  }
+}

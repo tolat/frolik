@@ -1,8 +1,10 @@
 import { forwardRef, useEffect, useState } from "react";
 import styles from "./styles/SimpleSearch.module.scss";
 import searchIcon from "../../images/search.png";
+import { useT } from "../../i18n";
 
 const SimpleSearch = forwardRef((props, ref) => {
+  const { t } = useT();
   const [value, setValue] = useState(props.defaultVal);
   const inputID = props.id || Math.random();
 
@@ -41,7 +43,7 @@ const SimpleSearch = forwardRef((props, ref) => {
         <img
           className={styles.searchIcon}
           src={searchIcon}
-          alt={"search-glass"}
+          alt={t("ui.search.icon")}
         />
       </div>
     </div>

@@ -1,0 +1,28 @@
+{
+  "categories": {
+    "Adventure": "Eventyr",
+    "Art": "Kunst",
+    "Food": "Mat",
+    "Games": "Spill",
+    "Sports": "Sport"
+  },
+  "statuses": {
+    "Ready": "Klar",
+    "Busy": "Opptatt",
+    "Inactive": "Inaktiv",
+    "Pending": "Venter"
+  },
+  "statusDescriptions": {
+    "Ready": "Du er åpen for treff med hvem som helst!",
+    "Busy": "Du er opptatt med andre, mindre morsomme ting.",
+    "Inactive": "Statusen din settes til Inaktiv etter to uker uten aktivitet."
+  },
+  "instructionTypes": {
+    "communicate": "Snakk sammen",
+    "purchase": "Kjøp",
+    "travel": "Reis",
+    "play": "Spill",
+    "capture": "Ta bilder",
+    "create": "Lag"
+  }
+}

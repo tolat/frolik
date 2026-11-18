@@ -1,0 +1,32 @@
+{
+  "header": "Profil",
+  "tabs": {
+    "photos": "Fotos"
+  },
+  "noPhotos": "Noch keine Fotos!",
+  "buttons": {
+    "cancel": "Abbrechen",
+    "unfriend": "Entfreunden",
+    "sendRequest": "Anfrage senden"
+  },
+  "actions": {
+    "chat": "+ Chat",
+    "outing": "+ Ausflug",
+    "friend": "+ Freund*in",
+    "requested": "Angefragt"
+  },
+  "locked": {
+    "header": "Schließ erst einen Ausflug ab",
+    "formerHeader": "Noch nicht",
+    "message": "Du kannst {{name}} als Freund*in hinzufügen, sobald ihr euch in den Tagesmatches begegnet seid und zusammen einen Ausflug abgeschlossen habt.",
+    "formerMessage": "Du und {{name}} wart schon mal befreundet. Damit ihr wieder Freunde werden könnt, muss {{name}} in deinen Tagesmatches auftauchen und ihr müsst zusammen einen neuen Ausflug abschließen."
+  },
+  "unfriend": {
+    "header": "{{name}} entfreunden?",
+    "message": "{{name}} wird aus deinen Freunden entfernt, und ihr könnt eure Profile gegenseitig nicht mehr öffnen.<br/><br/><b>Du kannst {{name}} nicht einfach wieder hinzufügen.</b> Damit ihr wieder Freunde werdet, muss {{name}} in deinen Tagesmatches auftauchen und ihr müsst zusammen einen neuen Ausflug abschließen."
+  },
+  "friendRequest": {
+    "header": "{{name}} eine Freundschaftsanfrage senden?",
+    "message": "{{name}} bekommt eine Mitteilung und kann annehmen oder ablehnen."
+  }
+}

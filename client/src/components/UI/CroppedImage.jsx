@@ -3,8 +3,10 @@ import styles from "./styles/CroppedImage.module.scss";
 import { useDispatch } from "react-redux";
 import { popupActions } from "../../store/popup-slice";
 import { Fragment, useState } from "react";
+import { useT } from "../../i18n";
 
 const CroppedImage = (props) => {
+  const { t } = useT();
   const dispatch = useDispatch();
   // Pressed state via pointer events: iOS Safari doesn't reliably apply :active
   const [badgePressed, setBadgePressed] = useState(false);
@@ -60,7 +62,7 @@ const CroppedImage = (props) => {
             onPointerLeave={badgeClickable ? () => setBadgePressed(false) : undefined}
             onPointerCancel={badgeClickable ? () => setBadgePressed(false) : undefined}
             role={badgeClickable ? "button" : undefined}
-            aria-label={badgeClickable ? "Change photo" : undefined}
+            aria-label={badgeClickable ? t("ui.photos.change") : undefined}
             className={`${styles.badgeContainer} ${
               badgeClickable ? styles.badgeClickable : ""
             } ${badgePressed ? styles.badgePressed : ""}`}

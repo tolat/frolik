@@ -11,7 +11,7 @@ const NavButton = (props) => {
               style={props.imgStyle}
               className={styles.iconButton}
               src={props.icon}
-              alt="button_icon"
+              alt=""
             />
             <div
               className={`${styles.iconText} ${

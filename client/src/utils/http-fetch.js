@@ -1,6 +1,7 @@
 import store from "../store";
 import { popupActions } from "../store/popup-slice";
 import { socketActions } from "../store/socket-slice";
+import { getLanguage, t } from "../i18n";
 
 export default async function httpFetch(
   requestConfig,
@@ -11,7 +12,8 @@ export default async function httpFetch(
     store.dispatch(socketActions.setIsConnecting(true));
     const response = await fetch(requestConfig.url, {
       method: requestConfig.method ? requestConfig.method : "GET",
-      headers: requestConfig.headers ? requestConfig.headers : {},
+      // The server answers errors (and signed-out screens) in this language
+      headers: { "X-Frolik-Lang": getLanguage(), ...(requestConfig.headers || {}) },
       body: requestConfig.body ? requestConfig.body : null,
       mode: requestConfig.mode ? requestConfig.mode : "cors",
       credentials: requestConfig.credentials
@@ -34,9 +36,8 @@ export default async function httpFetch(
           handleError(response);
         });
       } else if (response.status === 500) {
-        const message =
-          "Oops, something went wrong on our end! Refresh the page and try again.";
-        store.dispatch(popupActions.setWarningHeader("Internal Server Error"));
+        const message = t("common.errors.serverMessage");
+        store.dispatch(popupActions.setWarningHeader(t("common.errors.serverHeader")));
         store.dispatch(popupActions.setWarningMessage(message));
         store.dispatch(popupActions.showPopup("generic-warning"));
         handleError(response);

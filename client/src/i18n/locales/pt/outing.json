@@ -1,0 +1,120 @@
+{
+  "sections": {
+    "activity": "Atividade",
+    "photos": "Fotos",
+    "members": "Participantes",
+    "invited": "Convidados"
+  },
+  "alt": {
+    "flake": "furo",
+    "activity": "atividade",
+    "photos": "fotos",
+    "members": "participantes",
+    "invited": "convidados"
+  },
+  "buttons": {
+    "joinOuting": "Entrar no rolê",
+    "markCompleted": "Marcar como concluído",
+    "markedCompleted": "Marcado como concluído!",
+    "deleteOuting": "Excluir rolê",
+    "leaveOuting": "Sair do rolê",
+    "delete": "Excluir",
+    "deleting": "Excluindo...",
+    "leave": "Sair",
+    "cancel": "Cancelar",
+    "ok": "OK",
+    "gotIt": "Entendi"
+  },
+  "flakedOut": "Você furou!",
+  "chat": {
+    "openLabel": "Abrir chat do rolê",
+    "title": "Chat"
+  },
+  "deleteDrawer": {
+    "header": "Confirmar exclusão do rolê:",
+    "message": "Depois que você excluir o rolê, nenhum convidado vai poder entrar nele. Excluir este rolê <b>não afeta</b> seu índice de furos. Esta ação é permanente."
+  },
+  "leaveDrawer": {
+    "header": "Confirmar saída do rolê:",
+    "message": "Depois que você sair, os outros participantes ainda podem concluir o rolê. Se isso acontecer, <b>seu índice de furos vai piorar</b>. Esta ação é permanente (não dá para voltar depois de sair)."
+  },
+  "joinDrawer": {
+    "header": "Entrar neste rolê?",
+    "pendingLimit": "Ele conta para o seu limite de 5 rolês pendentes.",
+    "mustComplete": "Ele precisa ser concluído (ou excluído enquanto você for o único participante).",
+    "leavingLowersRating": "Sair depois de entrar <b>piora seu índice de furos</b>."
+  },
+  "completeDrawer": {
+    "header": "Marcar este rolê como concluído?",
+    "lastMember": "Você é o último participante a marcar como concluído",
+    "lockedYou": "Depois que você marcar como concluído, o rolê fica travado: não dá mais para mexer nas fotos.",
+    "lockedEveryone": "Depois que todos os participantes marcarem como concluído, o rolê fica travado: não dá mais para mexer nas fotos.",
+    "chatStaysOpen": "O chat do rolê continua aberto para vocês manterem contato.",
+    "cantUndo": "Isso não pode ser desfeito."
+  },
+  "rating": {
+    "title": "Avalie a atividade",
+    "hint": "Toque em uma estrela para avaliar",
+    "labels": {
+      "1": "Não curti",
+      "2": "Foi ok",
+      "3": "Boa",
+      "4": "Muito boa",
+      "5": "Amei!"
+    }
+  },
+  "completion": {
+    "needMembers": "O rolê precisa ter 2 ou mais participantes para ser marcado como concluído.",
+    "count": "{{completed}} / {{total}} participantes marcaram este rolê como concluído."
+  },
+  "howToComplete": {
+    "header": "Como concluir um rolê",
+    "intro": "Um rolê precisa de pelo menos 2 participantes para poder ser concluído.",
+    "waitForInvites": {
+      "one": "Espere seu convite ser aceito ou convide outra pessoa.",
+      "many": "Espere seus {{count}} convites serem aceitos ou convide outra pessoa.",
+      "other": "Espere seus {{count}} convites serem aceitos ou convide outra pessoa."
+    },
+    "inviteSomeone": "Convide um amigo ou um match do dia para entrar.",
+    "goTogether": "Façam o rolê juntos.",
+    "uploadPhoto": "Envie pelo menos uma foto do rolê.",
+    "everyoneMarks": "Cada participante toca em Marcar como concluído."
+  },
+  "photos": {
+    "limitHint": "Cada participante pode enviar até 2 fotos.",
+    "upload": "+ Enviar",
+    "edit": "Editar",
+    "doneEditing": "Concluir edição"
+  },
+  "tooManyPhotos": {
+    "header": "Fotos demais!",
+    "message": "Cada participante do rolê pode enviar no máximo 2 fotos. Se quiser trocar ou editar o que você enviou para este rolê, remova algumas das suas fotos."
+  },
+  "deletePhoto": {
+    "header": "Excluir foto?"
+  },
+  "noPhotos": {
+    "header": "Nenhuma foto enviada!",
+    "message": "O rolê precisa ter pelo menos uma foto enviada antes de ser marcado como concluído. Você pode adicionar fotos na página do rolê com o botão abaixo:",
+    "buttonAlt": "Botão de adicionar fotos",
+    "allMembers": "Todos os participantes precisam marcar o rolê como concluído!"
+  },
+  "countdown": {
+    "lessThanADay": "menos de um dia",
+    "days": {
+      "one": "{{count}} dia",
+      "many": "{{count}} dias",
+      "other": "{{count}} dias"
+    },
+    "finishNote": "Faltam {{time}} para todos marcarem como concluído. Quem não marcar até lá é removido e ganha um furo na conta.",
+    "inviteNote": "Se ninguém entrar em {{time}}, este rolê será excluído por inatividade.",
+    "invitesExpire": "Os convites expiram em {{time}} se não forem aceitos.",
+    "done": "✓ Feito",
+    "daysLeftTag": "Faltam {{days}} d",
+    "daysToJoinTag": "{{days}} d para entrar"
+  },
+  "deleteHelp": {
+    "onlyMember": "Você pode excluir o rolê porque é o único participante. Excluir o rolê <b>não vai piorar</b> seu índice de furos.",
+    "otherMembers": "Você não pode excluir o rolê porque há outros participantes. Sair do rolê <b>vai piorar</b> seu índice de furos."
+  }
+}

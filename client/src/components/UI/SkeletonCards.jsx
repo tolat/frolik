@@ -1,5 +1,6 @@
 import styles from "./styles/SkeletonCards.module.scss";
 import { shineSync } from "../../utils/shine";
+import { useT } from "../../i18n";
 
 // Loading placeholders shaped like the real cards: a white card with grey,
 // shining stand-ins for the photo, avatars, text lines and buttons.
@@ -122,12 +123,15 @@ export const SkeletonCard = ({ variant = "chat", fill = false }) => {
   );
 };
 
-const SkeletonCards = ({ count = 3, variant = "chat" }) => (
-  <div className={styles.list} role="status" aria-label="Loading">
-    {Array.from({ length: count }).map((_, i) => (
-      <SkeletonCard key={i} variant={variant} />
-    ))}
-  </div>
-);
+const SkeletonCards = ({ count = 3, variant = "chat" }) => {
+  const { t } = useT();
+  return (
+    <div className={styles.list} role="status" aria-label={t("ui.loading")}>
+      {Array.from({ length: count }).map((_, i) => (
+        <SkeletonCard key={i} variant={variant} />
+      ))}
+    </div>
+  );
+};
 
 export default SkeletonCards;

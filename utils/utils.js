@@ -3,6 +3,7 @@ const Chat = require("../models/chat");
 const nodemailer = require("nodemailer");
 const io = require("../server");
 const webpush = require("web-push");
+const { forUser } = require("./i18n");
 
 const {
   uniqueNamesGenerator,
@@ -210,8 +211,11 @@ module.exports.handleOutingInviteAction = async (
 
       // Send webpush Notification
       this.webpushNotify([foundUsr], {
-        title: "Outing Joined",
-        body: `${user.first_name} ${user.last_name} has joined the Outing: ${outing.name}`,
+        title: forUser("push.outingJoined.title"),
+        body: forUser("push.outingJoined.body", {
+          name: `${user.first_name} ${user.last_name}`,
+          outing: outing.name,
+        }),
       });
     }
   } else {
@@ -222,8 +226,11 @@ module.exports.handleOutingInviteAction = async (
 
     // Send webpush Notification
     this.webpushNotify([createdByUser], {
-      title: "Outing Invite Denied",
-      body: `${user.first_name} ${user.last_name} denied your invite for the Outing: ${outing.name}`,
+      title: forUser("push.inviteDenied.title"),
+      body: forUser("push.inviteDenied.body", {
+        name: `${user.first_name} ${user.last_name}`,
+        outing: outing.name,
+      }),
     });
   }
 
@@ -260,8 +267,12 @@ const userSubscriptions = (u) => {
 module.exports.userSubscriptions = userSubscriptions;
 
 // payload: { title, body, url?, tag? } — url is where tapping the
-// notification takes the user (defaults to Alerts)
+// notification takes the user (defaults to Alerts). title/body may be
+// strings or (user) => string (e.g. i18n forUser(key, vars)) so each
+// recipient gets the text in their own language.
 module.exports.webpushNotify = async (users, payload) => {
+  const { title, body: text, ...rest } = payload;
+  const resolve = (v, u) => (typeof v === "function" ? v(u) : v);
   await Promise.all(
     users.map(async (user) => {
       const userID = user._id ? user._id.toString() : user.toString();
@@ -276,7 +287,9 @@ module.exports.webpushNotify = async (users, payload) => {
 
       const body = JSON.stringify({
         url: "/alerts",
-        ...payload,
+        ...rest,
+        title: resolve(title, freshUser),
+        body: resolve(text, freshUser),
         notificationCount:
           (this.getTotalUnreadMessages(freshUser) || 0) +
           (freshUser.notifications?.length ?? 0),
@@ -339,8 +352,8 @@ module.exports.handleFriendRequestAction = async (
 
     // Send a webpush Notification to other users as well
     this.webpushNotify([requestingUser], {
-      title: "Friend Request Denied",
-      body: `${requestedName} denied your friend request`,
+      title: forUser("push.friendRequestDenied.title"),
+      body: forUser("push.friendRequestDenied.body", { name: requestedName }),
     });
   } else {
     // Notify requesting user of acceptance
@@ -356,8 +369,8 @@ module.exports.handleFriendRequestAction = async (
 
     // Send a webpush Notification to other users as well
     this.webpushNotify([requestingUser], {
-      title: "Friend Request Accepted",
-      body: `${requestedName} accepted your friend request!`,
+      title: forUser("push.friendRequestAccepted.title"),
+      body: forUser("push.friendRequestAccepted.body", { name: requestedName }),
     });
 
     // Add users to eachother's friends list
@@ -543,10 +556,17 @@ module.exports.onSocketConnection = async (socket) => {
       this.webpushNotify(
         chatUsers.filter((id) => id !== sessionUserID),
         {
-          title: `${sessionUser.first_name} ${sessionUser.last_name} to ${
-            chat.outing ? chat.outing.name : "Chat"
-          }`,
-          body: text || `Shared an activity: ${activity?.name}`,
+          title: chat.outing
+            ? forUser("push.chatMessage.title", {
+                name: `${sessionUser.first_name} ${sessionUser.last_name}`,
+                chat: chat.outing.name,
+              })
+            : forUser("push.chatMessage.titleDirect", {
+                name: `${sessionUser.first_name} ${sessionUser.last_name}`,
+              }),
+          body:
+            text ||
+            forUser("push.chatMessage.sharedActivity", { activity: activity?.name }),
           url: `/chat?open=${chat._id.toString()}`,
           tag: `chat-${chat._id.toString()}`,
         }

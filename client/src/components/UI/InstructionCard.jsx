@@ -9,6 +9,7 @@ import whistleIcon from "../../images/whistle.png";
 import createIcon from "../../images/paint.png";
 import SimpleInput from "./SimpleInput";
 import { INSTRUCTION_TITLE_MAX } from "../../utils/limits";
+import { useT } from "../../i18n";
 
 export const instructionIconMap = {
   communicate: communicateIcon,
@@ -20,6 +21,7 @@ export const instructionIconMap = {
 };
 
 const InstructionCard = (props) => {
+  const { t, tOr } = useT();
   const globals = useSelector((state) => state.auth.globals);
   // The kinds are now just icons: pick one, then write any short title
   const iconKinds = (globals?.instructionTypes || Object.keys(instructionIconMap))
@@ -69,7 +71,7 @@ const InstructionCard = (props) => {
               id={`${props.instruction.instructionID}-kind`}
               data-kind={kind}
               className={styles.iconPickerButton}
-              aria-label="Choose an icon"
+              aria-label={t("activity.instruction.chooseIcon")}
               aria-expanded={pickerOpen}
               onClick={() => setPickerOpen((o) => !o)}
             >
@@ -86,8 +88,8 @@ const InstructionCard = (props) => {
                     type="button"
                     role="option"
                     aria-selected={k === `${kind}`.toLowerCase()}
-                    aria-label={k}
-                    title={k}
+                    aria-label={tOr("data.instructionTypes." + k, k)}
+                    title={tOr("data.instructionTypes." + k, k)}
                     className={`${styles.iconOption} ${
                       k === `${kind}`.toLowerCase() ? styles.iconOptionOn : ""
                     }`}
@@ -103,7 +105,7 @@ const InstructionCard = (props) => {
             defaultVal={title}
             id={`${props.instruction.instructionID}-title`}
             className={styles.titleInput}
-            placeholder="Instruction title"
+            placeholder={t("activity.instruction.titlePlaceholder")}
             maxLength={INSTRUCTION_TITLE_MAX}
             suffix={
               title ? `${title.length}/${INSTRUCTION_TITLE_MAX}` : null
@@ -117,7 +119,7 @@ const InstructionCard = (props) => {
           rows={3}
           className={styles.instructionDetails}
           defaultValue={details}
-          placeholder="Instruction details"
+          placeholder={t("activity.instruction.detailsPlaceholder")}
           onChange={(e) => setDetails(e.target.value)}
           onBlur={(e) => handleDetailsBlur(e.target.value)}
         />
@@ -126,7 +128,7 @@ const InstructionCard = (props) => {
           className={styles.deleteInstructionButton}
           onClick={onDeleteInstruction}
         >
-          Remove instruction
+          {t("activity.instruction.remove")}
         </button>
       </div>
     );
@@ -135,7 +137,11 @@ const InstructionCard = (props) => {
   return (
     <div className={styles.iContainer}>
       <div className={styles.iIconContainer}>
-        <img src={iconSrc} className={styles.iIcon} alt={props.instruction.kind} />
+        <img src={iconSrc} className={styles.iIcon} alt={tOr(
+            "data.instructionTypes." + `${props.instruction.kind || ""}`.toLowerCase(),
+            props.instruction.kind
+          )}
+        />
       </div>
       <div className={styles.iRightContainer}>
         <div className={styles.iName}>{props.instruction.title}</div>

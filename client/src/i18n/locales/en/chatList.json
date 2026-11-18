@@ -1,0 +1,16 @@
+{
+  "searchPlaceholder": "Search Chats..",
+  "newChat": "New chat",
+  "emptyTitle": "Nothing to show yet!",
+  "emptyText": "You'll see your chats with friends and for specific Outings here.",
+  "filters": {
+    "label": "Filter chats",
+    "all": "All",
+    "unread": "Unread",
+    "dms": "DMs",
+    "outings": "Outings",
+    "noUnread": "You're all caught up — no unread chats.",
+    "noMatch": "No chats match these filters."
+  },
+  "archived": "Archived"
+}

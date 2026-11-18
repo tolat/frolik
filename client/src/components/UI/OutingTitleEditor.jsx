@@ -4,10 +4,12 @@ import styles from "./styles/OutingTitleEditor.module.scss";
 import { renameOuting } from "../../utils/data-fetch";
 import { modalActions } from "../../store/modal-slice";
 import { OUTING_NAME_MAX } from "../../utils/limits";
+import { useT } from "../../i18n";
 
 // "Outing: <name>" in the outing panel header, with a pencil to rename it
 // in place (members only). Enter saves, Escape cancels.
 const OutingTitleEditor = ({ outing, canEdit, className }) => {
+  const { t } = useT();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const [editing, setEditing] = useState(false);
@@ -57,8 +59,8 @@ const OutingTitleEditor = ({ outing, canEdit, className }) => {
             type="button"
             className={styles.iconButton}
             onClick={() => setEditing(true)}
-            aria-label="Rename outing"
-            title="Rename outing"
+            aria-label={t("ui.outingTitle.rename")}
+            title={t("ui.outingTitle.rename")}
           >
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M4 20h4l10.5-10.5a2.1 2.1 0 0 0-4-4L4 16v4z" />
@@ -86,7 +88,7 @@ const OutingTitleEditor = ({ outing, canEdit, className }) => {
           maxLength={OUTING_NAME_MAX}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={(e) => e.key === "Escape" && cancel()}
-          aria-label="Outing name"
+          aria-label={t("ui.outingTitle.name")}
           disabled={saving}
         />
         <span className={styles.counter}>
@@ -96,7 +98,7 @@ const OutingTitleEditor = ({ outing, canEdit, className }) => {
       <button
         type="submit"
         className={`${styles.iconButton} ${styles.save}`}
-        aria-label="Save name"
+        aria-label={t("ui.outingTitle.save")}
         disabled={!trimmed || saving}
       >
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -107,7 +109,7 @@ const OutingTitleEditor = ({ outing, canEdit, className }) => {
         type="button"
         className={styles.iconButton}
         onClick={cancel}
-        aria-label="Cancel rename"
+        aria-label={t("ui.outingTitle.cancel")}
         disabled={saving}
       >
         <svg viewBox="0 0 24 24" aria-hidden="true">

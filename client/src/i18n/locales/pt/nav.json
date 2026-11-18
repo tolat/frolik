@@ -1,0 +1,17 @@
+{
+  "tabs": {
+    "alerts": "Alertas",
+    "profile": "Perfil",
+    "outing": "Rolê",
+    "social": "Social",
+    "chats": "Chats"
+  },
+  "ok": "OK",
+  "tooManyOutings": {
+    "header": "Você tem rolês pendentes demais!",
+    "message": "<b>Você só pode ter até 5 rolês pendentes por vez.</b> <br/>Conclua ou exclua alguns rolês antes de criar outro. Você pode ver seus rolês quando quiser na página \"Perfil\", tocando nesta aba:",
+    "iconAlt": "ícone de rolês",
+    "ok": "OK"
+  },
+  "footer": "Bora sair, galera!"
+}

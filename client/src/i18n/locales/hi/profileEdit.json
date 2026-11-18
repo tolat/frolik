@@ -1,0 +1,14 @@
+{
+  "photo": {
+    "editAlt": "बदलें"
+  },
+  "fields": {
+    "city": "शहर:",
+    "firstName": "पहला नाम:",
+    "lastName": "उपनाम (वैकल्पिक):",
+    "tagline": "टैगलाइन:"
+  },
+  "buttons": {
+    "revertPhoto": "पुरानी फ़ोटो वापस लाएँ"
+  }
+}

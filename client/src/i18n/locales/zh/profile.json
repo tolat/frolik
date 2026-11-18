@@ -1,0 +1,30 @@
+{
+  "tabs": {
+    "photos": "照片",
+    "outings": "出游",
+    "friends": "好友"
+  },
+  "friendCard": {
+    "chat": "+ 聊天",
+    "outing": "+ 出游"
+  },
+  "edit": "编辑",
+  "empty": {
+    "title": "你还没有任何内容！",
+    "noMedia": "想添加照片、出游和好友？先在<balloon/>页面发起并完成一次出游吧！",
+    "noPhotos": "想添加照片？去<balloon/>页面完成更多出游吧！",
+    "noFriends": "想添加好友？去<balloon/>页面看看吧！",
+    "balloonAlt": "出游页面图标"
+  },
+  "friends": {
+    "searchPlaceholder": "搜索好友…",
+    "sortLabel": "好友排序",
+    "sort": "排序：",
+    "sortName": "名字",
+    "sortOutings": "出游",
+    "sortFlake": "靠谱分",
+    "sortBy": "按{{label}}排序",
+    "sortByAsc": "按{{label}}升序排列",
+    "sortByDesc": "按{{label}}降序排列"
+  }
+}

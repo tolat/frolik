@@ -1,0 +1,28 @@
+{
+  "categories": {
+    "Adventure": "Adventure",
+    "Art": "Art",
+    "Food": "Food",
+    "Games": "Games",
+    "Sports": "Sports"
+  },
+  "statuses": {
+    "Ready": "Ready",
+    "Busy": "Busy",
+    "Inactive": "Inactive",
+    "Pending": "Pending"
+  },
+  "statusDescriptions": {
+    "Ready": "You are available for outing requests from anyone!",
+    "Busy": "You are busy doing other, less fun things.",
+    "Inactive": "Your status will be set to Inactive after two weeks of inactivity."
+  },
+  "instructionTypes": {
+    "communicate": "Communicate",
+    "purchase": "Purchase",
+    "travel": "Travel",
+    "play": "Play",
+    "capture": "Capture",
+    "create": "Create"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "loading": "Carregando",
+  "dateTime": "{{date}} - {{time}}",
+  "rating": {
+    "unrated": "sem avaliação",
+    "outOfFive": "{{rating}}/5"
+  },
+  "outingStatus": {
+    "completed": "Concluído",
+    "youLeft": "Você saiu",
+    "invited": "Convidado: toque para entrar",
+    "waitingForMembers": "Aguardando participantes",
+    "waitingForPhotos": "Aguardando fotos",
+    "waitingForOthers": "Aguardando os outros concluírem",
+    "readyToFinish": "Pronto para concluir"
+  },
+  "outingCard": {
+    "completed": "Concluído - {{date}}",
+    "pending": "Pendente - {{date}}"
+  },
+  "outingList": {
+    "searchPlaceholder": "Buscar meus rolês",
+    "pendingHeader": "Rolês pendentes",
+    "pendingLimit": {
+      "one": "Você pode ter até {{count}} rolê pendente por vez.",
+      "many": "Você pode ter até {{count}} rolês pendentes por vez.",
+      "other": "Você pode ter até {{count}} rolês pendentes por vez."
+    }
+  },
+  "outingTitle": {
+    "rename": "Renomear rolê",
+    "name": "Nome do rolê",
+    "save": "Salvar nome",
+    "cancel": "Cancelar renomeação"
+  },
+  "chatCard": {
+    "delete": "Excluir",
+    "archive": "Arquivar",
+    "unarchive": "Desarquivar",
+    "markRead": "✓ Lido",
+    "justYou": "Só você",
+    "lastActive": "Última atividade: {{date}}"
+  },
+  "feedCard": {
+    "members": "Participantes do rolê",
+    "viewActivity": "Ver atividade",
+    "like": "Curtir",
+    "unlike": "Descurtir"
+  },
+  "friendCard": {
+    "profileNotShared": "Perfil não compartilhado"
+  },
+  "stats": {
+    "flakeRating": "Índice de furos",
+    "outings": "Rolês"
+  },
+  "statusButtons": {
+    "label": "Status",
+    "hints": {
+      "ready": "Aberto a rolês — você vai aparecer nos matches do dia",
+      "busy": "Dando um tempo — você não vai receber matches"
+    },
+    "currently": "Agora: {{status}}",
+    "choose": "Escolha seu status"
+  },
+  "starRate": {
+    "label": "Avaliação",
+    "stars": {
+      "one": "{{count}} estrela",
+      "many": "{{count}} estrelas",
+      "other": "{{count}} estrelas"
+    }
+  },
+  "photos": {
+    "none": "Sem fotos",
+    "remove": "Remover foto",
+    "userPhoto": "Foto",
+    "change": "Trocar foto"
+  },
+  "addUsers": {
+    "edit": "Editar pessoas",
+    "add": "Adicionar pessoas"
+  },
+  "search": {
+    "icon": "Buscar"
+  },
+  "profileHeader": {
+    "settings": "Configurações"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "header": "Opprett konto",
+  "create": "+ Opprett",
+  "creating": "Oppretter",
+  "ok": "OK",
+  "fields": {
+    "email": "E-post:",
+    "password": "Passord:"
+  },
+  "alreadyExists": {
+    "header": "Det finnes allerede en konto for {{email}}.",
+    "message": "Prøv igjen med en annen e-postadresse."
+  },
+  "confirmEmail": {
+    "header": "Sjekk e-posten din!",
+    "message": "Vi har sendt en lenke til {{email}} som du kan bruke for å fullføre registreringen.",
+    "resend": {
+      "idle": "Send bekreftelsen på nytt",
+      "sending": "Sender e-post …",
+      "sent": "E-posten er sendt!",
+      "failed": "Send bekreftelsen på nytt"
+    }
+  }
+}

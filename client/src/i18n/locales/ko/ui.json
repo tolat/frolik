@@ -1,0 +1,86 @@
+{
+  "loading": "불러오는 중",
+  "dateTime": "{{date}} - {{time}}",
+  "rating": {
+    "unrated": "평가 없음",
+    "outOfFive": "{{rating}}/5"
+  },
+  "outingStatus": {
+    "completed": "완료함",
+    "youLeft": "나감",
+    "invited": "초대받음: 탭해서 참여",
+    "waitingForMembers": "멤버 기다리는 중",
+    "waitingForPhotos": "사진 기다리는 중",
+    "waitingForOthers": "다른 멤버의 완료를 기다리는 중",
+    "readyToFinish": "완료할 수 있어요"
+  },
+  "outingCard": {
+    "completed": "완료 - {{date}}",
+    "pending": "예정 - {{date}}"
+  },
+  "outingList": {
+    "searchPlaceholder": "내 나들이 검색",
+    "pendingHeader": "예정된 나들이",
+    "pendingLimit": {
+      "other": "예정된 나들이는 한 번에 최대 {{count}}개까지 가질 수 있어요."
+    }
+  },
+  "outingTitle": {
+    "rename": "나들이 이름 바꾸기",
+    "name": "나들이 이름",
+    "save": "이름 저장",
+    "cancel": "이름 바꾸기 취소"
+  },
+  "chatCard": {
+    "delete": "삭제",
+    "archive": "보관",
+    "unarchive": "보관 해제",
+    "markRead": "✓ 읽음",
+    "justYou": "나만 있음",
+    "lastActive": "마지막 활동 {{date}}"
+  },
+  "feedCard": {
+    "members": "나들이 멤버",
+    "viewActivity": "액티비티 보기",
+    "like": "좋아요",
+    "unlike": "좋아요 취소"
+  },
+  "friendCard": {
+    "profileNotShared": "비공개 프로필"
+  },
+  "stats": {
+    "flakeRating": "신뢰도",
+    "outings": "나들이"
+  },
+  "statusButtons": {
+    "label": "상태",
+    "hints": {
+      "ready": "나들이 가능 — 오늘의 매치에 표시돼요",
+      "busy": "잠시 쉬는 중 — 매치되지 않아요"
+    },
+    "currently": "현재 상태: {{status}}",
+    "choose": "상태 선택"
+  },
+  "starRate": {
+    "label": "평점",
+    "stars": {
+      "other": "별 {{count}}개"
+    }
+  },
+  "photos": {
+    "none": "사진 없음",
+    "remove": "사진 삭제",
+    "userPhoto": "사진",
+    "change": "사진 변경"
+  },
+  "addUsers": {
+    "edit": "멤버 편집",
+    "add": "멤버 추가"
+  },
+  "search": {
+    "icon": "검색"
+  },
+  "profileHeader": {
+    "settings": "설정"
+  }
+}

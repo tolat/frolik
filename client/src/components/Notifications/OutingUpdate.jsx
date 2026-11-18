@@ -13,12 +13,13 @@ import {
 import { hideModal } from "../../store/modal-actions";
 import { modalActions } from "../../store/modal-slice";
 import { authActions } from "../../store/auth-slice";
-import { toAppDate } from "../../utils/utils";
+import { useT, T } from "../../i18n";
 import SimpleButton from "../UI/SimpleButton";
 import FriendCard from "../UI/FriendCard";
 
 const OutingUpdate = (props) => {
   const dispatch = useDispatch();
+  const { t, formatDate } = useT();
   const user = useSelector((state) => state.auth.user);
   const outingID = props.notification.outing;
   const inviteOutings = useSelector((state) => state.data.inviteOutings);
@@ -113,20 +114,22 @@ const OutingUpdate = (props) => {
 
         <Fragment>
           <div className={styles.outingInviteActivity}>
-            Outing: {outing ? <b>{outing.name}</b> : "…"}
+            {outing ? (
+              <T k="notifications.outingLabel" vars={{ name: outing.name }} />
+            ) : (
+              t("notifications.outingLoading")
+            )}
           </div>
-          <div>{toAppDate(n.created)}</div>
+          <div>{formatDate(n.created, { dateStyle: "medium", timeStyle: "short" })}</div>
           <div className={styles.outingInviteButtons}>
             {outing ? (
               <SimpleButton noShadow={true} onClick={handleViewOuting}>
-                {" "}
-                View Outing
+                {t("notifications.actions.viewOuting")}
               </SimpleButton>
             ) : null}
             {outing ? <div className={styles.buttonSpacer}></div> : null}
             <SimpleButton onClick={handleDismissInvite} noShadow={true}>
-              {" "}
-              Clear
+              {t("notifications.actions.clear")}
             </SimpleButton>
           </div>
         </Fragment>

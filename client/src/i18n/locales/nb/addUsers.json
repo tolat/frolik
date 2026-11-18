@@ -1,0 +1,20 @@
+{
+  "header": "Legg til deltakere",
+  "removeHeader": "Fjern deltakere",
+  "dailyMatches": "Dagsmatcher",
+  "required": "Påkrevd",
+  "matchesSubtext": "Hvert treff må ha med minst én person du ikke har møtt før. Matchene fornyes hver 24. time.",
+  "noMatches": "Ingen ledige matcher!",
+  "activeFriends": "Aktive venner",
+  "friendSlots": {
+    "firstFriend": "Du kan legge til en venn nå – du trenger også én dagsmatch per venn.",
+    "more": {
+      "one": "Du kan legge til {{count}} venn til – én per dagsmatch.",
+      "other": "Du kan legge til {{count}} venner til – én per dagsmatch."
+    },
+    "none": "Legg til en dagsmatch til for å invitere en venn til – én venn per match."
+  },
+  "lockedTitle": "Legg til en dagsmatch til for å invitere en venn til",
+  "searchPlaceholder": "Søk etter venner …",
+  "noFriends": "Ingen tilgjengelige venner!"
+}

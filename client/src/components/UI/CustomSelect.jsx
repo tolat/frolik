@@ -2,8 +2,13 @@ import { forwardRef, useEffect, useState } from "react";
 import styles from "./styles/CustomSelect.module.scss";
 import upIcon from "../../images/up.png";
 import downIcon from "../../images/down.png";
+import { useT } from "../../i18n";
+
+// Option names are shown through the shared category labels when they are
+// categories (others fall back to the name); the raw name is what is stored.
 
 const CustomSelect = forwardRef((props, ref) => {
+  const { tOr } = useT();
   const [value, setValue] = useState(props.defaultVal);
   const [optionsDisplay, setOptionsDisplay] = useState("none");
 
@@ -44,19 +49,19 @@ const CustomSelect = forwardRef((props, ref) => {
           className={styles.valueContainer}
         >
           <div id={props.id} ref={ref} className={styles.value}>
-            {value}
+            {value ? tOr("data.categories." + value, value) : value}
           </div>
           <img
             className={styles.arrow}
             style={{ display: optionsDisplay === "block" ? "none" : "block" }}
             src={downIcon}
-            alt="select-arrow"
+            alt=""
           />
           <img
             className={styles.arrow}
             style={{ display: optionsDisplay === "block" ? "block" : "none" }}
             src={upIcon}
-            alt="select-arrow"
+            alt=""
           />
         </div>
 
@@ -89,13 +94,16 @@ const CustomSelect = forwardRef((props, ref) => {
 });
 
 const Option = (props) => {
+  const { tOr } = useT();
   return (
     <div
       className={`${styles.optionComponentContainer} ${
         props.option.unselectable ? styles.unselectable : null
       }`}
     >
-      <div className={styles.name}>{props.option.name}</div>
+      <div className={styles.name}>
+        {tOr("data.categories." + props.option.name, props.option.name)}
+      </div>
       {props.option.details && (
         <div className={styles.details}>{props.option.details}</div>
       )}

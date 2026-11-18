@@ -1,0 +1,47 @@
+{
+  "actions": {
+    "delete": "डिलीट करें",
+    "cancel": "रद्द करें",
+    "showInstructions": "निर्देश दिखाएँ",
+    "hideInstructions": "निर्देश छिपाएँ",
+    "createOuting": "आउटिंग बनाएँ",
+    "sendToFriend": "दोस्त को भेजें",
+    "remove": "हटाएँ",
+    "select": "चुनें"
+  },
+  "delete": {
+    "header": "एक्टिविटी डिलीट करने की पुष्टि करें:",
+    "permanent": "यह कार्रवाई वापस नहीं ली जा सकती।",
+    "deleting": "डिलीट हो रहा है.."
+  },
+  "stats": {
+    "time": "समय",
+    "cost": "खर्च",
+    "group": "ग्रुप साइज़",
+    "rating": "रेटिंग",
+    "hours": {
+      "one": "{{count}} घंटा",
+      "other": "{{count}} घंटे"
+    },
+    "costValue": "${{cost}}",
+    "participants": {
+      "one": "{{count}} +",
+      "other": "{{count}} +"
+    }
+  },
+  "badges": {
+    "completed": "पूरी हुई",
+    "featured": "फ़ीचर्ड",
+    "created": "यूज़र ने बनाई"
+  },
+  "instructionsHeader": "निर्देश:",
+  "addInstruction": "+ निर्देश जोड़ें",
+  "goalHeader": "लक्ष्य:",
+  "goalAlt": "लक्ष्य",
+  "instruction": {
+    "chooseIcon": "आइकन चुनें",
+    "titlePlaceholder": "निर्देश का शीर्षक",
+    "detailsPlaceholder": "निर्देश का विवरण",
+    "remove": "निर्देश हटाएँ"
+  }
+}

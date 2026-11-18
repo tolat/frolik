@@ -1,0 +1,24 @@
+{
+  "cropper": {
+    "label": "缩放和裁剪",
+    "zoom": "缩放",
+    "cancel": "取消",
+    "upload": "上传",
+    "done": "完成",
+    "uploading": "上传中…"
+  },
+  "photo": {
+    "alt": "照片"
+  },
+  "sendActivity": {
+    "header": "发给好友",
+    "searchPlaceholder": "搜索好友…",
+    "noFriends": "添加好友后就能给他们发送活动。和别人一起完成一次出游后，就可以加对方为好友。",
+    "noMatches": "没有与“{{query}}”匹配的好友。",
+    "send": "发送",
+    "sending": "发送中…"
+  },
+  "sharedActivity": {
+    "label": "活动"
+  }
+}

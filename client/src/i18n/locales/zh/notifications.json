@@ -1,0 +1,38 @@
+{
+  "title": "提醒",
+  "empty": {
+    "title": "这里什么都没有！",
+    "body": "你的提醒会显示在这里",
+    "iconAlt": "铃铛"
+  },
+  "headers": {
+    "outingInvite": "你收到了一个出游邀请！",
+    "inviteAccepted": "接受了你出游邀请的人：",
+    "inviteDenied": "拒绝了你出游邀请的人：",
+    "outingLeft": "退出你出游的人：",
+    "outingJoined": "加入你出游的人：",
+    "outingCompleted": "你的出游已完成！",
+    "outingMarkedComplete": "将你的出游标记为完成的人：",
+    "friendRequest": "你收到了好友请求，来自：",
+    "friendRequestStatus": {
+      "accepted": "接受了你好友请求的人：",
+      "denied": "拒绝了你好友请求的人：",
+      "other": "你的好友请求状态为“{{status}}”，操作人："
+    },
+    "friendRemoved": "将你删除好友的人：",
+    "chatCreated": "把你拉进聊天的人："
+  },
+  "footers": {
+    "markComplete": "上传完照片后，就轮到你标记出游完成啦！"
+  },
+  "outingLabel": "出游：<b>{{name}}</b>",
+  "outingLoading": "出游：…",
+  "activityLabel": "活动：<b>{{name}}</b>",
+  "actions": {
+    "viewOuting": "查看出游",
+    "viewChat": "查看聊天",
+    "clear": "清除",
+    "accept": "接受",
+    "deny": "拒绝"
+  }
+}

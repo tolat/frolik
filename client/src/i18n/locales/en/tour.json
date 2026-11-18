@@ -1,0 +1,53 @@
+{
+  "steps": {
+    "welcome": {
+      "title": "Welcome to frolik 👋",
+      "body": "frolik helps you get out of the house and meet new people through real-life Outings. Let's start with how to plan an Outing — it takes about a minute."
+    },
+    "planOuting": {
+      "title": "Plan an Outing",
+      "body": "Every Outing needs two things: an activity, and at least one Daily Match — someone you haven't met yet. You get fresh matches every 24 hours, and you can invite friends too."
+    },
+    "pickActivity": {
+      "title": "Pick an activity",
+      "body": "Browse activities by category and tap Select. Once you've added a Daily Match, a Create Outing button appears. Invites go out and a group chat is created for the Outing."
+    },
+    "filterOrCreate": {
+      "title": "Filter or create",
+      "body": "Filter by cost, time, rating or group size, or show only completed, featured or community creations. Tap the blue + beside the categories to make a custom activity anyone in your city can use."
+    },
+    "stats": {
+      "title": "Your stats",
+      "body": "❄️ is your flake rating out of 5. Higher is better: 5.0 means you've never bailed on an Outing, and it drops each time you leave one or don't mark it completed. 🎈 counts the Outings you've completed."
+    },
+    "settings": {
+      "title": "Settings",
+      "body": "Edit your profile and set your status here. Set it to Ready to show up in other people's Daily Matches. You can replay this tour from here any time."
+    },
+    "alerts": {
+      "title": "Alerts",
+      "body": "Outing invites, friend requests and updates land here. Accept an invite to join an Outing — you can have up to 5 pending Outings at a time."
+    },
+    "finishing": {
+      "title": "Finishing an Outing",
+      "body": "After an Outing, open it from your Profile to upload photos and mark it complete with a rating. Once it's complete, you can add the people you went with as friends. Leaving an Outing you've joined counts as a flake."
+    },
+    "social": {
+      "title": "Social",
+      "body": "See your friends' completed Outings and like their photos."
+    },
+    "chats": {
+      "title": "Chats",
+      "body": "Every Outing gets its own group chat. Tap + to start a chat with friends."
+    },
+    "allSet": {
+      "title": "You're all set! 🎈",
+      "body": "Replay this tour any time from Settings — the ⚙️ on your Profile."
+    }
+  },
+  "skip": "Skip tour",
+  "back": "Back",
+  "start": "Start tour",
+  "letsGo": "Let's go",
+  "next": "Next"
+}

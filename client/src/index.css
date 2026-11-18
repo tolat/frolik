@@ -344,3 +344,12 @@ html.keyboard-open .chat-panel {
 [data-drawer-sheet] *::-webkit-scrollbar {
   display: none;
 }
+
+/* Right-to-left languages (Arabic): text people typed is often in another
+   script (an English activity description, a name). Let each piece of text
+   take its direction from its own first letters, so "Collect 5 colours!"
+   keeps its "!" at the end instead of jumping to the left. Layout direction
+   still follows the page (dir="rtl"). */
+[dir="rtl"] body * {
+  unicode-bidi: plaintext;
+}

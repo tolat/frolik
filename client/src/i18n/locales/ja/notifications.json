@@ -1,0 +1,38 @@
+{
+  "title": "お知らせ",
+  "empty": {
+    "title": "まだ何もありません！",
+    "body": "お知らせはここに表示されます",
+    "iconAlt": "ベル"
+  },
+  "headers": {
+    "outingInvite": "おでかけに招待されました！",
+    "inviteAccepted": "おでかけの招待を承認した人：",
+    "inviteDenied": "おでかけの招待を辞退した人：",
+    "outingLeft": "おでかけから抜けた人：",
+    "outingJoined": "おでかけに参加した人：",
+    "outingCompleted": "おでかけが完了しました！",
+    "outingMarkedComplete": "おでかけを完了にした人：",
+    "friendRequest": "友だちリクエストが届きました：",
+    "friendRequestStatus": {
+      "accepted": "友だちリクエストを承認した人：",
+      "denied": "友だちリクエストを辞退した人：",
+      "other": "友だちリクエストのステータス「{{status}}」："
+    },
+    "friendRemoved": "あなたを友だちから外した人：",
+    "chatCreated": "あなたをチャットに追加した人："
+  },
+  "footers": {
+    "markComplete": "写真のアップロードが終わったら、おでかけを完了にしましょう！"
+  },
+  "outingLabel": "おでかけ：<b>{{name}}</b>",
+  "outingLoading": "おでかけ：…",
+  "activityLabel": "アクティビティ：<b>{{name}}</b>",
+  "actions": {
+    "viewOuting": "おでかけを見る",
+    "viewChat": "チャットを見る",
+    "clear": "消去",
+    "accept": "承認",
+    "deny": "辞退"
+  }
+}

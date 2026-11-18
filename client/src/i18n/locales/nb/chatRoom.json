@@ -1,0 +1,13 @@
+{
+  "active": "Aktiv {{date}}",
+  "outing": "Treff",
+  "newOuting": "+ Treff",
+  "placeholder": "Melding …",
+  "send": "Send melding",
+  "new": "Ny",
+  "sentAt": "{{date}} · {{time}}",
+  "share": {
+    "opening": "Åpner …",
+    "activity": "Aktivitet"
+  }
+}

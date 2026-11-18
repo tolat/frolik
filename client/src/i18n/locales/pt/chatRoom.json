@@ -1,0 +1,13 @@
+{
+  "active": "Ativo {{date}}",
+  "outing": "Rolê",
+  "newOuting": "+ Rolê",
+  "placeholder": "Mensagem…",
+  "send": "Enviar mensagem",
+  "new": "Nova",
+  "sentAt": "{{date}} · {{time}}",
+  "share": {
+    "opening": "Abrindo…",
+    "activity": "Atividade"
+  }
+}

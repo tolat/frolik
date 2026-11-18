@@ -1,3 +1,5 @@
+import LanguagePicker from "../UI/LanguagePicker";
+import { getLanguage, useT } from "../../i18n";
 import styles from "./styles/CreateAccountModal.module.scss";
 import ModalPortal from "./ModalPortal";
 import { useReducer, useState } from "react";
@@ -33,6 +35,7 @@ const defaultReducer = {
 };
 
 const CreateAccountModal = (props) => {
+  const { t } = useT();
   const modalState = useSelector((state) => state.modal);
   const modalDisplay =
     modalState.selector === "create-account" ? "flex" : "none";
@@ -43,7 +46,8 @@ const CreateAccountModal = (props) => {
     defaultReducer
   );
 
-  const [buttonText, setButtonText] = useState("+ Create");
+  // null = the idle "+ Create" label (translated at render time)
+  const [buttonText, setButtonText] = useState(null);
   const [editingPhoto, setEditingPhoto] = useState(false);
   const [allowCrop, setAllowCrop] = useState(false);
 
@@ -55,13 +59,12 @@ const CreateAccountModal = (props) => {
   const [showConfirmEmail, setShowConfirmEmail] = useState(false);
   const [prevUsername, setPrevUsername] = useState(false);
   const [resentEmail, setResentEmail] = useState(false);
-  const [resendButtonText, setResendButtonText] = useState(
-    "Resend Verification Email"
-  );
+  // "idle" | "sending" | "sent" | "failed" (label picked at render time)
+  const [resendState, setResendState] = useState("idle");
   
   const buttonTextOnSubmit = (
     <div style={{ display: "flex" }}>
-      Creating &nbsp; <LoaderSpinner width="1.5rem" height="1.5rem" />
+      {t("signup.creating")} &nbsp; <LoaderSpinner width="1.5rem" height="1.5rem" />
     </div>
   );
   const validatorBubbleID = "validator-bubble";
@@ -97,7 +100,7 @@ const CreateAccountModal = (props) => {
         dispatch(popupActions.showPopup("user-already-exists"));
       }
 
-      setButtonText("+ Create");
+      setButtonText(null);
     } else {
       setShowConfirmEmail(true);
     }
@@ -110,6 +113,7 @@ const CreateAccountModal = (props) => {
         ...data,
         username: stagedData["create-email"].toLowerCase(),
         password: stagedData["create-password"],
+        language: getLanguage(),
       },
       resetForm
     );
@@ -119,14 +123,14 @@ const CreateAccountModal = (props) => {
     if (prevUsername) {
       const onComplete = (response) => {
         if (response.ok) {
-          setResendButtonText("Email Sent!");
+          setResendState("sent");
         } else {
           setResentEmail(false);
-          setResendButtonText("Resend Confirmation Email");
+          setResendState("failed");
         }
       };
 
-      setResendButtonText("Sending Email..");
+      setResendState("sending");
       setResentEmail(true);
       resendVerificationEmail(prevUsername, onComplete);
     }
@@ -136,14 +140,16 @@ const CreateAccountModal = (props) => {
     <ModalPortal>
       <WarningPopup
         selector={"user-already-exists"}
-        header={`Account for ${stagedData["create-email"]} already exists.`}
-        message={"Please try again with a different email."}
-        ok={"OK"}
+        header={t("signup.alreadyExists.header", {
+          email: stagedData["create-email"],
+        })}
+        message={t("signup.alreadyExists.message")}
+        ok={t("signup.ok")}
         okClick={() => dispatch(popupActions.hidePopup())}
       />
       <div className={styles.container} style={modalStyle}>
         <ModalHeaderPortal selector={"create-account"}>
-          Create Account
+          {t("signup.header")}
         </ModalHeaderPortal>
         <ValidatorBubble
           id={validatorBubbleID}
@@ -155,10 +161,13 @@ const CreateAccountModal = (props) => {
         />
         {showConfirmEmail ? (
           <div className={styles.confirmEmailContainer}>
-            <h2 className={styles.confirmEmailHeader}>Check your email!</h2>
+            <h2 className={styles.confirmEmailHeader}>
+              {t("signup.confirmEmail.header")}
+            </h2>
             <div className={styles.confirmEmailText}>
-              {`We've sent a link to ${stagedData["create-email"]}
-              that you can use to finish creating your account.`}
+              {t("signup.confirmEmail.message", {
+                email: stagedData["create-email"],
+              })}
             </div>
             <SimpleButton
               className={`${styles.resendEmailButton} ${
@@ -166,7 +175,7 @@ const CreateAccountModal = (props) => {
               }`}
               onClick={resentEmail ? null : handleResendEmail}
             >
-              {resendButtonText}
+              {t(`signup.confirmEmail.resend.${resendState}`)}
             </SimpleButton>
             
           </div>
@@ -174,7 +183,7 @@ const CreateAccountModal = (props) => {
           <ProfileEditor
             stagedData={stagedData}
             dispatchStageData={dispatchStageData}
-            buttonText={buttonText}
+            buttonText={buttonText || t("signup.create")}
             setButtonText={setButtonText}
             buttonTextOnSubmit={buttonTextOnSubmit}
             buttonSelector={"create-account"}
@@ -193,7 +202,7 @@ const CreateAccountModal = (props) => {
               type="text"
               id="create-email"
               name="email"
-              label="Email:"
+              label={t("signup.fields.email")}
               defaultVal={defaultReducer["create-email"]}
               className={styles.simpleInput}
               setDataChanged={(value) => {
@@ -204,13 +213,14 @@ const CreateAccountModal = (props) => {
               type="password"
               id="create-password"
               name="password"
-              label="Password:"
+              label={t("signup.fields.password")}
               defaultVal={defaultReducer["create-password"]}
               className={styles.simpleInput}
               setDataChanged={(value) => {
                 dispatchStageData({ id: "create-password", value });
               }}
             />
+            <LanguagePicker selector="language-picker-signup" />
           </ProfileEditor>
         )}
       </div>

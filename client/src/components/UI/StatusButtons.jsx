@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import styles from "./styles/StatusButtons.module.scss";
+import { useT } from "../../i18n";
 
+// hint: ui.statusButtons.hints.<tone>
 const OPTIONS = [
-  { value: "Ready", tone: "ready", hint: "Open to Outings — you'll appear in Daily Matches" },
-  { value: "Busy", tone: "busy", hint: "Taking a break — you won't be matched" },
+  { value: "Ready", tone: "ready" },
+  { value: "Busy", tone: "busy" },
 ];
 
 // Ready / Busy picker: the selected button fills with its colour.
 const StatusButtons = ({ id, label, defaultVal, setDataChanged }) => {
+  const { t, tOr } = useT();
   const [value, setValue] = useState(defaultVal);
   useEffect(() => setValue(defaultVal), [defaultVal]);
 
@@ -20,7 +23,7 @@ const StatusButtons = ({ id, label, defaultVal, setDataChanged }) => {
   return (
     <div id={id} className={styles.container}>
       {label && <div className={styles.label}>{label}</div>}
-      <div className={styles.buttons} role="radiogroup" aria-label="Status">
+      <div className={styles.buttons} role="radiogroup" aria-label={t("ui.statusButtons.label")}>
         {OPTIONS.map((o) => (
           <button
             key={o.value}
@@ -33,12 +36,18 @@ const StatusButtons = ({ id, label, defaultVal, setDataChanged }) => {
             onClick={() => select(o.value)}
           >
             <span className={styles.dot} />
-            {o.value}
+            {tOr("data.statuses." + o.value, o.value)}
           </button>
         ))}
       </div>
       <div className={styles.hint}>
-        {selected ? selected.hint : value ? `Currently ${value}` : "Choose your status"}
+        {selected
+          ? t(`ui.statusButtons.hints.${selected.tone}`)
+          : value
+          ? t("ui.statusButtons.currently", {
+              status: tOr("data.statuses." + value, value),
+            })
+          : t("ui.statusButtons.choose")}
       </div>
     </div>
   );

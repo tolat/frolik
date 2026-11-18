@@ -12,8 +12,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { popupActions } from "../../store/popup-slice";
 import uploadIcon from "../../images/upload-light.png";
 import ModalButtonPortal from "./ModalButtonPortal";
+import { useT } from "../../i18n";
 
 const ProfileEditor = (props) => {
+  const { t } = useT();
   const dimension = 20;
   const photoDimentionStyle = {
     width: `${dimension}rem`,
@@ -154,6 +156,11 @@ const ProfileEditor = (props) => {
     resetViewportShift();
   };
 
+  // Settings shows each field's name as its placeholder instead of a title
+  // above it (placeholderLabels); sign-up keeps the titles
+  const fieldText = (text) =>
+    props.placeholderLabels ? { placeholder: text } : { label: text };
+
   return (
     <Fragment>
       <CropperPopup
@@ -161,8 +168,8 @@ const ProfileEditor = (props) => {
         selector={"upload-profile-photo"}
         onCancel={handleCropCancel}
         onUpload={handleCropComplete}
-        button1Text={"Done"}
-        button1ActionText={"Done"}
+        button1Text={t("popups.cropper.done")}
+        button1ActionText={t("popups.cropper.done")}
         defaultCrop={stagedData.crop}
         defaultZoom={stagedData.zoom}
         cropShape="round"
@@ -198,7 +205,7 @@ const ProfileEditor = (props) => {
                   <img
                     src={uploadIcon}
                     className={styles.editButton}
-                    alt="edit"
+                    alt={t("profileEdit.photo.editAlt")}
                   />
                 }
                 onBadgeClick={onUploadClick}
@@ -206,10 +213,14 @@ const ProfileEditor = (props) => {
             </div>
           </div>
         </div>
+        {/* Settings: every row in one column with one even gap (the rows'
+            own margins differed, so some touched and others didn't) */}
+        <div className={props.placeholderLabels ? styles.fieldStack : styles.fieldPlain}>
         {props.children}
+        {props.beforeLocation}
         <LocationAutocomplete
           name={"Location"}
-          label={"City:"}
+          {...fieldText(t("profileEdit.fields.city"))}
           id={"location"}
           className={styles.locationSelect}
           defaultVal={defaultValues.location}
@@ -224,7 +235,7 @@ const ProfileEditor = (props) => {
             type="text"
             id="first_name"
             name="first_name"
-            label="First Name:"
+            {...fieldText(t("profileEdit.fields.firstName"))}
             defaultVal={defaultValues.first_name}
             setDataChanged={(value) => {
               dispatchStageData({ id: "first_name", value });
@@ -235,7 +246,7 @@ const ProfileEditor = (props) => {
             type="text"
             id="last_name"
             name="last_name"
-            label="Last Name (optional):"
+            {...fieldText(t("profileEdit.fields.lastName"))}
             defaultVal={defaultValues.last_name}
             setDataChanged={(value) => {
               dispatchStageData({ id: "last_name", value });
@@ -246,19 +257,20 @@ const ProfileEditor = (props) => {
           type="text"
           id="tagline"
           name="tagline"
-          label="Tagline:"
+          {...fieldText(t("profileEdit.fields.tagline"))}
           defaultVal={defaultValues.tagline}
           setDataChanged={(value) => {
             dispatchStageData({ id: "tagline", value });
           }}
         />
+        </div>
         <SimpleButton
           onClick={photoChanged ? handleRevert : (e) => e.preventDefault()}
           className={`${styles.revertButton} ${
             photoChanged ? null : styles.noClick
           }`}
         >
-          Revert Photo
+          {t("profileEdit.buttons.revertPhoto")}
         </SimpleButton>
         <ModalButtonPortal selector={props.buttonSelector}>
           <SimpleButton

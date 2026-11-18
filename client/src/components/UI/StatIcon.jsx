@@ -11,7 +11,7 @@ const StatIcon = (props) => {
         style={props.iconStyle}
         src={props.icon}
         className={styles.icon}
-        alt={`${props.alt}_icon`}
+        alt={props.alt}
       />
       <div className={styles.rating}>{props.rating}</div>
     </div>

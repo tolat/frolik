@@ -1,0 +1,45 @@
+{
+  "actions": {
+    "delete": "삭제",
+    "cancel": "취소",
+    "showInstructions": "진행 방법 보기",
+    "hideInstructions": "진행 방법 숨기기",
+    "createOuting": "나들이 만들기",
+    "sendToFriend": "친구에게 보내기",
+    "remove": "빼기",
+    "select": "선택"
+  },
+  "delete": {
+    "header": "액티비티 삭제 확인:",
+    "permanent": "이 작업은 되돌릴 수 없어요.",
+    "deleting": "삭제 중…"
+  },
+  "stats": {
+    "time": "소요 시간",
+    "cost": "비용",
+    "group": "인원",
+    "rating": "평점",
+    "hours": {
+      "other": "{{count}}시간"
+    },
+    "costValue": "${{cost}}",
+    "participants": {
+      "other": "{{count}}명 이상"
+    }
+  },
+  "badges": {
+    "completed": "완료함",
+    "featured": "추천",
+    "created": "사용자 제작"
+  },
+  "instructionsHeader": "진행 방법:",
+  "addInstruction": "+ 단계 추가",
+  "goalHeader": "목표:",
+  "goalAlt": "목표",
+  "instruction": {
+    "chooseIcon": "아이콘 선택",
+    "titlePlaceholder": "단계 제목",
+    "detailsPlaceholder": "단계 설명",
+    "remove": "단계 삭제"
+  }
+}

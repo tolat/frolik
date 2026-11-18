@@ -1,0 +1,38 @@
+{
+  "title": "Avvisi",
+  "empty": {
+    "title": "Qui non c'è niente!",
+    "body": "I tuoi avvisi compariranno qui",
+    "iconAlt": "Campanella"
+  },
+  "headers": {
+    "outingInvite": "Sei stato invitato a un'uscita!",
+    "inviteAccepted": "Il tuo invito all'uscita è stato accettato da:",
+    "inviteDenied": "Il tuo invito all'uscita è stato rifiutato da:",
+    "outingLeft": "Ha lasciato la tua uscita:",
+    "outingJoined": "Si è unito alla tua uscita:",
+    "outingCompleted": "La tua uscita è stata completata!",
+    "outingMarkedComplete": "La tua uscita è stata segnata come completata da:",
+    "friendRequest": "Hai una richiesta di amicizia da:",
+    "friendRequestStatus": {
+      "accepted": "La tua richiesta di amicizia è stata accettata da:",
+      "denied": "La tua richiesta di amicizia è stata rifiutata da:",
+      "other": "La tua richiesta di amicizia è stata {{status}} da:"
+    },
+    "friendRemoved": "Ti ha rimosso dagli amici:",
+    "chatCreated": "Sei stato aggiunto a una chat da:"
+  },
+  "footers": {
+    "markComplete": "Tocca a te segnare l'uscita come completata quando hai finito di caricare le foto!"
+  },
+  "outingLabel": "Uscita: <b>{{name}}</b>",
+  "outingLoading": "Uscita: …",
+  "activityLabel": "Attività: <b>{{name}}</b>",
+  "actions": {
+    "viewOuting": "Vedi uscita",
+    "viewChat": "Vedi chat",
+    "clear": "Cancella",
+    "accept": "Accetta",
+    "deny": "Rifiuta"
+  }
+}

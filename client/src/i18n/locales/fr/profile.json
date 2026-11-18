@@ -1,0 +1,30 @@
+{
+  "tabs": {
+    "photos": "Photos",
+    "outings": "Sorties",
+    "friends": "Amis"
+  },
+  "friendCard": {
+    "chat": "+ Discussion",
+    "outing": "+ Sortie"
+  },
+  "edit": "modifier",
+  "empty": {
+    "title": "Tu n'as encore aucun contenu !",
+    "noMedia": "Pour ajouter des photos, des sorties et des amis, crée et termine une sortie sur la page <balloon/> !",
+    "noPhotos": "Pour ajouter des photos, termine d'autres sorties sur la page <balloon/> !",
+    "noFriends": "Pour ajouter des amis, va sur la page <balloon/> !",
+    "balloonAlt": "icône de la page Sortie"
+  },
+  "friends": {
+    "searchPlaceholder": "Rechercher des amis…",
+    "sortLabel": "Trier les amis",
+    "sort": "Trier :",
+    "sortName": "Nom",
+    "sortOutings": "Sorties",
+    "sortFlake": "Indice de fiabilité",
+    "sortBy": "Trier par {{label}}",
+    "sortByAsc": "Trier par {{label}}, croissant",
+    "sortByDesc": "Trier par {{label}}, décroissant"
+  }
+}

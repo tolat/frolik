@@ -1,0 +1,14 @@
+{
+  "photo": {
+    "editAlt": "edit"
+  },
+  "fields": {
+    "city": "City:",
+    "firstName": "First Name:",
+    "lastName": "Last Name (optional):",
+    "tagline": "Tagline:"
+  },
+  "buttons": {
+    "revertPhoto": "Revert Photo"
+  }
+}

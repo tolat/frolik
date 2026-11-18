@@ -1,0 +1,53 @@
+{
+  "steps": {
+    "welcome": {
+      "title": "Willkommen bei frolik 👋",
+      "body": "Mit frolik kommst du raus und lernst bei echten Ausflügen neue Leute kennen. Fangen wir damit an, wie du einen Ausflug planst – dauert nur etwa eine Minute."
+    },
+    "planOuting": {
+      "title": "Ausflug planen",
+      "body": "Jeder Ausflug braucht zwei Dinge: eine Aktivität und mindestens ein Tagesmatch – jemanden, den du noch nicht kennst. Alle 24 Stunden gibt es neue Matches, und du kannst auch Freunde einladen."
+    },
+    "pickActivity": {
+      "title": "Aktivität wählen",
+      "body": "Stöbere nach Kategorie durch die Aktivitäten und tippe auf Auswählen. Sobald du ein Tagesmatch hinzugefügt hast, erscheint der Button Ausflug erstellen. Die Einladungen gehen raus und ein Gruppenchat für den Ausflug wird erstellt."
+    },
+    "filterOrCreate": {
+      "title": "Filtern oder erstellen",
+      "body": "Filtere nach Kosten, Dauer, Bewertung oder Gruppengröße oder zeig nur abgeschlossene, empfohlene oder Community-Aktivitäten. Tippe auf das blaue + neben den Kategorien, um eine eigene Aktivität zu erstellen, die alle in deiner Stadt nutzen können."
+    },
+    "stats": {
+      "title": "Deine Stats",
+      "body": "❄️ ist deine Zuverlässigkeit von 5. Höher ist besser: 5.0 heißt, du bist noch nie bei einem Ausflug abgesprungen. Sie sinkt jedes Mal, wenn du einen verlässt oder nicht abschließt. 🎈 zählt deine abgeschlossenen Ausflüge."
+    },
+    "settings": {
+      "title": "Einstellungen",
+      "body": "Hier bearbeitest du dein Profil und legst deinen Status fest. Stell ihn auf Bereit, um in den Tagesmatches anderer aufzutauchen. Du kannst diese Tour hier jederzeit wiederholen."
+    },
+    "alerts": {
+      "title": "Mitteilungen",
+      "body": "Ausflugseinladungen, Freundschaftsanfragen und Updates landen hier. Nimm eine Einladung an, um bei einem Ausflug mitzumachen – du kannst bis zu 5 offene Ausflüge gleichzeitig haben."
+    },
+    "finishing": {
+      "title": "Ausflug abschließen",
+      "body": "Öffne den Ausflug danach über dein Profil, lade Fotos hoch und schließ ihn mit einer Bewertung ab. Danach kannst du die Leute, mit denen du unterwegs warst, als Freunde hinzufügen. Wer einen Ausflug nach dem Beitreten verlässt, gilt als abgesprungen."
+    },
+    "social": {
+      "title": "Social",
+      "body": "Sieh dir die abgeschlossenen Ausflüge deiner Freunde an und like ihre Fotos."
+    },
+    "chats": {
+      "title": "Chats",
+      "body": "Jeder Ausflug bekommt seinen eigenen Gruppenchat. Tippe auf +, um einen Chat mit Freunden zu starten."
+    },
+    "allSet": {
+      "title": "Alles bereit! 🎈",
+      "body": "Du kannst die Tour jederzeit in den Einstellungen wiederholen – über das ⚙️ auf deinem Profil."
+    }
+  },
+  "skip": "Tour überspringen",
+  "back": "Zurück",
+  "start": "Tour starten",
+  "letsGo": "Los geht's",
+  "next": "Weiter"
+}

@@ -4,6 +4,7 @@ const webpush = require("web-push");
 const User = require("../models/user");
 const { tryCatch, reqAuthenticated } = require("../utils/middleware");
 const { userSubscriptions } = require("../utils/utils");
+const { tr, userLang } = require("../utils/i18n");
 
 // VAPID keys are initialized once in server.js at startup
 
@@ -61,8 +62,8 @@ router.post(
         .sendNotification(
           subscription,
           JSON.stringify({
-            title: "Notifications are on 🎈",
-            body: "We'll let you know about invites, messages and friend requests.",
+            title: tr(userLang(user), "push.subscribed.title"),
+            body: tr(userLang(user), "push.subscribed.body"),
             url: "/alerts",
           })
         )
@@ -98,8 +99,12 @@ router.post(
   tryCatch(async (req, res) => {
     const user = await sessionUser(req);
     const { webpushNotify } = require("../utils/utils");
+    const { forUser } = require("../utils/i18n");
     if (!user || !userSubscriptions(user).length) return res.sendStatus(406);
-    await webpushNotify([user], { title: "Test Notification", body: "Success!" });
+    await webpushNotify([user], {
+      title: forUser("push.test.title"),
+      body: forUser("push.test.body"),
+    });
     res.sendStatus(200);
   })
 );

@@ -8,11 +8,12 @@ import { dismissNotification, fetchOuting } from "../../utils/data-fetch";
 import { hideModal } from "../../store/modal-actions";
 import { modalActions } from "../../store/modal-slice";
 import { authActions } from "../../store/auth-slice";
-import { toAppDate } from "../../utils/utils";
+import { useT, T } from "../../i18n";
 import SimpleButton from "../UI/SimpleButton";
 
 const OutingInvite = (props) => {
   const dispatch = useDispatch();
+  const { t, formatDate } = useT();
   const user = useSelector((state) => state.auth.user);
   const outingID = props.notification.outing;
   const inviteOutings = useSelector((state) => state.data.inviteOutings);
@@ -68,25 +69,25 @@ const OutingInvite = (props) => {
             <div className={styles.outingInviteActivity}>
               {props.showOuting ? (
                 <div>
-                  Outing:<b> {outing.name} </b>
+                  <T k="notifications.outingLabel" vars={{ name: outing.name }} />
                 </div>
               ) : (
                 <div>
-                  {" "}
-                  Activity:<b> {outing.activity.name} </b>
+                  <T
+                    k="notifications.activityLabel"
+                    vars={{ name: outing.activity.name }}
+                  />
                 </div>
               )}
             </div>
-            <div>{toAppDate(props.notification.created)}</div>
+            <div>{formatDate(props.notification.created, { dateStyle: "medium", timeStyle: "short" })}</div>
             <div className={styles.outingInviteButtons}>
               <SimpleButton noShadow={true} onClick={handleViewOuting}>
-                {" "}
-                View Outing
+                {t("notifications.actions.viewOuting")}
               </SimpleButton>
               <div className={styles.buttonSpacer}></div>
               <SimpleButton onClick={handleDismissInvite} noShadow={true}>
-                {" "}
-                Clear
+                {t("notifications.actions.clear")}
               </SimpleButton>
             </div>
           </Fragment>

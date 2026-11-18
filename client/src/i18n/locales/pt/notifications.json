@@ -1,0 +1,38 @@
+{
+  "title": "Alertas",
+  "empty": {
+    "title": "Nada por aqui!",
+    "body": "Seus alertas vão aparecer aqui",
+    "iconAlt": "Sino"
+  },
+  "headers": {
+    "outingInvite": "Você foi convidado para um rolê!",
+    "inviteAccepted": "Seu convite para o rolê foi aceito por:",
+    "inviteDenied": "Seu convite para o rolê foi recusado por:",
+    "outingLeft": "Saiu do seu rolê:",
+    "outingJoined": "Entrou no seu rolê:",
+    "outingCompleted": "Seu rolê foi concluído!",
+    "outingMarkedComplete": "Seu rolê foi marcado como concluído por:",
+    "friendRequest": "Você tem uma solicitação de amizade de:",
+    "friendRequestStatus": {
+      "accepted": "Sua solicitação de amizade foi aceita por:",
+      "denied": "Sua solicitação de amizade foi recusada por:",
+      "other": "Sua solicitação de amizade foi {{status}} por:"
+    },
+    "friendRemoved": "Desfez a amizade com você:",
+    "chatCreated": "Você foi adicionado a um chat por:"
+  },
+  "footers": {
+    "markComplete": "Sua vez de marcar o rolê como concluído quando terminar de enviar as fotos!"
+  },
+  "outingLabel": "Rolê: <b>{{name}}</b>",
+  "outingLoading": "Rolê: …",
+  "activityLabel": "Atividade: <b>{{name}}</b>",
+  "actions": {
+    "viewOuting": "Ver rolê",
+    "viewChat": "Ver chat",
+    "clear": "Limpar",
+    "accept": "Aceitar",
+    "deny": "Recusar"
+  }
+}

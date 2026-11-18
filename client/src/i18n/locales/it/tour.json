@@ -1,0 +1,53 @@
+{
+  "steps": {
+    "welcome": {
+      "title": "Benvenuto su frolik 👋",
+      "body": "frolik ti aiuta a uscire di casa e conoscere gente nuova con uscite dal vivo. Iniziamo da come organizzare un'uscita: ci vuole circa un minuto."
+    },
+    "planOuting": {
+      "title": "Organizza un'uscita",
+      "body": "Ogni uscita ha bisogno di due cose: un'attività e almeno un match del giorno, cioè qualcuno che non hai ancora conosciuto. Ricevi nuovi match ogni 24 ore e puoi invitare anche i tuoi amici."
+    },
+    "pickActivity": {
+      "title": "Scegli un'attività",
+      "body": "Sfoglia le attività per categoria e tocca Scegli. Dopo aver aggiunto un match del giorno, compare il pulsante Crea uscita. Gli inviti partono e viene creata una chat di gruppo per l'uscita."
+    },
+    "filterOrCreate": {
+      "title": "Filtra o crea",
+      "body": "Filtra per costo, durata, valutazione o dimensione del gruppo, oppure mostra solo le attività completate, in evidenza o create dalla community. Tocca il + blu accanto alle categorie per creare un'attività personalizzata che chiunque nella tua città può usare."
+    },
+    "stats": {
+      "title": "Le tue statistiche",
+      "body": "❄️ è il tuo indice bidoni su 5. Più è alto, meglio è: 5.0 significa che non hai mai tirato un bidone a un'uscita, e scende ogni volta che ne lasci una o non la segni come completata. 🎈 conta le uscite che hai completato."
+    },
+    "settings": {
+      "title": "Impostazioni",
+      "body": "Qui puoi modificare il tuo profilo e impostare il tuo stato. Mettiti su Disponibile per comparire nei match del giorno degli altri. Da qui puoi rivedere questo tour quando vuoi."
+    },
+    "alerts": {
+      "title": "Avvisi",
+      "body": "Qui arrivano inviti alle uscite, richieste di amicizia e aggiornamenti. Accetta un invito per partecipare a un'uscita: puoi avere fino a 5 uscite in sospeso alla volta."
+    },
+    "finishing": {
+      "title": "Completare un'uscita",
+      "body": "Dopo un'uscita, aprila dal tuo Profilo per caricare le foto e segnarla come completata con una valutazione. Una volta completata, puoi aggiungere come amici le persone con cui sei uscito. Lasciare un'uscita a cui ti sei unito conta come un bidone."
+    },
+    "social": {
+      "title": "Social",
+      "body": "Guarda le uscite completate dai tuoi amici e metti mi piace alle loro foto."
+    },
+    "chats": {
+      "title": "Chat",
+      "body": "Ogni uscita ha la sua chat di gruppo. Tocca + per iniziare una chat con gli amici."
+    },
+    "allSet": {
+      "title": "Tutto pronto! 🎈",
+      "body": "Rivedi questo tour quando vuoi da Impostazioni: l'icona ⚙️ sul tuo Profilo."
+    }
+  },
+  "skip": "Salta il tour",
+  "back": "Indietro",
+  "start": "Inizia il tour",
+  "letsGo": "Andiamo!",
+  "next": "Avanti"
+}

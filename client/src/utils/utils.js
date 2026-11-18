@@ -5,6 +5,7 @@ import { modalActions } from "../store/modal-slice";
 import { fetchChats, updateChatLastRead } from "./data-fetch";
 import { chatActions } from "../store/chat-slice";
 import { authChecked, fetchAuth } from "../store/auth-actions";
+import { t, formatDate } from "../i18n";
 
 export const calcAvgRating = (activity) => {
   if (!activity.ratings) {
@@ -15,7 +16,9 @@ export const calcAvgRating = (activity) => {
     activity.ratings.reduce((acc, rating) => acc + rating.rating, 0) /
     activity.ratings.length
   ).toFixed(1);
-  return isNaN(ratingString) ? "unrated" : `${ratingString}/5`;
+  return isNaN(ratingString)
+    ? t("ui.rating.unrated")
+    : t("ui.rating.outOfFive", { rating: ratingString });
 };
 
 export const pageRouteLoader = async (url) => {
@@ -203,8 +206,10 @@ export const filtersAreEqual = (f1, f2) => {
 };
 
 export const toAppDate = (date) => {
-  return `${new Date(date).toDateString().slice(4, 15)} - 
-  ${new Date(date).toTimeString().slice(0, 5)}`;
+  return t("ui.dateTime", {
+    date: formatDate(date, { month: "short", day: "2-digit", year: "numeric" }),
+    time: formatDate(date, { hour: "2-digit", minute: "2-digit", hourCycle: "h23" }),
+  });
 };
 
 export const sortByDate = (a, b) => {
@@ -253,20 +258,25 @@ export const outingIsCompleted = (outing) =>
     outing?.users?.length === outing?.completions?.length);
 
 // What a pending Outing is waiting on, in plain words (Outing panel header
-// and the Outing cards). ready: true when nothing is blocking it.
+// and the Outing cards). ready: true when nothing is blocking it. key: a
+// stable id for the state; label: its translated text.
 export const outingStatus = (outing, user) => {
   const id = (x) => x?._id || x;
   const isMe = (x) => id(x) === user?._id;
-  if (outingIsCompleted(outing)) return { label: "Completed", ready: true };
-  if (outing?.flakes?.some(isMe)) return { label: "You left", ready: false };
-  if (outing?.invited?.some(isMe))
-    return { label: "Invited: tap to join", ready: false };
+  const status = (key, ready) => ({
+    key,
+    label: t(`ui.outingStatus.${key}`),
+    ready,
+  });
+  if (outingIsCompleted(outing)) return status("completed", true);
+  if (outing?.flakes?.some(isMe)) return status("youLeft", false);
+  if (outing?.invited?.some(isMe)) return status("invited", false);
   if ((outing?.users?.length || 0) < 2)
-    return { label: "Waiting for members", ready: false };
-  if (!outing?.photos?.[0]) return { label: "Waiting for photos", ready: false };
+    return status("waitingForMembers", false);
+  if (!outing?.photos?.[0]) return status("waitingForPhotos", false);
   if (outing?.completions?.some(isMe))
-    return { label: "Waiting for others to finish", ready: false };
-  return { label: "Ready to finish", ready: true };
+    return status("waitingForOthers", false);
+  return status("readyToFinish", true);
 };
 
 export const userIsLastCompletion = (user, outing) => {

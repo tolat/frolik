@@ -1,0 +1,38 @@
+{
+  "title": "Alertas",
+  "empty": {
+    "title": "¡No hay nada aquí!",
+    "body": "Tus alertas aparecerán aquí",
+    "iconAlt": "Campana"
+  },
+  "headers": {
+    "outingInvite": "¡Te invitaron a una salida!",
+    "inviteAccepted": "Aceptó tu invitación a la salida:",
+    "inviteDenied": "Rechazó tu invitación a la salida:",
+    "outingLeft": "Abandonó tu salida:",
+    "outingJoined": "Se unió a tu salida:",
+    "outingCompleted": "¡Tu salida se completó!",
+    "outingMarkedComplete": "Marcó tu salida como completada:",
+    "friendRequest": "Tienes una solicitud de amistad de:",
+    "friendRequestStatus": {
+      "accepted": "Aceptó tu solicitud de amistad:",
+      "denied": "Rechazó tu solicitud de amistad:",
+      "other": "Tu solicitud de amistad fue {{status}} por:"
+    },
+    "friendRemoved": "Te eliminó de sus amigos:",
+    "chatCreated": "Te agregó a un chat:"
+  },
+  "footers": {
+    "markComplete": "¡Te toca marcar la salida como completada cuando termines de subir las fotos!"
+  },
+  "outingLabel": "Salida: <b>{{name}}</b>",
+  "outingLoading": "Salida: …",
+  "activityLabel": "Actividad: <b>{{name}}</b>",
+  "actions": {
+    "viewOuting": "Ver salida",
+    "viewChat": "Ver chat",
+    "clear": "Borrar",
+    "accept": "Aceptar",
+    "deny": "Rechazar"
+  }
+}

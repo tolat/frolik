@@ -134,8 +134,10 @@
 }
 
 // "Keep my location up to date" is on: field shows the detected city only
+// Locked (kept up to date automatically): still a white field like the
+// others; the muted text and the "Auto" pill say it's automatic
 .locked .input {
-  background-color: $card_grey;
+  background-color: $surface;
   color: $text_muted;
   cursor: default;
 }

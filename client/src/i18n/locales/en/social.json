@@ -1,0 +1,7 @@
+{
+  "searchPlaceholder": "Search Posts..",
+  "loadFailedTitle": "Couldn't load the feed",
+  "loadFailedText": "Pull down to try again.",
+  "emptyTitle": "Nothing to show yet!",
+  "emptyText": "You'll see outings completed by people in your friends network here."
+}

@@ -1,0 +1,14 @@
+{
+  "photo": {
+    "editAlt": "modifica"
+  },
+  "fields": {
+    "city": "Città:",
+    "firstName": "Nome:",
+    "lastName": "Cognome (facoltativo):",
+    "tagline": "Motto:"
+  },
+  "buttons": {
+    "revertPhoto": "Ripristina foto"
+  }
+}

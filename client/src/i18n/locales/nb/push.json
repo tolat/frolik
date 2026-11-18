@@ -1,0 +1,12 @@
+{
+  "ios": {
+    "title": "Vil du ha varsler?",
+    "body": "Legg frolik til på Hjem-skjermen (Del → Legg til på Hjem-skjerm), og slå dem på der."
+  },
+  "blocked": "Varsler er blokkert. Slå dem på for frolik i nettleseren eller i innstillingene på telefonen.",
+  "prompt": {
+    "title": "Slå på varsler",
+    "body": "Få beskjed om invitasjoner, meldinger og venneforespørsler.",
+    "button": "Slå på"
+  }
+}

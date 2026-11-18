@@ -1,0 +1,30 @@
+{
+  "tabs": {
+    "photos": "الصور",
+    "outings": "النزهات",
+    "friends": "الأصدقاء"
+  },
+  "friendCard": {
+    "chat": "+ محادثة",
+    "outing": "+ نزهة"
+  },
+  "edit": "تعديل",
+  "empty": {
+    "title": "لا توجد لديك وسائط بعد!",
+    "noMedia": "لتبدأ بإضافة الصور والنزهات والأصدقاء، أنشئ نزهة وأكملها من صفحة <balloon/>!",
+    "noPhotos": "لإضافة صور، أكمل مزيدًا من النزهات من صفحة <balloon/>!",
+    "noFriends": "لإضافة أصدقاء، اذهب إلى صفحة <balloon/>!",
+    "balloonAlt": "أيقونة صفحة النزهة"
+  },
+  "friends": {
+    "searchPlaceholder": "ابحث عن أصدقاء..",
+    "sortLabel": "ترتيب الأصدقاء",
+    "sort": "الترتيب:",
+    "sortName": "الاسم",
+    "sortOutings": "النزهات",
+    "sortFlake": "تقييم الالتزام",
+    "sortBy": "الترتيب حسب {{label}}",
+    "sortByAsc": "الترتيب حسب {{label}}، تصاعديًا",
+    "sortByDesc": "الترتيب حسب {{label}}، تنازليًا"
+  }
+}

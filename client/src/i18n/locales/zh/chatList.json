@@ -1,0 +1,16 @@
+{
+  "searchPlaceholder": "搜索聊天…",
+  "newChat": "新聊天",
+  "emptyTitle": "这里还空空的！",
+  "emptyText": "你和好友的聊天、各次出游的群聊都会显示在这里。",
+  "filters": {
+    "label": "筛选聊天",
+    "all": "全部",
+    "unread": "未读",
+    "dms": "私信",
+    "outings": "出游",
+    "noUnread": "都看完啦——没有未读聊天。",
+    "noMatch": "没有符合筛选条件的聊天。"
+  },
+  "archived": "已归档"
+}

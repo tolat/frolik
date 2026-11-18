@@ -20,8 +20,10 @@ import {
   ACTIVITY_NAME_MAX,
   ACTIVITY_DESCRIPTION_MAX,
 } from "../../utils/limits";
+import { useT } from "../../i18n";
 
 const CreateActivityModal = (props) => {
+  const { t } = useT();
   const user = useSelector((state) => state.auth.user);
   const modalState = useSelector((state) => state.modal);
   const modalDisplay =
@@ -32,7 +34,7 @@ const CreateActivityModal = (props) => {
   const [category, setCategory] = useState("Adventure");
   const [instructions, setInstructions] = useState([]);
   const instructionTypes = globals?.instructionTypes;
-  const [createButtonText, setCreatebuttonText] = useState("Create Activity");
+  const [saving, setSaving] = useState(false);
   const dispatch = useDispatch();
 
   const [validationMessage, setValidationMessage] = useState(false);
@@ -51,17 +53,17 @@ const CreateActivityModal = (props) => {
 
   // Optional cover photo, already shrunk to a JPEG data URL
   const [cover, setCover] = useState(null);
-  const [coverError, setCoverError] = useState("");
+  const [coverError, setCoverError] = useState(false);
   const coverInputRef = useRef(null);
   const onCoverPicked = async (e) => {
     const file = e.target.files?.[0];
     e.target.value = ""; // let the same file be picked again
     if (!file) return;
     try {
-      setCoverError("");
+      setCoverError(false);
       setCover(await fileToResizedDataURL(file));
     } catch {
-      setCoverError("That file couldn't be read as an image.");
+      setCoverError(true);
     }
   };
 
@@ -110,7 +112,9 @@ const CreateActivityModal = (props) => {
       <SimpleInput
         id={`create-activity-name`}
         defaultVal={name}
-        placeholder={`Name (max ${ACTIVITY_NAME_MAX} characters)`}
+        placeholder={t("createActivity.placeholders.name", {
+          max: ACTIVITY_NAME_MAX,
+        })}
         maxLength={ACTIVITY_NAME_MAX}
         suffix={name ? `${name.length}/${ACTIVITY_NAME_MAX}` : null}
         setDataChanged={setName}
@@ -120,7 +124,9 @@ const CreateActivityModal = (props) => {
       <SimpleInput
         setDataChanged={setDescription}
         defaultVal={description}
-        placeholder={`Description (max ${ACTIVITY_DESCRIPTION_MAX} characters)`}
+        placeholder={t("createActivity.placeholders.description", {
+          max: ACTIVITY_DESCRIPTION_MAX,
+        })}
         maxLength={ACTIVITY_DESCRIPTION_MAX}
         suffix={
           description
@@ -136,7 +142,7 @@ const CreateActivityModal = (props) => {
         name={"Activity Location"}
         className={styles.locationSelect}
         defaultVal={location}
-        placeholder="City"
+        placeholder={t("createActivity.placeholders.city")}
         setDataChanged={setLocation}
       />
     ),
@@ -146,7 +152,7 @@ const CreateActivityModal = (props) => {
         id={`create-activity-goal`}
         setDataChanged={setGoal}
         defaultVal={goal}
-        placeholder="Enter goal"
+        placeholder={t("createActivity.placeholders.goal")}
       />
     ),
     category,
@@ -157,7 +163,7 @@ const CreateActivityModal = (props) => {
         setDataChanged={setDuration}
         defaultVal={duration}
         type="number"
-        placeholder="# Hours"
+        placeholder={t("createActivity.placeholders.hours")}
       />
     ),
     cost: (
@@ -165,7 +171,7 @@ const CreateActivityModal = (props) => {
         setDataChanged={setCost}
         defaultVal={cost}
         type="number"
-        placeholder="$ Cost"
+        placeholder={t("createActivity.placeholders.cost")}
         id={`create-activity-cost`}
         className={styles.iconInput}
       />
@@ -175,7 +181,7 @@ const CreateActivityModal = (props) => {
         setDataChanged={setParticipants}
         defaultVal={participants}
         type="number"
-        placeholder="# People"
+        placeholder={t("createActivity.placeholders.people")}
         id={`create-activity-participants`}
         className={styles.iconInput}
       />
@@ -241,7 +247,7 @@ const CreateActivityModal = (props) => {
 
     if (runValidation(validationIDMap, instructions)) {
       const onComplete = async (response) => {
-        setCreatebuttonText("Create Activity");
+        setSaving(false);
         if (!!response.activity) {
           // Reset form
           setInstructions([]);
@@ -260,11 +266,7 @@ const CreateActivityModal = (props) => {
         props.addActivity(response.activity);
       };
 
-      setCreatebuttonText(
-        <div style={{ display: "flex" }}>
-          Saving &nbsp; <LoaderSpinner width="1.5rem" height="1.5rem" />
-        </div>
-      );
+      setSaving(true);
       createActivity(user, newActivity, onComplete, cover || undefined);
     }
   };
@@ -290,7 +292,7 @@ const CreateActivityModal = (props) => {
           message={validationMessage}
         />
         <div style={modalStyle} className={styles.container}>
-        <ModalHeaderPortal selector={'create-activity'}>Create Activity</ModalHeaderPortal>
+        <ModalHeaderPortal selector={'create-activity'}>{t("createActivity.header")}</ModalHeaderPortal>
 
           <form id="create-activity-form" className={styles.createForm}>
             <ActivityCard
@@ -316,16 +318,16 @@ const CreateActivityModal = (props) => {
                   />
                   {cover ? (
                     <div className={styles.coverPreview}>
-                      <img src={cover} alt="Activity cover" />
+                      <img src={cover} alt={t("createActivity.cover.alt")} />
                       <div className={styles.coverActions}>
                         <button
                           type="button"
                           onClick={() => coverInputRef.current?.click()}
                         >
-                          Change
+                          {t("createActivity.cover.change")}
                         </button>
                         <button type="button" onClick={() => setCover(null)}>
-                          Remove
+                          {t("createActivity.cover.remove")}
                         </button>
                       </div>
                     </div>
@@ -340,18 +342,27 @@ const CreateActivityModal = (props) => {
                         <circle cx="9" cy="10" r="1.8" />
                         <path d="M21 16l-5-5-8 8" />
                       </svg>
-                      Add a cover photo
-                      <span>optional</span>
+                      {t("createActivity.cover.add")}
+                      <span>{t("createActivity.cover.optional")}</span>
                     </button>
                   )}
                   {coverError ? (
-                    <div className={styles.coverError}>{coverError}</div>
+                    <div className={styles.coverError}>
+                      {t("createActivity.cover.readError")}
+                    </div>
                   ) : null}
                 </>
               }
             />
             <SimpleButton onClick={onSubmit} className={styles.createButton}>
-              {createButtonText}
+              {saving ? (
+                <div style={{ display: "flex" }}>
+                  {t("createActivity.saving")} &nbsp;{" "}
+                  <LoaderSpinner width="1.5rem" height="1.5rem" />
+                </div>
+              ) : (
+                t("createActivity.create")
+              )}
             </SimpleButton>
           </form>
         </div>

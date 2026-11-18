@@ -1,0 +1,24 @@
+{
+  "header": "筛选活动",
+  "showOnly": {
+    "title": "仅显示",
+    "completed": "已完成",
+    "featured": "精选",
+    "created": "用户创作"
+  },
+  "details": "详情",
+  "fields": {
+    "minParticipants": "最少人数：",
+    "maxParticipants": "最多人数：",
+    "minCost": "最低费用：",
+    "maxCost": "最高费用：",
+    "minRating": "最低评分：",
+    "maxTime": "最长时长："
+  },
+  "units": {
+    "people": "人",
+    "hours": "小时"
+  },
+  "clearAll": "全部清除",
+  "apply": "应用"
+}

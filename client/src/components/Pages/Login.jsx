@@ -1,3 +1,4 @@
+import LanguagePicker from "../UI/LanguagePicker";
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./styles/Auth.module.scss";
 import { useDispatch } from "react-redux";
@@ -10,6 +11,7 @@ import SimpleButton from "../UI/SimpleButton";
 import { modalActions } from "../../store/modal-slice";
 import { popupActions } from "../../store/popup-slice";
 import BrandLoader from "../UI/BrandLoader";
+import { useT, T } from "../../i18n";
 import biking from "../../images/_biking.png";
 import hiking from "../../images/_hiking.png";
 import playingball from "../../images/_playingball.png";
@@ -31,6 +33,7 @@ function Login() {
   const authState = useSelector((state) => state.auth);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const navigate = useNavigate();
+  const { t } = useT();
 
   // Once authenticated, start on the Outing page (the home page) — unless
   // this tab was just refreshed on another page, then go back to it
@@ -54,9 +57,9 @@ function Login() {
       setIsLoggingIn(false);
       if (response.status === 401) {
         dispatch(
-          popupActions.setWarningHeader("Incorrect Username or Password")
+          popupActions.setWarningHeader(t("auth.login.incorrectHeader"))
         );
-        dispatch(popupActions.setWarningMessage("Try again."));
+        dispatch(popupActions.setWarningMessage(t("auth.login.incorrectMessage")));
         dispatch(popupActions.showPopup("generic-warning"));
       }
     };
@@ -93,14 +96,14 @@ function Login() {
       <CreateAccountModal />
       <img className={styles.logo} src={logo} alt="frolik" />
       <form className={styles.card} onSubmit={handleSubmit}>
-        <h1 className={styles.title}>Welcome back</h1>
-        <p className={styles.subtitle}>Log in to plan your next outing.</p>
+        <h1 className={styles.title}>{t("auth.login.title")}</h1>
+        <p className={styles.subtitle}>{t("auth.login.subtitle")}</p>
         <div className={styles.fields}>
           <SimpleInput
             type="text"
             id="username"
             name="username"
-            label="Email"
+            label={t("auth.login.email")}
             ref={usernameRef}
             defaultVal={""}
             required
@@ -109,7 +112,7 @@ function Login() {
             type="password"
             id="password"
             name="password"
-            label="Password"
+            label={t("auth.login.password")}
             ref={passwordRef}
             defaultVal={""}
             required
@@ -124,10 +127,10 @@ function Login() {
           {busy ? (
             <span className={styles.buttonContent}>
               <BrandLoader inline plain light noBalloon size={1.4} />
-              Logging in…
+              {t("auth.login.loggingIn")}
             </span>
           ) : (
-            "Log In"
+            t("auth.login.logIn")
           )}
         </SimpleButton>
         <SimpleButton
@@ -135,7 +138,7 @@ function Login() {
           onClick={handleCreateAccountButtonClick}
           className={styles.secondaryButton}
         >
-          Create Account
+          {t("auth.login.createAccount")}
         </SimpleButton>
         <div className={styles.links}>
           <button
@@ -143,18 +146,24 @@ function Login() {
             onClick={onForgotPasswordClick}
             className={styles.link}
           >
-            Forgot password?
+            {t("auth.login.forgotPassword")}
           </button>
           <button type="button" onClick={onSampleLogin} className={styles.link}>
-            Sample login
+            {t("auth.login.sampleLogin")}
           </button>
         </div>
       </form>
+      <div className={styles.languageRow}>
+        <LanguagePicker compact selector="language-picker-login" />
+      </div>
       <div className={styles.blurb}>
         <div>
-          <img className={styles.blurbLogo} src={logo} alt="frolik" /> is a
-          social app that gets people making new connections and getting out
-          of the house!
+          <T
+            k="auth.login.blurb"
+            components={{
+              logo: <img className={styles.blurbLogo} src={logo} alt="frolik" />,
+            }}
+          />
         </div>
         <img
           className={styles.flavourImage}

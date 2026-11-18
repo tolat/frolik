@@ -1,0 +1,7 @@
+{
+  "searchPlaceholder": "Rechercher des publications…",
+  "loadFailedTitle": "Impossible de charger le fil",
+  "loadFailedText": "Tire vers le bas pour réessayer.",
+  "emptyTitle": "Rien à afficher pour l'instant !",
+  "emptyText": "Tu verras ici les sorties terminées par les gens de ton réseau d'amis."
+}

@@ -1,0 +1,11 @@
+{
+  "language": {
+    "label": "اللغة",
+    "hint": "سيظهر Frolik بهذه اللغة.",
+    "searchPlaceholder": "ابحث عن لغة"
+  },
+  "errors": {
+    "serverHeader": "خطأ في الخادم",
+    "serverMessage": "عذرًا، حدث خطأ من جهتنا! حدّث الصفحة وحاول مرة أخرى."
+  }
+}

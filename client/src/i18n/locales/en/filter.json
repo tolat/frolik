@@ -1,0 +1,24 @@
+{
+  "header": "Filter Activities",
+  "showOnly": {
+    "title": "Show only",
+    "completed": "Completed",
+    "featured": "Featured",
+    "created": "Creations"
+  },
+  "details": "Details",
+  "fields": {
+    "minParticipants": "Min. Participants:",
+    "maxParticipants": "Max. Participants:",
+    "minCost": "Min. Cost:",
+    "maxCost": "Max. Cost:",
+    "minRating": "Min. Rating:",
+    "maxTime": "Max. Time:"
+  },
+  "units": {
+    "people": "people",
+    "hours": "hrs"
+  },
+  "clearAll": "Clear All",
+  "apply": "Apply"
+}

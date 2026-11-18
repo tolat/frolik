@@ -9,8 +9,10 @@ import SimpleSearch from "../UI/SimpleSearch";
 import { usePageRefresh } from "../../utils/pageRefresh";
 import useIncrementalList from "../../utils/useIncrementalList";
 import ListSentinel from "../UI/ListSentinel";
+import { useT } from "../../i18n";
 
 const Social = (props) => {
+  const { t } = useT();
   // null = not loaded yet (skeleton tiles). "Nothing to show yet" only once
   // the server has actually answered with no outings.
   const [outings, setOutings] = useState(null);
@@ -94,15 +96,15 @@ const Social = (props) => {
         <SimpleSearch
           setValue={setFeedSearch}
           defaultVal={""}
-          placeholder={"Search Posts.."}
+          placeholder={t("social.searchPlaceholder")}
         />
         {!outings && loadFailed ? (
           <div className={styles.noOutingsMessage}>
             <h2 className={styles.noOutingsMessageHeader}>
-              Couldn't load the feed
+              {t("social.loadFailedTitle")}
             </h2>
             <div className={styles.noOutingsMessageText}>
-              Pull down to try again.
+              {t("social.loadFailedText")}
             </div>
           </div>
         ) : outings ? (
@@ -116,12 +118,11 @@ const Social = (props) => {
           ) : (
             <div className={styles.noOutingsMessage}>
               <h2 className={styles.noOutingsMessageHeader}>
-                Nothing to show yet!
+                {t("social.emptyTitle")}
               </h2>
 
               <div className={styles.noOutingsMessageText}>
-                You'll see outings completed by people in your friends network
-                here.
+                {t("social.emptyText")}
               </div>
             </div>
           )

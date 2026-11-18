@@ -1,0 +1,11 @@
+{
+  "language": {
+    "label": "언어",
+    "hint": "Frolik이 이 언어로 표시돼요.",
+    "searchPlaceholder": "언어 검색"
+  },
+  "errors": {
+    "serverHeader": "서버 오류",
+    "serverMessage": "앗, 저희 쪽에 문제가 생겼어요! 페이지를 새로고침하고 다시 시도해 주세요."
+  }
+}

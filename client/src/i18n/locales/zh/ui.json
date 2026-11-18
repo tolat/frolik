@@ -1,0 +1,86 @@
+{
+  "loading": "加载中",
+  "dateTime": "{{date}} - {{time}}",
+  "rating": {
+    "unrated": "未评分",
+    "outOfFive": "{{rating}}/5"
+  },
+  "outingStatus": {
+    "completed": "已完成",
+    "youLeft": "你已退出",
+    "invited": "已受邀：点击加入",
+    "waitingForMembers": "等待成员加入",
+    "waitingForPhotos": "等待上传照片",
+    "waitingForOthers": "等待其他人完成",
+    "readyToFinish": "可以完成了"
+  },
+  "outingCard": {
+    "completed": "已完成 - {{date}}",
+    "pending": "待进行 - {{date}}"
+  },
+  "outingList": {
+    "searchPlaceholder": "搜索我的出游",
+    "pendingHeader": "待进行的出游",
+    "pendingLimit": {
+      "other": "你同时最多可以有{{count}}个待进行的出游。"
+    }
+  },
+  "outingTitle": {
+    "rename": "重命名出游",
+    "name": "出游名称",
+    "save": "保存名称",
+    "cancel": "取消重命名"
+  },
+  "chatCard": {
+    "delete": "删除",
+    "archive": "归档",
+    "unarchive": "取消归档",
+    "markRead": "✓ 已读",
+    "justYou": "只有你",
+    "lastActive": "最近活跃：{{date}}"
+  },
+  "feedCard": {
+    "members": "出游成员",
+    "viewActivity": "查看活动",
+    "like": "点赞",
+    "unlike": "取消点赞"
+  },
+  "friendCard": {
+    "profileNotShared": "主页未公开"
+  },
+  "stats": {
+    "flakeRating": "靠谱分",
+    "outings": "出游"
+  },
+  "statusButtons": {
+    "label": "状态",
+    "hints": {
+      "ready": "可以出游——你会出现在每日匹配中",
+      "busy": "暂时休息——不会被匹配"
+    },
+    "currently": "当前：{{status}}",
+    "choose": "选择你的状态"
+  },
+  "starRate": {
+    "label": "评分",
+    "stars": {
+      "other": "{{count}}星"
+    }
+  },
+  "photos": {
+    "none": "暂无照片",
+    "remove": "删除照片",
+    "userPhoto": "照片",
+    "change": "更换照片"
+  },
+  "addUsers": {
+    "edit": "编辑成员",
+    "add": "添加成员"
+  },
+  "search": {
+    "icon": "搜索"
+  },
+  "profileHeader": {
+    "settings": "设置"
+  }
+}

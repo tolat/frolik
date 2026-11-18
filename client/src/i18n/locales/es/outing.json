@@ -1,0 +1,120 @@
+{
+  "sections": {
+    "activity": "Actividad",
+    "photos": "Fotos",
+    "members": "Miembros",
+    "invited": "Invitados"
+  },
+  "alt": {
+    "flake": "plantón",
+    "activity": "actividad",
+    "photos": "fotos",
+    "members": "miembros",
+    "invited": "invitados"
+  },
+  "buttons": {
+    "joinOuting": "Unirme a la salida",
+    "markCompleted": "Marcar como completada",
+    "markedCompleted": "¡Marcada como completada!",
+    "deleteOuting": "Eliminar salida",
+    "leaveOuting": "Abandonar salida",
+    "delete": "Eliminar",
+    "deleting": "Eliminando...",
+    "leave": "Abandonar",
+    "cancel": "Cancelar",
+    "ok": "OK",
+    "gotIt": "Entendido"
+  },
+  "flakedOut": "¡Diste plantón!",
+  "chat": {
+    "openLabel": "Abrir el chat de la salida",
+    "title": "Chat"
+  },
+  "deleteDrawer": {
+    "header": "Confirma que quieres eliminar la salida:",
+    "message": "Una vez que elimines la salida, ninguno de los invitados podrá unirse. Eliminar esta salida <b>no afectará</b> tu índice de plantones. Esta acción es permanente."
+  },
+  "leaveDrawer": {
+    "header": "Confirma que quieres abandonar la salida:",
+    "message": "Aunque abandones la salida, los demás miembros aún pueden completarla. Si lo hacen, <b>bajará</b> tu índice de plantones. Esta acción es permanente (no podrás volver a unirte después de abandonarla)."
+  },
+  "joinDrawer": {
+    "header": "¿Unirte a esta salida?",
+    "pendingLimit": "Cuenta para tu límite de 5 salidas pendientes.",
+    "mustComplete": "Tendrás que completarla (o eliminarla si eres el único miembro).",
+    "leavingLowersRating": "Si la abandonas después de unirte, <b>bajará tu índice de plantones</b>."
+  },
+  "completeDrawer": {
+    "header": "¿Marcar esta salida como completada?",
+    "lastMember": "Eres el último miembro en marcarla como completada",
+    "lockedYou": "Cuando la marques como completada, la salida se bloquea: ya no se podrán cambiar las fotos.",
+    "lockedEveryone": "Cuando todos los miembros la marquen como completada, la salida se bloquea: ya no se podrán cambiar las fotos.",
+    "chatStaysOpen": "El chat de la salida sigue abierto para que sigan en contacto.",
+    "cantUndo": "Esto no se puede deshacer."
+  },
+  "rating": {
+    "title": "Califica la actividad",
+    "hint": "Toca una estrella para calificar",
+    "labels": {
+      "1": "No muy buena",
+      "2": "Estuvo bien",
+      "3": "Buena",
+      "4": "Muy buena",
+      "5": "¡Me encantó!"
+    }
+  },
+  "completion": {
+    "needMembers": "La salida debe tener 2 o más miembros para marcarse como completada.",
+    "count": "{{completed}} / {{total}} miembros marcaron esta salida como completada."
+  },
+  "howToComplete": {
+    "header": "Cómo completar una salida",
+    "intro": "Una salida necesita al menos 2 miembros para poder completarse.",
+    "waitForInvites": {
+      "one": "Espera a que acepten tu invitación o invita a alguien más.",
+      "many": "Espera a que acepten tus {{count}} invitaciones o invita a alguien más.",
+      "other": "Espera a que acepten tus {{count}} invitaciones o invita a alguien más."
+    },
+    "inviteSomeone": "Invita a un amigo o a un match del día.",
+    "goTogether": "Vayan juntos a la salida.",
+    "uploadPhoto": "Sube al menos una foto de la salida.",
+    "everyoneMarks": "Cada miembro toca Marcar como completada."
+  },
+  "photos": {
+    "limitHint": "Cada miembro puede subir hasta 2 fotos.",
+    "upload": "+ Subir",
+    "edit": "Editar",
+    "doneEditing": "Listo"
+  },
+  "tooManyPhotos": {
+    "header": "¡Demasiadas fotos!",
+    "message": "Cada miembro de la salida puede subir hasta 2 fotos. Si quieres cambiar o editar lo que subiste a esta salida, puedes quitar algunas de tus fotos."
+  },
+  "deletePhoto": {
+    "header": "¿Eliminar la foto?"
+  },
+  "noPhotos": {
+    "header": "¡No hay fotos!",
+    "message": "Las salidas necesitan al menos una foto antes de marcarse como completadas. Puedes agregar fotos en la página de la salida con este botón:",
+    "buttonAlt": "Botón para agregar fotos",
+    "allMembers": "¡Todos los miembros deben marcar la salida como completada!"
+  },
+  "countdown": {
+    "lessThanADay": "menos de un día",
+    "days": {
+      "one": "{{count}} día",
+      "many": "{{count}} días",
+      "other": "{{count}} días"
+    },
+    "finishNote": "Quedan {{time}} para que todos la marquen como completada. Quien no lo haga para entonces queda fuera y se le cuenta un plantón.",
+    "inviteNote": "Si nadie se une en {{time}}, esta salida se eliminará por inactividad.",
+    "invitesExpire": "Las invitaciones vencen en {{time}} si no se aceptan.",
+    "done": "✓ Listo",
+    "daysLeftTag": "Quedan {{days}} d",
+    "daysToJoinTag": "{{days}} d para unirse"
+  },
+  "deleteHelp": {
+    "onlyMember": "Puedes eliminar la salida porque eres el único miembro. Eliminarla <b>no afectará</b> tu índice de plantones.",
+    "otherMembers": "No puedes eliminar la salida porque hay otros miembros. Abandonarla <b>bajará</b> tu índice de plantones."
+  }
+}

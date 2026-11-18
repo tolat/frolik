@@ -5,8 +5,10 @@ import FriendCard from "../UI/FriendCard";
 import { goActions } from "../../store/go-slice";
 import ModalHeaderPortal from "./ModalHeaderPortal";
 import { collapseOut } from "../../utils/animations";
+import { useT } from "../../i18n";
 
 const EditUsersModal = (props) => {
+  const { t } = useT();
   const user = useSelector((state) => state.auth.user);
   const goState = useSelector((state) => state.go);
   const dispatch = useDispatch();
@@ -39,7 +41,7 @@ const EditUsersModal = (props) => {
     <ModalPortal>
       <div style={modalStyle} className={styles.container}>
         <ModalHeaderPortal selector={"edit-users"}>
-          Remove Outing Members
+          {t("addUsers.removeHeader")}
         </ModalHeaderPortal>
         {goState.outing.users.map((u) => (
           <FriendCard

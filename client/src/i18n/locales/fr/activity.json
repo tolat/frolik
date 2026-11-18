@@ -1,0 +1,49 @@
+{
+  "actions": {
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "showInstructions": "Voir les instructions",
+    "hideInstructions": "Masquer les instructions",
+    "createOuting": "Créer une sortie",
+    "sendToFriend": "Envoyer à un ami",
+    "remove": "Retirer",
+    "select": "Choisir"
+  },
+  "delete": {
+    "header": "Supprimer l'activité ?",
+    "permanent": "Cette action est définitive.",
+    "deleting": "Suppression…"
+  },
+  "stats": {
+    "time": "Durée",
+    "cost": "Coût",
+    "group": "Taille du groupe",
+    "rating": "Note",
+    "hours": {
+      "one": "{{count}} h",
+      "many": "{{count}} h",
+      "other": "{{count}} h"
+    },
+    "costValue": "{{cost}} $",
+    "participants": {
+      "one": "{{count}} +",
+      "many": "{{count}} +",
+      "other": "{{count}} +"
+    }
+  },
+  "badges": {
+    "completed": "Terminée",
+    "featured": "En vedette",
+    "created": "Créée par un membre"
+  },
+  "instructionsHeader": "Instructions :",
+  "addInstruction": "+ Ajouter une instruction",
+  "goalHeader": "Objectif :",
+  "goalAlt": "Objectif",
+  "instruction": {
+    "chooseIcon": "Choisis une icône",
+    "titlePlaceholder": "Titre de l'instruction",
+    "detailsPlaceholder": "Détails de l'instruction",
+    "remove": "Retirer l'instruction"
+  }
+}

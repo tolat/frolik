@@ -10,13 +10,14 @@ import {
   fetchStrippedUser,
 } from "../../utils/data-fetch";
 import { authActions } from "../../store/auth-slice";
-import { toAppDate } from "../../utils/utils";
+import { useT } from "../../i18n";
 import SimpleButton from "../UI/SimpleButton";
 import FriendCard from "../UI/FriendCard";
 import { dataActions } from "../../store/data-slice";
 
 const FriendRequestUpdate = (props) => {
   const dispatch = useDispatch();
+  const { t, tOr, formatDate } = useT();
   const user = useSelector((state) => state.auth.user);
   const notification = props.notification;
   const cachedUsers = useSelector((state) => state.data.cachedUsers);
@@ -48,7 +49,10 @@ const FriendRequestUpdate = (props) => {
     requestingUser && (
       <div className={styles.container}>
         <div className={styles.header}>
-          Your friend request was {status} by:
+          {tOr(
+            `notifications.headers.friendRequestStatus.${status}`,
+            t("notifications.headers.friendRequestStatus.other", { status })
+          )}
         </div>
         <FriendCard
           style={{ margin: "0" }}
@@ -56,11 +60,10 @@ const FriendRequestUpdate = (props) => {
           small={true}
           user={requestingUser}
         />
-        <div>{toAppDate(props.notification.created)}</div>
+        <div>{formatDate(props.notification.created, { dateStyle: "medium", timeStyle: "short" })}</div>
         <div className={styles.buttons}>
           <SimpleButton onClick={() => handleDismissRequest()} noShadow={true}>
-            {" "}
-            Clear
+            {t("notifications.actions.clear")}
           </SimpleButton>
         </div>
       </div>

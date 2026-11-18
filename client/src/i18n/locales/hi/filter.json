@@ -1,0 +1,24 @@
+{
+  "header": "एक्टिविटी फ़िल्टर करें",
+  "showOnly": {
+    "title": "सिर्फ़ ये दिखाएँ",
+    "completed": "पूरी हुईं",
+    "featured": "फ़ीचर्ड",
+    "created": "यूज़र की बनाई"
+  },
+  "details": "विवरण",
+  "fields": {
+    "minParticipants": "कम से कम लोग:",
+    "maxParticipants": "ज़्यादा से ज़्यादा लोग:",
+    "minCost": "कम से कम खर्च:",
+    "maxCost": "ज़्यादा से ज़्यादा खर्च:",
+    "minRating": "कम से कम रेटिंग:",
+    "maxTime": "ज़्यादा से ज़्यादा समय:"
+  },
+  "units": {
+    "people": "लोग",
+    "hours": "घंटे"
+  },
+  "clearAll": "सब हटाएँ",
+  "apply": "लागू करें"
+}

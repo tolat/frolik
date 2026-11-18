@@ -1,0 +1,32 @@
+{
+  "header": "Perfil",
+  "tabs": {
+    "photos": "Fotos"
+  },
+  "noPhotos": "¡Aún no hay fotos!",
+  "buttons": {
+    "cancel": "Cancelar",
+    "unfriend": "Eliminar amigo",
+    "sendRequest": "Enviar solicitud"
+  },
+  "actions": {
+    "chat": "+ Chat",
+    "outing": "+ Salida",
+    "friend": "+ Amigo",
+    "requested": "Solicitado"
+  },
+  "locked": {
+    "header": "Primero completa una salida",
+    "formerHeader": "Todavía no",
+    "message": "Podrás agregar a {{name}} como amigo cuando uno de ustedes le haya salido al otro en los matches del día y hayan completado una salida juntos.",
+    "formerMessage": "Tú y {{name}} ya fueron amigos. Para volver a serlo, {{name}} tiene que aparecer en tus matches del día y tienen que completar una nueva salida juntos."
+  },
+  "unfriend": {
+    "header": "¿Eliminar a {{name}} de tus amigos?",
+    "message": "{{name}} dejará de estar entre tus amigos, y ninguno de los dos podrá abrir el perfil del otro.<br/><br/><b>No podrás volver a agregar a {{name}} así nada más.</b> Para volver a ser amigos, {{name}} tiene que aparecer en tus matches del día y tienen que completar una nueva salida juntos."
+  },
+  "friendRequest": {
+    "header": "¿Enviarle una solicitud de amistad a {{name}}?",
+    "message": "{{name}} recibirá una alerta y podrá aceptarla o rechazarla."
+  }
+}

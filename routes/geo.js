@@ -157,7 +157,7 @@ router.get(
     const lat = Number(req.query.lat);
     const lng = Number(req.query.lng);
     if (!(Math.abs(lat) <= 90 && Math.abs(lng) <= 180)) {
-      return res.status(406).send({ header: "Invalid location", message: "" });
+      return res.status(406).send({ header: req.t("geo.invalidLocation.header"), message: "" });
     }
     // City-level only: round so we never send/keep a precise position
     const rlat = Math.round(lat * 100) / 100;
@@ -166,14 +166,17 @@ router.get(
       const place = await cached(`r:${rlat},${rlng}`, () => reversePlace(rlat, rlng));
       if (!place) {
         return res.status(406).send({
-          header: "Couldn't find your city",
-          message: "Try searching for it instead.",
+          header: req.t("geo.cityNotFound.header"),
+          message: req.t("geo.cityNotFound.message"),
         });
       }
       res.send({ place });
     } catch (err) {
       console.error("[geo reverse]", err.message);
-      res.status(502).send({ header: "Location lookup failed", message: "Try searching instead." });
+      res.status(502).send({
+        header: req.t("geo.lookupFailed.header"),
+        message: req.t("geo.lookupFailed.message"),
+      });
     }
   })
 );
