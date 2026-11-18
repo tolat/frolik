@@ -285,23 +285,44 @@ module.exports.activitySeeds = [
     participants: 2,
   },
 
-  // Beach Glass Rainbow
+  // Find The Rainbow (replaced Beach Glass Rainbow; same database record).
+  // Cover photo: "findtherainbow" (seeds/images/sampleUserPhotos), by
+  // @ramone on Unsplash, free under the Unsplash License.
   {
-    name: "Beach Glass Rainbow",
-    description: "Collect 5 different colours of beach glass!",
+    name: "Find The Rainbow",
+    description: "Hit the streets and hunt down a rainbow, one colour at a time!",
     category: "Adventure",
-    goal: "Try for 5 colours, the more the better!",
-    featured: false,
+    goal: "Find 5 things out in the world that make a full rainbow: red, orange, yellow, green and blue.",
+    featured: true,
+    cover_photo: "findtherainbow",
     instructions: [
       {
         kind: "communicate",
         number: 1,
-        title: "Pick a Beach",
-        details: "Decide on a local beach and time to meet.",
+        title: "Pick Your Patch",
+        details: "Choose a neighbourhood or street to explore and a time to meet.",
+      },
+      {
+        kind: "travel",
+        number: 2,
+        title: "Meet Up",
+        details: "Meet at your starting point. Comfy shoes recommended!",
+      },
+      {
+        kind: "capture",
+        number: 3,
+        title: "Hunt the Colours",
+        details: "Find something red, orange, yellow, green and blue out on the street (a door, a sign, a flower, a bike…) and snap a photo of each.",
+      },
+      {
+        kind: "create",
+        number: 4,
+        title: "Make Your Rainbow",
+        details: "Line your 5 photos up in rainbow order. Bonus points for the most creative finds!",
       },
     ],
     location: "Vancouver, CA",
-    rating: 3.5,
+    rating: 4,
     duration: 2,
     cost: 0,
     participants: 2,
