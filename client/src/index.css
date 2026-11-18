@@ -304,3 +304,12 @@ html.scroll-locked {
 html.keyboard-open .app-navbar {
   display: none !important;
 }
+
+/* ...and drop the nav-bar clearance while typing, so the message box sits
+   just above the keyboard instead of a nav bar's height above it */
+html.keyboard-open #modal-container {
+  padding-bottom: 0 !important;
+}
+html.keyboard-open .chat-panel {
+  height: 100dvh !important;
+}

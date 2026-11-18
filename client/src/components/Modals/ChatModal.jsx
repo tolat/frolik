@@ -124,7 +124,7 @@ const ChatModal = (props) => {
         </button>
       </ModalButtonPortal>
 
-      <div style={modalStyle} className={`${styles.container} noscroll`}>
+      <div style={modalStyle} className={`${styles.container} noscroll chat-panel`}>
         <div id="chat-container" className={`${styles.chatContainer} noscroll`}>
           {messages.map((m, i) => {
             // messages are newest-first; render order is reversed by CSS

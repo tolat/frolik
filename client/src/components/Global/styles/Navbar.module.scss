@@ -44,7 +44,7 @@
   max-width: 100%;
   position: relative;
   box-sizing: border-box;
-  height: 6.6rem;
+  height: 7rem;
   border-radius: 2.4rem;
   background: rgba(255, 255, 255, 0.96);
   @media (hover: hover) and (pointer: fine) {
@@ -84,7 +84,10 @@
 
 .navButton {
   flex: 1;
-  height: 5.2rem;
+  // A touch taller, with the extra space above the icon (bottom unchanged)
+  height: 5.6rem;
+  padding-top: 0.4rem !important;
+  box-sizing: border-box;
   position: relative;
   border-radius: 1.8rem;
   transition: background-color $dur $ease_out, transform $dur_fast $ease_out;
@@ -102,7 +105,7 @@
   background-color: $light_blue;
 
   img {
-    transform: translateY(-1px) scale(1.06);
+    transform: scale(1.06);
   }
 }
 
