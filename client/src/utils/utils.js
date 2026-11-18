@@ -252,13 +252,27 @@ export const userIsLastCompletion = (user, outing) => {
 // Flake rating out of 5 — HIGHER IS BETTER: 5.0 means never flaked, and it
 // drops with the share of outings the user flaked on (left, or was removed
 // for not marking completed). No outings yet = 5.0.
-export const calculateFlakeRating = (user) => {
+// A user's finished outings: those they flaked on (left, or were removed for
+// not marking completed) plus those they completed. A flaked outing counts
+// once, as a flake, even if the others finished it later. Pending outings
+// aren't counted.
+export const outingStats = (user) => {
   const outings = user?.outings || [];
-  if (!outings.length) return "5.0";
-  const flakeCount = outings.filter((o) =>
-    o.flakes?.some((id) => (id?._id || id) === user._id)
-  ).length;
-  return (5 - (flakeCount / outings.length) * 5).toFixed(1);
+  const isFlake = (o) =>
+    o.flakes?.some((id) => (id?._id || id) === user?._id);
+  const flaked = outings.filter(isFlake).length;
+  const completed = outings.filter((o) => !isFlake(o) && outingIsCompleted(o))
+    .length;
+  return { flaked, completed, total: flaked + completed };
+};
+
+// Flake rating out of 5 — HIGHER IS BETTER: 5.0 means never flaked; it drops
+// with the share of finished outings (completed + flaked) the user flaked
+// on. No finished outings yet = 5.0.
+export const calculateFlakeRating = (user) => {
+  const { flaked, total } = outingStats(user);
+  if (!total) return "5.0";
+  return (5 - (flaked / total) * 5).toFixed(1);
 };
 
 export const dateSort = (a, b) => {

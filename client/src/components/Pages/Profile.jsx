@@ -13,7 +13,7 @@ import EditProfileModal from "../Modals/EditProfileModal";
 import FriendCard from "../UI/FriendCard";
 import {
   calculateFlakeRating,
-  outingIsCompleted,
+  outingStats,
   pageRouteLoader,
   toSorted,
 } from "../../utils/utils";
@@ -152,7 +152,7 @@ const Profile = (props) => {
         ? { key, dir: "desc" }
         : null
     );
-  const completedCount = (f) => (f.outings || []).filter(outingIsCompleted).length;
+  const completedCount = (f) => outingStats(f).total; // completed + flaked
   const byName = (a, b) =>
     `${a.first_name} ${a.last_name}`.localeCompare(`${b.first_name} ${b.last_name}`);
   const sortValue = {
