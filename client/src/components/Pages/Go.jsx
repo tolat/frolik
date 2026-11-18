@@ -46,24 +46,55 @@ const tint = (color, alpha) => {
   return m ? `rgba(${m[1]}, ${m[2]}, ${m[3]}, ${alpha})` : color;
 };
 
-// A darker, readable shade of a (pastel) category colour, same hue:
-// "rgb(255 236 69)" -> a deep mustard. Falls back to the colour as given.
-const readableShade = (color) => {
+// Category tabs only: the category colour darkened just enough to reach a
+// contrast against the page (WCAG ratio), same hue — pastels like Sports
+// yellow or Art green were nearly invisible as text/underline. Everything
+// else (avatars, stripes) keeps the original colour.
+const PAGE_BG = [244, 246, 250];
+const luminance = ([r, g, b]) => {
+  const ch = (v) => {
+    v /= 255;
+    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+  };
+  return 0.2126 * ch(r) + 0.7152 * ch(g) + 0.0722 * ch(b);
+};
+const contrast = (a, b) => {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+};
+const hslToRgb = (h, s, l) => {
+  const k = (n) => (n + h / 30) % 12;
+  const a = s * Math.min(l, 1 - l);
+  const f = (n) => l - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1));
+  return [f(0), f(8), f(4)].map((v) => Math.round(v * 255));
+};
+const inkFor = (color, target) => {
   const m = String(color || "").match(/(\d+)[,\s]+(\d+)[,\s]+(\d+)/);
   if (!m) return color;
-  const [r, g, b] = m.slice(1, 4).map((n) => Number(n) / 255);
+  const rgb = m.slice(1, 4).map(Number);
+  if (contrast(rgb, PAGE_BG) >= target) return `rgb(${rgb.join(", ")})`;
+  const [r, g, b] = rgb.map((v) => v / 255);
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
-  let h = 0;
   const d = max - min;
+  let h = 0;
   if (d) {
     if (max === r) h = ((g - b) / d) % 6;
     else if (max === g) h = (b - r) / d + 2;
     else h = (r - g) / d + 4;
-    h *= 60;
-    if (h < 0) h += 360;
+    h = (h * 60 + 360) % 360;
   }
-  return `hsl(${Math.round(h)} ${d ? 70 : 0}% 36%)`;
+  let l = (max + min) / 2;
+  const sat = d ? d / (1 - Math.abs(2 * l - 1)) : 0;
+  // Softened saturation: pastels are near-100% saturated in HSL, so darkening
+  // them as-is turned out neon (lime green, pure red)
+  const soft = Math.min(sat, 0.6);
+  let out = rgb;
+  while (l > 0.05 && contrast(out, PAGE_BG) < target) {
+    l -= 0.01;
+    out = hslToRgb(h, soft, l);
+  }
+  return `rgb(${out.join(", ")})`;
 };
 
 const Go = (props) => {
@@ -92,16 +123,15 @@ const Go = (props) => {
     </div>
   );
 
-  // The selected category tab takes that category's colour: the underline in
-  // the colour itself, the title in a deeper shade of it (the colours are
-  // pastels — yellow text would be unreadable)
+  // The selected category tab takes that category's colour: underline and
+  // title in just-deep-enough versions of it (inkFor), the pastel behind
   const getHighlightStyle = (key) => {
     let keyCategory = Object.keys(categoryColorMap).find((k) =>
       key.includes(k)
     );
 
     return keyCategory === selected
-      ? { backgroundColor: categoryColorMap[keyCategory] }
+      ? { backgroundColor: inkFor(categoryColorMap[keyCategory], 2) }
       : {};
   };
 
@@ -116,8 +146,10 @@ const Go = (props) => {
         style={
           props.selected
             ? {
-                color: readableShade(props.color),
-                backgroundColor: tint(props.color, 0.4),
+                color: inkFor(props.color, 4.5),
+                backgroundColor: tint(props.color, 0.35),
+                // a lighter take on the buttons' lift, in the tab's colour
+                boxShadow: `0 1px 5px ${tint(props.color, 0.45)}`,
               }
             : null
         }
