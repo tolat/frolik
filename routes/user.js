@@ -501,6 +501,34 @@ router.get(
   })
 );
 
+// Mark alerts as read (opened from the Alerts page). They stay listed under
+// "Read"; read alerts older than READ_KEEP_DAYS are dropped here so the list
+// doesn't grow forever.
+const READ_KEEP_DAYS = 60;
+router.post(
+  "/:id/notifications/read",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    const ids = new Set((req.body.ids || []).map(String));
+    const now = new Date();
+    const cutoff = now.getTime() - READ_KEEP_DAYS * 24 * 60 * 60 * 1000;
+    user.notifications = (user.notifications || [])
+      .map((n) =>
+        n && !n.read && ids.has(String(n.id)) ? { ...n, read: true, read_at: now } : n
+      )
+      .filter(
+        (n) => n && !(n.read && n.read_at && new Date(n.read_at).getTime() < cutoff)
+      );
+    user.markModified("notifications");
+    await user.save();
+    pushUserUpdate([user]);
+    await populateUser(user);
+    res.send({ user });
+  })
+);
+
 // Dismiss a notification
 router.post(
   "/:id/notification/:notificationid/dismiss",
@@ -1102,6 +1130,64 @@ router.get(
         }
       }
     }
+
+    res.send({ outings });
+  })
+);
+
+// A person's completed Outings, for the Outings tab on their profile. Same
+// card shape as the social feed (activity + members), with members stripped
+// like friends are. Open to the people who can open the profile: themself,
+// their friends, and people who completed an Outing with them.
+router.get(
+  "/:id/profile-outings/:otherID",
+  reqAuthenticated,
+  sameUserOnly,
+  tryCatch(async (req, res) => {
+    const viewer = req.user;
+    const other = await User.findById(req.params.otherID).populate({
+      path: "outings",
+      populate: { path: "activity" },
+    });
+    if (!other) return res.status(404).send("User not found");
+
+    const otherID = other._id.toString();
+    const viewerID = viewer._id.toString();
+    const completed = (other.outings || []).filter(
+      (o) => o && o.date_completed && o.activity
+    );
+    const allowed =
+      otherID === viewerID ||
+      (viewer.friends || []).some((f) => (f._id || f).toString() === otherID) ||
+      completed.some((o) => o.users.some((u) => u.toString() === viewerID));
+    if (!allowed) return res.status(401).send("Not allowed");
+
+    // Hide the sample account's content, as the feed does
+    const sampleUser = await User.findOne({ username: "app.frolik@gmail.com" });
+    const sampleID = sampleUser?._id.toString();
+    const shown = completed.filter(
+      (o) => !o.users.some((u) => u.toString() === sampleID)
+    );
+
+    const people = await populateFriends([
+      ...new Set(shown.flatMap((o) => o.users.map((u) => u.toString()))),
+    ]);
+    const byID = Object.fromEntries(people.map((p) => [p._id.toString(), p]));
+
+    const outings = shown
+      .sort((a, b) => new Date(b.date_completed) - new Date(a.date_completed))
+      .map((o) => ({
+        _id: o._id,
+        name: o.name,
+        activity: o.activity,
+        date_completed: o.date_completed,
+        date_created: o.date_created,
+        photos: o.photos,
+        likes: o.likes,
+        flakes: o.flakes,
+        completions: o.completions,
+        users: o.users.map((u) => byID[u.toString()]).filter(Boolean),
+      }));
 
     res.send({ outings });
   })

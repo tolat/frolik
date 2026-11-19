@@ -3,7 +3,11 @@
   "empty": {
     "title": "아무것도 없어요!",
     "body": "알림이 여기에 표시돼요",
-    "iconAlt": "종"
+    "iconAlt": "종",
+    "unreadTitle": "모두 확인했어요",
+    "unreadBody": "모든 알림을 열어 봤어요",
+    "readTitle": "아직 읽은 알림이 없어요",
+    "readBody": "열어 본 알림은 여기로 옮겨져요"
   },
   "headers": {
     "outingInvite": "나들이에 초대받았어요!",
@@ -33,6 +37,12 @@
     "viewChat": "채팅 보기",
     "clear": "지우기",
     "accept": "수락",
-    "deny": "거절"
+    "deny": "거절",
+    "decline": "거절"
+  },
+  "filters": {
+    "all": "전체",
+    "unread": "읽지 않음",
+    "read": "읽음"
   }
 }

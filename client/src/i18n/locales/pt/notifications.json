@@ -3,7 +3,11 @@
   "empty": {
     "title": "Nada por aqui!",
     "body": "Seus alertas vão aparecer aqui",
-    "iconAlt": "Sino"
+    "iconAlt": "Sino",
+    "unreadTitle": "Tudo em dia",
+    "unreadBody": "Você abriu todos os seus alertas",
+    "readTitle": "Nada lido ainda",
+    "readBody": "Os alertas que você abrir aparecem aqui"
   },
   "headers": {
     "outingInvite": "Você foi convidado para um rolê!",
@@ -33,6 +37,12 @@
     "viewChat": "Ver chat",
     "clear": "Limpar",
     "accept": "Aceitar",
-    "deny": "Recusar"
+    "deny": "Recusar",
+    "decline": "Recusar"
+  },
+  "filters": {
+    "all": "Todos",
+    "unread": "Não lidos",
+    "read": "Lidos"
   }
 }

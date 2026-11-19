@@ -301,7 +301,7 @@ module.exports.webpushNotify = async (users, payload) => {
         body: resolve(text, freshUser),
         notificationCount:
           (this.getTotalUnreadMessages(freshUser) || 0) +
-          (freshUser.notifications?.length ?? 0),
+          this.unreadNotificationCount(freshUser),
       });
 
       // Send to every device; 404/410 = expired or unsubscribed, so prune it
@@ -620,3 +620,7 @@ module.exports.onSocketConnection = async (socket) => {
     }
   });
 };
+
+// Alerts the user hasn't opened yet (read ones stay listed under "Read")
+module.exports.unreadNotificationCount = (user) =>
+  (user?.notifications || []).filter((n) => n && !n.read).length;

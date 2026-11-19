@@ -9,7 +9,7 @@ import store from "./store";
 import { goActions } from "./store/go-slice";
 import { fetchGlobals } from "./utils/data-fetch";
 import { setBadge } from "./utils/badge";
-import { getTotalUnreadMessages } from "./utils/utils";
+import { getTotalUnreadMessages, unreadNotificationCount } from "./utils/utils";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { socketActions } from "./store/socket-slice";
 import { modalActions } from "./store/modal-slice";
@@ -53,7 +53,7 @@ function App() {
   useEffect(() => {
     if (user) {
       const unreadMessages =
-        (getTotalUnreadMessages(user) || 0) + (user.notifications?.length || 0);
+        (getTotalUnreadMessages(user) || 0) + unreadNotificationCount(user);
       setBadge(unreadMessages);
     }
   }, [user]);

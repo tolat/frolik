@@ -17,7 +17,7 @@ import chatIcon from "../../images/chat.png";
 import chatIconBlue from "../../images/chat-blue.png";
 import feedIcon from "../../images/post2.png";
 import feedIconBlue from "../../images/post2-blue.png";
-import { getTotalUnreadMessages } from "../../utils/utils";
+import { getTotalUnreadMessages, unreadNotificationCount } from "../../utils/utils";
 import PhotoPopup from "../Popups/PhotoPopup";
 import outingIcon from "../../images/air-balloon.png";
 import outingIconBlue from "../../images/air-balloon-blue.png";
@@ -187,9 +187,9 @@ const Navbar = (props) => {
                 className={`${styles.navButton} ${styles.notificationsHover}`}
                 blue={activePage === "alerts"}
               >
-                {user && user.notifications.length > 0 ? (
+                {unreadNotificationCount(user) > 0 ? (
                   <div className={styles.notificationBadge}>
-                    {user && user.notifications.length}
+                    {unreadNotificationCount(user)}
                   </div>
                 ) : null}
               </NavButton>

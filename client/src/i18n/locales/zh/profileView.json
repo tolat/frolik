@@ -1,9 +1,11 @@
 {
   "header": "查看主页",
   "tabs": {
-    "photos": "照片"
+    "photos": "照片",
+    "outings": "出游"
   },
   "noPhotos": "还没有照片！",
+  "noOutings": "还没有出游！",
   "buttons": {
     "cancel": "取消",
     "unfriend": "删除好友",

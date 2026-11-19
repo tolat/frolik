@@ -2,9 +2,11 @@ import { popupActions } from "../../store/popup-slice";
 import BrandLoader from "../UI/BrandLoader";
 import styles from "./styles/ProfileViewerModal.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import PhotoGrid from "../UI/PhotoGrid";
 import photos from "../../images/photogrid.png";
+import outingsIcon from "../../images/outing2.png";
+import FeedCard from "../UI/FeedCard";
 import getOutIcon from "../../images/air-balloon.png";
 import deleteFriend from "../../images/remove-friend.png";
 import addFriend from "../../images/add-friend.png";
@@ -15,6 +17,7 @@ import {
   createChat,
   fetchChats,
   fetchPhotos,
+  fetchProfileOutings,
   removeFriend,
   sendFriendRequest,
 } from "../../utils/data-fetch";
@@ -36,6 +39,11 @@ const sliderIcons = (t) => [
     key: "_photos",
     name: t("profileView.tabs.photos"),
     url: photos,
+  },
+  {
+    key: "_outings",
+    name: t("profileView.tabs.outings"),
+    url: outingsIcon,
   },
 ];
 
@@ -64,6 +72,21 @@ const ProfileViewerModal = (props) => {
     }
   }, [modalUser]);
 
+  // Outings tab: their completed Outings, as social-feed cards. Fetched when
+  // the tab is first opened for this person (null = loading)
+  const [tab, setTab] = useState("_photos");
+  const [outings, setOutings] = useState(null);
+  const modalUserID = modalUser?._id;
+  useEffect(() => {
+    setTab("_photos");
+    setOutings(null);
+  }, [modalUserID]);
+  useEffect(() => {
+    if (tab !== "_outings" || outings || !modalUserID) return;
+    fetchProfileOutings(user, modalUserID, setOutings, () => setOutings([]));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tab, outings, modalUserID]);
+
   return (
     <ModalPortal>
       <div style={modalStyle} className={styles.container}>
@@ -76,11 +99,24 @@ const ProfileViewerModal = (props) => {
         />
         <SliderNavbar
           id="slider-navbar"
-          selected={"_photos"}
-          setSelected={() => {}}
+          selected={tab}
+          setSelected={setTab}
           icons={sliderIcons(t)}
           style={{ paddingTop: "0" }}
         />
+        {tab === "_outings" ? (
+          outings === null ? (
+            <BrandLoader />
+          ) : outings.length ? (
+            <div className={styles.outingList}>
+              {outings.map((o) => (
+                <FeedCard key={o._id} outing={o} />
+              ))}
+            </div>
+          ) : (
+            <h2>{t("profileView.noOutings")}</h2>
+          )
+        ) : (
         <Fragment>
           {user._id === modalUser._id ? (
             <Fragment>
@@ -99,12 +135,13 @@ const ProfileViewerModal = (props) => {
                   : "1fr 1fr 1fr"
               }
             />
-          ) : user.outings.length > 0 ? (
+          ) : modalUser.outings?.length > 0 || user.outings.length > 0 ? (
             <h2>{t("profileView.noPhotos")}</h2>
           ) : (
             <BrandLoader />
           )}
         </Fragment>
+        )}
       </div>
     </ModalPortal>
   );

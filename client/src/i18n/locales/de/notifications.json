@@ -3,7 +3,11 @@
   "empty": {
     "title": "Hier ist nichts!",
     "body": "Deine Mitteilungen erscheinen hier",
-    "iconAlt": "Glocke"
+    "iconAlt": "Glocke",
+    "unreadTitle": "Alles erledigt",
+    "unreadBody": "Du hast alle Hinweise geöffnet",
+    "readTitle": "Noch nichts gelesen",
+    "readBody": "Geöffnete Hinweise landen hier"
   },
   "headers": {
     "outingInvite": "Du wurdest zu einem Ausflug eingeladen!",
@@ -33,6 +37,12 @@
     "viewChat": "Chat ansehen",
     "clear": "Entfernen",
     "accept": "Annehmen",
-    "deny": "Ablehnen"
+    "deny": "Ablehnen",
+    "decline": "Ablehnen"
+  },
+  "filters": {
+    "all": "Alle",
+    "unread": "Ungelesen",
+    "read": "Gelesen"
   }
 }

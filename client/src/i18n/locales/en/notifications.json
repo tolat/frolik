@@ -3,7 +3,11 @@
   "empty": {
     "title": "Nothing Here!",
     "body": "Your alerts will show up here",
-    "iconAlt": "Bell"
+    "iconAlt": "Bell",
+    "unreadTitle": "All caught up",
+    "unreadBody": "You've opened all your alerts",
+    "readTitle": "Nothing read yet",
+    "readBody": "Alerts you open move here"
   },
   "headers": {
     "outingInvite": "You have been invited to an Outing!",
@@ -33,6 +37,12 @@
     "viewChat": "View Chat",
     "clear": "Clear",
     "accept": "Accept",
-    "deny": "Deny"
+    "deny": "Deny",
+    "decline": "Decline"
+  },
+  "filters": {
+    "all": "All",
+    "unread": "Unread",
+    "read": "Read"
   }
 }

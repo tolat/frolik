@@ -25,6 +25,7 @@ const {
   outingIsPending,
   webpushNotify,
   decodeDataURL,
+  unreadNotificationCount,
 } = require("../utils/utils");
 const {
   reqAuthenticated,
@@ -188,7 +189,7 @@ router.post(
           // the activity loaded above (outing.activity is only its id here,
           // so the email's activity name used to come out blank)
           { ...outing.toObject(), activity },
-          u.notifications.length,
+          unreadNotificationCount(u),
           userUnreadMessages
         )
       );

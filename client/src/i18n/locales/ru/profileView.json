@@ -1,9 +1,11 @@
 {
   "header": "Профиль",
   "tabs": {
-    "photos": "Фото"
+    "photos": "Фото",
+    "outings": "Вылазки"
   },
   "noPhotos": "Фото пока нет!",
+  "noOutings": "Пока нет вылазок!",
   "buttons": {
     "cancel": "Отмена",
     "unfriend": "Удалить из друзей",

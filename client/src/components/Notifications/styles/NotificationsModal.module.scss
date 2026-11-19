@@ -86,3 +86,47 @@
   color: $text;
   font-weight: 700;
 }
+
+// All / Unread / Read, like the Chats filters
+.filterRow {
+  display: flex;
+  gap: 0.8rem;
+  width: 100%;
+  margin: 0 0 1.2rem;
+}
+
+.filterPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.4rem;
+  border-radius: 100rem;
+  border: 1.5px solid $light_grey;
+  background-color: $surface;
+  color: $text_muted;
+  font: inherit;
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.filterPillActive {
+  background-color: $text;
+  border-color: $text;
+  color: white;
+}
+
+.filterCount {
+  min-width: 1.9rem;
+  height: 1.9rem;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100rem;
+  background-color: $red;
+  color: white;
+  font-size: 1.1rem;
+}

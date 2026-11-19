@@ -3,7 +3,11 @@
   "empty": {
     "title": "Qui non c'è niente!",
     "body": "I tuoi avvisi compariranno qui",
-    "iconAlt": "Campanella"
+    "iconAlt": "Campanella",
+    "unreadTitle": "Tutto in ordine",
+    "unreadBody": "Hai aperto tutti i tuoi avvisi",
+    "readTitle": "Ancora niente di letto",
+    "readBody": "Gli avvisi che apri finiscono qui"
   },
   "headers": {
     "outingInvite": "Sei stato invitato a un'uscita!",
@@ -33,6 +37,12 @@
     "viewChat": "Vedi chat",
     "clear": "Cancella",
     "accept": "Accetta",
-    "deny": "Rifiuta"
+    "deny": "Rifiuta",
+    "decline": "Rifiuta"
+  },
+  "filters": {
+    "all": "Tutti",
+    "unread": "Da leggere",
+    "read": "Letti"
   }
 }

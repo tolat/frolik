@@ -1,9 +1,11 @@
 {
   "header": "프로필 보기",
   "tabs": {
-    "photos": "사진"
+    "photos": "사진",
+    "outings": "나들이"
   },
   "noPhotos": "아직 사진이 없어요!",
+  "noOutings": "아직 나들이가 없어요!",
   "buttons": {
     "cancel": "취소",
     "unfriend": "친구 끊기",

@@ -1,9 +1,11 @@
 {
   "header": "Perfil",
   "tabs": {
-    "photos": "Fotos"
+    "photos": "Fotos",
+    "outings": "Rolês"
   },
   "noPhotos": "Nenhuma foto ainda!",
+  "noOutings": "Nenhum rolê ainda!",
   "buttons": {
     "cancel": "Cancelar",
     "unfriend": "Desfazer amizade",

@@ -3,7 +3,11 @@
   "empty": {
     "title": "这里什么都没有！",
     "body": "你的提醒会显示在这里",
-    "iconAlt": "铃铛"
+    "iconAlt": "铃铛",
+    "unreadTitle": "全部看完了",
+    "unreadBody": "你已打开所有提醒",
+    "readTitle": "还没有已读提醒",
+    "readBody": "打开过的提醒会出现在这里"
   },
   "headers": {
     "outingInvite": "你收到了一个出游邀请！",
@@ -33,6 +37,12 @@
     "viewChat": "查看聊天",
     "clear": "清除",
     "accept": "接受",
-    "deny": "拒绝"
+    "deny": "拒绝",
+    "decline": "拒绝"
+  },
+  "filters": {
+    "all": "全部",
+    "unread": "未读",
+    "read": "已读"
   }
 }

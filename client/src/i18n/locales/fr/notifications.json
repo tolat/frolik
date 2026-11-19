@@ -3,7 +3,11 @@
   "empty": {
     "title": "Rien ici !",
     "body": "Tes alertes apparaîtront ici",
-    "iconAlt": "Cloche"
+    "iconAlt": "Cloche",
+    "unreadTitle": "Vous êtes à jour",
+    "unreadBody": "Vous avez ouvert toutes vos alertes",
+    "readTitle": "Rien de lu pour l’instant",
+    "readBody": "Les alertes que vous ouvrez arrivent ici"
   },
   "headers": {
     "outingInvite": "Tu es invité à une sortie !",
@@ -33,6 +37,12 @@
     "viewChat": "Voir la discussion",
     "clear": "Effacer",
     "accept": "Accepter",
-    "deny": "Refuser"
+    "deny": "Refuser",
+    "decline": "Refuser"
+  },
+  "filters": {
+    "all": "Toutes",
+    "unread": "Non lues",
+    "read": "Lues"
   }
 }

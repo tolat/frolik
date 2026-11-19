@@ -599,3 +599,7 @@ export const alphabetSort = (a, b) => {
   return 0;
 };
 
+
+// Alerts not opened yet: the nav badge and the app icon badge count these
+export const unreadNotificationCount = (user) =>
+  (user?.notifications || []).filter((n) => n && !n.read).length;

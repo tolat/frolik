@@ -258,7 +258,7 @@ export const fetchMatchedUsers = (user, setMatchedUsers) => {
 };
 
 // Get a chat with given id from server
-export const fetchChat = (userID, chatID, onComplete = () => {}) => {
+export const fetchChat = (userID, chatID, onComplete = () => {}, onError) => {
   if (!userID || !chatID) return;
   const requestConfig = { url: `${getServer()}/user/${userID}/chat/${chatID}` };
 
@@ -285,8 +285,11 @@ export const fetchChat = (userID, chatID, onComplete = () => {}) => {
     onComplete(response.chat);
   };
 
+  // The chat can be gone (deleted, or the user left it): let the caller
+  // fall back instead of silently doing nothing
   const handleError = (err) => {
     console.log("ERROR: ", err);
+    onError?.(err);
   };
 
   httpFetch(requestConfig, handleResponse, handleError);
@@ -506,6 +509,24 @@ export const dismissNotification = (user, notification, onComplete, status) => {
   };
 
   httpFetch(requestConfig, handleResponse, handleError);
+};
+
+// Mark alerts as read (they move to the Alerts page's "Read" filter)
+export const markNotificationsRead = (user, ids, onComplete = () => {}) => {
+  if (!ids?.length) return;
+  const requestConfig = {
+    url: `${getServer()}/user/${user._id}/notifications/read`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({ ids }),
+  };
+  httpFetch(
+    requestConfig,
+    (response) => onComplete({ ...response.user, friends: user.friends }),
+    (err) => console.log(err)
+  );
 };
 
 // Fetch a user with stripped down data
@@ -758,6 +779,18 @@ export const fetchFeedOutings = (user, onComplete, onError = () => {}) => {
 
   store.dispatch(dataActions.setFetchingFeedOutings(true));
   httpFetch(requestConfig, handleResponse, handleError);
+};
+
+// A person's completed Outings (Outings tab on their profile)
+export const fetchProfileOutings = (user, otherID, onComplete, onError = () => {}) => {
+  httpFetch(
+    { url: `${getServer()}/user/${user._id}/profile-outings/${otherID}` },
+    (response) => onComplete(response.outings || []),
+    (err) => {
+      console.log(err);
+      onError(err);
+    }
+  );
 };
 
 // Get a photo from an outing

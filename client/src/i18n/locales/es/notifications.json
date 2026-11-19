@@ -3,7 +3,11 @@
   "empty": {
     "title": "¡No hay nada aquí!",
     "body": "Tus alertas aparecerán aquí",
-    "iconAlt": "Campana"
+    "iconAlt": "Campana",
+    "unreadTitle": "¡Todo al día!",
+    "unreadBody": "Has abierto todas tus alertas",
+    "readTitle": "Aún no hay leídas",
+    "readBody": "Las alertas que abras aparecerán aquí"
   },
   "headers": {
     "outingInvite": "¡Te invitaron a una salida!",
@@ -33,6 +37,12 @@
     "viewChat": "Ver chat",
     "clear": "Borrar",
     "accept": "Aceptar",
-    "deny": "Rechazar"
+    "deny": "Rechazar",
+    "decline": "Rechazar"
+  },
+  "filters": {
+    "all": "Todas",
+    "unread": "No leídas",
+    "read": "Leídas"
   }
 }

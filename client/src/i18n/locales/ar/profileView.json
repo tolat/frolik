@@ -1,9 +1,11 @@
 {
   "header": "عرض الملف الشخصي",
   "tabs": {
-    "photos": "الصور"
+    "photos": "الصور",
+    "outings": "النزهات"
   },
   "noPhotos": "لا توجد صور بعد!",
+  "noOutings": "لا توجد نزهات بعد!",
   "buttons": {
     "cancel": "إلغاء",
     "unfriend": "إلغاء الصداقة",

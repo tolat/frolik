@@ -3,7 +3,11 @@
   "empty": {
     "title": "まだ何もありません！",
     "body": "お知らせはここに表示されます",
-    "iconAlt": "ベル"
+    "iconAlt": "ベル",
+    "unreadTitle": "すべて確認済み",
+    "unreadBody": "すべてのお知らせを開きました",
+    "readTitle": "既読はまだありません",
+    "readBody": "開いたお知らせはここに移動します"
   },
   "headers": {
     "outingInvite": "おでかけに招待されました！",
@@ -33,6 +37,12 @@
     "viewChat": "チャットを見る",
     "clear": "消去",
     "accept": "承認",
-    "deny": "辞退"
+    "deny": "辞退",
+    "decline": "辞退"
+  },
+  "filters": {
+    "all": "すべて",
+    "unread": "未読",
+    "read": "既読"
   }
 }

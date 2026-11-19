@@ -1,9 +1,11 @@
 {
   "header": "Viewing Profile",
   "tabs": {
-    "photos": "Photos"
+    "photos": "Photos",
+    "outings": "Outings"
   },
   "noPhotos": "No Photos Yet!",
+  "noOutings": "No Outings Yet!",
   "buttons": {
     "cancel": "Cancel",
     "unfriend": "Unfriend",

@@ -66,3 +66,12 @@
   gap: 0;
   flex-shrink: 0;
 }
+
+// Outings tab: the person's completed Outings as social-feed cards
+.outingList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 100%;
+  margin-top: 1.2rem;
+}

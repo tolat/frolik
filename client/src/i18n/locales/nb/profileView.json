@@ -1,9 +1,11 @@
 {
   "header": "Profil",
   "tabs": {
-    "photos": "Bilder"
+    "photos": "Bilder",
+    "outings": "Treff"
   },
   "noPhotos": "Ingen bilder ennå!",
+  "noOutings": "Ingen treff ennå!",
   "buttons": {
     "cancel": "Avbryt",
     "unfriend": "Fjern som venn",

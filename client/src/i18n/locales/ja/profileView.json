@@ -1,9 +1,11 @@
 {
   "header": "プロフィール",
   "tabs": {
-    "photos": "写真"
+    "photos": "写真",
+    "outings": "おでかけ"
   },
   "noPhotos": "まだ写真がありません！",
+  "noOutings": "まだおでかけはありません！",
   "buttons": {
     "cancel": "キャンセル",
     "unfriend": "友だちから外す",

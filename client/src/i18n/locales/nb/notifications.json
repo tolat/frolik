@@ -3,7 +3,11 @@
   "empty": {
     "title": "Ingenting her!",
     "body": "Varslene dine dukker opp her",
-    "iconAlt": "Bjelle"
+    "iconAlt": "Bjelle",
+    "unreadTitle": "Alt er lest",
+    "unreadBody": "Du har åpnet alle varslene dine",
+    "readTitle": "Ingenting lest ennå",
+    "readBody": "Varsler du åpner havner her"
   },
   "headers": {
     "outingInvite": "Du er invitert til et treff!",
@@ -33,6 +37,12 @@
     "viewChat": "Se chatten",
     "clear": "Fjern",
     "accept": "Godta",
-    "deny": "Avslå"
+    "deny": "Avslå",
+    "decline": "Avslå"
+  },
+  "filters": {
+    "all": "Alle",
+    "unread": "Uleste",
+    "read": "Leste"
   }
 }

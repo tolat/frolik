@@ -1,68 +1,23 @@
-import { useDispatch, useSelector } from "react-redux";
-import styles from "./styles/FriendRemoved.module.scss";
-import { useEffect } from "react";
-import {
-  dismissNotification,
-  fetchPhotos,
-  fetchProfilePic,
-  fetchStrippedUser,
-} from "../../utils/data-fetch";
-import { authActions } from "../../store/auth-slice";
 import { useT } from "../../i18n";
-import SimpleButton from "../UI/SimpleButton";
-import FriendCard from "../UI/FriendCard";
-import { dataActions } from "../../store/data-slice";
+import AlertTile from "./AlertTile";
+import { useAlertPerson, useOpeners } from "./useAlertData";
 
-const FriendRemoved = (props) => {
-  const dispatch = useDispatch();
-  const { t, formatDate } = useT();
-  const user = useSelector((state) => state.auth.user);
-  const notification = props.notification;
-  const cachedUsers = useSelector((state) => state.data.cachedUsers);
-  const removingUser = cachedUsers.find((u) => u._id === notification.by);
-
-  const handleDismissRequest = () => {
-    const onComplete = (newUser) => {
-      dispatch(authActions.setUser(newUser));
-    };
-
-    dismissNotification(user, props.notification, onComplete, null);
-  };
-
-  // Get requesting user and their data from server
-  useEffect(() => {
-    if (!removingUser) {
-      const onComplete = (strippedUser) => {
-        dispatch(dataActions.addCachedUser(strippedUser));
-        fetchPhotos(strippedUser);
-        fetchProfilePic(strippedUser._id);
-      };
-      fetchStrippedUser(notification.by, onComplete);
-    }
-  }, [notification, removingUser, dispatch]);
+// Unfriending closes the profile both ways, so this usually opens nothing
+// (tapping just marks it read); it opens the profile only if you can still
+// view it, e.g. you've since become friends again
+const FriendRemoved = ({ notification }) => {
+  const { t } = useT();
+  const person = useAlertPerson(notification.by);
+  const { openProfile, canOpenProfile } = useOpeners();
 
   return (
-    removingUser && (
-      <div className={styles.container}>
-        <div className={styles.header}>{t("notifications.headers.friendRemoved")}</div>
-        <FriendCard
-          style={{ margin: "0" }}
-          noShadow={true}
-          small={true}
-          user={removingUser}
-        />
-        <div>{formatDate(props.notification.created, { dateStyle: "medium", timeStyle: "short" })}</div>
-        <div className={styles.buttons}>
-          <SimpleButton
-            className={styles.clearButton}
-            onClick={() => handleDismissRequest()}
-            noShadow={true}
-          >
-            {t("notifications.actions.clear")}
-          </SimpleButton>
-        </div>
-      </div>
-    )
+    <AlertTile
+      notification={notification}
+      title={t("notifications.headers.friendRemoved")}
+      detail={person ? `${person.first_name} ${person.last_name}` : "…"}
+      person={person}
+      onOpen={canOpenProfile(person) ? () => openProfile(person) : null}
+    />
   );
 };
 
