@@ -23,6 +23,7 @@ import outingIcon from "../../images/air-balloon.png";
 import outingIconBlue from "../../images/air-balloon-blue.png";
 import logo from "../../images/frolik2.png";
 import InstallPromptModal from "../Modals/InstallPromptModal";
+import UpdateAppDrawer from "../Popups/UpdateAppDrawer";
 import Tour from "../Tour/Tour";
 import SendActivityPopup from "../Popups/SendActivityPopup";
 import SharedActivityPopup from "../Popups/SharedActivityPopup";
@@ -154,6 +155,7 @@ const Navbar = (props) => {
         />
       )}
       <InstallPromptModal />
+      <UpdateAppDrawer />
       {user && (
         <Fragment>
           <ChatModal />

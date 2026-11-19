@@ -16,6 +16,8 @@ import ModalPortal from "./ModalPortal";
 import {
   createChat,
   fetchChats,
+  dismissNotification,
+  fetchMatchedUsers,
   fetchPhotos,
   fetchProfileOutings,
   removeFriend,
@@ -31,7 +33,7 @@ import ModalHeaderPortal from "./ModalHeaderPortal";
 import SliderNavbar from "../UI/SliderNavbar";
 import CircleAction from "../UI/CircleAction";
 import WarningPopup from "../Popups/WarningPopup";
-import { friendAccess } from "../../utils/friendAccess";
+import { friendAccess, incomingFriendRequest } from "../../utils/friendAccess";
 import { useT, T } from "../../i18n";
 
 const sliderIcons = (t) => [
@@ -159,6 +161,18 @@ const ControlButtons = (props) => {
   );
   const former = access.former;
   const hasCompletedOutingTogether = access.canAddFriend;
+  // They've already asked you: accept it rather than asking them back
+  const incomingRequest = incomingFriendRequest(props.user, props.modalUser);
+  const onAcceptRequest = () =>
+    dismissNotification(
+      props.user,
+      incomingRequest,
+      (newUser) => {
+        dispatch(authActions.setUser(newUser));
+        fetchMatchedUsers(newUser);
+      },
+      "accepted"
+    );
 
   const onLockedAddFriend = () => {
     const name = props.modalUser.first_name;
@@ -274,6 +288,13 @@ const ControlButtons = (props) => {
             tone="secondary"
           />
         </>
+      ) : incomingRequest ? (
+        <CircleAction
+          compact
+          onClick={onAcceptRequest}
+          icon={addFriend}
+          label={t("notifications.actions.accept")}
+        />
       ) : friendRequested ? (
         <CircleAction
           compact

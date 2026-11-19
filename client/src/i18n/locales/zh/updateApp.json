@@ -1,0 +1,17 @@
+{
+  "title": "更新 Frolik",
+  "subtitle": "Frolik 有一项已安装的应用无法自动获取的更新。重新安装即可使用新版本，只需一分钟。",
+  "ios": {
+    "step1": "在主屏幕上长按 <b>Frolik</b> 图标",
+    "step2": "点按<b>移除 App</b>，然后点按<b>从主屏幕删除</b>",
+    "step3": "在 Safari 中打开 <b>frolik.ca</b>",
+    "step4": "点按<b>分享</b>，然后点按<b>添加到主屏幕</b>"
+  },
+  "android": {
+    "step1": "长按 <b>Frolik</b> 图标，然后点按<b>卸载</b>",
+    "step2": "在 Chrome 中打开 <b>frolik.ca</b>",
+    "step3": "点按 <b>⋮</b> 菜单，然后点按<b>安装应用</b>"
+  },
+  "note": "你的账户、出游和照片都安全无虞。重新安装后再登录一次即可。",
+  "later": "稍后提醒"
+}

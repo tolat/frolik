@@ -1,0 +1,17 @@
+{
+  "title": "Atualize o Frolik",
+  "subtitle": "O Frolik mudou de um jeito que o app instalado não consegue receber sozinho. Reinstale para ter a nova versão — leva só um minuto.",
+  "ios": {
+    "step1": "Toque e segure o ícone do <b>Frolik</b> na Tela de Início",
+    "step2": "Toque em <b>Remover App</b> e depois em <b>Apagar da Tela de Início</b>",
+    "step3": "Abra <b>frolik.ca</b> no Safari",
+    "step4": "Toque em <b>Compartilhar</b> e depois em <b>Adicionar à Tela de Início</b>"
+  },
+  "android": {
+    "step1": "Toque e segure o ícone do <b>Frolik</b> e toque em <b>Desinstalar</b>",
+    "step2": "Abra <b>frolik.ca</b> no Chrome",
+    "step3": "Toque no menu <b>⋮</b> e depois em <b>Instalar app</b>"
+  },
+  "note": "Sua conta, seus rolês e fotos estão seguros. É só entrar de novo depois de reinstalar.",
+  "later": "Lembrar mais tarde"
+}

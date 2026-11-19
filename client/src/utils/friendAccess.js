@@ -48,3 +48,10 @@ export const friendAccess = (user, other) => {
 
   return { self: false, isFriend, canAddFriend, canViewProfile, former };
 };
+
+// Their friend request to you, still waiting (the "friend-request" alert),
+// or null. When there is one, show Accept instead of sending a request back.
+export const incomingFriendRequest = (user, other) =>
+  (user?.notifications || []).find(
+    (n) => n && n.type === "friend-request" && !n.status && same(n.from, other)
+  ) || null;

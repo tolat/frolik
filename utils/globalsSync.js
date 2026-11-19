@@ -3,7 +3,7 @@
 // when the database is first seeded). Runs on server start (server.js) and
 // does nothing when they already match.
 const Globals = require("../models/globals");
-const { categoryColorMap } = require("../seeds/globals");
+const { categoryColorMap, appInstallVersion } = require("../seeds/globals");
 
 const syncCategoryColors = async () => {
   const globals = await Globals.findOne({});
@@ -21,12 +21,24 @@ const syncCategoryColors = async () => {
   return true;
 };
 
+// The installed-app version (see seeds/globals.js) ships the same way
+const syncAppInstallVersion = async () => {
+  const globals = await Globals.findOne({});
+  if (!globals || globals.appInstallVersion === appInstallVersion) return false;
+  await Globals.updateOne({ _id: globals._id }, { $set: { appInstallVersion } });
+  console.log(`[globals] app install version -> ${appInstallVersion}`);
+  return true;
+};
+
 const startGlobalsSync = () => {
   setTimeout(() => {
     syncCategoryColors().catch((err) =>
       console.error("[globals] colour sync failed:", err.message)
     );
+    syncAppInstallVersion().catch((err) =>
+      console.error("[globals] app version sync failed:", err.message)
+    );
   }, 15 * 1000);
 };
 
-module.exports = { syncCategoryColors, startGlobalsSync };
+module.exports = { syncCategoryColors, syncAppInstallVersion, startGlobalsSync };

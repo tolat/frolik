@@ -44,5 +44,12 @@
     "all": "Tutti",
     "unread": "Da leggere",
     "read": "Letti"
+  },
+  "status": {
+    "accepted": "Accettata",
+    "denied": "Rifiutata",
+    "joined": "Ti sei unito",
+    "declined": "Rifiutato",
+    "expired": "Scaduto"
   }
 }

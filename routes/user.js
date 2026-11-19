@@ -27,6 +27,7 @@ const {
   webpushNotify,
   decodeDataURL,
   toGeoPoint,
+  markNotificationAnswered,
 } = require("../utils/utils");
 const {
   reqAuthenticated,
@@ -502,27 +503,26 @@ router.get(
 );
 
 // Mark alerts as read (opened from the Alerts page). They stay listed under
-// "Read"; read alerts older than READ_KEEP_DAYS are dropped here so the list
-// doesn't grow forever.
-const READ_KEEP_DAYS = 60;
+// "Read" (and All) for good.
 router.post(
   "/:id/notifications/read",
   reqAuthenticated,
   sameUserOnly,
   tryCatch(async (req, res) => {
-    const user = await User.findById(req.params.id);
-    const ids = new Set((req.body.ids || []).map(String));
+    // Atomic updates, not a whole-document save: this runs alongside other
+    // writes to the same user (accepting a friend request from the alert
+    // fired both at once, and the save lost the race: VersionError, 500)
+    const userID = req.user._id;
+    const ids = (req.body.ids || []).map(Number).filter((n) => Number.isFinite(n));
     const now = new Date();
-    const cutoff = now.getTime() - READ_KEEP_DAYS * 24 * 60 * 60 * 1000;
-    user.notifications = (user.notifications || [])
-      .map((n) =>
-        n && !n.read && ids.has(String(n.id)) ? { ...n, read: true, read_at: now } : n
-      )
-      .filter(
-        (n) => n && !(n.read && n.read_at && new Date(n.read_at).getTime() < cutoff)
+    if (ids.length) {
+      await User.updateOne(
+        { _id: userID },
+        { $set: { "notifications.$[n].read": true, "notifications.$[n].read_at": now } },
+        { arrayFilters: [{ "n.id": { $in: ids }, "n.read": { $ne: true } }] }
       );
-    user.markModified("notifications");
-    await user.save();
+    }
+    const user = await User.findById(userID);
     pushUserUpdate([user]);
     await populateUser(user);
     res.send({ user });
@@ -576,8 +576,9 @@ router.post(
         );
         break;
 
+      // Anything else: it stays (alerts are kept for good), just read
       default:
-        nIndex != -1 && user.notifications.splice(nIndex, 1);
+        markNotificationAnswered(user, notification, notification.status || null);
         await user.save();
         await populateUser(user);
         break;
@@ -624,6 +625,17 @@ router.post(
         header: req.t("friend.alreadyFriends.header"),
         message: req.t("friend.alreadyFriends.message", { name: friendUser.first_name }),
       });
+    }
+
+    // They've already sent you a request: adding them accepts it (no second
+    // request going the other way)
+    if ((friendUser.friend_requests || []).some((id) => id.toString() === user._id.toString())) {
+      const notification =
+        (user.notifications || []).find(
+          (n) => n && n.type === "friend-request" && String(n.from) === friendUser._id.toString()
+        ) || { id: null };
+      await handleFriendRequestAction(notification, user, friendUser, "accepted");
+      return res.send({ user, accepted: true });
     }
 
     // Friends can only be added after completing an Outing together that came

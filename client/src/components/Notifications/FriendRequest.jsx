@@ -30,10 +30,16 @@ const FriendRequest = ({ notification }) => {
       detail={person ? `${person.first_name} ${person.last_name}` : "…"}
       person={person}
       onOpen={canOpenProfile(person) ? () => openProfile(person) : null}
-      actions={[
-        { label: t("notifications.actions.accept"), primary: true, onClick: () => respond("accepted") },
-        { label: t("notifications.actions.deny"), onClick: () => respond("denied") },
-      ]}
+      // Answered requests stay listed, showing what was decided
+      tag={notification.status ? t(`notifications.status.${notification.status}`) : null}
+      actions={
+        notification.status
+          ? null
+          : [
+              { label: t("notifications.actions.accept"), primary: true, onClick: () => respond("accepted") },
+              { label: t("notifications.actions.deny"), onClick: () => respond("denied") },
+            ]
+      }
     />
   );
 };

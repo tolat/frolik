@@ -346,7 +346,7 @@ router.get(
     const notification =
       outing &&
       user.notifications.find(
-        (n) => n.outing == outing._id.toString() && n.type == "outing-invite"
+        (n) => n.outing == outing._id.toString() && n.type == "outing-invite" && !n.status
       );
 
     // If outing does not exists send 404

@@ -152,19 +152,30 @@ module.exports.generateUniqueName = () => {
 // Send an invite update to the creator of the outing in the old Notification
 // Update the invited and users list for the outing
 // Update the invited user outings list and chat
+// Alerts stay on the Alerts page for good: answering one (accept / deny /
+// decline / expire) records the answer on it and marks it read, instead of
+// deleting it. Pending = no status yet.
+const markNotificationAnswered = (user, notification, status) => {
+  if (!notification || notification.id == null) return;
+  const now = new Date();
+  user.notifications = (user.notifications || []).map((n) =>
+    n && String(n.id) === String(notification.id)
+      ? { ...n, status, read: true, read_at: n.read_at || now }
+      : n
+  );
+  user.markModified?.("notifications");
+};
+module.exports.markNotificationAnswered = markNotificationAnswered;
+
 module.exports.handleOutingInviteAction = async (
   notification,
   user,
   outing,
   status
 ) => {
-  // Remove the notificaiton
-  user.notifications.splice(
-    user.notifications
-      .map((n) => n.id.toString())
-      .indexOf(notification.id.toString()),
-    1
-  );
+  // Keep the invite, answered ("accepted" shows as Joined, "denied" as
+  // Declined)
+  markNotificationAnswered(user, notification, status);
 
   // Remove user from outing invited list
   outing.invited.splice(
@@ -387,10 +398,8 @@ module.exports.handleFriendRequestAction = async (
     user.friends.push(requestingUser);
   }
 
-  // Clear notification for user
-  user.notifications = user.notifications.filter(
-    (n) => n.id != notification.id
-  );
+  // Keep the request on their Alerts page, answered
+  markNotificationAnswered(user, notification, status == "denied" ? "denied" : "accepted");
 
   await user.save();
   await requestingUser.save();

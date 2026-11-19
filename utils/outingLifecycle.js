@@ -170,7 +170,13 @@ const processInvites = async (outing, now) => {
   outing.invited = [];
   await User.updateMany(
     { _id: { $in: expired } },
-    { $pull: { notifications: { outing: outing._id.toString(), type: "outing-invite" } } }
+    // Kept on their Alerts page, tagged Expired
+    { $set: { "notifications.$[n].status": "expired" } },
+    {
+      arrayFilters: [
+        { "n.outing": outing._id.toString(), "n.type": "outing-invite", "n.status": null },
+      ],
+    }
   );
   await notify(expired, {
     key: "notice.inviteExpired",

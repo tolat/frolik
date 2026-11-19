@@ -1,0 +1,17 @@
+{
+  "title": "Frolik aktualisieren",
+  "subtitle": "Frolik hat sich so geändert, dass deine installierte App das nicht von selbst übernehmen kann. Installiere sie neu, um die neue Version zu bekommen – das dauert nur eine Minute.",
+  "ios": {
+    "step1": "Halte das <b>Frolik</b>-Symbol auf deinem Home-Bildschirm gedrückt",
+    "step2": "Tippe auf <b>App entfernen</b> und dann auf <b>Vom Home-Bildschirm löschen</b>",
+    "step3": "Öffne <b>frolik.ca</b> in Safari",
+    "step4": "Tippe auf <b>Teilen</b> und dann auf <b>Zum Home-Bildschirm</b>"
+  },
+  "android": {
+    "step1": "Halte das <b>Frolik</b>-Symbol gedrückt und tippe auf <b>Deinstallieren</b>",
+    "step2": "Öffne <b>frolik.ca</b> in Chrome",
+    "step3": "Tippe auf das Menü <b>⋮</b> und dann auf <b>App installieren</b>"
+  },
+  "note": "Dein Konto, deine Ausflüge und Fotos sind sicher. Melde dich nach der Neuinstallation einfach wieder an.",
+  "later": "Später erinnern"
+}

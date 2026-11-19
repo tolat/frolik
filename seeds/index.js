@@ -19,7 +19,7 @@ const {
   useLocalStorage,
 } = require("../utils/S3");
 const { generateUniqueName } = require("../utils/utils");
-const { categoryColorMap, statusMap, instructionTypes } = require("./globals");
+const { categoryColorMap, statusMap, instructionTypes, appInstallVersion } = require("./globals");
 
 // Connect to the database and handle connection errors
 mongoose.connect(dbUrl);
@@ -73,6 +73,7 @@ const UploadImagesToS3 = async (directoryPath) => {
 const seedGlobals = async () => {
   const globals = new Globals({
     categoryColorMap,
+    appInstallVersion,
     statusMap,
     instructionTypes,
   });

@@ -1,0 +1,17 @@
+{
+  "title": "Oppdater Frolik",
+  "subtitle": "Frolik er endret på en måte den installerte appen ikke kan hente selv. Installer den på nytt for å få den nye versjonen – det tar bare et minutt.",
+  "ios": {
+    "step1": "Trykk og hold på <b>Frolik</b>-ikonet på Hjem-skjermen",
+    "step2": "Trykk på <b>Fjern app</b>, deretter <b>Slett fra Hjem-skjermen</b>",
+    "step3": "Åpne <b>frolik.ca</b> i Safari",
+    "step4": "Trykk på <b>Del</b>, deretter <b>Legg til på Hjem-skjerm</b>"
+  },
+  "android": {
+    "step1": "Trykk og hold på <b>Frolik</b>-ikonet, og trykk på <b>Avinstaller</b>",
+    "step2": "Åpne <b>frolik.ca</b> i Chrome",
+    "step3": "Trykk på <b>⋮</b>-menyen, deretter <b>Installer app</b>"
+  },
+  "note": "Kontoen, treffene og bildene dine er trygge. Bare logg inn igjen etter at du har installert på nytt.",
+  "later": "Minn meg på det senere"
+}

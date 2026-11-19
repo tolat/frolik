@@ -7,6 +7,7 @@ const GlobalsSchema = new Schema(
     categoryColorMap: Object,
     statusMap: Object,
     instructionTypes: Array,
+    appInstallVersion: Number,
   },
   { minimize: false }
 );

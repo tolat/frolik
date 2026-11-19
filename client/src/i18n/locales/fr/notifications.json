@@ -44,5 +44,12 @@
     "all": "Toutes",
     "unread": "Non lues",
     "read": "Lues"
+  },
+  "status": {
+    "accepted": "Acceptée",
+    "denied": "Refusée",
+    "joined": "Rejointe",
+    "declined": "Déclinée",
+    "expired": "Expirée"
   }
 }

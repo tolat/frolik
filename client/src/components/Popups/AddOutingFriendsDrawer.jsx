@@ -5,8 +5,12 @@ import FriendCard from "../UI/FriendCard";
 import CircleAction from "../UI/CircleAction";
 import { popupActions } from "../../store/popup-slice";
 import { authActions } from "../../store/auth-slice";
-import { sendFriendRequest } from "../../utils/data-fetch";
-import { friendAccess } from "../../utils/friendAccess";
+import {
+  dismissNotification,
+  fetchMatchedUsers,
+  sendFriendRequest,
+} from "../../utils/data-fetch";
+import { friendAccess, incomingFriendRequest } from "../../utils/friendAccess";
 import addFriend from "../../images/add-friend.png";
 import sentMail from "../../images/sent-mail.png";
 import styles from "./styles/AddOutingFriendsDrawer.module.scss";
@@ -63,6 +67,18 @@ const AddOutingFriendsDrawer = ({ outing, visible }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible, completed, pending.length, outing?._id]);
 
+  // Someone who already asked you: Accept their request instead
+  const onAccept = (request) =>
+    dismissNotification(
+      user,
+      request,
+      (newUser) => {
+        dispatch(authActions.setUser(newUser));
+        fetchMatchedUsers(newUser);
+      },
+      "accepted"
+    );
+
   const onAdd = (member) => {
     sendFriendRequest(user, member, (response) => {
       if (response?.user) {
@@ -83,6 +99,10 @@ const AddOutingFriendsDrawer = ({ outing, visible }) => {
         <div className={styles.list}>
           {shownList.map((m) => {
             const requested = requestedIDs.has(String(m._id));
+            const incoming = incomingFriendRequest(user, m);
+            const isFriend = (user.friends || []).some(
+              (f) => String(f._id || f) === String(m._id)
+            );
             return (
               <FriendCard
                 key={m._id}
@@ -90,7 +110,21 @@ const AddOutingFriendsDrawer = ({ outing, visible }) => {
                 small={true}
                 noShadow={true}
                 buttons={
-                  requested ? (
+                  isFriend ? (
+                    <CircleAction
+                      compact
+                      icon={addFriend}
+                      label={t("friendsDrawer.friends")}
+                      tone="secondary"
+                    />
+                  ) : incoming ? (
+                    <CircleAction
+                      compact
+                      icon={addFriend}
+                      label={t("notifications.actions.accept")}
+                      onClick={() => onAccept(incoming)}
+                    />
+                  ) : requested ? (
                     <CircleAction
                       compact
                       icon={sentMail}

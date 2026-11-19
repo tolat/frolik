@@ -44,5 +44,12 @@
     "all": "Todas",
     "unread": "No leídas",
     "read": "Leídas"
+  },
+  "status": {
+    "accepted": "Aceptada",
+    "denied": "Rechazada",
+    "joined": "Te uniste",
+    "declined": "Rechazada",
+    "expired": "Caducada"
   }
 }

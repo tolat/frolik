@@ -44,5 +44,12 @@
     "all": "全部",
     "unread": "未读",
     "read": "已读"
+  },
+  "status": {
+    "accepted": "已接受",
+    "denied": "已拒绝",
+    "joined": "已加入",
+    "declined": "已谢绝",
+    "expired": "已过期"
   }
 }

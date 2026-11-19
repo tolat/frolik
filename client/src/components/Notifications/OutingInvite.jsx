@@ -6,7 +6,12 @@ import AlertTile from "./AlertTile";
 import { useAlertOuting, useCategoryColor, useOpeners } from "./useAlertData";
 
 // An invite (Decline here, or open the outing to join) or a completed outing
+// Invite answers as they read on the tile
+const INVITE_TAG = { accepted: "joined", denied: "declined", expired: "expired" };
+
 const OutingInvite = ({ notification, header, showOuting, canDecline }) => {
+  const status = notification.status;
+  const answered = canDecline && !!status;
   const dispatch = useDispatch();
   const { t } = useT();
   const user = useSelector((state) => state.auth.user);
@@ -29,9 +34,13 @@ const OutingInvite = ({ notification, header, showOuting, canDecline }) => {
           : t("notifications.outingLoading")
       }
       color={color}
-      onOpen={() => openOuting(outing)}
+      // A declined or expired invite has nothing to open any more
+      onOpen={answered && status !== "accepted" ? null : () => openOuting(outing)}
+      tag={answered ? t(`notifications.status.${INVITE_TAG[status] || status}`) : null}
       actions={
-        canDecline ? [{ label: t("notifications.actions.decline"), onClick: decline }] : null
+        canDecline && !answered
+          ? [{ label: t("notifications.actions.decline"), onClick: decline }]
+          : null
       }
     />
   );

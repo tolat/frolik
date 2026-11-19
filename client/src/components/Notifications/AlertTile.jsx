@@ -18,7 +18,7 @@ import { useT } from "../../i18n";
 // Titles reuse the old headers ("…was joined by:"), so the colon goes.
 const stripColon = (s) => String(s || "").replace(/\s*[:：]\s*$/, "");
 
-const AlertTile = ({ notification, title, detail, person, color, onOpen, actions }) => {
+const AlertTile = ({ notification, title, detail, person, color, onOpen, actions, tag }) => {
   const dispatch = useDispatch();
   const { formatDate } = useT();
   const user = useSelector((state) => state.auth.user);
@@ -74,20 +74,25 @@ const AlertTile = ({ notification, title, detail, person, color, onOpen, actions
               key={a.label}
               type="button"
               className={`${styles.action} ${a.primary ? styles.actionPrimary : ""}`}
-              onClick={() => {
-                markRead();
-                a.onClick();
-              }}
+              // No separate mark-read: the server marks the alert answered
+              // and read (sending both at once raced and failed)
+              onClick={() => a.onClick()}
             >
               {a.label}
             </button>
           ))}
         </div>
-      ) : onOpen ? (
-        <svg className={styles.chevron} viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M9 6l6 6-6 6" />
-        </svg>
-      ) : null}
+      ) : (
+        <>
+          {/* An answered request / invite: what was decided */}
+          {tag ? <span className={styles.tag}>{tag}</span> : null}
+          {onOpen ? (
+            <svg className={styles.chevron} viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+          ) : null}
+        </>
+      )}
       {unread ? <span className={styles.dot} aria-hidden="true" /> : null}
     </div>
   );

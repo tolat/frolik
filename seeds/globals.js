@@ -24,3 +24,11 @@ module.exports.instructionTypes = [
   "meet",
   "explore",
 ];
+
+// The installed app's version. Bump it (and deploy) when a change can't
+// reach an installed home-screen app by refreshing (manifest, app icon,
+// splash screen, service worker): installed apps stamped with an older
+// number ask the person to delete and reinstall from frolik.ca. Fresh
+// installs are stamped with the current number. See
+// client/src/components/Popups/UpdateAppDrawer.jsx
+module.exports.appInstallVersion = 1;

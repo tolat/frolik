@@ -44,5 +44,12 @@
     "all": "All",
     "unread": "Unread",
     "read": "Read"
+  },
+  "status": {
+    "accepted": "Accepted",
+    "denied": "Denied",
+    "joined": "Joined",
+    "declined": "Declined",
+    "expired": "Expired"
   }
 }

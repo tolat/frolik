@@ -135,3 +135,16 @@
   border-radius: 50%;
   background: var(--primary);
 }
+
+// Answered request / invite: Accepted, Denied, Joined, Declined, Expired
+.tag {
+  flex-shrink: 0;
+  margin-inline-start: 0.6rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  background: #eef0f4;
+  color: #5b6070;
+  font-size: 1.15rem;
+  font-weight: 700;
+  white-space: nowrap;
+}

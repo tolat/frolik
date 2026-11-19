@@ -44,5 +44,12 @@
     "all": "Alle",
     "unread": "Ungelesen",
     "read": "Gelesen"
+  },
+  "status": {
+    "accepted": "Angenommen",
+    "denied": "Abgelehnt",
+    "joined": "Beigetreten",
+    "declined": "Abgelehnt",
+    "expired": "Abgelaufen"
   }
 }

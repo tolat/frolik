@@ -44,5 +44,12 @@
     "all": "전체",
     "unread": "읽지 않음",
     "read": "읽음"
+  },
+  "status": {
+    "accepted": "수락함",
+    "denied": "거절함",
+    "joined": "참여함",
+    "declined": "거절함",
+    "expired": "만료됨"
   }
 }

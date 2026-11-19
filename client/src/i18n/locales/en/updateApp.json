@@ -1,0 +1,17 @@
+{
+  "title": "Update Frolik",
+  "subtitle": "Frolik has changed in a way your installed app can't pick up by itself. Reinstall it to get the new version — it only takes a minute.",
+  "ios": {
+    "step1": "Press and hold the <b>Frolik</b> icon on your Home Screen",
+    "step2": "Tap <b>Remove App</b>, then <b>Delete from Home Screen</b>",
+    "step3": "Open <b>frolik.ca</b> in Safari",
+    "step4": "Tap <b>Share</b>, then <b>Add to Home Screen</b>"
+  },
+  "android": {
+    "step1": "Press and hold the <b>Frolik</b> icon, then tap <b>Uninstall</b>",
+    "step2": "Open <b>frolik.ca</b> in Chrome",
+    "step3": "Tap the <b>⋮</b> menu, then <b>Install app</b>"
+  },
+  "note": "Your account, Outings and photos are safe. Just log in again after reinstalling.",
+  "later": "Remind me later"
+}

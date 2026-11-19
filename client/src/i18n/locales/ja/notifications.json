@@ -44,5 +44,12 @@
     "all": "すべて",
     "unread": "未読",
     "read": "既読"
+  },
+  "status": {
+    "accepted": "承認済み",
+    "denied": "拒否済み",
+    "joined": "参加済み",
+    "declined": "辞退済み",
+    "expired": "期限切れ"
   }
 }

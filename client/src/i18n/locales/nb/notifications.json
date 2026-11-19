@@ -44,5 +44,12 @@
     "all": "Alle",
     "unread": "Uleste",
     "read": "Leste"
+  },
+  "status": {
+    "accepted": "Godtatt",
+    "denied": "Avslått",
+    "joined": "Ble med",
+    "declined": "Avslått",
+    "expired": "Utløpt"
   }
 }

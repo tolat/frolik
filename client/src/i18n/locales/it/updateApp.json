@@ -1,0 +1,17 @@
+{
+  "title": "Aggiorna Frolik",
+  "subtitle": "Frolik è cambiata in un modo che l'app installata non può ricevere da sola. Reinstallala per avere la nuova versione: ci vuole solo un minuto.",
+  "ios": {
+    "step1": "Tieni premuta l'icona di <b>Frolik</b> nella schermata Home",
+    "step2": "Tocca <b>Rimuovi app</b>, poi <b>Rimuovi dalla schermata Home</b>",
+    "step3": "Apri <b>frolik.ca</b> in Safari",
+    "step4": "Tocca <b>Condividi</b>, poi <b>Aggiungi alla schermata Home</b>"
+  },
+  "android": {
+    "step1": "Tieni premuta l'icona di <b>Frolik</b>, poi tocca <b>Disinstalla</b>",
+    "step2": "Apri <b>frolik.ca</b> in Chrome",
+    "step3": "Tocca il menu <b>⋮</b>, poi <b>Installa app</b>"
+  },
+  "note": "Il tuo account, le uscite e le foto sono al sicuro. Accedi di nuovo dopo la reinstallazione.",
+  "later": "Ricordamelo più tardi"
+}
