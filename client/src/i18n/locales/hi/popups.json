@@ -8,7 +8,8 @@
     "uploading": "अपलोड हो रहा है…"
   },
   "photo": {
-    "alt": "फ़ोटो"
+    "alt": "फ़ोटो",
+    "close": "बंद करें"
   },
   "sendActivity": {
     "header": "दोस्त को भेजें",

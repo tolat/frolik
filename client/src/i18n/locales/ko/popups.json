@@ -8,7 +8,8 @@
     "uploading": "업로드 중…"
   },
   "photo": {
-    "alt": "사진"
+    "alt": "사진",
+    "close": "닫기"
   },
   "sendActivity": {
     "header": "친구에게 보내기",

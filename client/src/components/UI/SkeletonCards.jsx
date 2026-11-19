@@ -42,37 +42,36 @@ const Feed = () => (
   </>
 );
 
-// Activity cards are one big photo with the name, stats and buttons laid
-// over it: a grey shining "photo" with lighter bars where the text sits
+// Activity card (layout A): the art on top with the time / cost / group
+// chips at its top-left and the rating at its top-right, then the white
+// panel: name, city, two lines of description, Show Instructions + Select
 const O = ({ className = "", style }) => (
   <div className={`${styles.overlay} ${className}`} style={style} />
 );
 
 const Activity = () => (
-  <div className={styles.activityBody}>
-    <div className={styles.sideStripe} />
-    <div className={`${styles.activityPhoto} shine-loading`}>
-      <div className={styles.activityTop}>
-        <div className={styles.activityTitle}>
-          <O className={styles.oTitle} />
-          <O className={styles.oSub} />
-        </div>
-        <div className={styles.activityStats}>
-          {[0, 1, 2, 3].map((i) => (
-            <div key={i} className={styles.oStat}>
-              <O className={styles.oStatIcon} />
-              <O className={styles.oStatLabel} />
-            </div>
-          ))}
-        </div>
+  <>
+    <div className={`${styles.activityArt} shine-loading`}>
+      <div className={styles.activityChips}>
+        <O className={styles.oChip} />
+        <O className={styles.oChip} />
+        <O className={styles.oChipSmall} />
       </div>
-      <O className={styles.oDesc} />
-      <div className={styles.activityBottom}>
-        <O className={styles.oButton} />
-        <O className={styles.oSelect} />
+      <O className={styles.oRating} />
+    </div>
+    <div className={styles.activityPanel}>
+      <div className={`${styles.line} ${styles.activityName} shine-loading`} />
+      <div className={`${styles.line} ${styles.lineSmall} shine-loading`} style={{ width: "34%" }} />
+      <div className={styles.activityDesc}>
+        <div className={`${styles.line} shine-loading`} style={{ width: "92%" }} />
+        <div className={`${styles.line} shine-loading`} style={{ width: "64%" }} />
+      </div>
+      <div className={styles.activityActions}>
+        <div className={`${styles.line} shine-loading`} style={{ width: "11rem" }} />
+        <S className={styles.activitySelect} />
       </div>
     </div>
-  </div>
+  </>
 );
 
 // Chat list row: colour stripe, two overlapping avatars, name, activity,

@@ -123,17 +123,10 @@
   border-radius: 50%;
 }
 
-// ── Activity: one photo with the text laid over it ─────────────────────
+// ── Activity (layout A): art on top, white panel below ─────────────────
 .activity {
-  height: 33rem;
   margin-bottom: 1.4rem;
   box-shadow: $shadow_sm;
-}
-
-.activityBody {
-  display: flex;
-  flex: 1;
-  min-height: 0;
 }
 
 .sideStripe {
@@ -142,90 +135,77 @@
   flex-shrink: 0;
 }
 
-.activityPhoto {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  padding: 1.6rem;
-  box-sizing: border-box;
+// The art: same 5:3 box as the real card's photo
+.activityArt {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 5 / 3;
+  flex-shrink: 0;
 }
 
-// Light bars standing in for the white text on the photo
+// Light pills standing in for the chips / rating on the art
 .overlay {
-  background-color: rgba(255, 255, 255, 0.75);
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 100rem;
   flex-shrink: 0;
 }
 
-.activityTop {
+.activityChips {
+  position: absolute;
+  top: 1rem;
+  inset-inline-start: 1rem;
   display: flex;
-  justify-content: space-between;
-  gap: 1.2rem;
-}
-
-.activityTitle {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-  min-width: 0;
-}
-
-.oTitle {
-  width: 70%;
-  height: 1.8rem;
-}
-
-.oSub {
-  width: 42%;
-  height: 1.1rem;
-}
-
-.activityStats {
-  display: flex;
-  gap: 0.9rem;
-}
-
-.oStat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 0.5rem;
 }
 
-.oStatIcon {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
+.oChip {
+  width: 5.2rem;
+  height: 2.5rem;
 }
 
-.oStatLabel {
-  width: 2.6rem;
-  height: 0.9rem;
+.oChipSmall {
+  width: 4.2rem;
+  height: 2.5rem;
 }
 
-.oDesc {
-  margin-top: 1.2rem;
-  width: 78%;
-  height: 1.3rem;
+.oRating {
+  position: absolute;
+  top: 1rem;
+  inset-inline-end: 1rem;
+  width: 5.6rem;
+  height: 2.5rem;
 }
 
-.activityBottom {
-  margin-top: auto;
+.activityPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: 1.4rem 1.5rem 1.2rem;
+}
+
+.activityName {
+  width: 58%;
+  height: 1.9rem;
+}
+
+.activityDesc {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.activityActions {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 0.7rem;
 }
 
-.oButton {
-  width: 13rem;
-  height: 1.5rem;
-}
-
-.oSelect {
-  width: 5.4rem;
-  height: 1.5rem;
+.activitySelect {
+  width: 9rem;
+  height: 3.4rem;
+  border-radius: 100rem;
 }
 
 // ── Chat list card: stripe, avatar pair, four lines ───────────────────────

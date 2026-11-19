@@ -23,6 +23,7 @@ import {
   joinOuting,
   leaveOuting,
   uploadOutingPhoto,
+  uploadOutingVideo,
 } from "../../utils/data-fetch";
 import { authActions } from "../../store/auth-slice";
 import { popupActions } from "../../store/popup-slice";
@@ -41,6 +42,12 @@ import StarRate from "../UI/StarRate";
 import FeedCard from "../UI/FeedCard";
 import AddOutingFriendsDrawer from "../Popups/AddOutingFriendsDrawer";
 import SixPhotoGrid from "../UI/SixPhotoGrid";
+import {
+  MAX_VIDEO_BYTES,
+  MAX_VIDEO_SECONDS,
+  isVideoFile,
+  videoFileDuration,
+} from "../../utils/media";
 import ModalHeaderPortal from "./ModalHeaderPortal";
 import { useT, T } from "../../i18n";
 
@@ -103,6 +110,9 @@ const OutingModal = (props) => {
   const isOnlyUser = outing?.users?.length < 2;
   const userFlaked = outing?.flakes?.find((id) => id === user._id);
   const [editingPhotos, setEditingPhotos] = useState(false);
+  // Videos skip the cropper and upload straight away; this counts the ones
+  // still on their way (the server converts them, which takes a moment)
+  const [uploadingVideos, setUploadingVideos] = useState(0);
   const [uploads, setUploads] = useState([]);
   const userPhotoCount = outing?.photos?.filter(
     (p) => p.uploader === user?._id
@@ -230,7 +240,7 @@ const OutingModal = (props) => {
   );
 
   const onUploadClick = () => {
-    if (userPhotoCount > 1) {
+    if (userPhotoCount + uploadingVideos > 1) {
       dispatch(popupActions.showPopup("maximum-2-photos"));
       resetUploads();
     } else {
@@ -240,12 +250,56 @@ const OutingModal = (props) => {
 
   const onPhotosSelected = async () => {
     resetViewportShift(); // back from the iOS photo picker
-    const newPhotos = document.getElementById("upload-outing-photos").files;
+    const picked = Array.from(
+      document.getElementById("upload-outing-photos").files || []
+    );
 
-    // Check if user has met upload quota
-    if (newPhotos.length + userPhotoCount > 2) {
+    // Check if user has met upload quota (photos and videos count alike)
+    if (picked.length + userPhotoCount + uploadingVideos > 2) {
       dispatch(popupActions.showPopup("maximum-2-photos"));
       resetUploads();
+      return;
+    }
+
+    const videos = picked.filter(isVideoFile);
+    const newPhotos = picked.filter((f) => !isVideoFile(f));
+
+    const warn = (key, params) => {
+      dispatch(popupActions.setWarningHeader(t(`outing.video.${key}.header`)));
+      dispatch(popupActions.setWarningMessage(t(`outing.video.${key}.message`, params)));
+      dispatch(popupActions.setWarningAction(null));
+      dispatch(popupActions.showPopup("generic-warning"));
+    };
+
+    // Videos: check length and size here (the server checks again), then
+    // upload as they are
+    for (const file of videos) {
+      if (file.size > MAX_VIDEO_BYTES) {
+        warn("tooBig");
+        continue;
+      }
+      const seconds = await videoFileDuration(file);
+      if (seconds !== null && seconds > MAX_VIDEO_SECONDS + 0.6) {
+        warn("tooLong", { seconds: MAX_VIDEO_SECONDS });
+        continue;
+      }
+      setUploadingVideos((n) => n + 1);
+      const done = () => setUploadingVideos((n) => Math.max(0, n - 1));
+      uploadOutingVideo(
+        user,
+        outing,
+        file,
+        (response) => {
+          done();
+          fetchAuth();
+          fetchPhotos(response.user);
+        },
+        done
+      );
+    }
+
+    if (!newPhotos.length) {
+      document.getElementById("upload-outing-photos-form").reset();
       return;
     }
 
@@ -679,6 +733,7 @@ const OutingModal = (props) => {
                         ref={uploadInputRef}
                         onChange={onPhotosSelected}
                         type="file"
+                        accept="image/*,video/*"
                         multiple
                         id="upload-outing-photos"
                         style={{ display: "none" }}
@@ -686,7 +741,7 @@ const OutingModal = (props) => {
                     </form>
 
                     <div className={styles.sideBySide}>
-                      {userPhotoCount < 2 ? (
+                      {userPhotoCount + uploadingVideos < 2 ? (
                         <SimpleButton onClick={onUploadClick} className={styles.ctaButton}>
                           {t("outing.photos.upload")}
                         </SimpleButton>
@@ -706,6 +761,12 @@ const OutingModal = (props) => {
                   </div>
                 ) : null}
 
+                {uploadingVideos > 0 ? (
+                  <div className={styles.videoUploading} role="status">
+                    <span className={styles.videoUploadingSpinner} aria-hidden="true" />
+                    {t("outing.video.uploading")}
+                  </div>
+                ) : null}
                 <div className={styles.photoGridContainer}>
                   <SixPhotoGrid
                     deleteableIndexes={deleteableIndexes}

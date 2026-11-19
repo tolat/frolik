@@ -8,7 +8,8 @@
     "uploading": "Enviando…"
   },
   "photo": {
-    "alt": "Foto"
+    "alt": "Foto",
+    "close": "Fechar"
   },
   "sendActivity": {
     "header": "Enviar para um amigo",

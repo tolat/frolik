@@ -583,6 +583,28 @@ export const uploadOutingPhoto = (
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Upload a short video to an outing: the file itself is the body (no
+// base64), the server converts it and checks its length
+export const uploadOutingVideo = (user, outing, file, onComplete = () => {}, onError = () => {}) => {
+  const requestConfig = {
+    url: `${getServer()}/outing/${user._id}/${outing._id}/upload-video`,
+    headers: { "Content-Type": file.type || "application/octet-stream" },
+    method: "POST",
+    body: file,
+  };
+  httpFetch(
+    requestConfig,
+    (response) => {
+      fetchPhotos(store.getState().auth.user);
+      onComplete(response);
+    },
+    (err) => {
+      console.log(err);
+      onError(err);
+    }
+  );
+};
+
 // Delete a photo from an outing
 export const deleteOutingPhoto = (user, outing, key, onComplete) => {
   const requestConfig = {

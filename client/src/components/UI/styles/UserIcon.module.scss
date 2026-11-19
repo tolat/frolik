@@ -109,11 +109,22 @@
 }
 
 
-/* Round placeholder sweeping the shared shine while the photo loads */
-.shimmer {
+/* While the photo loads: the colour ring in greys (same segments, no
+   colour), with the shared shine sweeping the disc inside it */
+.skeletonRing {
   position: absolute;
   border-radius: 100rem;
   z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: grayscale(1) brightness(0.86);
+}
+
+.shimmer {
+  border-radius: 100rem;
+  // the white gap a real photo shows against the ring
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.9);
 }
 
 /* Laid out (so the photo can load) but invisible until it has */

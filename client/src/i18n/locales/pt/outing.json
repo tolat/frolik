@@ -81,7 +81,7 @@
     "everyoneMarks": "Cada participante toca em Marcar como concluído."
   },
   "photos": {
-    "limitHint": "Cada participante pode enviar até 2 fotos.",
+    "limitHint": "Cada membro pode enviar até 2 fotos ou vídeos (10 segundos no máximo).",
     "upload": "+ Enviar",
     "edit": "Editar",
     "doneEditing": "Concluir edição"
@@ -116,5 +116,17 @@
   "deleteHelp": {
     "onlyMember": "Você pode excluir o rolê porque é o único participante. Excluir o rolê <b>não vai piorar</b> seu índice de furos.",
     "otherMembers": "Você não pode excluir o rolê porque há outros participantes. Sair do rolê <b>vai piorar</b> seu índice de furos."
+  },
+  "video": {
+    "uploading": "Enviando vídeo…",
+    "tooBig": {
+      "header": "Vídeo muito grande",
+      "message": "Esse vídeo é grande demais para enviar. Tente um clipe mais curto ou menor."
+    },
+    "tooLong": {
+      "header": "Vídeo muito longo",
+      "message": "Os vídeos podem ter no máximo {{seconds}} segundos. Corte e tente de novo."
+    },
+    "label": "Vídeo"
   }
 }

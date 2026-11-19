@@ -6,6 +6,8 @@ import ImageLoadingTile from "./ImageLoadingTile";
 import useIncrementalList from "../../utils/useIncrementalList";
 import ListSentinel from "./ListSentinel";
 import { useT } from "../../i18n";
+import { isVideoUrl } from "../../utils/media";
+import VideoBadge from "./VideoBadge";
 
 const PhotoGrid = memo((props) => {
   const { t } = useT();
@@ -36,13 +38,30 @@ const PhotoGrid = memo((props) => {
           m && (
             <div key={index} className={styles.imageContainer}>
               <ImageLoadingTile id={m} />
-              <img
-                onClick={() => onImageClick(m)}
-                onLoad={(e) => onImageLoad(e, m)}
-                className={`${styles.img} hidden`}
-                alt={t("ui.photos.userPhoto")}
-                src={m}
-              />
+              {isVideoUrl(m) ? (
+                <>
+                  <video
+                    onClick={() => onImageClick(m)}
+                    onLoadedData={(e) => onImageLoad(e, m)}
+                    className={`${styles.img} hidden`}
+                    src={m}
+                    muted
+                    loop
+                    autoPlay
+                    playsInline
+                    preload="metadata"
+                  />
+                  <VideoBadge />
+                </>
+              ) : (
+                <img
+                  onClick={() => onImageClick(m)}
+                  onLoad={(e) => onImageLoad(e, m)}
+                  className={`${styles.img} hidden`}
+                  alt={t("ui.photos.userPhoto")}
+                  src={m}
+                />
+              )}
             </div>
           )
       )}

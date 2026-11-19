@@ -396,3 +396,32 @@
   background: #e3f6ec;
   color: #23855a;
 }
+
+// A video on its way up (the server converts it before it shows)
+.videoUploading {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0 0 1.4rem;
+  padding: 1rem 1.4rem;
+  border-radius: 1.2rem;
+  background: var(--primary-soft);
+  color: #1b1d24;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.videoUploadingSpinner {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  border: 0.22rem solid rgba(var(--primary-rgb), 0.25);
+  border-top-color: var(--primary);
+  animation: videoUploadingSpin 0.8s linear infinite;
+}
+
+@keyframes videoUploadingSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

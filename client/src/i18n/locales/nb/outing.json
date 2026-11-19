@@ -80,7 +80,7 @@
     "everyoneMarks": "Alle deltakerne trykker på Marker som fullført."
   },
   "photos": {
-    "limitHint": "Hver deltaker kan laste opp opptil 2 bilder.",
+    "limitHint": "Hvert medlem kan laste opp opptil 2 bilder eller videoer (maks 10 sekunder).",
     "upload": "+ Last opp",
     "edit": "Rediger",
     "doneEditing": "Ferdig"
@@ -114,5 +114,17 @@
   "deleteHelp": {
     "onlyMember": "Du kan slette treffet fordi du er eneste deltaker. Å slette treffet <b>går ikke ut over</b> påliteligheten din.",
     "otherMembers": "Du kan ikke slette treffet fordi det har andre deltakere. Forlater du treffet, <b>går det ut over</b> påliteligheten din."
+  },
+  "video": {
+    "uploading": "Laster opp video…",
+    "tooBig": {
+      "header": "Videoen er for stor",
+      "message": "Videoen er for stor til å lastes opp. Prøv et kortere eller mindre klipp."
+    },
+    "tooLong": {
+      "header": "Videoen er for lang",
+      "message": "Videoer kan være maks {{seconds}} sekunder. Klipp den og prøv igjen."
+    },
+    "label": "Video"
   }
 }

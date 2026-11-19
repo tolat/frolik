@@ -8,7 +8,8 @@
     "uploading": "جارٍ الرفع…"
   },
   "photo": {
-    "alt": "صورة"
+    "alt": "صورة",
+    "close": "إغلاق"
   },
   "sendActivity": {
     "header": "إرسال إلى صديق",

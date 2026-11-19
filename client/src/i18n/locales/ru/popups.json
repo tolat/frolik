@@ -8,7 +8,8 @@
     "uploading": "Загружаем…"
   },
   "photo": {
-    "alt": "Фото"
+    "alt": "Фото",
+    "close": "Закрыть"
   },
   "sendActivity": {
     "header": "Отправить другу",

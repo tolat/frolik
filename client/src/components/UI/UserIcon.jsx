@@ -60,11 +60,18 @@ const UserIcon = memo(function UserIcon(props) {
             </div>
           </div>
         ) : null}
+        {/* Loading: their colour ring, greyed out, round a shining disc
+            where the photo goes (it used to be one plain grey circle) */}
         {photoReady ? null : (
           <div
-            className={`${styles.shimmer} shine-loading`}
-            style={{ width: pieDimension, height: pieDimension, ...shineSync() }}
-          />
+            className={styles.skeletonRing}
+            style={{ width: pieDimension, height: pieDimension, background: backgroundString }}
+          >
+            <div
+              className={`${styles.shimmer} shine-loading`}
+              style={{ width: photoDimension, height: photoDimension, ...shineSync() }}
+            />
+          </div>
         )}
         {!photoString || photoString === "queued" ? null : (
           <div

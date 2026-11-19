@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { popupActions } from "../../store/popup-slice";
 import ImageLoadingTile from "./ImageLoadingTile";
 import { useT } from "../../i18n";
+import { isVideoUrl } from "../../utils/media";
+import VideoBadge from "./VideoBadge";
 
 const SixPhotoGrid = (props) => {
   const { t } = useT();
@@ -117,24 +119,50 @@ const SixPhotoGrid = (props) => {
             <ImageLoadingTile />
           </div>
         )}
-        <img
-          ref={(el) => {
-            if (el?.complete && !completeChecked.current.has(img)) {
-              completeChecked.current.add(img);
-              handleLoad(img);
-            }
-          }}
-          onLoad={() => handleLoad(img)}
-          onError={() => handleError(img)}
-          onClick={props.onClick ? null : () => onImageClick(img)}
-          className={`${styles.image} ${
-            props.noRoundedCornerLeft ? styles.noRoundedCornerLeft : null
-          } ${loaded ? styles.imageLoaded : styles.imageLoading}`}
-          src={img}
-          loading={props.eager ? "eager" : "lazy"}
-          decoding="async"
-          alt=""
-        />
+        {isVideoUrl(img) ? (
+          <>
+            <video
+              ref={(el) => {
+                if (el && el.readyState >= 2 && !completeChecked.current.has(img)) {
+                  completeChecked.current.add(img);
+                  handleLoad(img);
+                }
+              }}
+              onLoadedData={() => handleLoad(img)}
+              onError={() => handleError(img)}
+              onClick={props.onClick ? null : () => onImageClick(img)}
+              className={`${styles.image} ${
+                props.noRoundedCornerLeft ? styles.noRoundedCornerLeft : null
+              } ${loaded ? styles.imageLoaded : styles.imageLoading}`}
+              src={img}
+              muted
+              loop
+              autoPlay
+              playsInline
+              preload="metadata"
+            />
+            <VideoBadge />
+          </>
+        ) : (
+          <img
+            ref={(el) => {
+              if (el?.complete && !completeChecked.current.has(img)) {
+                completeChecked.current.add(img);
+                handleLoad(img);
+              }
+            }}
+            onLoad={() => handleLoad(img)}
+            onError={() => handleError(img)}
+            onClick={props.onClick ? null : () => onImageClick(img)}
+            className={`${styles.image} ${
+              props.noRoundedCornerLeft ? styles.noRoundedCornerLeft : null
+            } ${loaded ? styles.imageLoaded : styles.imageLoading}`}
+            src={img}
+            loading={props.eager ? "eager" : "lazy"}
+            decoding="async"
+            alt=""
+          />
+        )}
         {props.showDeleteable &&
         props.deleteableIndexes?.find(
           (i) => i === props.photos.indexOf(img)

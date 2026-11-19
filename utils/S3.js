@@ -31,12 +31,16 @@ const s3Client = useLocal
       maxAttempts: 3,
     });
 
-module.exports.uploadToS3 = async (Bucket, Key, Body) => {
+// ContentType matters for video: Safari won't play an S3 object served as
+// binary/octet-stream
+module.exports.uploadToS3 = async (Bucket, Key, Body, ContentType) => {
   if (useLocal) {
     await fs.promises.writeFile(path.join(LOCAL_DIR, safeKey(Key)), Body);
     return {};
   }
-  return await s3Client.send(new PutObjectCommand({ Bucket, Key, Body }));
+  return await s3Client.send(
+    new PutObjectCommand({ Bucket, Key, Body, ...(ContentType ? { ContentType } : {}) })
+  );
 };
 
 module.exports.downloadFromS3 = async (Bucket, Key) => {

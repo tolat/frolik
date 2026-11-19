@@ -160,3 +160,11 @@
   width: 4.4rem;
   height: 4.4rem;
 }
+
+/* Videos: square like the (cropped) photos, centre-cropped */
+video.image {
+  display: block;
+  aspect-ratio: 1;
+  height: auto;
+  object-fit: cover;
+}

@@ -81,7 +81,7 @@
     "everyoneMarks": "Ogni partecipante tocca Segna come completata."
   },
   "photos": {
-    "limitHint": "Ogni partecipante può caricare fino a 2 foto.",
+    "limitHint": "Ogni membro può caricare fino a 2 foto o video (massimo 10 secondi).",
     "upload": "+ Carica",
     "edit": "Modifica",
     "doneEditing": "Fine modifiche"
@@ -116,5 +116,17 @@
   "deleteHelp": {
     "onlyMember": "Puoi eliminare l'uscita perché sei l'unico partecipante. Eliminarla <b>non peggiorerà</b> il tuo indice bidoni.",
     "otherMembers": "Non puoi eliminare l'uscita perché ci sono altri partecipanti. Lasciarla <b>peggiorerà</b> il tuo indice bidoni."
+  },
+  "video": {
+    "uploading": "Caricamento video…",
+    "tooBig": {
+      "header": "Video troppo grande",
+      "message": "Questo video è troppo grande da caricare. Prova una clip più corta o più leggera."
+    },
+    "tooLong": {
+      "header": "Video troppo lungo",
+      "message": "I video possono durare al massimo {{seconds}} secondi. Taglialo e riprova."
+    },
+    "label": "Video"
   }
 }

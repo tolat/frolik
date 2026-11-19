@@ -29,3 +29,11 @@
   display: none;
 }
 
+
+/* Videos: square like the (cropped) photos, centre-cropped */
+video.img {
+  display: block;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+}

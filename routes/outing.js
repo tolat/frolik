@@ -4,6 +4,7 @@ const Activity = require("../models/activity");
 const Chat = require("../models/chat");
 const express = require("express");
 const sharp = require("sharp");
+const { processVideo, MAX_VIDEO_UPLOAD_BYTES } = require("../utils/video");
 const {
   downloadFromS3,
   uploadToS3,
@@ -639,6 +640,70 @@ router.post(
         console.error("Error uploading image:", error);
         res.status(500).send("Internal Server Error");
       });
+  })
+);
+
+// Upload a short Outing video (10s tops). The raw file is the request body
+// (no base64); it is converted to a small .mp4 that plays everywhere (see
+// utils/video). Counts toward the same 2-per-member limit as photos.
+router.post(
+  "/:id/:outingid/upload-video",
+  reqAuthenticated,
+  sameUserOnly,
+  express.raw({ type: () => true, limit: MAX_VIDEO_UPLOAD_BYTES }),
+  tryCatch(async (req, res) => {
+    const outing = await Outing.findById(req.params.outingid);
+    let user = req.user;
+    if (!outing) return res.status(404).send("Outing not found");
+
+    const refuse = (key, params) =>
+      res.status(406).send({
+        header: req.t(`outing.video.${key}.header`),
+        message: req.t(`outing.video.${key}.message`, params),
+      });
+
+    if (!Buffer.isBuffer(req.body) || !req.body.length) return refuse("noVideo");
+    if (!outing.users.find((u) => u._id.toString() == user._id.toString())) {
+      return res.status(406).send({
+        header: req.t("outing.photo.uploadNotMember.header"),
+        message: req.t("outing.photo.uploadNotMember.message"),
+      });
+    }
+    const mine = () =>
+      outing.photos.filter((p) => p.uploader.toString() == user._id.toString()).length;
+    if (mine() > 1) {
+      return res.status(406).send({
+        header: req.t("outing.photo.tooMany.header"),
+        message: req.t("outing.photo.tooMany.message"),
+      });
+    }
+
+    const result = await processVideo(req.body);
+    if (result.error === "tooLong") return refuse("tooLong", { seconds: 10 });
+    if (result.error) return refuse("unreadable");
+
+    // Re-read: the conversion takes a few seconds and the limit may have
+    // been reached by another upload meanwhile
+    const fresh = await Outing.findById(outing._id);
+    if (!fresh) return res.status(404).send("Outing not found");
+    if (
+      fresh.photos.filter((p) => p.uploader.toString() == user._id.toString()).length > 1
+    ) {
+      return res.status(406).send({
+        header: req.t("outing.photo.tooMany.header"),
+        message: req.t("outing.photo.tooMany.message"),
+      });
+    }
+
+    const key = `${user._id.toString()}-${fresh._id.toString()}-${Date.now()}.mp4`;
+    await uploadToS3(process.env.AWS_BUCKET, key, result.buffer, "video/mp4");
+    fresh.photos.push({ uploader: user, key, kind: "video" });
+    await fresh.save();
+
+    user = await User.findById(user._id.toString());
+    await populateUser(user);
+    pushUserUpdate(fresh.users);
+    res.send({ user });
   })
 );
 

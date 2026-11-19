@@ -8,7 +8,8 @@
     "uploading": "Laster opp …"
   },
   "photo": {
-    "alt": "Bilde"
+    "alt": "Bilde",
+    "close": "Lukk"
   },
   "sendActivity": {
     "header": "Send til en venn",

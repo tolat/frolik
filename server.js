@@ -151,7 +151,12 @@ if (useLocalStorage) {
     reqAuthenticated,
     (req, res, next) => (imageDelay ? setTimeout(next, imageDelay) : next()),
     express.static(LOCAL_STORAGE_DIR, {
-      setHeaders: (res) => res.setHeader("Content-Type", "image/jpeg"),
+      // Keys have no extension (images) except Outing videos (.mp4)
+      setHeaders: (res, filePath) =>
+        res.setHeader(
+          "Content-Type",
+          filePath.endsWith(".mp4") ? "video/mp4" : "image/jpeg"
+        ),
     })
   );
   console.log("[storage] Using local image storage in", LOCAL_STORAGE_DIR);

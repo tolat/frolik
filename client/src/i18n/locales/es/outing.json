@@ -81,7 +81,7 @@
     "everyoneMarks": "Cada miembro toca Marcar como completada."
   },
   "photos": {
-    "limitHint": "Cada miembro puede subir hasta 2 fotos.",
+    "limitHint": "Cada miembro puede subir hasta 2 fotos o videos (10 segundos como máximo).",
     "upload": "+ Subir",
     "edit": "Editar",
     "doneEditing": "Listo"
@@ -116,5 +116,17 @@
   "deleteHelp": {
     "onlyMember": "Puedes eliminar la salida porque eres el único miembro. Eliminarla <b>no afectará</b> tu índice de plantones.",
     "otherMembers": "No puedes eliminar la salida porque hay otros miembros. Abandonarla <b>bajará</b> tu índice de plantones."
+  },
+  "video": {
+    "uploading": "Subiendo video…",
+    "tooBig": {
+      "header": "Video demasiado grande",
+      "message": "Ese video es demasiado grande para subirlo. Prueba con un clip más corto o más pequeño."
+    },
+    "tooLong": {
+      "header": "Video demasiado largo",
+      "message": "Los videos pueden durar como máximo {{seconds}} segundos. Recórtalo e inténtalo de nuevo."
+    },
+    "label": "Video"
   }
 }

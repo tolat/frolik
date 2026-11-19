@@ -81,7 +81,7 @@
     "everyoneMarks": "Chaque membre touche Marquer terminée."
   },
   "photos": {
-    "limitHint": "Chaque membre peut téléverser jusqu'à 2 photos.",
+    "limitHint": "Chaque membre peut ajouter jusqu'à 2 photos ou vidéos (10 secondes max).",
     "upload": "+ Téléverser",
     "edit": "Modifier",
     "doneEditing": "Terminer"
@@ -116,5 +116,17 @@
   "deleteHelp": {
     "onlyMember": "Tu peux supprimer la sortie parce que tu en es le seul membre. La supprimer <b>n'affectera pas</b> ton indice de fiabilité.",
     "otherMembers": "Tu ne peux pas supprimer la sortie parce qu'il y a d'autres membres. La quitter <b>fera baisser</b> ton indice de fiabilité."
+  },
+  "video": {
+    "uploading": "Envoi de la vidéo…",
+    "tooBig": {
+      "header": "Vidéo trop lourde",
+      "message": "Cette vidéo est trop lourde pour être envoyée. Essaie un clip plus court ou plus léger."
+    },
+    "tooLong": {
+      "header": "Vidéo trop longue",
+      "message": "Les vidéos peuvent durer {{seconds}} secondes au maximum. Coupe-la et réessaie."
+    },
+    "label": "Vidéo"
   }
 }

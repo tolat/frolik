@@ -80,7 +80,7 @@
     "everyoneMarks": "Alle tippen auf Abschließen."
   },
   "photos": {
-    "limitHint": "Alle können bis zu 2 Fotos hochladen.",
+    "limitHint": "Jedes Mitglied kann bis zu 2 Fotos oder Videos hochladen (max. 10 Sekunden).",
     "upload": "+ Hochladen",
     "edit": "Bearbeiten",
     "doneEditing": "Fertig"
@@ -114,5 +114,17 @@
   "deleteHelp": {
     "onlyMember": "Du kannst den Ausflug löschen, weil du als Einzige*r dabei bist. Das Löschen <b>wirkt sich nicht negativ</b> auf deine Zuverlässigkeit aus.",
     "otherMembers": "Du kannst den Ausflug nicht löschen, weil noch andere dabei sind. Wenn du ihn verlässt, <b>sinkt</b> deine Zuverlässigkeit."
+  },
+  "video": {
+    "uploading": "Video wird hochgeladen…",
+    "tooBig": {
+      "header": "Video zu groß",
+      "message": "Dieses Video ist zu groß zum Hochladen. Versuche einen kürzeren oder kleineren Clip."
+    },
+    "tooLong": {
+      "header": "Video zu lang",
+      "message": "Videos dürfen höchstens {{seconds}} Sekunden lang sein. Kürze es und versuche es erneut."
+    },
+    "label": "Video"
   }
 }

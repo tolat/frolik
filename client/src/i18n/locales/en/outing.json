@@ -80,7 +80,7 @@
     "everyoneMarks": "Every member taps Mark Completed."
   },
   "photos": {
-    "limitHint": "Each member can upload up to 2 photos.",
+    "limitHint": "Each member can upload up to 2 photos or videos (10 seconds max).",
     "upload": "+ Upload",
     "edit": "Edit",
     "doneEditing": "Done Editing"
@@ -114,5 +114,17 @@
   "deleteHelp": {
     "onlyMember": "You can delete the outing because you are the only member. Deleting the outing <b>will not negatively affect</b> your flake rating.",
     "otherMembers": "You cannot delete the outing because there are other members. Leaving the outing <b>will negatively affect</b> your flake rating."
+  },
+  "video": {
+    "uploading": "Uploading video…",
+    "tooBig": {
+      "header": "Video too big",
+      "message": "That video is too large to upload. Try a shorter or smaller clip."
+    },
+    "tooLong": {
+      "header": "Video too long",
+      "message": "Videos can be {{seconds}} seconds at most. Trim it and try again."
+    },
+    "label": "Video"
   }
 }

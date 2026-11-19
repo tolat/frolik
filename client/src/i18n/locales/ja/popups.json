@@ -8,7 +8,8 @@
     "uploading": "アップロード中…"
   },
   "photo": {
-    "alt": "写真"
+    "alt": "写真",
+    "close": "閉じる"
   },
   "sendActivity": {
     "header": "友だちに送る",

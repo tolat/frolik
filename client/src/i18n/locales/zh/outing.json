@@ -79,7 +79,7 @@
     "everyoneMarks": "每位成员都点击“标记完成”。"
   },
   "photos": {
-    "limitHint": "每位成员最多可上传2张照片。",
+    "limitHint": "每位成员最多可上传 2 张照片或视频（视频最长 10 秒）。",
     "upload": "+ 上传",
     "edit": "编辑",
     "doneEditing": "完成编辑"
@@ -112,5 +112,17 @@
   "deleteHelp": {
     "onlyMember": "你是唯一的成员，所以可以删除这次出游。删除出游<b>不会影响</b>你的靠谱分。",
     "otherMembers": "还有其他成员，所以你无法删除这次出游。退出出游<b>会降低</b>你的靠谱分。"
+  },
+  "video": {
+    "uploading": "正在上传视频…",
+    "tooBig": {
+      "header": "视频太大",
+      "message": "这个视频太大，无法上传。请换一个更短或更小的片段。"
+    },
+    "tooLong": {
+      "header": "视频太长",
+      "message": "视频最长 {{seconds}} 秒。请剪短后重试。"
+    },
+    "label": "视频"
   }
 }

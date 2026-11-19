@@ -20,7 +20,12 @@ const OutingSchema = new Schema(
     // Stale-outing reminders already sent, e.g. "invite-7", "complete-3"
     reminders_sent: [String],
     photos: [
-      { uploader: { type: Schema.Types.ObjectId, ref: "User" }, key: String },
+      {
+        uploader: { type: Schema.Types.ObjectId, ref: "User" },
+        key: String,
+        // "video" for short clips (key ends in .mp4); missing = photo
+        kind: String,
+      },
     ],
   },
   { minimize: false }

@@ -42,3 +42,35 @@
   object-fit: contain;
   border-radius: 0;
 }
+
+/* A video plays at its own shape (tapping it works its controls, so the
+   space around it, or the close button, closes the viewer) */
+video.image {
+  width: auto;
+  max-width: 100%;
+  touch-action: auto;
+}
+
+.close {
+  position: fixed;
+  top: calc(env(safe-area-inset-top) + 1.2rem);
+  inset-inline-end: 1.2rem;
+  z-index: 2;
+  width: 4rem;
+  height: 4rem;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  svg {
+    width: 1.8rem;
+    height: 1.8rem;
+    stroke: white;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+  }
+}

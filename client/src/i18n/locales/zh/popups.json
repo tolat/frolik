@@ -8,7 +8,8 @@
     "uploading": "上传中…"
   },
   "photo": {
-    "alt": "照片"
+    "alt": "照片",
+    "close": "关闭"
   },
   "sendActivity": {
     "header": "发给好友",
