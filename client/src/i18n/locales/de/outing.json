@@ -1,14 +1,14 @@
 {
   "sections": {
     "activity": "Aktivität",
-    "photos": "Fotos",
+    "photos": "Medien",
     "members": "Teilnehmende",
     "invited": "Eingeladen"
   },
   "alt": {
     "flake": "abgesprungen",
     "activity": "Aktivität",
-    "photos": "Fotos",
+    "photos": "Medien",
     "members": "Teilnehmende",
     "invited": "Eingeladen"
   },
@@ -47,8 +47,8 @@
   "completeDrawer": {
     "header": "Diesen Ausflug abschließen?",
     "lastMember": "Du bist die letzte Person, die ihn abschließt",
-    "lockedYou": "Sobald du ihn abschließt, ist der Ausflug gesperrt: Fotos können nicht mehr geändert werden.",
-    "lockedEveryone": "Sobald alle ihn abgeschlossen haben, ist der Ausflug gesperrt: Fotos können nicht mehr geändert werden.",
+    "lockedYou": "Sobald du ihn als erledigt markierst, ist der Ausflug gesperrt: keine Änderungen an den Medien mehr.",
+    "lockedEveryone": "Sobald alle Mitglieder ihn als erledigt markieren, ist der Ausflug gesperrt: keine Änderungen an den Medien mehr.",
     "chatStaysOpen": "Der Ausflugschat bleibt offen, damit ihr in Kontakt bleiben könnt.",
     "cantUndo": "Das kann nicht rückgängig gemacht werden."
   },
@@ -76,26 +76,26 @@
     },
     "inviteSomeone": "Lade Freunde oder ein Tagesmatch ein.",
     "goTogether": "Macht den Ausflug zusammen.",
-    "uploadPhoto": "Lade mindestens ein Foto davon hoch.",
+    "uploadPhoto": "Füge mindestens ein Foto oder Video davon hinzu.",
     "everyoneMarks": "Alle tippen auf Abschließen."
   },
   "photos": {
-    "limitHint": "Jedes Mitglied kann bis zu 2 Fotos oder Videos hochladen (max. 10 Sekunden).",
-    "upload": "+ Hochladen",
+    "limitHint": "Jedes Mitglied kann bis zu 2 Fotos oder Videos hinzufügen (Videos max. 10 Sekunden).",
+    "upload": "+ Medien hinzufügen",
     "edit": "Bearbeiten",
     "doneEditing": "Fertig"
   },
   "tooManyPhotos": {
-    "header": "Zu viele Fotos!",
-    "message": "Pro Ausflug kann jede*r höchstens 2 Fotos hochladen. Du kannst einige deiner Fotos entfernen, wenn du deine Uploads für diesen Ausflug ändern möchtest."
+    "header": "Limit erreicht",
+    "message": "Jedes Mitglied kann bis zu 2 Fotos oder Videos hinzufügen. Entferne eines von deinen, um etwas anderes hinzuzufügen."
   },
   "deletePhoto": {
-    "header": "Foto löschen?"
+    "header": "Dieses Element löschen?"
   },
   "noPhotos": {
-    "header": "Keine Fotos hochgeladen!",
-    "message": "Ein Ausflug braucht mindestens ein Foto, bevor er abgeschlossen werden kann. Fotos fügst du auf der Ausflugsseite mit diesem Button hinzu:",
-    "buttonAlt": "Button „Fotos hinzufügen“",
+    "header": "Noch keine Medien!",
+    "message": "Ausflüge brauchen mindestens ein Foto oder Video, bevor sie als erledigt markiert werden können. Du kannst sie auf der Ausflugsseite mit dem Button unten hinzufügen:",
+    "buttonAlt": "Button zum Hinzufügen von Medien",
     "allMembers": "Alle Teilnehmenden müssen den Ausflug abschließen!"
   },
   "countdown": {

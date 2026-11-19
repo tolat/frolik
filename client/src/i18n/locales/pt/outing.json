@@ -1,14 +1,14 @@
 {
   "sections": {
     "activity": "Atividade",
-    "photos": "Fotos",
+    "photos": "Mídia",
     "members": "Participantes",
     "invited": "Convidados"
   },
   "alt": {
     "flake": "furo",
     "activity": "atividade",
-    "photos": "fotos",
+    "photos": "mídia",
     "members": "participantes",
     "invited": "convidados"
   },
@@ -47,8 +47,8 @@
   "completeDrawer": {
     "header": "Marcar este rolê como concluído?",
     "lastMember": "Você é o último participante a marcar como concluído",
-    "lockedYou": "Depois que você marcar como concluído, o rolê fica travado: não dá mais para mexer nas fotos.",
-    "lockedEveryone": "Depois que todos os participantes marcarem como concluído, o rolê fica travado: não dá mais para mexer nas fotos.",
+    "lockedYou": "Depois que você marcar como concluído, o rolê fica bloqueado: sem mais mudanças na mídia.",
+    "lockedEveryone": "Depois que todos os membros marcarem como concluído, o rolê fica bloqueado: sem mais mudanças na mídia.",
     "chatStaysOpen": "O chat do rolê continua aberto para vocês manterem contato.",
     "cantUndo": "Isso não pode ser desfeito."
   },
@@ -77,26 +77,26 @@
     },
     "inviteSomeone": "Convide um amigo ou um match do dia para entrar.",
     "goTogether": "Façam o rolê juntos.",
-    "uploadPhoto": "Envie pelo menos uma foto do rolê.",
+    "uploadPhoto": "Adicione pelo menos uma foto ou vídeo dele.",
     "everyoneMarks": "Cada participante toca em Marcar como concluído."
   },
   "photos": {
-    "limitHint": "Cada membro pode enviar até 2 fotos ou vídeos (10 segundos no máximo).",
-    "upload": "+ Enviar",
+    "limitHint": "Cada membro pode adicionar até 2 fotos ou vídeos (vídeos de até 10 segundos).",
+    "upload": "+ Adicionar mídia",
     "edit": "Editar",
     "doneEditing": "Concluir edição"
   },
   "tooManyPhotos": {
-    "header": "Fotos demais!",
-    "message": "Cada participante do rolê pode enviar no máximo 2 fotos. Se quiser trocar ou editar o que você enviou para este rolê, remova algumas das suas fotos."
+    "header": "Limite atingido",
+    "message": "Cada membro do rolê pode adicionar até 2 fotos ou vídeos. Remova um dos seus para adicionar outro."
   },
   "deletePhoto": {
-    "header": "Excluir foto?"
+    "header": "Apagar este item?"
   },
   "noPhotos": {
-    "header": "Nenhuma foto enviada!",
-    "message": "O rolê precisa ter pelo menos uma foto enviada antes de ser marcado como concluído. Você pode adicionar fotos na página do rolê com o botão abaixo:",
-    "buttonAlt": "Botão de adicionar fotos",
+    "header": "Nenhuma mídia ainda!",
+    "message": "Os rolês precisam de pelo menos uma foto ou vídeo antes de serem marcados como concluídos. Você pode adicionar na página do rolê com o botão abaixo:",
+    "buttonAlt": "Botão de adicionar mídia",
     "allMembers": "Todos os participantes precisam marcar o rolê como concluído!"
   },
   "countdown": {

@@ -1,14 +1,14 @@
 {
   "sections": {
     "activity": "Activité",
-    "photos": "Photos",
+    "photos": "Médias",
     "members": "Membres",
     "invited": "Invités"
   },
   "alt": {
     "flake": "lapin",
     "activity": "activité",
-    "photos": "photos",
+    "photos": "médias",
     "members": "membres",
     "invited": "invités"
   },
@@ -47,8 +47,8 @@
   "completeDrawer": {
     "header": "Marquer cette sortie terminée ?",
     "lastMember": "Tu es le dernier membre à la marquer terminée",
-    "lockedYou": "Une fois marquée terminée, la sortie est verrouillée : plus de modifications de photos.",
-    "lockedEveryone": "Une fois que tous les membres l'ont marquée terminée, la sortie est verrouillée : plus de modifications de photos.",
+    "lockedYou": "Une fois que tu la marques comme terminée, la sortie est verrouillée : plus de changements de médias.",
+    "lockedEveryone": "Une fois que tous les membres la marquent comme terminée, la sortie est verrouillée : plus de changements de médias.",
     "chatStaysOpen": "La discussion de la sortie reste ouverte pour que vous gardiez le contact.",
     "cantUndo": "Impossible d'annuler."
   },
@@ -77,26 +77,26 @@
     },
     "inviteSomeone": "Invite un ami ou un match du jour à se joindre à toi.",
     "goTogether": "Faites la sortie ensemble.",
-    "uploadPhoto": "Téléverse au moins une photo de la sortie.",
+    "uploadPhoto": "Ajoute au moins une photo ou une vidéo de la sortie.",
     "everyoneMarks": "Chaque membre touche Marquer terminée."
   },
   "photos": {
-    "limitHint": "Chaque membre peut ajouter jusqu'à 2 photos ou vidéos (10 secondes max).",
-    "upload": "+ Téléverser",
+    "limitHint": "Chaque membre peut ajouter jusqu'à 2 photos ou vidéos (vidéos de 10 secondes max).",
+    "upload": "+ Ajouter un média",
     "edit": "Modifier",
     "doneEditing": "Terminer"
   },
   "tooManyPhotos": {
-    "header": "Trop de photos !",
-    "message": "Chaque membre d'une sortie peut téléverser au maximum 2 photos. Tu peux retirer certaines de tes photos si tu veux changer ou modifier ce que tu as téléversé pour cette sortie."
+    "header": "Limite atteinte",
+    "message": "Chaque membre de la sortie peut ajouter jusqu'à 2 photos ou vidéos. Retire l'un des tiens pour en ajouter un autre."
   },
   "deletePhoto": {
-    "header": "Supprimer la photo ?"
+    "header": "Supprimer cet élément ?"
   },
   "noPhotos": {
-    "header": "Aucune photo téléversée !",
-    "message": "Une sortie doit avoir au moins une photo avant de pouvoir être marquée terminée. Tu peux ajouter des photos sur la page de la sortie avec le bouton ci-dessous :",
-    "buttonAlt": "Bouton d'ajout de photos",
+    "header": "Pas encore de médias !",
+    "message": "Les sorties doivent avoir au moins une photo ou une vidéo avant d'être marquées comme terminées. Tu peux en ajouter sur la page de la sortie avec le bouton ci-dessous :",
+    "buttonAlt": "Bouton pour ajouter des médias",
     "allMembers": "Tous les membres doivent marquer la sortie terminée !"
   },
   "countdown": {

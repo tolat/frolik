@@ -71,9 +71,9 @@
     }
   },
   "photos": {
-    "none": "No photos",
-    "remove": "Remove photo",
-    "userPhoto": "Photo",
+    "none": "No media",
+    "remove": "Remove",
+    "userPhoto": "Photo or video",
     "change": "Change photo"
   },
   "addUsers": {

@@ -1,14 +1,14 @@
 {
   "sections": {
     "activity": "Attività",
-    "photos": "Foto",
+    "photos": "Contenuti",
     "members": "Partecipanti",
     "invited": "Invitati"
   },
   "alt": {
     "flake": "bidone",
     "activity": "attività",
-    "photos": "foto",
+    "photos": "contenuti",
     "members": "partecipanti",
     "invited": "invitati"
   },
@@ -47,8 +47,8 @@
   "completeDrawer": {
     "header": "Segnare questa uscita come completata?",
     "lastMember": "Sei l'ultimo partecipante a segnarla come completata",
-    "lockedYou": "Una volta segnata come completata, l'uscita viene bloccata: non potrai più modificare le foto.",
-    "lockedEveryone": "Quando tutti i partecipanti l'avranno segnata come completata, l'uscita verrà bloccata: non si potranno più modificare le foto.",
+    "lockedYou": "Quando la segni come completata, l'uscita viene bloccata: niente più modifiche ai contenuti.",
+    "lockedEveryone": "Quando tutti i membri la segnano come completata, l'uscita viene bloccata: niente più modifiche ai contenuti.",
     "chatStaysOpen": "La chat dell'uscita resta aperta, così potete restare in contatto.",
     "cantUndo": "Non si può annullare."
   },
@@ -77,26 +77,26 @@
     },
     "inviteSomeone": "Invita un amico o un match del giorno a partecipare.",
     "goTogether": "Fate l'uscita insieme.",
-    "uploadPhoto": "Carica almeno una foto dell'uscita.",
+    "uploadPhoto": "Aggiungi almeno una foto o un video dell'uscita.",
     "everyoneMarks": "Ogni partecipante tocca Segna come completata."
   },
   "photos": {
-    "limitHint": "Ogni membro può caricare fino a 2 foto o video (massimo 10 secondi).",
-    "upload": "+ Carica",
+    "limitHint": "Ogni membro può aggiungere fino a 2 foto o video (video di massimo 10 secondi).",
+    "upload": "+ Aggiungi contenuti",
     "edit": "Modifica",
     "doneEditing": "Fine modifiche"
   },
   "tooManyPhotos": {
-    "header": "Troppe foto!",
-    "message": "Ogni partecipante all'uscita può caricare al massimo 2 foto. Se vuoi cambiare o modificare le foto che hai caricato per questa uscita, puoi rimuoverne qualcuna."
+    "header": "Limite raggiunto",
+    "message": "Ogni membro dell'uscita può aggiungere fino a 2 foto o video. Rimuovine uno dei tuoi per aggiungere altro."
   },
   "deletePhoto": {
-    "header": "Eliminare la foto?"
+    "header": "Eliminare questo elemento?"
   },
   "noPhotos": {
-    "header": "Nessuna foto caricata!",
-    "message": "Un'uscita deve avere almeno una foto caricata prima di poter essere segnata come completata. Puoi aggiungere foto nella pagina dell'uscita con il pulsante qui sotto:",
-    "buttonAlt": "Pulsante per aggiungere foto",
+    "header": "Ancora nessun contenuto!",
+    "message": "Le uscite devono avere almeno una foto o un video prima di poter essere segnate come completate. Puoi aggiungerli nella pagina dell'uscita con il pulsante qui sotto:",
+    "buttonAlt": "Pulsante per aggiungere contenuti",
     "allMembers": "Tutti i partecipanti devono segnare l'uscita come completata!"
   },
   "countdown": {

@@ -1,14 +1,14 @@
 {
   "sections": {
     "activity": "Aktivitet",
-    "photos": "Bilder",
+    "photos": "Media",
     "members": "Deltakere",
     "invited": "Invitert"
   },
   "alt": {
     "flake": "droppet ut",
     "activity": "aktivitet",
-    "photos": "bilder",
+    "photos": "media",
     "members": "deltakere",
     "invited": "inviterte"
   },
@@ -47,8 +47,8 @@
   "completeDrawer": {
     "header": "Markere treffet som fullført?",
     "lastMember": "Du er den siste som markerer det som fullført",
-    "lockedYou": "Når du markerer det som fullført, låses treffet: ingen flere endringer i bildene.",
-    "lockedEveryone": "Når alle deltakerne har markert det som fullført, låses treffet: ingen flere endringer i bildene.",
+    "lockedYou": "Når du markerer det som fullført, låses treffet: ingen flere endringer i media.",
+    "lockedEveryone": "Når alle medlemmene markerer det som fullført, låses treffet: ingen flere endringer i media.",
     "chatStaysOpen": "Chatten for treffet forblir åpen, så dere kan holde kontakten.",
     "cantUndo": "Dette kan ikke angres."
   },
@@ -76,26 +76,26 @@
     },
     "inviteSomeone": "Inviter en venn eller en dagsmatch til å bli med.",
     "goTogether": "Gjennomfør treffet sammen.",
-    "uploadPhoto": "Last opp minst ett bilde fra treffet.",
+    "uploadPhoto": "Legg til minst ett bilde eller én video fra det.",
     "everyoneMarks": "Alle deltakerne trykker på Marker som fullført."
   },
   "photos": {
-    "limitHint": "Hvert medlem kan laste opp opptil 2 bilder eller videoer (maks 10 sekunder).",
-    "upload": "+ Last opp",
+    "limitHint": "Hvert medlem kan legge til opptil 2 bilder eller videoer (videoer maks 10 sekunder).",
+    "upload": "+ Legg til media",
     "edit": "Rediger",
     "doneEditing": "Ferdig"
   },
   "tooManyPhotos": {
-    "header": "For mange bilder!",
-    "message": "Hver deltaker kan laste opp maks 2 bilder per treff. Du kan fjerne noen av bildene dine hvis du vil bytte dem ut eller endre dem."
+    "header": "Grensen er nådd",
+    "message": "Hvert medlem kan legge til opptil 2 bilder eller videoer. Fjern ett av dine for å legge til noe annet."
   },
   "deletePhoto": {
-    "header": "Slette bildet?"
+    "header": "Slette dette?"
   },
   "noPhotos": {
-    "header": "Ingen bilder lastet opp!",
-    "message": "Et treff må ha minst ett bilde før det kan markeres som fullført. Du kan legge til bilder på treffsiden med knappen nedenfor:",
-    "buttonAlt": "Knapp for å legge til bilder",
+    "header": "Ingen media ennå!",
+    "message": "Treff må ha minst ett bilde eller én video før de kan markeres som fullført. Du kan legge til på treffsiden med knappen nedenfor:",
+    "buttonAlt": "Knapp for å legge til media",
     "allMembers": "Alle deltakerne må markere treffet som fullført!"
   },
   "countdown": {

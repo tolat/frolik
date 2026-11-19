@@ -1,14 +1,14 @@
 {
   "sections": {
     "activity": "活动",
-    "photos": "照片",
+    "photos": "媒体",
     "members": "成员",
     "invited": "已邀请"
   },
   "alt": {
     "flake": "放鸽子",
     "activity": "活动",
-    "photos": "照片",
+    "photos": "媒体",
     "members": "成员",
     "invited": "已邀请"
   },
@@ -47,8 +47,8 @@
   "completeDrawer": {
     "header": "将这次出游标记为完成？",
     "lastMember": "你是最后一位标记完成的成员",
-    "lockedYou": "标记完成后，出游将被锁定：无法再修改照片。",
-    "lockedEveryone": "所有成员都标记完成后，出游将被锁定：无法再修改照片。",
+    "lockedYou": "一旦你标记为已完成，出游就会锁定：不能再更改媒体。",
+    "lockedEveryone": "所有成员都标记为已完成后，出游就会锁定：不能再更改媒体。",
     "chatStaysOpen": "出游群聊会继续保留，方便大家保持联系。",
     "cantUndo": "此操作无法撤销。"
   },
@@ -75,26 +75,26 @@
     },
     "inviteSomeone": "邀请一位好友或每日匹配加入。",
     "goTogether": "一起去出游。",
-    "uploadPhoto": "至少上传一张出游照片。",
+    "uploadPhoto": "至少添加一张照片或一个视频。",
     "everyoneMarks": "每位成员都点击“标记完成”。"
   },
   "photos": {
-    "limitHint": "每位成员最多可上传 2 张照片或视频（视频最长 10 秒）。",
-    "upload": "+ 上传",
+    "limitHint": "每位成员最多可添加 2 张照片或视频（视频最长 10 秒）。",
+    "upload": "+ 添加媒体",
     "edit": "编辑",
     "doneEditing": "完成编辑"
   },
   "tooManyPhotos": {
-    "header": "照片太多啦！",
-    "message": "每位出游成员最多只能上传2张照片。如果想更换或修改你在这次出游中上传的照片，可以先删掉一些。"
+    "header": "已达上限",
+    "message": "每位出游成员最多可添加 2 张照片或视频。删除你的一项后才能添加其他内容。"
   },
   "deletePhoto": {
-    "header": "删除照片？"
+    "header": "删除这一项？"
   },
   "noPhotos": {
-    "header": "还没有上传照片！",
-    "message": "出游至少要上传一张照片才能标记完成。你可以在出游页面用下方所示的按钮添加照片：",
-    "buttonAlt": "添加照片按钮",
+    "header": "还没有媒体！",
+    "message": "出游至少需要一张照片或一个视频才能标记为已完成。你可以在出游页面用下面的按钮添加：",
+    "buttonAlt": "添加媒体按钮",
     "allMembers": "所有出游成员都必须标记完成！"
   },
   "countdown": {

@@ -69,9 +69,9 @@
     }
   },
   "photos": {
-    "none": "暂无照片",
-    "remove": "删除照片",
-    "userPhoto": "照片",
+    "none": "没有媒体",
+    "remove": "移除",
+    "userPhoto": "照片或视频",
     "change": "更换照片"
   },
   "addUsers": {

@@ -1,14 +1,14 @@
 {
   "sections": {
     "activity": "Actividad",
-    "photos": "Fotos",
+    "photos": "Contenido",
     "members": "Miembros",
     "invited": "Invitados"
   },
   "alt": {
     "flake": "plantón",
     "activity": "actividad",
-    "photos": "fotos",
+    "photos": "contenido",
     "members": "miembros",
     "invited": "invitados"
   },
@@ -47,8 +47,8 @@
   "completeDrawer": {
     "header": "¿Marcar esta salida como completada?",
     "lastMember": "Eres el último miembro en marcarla como completada",
-    "lockedYou": "Cuando la marques como completada, la salida se bloquea: ya no se podrán cambiar las fotos.",
-    "lockedEveryone": "Cuando todos los miembros la marquen como completada, la salida se bloquea: ya no se podrán cambiar las fotos.",
+    "lockedYou": "Cuando la marques como completada, la salida se bloquea: ya no se puede cambiar su contenido.",
+    "lockedEveryone": "Cuando todos los miembros la marquen como completada, la salida se bloquea: ya no se puede cambiar su contenido.",
     "chatStaysOpen": "El chat de la salida sigue abierto para que sigan en contacto.",
     "cantUndo": "Esto no se puede deshacer."
   },
@@ -77,26 +77,26 @@
     },
     "inviteSomeone": "Invita a un amigo o a un match del día.",
     "goTogether": "Vayan juntos a la salida.",
-    "uploadPhoto": "Sube al menos una foto de la salida.",
+    "uploadPhoto": "Añade al menos una foto o video de ella.",
     "everyoneMarks": "Cada miembro toca Marcar como completada."
   },
   "photos": {
-    "limitHint": "Cada miembro puede subir hasta 2 fotos o videos (10 segundos como máximo).",
-    "upload": "+ Subir",
+    "limitHint": "Cada miembro puede añadir hasta 2 fotos o videos (videos de 10 segundos como máximo).",
+    "upload": "+ Añadir contenido",
     "edit": "Editar",
     "doneEditing": "Listo"
   },
   "tooManyPhotos": {
-    "header": "¡Demasiadas fotos!",
-    "message": "Cada miembro de la salida puede subir hasta 2 fotos. Si quieres cambiar o editar lo que subiste a esta salida, puedes quitar algunas de tus fotos."
+    "header": "Límite alcanzado",
+    "message": "Cada miembro de la salida puede añadir hasta 2 fotos o videos. Quita uno de los tuyos para añadir otro."
   },
   "deletePhoto": {
-    "header": "¿Eliminar la foto?"
+    "header": "¿Eliminar este elemento?"
   },
   "noPhotos": {
-    "header": "¡No hay fotos!",
-    "message": "Las salidas necesitan al menos una foto antes de marcarse como completadas. Puedes agregar fotos en la página de la salida con este botón:",
-    "buttonAlt": "Botón para agregar fotos",
+    "header": "¡Aún no hay contenido!",
+    "message": "Las salidas necesitan al menos una foto o video antes de marcarse como completadas. Puedes añadirlos en la página de la salida con el botón de abajo:",
+    "buttonAlt": "Botón para añadir contenido",
     "allMembers": "¡Todos los miembros deben marcar la salida como completada!"
   },
   "countdown": {

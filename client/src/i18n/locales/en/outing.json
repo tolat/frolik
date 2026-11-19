@@ -1,14 +1,14 @@
 {
   "sections": {
     "activity": "Activity",
-    "photos": "Photos",
+    "photos": "Media",
     "members": "Members",
     "invited": "Invited"
   },
   "alt": {
     "flake": "flake",
     "activity": "activity",
-    "photos": "photos",
+    "photos": "media",
     "members": "members",
     "invited": "invited"
   },
@@ -47,8 +47,8 @@
   "completeDrawer": {
     "header": "Mark this Outing completed?",
     "lastMember": "You're the last member to mark it completed",
-    "lockedYou": "Once you mark it completed, the Outing is locked: no more photo changes.",
-    "lockedEveryone": "Once every member marks it completed, the Outing is locked: no more photo changes.",
+    "lockedYou": "Once you mark it completed, the Outing is locked: no more changes to its media.",
+    "lockedEveryone": "Once every member marks it completed, the Outing is locked: no more changes to its media.",
     "chatStaysOpen": "The Outing chat stays open so you can keep in touch.",
     "cantUndo": "This can't be undone."
   },
@@ -76,26 +76,26 @@
     },
     "inviteSomeone": "Invite a friend or a Daily Match to join.",
     "goTogether": "Go on the Outing together.",
-    "uploadPhoto": "Upload at least one photo from it.",
+    "uploadPhoto": "Add at least one photo or video from it.",
     "everyoneMarks": "Every member taps Mark Completed."
   },
   "photos": {
-    "limitHint": "Each member can upload up to 2 photos or videos (10 seconds max).",
-    "upload": "+ Upload",
+    "limitHint": "Each member can add up to 2 photos or videos (videos 10 seconds max).",
+    "upload": "+ Add Media",
     "edit": "Edit",
     "doneEditing": "Done Editing"
   },
   "tooManyPhotos": {
-    "header": "Too many photos!",
-    "message": "Each Outing member can only upload up to 2 photos. You can remove some of your photos if you want to change or edit your uploads for this Outing."
+    "header": "Media limit reached",
+    "message": "Each Outing member can add up to 2 photos or videos. Remove one of yours to add something else."
   },
   "deletePhoto": {
-    "header": "Delete Photo?"
+    "header": "Delete this item?"
   },
   "noPhotos": {
-    "header": "No Photos Uploaded!",
-    "message": "Outings need to have at least one photo uploaded before they can be marked completed. You can add photos in the Outing page using the button shown below:",
-    "buttonAlt": "Add photos button",
+    "header": "No Media Yet!",
+    "message": "Outings need at least one photo or video before they can be marked completed. You can add some on the Outing page with the button shown below:",
+    "buttonAlt": "Add media button",
     "allMembers": "All Outing members must mark the Outing completed!"
   },
   "countdown": {

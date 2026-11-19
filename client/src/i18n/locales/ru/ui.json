@@ -75,9 +75,9 @@
     }
   },
   "photos": {
-    "none": "Нет фото",
-    "remove": "Убрать фото",
-    "userPhoto": "Фото",
+    "none": "Нет медиа",
+    "remove": "Удалить",
+    "userPhoto": "Фото или видео",
     "change": "Сменить фото"
   },
   "addUsers": {

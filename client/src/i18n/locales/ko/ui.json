@@ -69,9 +69,9 @@
     }
   },
   "photos": {
-    "none": "사진 없음",
-    "remove": "사진 삭제",
-    "userPhoto": "사진",
+    "none": "미디어 없음",
+    "remove": "삭제",
+    "userPhoto": "사진 또는 동영상",
     "change": "사진 변경"
   },
   "addUsers": {
