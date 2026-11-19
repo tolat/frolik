@@ -127,6 +127,11 @@
       "header": "Vidéo trop longue",
       "message": "Les vidéos peuvent durer {{seconds}} secondes au maximum. Coupe-la et réessaie."
     },
-    "label": "Vidéo"
+    "label": "Vidéo",
+    "processing": "Traitement de la vidéo…",
+    "failed": {
+      "header": "Échec de l'envoi",
+      "message": "La vidéo n'a pas été envoyée. Vérifie ta connexion et réessaie."
+    }
   }
 }

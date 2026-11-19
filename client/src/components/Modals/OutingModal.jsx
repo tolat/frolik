@@ -112,7 +112,10 @@ const OutingModal = (props) => {
   const [editingPhotos, setEditingPhotos] = useState(false);
   // Videos skip the cropper and upload straight away; this counts the ones
   // still on their way (the server converts them, which takes a moment)
-  const [uploadingVideos, setUploadingVideos] = useState(0);
+  // [{ id, pct, processing }]: shown as a bar with the upload %, then
+  // "Processing…" while the server converts the clip
+  const [videoUploads, setVideoUploads] = useState([]);
+  const uploadingVideos = videoUploads.length;
   const [uploads, setUploads] = useState([]);
   const userPhotoCount = outing?.photos?.filter(
     (p) => p.uploader === user?._id
@@ -272,19 +275,25 @@ const OutingModal = (props) => {
     };
 
     // Videos: check length and size here (the server checks again), then
-    // upload as they are
+    // upload as they are. The bar shows at once: reading the length can take
+    // a moment, and Chrome can't read iPhone (HEVC) clips at all
     for (const file of videos) {
       if (file.size > MAX_VIDEO_BYTES) {
         warn("tooBig");
         continue;
       }
+      const id = `${Date.now()}-${Math.random()}`;
+      const update = (patch) =>
+        setVideoUploads((list) => list.map((v) => (v.id === id ? { ...v, ...patch } : v)));
+      const done = () => setVideoUploads((list) => list.filter((v) => v.id !== id));
+      setVideoUploads((list) => list.concat({ id, pct: 0, processing: false }));
+
       const seconds = await videoFileDuration(file);
       if (seconds !== null && seconds > MAX_VIDEO_SECONDS + 0.6) {
+        done();
         warn("tooLong", { seconds: MAX_VIDEO_SECONDS });
         continue;
       }
-      setUploadingVideos((n) => n + 1);
-      const done = () => setUploadingVideos((n) => Math.max(0, n - 1));
       uploadOutingVideo(
         user,
         outing,
@@ -294,7 +303,8 @@ const OutingModal = (props) => {
           fetchAuth();
           fetchPhotos(response.user);
         },
-        done
+        done,
+        (pct) => update(pct >= 100 ? { pct: 100, processing: true } : { pct })
       );
     }
 
@@ -761,12 +771,24 @@ const OutingModal = (props) => {
                   </div>
                 ) : null}
 
-                {uploadingVideos > 0 ? (
-                  <div className={styles.videoUploading} role="status">
+                {videoUploads.map((v) => (
+                  <div key={v.id} className={styles.videoUploading} role="status">
                     <span className={styles.videoUploadingSpinner} aria-hidden="true" />
-                    {t("outing.video.uploading")}
+                    <span className={styles.videoUploadingText}>
+                      {v.processing
+                        ? t("outing.video.processing")
+                        : t("outing.video.uploading")}
+                    </span>
+                    {v.processing ? null : (
+                      <span className={styles.videoUploadingPct}>{v.pct}%</span>
+                    )}
+                    <span
+                      className={styles.videoUploadingBar}
+                      style={{ width: `${v.processing ? 100 : v.pct}%` }}
+                      aria-hidden="true"
+                    />
                   </div>
-                ) : null}
+                ))}
                 <div className={styles.photoGridContainer}>
                   <SixPhotoGrid
                     deleteableIndexes={deleteableIndexes}

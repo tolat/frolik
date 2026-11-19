@@ -125,6 +125,11 @@
       "header": "Videoen er for lang",
       "message": "Videoer kan være maks {{seconds}} sekunder. Klipp den og prøv igjen."
     },
-    "label": "Video"
+    "label": "Video",
+    "processing": "Behandler video…",
+    "failed": {
+      "header": "Opplastingen mislyktes",
+      "message": "Videoen ble ikke lastet opp. Sjekk tilkoblingen og prøv igjen."
+    }
   }
 }

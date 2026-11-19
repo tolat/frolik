@@ -127,6 +127,11 @@
       "header": "Video demasiado largo",
       "message": "Los videos pueden durar como máximo {{seconds}} segundos. Recórtalo e inténtalo de nuevo."
     },
-    "label": "Video"
+    "label": "Video",
+    "processing": "Procesando video…",
+    "failed": {
+      "header": "No se pudo subir",
+      "message": "El video no se subió. Revisa tu conexión e inténtalo de nuevo."
+    }
   }
 }

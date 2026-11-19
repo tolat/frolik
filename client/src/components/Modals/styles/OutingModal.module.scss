@@ -399,6 +399,8 @@
 
 // A video on its way up (the server converts it before it shows)
 .videoUploading {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   gap: 0.8rem;
@@ -412,6 +414,8 @@
 }
 
 .videoUploadingSpinner {
+  position: relative;
+  flex-shrink: 0;
   width: 1.6rem;
   height: 1.6rem;
   border-radius: 50%;
@@ -424,4 +428,25 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.videoUploadingText {
+  position: relative;
+  flex: 1;
+}
+
+.videoUploadingPct {
+  position: relative;
+  font-variant-numeric: tabular-nums;
+  color: var(--primary-strong);
+}
+
+// Fills behind the text as the file goes up
+.videoUploadingBar {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  background: rgba(var(--primary-rgb), 0.14);
+  transition: width 0.2s ease;
+  pointer-events: none;
 }

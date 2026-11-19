@@ -13,7 +13,8 @@ const ffmpegPath = require("ffmpeg-static");
 
 const MAX_SECONDS = 10;
 const SLACK_SECONDS = 0.6; // "10s" clips are often 10.3s
-const MAX_UPLOAD_BYTES = 60 * 1024 * 1024; // raw upload, before conversion
+// Raw upload, before conversion: a 10s 4K60 iPhone clip can pass 70 MB
+const MAX_UPLOAD_BYTES = 150 * 1024 * 1024;
 
 const run = (args) =>
   new Promise((resolve) => {
@@ -51,6 +52,8 @@ module.exports.processVideo = async (inputBuffer) => {
       "-y",
       "-i", input,
       "-t", String(MAX_SECONDS),
+      // 60fps phone clips: 30 is plenty here and halves the work
+      "-fpsmax", "30",
       "-map", "0:v:0",
       "-map", "0:a:0?",
       // At most 720p on the long side, even dimensions, upright (ffmpeg

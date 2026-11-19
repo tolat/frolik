@@ -6,6 +6,8 @@ import store from "../store";
 import { authActions } from "../store/auth-slice";
 import { chatActions } from "../store/chat-slice";
 import { goActions } from "../store/go-slice";
+import { popupActions } from "../store/popup-slice";
+import { getLanguage, t } from "../i18n";
 
 // Get all activities
 export const fetchActivities = async (setData) => {
@@ -584,25 +586,57 @@ export const uploadOutingPhoto = (
 };
 
 // Upload a short video to an outing: the file itself is the body (no
-// base64), the server converts it and checks its length
-export const uploadOutingVideo = (user, outing, file, onComplete = () => {}, onError = () => {}) => {
-  const requestConfig = {
-    url: `${getServer()}/outing/${user._id}/${outing._id}/upload-video`,
-    headers: { "Content-Type": file.type || "application/octet-stream" },
-    method: "POST",
-    body: file,
+// base64), the server converts it and checks its length. XHR rather than
+// fetch so the upload can report progress (onProgress: 0-100)
+export const uploadOutingVideo = (
+  user,
+  outing,
+  file,
+  onComplete = () => {},
+  onError = () => {},
+  onProgress = () => {}
+) => {
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", `${getServer()}/outing/${user._id}/${outing._id}/upload-video`);
+  xhr.withCredentials = true;
+  xhr.setRequestHeader("Content-Type", file.type || "application/octet-stream");
+  xhr.setRequestHeader("X-Frolik-Lang", getLanguage());
+  xhr.upload.onprogress = (e) => {
+    if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
   };
-  httpFetch(
-    requestConfig,
-    (response) => {
+  xhr.upload.onload = () => onProgress(100);
+
+  const showWarning = (header, message) => {
+    store.dispatch(popupActions.setWarningHeader(header));
+    store.dispatch(popupActions.setWarningMessage(message));
+    store.dispatch(popupActions.setWarningAction(null));
+    store.dispatch(popupActions.showPopup("generic-warning"));
+  };
+  const fail = () => {
+    showWarning(t("outing.video.failed.header"), t("outing.video.failed.message"));
+    onError();
+  };
+
+  xhr.onload = () => {
+    let body = null;
+    try {
+      body = JSON.parse(xhr.responseText);
+    } catch {}
+    if (xhr.status >= 200 && xhr.status < 300 && body) {
       fetchPhotos(store.getState().auth.user);
-      onComplete(response);
-    },
-    (err) => {
-      console.log(err);
-      onError(err);
+      onComplete(body);
+    } else if (xhr.status === 406 && body?.header) {
+      showWarning(body.header, body.message); // too long, unreadable, limit
+      onError();
+    } else if (xhr.status === 413) {
+      showWarning(t("outing.video.tooBig.header"), t("outing.video.tooBig.message"));
+      onError();
+    } else {
+      fail();
     }
-  );
+  };
+  xhr.onerror = fail;
+  xhr.send(file);
 };
 
 // Delete a photo from an outing

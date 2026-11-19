@@ -125,6 +125,11 @@
       "header": "Video zu lang",
       "message": "Videos dürfen höchstens {{seconds}} Sekunden lang sein. Kürze es und versuche es erneut."
     },
-    "label": "Video"
+    "label": "Video",
+    "processing": "Video wird verarbeitet…",
+    "failed": {
+      "header": "Hochladen fehlgeschlagen",
+      "message": "Das Video wurde nicht hochgeladen. Prüfe deine Verbindung und versuche es erneut."
+    }
   }
 }

@@ -123,6 +123,11 @@
       "header": "视频太长",
       "message": "视频最长 {{seconds}} 秒。请剪短后重试。"
     },
-    "label": "视频"
+    "label": "视频",
+    "processing": "正在处理视频…",
+    "failed": {
+      "header": "上传失败",
+      "message": "视频未能上传。请检查网络后重试。"
+    }
   }
 }

@@ -127,6 +127,11 @@
       "header": "Vídeo muito longo",
       "message": "Os vídeos podem ter no máximo {{seconds}} segundos. Corte e tente de novo."
     },
-    "label": "Vídeo"
+    "label": "Vídeo",
+    "processing": "Processando vídeo…",
+    "failed": {
+      "header": "Falha no envio",
+      "message": "O vídeo não foi enviado. Verifique sua conexão e tente de novo."
+    }
   }
 }

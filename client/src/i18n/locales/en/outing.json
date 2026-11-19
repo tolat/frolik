@@ -125,6 +125,11 @@
       "header": "Video too long",
       "message": "Videos can be {{seconds}} seconds at most. Trim it and try again."
     },
-    "label": "Video"
+    "label": "Video",
+    "processing": "Processing video…",
+    "failed": {
+      "header": "Upload failed",
+      "message": "The video didn't upload. Check your connection and try again."
+    }
   }
 }
