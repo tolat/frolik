@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="108 76 296 362">
+  <!-- Flat frolik balloon for small sizes (navbar tab): the same shapes as
+       balloon.svg in solid colours, no gradients, gloss or shadow filters
+       (those render soft on phones), cropped to the balloon. -->
+  <path d="M124 228 L180 228 C184 292 214 330 236 374 C212 330 124 300 124 228 Z" fill="#e8667e"/>
+  <path d="M392 228 L332 228 C328 292 298 330 276 374 C300 330 392 300 392 228 Z" fill="#7cbcf2"/>
+  <path d="M208 228 L304 228 C300 286 270 318 256 354 C242 318 212 286 208 228 Z" fill="#f9d24f"/>
+  <path d="M122 214 A134 134 0 0 1 390 214 Z" fill="#5fca86"/>
+  <rect x="113" y="201" width="286" height="28" rx="9" fill="#dfe3ea"/>
+  <rect x="212" y="380" width="92" height="54" rx="10" fill="#d9bf98"/>
+</svg>

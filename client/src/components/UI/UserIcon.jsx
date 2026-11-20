@@ -65,8 +65,11 @@ const UserIcon = memo(function UserIcon(props) {
         {photoReady ? null : (
           <div
             className={styles.skeletonRing}
-            style={{ width: pieDimension, height: pieDimension, background: backgroundString }}
+            style={{ width: pieDimension, height: pieDimension }}
           >
+            {/* The ring's own layer, so its grey filter doesn't darken the
+                shine disc (which must match the other skeletons) */}
+            <div className={styles.skeletonRingFill} style={{ background: backgroundString }} />
             <div
               className={`${styles.shimmer} shine-loading`}
               style={{ width: photoDimension, height: photoDimension, ...shineSync() }}

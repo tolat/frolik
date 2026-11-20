@@ -26,15 +26,15 @@ body {
      The default (original blue). Once a user has outings, utils/theme.js
      replaces these with the dominant colour of their colour wheel. Keep each
      -rgb in step with its colour. */
-  /* Deep teal: clear of every activity category colour (all pastels:
-     red, green, orange, lavender, yellow). Tried before: original blue
-     #5b8def (soft #eaf1fe), black #1b1d24, dark slate #232a38 */
-  --primary: #127481;
-  --primary-rgb: 18, 116, 129;
-  --primary-strong: #0c5a64;
-  --primary-strong-rgb: 12, 90, 100;
-  --primary-light: #2a8c99;
-  --primary-soft: #e2f1f2;
+  /* Black, with light grey for soft highlights (the app's art and category
+     colours carry the colour). Tried before: original blue #5b8def (soft
+     #eaf1fe), dark slate #232a38, deep teal #127481 (soft #e2f1f2) */
+  --primary: #1b1d24;
+  --primary-rgb: 27, 29, 36;
+  --primary-strong: #0b0c10;
+  --primary-strong-rgb: 11, 12, 16;
+  --primary-light: #3a3d48;
+  --primary-soft: #eceef2;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 

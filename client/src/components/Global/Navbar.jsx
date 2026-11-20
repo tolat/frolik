@@ -19,7 +19,7 @@ import feedIcon from "../../images/post2.png";
 import feedIconBlue from "../../images/post2-blue.png";
 import { getTotalUnreadMessages, unreadNotificationCount } from "../../utils/utils";
 import PhotoPopup from "../Popups/PhotoPopup";
-import balloonLogo from "../../images/brand/balloon.svg";
+import balloonLogo from "../../images/brand/balloon-flat.svg";
 import logo from "../../images/frolik2.png";
 import InstallPromptModal from "../Modals/InstallPromptModal";
 import UpdateAppDrawer from "../Popups/UpdateAppDrawer";

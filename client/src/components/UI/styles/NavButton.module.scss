@@ -55,11 +55,12 @@
   color: $blue !important;
 }
 
-// The Outing tab's frolik balloon logo: full colour. The artwork has empty
-// space around it, so it's drawn larger and the extra is taken back with
-// negative margins: it reads the same size as the other tab icons and the
-// tab keeps the same height.
+// The Outing tab's frolik balloon logo (images/brand/balloon-flat.svg: solid
+// colours, cropped to the balloon), a touch taller than the other icons
+// since it's narrow
 .logoIcon {
-  height: 3.8rem;
-  margin: -0.7rem 0;
+  height: 2.8rem;
+  width: auto;
+  margin-top: -0.2rem;
+  margin-bottom: -0.2rem;
 }
