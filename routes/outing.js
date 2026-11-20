@@ -27,6 +27,7 @@ const {
   webpushNotify,
   decodeDataURL,
   unreadNotificationCount,
+  dropFromOutingChat,
 } = require("../utils/utils");
 const {
   reqAuthenticated,
@@ -199,6 +200,7 @@ router.post(
     // Create outing chat
     let lastRead = {};
     lastRead[user._id.toString()] = "initialized";
+    for (const u of invited) lastRead[u._id.toString()] = "initialized";
     const newChat = new Chat({
       outing: newOuting,
       name: newOuting.name,
@@ -224,6 +226,11 @@ router.post(
     user.outings.push(newOuting);
     user.chats.push(newChat);
     await user.save();
+    // Invitees are in the outing chat right away (until they decline)
+    await User.updateMany(
+      { _id: { $in: invited.map((u) => u._id) } },
+      { $addToSet: { chats: newChat._id } }
+    );
     await populateUser(user);
     const populatedFriends = await populateFriends(user.friends);
 
@@ -871,7 +878,9 @@ router.post(
     });
 
     // remove user from outing invited
+    const droppedInvitees = outing.invited.map((u) => u._id || u);
     outing.invited = [];
+    await dropFromOutingChat(outing, droppedInvitees);
     await outing.save();
     res.sendStatus(200);
   })

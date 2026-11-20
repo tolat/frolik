@@ -28,6 +28,7 @@ const {
   decodeDataURL,
   toGeoPoint,
   markNotificationAnswered,
+  chatMemberIDs,
 } = require("../utils/utils");
 const {
   reqAuthenticated,
@@ -442,9 +443,7 @@ router.get(
     // Only members may open a chat. A member who deleted it "for me" (so it's
     // not in their list) gets it back when they open it, e.g. from a chat
     // alert's View Chat, which used to do nothing for them
-    const memberIDs = (chat.outing ? chat.outing.users : chat.users).map((u) =>
-      (u._id || u).toString()
-    );
+    const memberIDs = chatMemberIDs(chat);
     const listed = user.chats.find((c) => c.toString() == chat._id.toString());
     if (!listed) {
       if (!memberIDs.includes(user._id.toString())) {
@@ -462,8 +461,12 @@ router.get(
         ? chat.outing.users.map((u) => u.toString())
         : chat.users.map((u) => u.toString())
     );
+    // Outing invitees who haven't answered yet are in the chat too
+    const populatedInvited = chat.outing
+      ? await populateFriends(chat.outing.invited.map((u) => u.toString()))
+      : [];
 
-    res.send({ chat: chatForUser(user, chat), populatedUsers });
+    res.send({ chat: chatForUser(user, chat), populatedUsers, populatedInvited });
   })
 );
 
@@ -486,6 +489,7 @@ router.get(
 
     // For each chat, populate the outing users with stripped data
     let chatMembersMap = {};
+    let chatInvitedMap = {};
     for (let chat of user.chats) {
       const populatedMembers = await populateFriends(
         chat.outing
@@ -493,11 +497,18 @@ router.get(
           : chat.users.map((u) => u.toString())
       );
       chatMembersMap[chat._id.toString()] = populatedMembers;
+      // Outing invitees who haven't answered yet are in the chat too
+      if (chat.outing?.invited?.length) {
+        chatInvitedMap[chat._id.toString()] = await populateFriends(
+          chat.outing.invited.map((u) => u.toString())
+        );
+      }
     }
 
     res.send({
       chats: user.chats.map((c) => chatForUser(user, c)),
       chatMembersMap,
+      chatInvitedMap,
     });
   })
 );
@@ -757,6 +768,33 @@ router.post(
     markFormer(user, friendUser._id);
     markFormer(friendUser, user._id);
 
+    // Outing invites between the two are withdrawn: an invitee who is no
+    // longer friends with the outing's creator loses the invite and its chat
+    // (members who already joined stay)
+    const withdrawn = await Outing.find({
+      $or: [
+        { created_by: user._id, invited: friendUser._id },
+        { created_by: friendUser._id, invited: user._id },
+      ],
+    });
+    for (const outing of withdrawn) {
+      const invitee = outing.created_by.equals(user._id) ? friendUser : user;
+      outing.invited = outing.invited.filter((id) => !id.equals(invitee._id));
+      await outing.save();
+      invitee.chats = invitee.chats.filter(
+        (c) => (c._id || c).toString() !== outing.chat?.toString()
+      );
+      invitee.archived_chats = (invitee.archived_chats || []).filter(
+        (c) => (c._id || c).toString() !== outing.chat?.toString()
+      );
+      const invite = invitee.notifications.find(
+        (n) =>
+          n?.type === "outing-invite" && n.outing == outing._id.toString() && !n.status
+      );
+      markNotificationAnswered(invitee, invite, "expired");
+    }
+    const outingMembers = withdrawn.flatMap((o) => o.users);
+
     // Notify FriendUser
     const newNotification = {
       id: Date.now() + Math.random(),
@@ -770,7 +808,7 @@ router.post(
     await user.save();
     await friendUser.save();
 
-    pushUserUpdate([user, friendUser]);
+    pushUserUpdate([user, friendUser, ...outingMembers]);
 
     await populateUser(user);
     const populatedFriends = await populateFriends(user.friends);

@@ -259,6 +259,17 @@ export const fetchMatchedUsers = (user, setMatchedUsers) => {
   httpFetch(requestConfig, handleResponse, handleError);
 };
 
+// Everyone in a chat: outing chats include invitees who haven't answered yet
+export const chatMembers = (chat) =>
+  !chat
+    ? []
+    : chat.outing
+    ? [
+        ...(chat.outing.users || []),
+        ...(chat.outing.invited || []).filter((u) => u && u._id),
+      ]
+    : chat.users || [];
+
 // Get a chat with given id from server
 export const fetchChat = (userID, chatID, onComplete = () => {}, onError) => {
   if (!userID || !chatID) return;
@@ -266,14 +277,17 @@ export const fetchChat = (userID, chatID, onComplete = () => {}, onError) => {
 
   const handleResponse = (response) => {
     const populatedUsers = response.populatedUsers;
+    const populatedInvited = response.populatedInvited || [];
     if (response.chat.outing) {
       response.chat.outing.users = populatedUsers;
+      // Invitees who haven't answered yet are in the outing chat too
+      response.chat.outing.invited = populatedInvited;
     } else {
       response.chat.users = populatedUsers;
     }
 
     // Get any missing user photos
-    for (let user of populatedUsers) {
+    for (let user of [...populatedUsers, ...populatedInvited]) {
       if (!store.getState().data.users[user._id]) {
         fetchProfilePic(user._id);
       }
@@ -325,12 +339,14 @@ export const fetchChats = (user) => {
     for (let chat of response.chats) {
       if (chat.outing) {
         chat.outing.users = response.chatMembersMap[chat._id];
+        // Invitees who haven't answered yet are in the outing chat too
+        chat.outing.invited = response.chatInvitedMap?.[chat._id] || [];
       } else {
         chat.users = response.chatMembersMap[chat._id];
       }
 
       // Get any missing user photos
-      const chatUsers = chat.outing ? chat.outing.users : chat.users;
+      const chatUsers = chatMembers(chat);
       for (let member of chatUsers) {
         fetchProfilePic(member._id);
         store.dispatch(

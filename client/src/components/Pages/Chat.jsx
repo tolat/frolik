@@ -7,7 +7,7 @@ import SimpleSearch from "../UI/SimpleSearch";
 import SimpleButton from "../UI/SimpleButton";
 import { Fragment, memo, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { fetchChat } from "../../utils/data-fetch";
+import { fetchChat, chatMembers } from "../../utils/data-fetch";
 import { setLastReadMessage, getUnreadChatMessages } from "../../utils/utils";
 import CreateChatModal from "../Modals/CreateChatModal";
 import { modalActions } from "../../store/modal-slice";
@@ -85,7 +85,7 @@ const Chat = memo((props) => {
   function applyChatSearch(rawChats) {
     return chatSearch || chatSearch !== ""
       ? rawChats.filter((c) => {
-          const chatUsers = c.outing ? c.outing.users : c.users;
+          const chatUsers = chatMembers(c);
 
           return (
             (c.name &&

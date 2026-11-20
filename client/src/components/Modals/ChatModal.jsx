@@ -8,7 +8,7 @@ import ModalHeaderPortal from "./ModalHeaderPortal";
 import ModalButtonPortal from "./ModalButtonPortal";
 import { useEffect, useRef, useState } from "react";
 import { popupActions } from "../../store/popup-slice";
-import { fetchActivityDetails } from "../../utils/data-fetch";
+import { fetchActivityDetails, chatMembers } from "../../utils/data-fetch";
 import { sendChatMessage } from "../../store/chat-actions";
 import { socket } from "../../socket";
 import { goActions } from "../../store/go-slice";
@@ -29,9 +29,7 @@ const ChatModal = (props) => {
   const activeChat = useSelector((state) => state.modal.activeChat);
   const chat = chatState.find((c) => c._id === activeChat?._id) || activeChat;
   const lastReadMessage = getUnreadChatMessages(user, props.chat);
-  const memberNames = chat?.outing
-    ? chat.outing.users.map((u) => u.first_name)
-    : chat?.users?.map((u) => u.first_name);
+  const memberNames = chatMembers(chat).map((u) => u.first_name);
   const membersString = chat && genMembersString(memberNames);
   const messages = chat?.messages;
   const composerRef = useRef();
@@ -86,7 +84,7 @@ const ChatModal = (props) => {
     });
   };
 
-  const members = chat ? (chat.outing ? chat.outing.users : chat.users) : [];
+  const members = chatMembers(chat);
 
   return !chat ? (
     modalState.selector === "chat-modal" ? (

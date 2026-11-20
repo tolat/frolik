@@ -16,6 +16,7 @@ import {
   archiveChat,
   fetchChats,
   updateChatLastRead,
+  chatMembers,
 } from "../../utils/data-fetch";
 import { fetchAuth } from "../../store/auth-actions";
 import { authActions } from "../../store/auth-slice";
@@ -64,9 +65,7 @@ const ChatCard = memo((props) => {
   const didSwipe = useRef(false); // blocks the synthetic click after a swipe
 
   // Other members only — your own name isn't needed on your own chat list
-  const otherMembers = (
-    (chat?.outing ? chat?.outing?.users : chat?.users) || []
-  ).filter((u) => (u?._id || u) !== user?._id);
+  const otherMembers = chatMembers(chat).filter((u) => (u?._id || u) !== user?._id);
   const memberNames = !chat
     ? ""
     : otherMembers.length
@@ -263,7 +262,7 @@ const ChatCard = memo((props) => {
           ) : null}
           <div className={styles.iconClusterContainer}>
             <UserIconCluster
-              users={chat.outing ? chat.outing.users : chat.users}
+              users={chatMembers(chat)}
               sizeInRem={8.5}
               borderSizeInRem={0.8}
             />

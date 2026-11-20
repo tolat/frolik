@@ -14,7 +14,7 @@ const Outing = require("../models/outing");
 const Activity = require("../models/activity");
 const Chat = require("../models/chat");
 const { deleteFromS3 } = require("./S3");
-const { pushUserUpdate, webpushNotify } = require("./utils");
+const { pushUserUpdate, webpushNotify, dropFromOutingChat } = require("./utils");
 const { tr, userLang, forUser } = require("./i18n");
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -106,6 +106,7 @@ const finalizeOuting = async (outing, activity) => {
       { $pull: { notifications: { outing: outing._id.toString() } } }
     );
   }
+  await dropFromOutingChat(outing, outing.invited);
   outing.invited = [];
 
   const act = activity || (await Activity.findById(outing.activity));
@@ -168,6 +169,7 @@ const processInvites = async (outing, now) => {
   // Deadline passed: drop the pending invites
   const expired = outing.invited.map(idStr);
   outing.invited = [];
+  await dropFromOutingChat(outing, expired);
   await User.updateMany(
     { _id: { $in: expired } },
     // Kept on their Alerts page, tagged Expired

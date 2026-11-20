@@ -187,8 +187,14 @@ module.exports.handleOutingInviteAction = async (
   // add outing to invited user's outing list
   if (status == "accepted") {
     outing.users.push(user);
-    user.chats.push(outing.chat);
+    // Invitees already have the chat; don't list it twice
+    if (!user.chats.some((c) => idOf(c) === idOf(outing.chat))) {
+      user.chats.push(outing.chat);
+    }
     user.outings.push(outing);
+  } else if (outing.chat) {
+    // Declined: the outing chat goes too
+    user.chats = user.chats.filter((c) => idOf(c) !== idOf(outing.chat));
   }
 
   // Get outing creator from the db
@@ -482,7 +488,9 @@ module.exports.getTotalUnreadMessages = (user) => {
   return user?.chats
     ?.filter((c) =>
       c.outing
-        ? c.outing.users.find((uid) => uid.toString() === user._id.toString())
+        ? [...c.outing.users, ...(c.outing.invited || [])].find(
+            (uid) => uid.toString() === user._id.toString()
+          )
         : true
     )
     .reduce((count, chat) => (count += getUnreadChatMessages(user, chat)), 0);
@@ -498,8 +506,29 @@ module.exports.outingIsPending = (user, outing) => {
 
 
 const idOf = (u) => (u?._id ? u._id.toString() : u?.toString());
+// Outing chats include the invitees who haven't answered yet: they can read
+// and post from the moment they're invited, until they decline, the invite
+// expires or they unfriend the creator (see dropFromOutingChat).
 const chatMemberIDs = (chat) =>
-  (chat.outing ? chat.outing.users : chat.users).map(idOf);
+  (chat.outing
+    ? [...(chat.outing.users || []), ...(chat.outing.invited || [])]
+    : chat.users
+  ).map(idOf);
+module.exports.chatMemberIDs = chatMemberIDs;
+
+// Take the outing chat away from users who are no longer invited and never
+// joined (members keep it).
+module.exports.dropFromOutingChat = async (outing, userIDs) => {
+  if (!outing?.chat || !userIDs?.length) return;
+  const members = new Set((outing.users || []).map(idOf));
+  const ids = userIDs.map(idOf).filter((id) => id && !members.has(id));
+  if (!ids.length) return;
+  const chatID = outing.chat._id || outing.chat;
+  await User.updateMany(
+    { _id: { $in: ids } },
+    { $pull: { chats: chatID, archived_chats: chatID } }
+  );
+};
 
 module.exports.onSocketConnection = async (socket) => {
   // socket.request.user is set by the shared express session + passport
