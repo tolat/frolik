@@ -301,9 +301,9 @@ module.exports.activitySeeds = [
   {
     name: "Find The Rainbow",
     cover_photo: "art-findtherainbow", // seeds/images/activity-art
-    description: "Hit the streets and hunt down a rainbow, one colour at a time!",
+    description: "Hunt down a rainbow, one colour at a time, then bring it all together in one shot!",
     category: "Adventure",
-    goal: "Find 5 things out in the world that make a full rainbow: red, orange, yellow, green and blue.",
+    goal: "Find 5 things that make a full rainbow (red, orange, yellow, green and blue) and get them all together in one photo or video.",
     featured: true,
     instructions: [
       {
@@ -322,13 +322,13 @@ module.exports.activitySeeds = [
         kind: "capture",
         number: 3,
         title: "Hunt the Colours",
-        details: "Find something red, orange, yellow, green and blue out on the street (a door, a sign, a flower, a bike…) and snap a photo of each.",
+        details: "Find something red, orange, yellow, green and blue (a leaf, a flower, a snack, a scarf, a toy…). Pick things you can bring together!",
       },
       {
         kind: "create",
         number: 4,
         title: "Make Your Rainbow",
-        details: "Line your 5 photos up in rainbow order. Bonus points for the most creative finds!",
+        details: "Assemble all 5 objects in rainbow order and capture them together in one photo or video. Bonus points for the most creative finds!",
       },
     ],
     location: "Vancouver, CA",

@@ -20,6 +20,18 @@ const ART = path.join(__dirname, "../seeds/images/activity-art");
 const RENAMES = { "Find The Rainbow": "Beach Glass Rainbow" }; // new: old
 const BUILT_IN = { $or: [{ created_by: { $exists: false } }, { created_by: null }] };
 const RENAME_FIELDS = ["name", "description", "category", "goal", "featured", "instructions", "location", "duration", "cost", "participants"];
+// Built-in activities whose wording is kept in step with the seed: when the
+// description, goal or steps in seeds/activity.js change, the database copy
+// is updated on the next server start.
+const TEXT_SYNC = new Set(["Find The Rainbow"]);
+const TEXT_FIELDS = ["description", "goal", "instructions"];
+const plainSteps = (steps) =>
+  (steps || []).map(({ kind, number, title, details }) => ({ kind, number, title, details }));
+const textDiffers = (activity, seed) =>
+  TEXT_SYNC.has(seed.name) &&
+  (activity.description !== seed.description ||
+    activity.goal !== seed.goal ||
+    JSON.stringify(plainSteps(activity.instructions)) !== JSON.stringify(plainSteps(seed.instructions)));
 
 // apply: false = only report. force: re-upload art even when up to date.
 const syncActivityArt = async ({ apply = true, force = false, log = () => {} } = {}) => {
@@ -41,7 +53,8 @@ const syncActivityArt = async ({ apply = true, force = false, log = () => {} } =
     if (!fs.existsSync(file)) throw new Error(`Missing art file ${file}`);
 
     const needsCover = activity.cover_photo !== seed.cover_photo;
-    if (!renamed && !needsCover && !force) {
+    const needsText = !renamed && textDiffers(activity, seed);
+    if (!renamed && !needsCover && !needsText && !force) {
       log(`  =  ${seed.name}: up to date`);
       result.upToDate++;
       continue;
@@ -49,11 +62,18 @@ const syncActivityArt = async ({ apply = true, force = false, log = () => {} } =
     const changes = [];
     if (renamed) changes.push(`rename "${activity.name}" -> "${seed.name}"`);
     if (needsCover) changes.push(`cover ${activity.cover_photo || "(none)"} -> ${seed.cover_photo}`);
+    if (needsText) changes.push("wording");
     log(`  *  ${seed.name}: ${changes.join(", ") || "re-upload art"}`);
 
     if (apply) {
       // Upload first: the record only points at the art once the art exists
-      await uploadToS3(process.env.AWS_BUCKET, seed.cover_photo, fs.readFileSync(file));
+      if (renamed || needsCover || force) {
+        await uploadToS3(process.env.AWS_BUCKET, seed.cover_photo, fs.readFileSync(file));
+      }
+      if (needsText) {
+        for (const f of TEXT_FIELDS) activity[f] = seed[f];
+        activity.markModified("instructions");
+      }
       if (renamed) {
         for (const f of RENAME_FIELDS) activity[f] = seed[f];
         activity.markModified("instructions");

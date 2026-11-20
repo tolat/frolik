@@ -14,32 +14,15 @@ const NavButton = (props) => {
   return (
     <div className={`${styles.container} ${props.className}`}>
       <button onClick={props.onClick} className={styles.button}>
-        {props.featured && props.icon ? (
-          // Centre button: the icon in a white disc inside a colour ring
-          <Fragment>
-            <span
-              className={`${styles.ring} ${props.blue ? styles.ringActive : ""}`}
-              style={props.ringBackground ? { "--ring": props.ringBackground } : null}
-            >
-              <span className={styles.disc}>
-                <Icon className={styles.featuredIcon} src={props.icon} active={props.blue} />
-              </span>
-            </span>
-            <div
-              className={`${styles.iconText} ${
-                props.blue ? styles.blue : null
-              }`}
-            >
-              {props.text}
-            </div>
-          </Fragment>
-        ) : props.icon ? (
+        {props.icon ? (
           <Fragment>
             <Icon
               style={props.imgStyle}
-              className={styles.iconButton}
+              className={`${styles.iconButton} ${
+                props.keepColor ? styles.logoIcon : ""
+              }`}
               src={props.icon}
-              active={props.blue}
+              active={props.blue && !props.keepColor}
             />
             <div
               className={`${styles.iconText} ${

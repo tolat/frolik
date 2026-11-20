@@ -193,6 +193,9 @@
   width: 3.4rem;
   height: 3.4rem;
   margin-bottom: 0.4rem;
+  // The page's content box clips 10px past the screen edge: keep the shadow
+  // inside that (it used to be cut off in a straight line on the right)
+  margin-right: 0.3rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -200,7 +203,7 @@
   border: none;
   border-radius: 100rem;
   background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 55%, var(--primary-strong) 100%);
-  box-shadow: 0 6px 16px rgba(var(--primary-strong-rgb), 0.32);
+  box-shadow: 0 4px 8px rgba(var(--primary-strong-rgb), 0.28);
   cursor: pointer;
   transition: transform 0.15s $ease_out, box-shadow 0.15s ease;
 
@@ -437,6 +440,29 @@
   width: 7.5rem;
   flex-shrink: 0;
   padding: 0;
+}
+
+// Edit / Add Members: solid black circles (the app's button colour) with
+// white icons, label underneath
+.roundIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.6rem;
+  height: 4.6rem;
+  margin-bottom: 0.6rem;
+  border-radius: 50%;
+  background-color: $blue;
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.22);
+  transition: transform $dur_fast $ease_out;
+}
+
+.roundButton:active .roundIcon {
+  transform: scale(0.94);
+}
+
+.roundIconGlyph {
+  height: 2.3rem;
 }
 
 // "Add People" / "Edit People" under the round buttons

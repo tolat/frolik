@@ -101,12 +101,12 @@
   transform: scale(0.94);
 }
 
-// Current page: no box behind it. The (blue) icon lifts a touch with a soft
-// blue glow under it, the same treatment as the Outing button's ring
+// Current page: a soft blue square behind the tab, icon a touch bigger
 .activeLink .navButton {
+  background-color: $light_blue;
+
   img {
-    transform: translateY(-1px) scale(1.1);
-    filter: drop-shadow(0 4px 6px rgba(var(--primary-rgb), 0.45));
+    transform: scale(1.06);
   }
 }
 
@@ -177,17 +177,5 @@
   height: 4rem;
 }
 
-// The centre Outing button draws its own round highlight (NavButton ring):
-// no pill behind it, no extra icon zoom, and it overflows the bar upward
-.navButton.featuredNavButton,
-.activeLink .navButton.featuredNavButton {
-  background-color: transparent;
-  overflow: visible;
-
-  img {
-    transform: none;
-    filter: none;
-  }
-}
 
 // (taps shrink-bounce like the other tabs: .navButton:active above)

@@ -12,6 +12,7 @@ import editIcon from "../../images/edit.png";
 import plusIcon from "../../images/add-group.png";
 import EditUsersModal from "../Modals/EditUsersModal";
 import UserIconCluster from "../UI/UserIconCluster";
+import TintedIcon from "../UI/TintedIcon";
 import ActivityCard from "../UI/ActivityCard";
 import FilterActivitiesModal from "../Modals/FilterActivitiesModal";
 import balloonIcon from "../../images/air-balloon-light.png";
@@ -384,11 +385,9 @@ const Go = (props) => {
             className={styles.roundButton}
             style={{ opacity: goState.outing.users[1] ? 1 : 0.2 }}
           >
-            <img
-              className={styles.editIcon}
-              src={editIcon}
-              alt=""
-            />
+            <span className={styles.roundIcon}>
+              <TintedIcon src={editIcon} className={styles.roundIconGlyph} color="#fff" />
+            </span>
             <span className={styles.roundButtonLabel}>
               {t("go.members.edit")}
             </span>
@@ -399,15 +398,15 @@ const Go = (props) => {
             borderSizeInRem={avatarRem * (1.4 / 18)}
           />
           <button onClick={handleAddUserClick} className={styles.roundButton}>
-            <img
-              className={`${styles.editIcon} ${
+            <span
+              className={`${styles.roundIcon} ${
                 goState.outing.activity?.name && goState.outing.users.length < 2
                   ? styles["bump"]
-                  : null
+                  : ""
               }`}
-              src={plusIcon}
-              alt=""
-            />
+            >
+              <TintedIcon src={plusIcon} className={styles.roundIconGlyph} color="#fff" />
+            </span>
             <span className={styles.roundButtonLabel}>
               {t("go.members.add")}
             </span>

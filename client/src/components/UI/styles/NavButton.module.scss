@@ -55,78 +55,11 @@
   color: $blue !important;
 }
 
-// ── Centre (Outing) button: round, lifted, with the avatars' colour ring ───
-// The ring is drawn hollow (::before, masked) so the centre can use the nav
-// bar's own see-through white and blur — a solid white disc stood out
-.ring {
-  --ring: conic-gradient(
-    from 200deg,
-    rgb(248 157 157),
-    rgb(186, 255, 169),
-    rgb(255 196 140),
-    rgb(201 184 255),
-    rgb(255 236 69),
-    rgb(248 157 157)
-  ); // fallback until the category colours load
-  --ring-width: 0.4rem;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 5.2rem;
-  height: 5.2rem;
-  margin-top: -2.6rem; // lifted above the bar
-  box-sizing: border-box;
-  border-radius: 50%;
-  box-shadow: 0 6px 16px rgba(27, 29, 36, 0.16), 0 0 0 0.35rem rgba(255, 255, 255, 0.96);
-  transition: box-shadow $dur ease;
-
-  &::before {
-    content: "";
-    position: absolute;
-    // 1px past the edge, under the white collar: at exactly the edge the
-    // anti-aliased rim let dark photos behind the bar show as a hairline
-    inset: -1px;
-    border-radius: 50%;
-    background: var(--ring);
-    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--ring-width)), #000 calc(100% - var(--ring-width) + 0.5px));
-    mask: radial-gradient(farthest-side, transparent calc(100% - var(--ring-width)), #000 calc(100% - var(--ring-width) + 0.5px));
-    pointer-events: none;
-    // above the centre: its frosted blur (computers) puts it on its own
-    // layer, which otherwise painted over the ring and hid it
-    z-index: 1;
-  }
+// The Outing tab's frolik balloon logo: full colour. The artwork has empty
+// space around it, so it's drawn larger and the extra is taken back with
+// negative margins: it reads the same size as the other tab icons and the
+// tab keeps the same height.
+.logoIcon {
+  height: 3.8rem;
+  margin: -0.7rem 0;
 }
-
-// Same fill as the nav bar (Navbar.module.scss .innerContainer)
-.disc {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  // a little under the ring's inner edge (the ring is drawn on top), so no
-  // see-through sliver opens between them
-  width: calc(100% - 2 * var(--ring-width) + 4px);
-  height: calc(100% - 2 * var(--ring-width) + 4px);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.96);
-  transition: background-color $dur ease;
-
-  @media (hover: hover) and (pointer: fine) {
-    -webkit-backdrop-filter: saturate(180%) blur(18px);
-    backdrop-filter: saturate(180%) blur(18px);
-  }
-}
-
-.featuredIcon {
-  height: 2.5rem;
-}
-
-.ringActive {
-  box-shadow: 0 8px 20px rgba(var(--primary-rgb), 0.28), 0 0 0 0.35rem rgba(255, 255, 255, 0.96);
-
-  .disc {
-    background: $light_blue;
-  }
-}
-
-
