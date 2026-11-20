@@ -435,6 +435,7 @@
 .usersContainer .roundButton {
   background-color: transparent;
   width: 7.5rem;
+  flex-shrink: 0;
   padding: 0;
 }
 
@@ -442,8 +443,12 @@
 .roundButtonLabel {
   font-size: 1.15rem;
   font-weight: 600;
+  line-height: 1.2;
   color: $text_muted;
-  white-space: nowrap;
+  text-align: center;
+  // Long labels (other languages) wrap onto a second line instead of
+  // spilling under the avatar
+  overflow-wrap: anywhere;
 }
 
 .selectedActivity {

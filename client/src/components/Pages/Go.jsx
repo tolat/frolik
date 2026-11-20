@@ -40,6 +40,7 @@ import CreateActivityDrawer from "../Popups/CreateActivityDrawer";
 import LoaderSpinner from "../UI/LoaderSpinner";
 import { useT } from "../../i18n";
 import { inkFor } from "../../utils/theme";
+import useViewportWidth from "../../hooks/useViewportWidth";
 
 // The category colour, see-through: a soft highlight behind the tab title
 const tint = (color, alpha) => {
@@ -339,6 +340,15 @@ const Go = (props) => {
     setSelected(capitalizeFirstLetter(activity?.category.toLowerCase()));
   };
 
+  // The avatar takes what's left between the two side buttons (7.5rem
+  // each + padding), up to 18rem. On a 320px-wide screen (iPhone "Larger
+  // Text" display zoom) a fixed 18rem pushed the buttons off the edges.
+  const viewportWidth = useViewportWidth();
+  const avatarRem = Math.max(
+    11,
+    Math.min(18, Math.floor((viewportWidth - 180) / 10 * 2) / 2)
+  );
+
   const removeActivity = (activity) => {
     dispatchFilter({ type: "remove-activity", payload: activity });
   };
@@ -385,8 +395,8 @@ const Go = (props) => {
           </button>
           <UserIconCluster
             users={goUsers}
-            sizeInRem={18}
-            borderSizeInRem={1.4}
+            sizeInRem={avatarRem}
+            borderSizeInRem={avatarRem * (1.4 / 18)}
           />
           <button onClick={handleAddUserClick} className={styles.roundButton}>
             <img
