@@ -399,9 +399,11 @@ module.exports.handleFriendRequestAction = async (
       body: forUser("push.friendRequestAccepted.body", { name: requestedName }),
     });
 
-    // Add users to eachother's friends list
-    requestingUser.friends.push(user);
-    user.friends.push(requestingUser);
+    // Add users to eachother's friends list (once: accepting twice, e.g. a
+    // double tap, used to list the same friend several times)
+    const has = (list, u) => (list || []).some((f) => (f._id || f).toString() === u._id.toString());
+    if (!has(requestingUser.friends, user)) requestingUser.friends.push(user);
+    if (!has(user.friends, requestingUser)) user.friends.push(requestingUser);
   }
 
   // Keep the request on their Alerts page, answered

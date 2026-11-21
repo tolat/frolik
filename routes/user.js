@@ -565,6 +565,31 @@ router.post(
       return;
     }
 
+    // An invite or friend request that was already answered stays answered:
+    // answering it again (a double tap, or the alert and the drawer both)
+    // used to add the friend or join the outing a second time
+    const answerable =
+      notification.type === "friend-request" || notification.type === "outing-invite";
+    if (answerable) {
+      // Claim it in the database first, so two answers at the same moment
+      // can't both get through (the second used to 500 or add twice)
+      const claim = notification.status
+        ? { modifiedCount: 0 }
+        : await User.updateOne(
+            {
+              _id: user._id,
+              notifications: { $elemMatch: { id: notification.id, status: null } },
+            },
+            { $set: { "notifications.$.status": "answering" } }
+          );
+      if (!claim.modifiedCount) {
+        const fresh = await User.findById(user._id);
+        await populateUser(fresh);
+        res.send({ user: fresh });
+        return;
+      }
+    }
+
     // Handle dismissal of different notification types
     switch (notification.type) {
       case "outing-invite":

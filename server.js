@@ -203,4 +203,7 @@ server.listen(process.env.PORT, () => {
   require("./utils/activityArt").startActivityArtSync();
   // Category colours from seeds/globals.js (utils/globalsSync.js)
   require("./utils/globalsSync").startGlobalsSync();
+  // Repeated friends / outing members from answering a request twice
+  // (utils/dedupeLists.js)
+  require("./utils/dedupeLists").startDedupeLists();
 });
