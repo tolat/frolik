@@ -112,8 +112,9 @@
 }
 
 .filterPillActive {
-  background-color: $text;
-  border-color: $text;
+  // The app's button colour, with the same light-to-dark gradient as buttons
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 55%, var(--primary-strong) 100%);
+  border-color: transparent;
   color: white;
 }
 
