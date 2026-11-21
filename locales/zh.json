@@ -13,6 +13,8 @@
   "activity.nameLength.message": "活动名称需为1-{{max}}个字符。",
   "activity.notFound.header": "找不到该活动",
   "activity.notFound.message": "它可能已被删除。",
+  "appUpdate.required.header": "Frolik 已更新",
+  "appUpdate.required.message": "此版本的应用已无法使用。请从主屏幕删除 Frolik，然后在 Safari 或 Chrome 中打开 frolik.ca，再次将其添加到主屏幕。（在浏览器中，只需刷新页面即可。）",
   "auth.alreadyVerified.header": "无法发送邮件",
   "auth.alreadyVerified.message": "用户{{email}}已完成验证。",
   "auth.linkExpired.header": "链接已过期",

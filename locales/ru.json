@@ -13,6 +13,8 @@
   "activity.nameLength.message": "Название активности — от 1 до {{max}} символов.",
   "activity.notFound.header": "Активность не найдена",
   "activity.notFound.message": "Возможно, её удалили.",
+  "appUpdate.required.header": "Frolik обновился",
+  "appUpdate.required.message": "Эта версия приложения больше не работает. Удалите Frolik с главного экрана, затем откройте frolik.ca в Safari или Chrome и снова добавьте его на главный экран. (В браузере просто обновите страницу.)",
   "auth.alreadyVerified.header": "Не удалось отправить письмо",
   "auth.alreadyVerified.message": "Адрес {{email}} уже подтверждён.",
   "auth.linkExpired.header": "Ссылка устарела",

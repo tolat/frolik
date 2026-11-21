@@ -13,6 +13,8 @@
   "activity.nameLength.message": "Activity names must be 1-{{max}} characters.",
   "activity.notFound.header": "Activity not found",
   "activity.notFound.message": "It may have been deleted.",
+  "appUpdate.required.header": "Frolik has been updated",
+  "appUpdate.required.message": "This version of the app no longer works. Delete Frolik from your home screen, then open frolik.ca in Safari or Chrome and add it to your home screen again. (In a browser, just refresh the page.)",
   "auth.alreadyVerified.header": "Could not send email",
   "auth.alreadyVerified.message": "User {{email}} has already been verified.",
   "auth.linkExpired.header": "Link Expired",

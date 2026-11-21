@@ -13,6 +13,8 @@
   "activity.nameLength.message": "يجب أن يتكون اسم النشاط من 1 إلى {{max}} حرفًا.",
   "activity.notFound.header": "النشاط غير موجود",
   "activity.notFound.message": "ربما تم حذفه.",
+  "appUpdate.required.header": "تم تحديث Frolik",
+  "appUpdate.required.message": "هذا الإصدار من التطبيق لم يعد يعمل. احذف Frolik من شاشتك الرئيسية، ثم افتح frolik.ca في Safari أو Chrome وأضفه إلى شاشتك الرئيسية مرة أخرى. (في المتصفح، يكفي تحديث الصفحة.)",
   "auth.alreadyVerified.header": "تعذّر إرسال البريد الإلكتروني",
   "auth.alreadyVerified.message": "تم التحقق من المستخدم {{email}} مسبقًا.",
   "auth.linkExpired.header": "انتهت صلاحية الرابط",

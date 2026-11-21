@@ -1,5 +1,10 @@
 import { getServer } from "./env-utils";
-import { t } from "../i18n";
+import { t, getLanguage } from "../i18n";
+
+// Every request to the app's API carries the language header: the server
+// also uses its absence to spot out-of-date app installs
+// (utils/requireCurrentApp.js on the server)
+const appHeaders = (extra = {}) => ({ "X-Frolik-Lang": getLanguage(), ...extra });
 
 // Labels the user actually picked from geocoding results (or already had),
 // with their coordinates. Validators accept only these, and the save calls
@@ -24,6 +29,7 @@ export const geoFromPoint = (point) =>
 export const searchPlaces = async (q, signal) => {
   const res = await fetch(`${getServer()}/geo/search?q=${encodeURIComponent(q)}`, {
     signal,
+    headers: appHeaders(),
   });
   if (!res.ok) throw new Error("search failed");
   return (await res.json()).places || [];
@@ -81,7 +87,7 @@ const positionError = (err) =>
 const reverseLookup = async (lat, lng) => {
   const url = `${getServer()}/geo/reverse?lat=${lat}&lng=${lng}`;
   const attempt = async () => {
-    const res = await fetch(url);
+    const res = await fetch(url, { headers: appHeaders() });
     const body = await res.json().catch(() => ({}));
     if (res.ok && body.place) return body.place;
     const err = new Error(body.header || t("location.errors.cityNotFound"));
@@ -124,7 +130,7 @@ export const saveLocation = async (userID, body) => {
   const res = await fetch(`${getServer()}/user/${userID}/location`, {
     method: "POST",
     credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    headers: appHeaders({ "Content-Type": "application/json" }),
     body: JSON.stringify({ userID, ...body }),
   });
   const data = await res.json().catch(() => ({}));

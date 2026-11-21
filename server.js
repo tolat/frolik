@@ -126,6 +126,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 // req.t(key, vars): server messages in the user's language (utils/i18n.js)
 app.use(attachI18n);
+// Out-of-date installed apps get "Frolik has been updated" on every request
+// until they reinstall (utils/requireCurrentApp.js)
+app.use(require("./utils/requireCurrentApp").requireCurrentApp);
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());

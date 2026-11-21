@@ -13,6 +13,8 @@
   "activity.nameLength.message": "액티비티 이름은 1~{{max}}자여야 해요.",
   "activity.notFound.header": "액티비티를 찾을 수 없어요",
   "activity.notFound.message": "삭제되었을 수 있어요.",
+  "appUpdate.required.header": "Frolik이 업데이트되었습니다",
+  "appUpdate.required.message": "이 버전의 앱은 더 이상 작동하지 않습니다. 홈 화면에서 Frolik을 삭제한 다음 Safari 또는 Chrome에서 frolik.ca를 열어 홈 화면에 다시 추가하세요. (브라우저에서는 페이지를 새로고침하기만 하면 됩니다.)",
   "auth.alreadyVerified.header": "메일을 보낼 수 없어요",
   "auth.alreadyVerified.message": "{{email}} 사용자는 이미 인증되었어요.",
   "auth.linkExpired.header": "링크 만료",

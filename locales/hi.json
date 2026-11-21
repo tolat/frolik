@@ -13,6 +13,8 @@
   "activity.nameLength.message": "एक्टिविटी का नाम 1-{{max}} अक्षरों का होना चाहिए।",
   "activity.notFound.header": "एक्टिविटी नहीं मिली",
   "activity.notFound.message": "शायद इसे डिलीट कर दिया गया है।",
+  "appUpdate.required.header": "Frolik अपडेट हो गया है",
+  "appUpdate.required.message": "ऐप का यह संस्करण अब काम नहीं करता। अपनी होम स्क्रीन से Frolik हटाएँ, फिर Safari या Chrome में frolik.ca खोलें और इसे फिर से होम स्क्रीन पर जोड़ें। (ब्राउज़र में, बस पेज रीफ़्रेश करें।)",
   "auth.alreadyVerified.header": "ईमेल नहीं भेजा जा सका",
   "auth.alreadyVerified.message": "यूज़र {{email}} पहले ही वेरिफ़ाई हो चुका है।",
   "auth.linkExpired.header": "लिंक की समय-सीमा खत्म",

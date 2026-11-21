@@ -13,6 +13,8 @@
   "activity.nameLength.message": "Aktivitetsnavn må ha 1–{{max}} tegn.",
   "activity.notFound.header": "Fant ikke aktiviteten",
   "activity.notFound.message": "Den kan ha blitt slettet.",
+  "appUpdate.required.header": "Frolik er oppdatert",
+  "appUpdate.required.message": "Denne versjonen av appen virker ikke lenger. Slett Frolik fra hjemskjermen, åpne deretter frolik.ca i Safari eller Chrome og legg den til på hjemskjermen igjen. (I en nettleser holder det å laste inn siden på nytt.)",
   "auth.alreadyVerified.header": "Kunne ikke sende e-post",
   "auth.alreadyVerified.message": "Brukeren {{email}} er allerede bekreftet.",
   "auth.linkExpired.header": "Lenken er utløpt",

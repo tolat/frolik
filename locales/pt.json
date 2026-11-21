@@ -13,6 +13,8 @@
   "activity.nameLength.message": "O nome da atividade precisa ter de 1 a {{max}} caracteres.",
   "activity.notFound.header": "Atividade não encontrada",
   "activity.notFound.message": "Ela pode ter sido excluída.",
+  "appUpdate.required.header": "O Frolik foi atualizado",
+  "appUpdate.required.message": "Esta versão do app não funciona mais. Apague o Frolik da sua tela inicial, depois abra frolik.ca no Safari ou Chrome e adicione-o à tela inicial novamente. (Em um navegador, basta atualizar a página.)",
   "auth.alreadyVerified.header": "Não foi possível enviar o e-mail",
   "auth.alreadyVerified.message": "O usuário {{email}} já foi verificado.",
   "auth.linkExpired.header": "Link expirado",
