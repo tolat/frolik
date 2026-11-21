@@ -452,7 +452,8 @@
   height: 4.6rem;
   margin-bottom: 0.6rem;
   border-radius: 50%;
-  background-color: $blue;
+  // Same light-to-dark gradient as the app's other buttons
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 55%, var(--primary-strong) 100%);
   box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.22);
   transition: transform $dur_fast $ease_out;
 }

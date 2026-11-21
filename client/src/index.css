@@ -26,15 +26,16 @@ body {
      The default (original blue). Once a user has outings, utils/theme.js
      replaces these with the dominant colour of their colour wheel. Keep each
      -rgb in step with its colour. */
-  /* Black, with light grey for soft highlights (the app's art and category
-     colours carry the colour). Tried before: original blue #5b8def (soft
-     #eaf1fe), dark slate #232a38, deep teal #127481 (soft #e2f1f2) */
-  --primary: #1b1d24;
-  --primary-rgb: 27, 29, 36;
-  --primary-strong: #0b0c10;
-  --primary-strong-rgb: 11, 12, 16;
-  --primary-light: #3a3d48;
-  --primary-soft: #eceef2;
+  /* Near-black with a hint of blue (primary-light is set a little brighter
+     so the buttons' light-to-dark gradient still shows), light grey for soft
+     highlights. Tried and dropped: original blue #5b8def, black #1b1d24,
+     dark slate #232a38, deep teal #127481, navy #1f3566 */
+  --primary: #1c2335;
+  --primary-rgb: 28, 35, 53;
+  --primary-strong: #10141f;
+  --primary-strong-rgb: 16, 20, 31;
+  --primary-light: #3a4560;
+  --primary-soft: #eaedf4;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
