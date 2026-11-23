@@ -13,5 +13,10 @@
     "confirm": "Mein Profil löschen",
     "deleting": "Wird gelöscht …",
     "cancel": "Abbrechen"
+  },
+  "darkMode": {
+    "title": "Dunkelmodus",
+    "on": "An: dunkle Hintergründe auf diesem Gerät.",
+    "off": "Dunkle Hintergründe auf diesem Gerät verwenden."
   }
 }

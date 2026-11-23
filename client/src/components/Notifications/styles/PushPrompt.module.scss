@@ -52,8 +52,9 @@
   border: none;
   border-radius: 100rem;
   padding: 0.8rem 1.4rem;
-  background-color: $blue;
-  color: white;
+  background: var(--btn-fill);
+  box-shadow: var(--btn-shadow);
+  color: var(--on-btn);
   font-size: 1.3rem;
   font-weight: 600;
   cursor: pointer;

@@ -82,9 +82,9 @@
   padding: 0.55rem 1.5rem !important;
   border: none !important;
   border-radius: 100rem !important;
-  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 55%, var(--primary-strong) 100%) !important;
-  box-shadow: 0 4px 12px rgba(var(--primary-strong-rgb), 0.28) !important;
-  color: white !important;
+  background: var(--btn-fill) !important;
+  box-shadow: var(--btn-shadow) !important;
+  color: var(--on-btn) !important;
   font-size: 1.25rem !important;
   font-weight: 700;
 }

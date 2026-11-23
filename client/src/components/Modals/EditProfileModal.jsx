@@ -21,6 +21,7 @@ import { modalActions } from "../../store/modal-slice";
 import { startTour } from "../Tour/Tour";
 import { confirmLocation, geoFromPoint } from "../../utils/location";
 import NotificationsToggle from "../UI/NotificationsToggle";
+import DarkModeToggle from "../UI/DarkModeToggle";
 import WarningPopup from "../Popups/WarningPopup";
 import { deleteAccount } from "../../utils/data-fetch";
 import { useT } from "../../i18n";
@@ -188,6 +189,7 @@ const EditProfileModal = () => {
             <>
               <AutoLocationToggle />
               <NotificationsToggle />
+              <DarkModeToggle />
             </>
           }
           clearValidators={() => setValidationDisplay("none")}

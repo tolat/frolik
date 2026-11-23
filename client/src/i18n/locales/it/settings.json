@@ -13,5 +13,10 @@
     "confirm": "Elimina il mio profilo",
     "deleting": "Eliminazione…",
     "cancel": "Annulla"
+  },
+  "darkMode": {
+    "title": "Modalità scura",
+    "on": "Attiva: sfondi scuri su questo dispositivo.",
+    "off": "Usa sfondi scuri su questo dispositivo."
   }
 }

@@ -64,7 +64,7 @@
 
 .stripe {
   height: 0.8rem;
-  background-color: #dfe3ea;
+  background-color: var(--bone);
   flex-shrink: 0;
 }
 
@@ -131,7 +131,7 @@
 
 .sideStripe {
   width: 0.8rem;
-  background-color: #dfe3ea;
+  background-color: var(--bone);
   flex-shrink: 0;
 }
 
@@ -145,7 +145,7 @@
 
 // Light pills standing in for the chips / rating on the art
 .overlay {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: var(--glass);
   border-radius: 100rem;
   flex-shrink: 0;
 }

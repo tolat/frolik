@@ -13,5 +13,10 @@
     "confirm": "Supprimer mon profil",
     "deleting": "Suppression…",
     "cancel": "Annuler"
+  },
+  "darkMode": {
+    "title": "Mode sombre",
+    "on": "Activé : fonds sombres sur cet appareil.",
+    "off": "Utiliser des fonds sombres sur cet appareil."
   }
 }

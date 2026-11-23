@@ -50,8 +50,9 @@
 }
 
 .saveButton {
-  background-color: $blue;
-  color: #fff;
+  background: var(--btn-fill);
+  box-shadow: var(--btn-shadow);
+  color: var(--on-btn);
   border: none;
   padding-inline-start: 2rem;
   padding-inline-end: 2rem;
@@ -80,7 +81,7 @@
 
 .cropButton {
   background-color: $button_grey;
-  color: #000000;
+  color: var(--text);
   border: none;
   padding: 1rem;
   cursor: pointer;
@@ -157,9 +158,9 @@
 }
 
 .saveButton {
-  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 55%, var(--primary-strong) 100%) !important;
-  color: white !important;
-  box-shadow: 0 4px 12px rgba(var(--primary-strong-rgb), 0.28) !important;
+  background: var(--btn-fill) !important;
+  color: var(--on-btn) !important;
+  box-shadow: var(--btn-shadow) !important;
 }
 
 .unclickableButton {

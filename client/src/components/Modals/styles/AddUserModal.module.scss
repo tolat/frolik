@@ -49,7 +49,7 @@
 .dailyMatchesContainer {
   border-radius: $radius_lg;
   padding: 1.8rem 1.4rem 0.8rem;
-  background: linear-gradient(160deg, #fff7e6 0%, $surface 70%);
+  background: linear-gradient(160deg, color-mix(in srgb, #ffbf47 14%, var(--surface)) 0%, $surface 70%);
   border: 1.5px solid rgba(255, 191, 71, 0.45);
   box-shadow: $shadow_sm;
   margin-bottom: 1.6rem;

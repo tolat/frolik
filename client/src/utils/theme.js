@@ -82,8 +82,29 @@ export const inkFor = (color, target) => {
 const hex = (rgb) => "#" + rgb.map((v) => v.toString(16).padStart(2, "0")).join("");
 const mixWhite = (rgb, amount) => rgb.map((v) => Math.round(v + (255 - v) * amount));
 
-// The CSS variables for one primary colour
+// Mix a colour into the dark-mode surface (index.css --surface, dark)
+const DARK_SURFACE = [26, 29, 37];
+const mixDark = (rgb, amount) =>
+  rgb.map((v, i) => Math.round(DARK_SURFACE[i] + (v - DARK_SURFACE[i]) * amount));
+
+// The CSS variables for one primary colour. In dark mode the soft tint is a
+// deep, muted version of the colour (a pale wash glared on the dark screen)
+// and accents use the bright colour itself, so text on the dark reads.
 export const primaryShades = (color) => {
+  const dark = document.documentElement.getAttribute("data-theme") === "dark";
+  if (dark) {
+    const rgb = parseRgb(color);
+    if (!rgb) return null;
+    return {
+      "--primary": hex(rgb),
+      "--primary-rgb": "0, 0, 0",
+      "--primary-strong": hex(mixWhite(rgb, 0.2)),
+      "--primary-strong-rgb": "0, 0, 0",
+      "--primary-light": hex(mixWhite(rgb, 0.35)),
+      // A richer (darkened) version of the colour, sunk into the dark surface
+      "--primary-soft": hex(mixDark(darkenTo(color, 3) || rgb, 0.42)),
+    };
+  }
   const base = darkenTo(color, 3); // white text on it reads
   const strong = darkenTo(color, 4.5); // text-on-white, pressed states
   if (!base || !strong) return null;

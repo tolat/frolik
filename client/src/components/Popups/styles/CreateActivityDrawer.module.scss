@@ -85,8 +85,8 @@
 .coverActions button {
   border: none;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.94);
-  color: #1b1d24;
+  background: var(--glass);
+  color: var(--text);
   font: inherit;
   font-size: 1.2rem;
   font-weight: 700;
@@ -148,7 +148,7 @@
 .title {
   font-size: 1.9rem;
   font-weight: 800;
-  color: #1b1d24;
+  color: var(--text);
   margin-bottom: 1rem;
 }
 
@@ -182,7 +182,7 @@
 .label {
   font-size: 1.45rem;
   font-weight: 800;
-  color: #1b1d24;
+  color: var(--text);
   margin: 0.6rem 0 0.6rem 0.2rem;
 }
 
@@ -246,12 +246,12 @@
   gap: 0.8rem;
   border: none;
   border-radius: 999px;
-  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 55%, var(--primary-strong) 100%);
-  color: white;
+  background: var(--btn-fill);
+  color: var(--on-btn);
   font: inherit;
   font-size: 1.6rem;
   font-weight: 700;
-  box-shadow: 0 8px 20px rgba(var(--primary-strong-rgb), 0.32);
+  box-shadow: var(--btn-shadow);
   cursor: pointer;
   transition: transform 0.15s ease;
 

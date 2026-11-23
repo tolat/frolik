@@ -27,9 +27,9 @@
   height: calc(100% + 2.4rem);
   background: linear-gradient(
     to bottom,
-    rgba(244, 246, 250, 0) 0%,
-    rgba(244, 246, 250, 0.75) 45%,
-    rgba(244, 246, 250, 0.95) 100%
+    color-mix(in srgb, var(--app-bg) 0%, transparent) 0%,
+    color-mix(in srgb, var(--app-bg) 75%, transparent) 45%,
+    color-mix(in srgb, var(--app-bg) 95%, transparent) 100%
   );
   pointer-events: none;
   z-index: -1;
@@ -46,7 +46,7 @@
   box-sizing: border-box;
   height: 7rem;
   border-radius: 2.4rem;
-  background: rgba(255, 255, 255, 0.96);
+  background: var(--glass);
   @media (hover: hover) and (pointer: fine) {
     -webkit-backdrop-filter: saturate(180%) blur(18px);
     backdrop-filter: saturate(180%) blur(18px);
@@ -148,7 +148,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 100rem;
-  border: 2px solid white;
+  border: 2px solid var(--surface);
   animation: badge-pop 0.4s $ease_spring both;
 }
 

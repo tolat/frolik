@@ -88,8 +88,9 @@
   flex-shrink: 0;
   padding: 0.6rem 1.4rem;
   border-radius: 100rem;
-  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 55%, var(--primary-strong) 100%);
-  color: white;
+  background: var(--btn-fill);
+  box-shadow: var(--btn-shadow);
+  color: var(--on-btn);
   font-size: 1.3rem;
   font-weight: 700;
 }

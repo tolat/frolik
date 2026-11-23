@@ -12,6 +12,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#f4f6fa" />
     <meta name="color-scheme" content="light" />
+    <script>
+      // Dark mode (Settings), applied before anything draws so there's no
+      // white flash. Same key and values as src/utils/themeMode.js.
+      try {
+        if (localStorage.getItem("frolik:theme") === "dark") {
+          document.documentElement.setAttribute("data-theme", "dark");
+          document.querySelector('meta[name="theme-color"]').setAttribute("content", "#0f1116");
+          document.querySelector('meta[name="color-scheme"]').setAttribute("content", "dark");
+        }
+      } catch (e) {}
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

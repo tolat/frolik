@@ -13,8 +13,9 @@
 }
 
 .saveButton {
-  background-color: $blue;
-  color: #fff;
+  background: var(--btn-fill);
+  box-shadow: var(--btn-shadow);
+  color: var(--on-btn);
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -29,7 +30,7 @@
 
 .statusOptionContainer {
   font-size: 1.3rem;
-  background-color: white;
+  background-color: var(--surface);
   padding: 1rem;
   width: 100%;
   box-sizing: border-box;

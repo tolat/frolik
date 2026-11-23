@@ -13,5 +13,10 @@
     "confirm": "Excluir meu perfil",
     "deleting": "Excluindo…",
     "cancel": "Cancelar"
+  },
+  "darkMode": {
+    "title": "Modo escuro",
+    "on": "Ativado: fundos escuros neste dispositivo.",
+    "off": "Usar fundos escuros neste dispositivo."
   }
 }

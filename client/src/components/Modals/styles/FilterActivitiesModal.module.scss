@@ -59,9 +59,19 @@
 }
 
 .chipOn {
-  background: $blue;
-  border-color: $blue;
-  color: white;
+  background: var(--btn-fill);
+  box-shadow: var(--btn-shadow);
+  border-color: transparent;
+  color: var(--on-btn);
+
+  // its black icon: black on white, white on the dark-mode slate
+  img {
+    filter: brightness(0) !important;
+  }
+
+  :global(html[data-theme="dark"]) & img {
+    filter: brightness(0) invert(1) !important;
+  }
 }
 
 .fields {

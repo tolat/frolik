@@ -59,7 +59,7 @@
   top: 0;
   align-items: center;
   width: $central_span_width;
-  background-color: rgba(244, 246, 250, 0.97);
+  background-color: color-mix(in srgb, var(--app-bg) 97%, transparent);
   @media (hover: hover) and (pointer: fine) {
     -webkit-backdrop-filter: saturate(180%) blur(16px);
     backdrop-filter: saturate(180%) blur(16px);
@@ -121,8 +121,9 @@
 
 .headerButton{
   width: fit-content;
-  background-color: $blue;
-  color: white;
+  background: var(--btn-fill);
+  box-shadow: var(--btn-shadow);
+  color: var(--on-btn);
   font-weight: bold;
   margin-right: 0.5rem;
 }

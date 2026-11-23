@@ -13,10 +13,10 @@
 }
 
 .addFriend {
-  background-color: $blue;
+  background: var(--btn-fill);
   margin: 2rem 0 2rem 0;
-  color: white;
-  box-shadow: none;
+  color: var(--on-btn);
+  box-shadow: var(--btn-shadow);
   border: 1px solid $light_grey;
   border-radius: 100rem;
 }
@@ -39,7 +39,7 @@
 
 .removeFriendButton {
   background-color: $button_grey;
-  color: black;
+  color: var(--text);
   box-shadow: none !important;
   border: 1px solid $light_grey;
   border-radius: 100rem;

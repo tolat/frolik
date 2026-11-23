@@ -39,9 +39,9 @@
   min-width: 4.2rem;
   width: 4.2rem;
   height: 4.2rem;
-  box-shadow: 0 6px 16px rgba(var(--primary-rgb), 0.35);
-  background-color: $blue;
-  color: white;
+  box-shadow: var(--btn-shadow);
+  background: var(--btn-fill);
+  color: var(--on-btn);
   font-size: 2.2rem;
   font-weight: 300;
   line-height: 1;
@@ -156,9 +156,10 @@
 
 .filterPillActive {
   // The app's button colour, with the same light-to-dark gradient as buttons
-  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 55%, var(--primary-strong) 100%);
+  background: var(--btn-fill);
+  box-shadow: var(--btn-shadow);
   border-color: transparent;
-  color: white;
+  color: var(--on-btn);
 }
 
 .filterCount {
@@ -185,15 +186,15 @@
 // Blue gradient circle with a drawn, bold plus — matches the outing page's
 // create-activity button (a "+" text glyph never sat centred)
 .newChatButton {
-  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 55%, var(--primary-strong) 100%) !important;
-  box-shadow: 0 6px 16px rgba(var(--primary-strong-rgb), 0.32) !important;
+  background: var(--btn-fill) !important;
+  box-shadow: var(--btn-shadow) !important;
   border: none !important;
 
   svg {
     width: 2rem;
     height: 2rem;
     fill: none;
-    stroke: white;
+    stroke: var(--on-btn);
     stroke-width: 2.8;
     stroke-linecap: round;
     display: block;

@@ -61,7 +61,7 @@
 
 .location {
   font-size: 1.1rem;
-  color: black;
+  color: var(--text);
   width: 100%;
 }
 
@@ -72,9 +72,10 @@
 }
 
 .select {
-  background-color: $blue;
+  background: var(--btn-fill);
+  box-shadow: var(--btn-shadow);
   width: 14rem;
-  color: white;
+  color: var(--on-btn);
   display: flex;
   align-items: center;
   border-top-right-radius: 0;
@@ -95,7 +96,7 @@
 
 .description {
   font-size: 1.4rem;
-  color: rgb(0, 0, 0);
+  color: var(--text);
   margin-top: 0.5rem;
 }
 
@@ -557,14 +558,14 @@
   border-radius: 999px;
   font-size: 1.2rem;
   font-weight: 700;
-  color: #1b1d24;
+  color: var(--text);
   box-shadow: 0 2px 6px rgba(20, 24, 40, 0.15);
   pointer-events: none;
 }
 
 .feedRating {
   inset-inline-end: 1rem;
-  background: rgba(255, 255, 255, 0.94);
+  background: var(--glass);
 
   img {
     width: 1.3rem !important;
@@ -580,7 +581,7 @@
   font-size: 1.9rem;
   font-weight: 800;
   line-height: 1.2;
-  color: #1b1d24;
+  color: var(--text);
   overflow-wrap: anywhere;
 }
 
@@ -598,7 +599,7 @@
   margin-top: 0.8rem;
   font-size: 1.45rem;
   line-height: 1.4;
-  color: #2b2e38;
+  color: var(--text);
 }
 
 .feedChips {
@@ -617,7 +618,7 @@
   background: $card_grey;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #2b2e38;
+  color: var(--text);
 
   img {
     width: 1.4rem;
@@ -651,9 +652,9 @@
   font: inherit;
   font-size: 1.4rem;
   font-weight: 700;
-  color: white;
-  background: linear-gradient(135deg, var(--primary-light), $blue);
-  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+  color: var(--on-btn);
+  background: var(--btn-fill);
+  box-shadow: var(--btn-shadow);
   cursor: pointer;
   transition: transform 0.12s ease;
 
@@ -679,12 +680,12 @@
   background: $card_grey;
   font-size: 1.45rem;
   line-height: 1.4;
-  color: #2b2e38;
+  color: var(--text);
 }
 
 .goalLabel {
   font-weight: 800;
-  color: #1b1d24;
+  color: var(--text);
 }
 
 // Time / cost / group chips float top left on the art, like the rating
@@ -700,8 +701,8 @@
 }
 
 .feedPhoto .feedChip {
-  background: rgba(255, 255, 255, 0.94);
-  color: #1b1d24;
+  background: var(--glass);
+  color: var(--text);
   font-weight: 700;
   font-size: 1.2rem;
   box-shadow: 0 2px 6px rgba(20, 24, 40, 0.15);

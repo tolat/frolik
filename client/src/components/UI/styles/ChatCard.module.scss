@@ -72,7 +72,7 @@
 
 .container:hover {
   cursor: pointer;
-  background-color: rgb(242, 242, 242);
+  background-color: var(--button-grey);
 }
 
 .leftSection {

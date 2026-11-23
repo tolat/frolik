@@ -25,17 +25,21 @@
   align-items: center;
   justify-content: center;
   border-radius: 100rem;
-  background: $grad_blue;
-  box-shadow: 0 6px 16px rgba(var(--primary-strong-rgb), 0.3);
+  background: var(--btn-fill);
+  box-shadow: var(--btn-shadow);
   transition: transform $dur_fast $ease_out, box-shadow $dur_fast ease;
 }
 
-// The PNG icons are black; white on the blue circle
+// The PNG icons: black on the white button, white on the dark-mode slate
 .icon {
   width: 2.3rem;
   height: 2.3rem;
   object-fit: contain;
-  filter: brightness(0) invert(1);
+  filter: brightness(0) !important;
+}
+
+:global(html[data-theme="dark"]) .icon {
+  filter: brightness(0) invert(1) !important;
 }
 
 .label {

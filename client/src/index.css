@@ -15,8 +15,9 @@ body {
 }
 
 :root {
-  /* The app is designed light-only. Without an explicit background, browsers
-     in dark mode painted the page black behind black text. */
+  /* Light by default; Settings has a Dark mode switch (html[data-theme]
+     below). The explicit colours stop a phone's own dark mode from painting
+     the page black behind black text. */
   color-scheme: light;
   --app-bg: #f4f6fa;
   --surface: #ffffff;
@@ -36,7 +37,71 @@ body {
   --primary-strong-rgb: 16, 20, 31;
   --primary-light: #3a4560;
   --primary-soft: #eaedf4;
+  /* Buttons: flat white with dark text and icons and a soft neutral shadow
+     (no outline); dark mode uses slate (below). --primary above stays the
+     colour for active tabs, links and accents. */
+  --btn-fill: #ffffff;
+  --on-btn: #1b1d24;
+  --btn-shadow: 0 1px 2px rgba(20, 24, 40, 0.06), 0 3px 10px rgba(20, 24, 40, 0.09);
+  --btn-shadow-hover: 0 2px 4px rgba(20, 24, 40, 0.07), 0 6px 16px rgba(20, 24, 40, 0.12);
+  /* Tint behind an icon sitting on a button */
+  --on-btn-tint: rgba(20, 24, 40, 0.06);
+  /* Small badges and icon tiles with white icons: a dark fill in both modes */
+  --accent-fill-light: #3a4560;
+  --accent-fill: #1c2335;
+  --accent-fill-strong: #10141f;
+  /* Greys and the see-through white used for bars and pills over photos */
+  --card-grey: #f7f8fb;
+  --button-grey: #eef0f5;
+  --light-grey: #e5e8ef;
+  --glass: rgba(255, 255, 255, 0.94);
+  /* Skeleton loaders: the grey bones and the shine sweeping across them */
+  --bone: #dfe3ea;
+  --bone-light: #e6e9f0;
+  --shine: rgba(255, 255, 255, 0.85);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── Dark mode (Settings → Dark mode; html[data-theme], set before the app
+   loads by public/index.html). Same names, dark values; buttons are a dark
+   blue-grey with light text. ── */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --app-bg: #0f1116;
+  --surface: #1a1d25;
+  --text: #eceef3;
+  --text-muted: #9ca3b4;
+  --card-grey: #20242d;
+  --button-grey: #272b35;
+  --light-grey: #2f343f;
+  --glass: rgba(26, 29, 37, 0.92);
+  --bone: #262a34;
+  --bone-light: #22262f;
+  --shine: rgba(255, 255, 255, 0.07);
+  /* Accents (active tab label, links, tinted icons) turn light */
+  --primary: #eceef3;
+  --primary-rgb: 0, 0, 0;
+  --primary-strong: #ffffff;
+  --primary-strong-rgb: 0, 0, 0;
+  --primary-light: #ffffff;
+  --primary-soft: #2a2f3b;
+  /* Buttons: slate, a shade up from the cards, with light text */
+  --btn-fill: #2b3243;
+  --on-btn: #eceef3;
+  --on-btn-tint: rgba(255, 255, 255, 0.12);
+  --btn-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 2px 8px rgba(0, 0, 0, 0.35);
+  --btn-shadow-hover: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 14px rgba(0, 0, 0, 0.45);
+  --accent-fill-light: #4a5672;
+  --accent-fill: #333c52;
+  --accent-fill-strong: #262e40;
+}
+
+/* Dark mode: the app's black line icons (PNG) are flipped to white, keeping
+   their colours' hues. Photos (JPEG / uploads) and the app icon are left as
+   they are. */
+html[data-theme="dark"] img[src^="data:image/png"],
+html[data-theme="dark"] img[src*="/static/media/"][src$=".png"]:not([src*="app-icon"]):not([src*="safari"]) {
+  filter: invert(1) hue-rotate(180deg);
 }
 
 body {
@@ -290,11 +355,11 @@ img {
 
 .tile-loading::after,
 .shine-loading {
-  background-color: #e6e9f0;
+  background-color: var(--bone-light);
   background-image: linear-gradient(
     105deg,
     rgba(255, 255, 255, 0) 35%,
-    rgba(255, 255, 255, 0.85) 50%,
+    var(--shine) 50%,
     rgba(255, 255, 255, 0) 65%
   );
   background-size: 220% 100%;

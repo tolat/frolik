@@ -7,18 +7,15 @@ import { useEffect, useRef, useState } from "react";
 import { hideModal } from "../../store/modal-actions";
 import ModalHeaderPortal from "./ModalHeaderPortal";
 import completeIcon from "../../images/complete.png";
-import completeIconLight from "../../images/complete-light.png";
 import creationIcon from "../../images/sketch.png";
-import creationIconLight from "../../images/sketch-light.png";
 import featuredIcon from "../../images/feature.png";
-import featuredIconLight from "../../images/feature-light.png";
 import { useT } from "../../i18n";
 
 // "Show only" toggles — pick any number; an activity must match all of them
 const SHOW_ONLY = [
-  { key: "completed", labelKey: "filter.showOnly.completed", icon: completeIcon, iconOn: completeIconLight },
-  { key: "featured", labelKey: "filter.showOnly.featured", icon: featuredIcon, iconOn: featuredIconLight },
-  { key: "created", labelKey: "filter.showOnly.created", icon: creationIcon, iconOn: creationIconLight },
+  { key: "completed", labelKey: "filter.showOnly.completed", icon: completeIcon },
+  { key: "featured", labelKey: "filter.showOnly.featured", icon: featuredIcon },
+  { key: "created", labelKey: "filter.showOnly.created", icon: creationIcon },
 ];
 
 const FilterActivitiesModal = (props) => {
@@ -104,7 +101,7 @@ const FilterActivitiesModal = (props) => {
               onClick={() => toggle(o.key)}
               className={`${styles.chip} ${showOnly[o.key] ? styles.chipOn : ""}`}
             >
-              <img src={showOnly[o.key] ? o.iconOn : o.icon} alt="" />
+              <img src={o.icon} alt="" />
               {t(o.labelKey)}
             </button>
           ))}

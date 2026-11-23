@@ -13,5 +13,10 @@
     "confirm": "Delete my profile",
     "deleting": "Deleting…",
     "cancel": "Cancel"
+  },
+  "darkMode": {
+    "title": "Dark mode",
+    "on": "On: dark backgrounds on this device.",
+    "off": "Use dark backgrounds on this device."
   }
 }

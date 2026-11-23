@@ -48,8 +48,9 @@
 }
 
 .save {
-  background: $blue;
-  color: white;
+  background: var(--btn-fill);
+  box-shadow: var(--btn-shadow);
+  color: var(--on-btn);
 }
 
 .field {

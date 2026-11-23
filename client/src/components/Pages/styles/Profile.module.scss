@@ -162,7 +162,7 @@
 .fixedSliderNavbar {
   position: fixed;
   top: 0;
-  background-color: rgba(244, 246, 250, 0.9);
+  background-color: color-mix(in srgb, var(--app-bg) 90%, transparent);
   @media (hover: hover) and (pointer: fine) {
     -webkit-backdrop-filter: blur(14px);
     backdrop-filter: blur(14px);
@@ -203,9 +203,10 @@
 
 .sortPillActive {
   // The app's button colour, with the same light-to-dark gradient as buttons
-  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 55%, var(--primary-strong) 100%);
+  background: var(--btn-fill);
+  box-shadow: var(--btn-shadow);
   border-color: transparent;
-  color: white;
+  color: var(--on-btn);
 }
 
 .sortArrow {

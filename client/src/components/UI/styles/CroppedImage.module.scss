@@ -33,7 +33,7 @@
   width: 28%;
   height: 28%;
   position: absolute;
-  background-color: rgb(255, 255, 255);
+  background-color: var(--surface);
   bottom: 0rem;
   right: 0rem;
   border-radius: 100rem;
@@ -50,7 +50,7 @@
   align-items: center;
   width: 85%;
   height: 85%;
-  background-color: $blue;
+  background-color: var(--accent-fill);
   border-radius: 100rem;
 }
 

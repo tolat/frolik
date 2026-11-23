@@ -15,7 +15,7 @@ import UserIconCluster from "../UI/UserIconCluster";
 import TintedIcon from "../UI/TintedIcon";
 import ActivityCard from "../UI/ActivityCard";
 import FilterActivitiesModal from "../Modals/FilterActivitiesModal";
-import balloonIcon from "../../images/air-balloon-light.png";
+import balloonIcon from "../../images/air-balloon.png";
 import {
   capitalizeFirstLetter,
   outingIsCompleted,
@@ -386,7 +386,7 @@ const Go = (props) => {
             style={{ opacity: goState.outing.users[1] ? 1 : 0.2 }}
           >
             <span className={styles.roundIcon}>
-              <TintedIcon src={editIcon} className={styles.roundIconGlyph} color="#fff" />
+              <TintedIcon src={editIcon} className={styles.roundIconGlyph} color="var(--on-btn)" />
             </span>
             <span className={styles.roundButtonLabel}>
               {t("go.members.edit")}
@@ -405,7 +405,7 @@ const Go = (props) => {
                   : ""
               }`}
             >
-              <TintedIcon src={plusIcon} className={styles.roundIconGlyph} color="#fff" />
+              <TintedIcon src={plusIcon} className={styles.roundIconGlyph} color="var(--on-btn)" />
             </span>
             <span className={styles.roundButtonLabel}>
               {t("go.members.add")}

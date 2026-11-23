@@ -14,7 +14,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 100rem;
-  background-color: #ffffff;
+  background-color: var(--surface);
   box-shadow: 0 2px 10px rgba(20, 24, 40, 0.12);
   opacity: 0;
   pointer-events: none;
@@ -44,7 +44,7 @@
 
 .track {
   fill: none;
-  stroke: #e6e9f0;
+  stroke: var(--light-grey);
   stroke-width: 3;
 }
 

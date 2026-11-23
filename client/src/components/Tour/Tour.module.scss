@@ -124,8 +124,8 @@
 }
 
 .next {
-  background-color: $blue;
-  color: white;
+  background: var(--btn-fill);
+  color: var(--on-btn);
   padding: 0.9rem 1.8rem;
-  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.35);
+  box-shadow: var(--btn-shadow);
 }

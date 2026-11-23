@@ -10,16 +10,18 @@ $blue: var(--primary); // primary action colour: set in index.css :root
 $blue_dark: var(--primary-strong);
 $light_blue: var(--primary-soft);
 $green: #34b77a;
-$card_grey: #f7f8fb;
-$button_grey: #eef0f5;
+// Colours that change in dark mode are CSS variables (index.css :root and
+// html[data-theme="dark"]); no Sass colour maths on these
+$card_grey: var(--card-grey);
+$button_grey: var(--button-grey);
 $red: #ef6461;
-$light_grey: #e5e8ef;
+$light_grey: var(--light-grey);
 $zoom: 0.65;
 $orange: #ffbf47;
-$text: #1b1d24;
-$text_muted: #6b7182;
-$surface: #ffffff;
-$app_bg: #f4f6fa;
+$text: var(--text);
+$text_muted: var(--text-muted);
+$surface: var(--surface);
+$app_bg: var(--app-bg);
 
 // Shape + depth
 $radius_sm: 1rem;
@@ -54,7 +56,9 @@ $dur: 0.28s;
 // ── Buttons ──────────────────────────────────────────────────────────────────
 // One look for every action button (SimpleButton + className). !important
 // because SimpleButton's own base colour can load after a module's rules.
-$grad_blue: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 55%, var(--primary-strong) 100%);
+// Dark accent fill for small badges and icon tiles with white icons (stays
+// dark in dark mode, unlike --primary). Buttons use --btn-fill instead.
+$grad_blue: linear-gradient(135deg, var(--accent-fill-light) 0%, var(--accent-fill) 55%, var(--accent-fill-strong) 100%);
 $grad_green: linear-gradient(135deg, #45c58a 0%, #34b77a 55%, #2a9a66 100%);
 $grad_red: linear-gradient(135deg, #f47f7c 0%, #ef6461 55%, #d94d4a 100%);
 
@@ -65,12 +69,12 @@ $grad_red: linear-gradient(135deg, #f47f7c 0%, #ef6461 55%, #d94d4a 100%);
   letter-spacing: -0.01em;
 }
 
-// Primary action: blue gradient
+// Primary action: the app's light button (index.css --btn-fill)
 @mixin btn_primary {
   @include btn_base;
-  background: $grad_blue !important;
-  color: white !important;
-  box-shadow: 0 4px 12px rgba(var(--primary-strong-rgb), 0.28) !important;
+  background: var(--btn-fill) !important;
+  color: var(--on-btn) !important;
+  box-shadow: var(--btn-shadow) !important;
 }
 
 // Positive action (Accept, Mark Completed): green gradient

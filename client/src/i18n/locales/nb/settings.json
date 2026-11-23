@@ -13,5 +13,10 @@
     "confirm": "Slett profilen min",
     "deleting": "Sletter …",
     "cancel": "Avbryt"
+  },
+  "darkMode": {
+    "title": "Mørk modus",
+    "on": "På: mørk bakgrunn på denne enheten.",
+    "off": "Bruk mørk bakgrunn på denne enheten."
   }
 }

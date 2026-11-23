@@ -65,13 +65,13 @@
   left: 2rem;
   width: calc(100% - 4rem);
   box-sizing: border-box;
-  border: 1px solid #c1c1c1;
+  border: 1px solid var(--light-grey);
   z-index: 1;
 }
 
 .optionComponentContainer {
   font-size: 1.3rem;
-  background-color: white;
+  background-color: var(--surface);
   padding: 1rem;
   width: 100%;
   box-sizing: border-box;
