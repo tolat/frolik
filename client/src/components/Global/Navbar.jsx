@@ -2,8 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useLocation, useNavigate } from "react-router-dom"; // Import Link from react-router-dom
 import styles from "./styles/Navbar.module.scss";
 import NavButton from "../UI/NavButton";
-import bell from "../../images/bell6.png";
-import bellBlue from "../../images/bell6-blue.png";
 import OutingModal from "../Modals/OutingModal";
 import ChatModal from "../Modals/ChatModal";
 import WarningPopup from "../Popups/WarningPopup";
@@ -11,15 +9,10 @@ import { popupActions } from "../../store/popup-slice";
 import outingsBarIcon from "../../images/outingsToolbar.png";
 import { Fragment, useEffect, useState } from "react";
 import ProfileViewerModal from "../Modals/ProfileViewerModal";
-import profileIcon from "../../images/account.png";
-import profileIconBlue from "../../images/account-blue.png";
-import chatIcon from "../../images/chat.png";
-import chatIconBlue from "../../images/chat-blue.png";
-import feedIcon from "../../images/post2.png";
-import feedIconBlue from "../../images/post2-blue.png";
 import { getTotalUnreadMessages, unreadNotificationCount } from "../../utils/utils";
 import PhotoPopup from "../Popups/PhotoPopup";
 import balloonLogo from "../../images/brand/balloon-flat.svg";
+import { Bell, CircleUserRound, Images, MessageCircle } from "lucide-react";
 import logo from "../../images/frolik2.png";
 import InstallPromptModal from "../Modals/InstallPromptModal";
 import UpdateAppDrawer from "../Popups/UpdateAppDrawer";
@@ -177,7 +170,7 @@ const Navbar = (props) => {
               to="/alerts"
             >
               <NavButton
-                icon={activePage === "alerts" ? bellBlue : bell}
+                glyph={Bell}
                 text={t("nav.tabs.alerts")}
                 className={`${styles.navButton} ${styles.notificationsHover}`}
                 blue={activePage === "alerts"}
@@ -194,7 +187,7 @@ const Navbar = (props) => {
               to="/profile"
             >
               <NavButton
-                icon={activePage === "profile" ? profileIconBlue : profileIcon}
+                glyph={CircleUserRound}
                 text={t("nav.tabs.profile")}
                 className={`${styles.navButton} ${styles.profileHover}`}
                 blue={activePage === "profile"}
@@ -218,7 +211,7 @@ const Navbar = (props) => {
               to="/social"
             >
               <NavButton
-                icon={activePage === "social" ? feedIconBlue : feedIcon}
+                glyph={Images}
                 text={t("nav.tabs.social")}
                 className={`${styles.navButton} ${styles.socialHover}`}
                 blue={activePage === "social"}
@@ -229,7 +222,7 @@ const Navbar = (props) => {
               to="/chat"
             >
               <NavButton
-                icon={activePage === "chat" ? chatIconBlue : chatIcon}
+                glyph={MessageCircle}
                 text={t("nav.tabs.chats")}
                 className={`${styles.navButton} ${styles.chatsHover}`}
                 blue={activePage === "chat"}

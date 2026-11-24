@@ -149,3 +149,14 @@
   font-weight: 700;
   white-space: nowrap;
 }
+
+// ── (2026-11 redesign) Same row style as the chat list ──────────────────────
+.tile {
+  border-radius: 2rem;
+  border: 1px solid $hairline;
+  box-shadow: none;
+}
+
+.title {
+  letter-spacing: -0.01em;
+}

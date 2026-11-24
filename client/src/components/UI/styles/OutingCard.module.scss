@@ -181,3 +181,23 @@
   width: 1.4rem;
   height: 1.4rem;
 }
+
+// ── (2026-11 redesign) Same row style as the chat list ──────────────────────
+.outerContainer {
+  border-radius: 2rem;
+  border: 1px solid $hairline;
+  box-shadow: none;
+}
+
+.outerContainer:hover {
+  box-shadow: $shadow_sm;
+}
+
+.categoryStripe {
+  width: 0.5rem;
+}
+
+.innerContainer {
+  background-color: $surface;
+  border: none;
+}

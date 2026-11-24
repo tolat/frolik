@@ -133,3 +133,32 @@
   border: 1px solid $light_grey;
   border-radius: 5px; */
 }
+
+
+// ── (2026-11 redesign) ──────────────────────────────────────────────────────
+.settingsButton {
+  width: 4.2rem;
+  height: 4.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: $button_grey;
+  color: $text;
+  cursor: pointer;
+  transition: transform $dur_fast $ease_out;
+
+  &:active {
+    transform: scale(0.94);
+  }
+}
+
+.tagline {
+  padding: 0.4rem 1.6rem 1.6rem;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 500;
+  color: $text_muted;
+  line-height: 1.4;
+}

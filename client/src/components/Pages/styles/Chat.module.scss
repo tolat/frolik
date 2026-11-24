@@ -200,3 +200,14 @@
     display: block;
   }
 }
+
+// ── (redesign) one spacing rhythm: title → search → filters → list ─────────
+.container {
+  padding-top: 0;
+}
+
+.searchRow,
+.filterRow,
+.archivedToggle {
+  margin: 0 0 1.2rem;
+}

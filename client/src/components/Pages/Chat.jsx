@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import PageHeader from "../UI/PageHeader";
 import SkeletonCards from "../UI/SkeletonCards";
 import styles from "./styles/Chat.module.scss";
 import { dateSort, pageRouteLoader, toSorted } from "../../utils/utils";
@@ -113,13 +114,7 @@ const Chat = memo((props) => {
     <Fragment>
       <div className={styles.container}>
         <CreateChatModal />
-        <div className={styles.searchRow}>
-          <SimpleSearch
-            style={{ marginBottom: 0 }}
-            setValue={setChatSearch}
-            defaultVal={""}
-            placeholder={t("chatList.searchPlaceholder")}
-          />
+        <PageHeader title={t("nav.tabs.chats")}>
           <SimpleButton
             onClick={onCreateChat}
             className={styles.newChatButton}
@@ -141,6 +136,15 @@ const Chat = memo((props) => {
               {t("chatList.newChat")}
             </span>
           </SimpleButton>
+        </PageHeader>
+        <div className={styles.searchRow}>
+          <SimpleSearch
+            style={{ marginBottom: 0 }}
+            setValue={setChatSearch}
+            defaultVal={""}
+            placeholder={t("chatList.searchPlaceholder")}
+          />
+
         </div>
         {!chats || (fetchingChats && !chats[0]) ? (
           <SkeletonCards variant="chat" count={4} />

@@ -14,7 +14,20 @@ const NavButton = (props) => {
   return (
     <div className={`${styles.container} ${props.className}`}>
       <button onClick={props.onClick} className={styles.button}>
-        {props.icon ? (
+        {props.glyph ? (
+          // A line icon (lucide-react): darker and a touch bolder when active
+          <Fragment>
+            <props.glyph
+              className={styles.glyph}
+              size={23}
+              strokeWidth={props.blue ? 2.3 : 1.9}
+              aria-hidden="true"
+            />
+            <div className={`${styles.iconText} ${props.blue ? styles.blue : ""}`}>
+              {props.text}
+            </div>
+          </Fragment>
+        ) : props.icon ? (
           <Fragment>
             <Icon
               style={props.imgStyle}

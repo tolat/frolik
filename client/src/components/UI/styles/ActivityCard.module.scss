@@ -751,3 +751,11 @@
   width: 1.8rem;
   height: 1.8rem;
 }
+
+// ── (2026-11 redesign) ──────────────────────────────────────────────────────
+// the hairline is a shadow ring: a border showed as a light edge round the art
+.outerContainer,
+.feedCard {
+  border-radius: 2.4rem;
+  box-shadow: 0 0 0 1px $hairline, $shadow_sm;
+}

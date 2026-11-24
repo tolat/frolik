@@ -1,0 +1,29 @@
+@import "../../../utils/responsive.scss";
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.2rem;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 2rem 0.2rem 1.4rem;
+}
+
+.title {
+  @include page_title;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-shrink: 0;
+}
+
+// Same title position on every page, with or without buttons beside it
+.header {
+  align-items: center;
+  min-height: 7.8rem; // 2rem + 1.4rem padding + a 4.4rem button
+}

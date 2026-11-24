@@ -28,8 +28,8 @@
   scrollbar-width: none; /* Firefox */
   box-sizing: border-box;
   width: 100%;
-  padding: 1rem;
-  padding-top: 0;
+  // even page gutters
+  padding: 0 1.6rem;
 
   @include responsive(
     "width",

@@ -19,10 +19,16 @@ body {
      below). The explicit colours stop a phone's own dark mode from painting
      the page black behind black text. */
   color-scheme: light;
-  --app-bg: #f4f6fa;
+  /* (2026-11 redesign) Neutral, cool greys: a soft off-white page, white
+     cards with a hairline edge and wide faint shadows */
+  --app-bg: #f3f4f7;
   --surface: #ffffff;
-  --text: #1b1d24;
-  --text-muted: #6b7182;
+  --text: #111318;
+  --text-muted: #6e7380;
+  --hairline: rgba(17, 19, 24, 0.06);
+  --shadow-sm: 0 1px 2px rgba(17, 19, 24, 0.04), 0 6px 20px rgba(17, 19, 24, 0.05);
+  --shadow-md: 0 2px 6px rgba(17, 19, 24, 0.05), 0 12px 32px rgba(17, 19, 24, 0.08);
+  --shadow-lg: 0 20px 60px rgba(17, 19, 24, 0.18);
   /* ── Primary action colour (buttons, links, toggles, active nav tab) ──
      The default (original blue). Once a user has outings, utils/theme.js
      replaces these with the dominant colour of their colour wheel. Keep each
@@ -51,9 +57,9 @@ body {
   --accent-fill: #1c2335;
   --accent-fill-strong: #10141f;
   /* Greys and the see-through white used for bars and pills over photos */
-  --card-grey: #f7f8fb;
-  --button-grey: #eef0f5;
-  --light-grey: #e5e8ef;
+  --card-grey: #f7f8fa;
+  --button-grey: #eceef2;
+  --light-grey: #e3e6eb;
   --glass: rgba(255, 255, 255, 0.94);
   /* Skeleton loaders: the grey bones and the shine sweeping across them */
   --bone: #dfe3ea;
@@ -67,14 +73,18 @@ body {
    blue-grey with light text. ── */
 html[data-theme="dark"] {
   color-scheme: dark;
-  --app-bg: #0f1116;
-  --surface: #1a1d25;
-  --text: #eceef3;
-  --text-muted: #9ca3b4;
-  --card-grey: #20242d;
-  --button-grey: #272b35;
-  --light-grey: #2f343f;
-  --glass: rgba(26, 29, 37, 0.92);
+  --app-bg: #0c0d11;
+  --surface: #17191f;
+  --text: #f1f2f5;
+  --text-muted: #9a9fac;
+  --hairline: rgba(255, 255, 255, 0.07);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.6);
+  --card-grey: #1d2027;
+  --button-grey: #24272f;
+  --light-grey: #2d3039;
+  --glass: rgba(23, 25, 31, 0.9);
   --bone: #262a34;
   --bone-light: #22262f;
   --shine: rgba(255, 255, 255, 0.07);

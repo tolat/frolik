@@ -41,8 +41,8 @@
   width: 100%;
   justify-self: flex-start;
   align-items: center;
-  width: calc(100vw - 2rem);
-  max-width: calc($central_span_width - 2rem);
+  // (redesign) the page gutters already inset it; same width as the search
+  width: 100%;
   background-color: $app_bg;
 }
 

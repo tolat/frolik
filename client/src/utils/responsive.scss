@@ -24,12 +24,16 @@ $surface: var(--surface);
 $app_bg: var(--app-bg);
 
 // Shape + depth
-$radius_sm: 1rem;
-$radius_md: 1.6rem;
-$radius_lg: 2.2rem;
-$shadow_sm: 0 1px 2px rgba(20, 24, 40, 0.06), 0 1px 3px rgba(20, 24, 40, 0.04);
-$shadow_md: 0 4px 14px rgba(20, 24, 40, 0.08), 0 1px 3px rgba(20, 24, 40, 0.05);
-$shadow_lg: 0 12px 40px rgba(20, 24, 40, 0.16);
+// (2026-11 redesign) Softer, rounder, flatter: hairline edges and wide,
+// faint shadows instead of tight dark ones. The values live in index.css so
+// dark mode can change them.
+$radius_sm: 1.2rem;
+$radius_md: 2rem;
+$radius_lg: 2.6rem;
+$shadow_sm: var(--shadow-sm);
+$shadow_md: var(--shadow-md);
+$shadow_lg: var(--shadow-lg);
+$hairline: var(--hairline);
 
 // Motion
 $ease_out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -41,7 +45,25 @@ $dur: 0.28s;
   background-color: $surface;
   border-radius: $radius_md;
   box-shadow: $shadow_sm;
-  border: 1px solid rgba(20, 24, 40, 0.04);
+  border: 1px solid $hairline;
+}
+
+// Large page title (Outing, Social, Chats, Alerts…)
+@mixin page_title {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  color: $text;
+}
+
+// Small section label above a group ("Pending outings", "Goal"…)
+@mixin section_label {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: $text_muted;
 }
 
 @mixin pressable {
@@ -59,8 +81,8 @@ $dur: 0.28s;
 // Dark accent fill for small badges and icon tiles with white icons (stays
 // dark in dark mode, unlike --primary). Buttons use --btn-fill instead.
 $grad_blue: linear-gradient(135deg, var(--accent-fill-light) 0%, var(--accent-fill) 55%, var(--accent-fill-strong) 100%);
-$grad_green: linear-gradient(135deg, #45c58a 0%, #34b77a 55%, #2a9a66 100%);
-$grad_red: linear-gradient(135deg, #f47f7c 0%, #ef6461 55%, #d94d4a 100%);
+$grad_green: #2fb173;
+$grad_red: #ec5d5a;
 
 @mixin btn_base {
   border: none !important;
@@ -82,7 +104,7 @@ $grad_red: linear-gradient(135deg, #f47f7c 0%, #ef6461 55%, #d94d4a 100%);
   @include btn_base;
   background: $grad_green !important;
   color: white !important;
-  box-shadow: 0 4px 12px rgba(42, 154, 102, 0.26) !important;
+  box-shadow: 0 2px 8px rgba(42, 154, 102, 0.22) !important;
 }
 
 // Destructive action (Delete, Leave, Logout): red gradient
@@ -90,7 +112,7 @@ $grad_red: linear-gradient(135deg, #f47f7c 0%, #ef6461 55%, #d94d4a 100%);
   @include btn_base;
   background: $grad_red !important;
   color: white !important;
-  box-shadow: 0 4px 12px rgba(217, 77, 74, 0.26) !important;
+  box-shadow: 0 2px 8px rgba(217, 77, 74, 0.22) !important;
 }
 
 // Secondary action (Cancel, Clear): flat grey

@@ -11,16 +11,19 @@
     padding: 1.4rem;
     box-sizing: border-box;
     font-size: 1.4rem;
-    border: 1.5px solid $light_grey;
+    // (redesign) filled, borderless until focused
+    border: 1.5px solid transparent;
     outline: none;
     transition: border-color $dur ease, box-shadow $dur ease, background-color $dur ease;
-    background-color: $surface;
-    border-radius: $radius_md;
+    background-color: $button_grey;
+    color: $text;
+    border-radius: 1.4rem;
   }
 
   .input:focus{
-    border-color: $blue;
-    box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.18);
+    background-color: $surface;
+    border-color: $hairline;
+    box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.08);
   }
 
   .label{

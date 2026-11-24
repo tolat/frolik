@@ -220,3 +220,102 @@
 .lastActive {
   color: $text_muted;
 }
+
+
+// ── (2026-11 redesign) Message-list row ─────────────────────────────────────
+.outerContainer {
+  margin-bottom: 0.8rem;
+  border-radius: 2rem;
+  border: 1px solid $hairline;
+  box-shadow: none;
+}
+
+.outerContainer:hover {
+  box-shadow: $shadow_sm;
+}
+
+.container {
+  align-items: center;
+  padding: 1.2rem 1.4rem;
+  gap: 1.3rem;
+}
+
+.iconClusterContainer {
+  margin-inline-end: 0;
+  flex-shrink: 0;
+}
+
+.leftSection {
+  flex: 1;
+  min-width: 0;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+.titleRow,
+.subtitleRow {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-width: 0;
+}
+
+.name {
+  flex: 1;
+  min-width: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lastActive {
+  flex-shrink: 0;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: $text_muted;
+}
+
+.subtitle {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.35rem;
+  color: $text_muted;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.categoryDot {
+  flex-shrink: 0;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+}
+
+.outingActivity {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: $text;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.sep {
+  opacity: 0.6;
+}
+
+.notificationBadge {
+  position: static;
+  flex-shrink: 0;
+}

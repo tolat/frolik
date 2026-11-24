@@ -44,15 +44,15 @@
   max-width: 100%;
   position: relative;
   box-sizing: border-box;
-  height: 7rem;
-  border-radius: 2.4rem;
+  height: 6.6rem;
+  border-radius: 2.6rem;
   background: var(--glass);
   @media (hover: hover) and (pointer: fine) {
-    -webkit-backdrop-filter: saturate(180%) blur(18px);
-    backdrop-filter: saturate(180%) blur(18px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
   }
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 0 10px 30px rgba(20, 24, 40, 0.12), 0 1px 3px rgba(20, 24, 40, 0.06);
+  border: 1px solid $hairline;
+  box-shadow: $shadow_md;
 }
 
 .none {
@@ -85,11 +85,11 @@
 .navButton {
   flex: 1;
   // A touch taller, with the extra space above the icon (bottom unchanged)
-  height: 5.6rem;
-  padding-top: 0.4rem !important;
+  height: 5.4rem;
+  padding-top: 0.2rem !important;
   box-sizing: border-box;
   position: relative;
-  border-radius: 1.8rem;
+  border-radius: 2rem;
   transition: background-color $dur $ease_out, transform $dur_fast $ease_out;
 
   img {
@@ -101,13 +101,9 @@
   transform: scale(0.94);
 }
 
-// Current page: a soft blue square behind the tab, icon a touch bigger
+// Current page: a soft square behind the tab
 .activeLink .navButton {
-  background-color: $light_blue;
-
-  img {
-    transform: scale(1.06);
-  }
+  background-color: $button_grey;
 }
 
 .activeLink {

@@ -36,9 +36,15 @@
   box-sizing: border-box;
 }
 
+// Line icons (lucide): muted, the text colour when active
+.glyph {
+  color: $text_muted;
+  transition: color $dur ease, transform $dur $ease_spring;
+}
+
 .iconText {
   font-size: 1.05rem;
-  margin-top: 0.4rem;
+  margin-top: 0.35rem;
   color: $text_muted;
   font-weight: 600;
   letter-spacing: 0;
@@ -52,7 +58,11 @@
 }
 
 .blue {
-  color: $blue !important;
+  color: $text !important;
+}
+
+.button:has(.blue) .glyph {
+  color: $text;
 }
 
 // The Outing tab's frolik balloon logo (images/brand/balloon-flat.svg: solid

@@ -76,13 +76,15 @@ const FeedCard = (props) => {
         }`}
         style={ready ? undefined : shineSync()}
       >
+        {/* (redesign) post layout: who + what, the photos, then like / view */}
+        <FeedCardFooter outing={outing} memberNames={memberNames} part="header" />
         {outing && outingPhotos[0] && !outingPhotos.find((img) => img === "queued") ? (
           <SixPhotoGrid photos={outingPhotos} onAllLoaded={() => setReady(true)} />
         ) : (
           <div className={`${styles.loadingTile} shine-loading`} />
         )}
 
-        <FeedCardFooter outing={outing} memberNames={memberNames} />
+        <FeedCardFooter outing={outing} memberNames={memberNames} part="actions" />
         {!ready && <SkeletonCard variant="feed" fill />}
       </div>
     )
@@ -159,6 +161,7 @@ const FeedCardFooter = (props) => {
   return (
     outing && (
       <div className={styles.topContainer}>
+        {props.part === "header" && (
         <EmptyPopup selector={usersPopupSelector}>
           <div className={styles.friendsPopupContainer}>
             <h2 className={styles.friendsPopupHeader}>
@@ -169,44 +172,47 @@ const FeedCardFooter = (props) => {
             ))}
           </div>
         </EmptyPopup>
-        <div
-          style={{ backgroundColor: activityColor }}
-          className={styles.colorStripe}
-        ></div>
-        <div className={styles.topInnerContainer}>
-          <div className={styles.innerContainerLeft}>
+        )}
+        {props.part === "header" ? (
+          <div className={styles.postHeader}>
             <UserIconCluster
               onClick={onClusterClick}
               users={outing.users}
-              sizeInRem={8.5}
-              borderSizeInRem={0.8}
+              sizeInRem={4.8}
+              borderSizeInRem={0.4}
             />
             <div className={styles.outingDetailsContainer}>
               <div className={styles.outingMembers}>{props.memberNames}</div>
-              <div className={styles.activityName}>{outing.activity.name}</div>
-              <div className={styles.buttonsContainer}>
-                <SimpleButton
-                  onClick={onShowActivityPopup}
-                  className={styles.viewActivityButton}
-                  noShadow={true}
-                >
-                  {t("ui.feedCard.viewActivity")}
-                </SimpleButton>
+              <div className={styles.activityName}>
+                <span
+                  className={styles.categoryDot}
+                  style={{ backgroundColor: activityColor }}
+                />
+                {outing.activity.name}
               </div>
             </div>
           </div>
-
-          <div ref={heartRef} className={styles.likeWrapper}>
-            <StatIcon
-              onClick={onLikeClick}
-              icon={liked ? heartFull : heart}
-              className={styles.likeIcon}
-              iconStyle={{ width: "3rem", height: "3rem" }}
-              alt={liked ? t("ui.feedCard.unlike") : t("ui.feedCard.like")}
-              rating={likes.length || null}
-            />
+        ) : (
+          <div className={styles.postActions}>
+            <div ref={heartRef} className={styles.likeWrapper}>
+              <StatIcon
+                onClick={onLikeClick}
+                icon={liked ? heartFull : heart}
+                className={styles.likeIcon}
+                iconStyle={{ width: "2.6rem", height: "2.6rem" }}
+                alt={liked ? t("ui.feedCard.unlike") : t("ui.feedCard.like")}
+                rating={likes.length || null}
+              />
+            </div>
+            <SimpleButton
+              onClick={onShowActivityPopup}
+              className={styles.viewActivityButton}
+              noShadow={true}
+            >
+              {t("ui.feedCard.viewActivity")}
+            </SimpleButton>
           </div>
-        </div>
+        )}
       </div>
     )
   );

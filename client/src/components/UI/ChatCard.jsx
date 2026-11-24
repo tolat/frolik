@@ -6,7 +6,6 @@ import {
   genMembersString,
   getUnreadChatMessages,
   setLastReadMessage,
-  toAppDate,
 } from "../../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
@@ -31,7 +30,17 @@ const SNAP_THRESHOLD = DELETE_ZONE_WIDTH / 2;
 const AXIS_LOCK_PX = 8; // movement needed before deciding swipe vs scroll
 
 const ChatCard = memo((props) => {
-  const { t } = useT();
+  const { t, formatDate } = useT();
+  // List time: today -> 13:05, this week -> Wed, older -> Nov 19
+  const shortTime = (date) => {
+    const d = new Date(date);
+    if (isNaN(d)) return "";
+    const now = new Date();
+    if (d.toDateString() === now.toDateString())
+      return formatDate(d, { hour: "numeric", minute: "2-digit" });
+    if (now - d < 6 * 24 * 3600 * 1000) return formatDate(d, { weekday: "short" });
+    return formatDate(d, { month: "short", day: "numeric" });
+  };
   const user = useSelector((state) => state.auth.user);
   const chat = props.chat;
   const globals = useSelector((state) => state.auth.globals);
@@ -205,17 +214,6 @@ const ChatCard = memo((props) => {
 
   return !chat ? null : (
     <div ref={rootRef} className={`${styles.outerContainer} fade-in`}>
-      {/* Category colour bar for outing chats only; DMs have none */}
-      {chat.outing ? (
-        <div
-          style={{
-            backgroundColor:
-              globals.categoryColorMap[chat.outing.activity.category],
-          }}
-          className={styles.categoryStripe}
-        ></div>
-      ) : null}
-
       <div className={styles.swipeClip}>
         {canMarkRead && (
           <div
@@ -255,43 +253,45 @@ const ChatCard = memo((props) => {
           }}
           className={styles.container}
         >
-          {unreadChatMessages > 0 ? (
-            <div className={styles.notificationBadge}>
-              {unreadChatMessages > 0 && unreadChatMessages}
-            </div>
-          ) : null}
+          {/* (redesign) A message-list row: avatars | name + subtitle |
+              time + unread count */}
           <div className={styles.iconClusterContainer}>
             <UserIconCluster
               users={chatMembers(chat)}
-              sizeInRem={8.5}
-              borderSizeInRem={0.8}
+              sizeInRem={5.4}
+              borderSizeInRem={0.45}
             />
           </div>
           <div className={styles.leftSection}>
-            <div>
-              <div className={styles.name}>{chat.name}</div>
-              {chat.outing && (
-                <div className={styles.outingActivity}>
-                  {chat.outing.activity.name}
-                </div>
-              )}
-              <div
-                className={`${styles.memberNames} ${
-                  chat.outing ? null : styles.nonUserMembers
-                }`}
-              >
-                {memberNames}
-              </div>
-              {/* DMs: the person's name is the title, with a grey label
-                  under it like an Outing chat's activity */}
-              {!chat.outing && (
-                <div className={styles.outingActivity}>
-                  {t("ui.chatCard.directMessage")}
-                </div>
-              )}
+            <div className={styles.titleRow}>
+              {/* DMs have no name: the other person's name is the title */}
+              <div className={styles.name}>{chat.outing ? chat.name : memberNames}</div>
+              <div className={styles.lastActive}>{shortTime(chat.touched)}</div>
             </div>
-            <div className={styles.lastActive}>
-              {t("ui.chatCard.lastActive", { date: toAppDate(chat.touched) })}
+            <div className={styles.subtitleRow}>
+              <div className={styles.subtitle}>
+                {chat.outing ? (
+                  <>
+                    <span
+                      className={styles.categoryDot}
+                      style={{
+                        backgroundColor:
+                          globals.categoryColorMap[chat.outing.activity.category],
+                      }}
+                    />
+                    <span className={styles.outingActivity}>
+                      {chat.outing.activity.name}
+                    </span>
+                    {memberNames ? <span className={styles.sep}>·</span> : null}
+                    <span>{memberNames}</span>
+                  </>
+                ) : (
+                  <span>{t("ui.chatCard.directMessage")}</span>
+                )}
+              </div>
+              {unreadChatMessages > 0 ? (
+                <div className={styles.notificationBadge}>{unreadChatMessages}</div>
+              ) : null}
             </div>
           </div>
         </div>

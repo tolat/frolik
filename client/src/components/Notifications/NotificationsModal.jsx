@@ -1,4 +1,5 @@
 import OutingNotice from "./OutingNotice";
+import PageHeader from "../UI/PageHeader";
 import { Fragment, useState } from "react";
 import ModalPortal from "../Modals/ModalPortal";
 import styles from "./styles/NotificationsModal.module.scss";
@@ -48,6 +49,7 @@ const NotificationsModal = (props) => {
         {!props.asPage && (
           <ModalHeaderPortal selector={"notifications"}>{t("notifications.title")}</ModalHeaderPortal>
         )}
+        {props.asPage && <PageHeader title={t("nav.tabs.alerts")} />}
         {props.asPage && <PushPrompt />}
         <div className={styles.filterRow} role="tablist">
           {filters.map((f) => (

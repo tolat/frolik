@@ -2,7 +2,7 @@ import styles from "./styles/ProfileHeader.module.scss";
 import FriendCard from "./FriendCard";
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modal-slice";
-import gear from "../../images/gear.png";
+import { Settings } from "lucide-react";
 import { Fragment } from "react";
 import { useT } from "../../i18n";
 
@@ -37,13 +37,15 @@ const ProfileHeader = (props) => {
                 <div className={styles.sideBySide}>
                   {isSameUser ? (
                     <div className={styles.settingButtonContainer}>
-                      <img
+                      <button
+                        type="button"
                         onClick={handleClick}
                         className={styles.settingsButton}
-                        src={gear}
-                        alt={t("ui.profileHeader.settings")}
+                        aria-label={t("ui.profileHeader.settings")}
                         data-tour="settings"
-                      />
+                      >
+                        <Settings size={21} strokeWidth={2} aria-hidden="true" />
+                      </button>
                     </div>
                   ) : (
                     props.headerButtons

@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import PageHeader from "../UI/PageHeader";
 import SkeletonCards from "../UI/SkeletonCards";
 import { pageRouteLoader, sortByDate, toSorted } from "../../utils/utils";
 import styles from "./styles/Social.module.scss";
@@ -93,6 +94,7 @@ const Social = (props) => {
   return (
     <Fragment>
       <div className={styles.container}>
+        <PageHeader title={t("nav.tabs.social")} />
         <SimpleSearch
           setValue={setFeedSearch}
           defaultVal={""}

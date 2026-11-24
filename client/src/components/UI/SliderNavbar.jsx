@@ -7,7 +7,10 @@ const SliderNavber = (props) => {
 
   return (
     <div
-      className={`${styles.container} ${props.className}`}
+      // Icon tabs (Profile) render as a segmented control
+      className={`${styles.container} ${props.icons ? styles.segmented : ""} ${
+        props.className || ""
+      }`}
       id={props.id}
       style={props.style}
     >

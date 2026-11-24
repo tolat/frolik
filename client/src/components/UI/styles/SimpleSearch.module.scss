@@ -46,18 +46,20 @@
 }
 
 // ── Pill search field ───────────────────────────────────────────────────────
+// (redesign) A filled, borderless field
 .container {
-  height: 4.2rem;
-  background-color: $surface;
-  border: 1.5px solid $light_grey;
-  border-radius: 100rem;
+  height: 4.4rem;
+  background-color: $button_grey;
+  border: 1.5px solid transparent;
+  border-radius: 1.4rem;
   overflow: hidden;
-  transition: border-color $dur ease, box-shadow $dur ease;
+  transition: border-color $dur ease, box-shadow $dur ease, background-color $dur ease;
 }
 
 .container:focus-within {
-  border-color: $blue;
-  box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.18);
+  background-color: $surface;
+  border-color: $hairline;
+  box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.08);
 }
 
 .input {
@@ -79,5 +81,5 @@
 .searchIcon {
   background-color: transparent;
   border: none;
-  opacity: 0.55;
+  opacity: 0.45;
 }

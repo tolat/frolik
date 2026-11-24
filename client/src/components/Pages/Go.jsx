@@ -1,4 +1,6 @@
 import styles from "./styles/Go.module.scss";
+import PageHeader from "../UI/PageHeader";
+import { SlidersHorizontal, UserPlus, UserPen } from "lucide-react";
 import { scrollToElement } from "../../utils/scrollTo";
 import SkeletonCards from "../UI/SkeletonCards";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,11 +10,8 @@ import { Fragment, useEffect, useReducer, useRef, useState } from "react";
 import { usePageRefresh } from "../../utils/pageRefresh";
 import AddUserModal from "../Modals/AddUserModal";
 import { modalActions } from "../../store/modal-slice";
-import editIcon from "../../images/edit.png";
-import plusIcon from "../../images/add-group.png";
 import EditUsersModal from "../Modals/EditUsersModal";
 import UserIconCluster from "../UI/UserIconCluster";
-import TintedIcon from "../UI/TintedIcon";
 import ActivityCard from "../UI/ActivityCard";
 import FilterActivitiesModal from "../Modals/FilterActivitiesModal";
 import balloonIcon from "../../images/air-balloon.png";
@@ -41,7 +40,6 @@ import CreateActivityDrawer from "../Popups/CreateActivityDrawer";
 import LoaderSpinner from "../UI/LoaderSpinner";
 import { useT } from "../../i18n";
 import { inkFor } from "../../utils/theme";
-import useViewportWidth from "../../hooks/useViewportWidth";
 
 // The category colour, see-through: a soft highlight behind the tab title
 const tint = (color, alpha) => {
@@ -341,15 +339,6 @@ const Go = (props) => {
     setSelected(capitalizeFirstLetter(activity?.category.toLowerCase()));
   };
 
-  // The avatar takes what's left between the two side buttons (7.5rem
-  // each + padding), up to 18rem. On a 320px-wide screen (iPhone "Larger
-  // Text" display zoom) a fixed 18rem pushed the buttons off the edges.
-  const viewportWidth = useViewportWidth();
-  const avatarRem = Math.max(
-    11,
-    Math.min(18, Math.floor((viewportWidth - 180) / 10 * 2) / 2)
-  );
-
   const removeActivity = (activity) => {
     dispatchFilter({ type: "remove-activity", payload: activity });
   };
@@ -379,38 +368,57 @@ const Go = (props) => {
         okClick={onPopupOk}
       />
       <div className={styles.container}>
+        {/* (2026-11 redesign) Page title; Filter sits top-right while
+            browsing activities */}
+        <PageHeader title={t("nav.tabs.outing")}>
+          {!goState.outing.activity?.name && (
+            <button
+              type="button"
+              onClick={handleFilterActivitiesClick}
+              className={`${styles.headerIconButton} ${
+                activeFilterCount ? styles.headerIconButtonActive : ""
+              }`}
+              aria-label={t("go.filter")}
+              title={t("go.filter")}
+              data-tour="activity-tools"
+            >
+              <SlidersHorizontal size={20} strokeWidth={2} aria-hidden="true" />
+              {activeFilterCount ? (
+                <span className={styles.filterCount}>{activeFilterCount}</span>
+              ) : null}
+            </button>
+          )}
+        </PageHeader>
+        <div className={styles.planCard}>
         <div className={styles.usersContainer}>
-          <button
-            onClick={goState.outing.users[1] ? handleEditUsersClick : null}
-            className={styles.roundButton}
-            style={{ opacity: goState.outing.users[1] ? 1 : 0.2 }}
-          >
-            <span className={styles.roundIcon}>
-              <TintedIcon src={editIcon} className={styles.roundIconGlyph} color="var(--on-btn)" />
-            </span>
-            <span className={styles.roundButtonLabel}>
-              {t("go.members.edit")}
-            </span>
-          </button>
           <UserIconCluster
             users={goUsers}
-            sizeInRem={avatarRem}
-            borderSizeInRem={avatarRem * (1.4 / 18)}
+            sizeInRem={8.4}
+            borderSizeInRem={0.65}
           />
-          <button onClick={handleAddUserClick} className={styles.roundButton}>
-            <span
-              className={`${styles.roundIcon} ${
+          <div className={styles.memberButtons}>
+            <button
+              type="button"
+              onClick={handleAddUserClick}
+              className={`${styles.memberButton} ${styles.memberButtonPrimary} ${
                 goState.outing.activity?.name && goState.outing.users.length < 2
                   ? styles["bump"]
                   : ""
               }`}
             >
-              <TintedIcon src={plusIcon} className={styles.roundIconGlyph} color="var(--on-btn)" />
-            </span>
-            <span className={styles.roundButtonLabel}>
+              <UserPlus size={17} strokeWidth={2.2} aria-hidden="true" />
               {t("go.members.add")}
-            </span>
-          </button>
+            </button>
+            <button
+              type="button"
+              onClick={goState.outing.users[1] ? handleEditUsersClick : null}
+              className={styles.memberButton}
+              disabled={!goState.outing.users[1]}
+            >
+              <UserPen size={17} strokeWidth={2.2} aria-hidden="true" />
+              {t("go.members.edit")}
+            </button>
+          </div>
         </div>
         {/* Checklist until the outing is ready, then just the Create button.
             One wrapper keeps the tour's spotlight target either way. */}
@@ -487,15 +495,10 @@ const Go = (props) => {
             </>
           )}
         </div>
+        </div>
 
         {goState.outing.activity?.name ? (
           <Fragment>
-            {goState.outing.users[1] && goState.outing.activity?.name ? null : (
-              <Fragment>
-                <br />
-                <br />
-              </Fragment>
-            )}
 
             <div ref={activitiesRef} className={styles.selectedActivity}>
               <ActivityCard
@@ -510,25 +513,6 @@ const Go = (props) => {
           </Fragment>
         ) : (
           <Fragment>
-            <SimpleButton
-              onClick={handleFilterActivitiesClick}
-              className={`${styles.filterButton} ${
-                activeFilterCount ? styles.activeFiltersButton : ""
-              }`}
-              data-tour="activity-tools"
-            >
-              <svg
-                className={styles.filterIcon}
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path d="M4 6h16M7 12h10M10 18h4" />
-              </svg>
-              {t("go.filter")}
-              {activeFilterCount ? (
-                <span className={styles.filterCount}>{activeFilterCount}</span>
-              ) : null}
-            </SimpleButton>
             <div className={styles.categoryRow}>
               <SliderNavber
                 className={styles.categorySlider}
