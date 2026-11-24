@@ -210,3 +210,12 @@
 .likeIcon {
   margin-inline-start: 0.6rem;
 }
+
+// Title and actions both under the photos, as one footer
+.postHeader {
+  padding: 1.4rem 1.6rem 0.4rem;
+}
+
+.postActions {
+  padding: 0.6rem 1.6rem 1.4rem 1rem; // heart lines up with the avatars
+}

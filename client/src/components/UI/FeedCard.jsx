@@ -76,14 +76,14 @@ const FeedCard = (props) => {
         }`}
         style={ready ? undefined : shineSync()}
       >
-        {/* (redesign) post layout: who + what, the photos, then like / view */}
-        <FeedCardFooter outing={outing} memberNames={memberNames} part="header" />
+        {/* (redesign) post layout: the photos, then who + what, then like / view */}
         {outing && outingPhotos[0] && !outingPhotos.find((img) => img === "queued") ? (
           <SixPhotoGrid photos={outingPhotos} onAllLoaded={() => setReady(true)} />
         ) : (
           <div className={`${styles.loadingTile} shine-loading`} />
         )}
 
+        <FeedCardFooter outing={outing} memberNames={memberNames} part="header" />
         <FeedCardFooter outing={outing} memberNames={memberNames} part="actions" />
         {!ready && <SkeletonCard variant="feed" fill />}
       </div>

@@ -1,6 +1,6 @@
 import styles from "./styles/Go.module.scss";
 import PageHeader from "../UI/PageHeader";
-import { SlidersHorizontal, UserPlus, UserPen } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import { scrollToElement } from "../../utils/scrollTo";
 import SkeletonCards from "../UI/SkeletonCards";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,8 +10,11 @@ import { Fragment, useEffect, useReducer, useRef, useState } from "react";
 import { usePageRefresh } from "../../utils/pageRefresh";
 import AddUserModal from "../Modals/AddUserModal";
 import { modalActions } from "../../store/modal-slice";
+import editIcon from "../../images/edit.png";
+import plusIcon from "../../images/add-group.png";
 import EditUsersModal from "../Modals/EditUsersModal";
 import UserIconCluster from "../UI/UserIconCluster";
+import TintedIcon from "../UI/TintedIcon";
 import ActivityCard from "../UI/ActivityCard";
 import FilterActivitiesModal from "../Modals/FilterActivitiesModal";
 import balloonIcon from "../../images/air-balloon.png";
@@ -40,6 +43,7 @@ import CreateActivityDrawer from "../Popups/CreateActivityDrawer";
 import LoaderSpinner from "../UI/LoaderSpinner";
 import { useT } from "../../i18n";
 import { inkFor } from "../../utils/theme";
+import useViewportWidth from "../../hooks/useViewportWidth";
 
 // The category colour, see-through: a soft highlight behind the tab title
 const tint = (color, alpha) => {
@@ -339,6 +343,15 @@ const Go = (props) => {
     setSelected(capitalizeFirstLetter(activity?.category.toLowerCase()));
   };
 
+  // The avatar takes what's left between the two side buttons (7.5rem
+  // each + padding + the 1.6rem page gutters), up to 18rem. On a 320px-wide screen (iPhone "Larger
+  // Text" display zoom) a fixed 18rem pushed the buttons off the edges.
+  const viewportWidth = useViewportWidth();
+  const avatarRem = Math.max(
+    11,
+    Math.min(18, Math.floor((viewportWidth - 212) / 10 * 2) / 2)
+  );
+
   const removeActivity = (activity) => {
     dispatchFilter({ type: "remove-activity", payload: activity });
   };
@@ -391,34 +404,37 @@ const Go = (props) => {
         </PageHeader>
         <div className={styles.planCard}>
         <div className={styles.usersContainer}>
+          <button
+            onClick={goState.outing.users[1] ? handleEditUsersClick : null}
+            className={styles.roundButton}
+            style={{ opacity: goState.outing.users[1] ? 1 : 0.2 }}
+          >
+            <span className={styles.roundIcon}>
+              <TintedIcon src={editIcon} className={styles.roundIconGlyph} color="var(--on-btn)" />
+            </span>
+            <span className={styles.roundButtonLabel}>
+              {t("go.members.edit")}
+            </span>
+          </button>
           <UserIconCluster
             users={goUsers}
-            sizeInRem={8.4}
-            borderSizeInRem={0.65}
+            sizeInRem={avatarRem}
+            borderSizeInRem={avatarRem * (1.4 / 18)}
           />
-          <div className={styles.memberButtons}>
-            <button
-              type="button"
-              onClick={handleAddUserClick}
-              className={`${styles.memberButton} ${styles.memberButtonPrimary} ${
+          <button onClick={handleAddUserClick} className={styles.roundButton}>
+            <span
+              className={`${styles.roundIcon} ${
                 goState.outing.activity?.name && goState.outing.users.length < 2
                   ? styles["bump"]
                   : ""
               }`}
             >
-              <UserPlus size={17} strokeWidth={2.2} aria-hidden="true" />
+              <TintedIcon src={plusIcon} className={styles.roundIconGlyph} color="var(--on-btn)" />
+            </span>
+            <span className={styles.roundButtonLabel}>
               {t("go.members.add")}
-            </button>
-            <button
-              type="button"
-              onClick={goState.outing.users[1] ? handleEditUsersClick : null}
-              className={styles.memberButton}
-              disabled={!goState.outing.users[1]}
-            >
-              <UserPen size={17} strokeWidth={2.2} aria-hidden="true" />
-              {t("go.members.edit")}
-            </button>
-          </div>
+            </span>
+          </button>
         </div>
         {/* Checklist until the outing is ready, then just the Create button.
             One wrapper keeps the tour's spotlight target either way. */}

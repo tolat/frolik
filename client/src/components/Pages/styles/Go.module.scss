@@ -635,87 +635,6 @@
   box-shadow: var(--btn-shadow);
 }
 
-// The plan: who's coming + what's left to do (or Create Outing)
-.planCard {
-  @include card;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 1.6rem;
-  margin-bottom: 2rem;
-  border-radius: 2.4rem;
-}
-
-.usersContainer {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 1.6rem;
-  padding: 0;
-  background: transparent;
-}
-
-.memberButtons {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-
-.memberButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.7rem;
-  height: 4rem;
-  padding: 0 1.4rem;
-  border: none;
-  border-radius: 100rem;
-  background: $button_grey;
-  color: $text;
-  font: inherit;
-  font-size: 1.35rem;
-  font-weight: 650;
-  white-space: nowrap;
-  cursor: pointer;
-  @include pressable;
-
-  &:disabled {
-    opacity: 0.4;
-    cursor: default;
-  }
-}
-
-.memberButtonPrimary {
-  background: var(--btn-fill);
-  color: var(--on-btn);
-  box-shadow: var(--btn-shadow);
-}
-
-.readyArea {
-  align-items: stretch;
-  margin-top: 1.4rem;
-  padding-top: 1.4rem;
-  border-top: 1px solid $hairline;
-}
-
-.requirements {
-  justify-content: flex-start;
-  margin: 0;
-}
-
-.requirement {
-  background-color: $card_grey;
-  border-width: 1px;
-}
-
-.requirementNote {
-  text-align: start;
-}
-
-.goCta {
-  max-width: none;
-}
 
 // Categories: a scrolling row of chips (the category's colour when chosen)
 .categorySlider {
@@ -761,9 +680,6 @@
 }
 
 // ── (redesign) spacing + categories that fit without scrolling ─────────────
-.planCard {
-  margin-bottom: 1.6rem;
-}
 
 .categoryRow {
   gap: 0.6rem;
@@ -793,4 +709,9 @@
 
 .createActivityPlus {
   margin: 0 0.2rem 0 0;
+}
+
+// Room between the steps / Create button and the category chips
+.readyArea {
+  margin-bottom: 1.6rem;
 }
