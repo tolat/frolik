@@ -220,6 +220,7 @@ const Profile = (props) => {
           selected={selectedSliderKey}
           setSelected={setSelectedSliderKey}
           icons={getSliderIcons(t)}
+          style={{ paddingTop: "0" }}
         />
       </div>
       {!userPhotos[0] && !user.friends[0] && !user.outings[0] ? (

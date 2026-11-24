@@ -636,82 +636,13 @@
 }
 
 
-// Categories: a scrolling row of chips (the category's colour when chosen)
-.categorySlider {
-  gap: 0.6rem;
-  overflow-x: auto;
-  scrollbar-width: none;
-  padding: 0.2rem 0.1rem 0.6rem !important;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  > div {
-    flex: 0 0 auto;
-    padding: 0;
-    background: transparent;
-    opacity: 1;
-  }
-
-  // the tab's own pill (gets the category tint inline when chosen)
-  > div > div:first-child {
-    padding: 0.85rem 1.6rem !important;
-    margin: 0 !important;
-    border-radius: 100rem !important;
-    background-color: $button_grey;
-    font-size: 1.35rem;
-    font-weight: 650;
-    color: $text_muted;
-  }
-
-  // the old underline under each tab
-  > div > div:last-child {
-    display: none;
-  }
-}
-
-.categoryRow {
-  margin-bottom: 0.8rem;
-}
-
-.createActivityPlus {
-  margin-bottom: 0.6rem;
-}
-
-// ── (redesign) spacing + categories that fit without scrolling ─────────────
-
-.categoryRow {
-  gap: 0.6rem;
-  margin-bottom: 1.2rem;
-}
-
-// The five chips share the row, sized to their names (the + stays at the end)
-.categorySlider {
-  gap: 0.3rem;
-  overflow: visible;
-  padding: 0 !important;
-
-  > div {
-    flex: 1 1 auto;
-    min-width: 0;
-  }
-
-  > div > div:first-child {
-    padding: 0.85rem 0.6rem !important;
-    text-align: center;
-    font-size: 1.2rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
-
-.createActivityPlus {
-  margin: 0 0.2rem 0 0;
-}
-
 // Room between the steps / Create button and the category chips
 .readyArea {
   margin-bottom: 1.6rem;
+}
+
+// The page gutters are wider than when these tabs were sized: let the
+// tabs shrink a little so Sports does not slide under the + button
+.categorySlider > div {
+  min-width: 0;
 }
