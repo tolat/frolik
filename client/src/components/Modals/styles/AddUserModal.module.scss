@@ -111,3 +111,10 @@
 .addButtonLocked:active {
   transform: none;
 }
+
+// The friend-slots note changes as matches are added (1 or 2 lines):
+// always reserve two lines so the list below doesn't jump
+.friendSlots {
+  line-height: 1.4;
+  min-height: calc(2 * 1.4 * 1.3rem);
+}
